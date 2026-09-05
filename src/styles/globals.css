@@ -1,0 +1,225 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ------------------------------------------------------------------ */
+/* Design tokens — single source of truth.                            */
+/* Values are raw RGB triplets so Tailwind can apply alpha.           */
+/*                                                                    */
+/* The scale is named by elevation, and elevation is the semantic:    */
+/*                                                                    */
+/*   --ink-950  page          the page itself, and the header over it */
+/*   --ink-900  inset         wells things sit *in*: canvases, fields */
+/*   --ink-800  card          surfaces that sit *on* the page         */
+/*   --ink-700  raised        chips, secondary buttons, hover fills   */
+/*   --line     border        always used at low alpha                */
+/*   --fg…      text          three tiers: body, muted, faint         */
+/*                                                                    */
+/* Both themes define every one of these. A component never asks      */
+/* which theme is active — it asks for a role and gets the right      */
+/* value. Canvas code reads the same variables at runtime through     */
+/* src/design/tokens.ts, so there is exactly one source of truth.     */
+/* ------------------------------------------------------------------ */
+:root,
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* Surfaces */
+  --ink-950: 10 10 15;
+  --ink-900: 16 16 24;
+  --ink-800: 23 23 34;
+  --ink-700: 32 32 46;
+
+  /* Strokes — light ink on dark ground, used at low alpha via Tailwind */
+  --line: 255 255 255;
+  --line-strong: 255 255 255;
+
+  /* Text */
+  --fg: 237 237 244;
+  --fg-muted: 158 158 178;
+  --fg-faint: 108 108 128;
+
+  /* Accent — electric violet.
+     Two tokens, because one cannot do both jobs: a violet light enough to
+     read as *text* on ink (4.5:1) is too light to carry near-white *label*
+     text on top of it, and the two luminance ranges do not overlap at AA.
+     `--accent` is the mark — text, rules, strokes, canvas paths.
+     `--accent-fill` is the surface a label sits on. */
+  --accent: 154 112 249;
+  --accent-fill: 124 58 237;
+  --accent-soft: 76 51 133;
+  --accent-fg: 245 243 255;
+
+  /* Categorical signals (lab categories, data viz, states) */
+  --signal-cyan: 34 211 238;
+  --signal-green: 52 211 153;
+  --signal-amber: 251 191 36;
+  --signal-rose: 251 113 133;
+  --signal-blue: 96 165 250;
+
+  /* Elevation. Dark ground takes a deep, wide shadow. */
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px -8px rgb(0 0 0 / 0.5);
+  --shadow-card-hover: 0 1px 2px rgb(0 0 0 / 0.4), 0 16px 40px -12px rgb(0 0 0 / 0.6);
+
+  /* Typography */
+  --font-display: "Sora", "Inter", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", monospace;
+}
+
+/* ------------------------------------------------------------------ */
+/* Light theme.                                                        */
+/*                                                                     */
+/* Not "the dark theme inverted". The elevation ramp reverses — on a   */
+/* light ground a card is *whiter* than the page and a well is         */
+/* *greyer* — and every saturated colour is re-picked, because the     */
+/* neons that carry a dark UI fall to 2:1 on white. The signal hues    */
+/* drop to their 700 weights and the accent darkens with them, which   */
+/* keeps body text on white above 4.5:1 and every state marker above   */
+/* 3:1. See the contrast table in the theme tests.                     */
+/* ------------------------------------------------------------------ */
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  /* Surfaces — page is off-white, cards are white, wells are grey */
+  --ink-950: 247 248 251;
+  --ink-900: 240 242 247;
+  --ink-800: 255 255 255;
+  --ink-700: 232 235 242;
+
+  /* Strokes — dark ink on light ground, same low alphas */
+  --line: 15 18 32;
+  --line-strong: 15 18 32;
+
+  /* Text */
+  --fg: 17 19 27;
+  --fg-muted: 84 89 104;
+  --fg-faint: 124 130 146;
+
+  /* Accent — the same violet, weighted for white. On a light ground one
+     value serves both roles: it is dark enough for white labels (7.1:1) and
+     dark enough to read as text on white (7.5:1). */
+  --accent: 109 40 217;
+  --accent-fill: 109 40 217;
+  --accent-soft: 221 214 254;
+  --accent-fg: 255 255 255;
+
+  /* Categorical signals at their 700 weights */
+  --signal-cyan: 14 116 144;
+  --signal-green: 4 120 87;
+  --signal-amber: 180 83 9;
+  --signal-rose: 190 18 60;
+  --signal-blue: 29 78 216;
+
+  /* Elevation. Light ground takes a tighter, much softer shadow. */
+  --shadow-card: 0 1px 2px rgb(15 18 32 / 0.06), 0 8px 24px -12px rgb(15 18 32 / 0.14);
+  --shadow-card-hover: 0 1px 2px rgb(15 18 32 / 0.08), 0 16px 40px -16px rgb(15 18 32 / 0.2);
+}
+
+/* ------------------------------------------------------------------ */
+/* Base                                                                */
+/* ------------------------------------------------------------------ */
+@layer base {
+  html {
+    @apply antialiased;
+    scrollbar-gutter: stable;
+  }
+
+  body {
+    @apply bg-ink-950 font-body text-body text-fg;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    @apply bg-accent/30 text-accent-fg;
+  }
+
+  /* Visible, consistent focus for keyboard users — never remove. */
+  :focus-visible {
+    @apply outline-none ring-2 ring-accent ring-offset-2 ring-offset-ink-950;
+  }
+
+  /* Honor reduced motion globally; Framer Motion is handled via the
+     useReducedMotion hook, this covers CSS transitions/animations. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Shared component classes                                            */
+/* ------------------------------------------------------------------ */
+@layer components {
+  .shell {
+    @apply mx-auto w-full max-w-shell px-6 md:px-10;
+  }
+
+  .card-surface {
+    @apply rounded-card border border-line/10 bg-ink-800 shadow-card;
+  }
+
+  .skip-link {
+    @apply sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50
+      focus:rounded focus:bg-accent-fill focus:px-4 focus:py-2 focus:text-accent-fg;
+  }
+
+  /* ---------------------------------------------------------------- */
+  /* Range slider.                                                     */
+  /*                                                                   */
+  /* Left to the browser, the track paints as rgb(59 59 59) — an       */
+  /* off-palette grey that reads warmer and brighter than any ink      */
+  /* surface, which made it the loudest thing on a panel in the two    */
+  /* labs that use sliders. The fill is a gradient on the element      */
+  /* rather than a native part, so every browser shows the same thing  */
+  /* (WebKit has no ::-moz-range-progress equivalent).                 */
+  /*                                                                   */
+  /* The element is 24px tall for the pointer target while the visible */
+  /* track stays 6px — background-size paints the band, not the box.   */
+  /* It is still a native <input type="range">, so keyboard, stepping  */
+  /* and screen-reader semantics are untouched.                        */
+  /* ---------------------------------------------------------------- */
+  .lab-range {
+    @apply h-6 w-full cursor-pointer appearance-none bg-transparent;
+    background-image: linear-gradient(
+      to right,
+      rgb(var(--accent)) var(--range-fill, 50%),
+      rgb(var(--ink-700)) var(--range-fill, 50%)
+    );
+    background-repeat: no-repeat;
+    background-size: 100% 0.375rem;
+    background-position: center;
+  }
+
+  .lab-range::-webkit-slider-thumb {
+    @apply appearance-none rounded-pill bg-accent-fill;
+    height: 1rem;
+    width: 1rem;
+    border: 2px solid rgb(var(--ink-950));
+    box-shadow: 0 1px 3px rgb(0 0 0 / 0.6);
+  }
+
+  .lab-range::-moz-range-thumb {
+    @apply rounded-pill border-0 bg-accent-fill;
+    height: 1rem;
+    width: 1rem;
+    box-shadow:
+      0 0 0 2px rgb(var(--ink-950)),
+      0 1px 3px rgb(0 0 0 / 0.6);
+  }
+
+  .lab-range::-moz-range-track {
+    @apply border-0 bg-transparent;
+    height: 0.375rem;
+  }
+
+  .lab-range:disabled {
+    @apply cursor-not-allowed opacity-40;
+  }
+}

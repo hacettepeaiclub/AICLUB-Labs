@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="AI Club Labs — interactive experiences that teach Computer Science and AI." />
+    <meta name="theme-color" content="#0a0a0f" />
+    <title>AI Club Labs</title>
+    <script>
+      // Runs before the stylesheet paints and before React exists, so a visitor
+      // who chose light never sees a dark frame first. The markup already says
+      // data-theme="dark", which is the default and also the correct answer for
+      // anyone who has not chosen — so this only ever has work to do for
+      // someone who has.
+      (function () {
+        try {
+          var theme = localStorage.getItem("aiclub-labs-theme");
+          if (theme === "light" || theme === "dark") {
+            document.documentElement.setAttribute("data-theme", theme);
+            var meta = document.querySelector('meta[name="theme-color"]');
+            if (meta) meta.setAttribute("content", theme === "light" ? "#f7f8fb" : "#0a0a0f");
+          }
+          var lang = localStorage.getItem("aiclub-labs-language");
+          if (lang === "tr" || lang === "en") document.documentElement.setAttribute("lang", lang);
+        } catch (e) {
+          // Storage can be blocked outright; the defaults in the markup stand.
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
