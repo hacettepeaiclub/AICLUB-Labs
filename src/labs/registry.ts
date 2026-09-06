@@ -1,5 +1,6 @@
 import { lazy } from "react";
 import type { LabEntry } from "./types";
+import { attentionMeta } from "./attention/meta";
 import { gradientDescentMeta } from "./gradient-descent/meta";
 import { hashPlaygroundMeta } from "./hash-playground/meta";
 import { neuralPlaygroundMeta } from "./neural-playground/meta";
@@ -27,6 +28,7 @@ import { tokenizerMeta } from "./tokenizer/meta";
  * registry stays cheap even at 100+ entries.
  */
 export const labs: LabEntry[] = [
+  { meta: attentionMeta, Component: lazy(() => import("./attention")) },
   { meta: gradientDescentMeta, Component: lazy(() => import("./gradient-descent")) },
   { meta: hashPlaygroundMeta, Component: lazy(() => import("./hash-playground")) },
   { meta: neuralPlaygroundMeta, Component: lazy(() => import("./neural-playground")) },
