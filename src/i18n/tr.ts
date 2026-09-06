@@ -98,6 +98,83 @@ export const tr: Translation = {
   },
 
   labs: {
+    // ------------------------------------------------ reward playground ----
+    "reward-playground": {
+      title: "Ödül Laboratuvarı",
+      description:
+        "Bir robot için bir karenin ne kadar değerli olduğuna siz karar verin ve tam olarak dediğinizi yapmasını izleyin.",
+
+      room: {
+        title: "Oda",
+        question:
+          "Bu robota çıkış yolunu kimse göstermedi. Yolu deneyerek buldu — neyi önemseyeceğine ise siz karar veriyorsunuz.",
+        sliderLabel: "İşaretli kare robot için ne kadar değerli?",
+        sliderValue: (value: string) => `İşaretli karenin değeri ${value}`,
+        hint: "Sürükleyin. Her oynattığınızda yol sıfırdan yeniden öğreniliyor.",
+        wow: "Ona durmasını söylemediniz. O karenin kapıdan daha değerli olduğunu söylediniz.",
+        behaviour: {
+          avoided: "Kareye basmamak için uzun yoldan dolandı ve kapıya ulaştı.",
+          passed: "Yolu üzerinde kareye basarak geçti ve kapıya ulaştı.",
+          stayed: "Kapıya hiç gitmedi. Sadece karenin yanında oyalanıyor.",
+        },
+        readout: (steps: number, visits: number) =>
+          `${steps} hamle · kareye ${visits} kez bastı`,
+        mapLabel: (behaviour: string, steps: number, visits: number, at: number) =>
+          `Yukarıdan görünen küçük bir oda. ${behaviour} Toplam ${steps} hamle, işaretli kareye ${visits} kez basıldı. Robot ${at}. hamlede.`,
+      },
+
+      learn: {
+        kicker: "Bunu nasıl çözdü?",
+        title: "Yapabileceği her hamle için bir sayı tuttu.",
+        lede: "Buradaki hiçbir şey robotun öğrenmiş olabileceğinin bir resmi değil — kaydırıcıyı getirdiğiniz anda gerçekten öğrenmiş olduğu şey. Yukarıdaki kaydırıcıyı oynatın; bu sayfadaki her sayı yeni bir çalıştırmadan baştan hesaplanır.",
+
+        scrubber: "Ne kadar deneme yaptığı",
+        episode: (n: number) => `${n}. deneme`,
+        scrubberValue: (episode: number, total: number) =>
+          `${total} denemenin ${episode}. denemesinden sonra`,
+        episodeLabel: "Yapılan deneme",
+
+        mapLabel: (episode: number) =>
+          `${episode} denemeden sonraki oda. Her kare, robotun orayı ne kadar iyi bulduğunu ve oradan hangi yöne gideceğini gösterir.`,
+        cellLabel: (row: number, col: number, value: string, action: string) =>
+          `Satır ${row}, sütun ${col}. Değeri ${value}. Buradan ${action} giderdi.`,
+        wallCell: (row: number, col: number) => `Satır ${row}, sütun ${col}. Duvar.`,
+
+        actions: { 0: "yukarı", 1: "aşağı", 2: "sola", 3: "sağa" },
+        noAction: "hiçbir yere — burası kapı",
+        bestAction: "en iyi",
+        selectedTitle: (row: number, col: number) => `Satır ${row}, sütun ${col}`,
+        chain: (row: number, col: number, action: string, value: string) =>
+          `Satır ${row}, sütun ${col} üzerindeyken robotun yapabileceği dört hamle ve her biri için bir sayı var. En büyüğünü seçiyor — ${action} giderek elde ettiği ${value} — çünkü o hamle en son denediğinde onu daha iyi bir yere götürmüştü. Bunu birkaç yüz kez tekrarlayın, sayılar değişmeyi bırakır.`,
+
+        unexploredLabel: "Uğramadığı kare",
+        unexploredHint: "oraya gitmeyi bıraktı",
+
+        propagation:
+          "Kaydırıcıyı en başa çekin. İlk on-on beş denemede hiçbir şeyin değeri yok: robot dolanıyor ve attığı her adım ona biraz pahalıya geliyor. Sonra kapıya tesadüfen giriyor, kapının yanındaki bir kare pozitife dönüyor ve sonraki birkaç denemede bu iyi haber odaya doğru, kare kare yayılıyor. Öğrenmenin tamamı bu yayılma.",
+
+        formulaTitle: "Her hamleden sonra uyguladığı kural",
+        formulaNote:
+          "Şöyle okuyun: az önce yaptığınız hamlenin sayısını, gerçekte elde ettiğiniz ödüle ve vardığınız yerden artık mümkün gördüğünüz en iyi değere doğru biraz kaydırın. α bu kaydırmanın büyüklüğü, γ ise ileride gelecek bir ödülün şimdikine kıyasla ne kadar değerli sayıldığı.",
+
+        honesty:
+          "Robot odanın tamamını öğrenmedi. İşine yarayan bir yol öğrendi ve geri kalanını keşfetmeyi bıraktı; bu yüzden bazı kareler hâlâ en baştaki tahminini taşıyor. Bu yöntemin bir kusuru değil — yalnızca kendi deneyiminden öğrenmek tam olarak böyle görünür.",
+
+        scheduleWarning:
+          "Kaydedilen denemeler eşit aralıklı, bu da öğrenmenin gerçekleştiği kısmı gizliyor.",
+      },
+
+      recap: {
+        lessons: [
+          "Ödül bir talimat değildir. Bir puandır ve robot en yüksek puanı veren davranışı bulur — aklınızdan hiç geçmemiş olanı bile.",
+          "Deneyerek öğrenir: her hamle bir sayıyı günceller ve işe yarayan sayılar, ilk kez iyi giden şeyden dışa doğru yayılır.",
+          "Aklınızdaki sonucu değil, gerçekten yazdığınız ödülü optimize eder.",
+        ],
+        footer:
+          "Bu, küçük ve deterministic bir grid üzerinde gerçek tabular Q-learning'dir: yirmi yedi kare, dört hamle, her ikili için bir sayı. Gerçek robotlar ve büyük pekiştirmeli öğrenme sistemleri bundan çok daha karmaşıktır — ama verdiğiniz ödülle istediğiniz sonuç arasındaki açık, sistemler büyüdükçe kapanmıyor.",
+      },
+    },
+
     // ------------------------------------------------------- attention ----
     attention: {
       title: "Attention Laboratuvarı",
