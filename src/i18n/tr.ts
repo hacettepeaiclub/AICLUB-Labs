@@ -8,9 +8,10 @@ import type { Translation } from "./types";
  *
  * ## Çeviri ilkeleri
  *
- * Metinler İngilizceden kelime kelime çevrilmedi. Hedef, akademik ve teknik
- * açıdan doğru, aynı zamanda okunabilir Türkçe. Cümleler "siz" kipinde ve
- * gereksiz uzatılmadan kuruldu: akademik terminoloji, uzun cümle demek değil.
+ * Metinler İngilizceden kelime kelime çevrilmedi, konuşma diline yakın ve
+ * doğal Türkçeyle yeniden yazıldı. "Siz" kipi kullanıldı ama cümleler
+ * gereksiz yere resmileştirilmedi ya da uzatılmadı; teknik doğruluk, ağdalı
+ * bir dil kullanmayı gerektirmiyor.
  *
  * Yerleşik Türkçe karşılığı olan terimler çevrildi (ağırlık, kayıp, gradyan,
  * geri yayılım, çakışma, terslik, derlem). Karşılığı yapay kalan ya da anlam
@@ -19,7 +20,8 @@ import type { Translation } from "./types";
  *
  * Sayı biçimlerine dikkat edildi: Türkçede yüzde işareti sayıdan önce gelir
  * (%50) ve sayıdan sonra gelen ad çoğul eki almaz ("5 token", "5 tokenlar"
- * değil).
+ * değil). Uzun tire (em dash) hiç kullanılmadı; Türkçede doğal olan virgül,
+ * nokta ve iki nokta üst üste tercih edildi.
  */
 export const tr: Translation = {
   shell: {
@@ -52,12 +54,12 @@ export const tr: Translation = {
 
   home: {
     kicker: "AI Club Labs",
-    title: "Bilgisayar biliminin ve yapay zekanın ardındaki fikirlerle oynayın.",
-    lede: "Algoritmalara, yapay sinir ağlarına ve hesaplamanın işleyişine doğrudan dokunabileceğiniz etkileşimli deneyler. Ders anlatımı yok; yalnızca çevirebileceğiniz kollar var.",
+    title: "Bilgisayar biliminin ve yapay zekânın arkasındaki fikirlerle oynayın.",
+    lede: "Algoritmalara, yapay sinir ağlarına ve hesaplamanın işleyişine elinizle dokunabileceğiniz etkileşimli deneyler. Uzun anlatımlar yok, sadece oynayarak keşfedeceğiniz düğmeler ve kaydırıcılar var.",
     experiments: "Deneyler",
     emptyTitle: "İlk deneyler hazırlanıyor.",
     emptyBody:
-      "Altyapı hazır — laboratuvarlar kendilerini kaydeder ve burada otomatik olarak görünür.",
+      "Altyapı hazır. Laboratuvarlar kendilerini kaydediyor ve burada otomatik olarak beliriyor.",
   },
 
   notFound: {
@@ -91,7 +93,7 @@ export const tr: Translation = {
     tryAgain: "Yeniden deneyin",
     solved: (done: number, total: number) => `${total} görevden ${done} tanesi çözüldü`,
     recapTitle: "Bugün öğrendikleriniz",
-    controlsLabel: "Benzetim denetimleri",
+    controlsLabel: "Deney kontrolleri",
     keyboardHint: "Grafik odaktayken",
   },
 
@@ -107,7 +109,7 @@ export const tr: Translation = {
       turnSoundOff: "Sesi kapat",
       inputPlaceholder: "merhaba dünya",
       emptyNote: "Boş bir metnin bile bir hash değeri vardır.",
-      lengthNote: (chars: number) => `Girdi ${chars} karakter — çıktı 256 bit. Her zaman.`,
+      lengthNote: (chars: number) => `Girdi ${chars} karakter, çıktı 256 bit. Her zaman.`,
       liveHashing: "Canlı özetleme",
       digestBits: "64 onaltılık · 256 bit",
       hoverPair: "İçini görmek için bir çiftin üzerine gelin",
@@ -145,7 +147,7 @@ export const tr: Translation = {
             top: "Aynı girdi",
             bottom: "Aynı çıktı",
             detail:
-              "“hello” metnini bugün, yarın ya da dünyadaki herhangi bir makinede özetleyin — tam olarak aynı 64 karakteri elde edersiniz.",
+              "“hello” metnini bugün, yarın ya da dünyanın herhangi bir makinesinde özetleyin: sonuç her zaman tıpatıp aynı 64 karakter olur.",
           },
           fixedLength: {
             title: "Sabit uzunluk",
@@ -180,7 +182,7 @@ export const tr: Translation = {
           git: {
             label: "Git",
             headline: "Her commit bir hash değeridir",
-            body: "Git, her commit'i içeriğinin ve bir önceki commit'in hash değerinin özetiyle tanımlar. Geçmişteki herhangi bir satırı değiştirin; ondan sonraki bütün hash değerleri değişir — müdahale anında görünür olur.",
+            body: "Git, her commit'i içeriğinin ve bir önceki commit'in hash değerinin özetiyle tanımlar. Geçmişteki herhangi bir satırı değiştirirseniz ondan sonraki bütün hash değerleri değişir, yani yapılan müdahale anında ortaya çıkar.",
             steps: ["file.txt", "SHA-256", "commit a3f9c21", "✓ geçmiş doğrulandı"],
           },
           passwords: {
@@ -198,19 +200,19 @@ export const tr: Translation = {
           https: {
             label: "HTTPS",
             headline: "Hash, bağlantıyı dürüst tutar",
-            body: "TLS, sertifikaları parmak iziyle tanımlamak ve verinin yolda değiştirilmediğini doğrulamak için hash kullanır. Tek bir baytın değişmesi hash'i bozar — yani müdahale gizlenemez.",
+            body: "TLS, sertifikaları parmak iziyle tanımlamak ve verinin yolda değiştirilmediğini doğrulamak için hash kullanır. Tek bir baytın değişmesi bile hash'i bozar, yani hiçbir müdahale gizlenemez.",
             steps: ["mesaj", "SHA-256", "imza", "✓ varışta doğrulandı"],
           },
           blockchain: {
             label: "Blok zinciri",
             headline: "Her blok bir öncekini özetler",
-            body: "Bir blok, kendinden önceki bloğun hash değerini içerir ve bloklar böylece birbirine zincirlenir. Eski bir bloğu değiştirin; sonraki bütün hash değerleri bozulur — defteri müdahaleye karşı görünür kılan şey budur. Madencilik ise belirli bir eşiğin altında bir hash aramaktır.",
+            body: "Bir blok, kendinden önceki bloğun hash değerini içerir ve bloklar böylece birbirine zincirlenir. Eski bir bloğu değiştirirseniz ondan sonraki bütün hash değerleri bozulur; defteri müdahaleye karşı bu kadar dayanıklı kılan şey de budur. Madencilik ise belirli bir eşiğin altında kalan bir hash aramaktan ibarettir.",
             steps: ["blok 41", "SHA-256", "blok 42", "✓ birini değiştir, hepsi bozulur"],
           },
           signatures: {
             label: "İmzalar",
             headline: "Belgeyi değil, hash değerini imzalarsınız",
-            body: "Dijital imzalar, belgenin hash değerini özel bir anahtarla şifreler. Herkes belgeyi yeniden özetleyip imzayı denetleyebilir — böylece kimin imzaladığı ve o günden beri tek bir baytın bile değişmediği kanıtlanır.",
+            body: "Dijital imzalar, belgenin hash değerini özel bir anahtarla şifreler. Herkes belgeyi yeniden özetleyip imzayı denetleyebilir; böylece hem kimin imzaladığı hem de o günden beri tek bir baytın bile değişmediği kanıtlanmış olur.",
             steps: ["sozlesme.pdf", "SHA-256", "anahtarla imzalandı", "✓ herkes doğrulayabilir"],
           },
         },
@@ -219,7 +221,7 @@ export const tr: Translation = {
       challenge: {
         kicker: "Görev",
         title: "Aynı hash değerini veren iki girdi bulun.",
-        lede: "Buyurun deneyin — internetin bütün güvenliği bunu başaramayacağınıza güveniyor.",
+        lede: "Hadi, bir deneyin. İnternetin bütün güvenliği sizin bunu başaramayacağınıza güveniyor.",
         inputA: "Girdi A",
         inputB: "Girdi B",
         rounds: "Turlar",
@@ -233,14 +235,13 @@ export const tr: Translation = {
 
       recap: {
         lessons: [
-          "Deterministik — aynı girdi, her seferinde aynı hash",
-          "Tek yönlü — hesaplaması kolay, geri dönüşü yok",
-          "Sabit uzunluk — girdi ne olursa olsun her zaman 256 bit",
-          "Çığ etkisi — tek bir karakter bitlerin yarısını değiştirir",
-          "Gerçek kullanımlar — Git, parolalar, HTTPS, blok zincirleri, imzalar",
+          "Deterministik: aynı girdi, her zaman aynı hash",
+          "Tek yönlü: hesaplaması kolay, geri dönüşü yok",
+          "Sabit uzunluk: girdi ne olursa olsun her zaman 256 bit",
+          "Çığ etkisi: tek bir karakter bitlerin yarısını değiştirir",
+          "Gerçek kullanımlar: Git, parolalar, HTTPS, blok zincirleri, imzalar",
         ],
-        footer:
-          "Yukarı kaydırıp yazmayı sürdürün — çığ etkisi hiç eskimiyor.",
+        footer: "Yukarı kaydırıp yazmayı sürdürün, çığ etkisi hiç eskimiyor.",
       },
     },
 
@@ -254,7 +255,7 @@ export const tr: Translation = {
         `İki sınıfta ${points} nokta. Ağ şu anda eğitim noktalarının %${accuracy} kadarını doğru biliyor; gölgeli arka plan ise diğer her yerde tahmin ettiği sınıf.`,
       datasets: {
         gauss: { label: "İki küme", hint: "Tek bir doğru yeterli." },
-        circle: { label: "Çember", hint: "Eğri gerekiyor — hiçbir doğru bunu yapamaz." },
+        circle: { label: "Çember", hint: "Eğri gerekiyor, düz bir çizgiyle bu iş olmaz." },
         xor: { label: "XOR", hint: "Klasik: gizli katman olmadan çözülemez." },
         spiral: { label: "Spiral", hint: "Zorlu. Nöron ve sabır gerekir." },
       },
@@ -267,15 +268,15 @@ export const tr: Translation = {
         idle: "İkisini yan yana çalıştırın ve soldakinin nerede pes ettiğini izleyin.",
       },
       layersPanels: {
-        flat: { title: "Gizli katman yok", subtitle: "İki girdi doğrudan çıktıya bağlı — tek bir nöron." },
-        deep: { title: "Tek gizli katman", subtitle: "Aynı yapı, aralarında dört nöronla." },
+        flat: { title: "Gizli katman yok", subtitle: "İki girdi doğrudan çıktıya bağlı: tek bir nöron." },
+        deep: { title: "Tek gizli katman", subtitle: "Aynı yapı, ama aralarında dört nöron var." },
       },
       descentNote: {
         overshoot:
-          "Hedefi aştı. Her adım dibin ötesine sıçrayıp karşı duvarda daha yukarıya iniyor — kayıp patlıyor.",
+          "Hedefi aştı. Her adım dibin ötesine sıçrayıp karşı duvarda daha yukarıya iniyor, kayıp da patlıyor.",
         deep: "En derin vadiye yerleşti. Sağlıklı bir eğitim böyle görünür.",
         shallow:
-          "Yerleşti — ama sağdaki sığ çukura. Gradyan inişi yalnızca ayağının altındaki eğimi görür, manzaranın tamamını asla.",
+          "Yerleşti, ama sağdaki sığ çukura. Gradyan inişi yalnızca ayağının altındaki eğimi görür, manzaranın tamamını asla.",
         rolling: "Teğet doğrusunu izleyin: adımın elindeki tek bilgi onun dikliği.",
       },
       neuronLabel: (w1: string, w2: string, bias: string) =>
@@ -304,7 +305,7 @@ export const tr: Translation = {
         newSample: "Yeni örneklem",
         insideTitle: "Ağın içeriden görünüşü",
         insideBody:
-          "Aynı ağ, ikinci bir bakış. Her kare, tek bir nöronun bütün girdi düzlemi üzerindeki kendi yanıtıdır — bir önceki katmanın kurduğu öznitelikler ve bir sonraki katmanın elinde bulunan malzeme.",
+          "Aynı ağ, ikinci bir bakış açısıyla. Her kare, bir nöronun bütün girdi düzlemine verdiği kendi yanıtını gösterir: bir önceki katmanın kurduğu öznitelikler ve bir sonraki katmanın elinde bulunan malzeme.",
         canvasLabel: "Karar yüzeyi ve üzerine çizilmiş eğitim verisi.",
         playPause: "Boşluk",
       },
@@ -321,12 +322,12 @@ export const tr: Translation = {
       neuron: {
         kicker: "Sonuna kadar yakınlaşın",
         title: "Bir nöron sandığınızdan küçüktür.",
-        lede: "Belleği yok, mantığı yok, hiçbir marifeti yok. Üç sayı ve bir ezme işlemi — bütün alanın üzerine kurulduğu birim bundan ibaret.",
+        lede: "Belleği yok, mantığı yok, hiçbir marifeti yok. Üç sayı ve bir ezme işlemi: bütün alanın üzerine kurulduğu birim bundan ibaret.",
         weight1: "x₁ ağırlığı",
         weight2: "x₂ ağırlığı",
         bias: "Bias",
         activation: "Aktivasyon",
-        note: "Yapamadığınız şeye dikkat edin: bu üç kaydırıcıyı nasıl çekerseniz çekin, sınır düz bir çizgi olarak kalır. Tek bir nöronun sınırı budur — ve bir sonraki bölümün var olma nedeni.",
+        note: "Şuna dikkat edin: bu üç kaydırıcıyı nasıl çekerseniz çekin, sınır yine düz bir çizgi olarak kalır. Tek bir nöronun sınırı budur ve bir sonraki bölümün var olma nedeni de tam olarak bu.",
         canvasLabel: "Tek bir nöronun girdi düzlemi üzerindeki çıktısı.",
         activations: {
           tanh: "−1…1 aralığına ezer. Düzgün, simetrik, güvenli bir başlangıç.",
@@ -338,7 +339,7 @@ export const tr: Translation = {
       layers: {
         kicker: "Katmanlar neden gerekli",
         title: "Yapay zekâyı on yıl durduran dört nokta.",
-        lede: "XOR: karşılıklı köşelere yerleşmiş iki sınıf. Tek bir nöron bunları ayıramaz ve 1969'da yapılan bu saptama alanı neredeyse bitiriyordu. Çözümün tamamı tek bir gizli katman.",
+        lede: "XOR: karşılıklı köşelere yerleşmiş iki sınıf. Tek bir nöron bunları birbirinden ayıramaz ve 1969'da fark edilen bu gerçek, alanı neredeyse bitiriyordu. Çözümün tamamıysa tek bir gizli katmandan ibaret.",
         noHidden: "Gizli katman yok",
         oneHidden: "Tek gizli katman",
         accuracy: "Doğruluk",
@@ -352,7 +353,7 @@ export const tr: Translation = {
       descent: {
         kicker: "Nasıl öğreniyor",
         title: "Yokuş aşağı, her seferinde küçük bir adım.",
-        lede: "Öğrenme bir sezgi anı değildir. Gradyanın tersi yönde ilerleyen, bir yamaç üzerindeki bir toptur — ve her şeyi belirleyen, adımlarının büyüklüğüdür.",
+        lede: "Öğrenme, ansızın gelen bir kavrayış değildir. Bir yamaçta gradyanın tersi yönünde yuvarlanan bir top gibidir ve her şeyi belirleyen, attığı adımların büyüklüğüdür.",
         learningRate: "Öğrenme oranı",
         roll: "Yuvarla",
         oneStep: "Tek adım",
@@ -376,7 +377,7 @@ export const tr: Translation = {
           },
           loss: {
             title: "Kayıp",
-            body: "Tahmini gerçek etiketle karşılaştırın ve farkın karesini alın. Bütün ağ için tek bir sayı — ve ağın küçültmeye çalıştığı yegâne şey.",
+            body: "Tahmini gerçek etiketle karşılaştırın ve farkın karesini alın. Ortaya bütün ağ için tek bir sayı çıkar ve ağın küçültmeye çalıştığı tek şey de budur.",
           },
           backprop: {
             title: "Geri yayılım",
@@ -412,15 +413,15 @@ export const tr: Translation = {
 
       recap: {
         lessons: [
-          "Bir nöron, ağırlıklı bir toplam ve bir ezme işlemidir — tek başına yalnızca düz bir çizgi çizebilir",
+          "Bir nöron, ağırlıklı bir toplam ve bir ezme işleminden ibarettir; tek başına yalnızca düz bir çizgi çizebilir",
           "Gizli katmanlar o çizgiyi büker; XOR bir gizli katman olmadan çözülemez",
           "Her nöron kendi özniteliğini öğrenir, sonraki katman da bunları birleştirir",
           "Kayıp ağın ne kadar yanıldığını söyler; geri yayılım ise hangi ağırlığın sorumlu olduğunu",
-          "Gradyan inişi her ağırlığı yokuş aşağı iter — öğrenme oranı da adımın büyüklüğüdür",
+          "Gradyan inişi her ağırlığı yokuş aşağı iter; öğrenme oranı da atılan adımın büyüklüğüdür",
           "Adım çok küçükse sürünür, çok büyükse hedefi aşar; hiçbiri manzaranın tamamını görmez",
         ],
         footer:
-          "Az önce izlediğiniz her şey 300 satırlık sıradan aritmetikti. Bugünün yapay zekâsının ardındaki modeller de aynı dört adımdan oluşuyor — yalnızca çok daha fazla ağırlıkla.",
+          "Az önce izlediğiniz her şey 300 satırlık sıradan aritmetikti. Bugünün yapay zekâsının arkasındaki modeller de aynı dört adımdan oluşuyor, sadece çok daha fazla ağırlıkla.",
       },
     },
 
@@ -474,12 +475,12 @@ export const tr: Translation = {
       row: (row: number, col: number) => `satır ${row}, sütun ${col}`,
       intro: {
         caption:
-          "Birkaç engel çizin, sonra Çalıştır'a basın. Aramanın gerçekte nereye gittiğini izleyin — hedefin olmadığı her yer dâhil.",
+          "Birkaç engel çizin, sonra Çalıştır'a basın. Aramanın gerçekte nereye yayıldığını izleyin, hedefin olmadığı yerler de dahil.",
       },
       bfs: {
         kicker: "Düşünürken izleyin",
         title: "Çizgiler hâlinde değil, katmanlar hâlinde yayılır.",
-        lede: "Adım adım ilerleyin. Halkalı hücreler bilinen ama henüz ziyaret edilmemiş hücrelerdir — sınır. Dolu hücreler ise kesinleşmiştir: arama, her birine kaç hamlede ulaşıldığını bilir ve bir daha oraya bakmaz.",
+        lede: "Adım adım ilerleyin. Halkalı hücreler bilinen ama henüz ziyaret edilmemiş hücrelerdir, yani sınır. Dolu hücreler ise kesinleşmiştir: arama, her birine kaç hamlede ulaşıldığını bilir ve bir daha oraya bakmaz.",
         caption:
           "Hücreleri ilk giren ilk çıkar sırasıyla ele almak işin tamamı: bu, onların uzaklık sırasına göre kesinleşmesini sağlar, dolayısıyla hedefe ulaşan ilk rota en kısasıdır. Buna genişlik öncelikli arama denir.",
       },
@@ -488,14 +489,14 @@ export const tr: Translation = {
         title: "Bazı zeminlerde ilerlemek daha yavaştır.",
         lede: "Çamura girmenin maliyeti 5, açık zeminin 1. Önce BFS'i, sonra Dijkstra'yı çalıştırın ve ızgaranın altındaki iki sayıyı karşılaştırın.",
         caption:
-          "BFS yine en az hamleyi yapıyor — doğruca bataklığın içinden. Dijkstra daha çok adım atıyor ama daha az ödüyor; çünkü her seferinde en yakın hücreyi değil, bildiği en ucuz hücreyi kesinleştiriyor.",
+          "BFS yine en az hamleyle gidiyor, doğruca bataklığın içinden. Dijkstra daha çok adım atıyor ama daha az ödüyor; çünkü her seferinde en yakın hücreyi değil, bildiği en ucuz hücreyi kesinleştiriyor.",
       },
       astar: {
         kicker: "Aramaya bir ipucu verin",
         title: "Aynı doğru cevap, çok daha az arama.",
         lede: "Dijkstra hedefin nerede olduğunu bilmez, bu yüzden her yöne eşit yayılır. A* ise kalan uzaklık için bir tahmin ekler ve onu izler: f = g + h; burada g şu ana kadarki maliyet, h ise tahmindir.",
         caption:
-          "Aynı yol, aynı maliyet — İncelenen sayısına bakın. Buradaki tahmin Manhattan uzaklığı; dört yönlü bir ızgarada kalan mesafeyi asla olduğundan fazla gösteremez ve A*'ın ona güvenerek hiçbir şeyden ödün vermemesinin nedeni tam olarak budur.",
+          "Aynı yol, aynı maliyet. İncelenen sayısına bakın. Buradaki tahmin Manhattan uzaklığı; dört yönlü bir ızgarada kalan mesafeyi asla olduğundan fazla gösteremez, A*'ın ona güvenerek hiçbir şeyden ödün vermemesinin nedeni de tam olarak budur.",
       },
       challenge: {
         kicker: "Görev",
@@ -528,7 +529,7 @@ export const tr: Translation = {
           solved: (cost: number, explored: number) =>
             `Çözüldü. Maliyet ${cost} ve yalnızca ${explored} hücre kesinleşti.`,
           overBudget: (explored: number, budget: number) =>
-            `Yol en uygun olanı — ama ${explored} hücre incelediniz. Bütçe: ${budget}.`,
+            `Yol en uygun olanı ama ${explored} hücre incelediniz. Bütçe: ${budget}.`,
           suboptimal: (explored: number, cost: number, optimal: number) =>
             `Yalnızca ${explored} hücre incelediniz, ancak yolunuzun maliyeti ${cost}. En uygun maliyet: ${optimal}.`,
           both: (cost: number, optimal: number, explored: number, budget: number) =>
@@ -537,7 +538,7 @@ export const tr: Translation = {
       },
       recap: {
         lessons: [
-          "Bir arama hedefe doğru yönelmez — hedef, ulaştığı şeylerden biri olana kadar yayılır",
+          "Bir arama doğrudan hedefe yönelmez; hedef, ulaştığı noktalardan biri olana kadar her yöne yayılır",
           "BFS hücreleri ilk giren ilk çıkar sırasıyla alır; böylece onları en az hamle sırasına göre kesinleştirir",
           "Zemin tekdüze olmaktan çıktığı anda en az hamle ile en ucuz rota farklı sorulardır",
           "Dijkstra her zaman bildiği en ucuz hücreyi kesinleştirir; cevabının en ucuz olmasının nedeni budur",
@@ -545,7 +546,7 @@ export const tr: Translation = {
           "Tahmin mesafeyi asla olduğundan fazla göstermez; bu yüzden A* daha hızlı ulaşırken hiçbir şeyden ödün vermez",
         ],
         footer:
-          "Telefonunuzun bugüne kadar önerdiği her güzergâh buna benzer bir döngüden çıktı — bir sınır, kesinleşmiş bir küme ve sıradaki hücreyi seçen bir kural.",
+          "Telefonunuzun bugüne kadar önerdiği her güzergâh buna benzer bir döngüden çıktı: bir sınır, kesinleşmiş bir küme ve sıradaki hücreyi seçen bir kural.",
       },
     },
 
@@ -598,7 +599,7 @@ export const tr: Translation = {
       race: {
         oneButton: "Tek düğme. İkisi de aynı veriden başlıyor.",
         bothDone:
-          "Aynı dizi, aynı sonuç — ve biri diğerinin sorduğu soruların çok azını sordu.",
+          "Aynı dizi, aynı sonuç. Ama biri diğerinin sorduğu soruların çok azını sordu.",
         caption:
           "Aynı dizi, aynı sonuç. Sayaçlar aynı değil ve bu laboratuvarın tamamı işte o farkla ilgili.",
       },
@@ -614,14 +615,14 @@ export const tr: Translation = {
         title: "İş, verinin kendisinde.",
         lede: "Grafiği yeniden biçimlendirmek için üzerinde sürükleyin ya da hazır bir biçim seçin, sonra yeniden sıralayın. Her sayıya ne olduğunu izleyin.",
         caption:
-          "Seçmeli Sıralama burada her seferinde tam 496 soru soruyor — sıralı, karışık ya da ters, fark etmiyor; çünkü kalan bütün çiftleri koşulsuz denetliyor. Eklemeli Sıralama'nın sayısı ise çizdiğiniz biçimle birlikte değişiyor.",
+          "Seçmeli Sıralama burada her seferinde tam 496 soru soruyor, sıralı, karışık ya da ters fark etmiyor; çünkü kalan bütün çiftleri koşulsuz denetliyor. Eklemeli Sıralama'nın sayısı ise çizdiğiniz biçimle birlikte değişiyor.",
       },
       distance: {
         kicker: "Yerinden ne kadar uzakta",
         title: "Mesele kaç tanesinin yanlış olduğu değil.",
         lede: "Sıralı biçimden başlayın. Önce tek bir çubuğu ait olduğu yerden çok uzağa taşıyın; sonra bunun yerine üç çubuğu azıcık oynatın. İkisinin maliyetini karşılaştırın.",
         caption:
-          "Terslik, sırası bozuk olan bir çifttir. Bu eklemeli sıralama, kendisine verilen dizideki her terslik için tam olarak bir kaydırma yapar — yani yerinden çok uzaktaki tek bir değer, birkaç küçük hatadan daha pahalıya gelebilir.",
+          "Terslik, sırası bozuk olan bir çifttir. Bu eklemeli sıralama, kendisine verilen dizideki her terslik için tam olarak bir kaydırma yapar. Yani yerinden çok uzaktaki tek bir değer, birkaç küçük hatadan daha pahalıya gelebilir.",
       },
       challenge: {
         kicker: "Görev",
@@ -647,7 +648,7 @@ export const tr: Translation = {
           },
           "fewest-writes": {
             title: "En az yazma",
-            brief: "İstediğiniz kadar soru sorun — yeter ki fazla veri taşımayın.",
+            brief: "İstediğiniz kadar soru sorun, yeter ki fazla veri taşımayın.",
           },
           "three-edits": {
             title: "Üç düzenleme",
@@ -669,7 +670,7 @@ export const tr: Translation = {
           "Seçmeli sıralama her turda kalanın tamamını tarar; bu yüzden ne verirseniz verin aynı sayıda soru sorar",
           "Eklemeli sıralama yalnızca gerektiği kadar geriye yürür; bu yüzden maliyeti verinin bir özelliğidir",
           "Ne kadar iş olduğunu belirleyen şey yalnızca girdinin boyutu değil, biçimidir",
-          "Terslik, sırası bozuk bir çifttir — bu eklemeli sıralama her terslik için bir kez kaydırma yapar",
+          "Terslik, sırası bozuk bir çifttir; bu eklemeli sıralama her terslik için bir kez kaydırma yapar",
           "Tek bir “daha iyi algoritma” yoktur: daha az soru ile daha az yazma farklı hedeflerdir",
         ],
         footer:
@@ -683,7 +684,7 @@ export const tr: Translation = {
       description:
         "Bir tokenizer'ı elinizle eğitin ve ne okuduğunun, neyi söylemenin ucuz olduğunu nasıl belirlediğini görün.",
       honesty:
-        "Bu laboratuvar için birkaç kilobaytlık metin üzerinde eğitilmiş küçük bir BPE tokenizer'ı — herhangi bir GPT modelinin kullandığı tokenizer değil.",
+        "Bu laboratuvar için birkaç kilobaytlık metin üzerinde eğitilmiş küçük bir BPE tokenizer'ı. Herhangi bir GPT modelinin kullandığı tokenizer değil.",
       nothingToTokenize: "Henüz tokenleştirilecek bir şey yok.",
       stripSummary: (label: string, count: number, list: string) =>
         `${label}. ${count} token: ${list}`,
@@ -691,7 +692,7 @@ export const tr: Translation = {
       guess: {
         sectionLabel: "Kesikleri tahmin edin",
         heading: "Sizce bu metin nerelerden ayrılıyor?",
-        lede: "Bir dil modeli bu cümleyi hiçbir zaman harfler olarak görmez; tam olarak kelimeler olarak da görmez. Onun ne gördüğünü söylemeden önce — cümleyi nerelerden parçaladığını düşünüyorsanız oraları işaretleyin. Sonra sonucu açın.",
+        lede: "Bir dil modeli bu cümleyi hiçbir zaman harfler olarak görmez; tam olarak kelimeler olarak da görmez. Onun ne gördüğünü söylemeden önce, cümleyi nerelerden parçaladığını düşünüyorsanız oraları işaretleyin. Sonra sonucu açın.",
         stripLabel: (sentence: string) =>
           `“${sentence}” cümlesi. Nerelerden ayrıldığını düşünüyorsanız işaretleyin. Sol ve sağ yön tuşlarıyla hareket edin, Boşluk ile kesik koyun veya kaldırın.`,
         cellLabel: (character: string, position: number) =>
@@ -714,7 +715,7 @@ export const tr: Translation = {
         resultTail: (actual: number, tokens: number) =>
           `Tokenizer toplam ${actual} kesik yaptı ve geriye ${tokens} parça kaldı.`,
         explain:
-          "Kelime değiller. “gardeners” ikiye ayrıldı: “garden” ve “ers”. Nokta tek başına duruyor ve her boşluk, kendisinden sonraki kelimeye ait — aralarında durmuyor.",
+          "Kelime değiller. “gardeners” ikiye ayrıldı: “garden” ve “ers”. Nokta tek başına duruyor ve her boşluk kendisinden sonraki kelimeye aittir, aralarında durmuyor.",
         actualLabel: "Cümlenin gerçekte ayrıldığı parçalar",
         announceCleared: "Temizlendi. Kesikleri yeniden işaretleyin.",
         announceEveryWord: "Her kelimenin önüne bir kesik konuldu.",
@@ -736,7 +737,7 @@ export const tr: Translation = {
       train: {
         kicker: "Parçalar nereden geliyor",
         title: "O parçaları kimse seçmedi.",
-        lede: "Onlar sayıldı. İşte izlenebilecek kadar küçük bir derlem: Birleştir'e basın, derlemdeki en sık komşu çift geçtiği her yerde tek bir parçaya kaynasın. Sonra sayım yeniden başlar.",
+        lede: "Onlar sayıldı. Burada adım adım izleyebileceğiniz kadar küçük bir derlem var: Birleştir'e basın, derlemdeki en sık geçen komşu çift, geçtiği her yerde tek bir parçaya kaynaşsın. Sonra sayım yeniden başlar.",
         corpusLabel: "Okuduğu derlem",
         mergeNext: "Sıradaki çifti birleştir",
         trainAll: "Tümünü eğit",
@@ -754,9 +755,9 @@ export const tr: Translation = {
         ) =>
           `${index}. birleştirme: en sık geçen komşu çift ${left} + ${right} idi, ${frequency} kez görüldü. Artık tek bir token: ${token}. Sözlük: ${vocabulary} parça. Derlemin maliyeti ${tokens} token.`,
         exhausted: (merges: number, vocabulary: number) =>
-          `Birleştirilecek bir şey kalmadı — artık hiçbir çift birden fazla geçmiyor, dolayısıyla birini kaynaştırmak öğrenmek değil ezberlemek olurdu. ${merges} birleştirmede durdu; sözlük ${vocabulary} parçadan oluşuyor.`,
+          `Birleştirilecek bir şey kalmadı. Artık hiçbir çift birden fazla geçmiyor, dolayısıyla birini kaynaştırmak öğrenmek değil ezberlemek olurdu. ${merges} birleştirmede durdu; sözlük ${vocabulary} parçadan oluşuyor.`,
         explain:
-          "İşte byte-pair encoding (BPE) budur. Bütün komşu çiftleri sayın, en sık olanı kaynaştırın, yeniden sayın. Sonunda elde ettiği parçalar onun sözlüğüdür ve her kaynaşma bir birleştirmedir. Kimse ona “·read” bir kelimedir demedi — bu yalnızca ilk dört sayım turunun, her seferinde bir çift olacak şekilde ürettiği şey. Boşluğun daha ilk birleştirmeden itibaren parçaya dâhil olduğuna dikkat edin: öğrendiği parça “read” değil, “·read”. “·every” ise sonuna kadar parçalı kalıyor, çünkü metinde yalnızca bir kez geçiyor.",
+          "İşte byte-pair encoding (BPE) budur. Bütün komşu çiftleri sayın, en sık olanı kaynaştırın, yeniden sayın. Sonunda elde ettiği parçalar onun sözlüğüdür ve her kaynaşma bir birleştirmedir. Kimse ona “·read” bir kelimedir demedi; bu, ilk dört sayım turunun sırayla ürettiği bir sonuçtan ibaret. Boşluğun daha ilk birleştirmeden itibaren parçaya dâhil olduğuna dikkat edin: öğrendiği parça “read” değil, “·read”. “·every” ise sonuna kadar parçalı kalıyor, çünkü metinde yalnızca bir kez geçiyor.",
         announceFinished:
           "Eğitim tamamlandı. Birden fazla geçen hiçbir çift kalmadı, dolayısıyla birleştirmeye değer bir şey yok.",
         announceFinishedAfter: (merges: number) =>
@@ -770,7 +771,7 @@ export const tr: Translation = {
         lede: "Bu tokenizer birkaç kilobaytlık Türkçe okudu. Eğitimini geri sarmak için kaydırıcıyı sürükleyin ve cümleyi dilediğiniz gibi değiştirin. Parçalar her konumda gerçekten yeniden hesaplanır.",
         sentenceLabel: "Cümleniz",
         sentenceHint:
-          "Cümleyi değiştirin ya da kendiniz yazın. Türkçe veya İngilizce — tokenizer ikisine de yanıt verir.",
+          "Cümleyi değiştirin ya da kendiniz yazın. Türkçe veya İngilizce, tokenizer ikisine de yanıt verir.",
         mergesLearned: "Öğrenilen birleştirme",
         mergesValueText: (merges: number, max: number) => `${max} birleştirmeden ${merges} tanesi`,
         untrained: "Eğitimsiz",
@@ -780,13 +781,13 @@ export const tr: Translation = {
           `Tokenizer eğitiliyor… ${total} birleştirmeden ${done} tanesi.`,
         ready: "Tokenizer'ın eğitimi tamamlandı. Birleştirme kaydırıcısını sürükleyin.",
         explain:
-          "Sıfır birleştirmede her karakter kendi başına bir tokendir, çünkü tokenizer harflerden başka bir şey bilmiyordur. Sağa doğru sürükleyin ve “·ev · ler · imiz · den” dizisinin önce “·ev · lerimiz · den”e, sonra “·evlerimiz · den”e dönüşmesini izleyin. Bu parçalar Türkçe ekler ve algoritmanın hiçbir yerinde ekin ne olduğu yazmaz — bunlar yalnızca sürekli yan yana çıkan komşular.",
+          "Sıfır birleştirmede her karakter kendi başına bir tokendir, çünkü tokenizer harflerden başka bir şey bilmiyordur. Sağa doğru sürükleyin ve “·ev · ler · imiz · den” dizisinin önce “·ev · lerimiz · den”e, sonra “·evlerimiz · den”e dönüşmesini izleyin. Bu parçalar Türkçe ekler ama algoritmanın hiçbir yerinde ekin ne olduğu yazmıyor; bunlar yalnızca sürekli yan yana çıkan komşular.",
       },
 
       compare: {
         kicker: "Ne üzerinde eğitildi?",
         title: "Ne okuduysa onu ucuzlatır.",
-        lede: "İki tokenizer; aynı algoritma, aynı miktarda eğitim, farklı okuma. İkisine de aynı metni verin ve faturanın nasıl ayrıştığını görün — sonra aradaki farkı kapatan bir cümle yazmayı deneyin.",
+        lede: "İki tokenizer; aynı algoritma, aynı miktarda eğitim, farklı okuma. İkisine de aynı metni verin ve faturanın nasıl ayrıştığını görün. Sonra aradaki farkı kapatan bir cümle yazmayı deneyin.",
         textLabel: "İki tokenizer'ın da aldığı metin",
         textHint:
           "Metni istediğiniz gibi değiştirin. Hiçbir tokenizer'ı, hiç okumadığı bir dilde akıcı kılan bir cümle bulamayacaksınız.",
@@ -795,9 +796,9 @@ export const tr: Translation = {
         englishCorpus: "birkaç kilobaytlık İngilizce düzyazı",
         turkishCorpus: "birkaç kilobaytlık Türkçe düzyazı",
         tokens: "token",
-        cheaper: "Burada daha ucuz — bu, okuduğu bir dil.",
+        cheaper: "Burada daha ucuz, çünkü bu onun okuduğu bir dil.",
         ratio: (ratio: string) =>
-          `Aynı karakterler, aynı algoritma, aynı sayıda birleştirme — ve biri diğerinin ${ratio} katına mal oluyor. Fark, tamamen her birinin okuması için ne verildiğinde.`,
+          `Aynı karakterler, aynı algoritma, aynı sayıda birleştirme. Yine de biri diğerinin ${ratio} katına mal oluyor. Aradaki fark, tamamen her birine ne okutulduğundan kaynaklanıyor.`,
         sampleLoaded: (label: string, words: number, characters: number) =>
           `${label} örneği yüklendi: ${words} kelime, ${characters} karakter.`,
         samples: {
@@ -831,9 +832,9 @@ export const tr: Translation = {
         turkish: "Türkçe",
         mergesLearned: "Öğrenilen birleştirme",
         unknownNote: (unknown: number) =>
-          `${unknown} parça kesik çizgiyle çevrelenmiş ve ? ile işaretlenmiş — bunlar tokenizer'ın daha önce hiç görmediği karakterler. Sıradan düzyazı okudu ve düzyazı neredeyse tamamen küçük harflerden oluşur.`,
+          `${unknown} parça kesik çizgiyle çevrelenmiş ve ? ile işaretlenmiş: bunlar tokenizer'ın daha önce hiç görmediği karakterler. Sıradan düzyazı okudu ve düzyazı neredeyse tamamen küçük harflerden oluşur.`,
         englishCeiling:
-          "İngilizce tokenizer'ın tam olarak eğitilmiş hâli bu — bu cümlede varabileceği en iyi nokta. Eksik olan şey daha fazla eğitim değil.",
+          "İngilizce tokenizer'ın tam olarak eğitilmiş hâli bu, bu cümlede varabileceği en iyi nokta burası. Eksik olan şey daha fazla eğitim değil.",
         puzzles: {
           "say-it-cheaper": {
             title: "Daha ucuza söyleyin",
@@ -856,7 +857,7 @@ export const tr: Translation = {
           missingWords: (words: readonly string[]) =>
             `Şunlar hâlâ eksik: ${words.map((w) => `“${w}”`).join(", ")}. Cümlenin tamamının korunması gerekiyor.`,
           overBudget: (tokens: number, budget: number) =>
-            `${tokens} token — ${budget} bütçesini ${tokens - budget} aşıyor.`,
+            `${tokens} token, ${budget} bütçesini ${tokens - budget} aşıyor.`,
           passed: (tokens: number, budget: number) =>
             `${tokens} token, ${budget} bütçesinin içinde.`,
           solvedAnnounce: (message: string) => `Çözüldü. ${message}`,
@@ -865,7 +866,7 @@ export const tr: Translation = {
 
       recap: {
         lessons: [
-          "Bir tokenizer metni kelimelere ayırmaz — sık rastlanan parçalara ayırır",
+          "Bir tokenizer metni kelimelere değil, sık rastlanan parçalara ayırır",
           "Bu parçalar sayarak öğrenilir: en sık komşu çifti kaynaştır, sonra yeniden say",
           "Kaç birleştirme öğrendiği neyin tek token sayılacağını belirler ve kazancın büyük kısmı başlarda gelir",
           "Baştaki boşluk kendisinden sonraki kelimeye aittir; bu yüzden boşlukların ve büyük harflerin bir bedeli vardır",
@@ -873,7 +874,7 @@ export const tr: Translation = {
           "Türkçe ekler yalnızca gerçekten Türkçe okumuş bir tokenizer için tek token hâline gelir",
         ],
         footer:
-          "Gerçek modeller de bu yolla eğitiliyor; çok daha fazla metinle ve karakterler yerine ham baytlar üzerinde — eğitim verisinde az bulunan bir dilde yazmanın, model o dili konuşmayı öğrendikten çok sonra bile pahalı kalmasının nedeni bu.",
+          "Gerçek modeller de bu yolla eğitiliyor; çok daha fazla metinle, karakterler yerine ham baytlar üzerinde. Eğitim verisinde az bulunan bir dilin, model onu konuşmayı öğrendikten çok sonra bile pahalı kalmasının nedeni de bu.",
       },
     },
   },

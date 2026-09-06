@@ -109,9 +109,7 @@ export const HashOutput = memo(function HashOutput({
         <div className="flex items-center gap-2">
           <Badge dotClassName="bg-signal-green">SHA-256</Badge>
           <Badge>{t.digestBits}</Badge>
-          <span className="hidden text-caption text-fg-faint sm:inline">
-            hover a pair to see inside
-          </span>
+          <span className="hidden text-caption text-fg-faint sm:inline">{t.hoverPair}</span>
         </div>
         <motion.button
           type="button"
