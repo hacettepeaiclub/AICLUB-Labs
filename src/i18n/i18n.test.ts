@@ -97,6 +97,10 @@ describe("Turkish quality", () => {
     "preferences.turkish",
     "preferences.turkishFull",
     "home.kicker",
+    // "Gradient Descent" is the name of the method in Turkish technical
+    // writing too; translating it would invent a term nobody uses.
+    "labs.gradient-descent.title",
+    "labs.gradient-descent.optimizers.gd",
     "labs.hash-playground.usage.items.git.label",
     "labs.hash-playground.usage.items.https.label",
     "labs.neural-playground.neuron.bias",

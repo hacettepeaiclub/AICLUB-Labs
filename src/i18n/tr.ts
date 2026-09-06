@@ -98,6 +98,246 @@ export const tr: Translation = {
   },
 
   labs: {
+    // ------------------------------------------------ gradient descent ----
+    "gradient-descent": {
+      title: "Gradient Descent",
+      description:
+        "Bir yüzeyin biçiminin, atmanıza izin verilen adımın boyutunu nasıl belirlediğini görün.",
+
+      controls: {
+        run: "Çalıştır",
+        pause: "Duraklat",
+        reset: "Sıfırla",
+        stepOnce: "Tek adım",
+        scrubber: "Adım",
+        scrubberValue: (index: number, total: number) => `${total} adımdan ${index}. adım`,
+        learningRate: "Adım boyu η",
+        learningRateValue: (value: string) => `Adım boyu ${value}`,
+        beta: "Momentum β",
+        betaValue: (value: string) => `Momentum beta ${value}`,
+        curvature: "Eğrilik oranı",
+        curvatureValue: (value: string) => `Koşul sayısı ${value}`,
+        optimizer: "Optimizer",
+        resetPoint: "Noktayı geri al",
+      },
+
+      optimizers: {
+        gd: "Gradient Descent",
+        momentum: "Momentum",
+        adam: "Adam",
+      },
+
+      status: {
+        running: "Çalışıyor",
+        converged: "Hedefe ulaştı",
+        diverged: "Iraksadı",
+        exhausted: "Adımlar tükendi",
+      },
+
+      figures: {
+        step: "Adım",
+        objective: "Amaç değeri",
+        objectiveHint: "f fonksiyonunun buradaki değeri",
+        gradientNorm: "Gradient büyüklüğü",
+        position: "Konum",
+        status: "Sonuç",
+        conditionNumber: "Koşul sayısı",
+        conditionNumberHint: "κ = dik eğrilik ÷ düz eğrilik",
+        stepsTaken: (n: number) => `${n} adım`,
+        stepsToTolerance: "Hedefe kadar adım",
+      },
+
+      map: {
+        label: (
+          x: string,
+          y: string,
+          step: number,
+          objective: string,
+          gradient: string,
+          status: string,
+        ) =>
+          `Amaç fonksiyonunun eşyükselti haritası. Adım ${step}. Konum ${x}, ${y}. Amaç değeri ${objective}. Gradient büyüklüğü ${gradient}. ${status}.`,
+      },
+
+      chart: {
+        label: (objective: string, step: number) =>
+          `Amaç değerinin adım sayısına göre logaritmik grafiği. ${step}. adımda amaç değeri ${objective}.`,
+      },
+
+      announce: {
+        ready: "Başlangıç noktasına dönüldü.",
+        finished: (steps: number, status: string) => `${steps} adım sonra bitti. ${status}.`,
+      },
+
+      find: {
+        title: "Dibi bulun",
+        question: "Hangi adım boyu merkeze en az adımda ulaşır?",
+        caption:
+          "Başlangıç noktası her seferinde aynı ve değiştirebileceğiniz tek bir şey var. Sayılardan çok yolun biçimine bakın: doğrudan merkeze gitmiyor. Önce bir yana savruluyor, sonra geri dönüyor.",
+      },
+
+      direction: {
+        kicker: "Neden o yön",
+        title: "Gradient bir vektördür ve cevabı gösteren bir işaret değildir.",
+        lede: "Mevcut noktadan iki ok çıkıyor. Düz olan, adımın gerçekte gittiği yön: negatif gradient. Kesikli olan ise minimuma giden doğru. Önce noktayı, sonra eğriliği sürükleyin ve aralarındaki açıya bakın.",
+        descent: "Adımın gittiği yön: −∇f",
+        target: "Minimuma giden doğru",
+        equalLength:
+          "İki ok da aynı uzunlukta çiziliyor; böylece karşılaştırılan tek şey yönleri oluyor.",
+        angle: "Aralarındaki açı",
+        angleHint: "0° iki yönün çakıştığı durumdur",
+        aligned:
+          "Burada iki eğrilik eşit; bu durumda −∇f = −(a·x, b·y) ifadesi −(x, y) yönünün pozitif bir katıdır ve iki yön tam olarak çakışır.",
+        apart:
+          "İki yön farklı. −∇f = −(a·x, b·y) her koordinatı o koordinatın kendi eğriliğiyle ölçekler; dolayısıyla eğrilikleri eşit olmayan bir yüzeyde adım, minimuma değil dik eksene doğru çekilir.",
+        onAxis:
+          "Nokta bir eksenin üzerinde ve koordinatlardan biri zaten sıfır. Burada eğrilikler ne olursa olsun iki yön çakışır, çünkü eşit olmayan ölçeklemenin etki edeceği bir şey kalmamıştır. Ayırmak için noktayı eksenden çıkarın.",
+        dragHint: "Noktayı taşımak için harita üzerinde herhangi bir yeri sürükleyin ya da haritaya odaklanıp",
+        keyboardHint: "tuşlarını kullanın; başa döndürmek için:",
+        label: (x: string, y: string, kappa: string, angle: string) =>
+          `Taşınabilir noktası olan eşyükselti haritası. Nokta ${x}, ${y} konumunda. Koşul sayısı ${kappa}. İniş yönü, minimuma giden doğrudan ${angle} derece sapmış durumda.`,
+        caption:
+          "Eğrilik oranını 1'e indirin; iki ok tek bir oka dönüşür. Eksenlerin dışında bu, ikisinin çakıştığı tek durumdur — ve tek boyutlu bir resmin hiçbir şekilde gösteremeyeceği bir durumdur, çünkü tek eksende gradient yalnızca bir işarettir.",
+      },
+
+      rate: {
+        kicker: "Adım boyu",
+        title: "Tavanı belirleyen, algoritma değil yüzeydir.",
+        lede: "Aynı yüzey, aynı başlangıç noktası, değişen tek bir sayı. Kaydırıcının altındaki iki işaret bu yüzeyin eğriliğinden hesaplanıyor; gösterim işe yarasın diye seçilmiş değiller.",
+        marks: { monotone: "aşma yok", stability: "kararlılık sınırı" },
+        regimes: {
+          monotone: "Doğrudan yaklaşıyor",
+          oscillating: "Aşıyor ama yine de yaklaşıyor",
+          boundary: "Tam sınırda",
+          divergent: "Iraksıyor",
+        },
+        regimeNote: {
+          monotone:
+            "η her iki eğrilik için de 1/c değerinin altında; yani hiçbir koordinat içeri girerken minimumu geçmiyor.",
+          oscillating:
+            "η, dik eksende 1/c değerini aşmış durumda. O koordinat her adımda işaret değiştiriyor ama yine de küçülüyor; bu yüzden yol zikzak çizerek içeri iniyor.",
+          boundary:
+            "η, dik eksende tam olarak 2/c. O koordinat her adımda −1 ile çarpılıyor: ne küçülüyor ne büyüyor; ilerlemeyi yalnızca düz eksen sağlıyor.",
+          divergent:
+            "η, dik eksende 2/c değerini aşmış; o koordinat her adımda büyüyor ve çalışma haritanın dışına çıkıyor.",
+        },
+        scope:
+          "Bu eşikler burada kullanılan ikinci dereceden amaç fonksiyonu için tam olarak geçerlidir; bu fonksiyonun eğriliği her noktada aynıdır. Eğriliğin konuma göre değiştiği bir yüzeyde kullanılabilir adım boyu da onunla birlikte değişir.",
+        caption:
+          "Kararlılık sınırı, 2 bölü büyük eğriliktir; dolayısıyla yüzey değişince o da değişir. Hiçbir adım boyunun tek başına büyük ya da küçük olmamasının nedeni budur: bu yüzeyi tamamen terk eden η, daha yumuşak bir yüzeye sakince yerleşir. İkinci görev tam olarak bununla ilgili.",
+      },
+
+      momentumSection: {
+        kicker: "Momentum",
+        title: "Bir önceki adımdan bir şeyler taşımak.",
+        lede: "Momentum bir hız değeri tutar: v ← β·v + ∇f, ardından θ ← θ − η·v. Aynı yöne bakmayı sürdüren itmeler birikir; sürekli yön değiştirenler birbirini götürür. İki panel de aynı noktadan başlar ve adım adım birlikte ilerler; böylece önce bitirmek, daha hızlı hesaplanmak değil daha az adım gerektirmek anlamına gelir.",
+        marks: { plain: "düz sınır", momentum: "momentum sınırı" },
+        caption:
+          "Bu convention ile kararlılık koşulu η·max(a,b) < 2(1+β) olur; bu, düz inişin η·max(a,b) < 2 koşulundan daha geniştir. Yani momentum, düz inişin taşıyamayacağı kadar büyük bir adım boyunu taşıyabilir. Bu fazladan aralığın bedeli salınımdır. Adım boyunu sabit tutup β'yı yükseltin: çalışma önce kısalır, belli bir noktadan sonra yeniden uzar.",
+        announce: (
+          plainSteps: number,
+          plainStatus: string,
+          momentumSteps: number,
+          momentumStatus: string,
+        ) =>
+          `Gradient descent: ${plainSteps} adım, ${plainStatus}. Momentum: ${momentumSteps} adım, ${momentumStatus}.`,
+      },
+
+      adam: {
+        kicker: "Adam",
+        title: "Her parametre için ayrı bir adım boyu.",
+        lede: "Adam, her koordinatın adımını o koordinatın kendi gradient büyüklüğüne dair yürüyen bir tahmine böler. m ortalama gradient, s ise ortalama karesel gradienttir; ikisi de sıfırdan başlamanın yarattığı sapmaya karşı düzeltilir ve güncelleme η·m̂ ÷ (√ŝ + ε) olur.",
+        firstStepTitle: "İki eğriliğin bir milyon kat ayrıldığı yerde ilk adım",
+        firstStepLede: (a: string, b: string) =>
+          `Bir eksende eğrilik ${a}, diğerinde ${b}. Gradient'in iki bileşeni arasında yaklaşık bir milyon kat fark var. Aşağıdaki her sayı, engine tek adım çalıştırılarak ölçülüyor.`,
+        tableCaption:
+          "Her eksende gradient büyüklüğü ve ilk adımın boyutu; gradient descent ve Adam için.",
+        colQuantity: "Büyüklük",
+        colX: "Dik eksen",
+        colY: "Düz eksen",
+        rowGradient: "Gradient büyüklüğü",
+        rowGd: (rate: string) => `Gradient descent adımı, η = ${rate}`,
+        rowAdam: (rate: string) => `Adam adımı, η = ${rate}`,
+        firstStepNote:
+          "Sapma düzeltmesinden sonra birinci moment tam olarak g, ikincisi tam olarak g² olur; dolayısıyla ilk güncelleme η·g ÷ (|g| + ε) hâline gelir. Gradient'in büyüklüğü sadeleşir ve iki eksen de yaklaşık η kadar hareket eder. Burada parametre başına uyarlamalı adım denen şey budur — ve düzeltmenin atlanmayıp gerçekten uygulanmasının nedeni de budur.",
+        rate: "Adam adım boyu η",
+        honesty:
+          "Bunların hiçbiri Adam daha hızlı yakınsar demek değildir. Yukarıdaki κ = 60 vadisinde 300 adım boyu taranarak ölçüldüğünde Adam'ın en iyi sonucu 17 adımdır; iyi seçilmiş bir momentum ayarı ise aynı toleransa yaklaşık 10 adımda ulaşır. 0,10 gibi ölçülü bir adım boyunda Adam'ın ihtiyacı 66 adımdır. Yani seçilecek bir adım boyu hâlâ vardır ve onu kötü seçmenin bedeli hâlâ ödenir. Bu sayılar bu amaç fonksiyonuna, bu başlangıç noktasına ve bu aramaya aittir; optimizer'lar arasında genel bir sıralama değildir.",
+      },
+
+      challenge: {
+        kicker: "Üç soru",
+        title: "Bütçe adım cinsinden sayılır.",
+        lede: "Her biri bir yüzeyi, bir başlangıç noktasını ve bir adım sayısını sabitliyor. Yavaşça varmak geçmek sayılmaz ve üçünün cevabı aynı değil.",
+        budget: (n: number) => `${n} adım`,
+        goal: (budget: number, tolerance: string) =>
+          `Hedef: ${budget} adım içinde amaç değeri ≤ ${tolerance}.`,
+        progress: (done: number, total: number) => `${total} görevden ${done} tanesi çözüldü`,
+        pressRun:
+          "Bu denemenin sonucunu görmek için Çalıştır'a basın ya da adım kaydırıcısını sona sürükleyin.",
+        pass: "Çözüldü.",
+        notYet: "Henüz değil.",
+        boundaryHint: (limit: string, kappa: string) =>
+          `Bu ayarlar için kararlılık sınırı: ${limit}. Koşul sayısı κ = ${kappa}.`,
+        verdicts: {
+          solved: (steps: number, budget: number) =>
+            `Hedefe ${steps} adımda ulaştı; bütçe ${budget} adımdı.`,
+          overBudget: (steps: number, budget: number) =>
+            `Hedefe varıyor ama ${steps} adımda; bütçe ise ${budget} adım.`,
+          stalled: (budget: number) =>
+            `Bu ayar hedefe hiç ulaşmıyor. Bütçe ${budget} adım.`,
+          diverged:
+            "Çalışma yüzeyi terk etti: bu ayarlarda adım boyu, buradaki kararlılık sınırına eşit ya da ondan büyük.",
+        },
+        transfer: {
+          title: "Aynı sayı, daha yumuşak bir yüzeyde",
+          divergesHereConvergesThere: (
+            rate: string,
+            limitHere: string,
+            limitThere: string,
+            steps: number,
+          ) =>
+            `η = ${rate}, bu yüzeyin ${limitHere} olan kararlılık sınırının üzerinde; bu yüzden çalışma patlıyor. Daha yumuşak yüzeyin sınırı ise ${limitThere} ve tam olarak aynı η orada ${steps} adımda yerleşiyor. Değişen adım boyu değildi. Yüzeydi.`,
+          worksOnBoth: (steps: number) =>
+            `Bu η iki yüzeyde de yakınsıyor: burada ve daha yumuşak yüzeyde ${steps} adımda. Değeri yukarı itin ve hangisinin önce pes ettiğine bakın.`,
+          worksOnNeither:
+            "Bu η, verilen adım sayısı içinde iki yüzeyde de hedefe ulaşamıyor. Sorun büyüklüğü değil, küçüklüğü.",
+          mapLabel: (rate: string, status: string, steps: number) =>
+            `${rate} adım boyuyla çalıştırılan daha yumuşak yüzeyin eşyükselti haritası. ${steps} adım sonra: ${status}.`,
+        },
+        items: {
+          c1: {
+            title: "Tatlı nokta",
+            brief:
+              "Tek bir yüzey, düz gradient descent ve dar bir bütçe. Oraya çabucak ulaştıran bir adım boyu var; ulaştırmayan bir sürü adım boyu da var.",
+          },
+          c2: {
+            title: "Fazla büyük",
+            brief:
+              "Bu görev kararlılık sınırının üzerinde başlıyor ve ilk çalıştırmada patlıyor. Önce işe yarayan bir adım boyu bulun; sonra aynı sayının daha yumuşak bir yüzeyde ne yaptığına bakın.",
+          },
+          c3: {
+            title: "Dar vadi",
+            brief:
+              "κ = 60 olan bir vadi. Hiçbir adım boyu düz gradient descent'in bu bütçe içinde bitirmesini sağlamıyor; diğer iki optimizer'ın var olma nedeni tam olarak bu.",
+          },
+        },
+      },
+
+      recap: {
+        lessons: [
+          "Negatif gradient yokuş aşağıyı gösterir, minimumu değil. Eksenlerin dışında ikisi yalnızca eğriliğin her yönde aynı olduğu yerde çakışır.",
+          "Bir yüzeyin taşıyabileceği en büyük adım boyu, 2 bölü en dik eğriliktir. Bu, algoritmanın değil yüzeyin bir özelliğidir; dolayısıyla hiçbir adım boyu tek başına büyük ya da küçük değildir.",
+          "Bu sınırın yarısının altında yaklaşma doğrudandır; ikisinin arasında yol aşar ama yine de yaklaşır; tam sınırda dik koordinat küçülmeyi bırakır; üstünde ise çalışma yüzeyi terk eder.",
+          "Koşul sayısı κ, dik eğriliğin düz eğriliğe bölümüdür ve tek bir adım boyunun iki yöne birden hizmet etmesini engelleyen şey odur: düz eksen hâlâ sürünürken dik eksen çoktan tavanına dayanmıştır.",
+          "Momentum geçmiş gradientleri biriktirir. Kararlı aralığı η·max(a,b) < 2(1+β) düzeyine genişletir ve uzun bir zikzağı kısaltabilir; ama belli bir noktadan sonra fazlası çalışmayı yeniden uzatır.",
+          "Adam her koordinatın adımını o koordinatın kendi gradient geçmişine göre ölçekler; böylece gradient büyüklüğündeki bir milyon katlık fark, adım boyunda bir milyon katlık farka dönüşmez. Yine de seçilecek bir adım boyu vardır.",
+        ],
+        footer:
+          "Buradaki her şey dışbükey ve ikinci dereceden bir yüzey: eğrilik her noktada aynı, gradient tam olarak biliniyor ve cevap daha başlamadan belli. Gerçek eğitim bu üçünden de vazgeçer. Geriye kalan, bu sayfa boyunca ileri geri oynadığınız ilişkidir: atmanıza izin verilen adımın boyutunu yüzeyin biçimi belirler.",
+      },
+    },
+
     // ---------------------------------------------------------- hash ----
     "hash-playground": {
       title: "Hash Laboratuvarı",
