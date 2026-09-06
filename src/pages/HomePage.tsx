@@ -10,17 +10,14 @@ export function HomePage() {
   const labs = publishedLabs();
 
   return (
-    <div className="shell py-section">
+    <div className="shell" style={{ paddingTop: "5vh" }}>
       <motion.section
         variants={staggerChildren()}
         initial="hidden"
         animate="visible"
         className="max-w-prose"
       >
-        <motion.p variants={fadeUp(reduced)} className="text-overline uppercase text-accent">
-          {t.home.kicker}
-        </motion.p>
-        <motion.h1 variants={fadeUp(reduced)} className="mt-4 text-display-xl text-fg">
+        <motion.h1 variants={fadeUp(reduced)} className="mt-2 text-display-xl text-fg">
           {t.home.title}
         </motion.h1>
         <motion.p variants={fadeUp(reduced)} className="mt-6 text-body-lg text-fg-muted">

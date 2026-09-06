@@ -31,8 +31,9 @@ export const tr: Translation = {
     breadcrumb: "Sayfa yolu",
     backToLabs: "← Tüm laboratuvarlar",
     footerTagline:
-      "AI Club Labs — bilgisayar bilimini üzerinde oynayarak öğrenin.",
-    footerRights: (year: number) => `© ${year} AI Club`,
+      "AI Club Labs: Bilgisayar bilimini oynayarak öğrenin.",
+    footerRights: (year: number) => `© ${year} Hacettepe AI Club`,
+    footerCredit: "Hacettepe Yapay Zeka Topluluğu projesidir",
     minutes: (n: number) => `${n} dk`,
     loadingLab: "Laboratuvar yükleniyor",
     openLab: "Laboratuvarı aç →",
@@ -51,7 +52,7 @@ export const tr: Translation = {
 
   home: {
     kicker: "AI Club Labs",
-    title: "Bilgisayar biliminin ardındaki fikirlerle oynayın.",
+    title: "Bilgisayar biliminin ve yapay zekanın ardındaki fikirlerle oynayın.",
     lede: "Algoritmalara, yapay sinir ağlarına ve hesaplamanın işleyişine doğrudan dokunabileceğiniz etkileşimli deneyler. Ders anlatımı yok; yalnızca çevirebileceğiniz kollar var.",
     experiments: "Deneyler",
     emptyTitle: "İlk deneyler hazırlanıyor.",

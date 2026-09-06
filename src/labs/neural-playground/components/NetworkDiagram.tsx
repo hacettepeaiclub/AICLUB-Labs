@@ -277,7 +277,7 @@ export function NetworkDiagram({ netRef, sizes, running, revision = 0 }: Network
 
       <p className="mt-4 text-center text-caption text-fg-faint">
         Each square is one neuron&rsquo;s own picture of the input. Lines are weights —
-        <span className="mx-1 text-accent">violet pushes up</span>,
+        <span className="mx-1 text-accent">blue pushes up</span>,
         <span className="mx-1 text-signal-cyan">cyan pushes down</span>, thickness is strength.
       </p>
     </div>

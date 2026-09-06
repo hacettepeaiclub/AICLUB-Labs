@@ -13,7 +13,7 @@ Every lab must feel like it belongs to the same product. These rules are how.
 ## Color
 
 - Page background `ink-950`, panels `ink-800`, hover `ink-700`. Text `fg` / `fg-muted` / `fg-faint`.
-- Accent (violet) is for: primary actions, the "current focus" of a simulation, links. Never for large fills.
+- Accent (navy blue) is for: primary actions, the "current focus" of a simulation, links. Never for large fills.
 - `signal-*` colors are categorical: lab categories, data series, algorithm states (comparing = amber, sorted = green, active = accent…). Use them consistently within a lab.
 - Never hardcode a hex value. DOM → Tailwind classes; canvas/SVG-in-JS → `color()` from `design/tokens.ts`.
 

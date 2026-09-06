@@ -146,7 +146,7 @@ describe("contrast — WCAG AA", () => {
     });
 
     it(`${name}: a label on the accent fill clears 4.5:1`, () => {
-      // The reason the accent is two tokens: no single violet can be light
+      // The reason the accent is two tokens: no single navy can be light
       // enough to read on ink and dark enough to carry a near-white label.
       expect(contrast(theme["accent-fg"]!, theme["accent-fill"]!)).toBeGreaterThanOrEqual(4.5);
     });

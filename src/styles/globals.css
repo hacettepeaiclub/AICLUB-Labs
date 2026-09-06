@@ -39,16 +39,17 @@
   --fg-muted: 158 158 178;
   --fg-faint: 108 108 128;
 
-  /* Accent — electric violet.
-     Two tokens, because one cannot do both jobs: a violet light enough to
-     read as *text* on ink (4.5:1) is too light to carry near-white *label*
-     text on top of it, and the two luminance ranges do not overlap at AA.
+  /* Accent — brand navy blue (the club mark's colour).
+     Two tokens, because one cannot do both jobs: the mark's actual navy is too
+     dark to read as *text* on ink at 4.5:1, so `--accent` is lightened to an
+     electric blue for that role, while `--accent-fill` stays the true navy —
+     the surface a near-white label sits on.
      `--accent` is the mark — text, rules, strokes, canvas paths.
      `--accent-fill` is the surface a label sits on. */
-  --accent: 154 112 249;
-  --accent-fill: 124 58 237;
-  --accent-soft: 76 51 133;
-  --accent-fg: 245 243 255;
+  --accent: 75 148 213;
+  --accent-fill: 18 25 51;
+  --accent-soft: 36 57 76;
+  --accent-fg: 240 246 255;
 
   /* Categorical signals (lab categories, data viz, states) */
   --signal-cyan: 34 211 238;
@@ -96,12 +97,12 @@
   --fg-muted: 84 89 104;
   --fg-faint: 124 130 146;
 
-  /* Accent — the same violet, weighted for white. On a light ground one
-     value serves both roles: it is dark enough for white labels (7.1:1) and
-     dark enough to read as text on white (7.5:1). */
-  --accent: 109 40 217;
-  --accent-fill: 109 40 217;
-  --accent-soft: 221 214 254;
+  /* Accent — the mark's actual navy, weighted for white. On a light ground
+     one value serves both roles: it is dark enough for white labels (11.3:1)
+     and dark enough to read as text on white (11.3:1). */
+  --accent: 18 25 51;
+  --accent-fill: 18 25 51;
+  --accent-soft: 219 235 250;
   --accent-fg: 255 255 255;
 
   /* Categorical signals at their 700 weights */

@@ -191,7 +191,7 @@ sideways. This is what keeps lab #40 from breaking lab #12.
 Full detail in [GUIDELINES.md](GUIDELINES.md). In one line: **calm luxury — the
 simulation is the loudest thing on the page, and the chrome never competes.**
 
-- Dark surfaces (`ink-*`), restrained violet accent, generous whitespace.
+- Dark surfaces (`ink-*`), restrained navy blue accent, generous whitespace.
 - The accent color marks primary actions and the current focus of a simulation —
   never large fills. `signal-*` colors are categorical and used consistently
   _within_ a lab (comparing = amber, sorted = green, active = accent).

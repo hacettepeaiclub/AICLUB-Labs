@@ -1,6 +1,7 @@
 import { Link, NavLink } from "react-router-dom";
 import { useTheme } from "@/app/ThemeProvider";
 import type { Language, ThemeName } from "@/app/preferences";
+import logoMark from "@/assets/aiclub-mark-white.png";
 import { useLanguage, useT } from "@/i18n";
 import { cn } from "@/lib/cn";
 import { PreferenceToggle } from "./PreferenceToggle";
@@ -24,12 +25,8 @@ export function SiteHeader() {
     <header className="sticky top-0 z-40 border-b border-line/10 bg-ink-950/80 backdrop-blur-md">
       <div className="shell flex h-16 items-center justify-between gap-3">
         <Link to="/" className="flex shrink-0 items-center gap-2.5 rounded">
-          <span
-            aria-hidden
-            className="grid size-8 place-items-center rounded bg-accent-fill font-display text-body-sm
-              font-bold text-accent-fg"
-          >
-            λ
+          <span aria-hidden className="grid size-8 shrink-0 place-items-center rounded bg-accent-fill p-1.5">
+            <img src={logoMark} alt="" className="h-full w-full object-contain" />
           </span>
           {/* The wordmark is the first thing to go when the two toggles and the
               nav link stop fitting; the mark alone still gets you home. */}

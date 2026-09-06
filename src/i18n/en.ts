@@ -21,8 +21,9 @@ export const en = {
     allLabs: "All labs",
     breadcrumb: "Breadcrumb",
     backToLabs: "← All labs",
-    footerTagline: "AI Club Labs — learn computer science by playing with it.",
-    footerRights: (year: number) => `© ${year} AI Club`,
+    footerTagline: "AI Club Labs: Learn computer science by playing with it.",
+    footerRights: (year: number) => `© ${year} Hacettepe AI Club`,
+    footerCredit: "A project by Hacettepe AI Club",
     minutes: (n: number) => `${n} min`,
     loadingLab: "Loading lab",
     openLab: "Open lab →",
@@ -41,7 +42,7 @@ export const en = {
 
   home: {
     kicker: "AI Club Labs",
-    title: "Play with the ideas behind computer science.",
+    title: "Play with the ideas behind computer science and artificial intelligence.",
     lede: "Interactive experiments that let you touch algorithms, neural networks, and the machinery of computation — no lectures, just levers to pull.",
     experiments: "Experiments",
     emptyTitle: "First experiments are brewing.",

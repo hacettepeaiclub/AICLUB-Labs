@@ -33,7 +33,7 @@ export default {
           muted: "rgb(var(--fg-muted) / <alpha-value>)",
           faint: "rgb(var(--fg-faint) / <alpha-value>)",
         },
-        // Brand accent (electric violet → used sparingly)
+        // Brand accent (navy blue → used sparingly)
         accent: {
           DEFAULT: "rgb(var(--accent) / <alpha-value>)",
           // The surface a label sits on. See the note in globals.css.

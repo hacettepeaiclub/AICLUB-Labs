@@ -19,7 +19,7 @@ export interface LabSectionProps {
  * opacity-only under reduced motion, so every lab's rhythm down the page is
  * the same without each one re-deciding it.
  */
-export function LabSection({ kicker, title, lede, children }: LabSectionProps) {
+export function LabSection({ title, lede, children }: LabSectionProps) {
   const reduced = useReducedMotion();
   return (
     <motion.section
@@ -28,7 +28,6 @@ export function LabSection({ kicker, title, lede, children }: LabSectionProps) {
       whileInView="visible"
       viewport={{ once: true, margin: "-80px" }}
     >
-      <p className="text-overline uppercase text-accent">{kicker}</p>
       <h2 className="mt-3 text-display-md text-fg">{title}</h2>
       {lede && <p className="mt-3 max-w-prose text-body text-fg-muted">{lede}</p>}
       <div className="mt-8">{children}</div>
