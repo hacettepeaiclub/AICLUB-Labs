@@ -86,6 +86,82 @@ export const en = {
   },
 
   labs: {
+    // ------------------------------------------------ reward playground ----
+    "reward-playground": {
+      title: "Reward Playground",
+      description: "Decide what one square is worth to a robot, and watch it obey you exactly.",
+
+      room: {
+        title: "The room",
+        question:
+          "Nobody showed this robot the way out. It worked the route out by trying things — and you get to decide what it cares about.",
+        sliderLabel: "What is the marked square worth to the robot?",
+        sliderValue: (value: string) => `The marked square is worth ${value}`,
+        hint: "Drag it. The route is worked out again from scratch every time you move it.",
+        wow: "You never told it to stop. You told it the square was worth more than the door.",
+        behaviour: {
+          avoided: "It walked the long way round to keep off the square, and reached the door.",
+          passed: "It crossed the square on its way and reached the door.",
+          stayed: "It never went to the door at all. It just stays by the square.",
+        },
+        readout: (steps: number, visits: number) =>
+          `${steps} moves · stepped on the square ${visits} ${visits === 1 ? "time" : "times"}`,
+        mapLabel: (behaviour: string, steps: number, visits: number, at: number) =>
+          `A small room seen from above. ${behaviour} ${steps} moves in total, stepping on the marked square ${visits} times. The robot is at move ${at}.`,
+      },
+
+      learn: {
+        kicker: "How did it work this out?",
+        title: "It kept a number for every move it could make.",
+        lede: "Nothing here is a picture of what the robot might have learned — it is what it did learn, at the moment you scrub to. Move the slider above and every number on this page is recomputed from a fresh run.",
+
+        scrubber: "How much practice it has had",
+        episode: (n: number) => `attempt ${n}`,
+        scrubberValue: (episode: number, total: number) =>
+          `After attempt ${episode} of ${total}`,
+        episodeLabel: "Attempts so far",
+
+        mapLabel: (episode: number) =>
+          `The room after ${episode} attempts. Each square shows how good the robot thinks it is, and the direction it would move from there.`,
+        cellLabel: (row: number, col: number, value: string, action: string) =>
+          `Row ${row}, column ${col}. Worth ${value}. It would move ${action}.`,
+        wallCell: (row: number, col: number) => `Row ${row}, column ${col}. Wall.`,
+
+        actions: { 0: "up", 1: "down", 2: "left", 3: "right" },
+        noAction: "nowhere — this is the door",
+        bestAction: "best",
+        selectedTitle: (row: number, col: number) => `Row ${row}, column ${col}`,
+        chain: (row: number, col: number, action: string, value: string) =>
+          `Standing at row ${row}, column ${col}, the robot has four moves it could make and a number for each one. It keeps the largest — ${value}, by moving ${action} — because that move led somewhere better the last time it tried. Repeat that a few hundred times and the numbers stop changing.`,
+
+        unexploredLabel: "Squares its route skips",
+        unexploredHint: "it stopped going there",
+
+        propagation:
+          "Scrub back to the very beginning. For the first dozen attempts nothing is worth anything: the robot is wandering, and every move it makes costs it a little. Then it stumbles into the door, one square near the door turns positive, and over the next handful of attempts that good news spreads outward across the room, one square at a time. That spread is the whole of the learning.",
+
+        formulaTitle: "The rule it applies after every single move",
+        formulaNote:
+          "Read it as: nudge the number for the move you just made towards what you actually got, plus the best you now think is available from where you landed. α is how big a nudge, γ is how much a later reward is worth compared with one right now.",
+
+        honesty:
+          "The robot did not learn the whole room. It learned a route that works and stopped exploring the rest, so some squares still carry whatever it happened to think early on. That is not a fault in the method — it is what learning only from your own experience looks like.",
+
+        scheduleWarning:
+          "The saved attempts are evenly spaced, which hides the part where the learning happens.",
+      },
+
+      recap: {
+        lessons: [
+          "A reward is not an instruction. It is a score, and the robot will find whatever behaviour scores highest — including one you never had in mind.",
+          "It learns by trying: each move updates a number, and the useful numbers spread outward from the first thing that ever went well.",
+          "It optimises the reward you actually wrote down, not the outcome you were picturing when you wrote it.",
+        ],
+        footer:
+          "This is real tabular Q-learning on a small deterministic grid: twenty-seven squares, four moves, one number per pair. Real robots and large reinforcement-learning systems are far more complicated — but the gap between what you rewarded and what you wanted does not get smaller as they grow.",
+      },
+    },
+
     // ------------------------------------------------------- attention ----
     attention: {
       title: "Attention Playground",
