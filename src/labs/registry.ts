@@ -1,6 +1,8 @@
 import { lazy } from "react";
 import type { LabEntry } from "./types";
 import { attentionMeta } from "./attention/meta";
+import { embeddingUniverse3DMeta } from "./embedding-universe-3d/meta";
+import { embeddingUniverseMeta } from "./embedding-universe/meta";
 import { gradientDescentMeta } from "./gradient-descent/meta";
 import { hashPlaygroundMeta } from "./hash-playground/meta";
 import { neuralPlaygroundMeta } from "./neural-playground/meta";
@@ -30,6 +32,9 @@ import { tokenizerMeta } from "./tokenizer/meta";
  */
 export const labs: LabEntry[] = [
   { meta: attentionMeta, Component: lazy(() => import("./attention")) },
+  { meta: embeddingUniverseMeta, Component: lazy(() => import("./embedding-universe")) },
+  // Draft: routable, but kept off the home grid. A prototype, not a lesson.
+  { meta: embeddingUniverse3DMeta, Component: lazy(() => import("./embedding-universe-3d")) },
   { meta: gradientDescentMeta, Component: lazy(() => import("./gradient-descent")) },
   { meta: hashPlaygroundMeta, Component: lazy(() => import("./hash-playground")) },
   { meta: neuralPlaygroundMeta, Component: lazy(() => import("./neural-playground")) },

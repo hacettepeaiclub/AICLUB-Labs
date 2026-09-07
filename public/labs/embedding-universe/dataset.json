@@ -1,0 +1,33 @@
+{
+  "datasetVersion": 1,
+  "generatedAt": "2026-09-06",
+  "vocabularyVersion": 1,
+  "vocabularyChecksum": "981b53c8d9b302af08eae000f0cbb58d81c824f8b6c038ea56a83171e08f68d3",
+  "wordCount": 318,
+  "dimensions": 300,
+  "model": {
+    "id": "sentence-transformers/average_word_embeddings_glove.6B.300d",
+    "revision": "e5e8fec6971be8960cfaa853a77a6ddc62a265d7",
+    "tensor": "emb_layer.weight",
+    "underlying": "GloVe 6B 300d (Stanford NLP), trained on Wikipedia 2014 + Gigaword 5",
+    "license": "PDDL v1.0 (public domain) for the pretrained vectors",
+    "method": "word-level lookup — no tokenisation, no pooling, no inference",
+    "normalization": "L2 to unit length, applied by this script; GloVe ships un-normalised"
+  },
+  "float32": {
+    "file": "vectors.f32.bin",
+    "location": "src/labs/embedding-universe/fixtures/ — test reference, never shipped or fetched",
+    "bytes": 381600,
+    "layout": "wordCount x dimensions, little-endian f32, vocabulary order",
+    "sha256": "8a7f553696eb467a92add59dc790b5569401e3653c6d436aa43c7b7e7b32a884"
+  },
+  "int16": {
+    "file": "vectors.i16.bin",
+    "location": "public/labs/embedding-universe/ — the only vector asset the browser fetches",
+    "bytes": 192072,
+    "layout": "wordCount x dimensions little-endian i16, then wordCount little-endian f32 scales",
+    "scheme": "symmetric per-vector: q = round(v / s) clamped to +/-32767, s = max|v| / 32767",
+    "note": "scales are stored for completeness but are not needed to decode: the decoder re-normalises, and L2(s*q) === L2(q) for s > 0",
+    "sha256": "1826984f8f49d808f077b8c0f98beba82040af9735126546c3b3abeca9ebfda0"
+  }
+}
