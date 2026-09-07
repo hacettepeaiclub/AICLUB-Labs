@@ -98,6 +98,149 @@ export const tr: Translation = {
   },
 
   labs: {
+    // ------------------------------- embedding universe (3D prototype) ----
+  "embedding-universe-3d": {
+      title: "Gömme Evreni — 3B prototip",
+      description:
+        "Bir deney: aynı 318 kelime, iki yerine üç PCA eksenine indirgenmiş hâliyle.",
+      lede: "Aynı kelimeler, aynı vektörler, bir eksen daha. Bulutu döndürmek için sürükle.",
+      honesty:
+        "Bu, gömmenin gerçek görüntüsü değildir. Uzayın 300 boyutu var; döndürdüğün şey, onun üç PCA eksenine indirgenmiş bir görünümü — düz haritadan bir eksen fazla, yine de neredeyse hiçbiri.",
+      compare:
+        "Bu bir prototip ve dersten bilerek ayrı tutuldu. Derinlik, bulutu bir mekân gibi hissettiriyor; ama projeksiyonu daha doğru yapmıyor. Bu takasın öğretmeye değip değmediğine karar vermek, prototipi yapmanın asıl sebebi.",
+      error: "Kelime vektörleri yüklenemedi.",
+      varianceLabel: "Açıklanan varyans",
+      varianceHint: (dimensions: number) => `${dimensions} eksenin üçü`,
+      selectedLabel: "Seçili",
+      recapTitle: "Bu prototip ne gösteriyor",
+      recap: {
+        lessons: [
+          "Üç eksen, uzayın ikiden biraz fazlasını taşıyor — yine de neredeyse hiçbirini.",
+          "Derinlik bulutu bir mekân gibi hissettiriyor; bu, bilgilendirici olsun ya da olmasın ikna edici.",
+          "Kelimeler, vektörler ve en yakın komşular düz haritayla birebir aynı; değişen yalnızca görüş.",
+        ],
+      },
+      map: {
+        mapLabel:
+          "Üç boyutta kelime bulutu. Döndürmek için sürükle. Ok tuşları en yakın kelimeler arasında gezinir, Shift ve ok tuşları görüşü çevirir, Enter seçer.",
+        hint: "Döndürmek için sürükle · Shift + ok tuşları",
+        pointLabel: (word: string, gloss: string) => `${word}, ${gloss}`,
+        neighbourLabel: (word: string, gloss: string, rank: number, score: string) =>
+          `${word}, ${gloss}. ${rank}. en yakın, benzerlik ${score}`,
+        selectedLabel: (word: string, gloss: string) => `${word}, ${gloss}. Seçili`,
+        pending: "Üç eksen hesaplanıyor…",
+      },
+    },
+
+    // ------------------------------------------------ embedding universe ----
+    "embedding-universe": {
+      title: "Gömme Evreni",
+      description:
+        "Bir modelin APPLE'a en yakın gördüğü kelimeyi tahmin et, sonra bu kelime haritasının neyi sakladığını gör.",
+
+      predict: {
+        question: (word: string) => `${word} kelimesine en yakın hangisi?`,
+        hint: "Üçü de ilgili — sen hangisini beklersin?",
+        loading: "Kelime vektörleri yükleniyor…",
+        chose: (word: string, rank: number, total: number, score: string) =>
+          `${word} dedin — ${total} kelime içinde ${rank}. sırada, ${score} benzerlikle.`,
+        nearest: (word: string, score: string) => `En yakını ${word}, ${score} benzerlikle.`,
+        because:
+          "Bu vektörler kelimelerin ne anlama geldiğinden değil, nasıl kullanıldığından öğrenildi. Haber ve ansiklopedi metinlerinde apple, meyvelerden çok software ile yan yana geçiyor.",
+      },
+
+      explore: {
+        title: "Evreni keşfet",
+        neighboursTitle: "En yakın kelimeler",
+        announce: (word: string, gloss: string) => `${word} seçildi, ${gloss}.`,
+      },
+
+      map: {
+        mapLabel: "Kelime haritası. Ok tuşları en yakın kelimeler arasında gezinir, Enter seçer.",
+        pointLabel: (word: string, gloss: string) => `${word}, ${gloss}`,
+        neighbourLabel: (word: string, gloss: string, rank: number, score: string) =>
+          `${word}, ${gloss}. ${rank}. en yakın, benzerlik ${score}`,
+        selectedLabel: (word: string, gloss: string) => `${word}, ${gloss}. Seçili`,
+        pending: "Kelimelerin nereye düştüğü hesaplanıyor…",
+        linksNote:
+          "Çizgiler, seçili kelimeyi yanında listelenen sekiz kelimeye bağlar. Bunlar okumayı kolaylaştırmak içindir, modelin parçası değildir — gömmede bağlantı yoktur, yalnızca mesafeler vardır.",
+      },
+
+      search: {
+        label: "Kelime bul",
+        placeholder: "türkçe ya da english…",
+        noMatch: (query: string) => `Bu kümede “${query}” ile eşleşen kelime yok.`,
+        resultsLabel: "Arama sonuçları",
+        optionLabel: (word: string, gloss: string) => `${word}, ${gloss}`,
+      },
+
+      neighbours: {
+        title: (word: string) => `${word} kelimesine en yakınlar`,
+        rankHeader: "Sıra",
+        wordHeader: "Kelime",
+        scoreHeader: "Benzerlik",
+        rowLabel: (word: string, gloss: string, rank: number, score: string) =>
+          `${word}, ${gloss}. ${rank}. en yakın, benzerlik ${score}. Haritayı buraya taşımak için seç.`,
+      },
+
+      projection: {
+        kicker: "Haritanın göstermedikleri",
+        title: "Uzayın kendisine bakmıyorsun",
+        lede: "Yukarıdaki kelimeler gerçek. Konumları ise 300 sayının 2'ye yassıltılmış hâli ve yassıltmak bir şeyleri kaybetmek zorunda. Tam olarak neyi kaybettiği burada.",
+        modeLabel: "Bana göster",
+        modeNone: "Kendi seçimim",
+        modeHidden: "Yakın, uzağa çizilmiş",
+        modeFalse: "Uzak, yakına çizilmiş",
+        idle: "Yukarıdaki ikisinden birini seç ve o kelimelerin haritada nerede olduğuna bak.",
+        // Türkçe sıra sayıları düzenli: sayının ardından nokta yeter.
+        ordinal: (n: number) => `${n}.`,
+        hiddenBody: (
+          a: string,
+          b: string,
+          rank: string,
+          total: number,
+          score: string,
+          percent: string,
+        ) =>
+          `${a} ile ${b}, ${total} çift içinde ${rank} en yakın çift, ${score} benzerlikle. Projeksiyon onları haritanın ${percent} kadarı uzağına koydu — resme bakarak ilişkili olduklarını asla tahmin edemezdin.`,
+        falseBody: (
+          a: string,
+          b: string,
+          screenRank: string,
+          trueRank: string,
+          total: number,
+          score: string,
+        ) =>
+          `${a} ile ${b} ekranda ${screenRank} en yakın, neredeyse bitişik duruyor. Gerçek uzayda ise ${total} içinde ${trueRank} sıradalar, ${score} benzerlikle. Bu yakınlığı resim uydurdu.`,
+        varianceLabel: "Açıklanan varyans",
+        varianceHint: (first: string, second: string) => `PC1 ${first} + PC2 ${second}`,
+        varianceBody: (percent: string, remaining: number) =>
+          `Bu iki eksen, bu veri kümesindeki varyansın ${percent} kadarını açıklıyor. Geri kalan değişim hiçbir yere gitmedi — düz bir ekranda yeri olmayan diğer ${remaining} yönde duruyor.`,
+        correlationLabel: "Mesafe uyumu",
+        correlationHint: "−1.00 olsaydı harita hiçbir şey kaybetmemiş olurdu",
+        pending: "Projeksiyon hesaplanıyor…",
+      },
+
+      data: {
+        error: "Kelime vektörleri yüklenemedi.",
+      },
+
+      recap: {
+        lessons: [
+          "Gömme, bir öğeyi vektöre çevirir; böylece öğeler arasındaki ilişkiler mesafeye dönüşür.",
+          "Bu ilişkiler kelimelerin anlamından değil, birlikte nasıl kullanıldıklarından gelir.",
+          "300 boyutlu bir uzayın 2 boyutlu haritası bir gölgedir: gösterdiğinin bir kısmı orada yoktur, orada olanın bir kısmı da gösterilmez.",
+        ],
+      },
+
+      honesty: {
+        source:
+          "Vektörler GloVe 6B 300d; Stanford NLP tarafından Wikipedia 2014 ve Gigaword 5 üzerinde önceden eğitildi. Bu lab her kelimeyi o yayımlanmış tablodan arayıp birim uzunluğa normalize ediyor; burada hiçbir şey eğitilmiyor, ince ayar yapılmıyor ya da üretilmiyor.",
+        turkish:
+          "Gömme uzayı İngilizcedir. Buradaki Türkçe kelimeler okumayı kolaylaştırmak için bizim eklediğimiz etiketlerdir — gömülmediler ve bu bir Türkçe gömme uzayı değildir.",
+      },
+    },
+
     // ------------------------------------------------ reward playground ----
     "reward-playground": {
       title: "Ödül Laboratuvarı",
