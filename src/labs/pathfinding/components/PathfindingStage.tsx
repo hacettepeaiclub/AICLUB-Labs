@@ -1,5 +1,6 @@
 import { useCallback, useRef, useState } from "react";
 import { useReducedMotion } from "framer-motion";
+import { Stage, Transport } from "@/components/lab";
 import { Button, Kbd, Segmented } from "@/components/ui";
 import { useT } from "@/i18n";
 import { colOf, rowOf, type Algorithm, type Grid } from "../engine";
@@ -7,7 +8,7 @@ import { clearTerrain, summarise, type Tool } from "../gridEdit";
 import { buildPreset, NARROW, pickSize, type PresetId } from "../mazes";
 import { useSearchRun } from "../useSearchRun";
 import { GridCanvas } from "./GridCanvas";
-import { AlgorithmComparison, ALGORITHM_LABEL, SearchMetrics } from "./SearchMetrics";
+import { AlgorithmComparison, ALGORITHM_LABEL, SearchFigures } from "./SearchMetrics";
 
 export interface PathfindingStageProps {
   preset: PresetId;
@@ -26,11 +27,26 @@ const describe = (grid: Grid, index: number): string =>
   `row ${rowOf(grid, index) + 1}, column ${colOf(grid, index) + 1}`;
 
 /**
- * The interactive unit every section is built from: a grid you draw on, three
- * controls, and the numbers the run produced.
+ * The interactive unit every section is built from: a grid you draw on, the
+ * controls that run it, and the numbers the run produced — inside one `Stage`.
  *
  * The grid lives in a ref and is mutated in place — painting never re-renders
  * React — and the canvas is the only thing that reads it every frame.
+ *
+ * ## What moved, and why
+ *
+ * The four buttons used to sit in a two-by-two grid: a primary, a secondary
+ * and two ghosts, none of which looked like the thing to press. Run, Step and
+ * Reset are now the shared `Transport`; Clear is a map tool, so it lives with
+ * the other map tools in the stage's disclosure.
+ *
+ * The keyboard instructions used to be a five-line paragraph wedged between
+ * the grid and everything under it, which on a phone was most of a screen of
+ * text standing between the visitor and the Run button. The visible copy is
+ * now inside the disclosure. The grid's `aria-describedby` points instead at a
+ * permanently rendered short version, so assistive technology gets the help
+ * whether or not a disclosure happens to be open — which it did not
+ * reliably do before, and would not have done at all from inside `<details>`.
  */
 export function PathfindingStage({
   preset,
@@ -85,9 +101,9 @@ export function PathfindingStage({
     (next: Algorithm) => {
       setAlgorithm(next);
       run.reset();
-      run.announce(`Algorithm set to ${ALGORITHM_LABEL[next]}.`);
+      run.announce(lab.status.selected(ALGORITHM_LABEL[next]));
     },
-    [run],
+    [run, lab],
   );
 
   const metrics = run.metrics;
@@ -122,28 +138,40 @@ export function PathfindingStage({
 
   return (
     <div className="space-y-4">
-      <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_18rem]">
-        <div className="space-y-3">
-          <GridCanvas
-            gridRef={gridRef}
-            searchRef={run.searchRef}
-            running={run.running}
-            onFrame={run.advanceFrame}
-            revision={revision + edits}
-            tool={tool}
-            editable={editable}
-            onEdit={handleEdit}
-            cursor={cursor}
-            onCursorChange={setCursor}
-            label={summary}
-            describedBy={helpId}
-          />
-
+      <Stage
+        width="full"
+        secondaryLabel={lab.gridAndKeys}
+        caption={caption}
+        announcement={run.announcement}
+        viewport={
+          <>
+            <GridCanvas
+              gridRef={gridRef}
+              searchRef={run.searchRef}
+              running={run.running}
+              onFrame={run.advanceFrame}
+              revision={revision + edits}
+              tool={tool}
+              editable={editable}
+              onEdit={handleEdit}
+              cursor={cursor}
+              onCursorChange={setCursor}
+              label={summary}
+              describedBy={helpId}
+            />
+            {/* Always in the DOM, never on screen: the description the grid
+                points at must not depend on a disclosure being open. */}
+            <p id={helpId} className="sr-only">
+              {lab.gridHelp}
+            </p>
+          </>
+        }
+        readout={
           <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
             <p className="text-caption text-fg-faint">
               <span className="mr-1.5 inline-block size-2.5 rounded-[2px] bg-fg-muted/40 align-middle ring-1 ring-fg-muted/55" />
               {lab.legend.wall}
-              <span className="ml-4 mr-1.5 inline-block size-2.5 rounded-[2px] bg-signal-cyan/25 align-middle ring-1 ring-signal-cyan" />
+              <span className="ml-4 mr-1.5 inline-block size-2.5 rounded-[2px] bg-data/25 align-middle ring-1 ring-data" />
               {lab.legend.frontier}
               <span className="ml-4 mr-1.5 inline-block size-2.5 rounded-[2px] bg-signal-cyan/25 align-middle" />
               {lab.legend.settled}
@@ -157,74 +185,67 @@ export function PathfindingStage({
               )}
             </p>
             <p className="font-mono text-caption text-fg-faint" aria-hidden>
-              {cursor >= 0 ? describe(gridRef.current, cursor) : " "}
+              {cursor >= 0 ? describe(gridRef.current, cursor) : " "}
             </p>
           </div>
+        }
+        primary={
+          <Transport
+            running={run.running}
+            onRun={run.run}
+            onStep={run.stepOnce}
+            onReset={handleReset}
+          />
+        }
+        figures={<SearchFigures metrics={metrics} emphasis={emphasis} showCost={showCost} />}
+        secondary={
+          <>
+            {algorithms.length > 1 && (
+              <Segmented
+                label={lab.algorithm}
+                value={algorithm}
+                options={algorithms.map((a) => ({ value: a, label: ALGORITHM_LABEL[a] }))}
+                onChange={handleAlgorithm}
+              />
+            )}
 
-          {caption && <p className="max-w-prose text-body-sm text-fg-muted">{caption}</p>}
+            {allowMud && (
+              <Segmented
+                label={lab.draw}
+                value={tool}
+                options={[
+                  { value: "wall", label: lab.tools.wall },
+                  { value: "mud", label: lab.tools.mud },
+                  { value: "erase", label: lab.tools.erase },
+                ]}
+                onChange={setTool}
+              />
+            )}
 
-          <p id={helpId} className="text-caption text-fg-faint">
-            {lab.gridHelpFull.drag} <span className="font-mono text-fg">S</span>{" "}
-            {lab.gridHelpFull.or} <span className="font-mono text-fg">G</span>{" "}
-            {lab.gridHelpFull.toMove} <Kbd>Space</Kbd> {lab.gridHelpFull.toggles} <Kbd>S</Kbd>{" "}
-            {lab.gridHelpFull.or} <Kbd>G</Kbd> {lab.gridHelpFull.drops}
-          </p>
-        </div>
-
-        <div className="space-y-4">
-          {algorithms.length > 1 && (
-            <Segmented
-              label={lab.algorithm}
-              value={algorithm}
-              options={algorithms.map((a) => ({ value: a, label: ALGORITHM_LABEL[a] }))}
-              onChange={handleAlgorithm}
-            />
-          )}
-
-          {allowMud && (
-            <Segmented
-              label={lab.draw}
-              value={tool}
-              options={[
-                { value: "wall", label: lab.tools.wall },
-                { value: "mud", label: lab.tools.mud },
-                { value: "erase", label: lab.tools.erase },
-              ]}
-              onChange={setTool}
-            />
-          )}
-
-          {/* Two by two: four buttons do not fit the sidebar on one line, and a
-              lone wrapped "Clear" read like a mistake. */}
-          <div className="grid grid-cols-2 gap-2">
-            <Button onClick={run.run}>{run.running ? t.common.pause : t.common.run}</Button>
-            <Button variant="secondary" onClick={run.stepOnce} disabled={run.running}>
-              {t.common.step}
-            </Button>
-            <Button variant="ghost" onClick={handleReset}>
-              {t.common.reset}
-            </Button>
-            <Button variant="ghost" onClick={handleClear}>
+            <Button variant="secondary" onClick={handleClear} className="min-h-[44px] w-full">
               {t.common.clear}
             </Button>
-          </div>
 
-          <SearchMetrics metrics={metrics} emphasis={emphasis} showCost={showCost} />
-        </div>
-      </div>
+            <p className="text-caption text-fg-faint">
+              {lab.gridHelpFull.drag} <span className="font-mono text-fg">S</span>{" "}
+              {lab.gridHelpFull.or} <span className="font-mono text-fg">G</span>{" "}
+              {lab.gridHelpFull.toMove} <Kbd>Space</Kbd> {lab.gridHelpFull.toggles} <Kbd>S</Kbd>{" "}
+              {lab.gridHelpFull.or} <Kbd>G</Kbd> {lab.gridHelpFull.drops}
+            </p>
+          </>
+        }
+      />
 
       {compare && (
-        <AlgorithmComparison
-          results={run.results}
-          order={algorithms}
-          emphasis={emphasis}
-          showCost={showCost}
-        />
+        <div className="mx-auto max-w-shell">
+          <AlgorithmComparison
+            results={run.results}
+            order={algorithms}
+            emphasis={emphasis}
+            showCost={showCost}
+          />
+        </div>
       )}
-
-      <p aria-live="polite" className="sr-only">
-        {run.announcement}
-      </p>
     </div>
   );
 }

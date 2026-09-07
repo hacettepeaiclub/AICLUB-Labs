@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { Badge, Button, Segmented } from "@/components/ui";
+import { Stage, Transport } from "@/components/lab";
+import { Badge, Segmented } from "@/components/ui";
 import { useT } from "@/i18n";
 import { useLocalControls } from "@/hooks";
 import { spring } from "@/design/motion";
@@ -10,7 +11,7 @@ import { CHALLENGES, challengeGrid } from "../mazes";
 import { judge, solvedCount, type ChallengeProgress } from "../challenge";
 import { useSearchRun } from "../useSearchRun";
 import { GridCanvas } from "./GridCanvas";
-import { ALGORITHM_LABEL, SearchMetrics } from "./SearchMetrics";
+import { ALGORITHM_LABEL, SearchFigures } from "./SearchMetrics";
 
 const ALGORITHMS: readonly Algorithm[] = ["bfs", "dijkstra", "astar"];
 const MAZE_IDS = CHALLENGES.map((m) => m.id);
@@ -101,8 +102,12 @@ export function PathChallenge() {
         </Badge>
       </div>
 
-      <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_18rem]">
-        <div className="space-y-3">
+      <Stage
+        width="full"
+        secondaryLabel={lab.algorithm}
+        caption={c.maps[maze.id].hint}
+        announcement={run.announcement}
+        viewport={
           <GridCanvas
             gridRef={gridRef}
             searchRef={run.searchRef}
@@ -123,44 +128,39 @@ export function PathChallenge() {
               ALGORITHM_LABEL[algorithm],
             )}
           />
-          <p className="text-body-sm text-fg-muted">{c.maps[maze.id].hint}</p>
-        </div>
-
-        <div className="space-y-4">
-          <div className="card-surface p-5">
-            <p className="text-overline uppercase text-accent">{c.bothAtOnce}</p>
-            <dl className="mt-3 space-y-2 font-mono text-body-sm">
-              <div className="flex justify-between gap-4">
-                <dt className="text-fg-faint">{c.costMustBe}</dt>
-                <dd className="tabular-nums text-fg">{maze.optimalCost}</dd>
-              </div>
-              <div className="flex justify-between gap-4">
-                <dt className="text-fg-faint">{c.exploredAtMost}</dt>
-                <dd className="tabular-nums text-fg">{maze.budget}</dd>
-              </div>
-            </dl>
-          </div>
-
+        }
+        readout={
+          /* The two gates, where the run can be checked against them without
+             looking away from the grid. */
+          <dl className="flex flex-wrap items-baseline gap-x-6 gap-y-1 font-mono text-caption">
+            <div className="flex gap-2">
+              <dt className="text-fg-faint">{c.costMustBe}</dt>
+              <dd className="tabular-nums text-fg">{maze.optimalCost}</dd>
+            </div>
+            <div className="flex gap-2">
+              <dt className="text-fg-faint">{c.exploredAtMost}</dt>
+              <dd className="tabular-nums text-fg">{maze.budget}</dd>
+            </div>
+          </dl>
+        }
+        primary={
+          <Transport
+            running={run.running}
+            onRun={handleRun}
+            onStep={run.stepOnce}
+            onReset={run.reset}
+          />
+        }
+        figures={<SearchFigures metrics={run.metrics} />}
+        secondary={
           <Segmented
             label={lab.algorithm}
             value={algorithm}
             options={ALGORITHMS.map((a) => ({ value: a, label: ALGORITHM_LABEL[a] }))}
             onChange={selectAlgorithm}
           />
-
-          <div className="grid grid-cols-2 gap-2">
-            <Button onClick={handleRun}>{run.running ? t.common.pause : t.common.run}</Button>
-            <Button variant="secondary" onClick={run.stepOnce} disabled={run.running}>
-              {t.common.step}
-            </Button>
-            <Button variant="ghost" onClick={run.reset} className="col-span-2">
-              {t.common.reset}
-            </Button>
-          </div>
-
-          <SearchMetrics metrics={run.metrics} />
-        </div>
-      </div>
+        }
+      />
 
       {verdict && (
         <motion.p
@@ -193,9 +193,6 @@ export function PathChallenge() {
         </motion.p>
       )}
 
-      <p aria-live="polite" className="sr-only">
-        {run.announcement}
-      </p>
     </div>
   );
 }

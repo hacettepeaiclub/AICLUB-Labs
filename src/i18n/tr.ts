@@ -101,6 +101,7 @@ export const tr: Translation = {
     solved: (done: number, total: number) => `${total} görevden ${done} tanesi çözüldü`,
     recapTitle: "Bugün öğrendikleriniz",
     controlsLabel: "Deney kontrolleri",
+    moreControls: "Ayarlar ve yardım",
     keyboardHint: "Grafik odaktayken",
   },
 
@@ -989,6 +990,7 @@ export const tr: Translation = {
       findTheWay: "Yolu bulun",
       algorithm: "Algoritma",
       draw: "Çiz",
+      gridAndKeys: "Harita araçları ve klavye",
       map: "Harita",
       tools: { wall: "Engel", mud: "Çamur", erase: "Sil", start: "Başlangıç", goal: "Hedef" },
       legend: {
@@ -1031,6 +1033,7 @@ export const tr: Translation = {
       },
       row: (row: number, col: number) => `satır ${row}, sütun ${col}`,
       intro: {
+        question: "İlk olarak hangi kareye bakıyor?",
         caption:
           "Birkaç engel çizin, sonra Çalıştır'a basın. Aramanın gerçekte nereye yayıldığını izleyin, hedefin olmadığı yerler de dahil.",
       },

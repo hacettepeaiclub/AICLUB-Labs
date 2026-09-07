@@ -16,8 +16,10 @@ export default function Pathfinding() {
 
   return (
     <div className="space-y-24 md:space-y-32">
-      {/* 1 — Behaviour first: no algorithm names, one button. */}
+      {/* 1 — Behaviour first: a question, then the grid. No algorithm names,
+          no vocabulary, and nothing to read before touching something. */}
       <section aria-label={t.findTheWay}>
+        <p className="mb-6 max-w-prose text-body-lg text-fg">{t.intro.question}</p>
         <PathfindingStage
           preset="simple"
           algorithms={["bfs"]}

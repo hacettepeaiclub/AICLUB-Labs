@@ -55,7 +55,17 @@ function inks(): Ink {
     wallLip: color("fgMuted", 0.5),
     mudFill: color("signalAmber", 0.16),
     mudHatch: color("signalAmber", 0.55),
-    frontierRing: color("signalCyan", 0.95),
+    /*
+     * The frontier is the one thing on this grid that is changing right now,
+     * which is exactly what `--data` is reserved for. It used to be the same
+     * cyan as the settled region at a different alpha, so a single hue was
+     * carrying two meanings — "the edge the search can grow from" and "ground
+     * the search has finished with" — and the wave was hard to pick out of its
+     * own wake. Settled keeps the categorical cyan; the live edge is now its
+     * own colour. Neither is distinguished by colour alone: the frontier is an
+     * open ring and settled cells are filled.
+     */
+    frontierRing: color("data", 0.95),
     closedFill: color("signalCyan", 0.2),
     pathFill: color("accent", 0.85),
     pathBead: color("fg"),
