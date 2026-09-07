@@ -10,10 +10,19 @@ import { orderedLabs } from "@/labs/registry";
  *
  * ## What it is trying to do
  *
- * Say what this is in four lines, and then get out of the way. The whole
+ * Say what this is in three lines, and then get out of the way. The whole
  * collection — all nine labs, no curation, no path, no second click — starts
  * within a screen of the top, because the fastest way to explain a laboratory
  * is to show what is in it.
+ *
+ * ## Why there is no button
+ *
+ * There was a "Start experimenting" CTA under the lede, pointing at the first
+ * lab. It made sense while the collection was somewhere else; now the
+ * collection is directly below it, and a button whose destination is already
+ * on screen is a step invented for the sake of having one. Removing it also
+ * removes the question it forced — *which* lab does the big button pick? —
+ * which the page had no honest answer to. Nine cards, nine actions.
  *
  * ## Why there is no hero visual
  *
@@ -39,7 +48,6 @@ export function HomePage() {
   const t = useT();
   const copy = t.home;
   const labs = orderedLabs();
-  const first = labs[0];
 
   return (
     <div className="shell pb-24 pt-8 md:pt-12">
@@ -59,17 +67,6 @@ export function HomePage() {
           {copy.title}
         </h1>
         <p className="mt-4 max-w-prose text-body-lg text-fg-muted">{copy.lede}</p>
-
-        {first && (
-          <Link
-            to={`/labs/${first.meta.slug}`}
-            className="mt-7 inline-flex min-h-[44px] items-center rounded border border-accent/50
-              bg-accent-fill px-5 text-body-sm font-semibold text-accent-fg
-              transition-colors duration-fast hover:border-accent hover:bg-accent-fill/85"
-          >
-            {copy.cta}
-          </Link>
-        )}
       </section>
 
       {/* ---------------------------------------------------------- labs -- */}
