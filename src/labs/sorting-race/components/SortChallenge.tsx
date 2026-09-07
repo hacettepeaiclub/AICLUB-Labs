@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { Badge, Button, Segmented } from "@/components/ui";
+import { Stage, Transport } from "@/components/lab";
+import { Badge, Segmented } from "@/components/ui";
 import { useT } from "@/i18n";
 import { useLocalControls } from "@/hooks";
 import { spring } from "@/design/motion";
@@ -10,7 +11,7 @@ import { inversions, type Algorithm } from "../engine";
 import { beatenCount, CHALLENGES, judge, type ChallengeProgress } from "../challenge";
 import { useSortRun } from "../useSortRun";
 import { BarCanvas } from "./BarCanvas";
-import { SortMetrics, useAlgorithmLabel } from "./SortMetrics";
+import { SortFigures, useAlgorithmLabel } from "./SortMetrics";
 
 const ALGORITHMS: readonly Algorithm[] = ["selection", "insertion"];
 const IDS = CHALLENGES.map((c) => c.id);
@@ -50,6 +51,10 @@ export function SortChallenge() {
     algorithms: list,
     reduced,
     eventsPerFrame: EVENTS_PER_FRAME,
+    describeFinish: (sorts) => {
+      const s = sorts[0];
+      return s ? c.finished(s.comparisons, s.moves) : "";
+    },
   });
 
   const sortRef = useRef(run.sortsRef.current[0] ?? null);
@@ -107,6 +112,7 @@ export function SortChallenge() {
 
   const beaten = beatenCount(progress, IDS);
   const editable = !run.running && spec.maxEdits !== undefined;
+  const helpId = `${spec.id}-bars-help`;
 
   return (
     <div className="space-y-5">
@@ -122,60 +128,80 @@ export function SortChallenge() {
         </Badge>
       </div>
 
-      <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_18rem]">
-        <div className="space-y-3">
-          <BarCanvas
-            valuesRef={valuesRef}
-            sortRef={sortRef}
-            running={run.running}
-            onFrame={run.advanceFrame}
-            revision={run.revision + edits + attempt}
-            editable={editable}
-            onEdit={handleEdit}
-            cursor={cursor}
-            onCursorChange={setCursor}
-            label={c.chartLabel(
-              c.puzzles[spec.id].title,
-              valuesRef.current.length,
-              inversions(valuesRef.current),
-              c.goal(spec.budget, c.units[spec.objective]),
-              (spec.maxEdits !== undefined ? `${c.editsUsed(changed, spec.maxEdits)} ` : "") +
-                (metrics.status === "done"
-                  ? c.finished(metrics.comparisons, metrics.moves)
-                  : lab.state.notStarted),
-            )}
-          />
-          <p className="text-body-sm text-fg-muted">{c.puzzles[spec.id].brief}</p>
-        </div>
-
-        <div className="space-y-4">
-          <div className="card-surface p-5">
-            <p className="text-overline uppercase text-accent">{c.budget}</p>
-            <dl className="mt-3 space-y-2 font-mono text-body-sm">
-              <div className="flex justify-between gap-4">
-                <dt className="text-fg-faint">{spec.objective} at most</dt>
-                <dd className="tabular-nums text-fg">{spec.budget}</dd>
-              </div>
-              {spec.maxEdits !== undefined && (
-                <div className="flex justify-between gap-4">
-                  <dt className="text-fg-faint">bars changed</dt>
-                  <dd
-                    className={cn(
-                      "tabular-nums",
-                      changed > spec.maxEdits ? "text-signal-amber" : "text-fg",
-                    )}
-                  >
-                    {changed} / {spec.maxEdits}
-                  </dd>
-                </div>
+      <Stage
+        width="full"
+        secondaryLabel={lab.algorithm}
+        caption={c.puzzles[spec.id].brief}
+        announcement={run.announcement}
+        viewport={
+          <>
+            {editable && <p className="text-caption text-fg-muted">{lab.drawHint}</p>}
+            <BarCanvas
+              valuesRef={valuesRef}
+              sortRef={sortRef}
+              running={run.running}
+              onFrame={run.advanceFrame}
+              revision={run.revision + edits + attempt}
+              editable={editable}
+              onEdit={handleEdit}
+              cursor={cursor}
+              onCursorChange={setCursor}
+              describedBy={helpId}
+              label={c.chartLabel(
+                c.puzzles[spec.id].title,
+                valuesRef.current.length,
+                inversions(valuesRef.current),
+                c.goal(spec.budget, c.units[spec.objective]),
+                (spec.maxEdits !== undefined ? `${c.editsUsed(changed, spec.maxEdits)} ` : "") +
+                  (metrics.status === "done"
+                    ? c.finished(metrics.comparisons, metrics.moves)
+                    : lab.state.notStarted),
               )}
-            </dl>
-          </div>
-
-          {spec.algorithm ? (
-            <p className="text-caption text-fg-faint">
-              {c.fixedTo(names[spec.algorithm])}
+            />
+            {/* One puzzle asks the visitor to reshape the array, so the chart
+                needs the same permanently-rendered description the teaching
+                sections have. It had none before. */}
+            <p id={helpId} className="sr-only">
+              {lab.keyboardHelp}
             </p>
+          </>
+        }
+        readout={
+          /* The budget, where it can be read against the counters without
+             looking away from the chart. */
+          <dl className="flex flex-wrap items-baseline gap-x-6 gap-y-1 font-mono text-caption">
+            <div className="flex gap-2">
+              <dt className="text-fg-faint">{c.atMost(c.units[spec.objective])}</dt>
+              <dd className="tabular-nums text-fg">{spec.budget}</dd>
+            </div>
+            {spec.maxEdits !== undefined && (
+              <div className="flex gap-2">
+                <dt className="text-fg-faint">{c.barsChanged}</dt>
+                <dd
+                  className={cn(
+                    "tabular-nums",
+                    changed > spec.maxEdits ? "text-signal-amber" : "text-fg",
+                  )}
+                >
+                  {changed} / {spec.maxEdits}
+                </dd>
+              </div>
+            )}
+          </dl>
+        }
+        primary={
+          <Transport
+            running={run.running}
+            onRun={run.start}
+            onStep={run.stepOnce}
+            onReset={handleReset}
+            runLabel={lab.sort}
+          />
+        }
+        figures={<SortFigures metrics={metrics} emphasis={spec.objective} compact />}
+        secondary={
+          spec.algorithm ? (
+            <p className="text-caption text-fg-faint">{c.fixedTo(names[spec.algorithm])}</p>
           ) : (
             <Segmented
               label={lab.algorithm}
@@ -183,21 +209,9 @@ export function SortChallenge() {
               options={ALGORITHMS.map((a) => ({ value: a, label: names[a] }))}
               onChange={selectAlgorithm}
             />
-          )}
-
-          <div className="grid grid-cols-2 gap-2">
-            <Button onClick={run.start}>{run.running ? t.common.pause : lab.sort}</Button>
-            <Button variant="secondary" onClick={run.stepOnce} disabled={run.running}>
-              {t.common.step}
-            </Button>
-            <Button variant="ghost" onClick={handleReset} className="col-span-2">
-              {t.common.reset}
-            </Button>
-          </div>
-
-          <SortMetrics metrics={metrics} emphasis={spec.objective} compact />
-        </div>
-      </div>
+          )
+        }
+      />
 
       {verdict && (
         <motion.p
@@ -221,9 +235,6 @@ export function SortChallenge() {
         </motion.p>
       )}
 
-      <p aria-live="polite" className="sr-only">
-        {run.announcement}
-      </p>
     </div>
   );
 }

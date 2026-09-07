@@ -1123,6 +1123,7 @@ export const en = {
       theRace: "The race",
       algorithm: "Algorithm",
       shape: "Shape",
+      shapeAndKeys: "Shape and keyboard",
       puzzle: "Puzzle",
       sorterA: "Sorter A",
       sorterB: "Sorter B",
@@ -1134,6 +1135,7 @@ export const en = {
         random: "Shuffled",
         reversed: "Reversed",
       },
+      legend: { settled: "settled", comparing: "comparing", lifted: "lifted out" },
       metrics: {
         comparisons: "Comparisons",
         moves: "Moves",
@@ -1145,6 +1147,8 @@ export const en = {
       drawHint: "Drag across the chart to reshape the data.",
       keyboardHint: "pick a bar and",
       keyboardHint2: "change its height.",
+      keyboardHelp:
+        "Drag across the chart to reshape it. With it focused, left and right arrows pick a bar and up and down change its height.",
       chartLabel: (
         size: number,
         algorithm: string,
@@ -1165,38 +1169,42 @@ export const en = {
         selected: (algorithm: string) => `${algorithm} selected.`,
       },
       race: {
+        question: "Which one finishes first?",
         oneButton: "One button. Both start from the same data.",
-        bothDone:
-          "Same array, same answer — and one of them asked a fraction of the questions.",
-        caption:
-          "Same array, same answer. The counters are not the same, and that difference is the whole lab.",
+        bothDone: "Same answer — and one of them asked a fraction of the questions.",
+        sorted: "sorted",
+        caption: "Same array, same answer. The counters are not.",
+        panelLabel: (title: string, size: number, state: string) =>
+          `${title}: bar chart of ${size} values. ${state}`,
       },
       watch: {
         kicker: "Watch them work",
         title: "One sweeps. The other tiptoes.",
-        lede: "Step through it. Sorter A scans the entire remaining array on every pass before it moves anything. Sorter B lifts one value out and walks it backwards only as far as it has to.",
+        lede: "Step through it. Sorter A rescans the whole remainder before it moves anything; Sorter B lifts one value and walks it back only as far as it must.",
         caption:
-          "Those are Selection Sort and Insertion Sort. The long uninterrupted runs of comparisons belong to the first; the short compare-shift-compare rhythm belongs to the second.",
+          "Those are Selection Sort and Insertion Sort. Long unbroken runs of comparisons belong to the first; the compare-shift-compare rhythm belongs to the second.",
       },
       data: {
         kicker: "Draw the data",
         title: "The work is in the data.",
-        lede: "Drag across the chart to reshape it, or pick a shape, then sort it again. Watch what happens to each number.",
+        lede: "Reshape the chart — drag across it, or pick a shape — then sort it again.",
         caption:
-          "Selection Sort asks 496 questions here every single time — sorted, shuffled or reversed — because it checks every remaining pair regardless. Insertion Sort's number moves with the shape you draw.",
+          "Selection Sort asks 496 questions here every time, sorted or shuffled or reversed, because it checks every remaining pair regardless. Insertion Sort's number moves with the shape you draw.",
       },
       distance: {
         kicker: "How far from home",
         title: "It isn't how many are wrong.",
-        lede: "Start from the ordered shape. Drag one bar a long way from where it belongs, then instead try nudging three bars slightly. Compare what each costs.",
+        lede: "Start from the ordered shape. Drag one bar far from where it belongs, then instead nudge three bars slightly. Compare what each costs.",
         caption:
-          "An inversion is a pair that is out of order. This insertion sort shifts exactly once for every inversion in the array it was given — so one value far from home can cost more than several small mistakes.",
+          "An inversion is a pair in the wrong order. This insertion sort shifts once for every inversion in the array it was given — so one value far from home can cost more than several small mistakes.",
       },
       challenge: {
         kicker: "The challenge",
-        title: "Cheaper depends on what you are counting.",
-        lede: "Three fixed arrays. Each one has a budget, and the budget is not always about the same number.",
+        title: "Cheaper depends on what you count.",
+        lede: "Three fixed arrays, three budgets — and the budget is not always about the same number.",
         budget: "Budget",
+        atMost: (unit: string) => `${unit} at most`,
+        barsChanged: "bars changed",
         beaten: (done: number, total: number) => `${done} of ${total} beaten`,
         fixedTo: (algorithm: string) => `Fixed to ${algorithm}. Reshape the data instead.`,
         goal: (budget: number, unit: string) => `Goal: at most ${budget} ${unit}.`,
@@ -1234,11 +1242,8 @@ export const en = {
       recap: {
         lessons: [
           "Two algorithms can reach the same answer having done wildly different amounts of work",
-          "Selection sort scans the whole remainder every pass, so it asks the same number of questions whatever you give it",
-          "Insertion sort walks backwards only as far as it must, so its cost is a property of the data",
-          "The shape of the input, not just its size, decides how much work there is to do",
-          "An inversion is a pair that is out of order — this insertion sort shifts once for each one",
-          "There is no single better algorithm: fewer questions and fewer writes are different goals",
+          "Selection sort rescans the whole remainder every pass, so its cost is fixed; insertion sort walks back only as far as it must, so its cost is a property of the data",
+          "An inversion is a pair out of order and this insertion sort shifts once for each — but asking fewer questions is not the same goal as writing less data",
         ],
         footer:
           "Real sorting libraries lean on exactly this: they hand nearly-ordered runs to an insertion sort, because on that shape the work has almost already been done.",

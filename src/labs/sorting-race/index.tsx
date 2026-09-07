@@ -16,13 +16,15 @@ export default function SortingRace() {
 
   return (
     <div className="space-y-24 md:space-y-32">
-      {/* 1 — Behaviour first: no names, one button. */}
+      {/* 1 — Behaviour first: a question, then two sorters on one array. No
+          names, no vocabulary, nothing to read before pressing something. */}
       <section aria-labelledby="race-heading">
         {/* Hidden on purpose: this section names nothing until section 2, but
             the outline still needs its level-2 rung. */}
         <h2 id="race-heading" className="sr-only">
           {t.theRace}
         </h2>
+        <p className="mb-6 max-w-prose text-body-lg text-fg">{t.race.question}</p>
         <RaceStage />
       </section>
 

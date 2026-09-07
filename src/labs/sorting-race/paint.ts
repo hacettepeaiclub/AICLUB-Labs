@@ -40,10 +40,23 @@ function inks(): Ink {
   inkVersion = paletteVersion();
   ink = {
     bar: color("fgFaint", 0.45),
-    barSettled: color("signalCyan", 0.5),
-    rule: color("signalCyan", 0.9),
-    mark: color("accent"),
-    held: color("accent", 0.9),
+    /*
+     * Two roles, two colours, and they are the same two the rest of the
+     * collection uses. `accent` is the sorted prefix — the answer, being built
+     * left to right — and `--data` is whatever the algorithm is touching this
+     * frame: the pair under comparison and the value held out of the array.
+     *
+     * Before this, settled bars and the rule under them were `signalCyan`
+     * while the live pair was `accent`, which had the emphasis backwards: the
+     * finished region was the brightest thing on the chart and the one bar
+     * actually moving was the dullest. It also disagreed with the lab's own
+     * signature on the home page, where the sorted prefix has always been
+     * `accent`.
+     */
+    barSettled: color("accent", 0.55),
+    rule: color("accent", 0.95),
+    mark: color("data"),
+    held: color("data", 0.9),
     hole: color("fgFaint", 0.16),
     cursor: color("fg", 0.9),
   };
