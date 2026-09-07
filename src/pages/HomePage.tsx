@@ -145,21 +145,21 @@ function LabTile({ meta }: { meta: LabMeta }) {
         than wrapping; the open action never shrinks. The duration still lives
         on the lab itself (LabShell), where it is a decision.
 
-        Below `sm` the two stack instead of sharing a line. Measured at 360px,
-        "Machine Learning · intermediate" and "Open lab →" want 271px of a
-        272px card, and the metadata was losing its last word to the ellipsis —
-        a truncated category is worse than a second line, and stacked they are
-        still the same two fixed-height rows on all nine cards.
+        The difficulty went the same way. "intermediate" on seven of nine cards
+        sorts nothing and warns nobody — it is a label the grid wears rather
+        than information a reader acts on, and next to a one-line description
+        it was the longest thing in the row. It stays in `LabMeta` and on the
+        lab page, where it answers a question someone is actually asking.
+
+        Losing it also retires a responsive rule: "Machine Learning ·
+        intermediate" and "Open lab →" wanted 271px of a 272px card at 360px,
+        so the two used to stack below `sm`. The domain alone leaves room to
+        spare, so they share one line at every width again.
       */}
-      <div
-        className="mt-4 flex flex-col items-start gap-1 text-caption
-          sm:flex-row sm:items-center sm:justify-between sm:gap-3"
-      >
-        <span className="flex w-full min-w-0 items-center gap-2 text-fg-muted sm:w-auto">
+      <div className="mt-4 flex items-center justify-between gap-3 text-caption">
+        <span className="flex min-w-0 items-center gap-2 text-fg-muted">
           <span aria-hidden className={cn("size-1.5 shrink-0 rounded-pill", category.dot)} />
-          <span className="truncate">
-            {t.category[meta.category]} · {t.difficulty[meta.difficulty]}
-          </span>
+          <span className="truncate">{t.category[meta.category]}</span>
         </span>
         <span className="shrink-0 font-medium text-fg-faint transition-colors duration-fast group-hover:text-accent">
           {t.shell.openLab}
