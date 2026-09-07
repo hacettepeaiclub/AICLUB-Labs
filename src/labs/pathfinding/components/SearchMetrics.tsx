@@ -1,4 +1,4 @@
-import { Figure, FigureRow } from "@/components/lab";
+import { Figure } from "@/components/lab";
 import { useT } from "@/i18n";
 import { Badge } from "@/components/ui";
 import { cn } from "@/lib/cn";
@@ -11,7 +11,7 @@ export const ALGORITHM_LABEL: Record<Algorithm, string> = {
   astar: "A*",
 };
 
-export interface SearchMetricsProps {
+export interface SearchFiguresProps {
   metrics: RunMetrics;
   /** The number this section is really about, so the eye lands on it. */
   emphasis?: "explored" | "cost";
@@ -19,12 +19,19 @@ export interface SearchMetricsProps {
   showCost?: boolean;
 }
 
-/** Explored, steps and cost. Nothing else: this is not a dashboard. */
-export function SearchMetrics({ metrics, emphasis, showCost = true }: SearchMetricsProps) {
+/**
+ * Explored, steps and cost. Nothing else: this is not a dashboard.
+ *
+ * Rendered bare rather than in a `FigureRow`. Inside a `Stage` the chassis is
+ * already the panel, and wrapping these three numbers in a second bordered
+ * surface put a card inside a card — which is what made the old layout read as
+ * a stack of unrelated blocks rather than one instrument.
+ */
+export function SearchFigures({ metrics, emphasis, showCost = true }: SearchFiguresProps) {
   const t = useT().labs.pathfinding;
   const solved = metrics.status === "solved";
   return (
-    <FigureRow>
+    <>
       <Figure
         label={t.metrics.explored}
         value={metrics.explored.toLocaleString("en-US")}
@@ -38,8 +45,10 @@ export function SearchMetrics({ metrics, emphasis, showCost = true }: SearchMetr
           tone={emphasis === "cost" ? "accent" : "default"}
         />
       )}
-      {metrics.status === "unreachable" && <Badge dotClassName="bg-signal-rose">{t.metrics.noPath}</Badge>}
-    </FigureRow>
+      {metrics.status === "unreachable" && (
+        <Badge dotClassName="bg-signal-rose">{t.metrics.noPath}</Badge>
+      )}
+    </>
   );
 }
 
@@ -64,7 +73,7 @@ export function AlgorithmComparison({
   if (rows.length === 0) return null;
 
   return (
-    <div className="card-surface overflow-x-auto p-5">
+    <div className="overflow-x-auto rounded-card border border-line/10 bg-ink-800 p-5">
       <table className="w-full min-w-72 text-body-sm">
         <caption className="mb-3 text-left text-caption text-fg-faint">
           Same map, run by run

@@ -95,6 +95,9 @@ export const en = {
     solved: (done: number, total: number) => `${done} of ${total} solved`,
     recapTitle: "Today you learned",
     controlsLabel: "Simulation controls",
+    // Names what a stage's disclosure holds. Never "Advanced", never a
+    // gear icon: a visitor should know what is behind it before opening it.
+    moreControls: "Settings and help",
     keyboardHint: "With the chart focused,",
   },
 
@@ -993,6 +996,7 @@ export const en = {
       findTheWay: "Find the way",
       algorithm: "Algorithm",
       draw: "Draw",
+      gridAndKeys: "Map tools and keyboard",
       map: "Map",
       tools: { wall: "Wall", mud: "Mud", erase: "Erase", start: "Start", goal: "Goal" },
       legend: {
@@ -1032,6 +1036,10 @@ export const en = {
       },
       row: (row: number, col: number) => `row ${row}, column ${col}`,
       intro: {
+        // Behaviour first: one question, then the grid. The old section opened
+        // straight into an instruction, which told the visitor what to do
+        // without telling them what to watch for.
+        question: "Which square does it look at first?",
         caption:
           "Draw a few walls, then press Run. Watch where the search actually goes — including everywhere the goal isn't.",
       },
