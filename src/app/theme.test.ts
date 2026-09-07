@@ -71,6 +71,7 @@ describe("tokens", () => {
       "accent-fill",
       "accent-fg",
       "accent-soft",
+      "data",
       "signal-cyan",
       "signal-green",
       "signal-amber",
@@ -157,6 +158,28 @@ describe("contrast — WCAG AA", () => {
           3,
         );
       }
+    });
+
+    it(`${name}: live-data marks clear 3:1 on every surface`, () => {
+      // `--data` is only ever a graphical mark — a bar, a dot, a fill in a
+      // signature — so the bar is WCAG's non-text 3:1, not 4.5:1. Nothing may
+      // use it as text without moving this test first.
+      for (const [surface, bg] of surfaces(theme)) {
+        expect(contrast(theme["data"]!, bg), `${name} data on ${surface}`).toBeGreaterThanOrEqual(
+          3,
+        );
+      }
+    });
+
+    it(`${name}: live data does not collapse into the brand navy`, () => {
+      // The whole reason `--data` exists is that "this value is changing" and
+      // "this is the brand / this is settled" have to be two different things
+      // at a glance — they appear side by side, bar against bar, in the hero.
+      // The light theme failed this at 1.91:1 before #2B6B88 was replaced.
+      expect(
+        contrast(theme["data"]!, theme["accent-fill"]!),
+        `${name} data vs accent-fill`,
+      ).toBeGreaterThanOrEqual(3);
     });
 
     it(`${name}: every state signal clears 3:1 on the card surface`, () => {

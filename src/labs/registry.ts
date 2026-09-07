@@ -49,5 +49,44 @@ export const publishedLabs = (): LabEntry[] =>
     .filter((lab) => !lab.meta.draft)
     .sort((a, b) => b.meta.publishedAt.localeCompare(a.meta.publishedAt));
 
+/**
+ * The order the collection is read in.
+ *
+ * A written sequence rather than a computed one. Every rule that was tried
+ * here answered a question nobody asked: publication date put the newest lab
+ * first, and a difficulty rank put the three labs tagged `intro` first — but
+ * "how hard is this lab" is not "where does this belong in the collection".
+ * Attention and Reward are gentle introductions *to attention and to reward*;
+ * they still assume a reader who wants machine learning.
+ *
+ * So the list below is the argument the collection makes, in order: what a
+ * function does to input, what an algorithm costs, how a search explores, how
+ * text is cut up — and only then the machine learning that stands on all four.
+ *
+ * A lab missing from this list is not lost: it sorts to the end, alphabetically,
+ * so registering a lab always puts it on the home page and forgetting to name
+ * it here is a placement bug rather than a disappearance.
+ */
+const LAB_ORDER = [
+  "hash-playground",
+  "sorting-race",
+  "pathfinding",
+  "tokenizer",
+  "gradient-descent",
+  "neural-playground",
+  "attention",
+  "reward-playground",
+  "embedding-universe",
+] as const;
+
+const RANK = new Map<string, number>(LAB_ORDER.map((slug, index) => [slug, index]));
+const rankOf = (slug: string) => RANK.get(slug) ?? LAB_ORDER.length;
+
+export const orderedLabs = (): LabEntry[] =>
+  publishedLabs().sort(
+    (a, b) =>
+      rankOf(a.meta.slug) - rankOf(b.meta.slug) || a.meta.slug.localeCompare(b.meta.slug),
+  );
+
 export const findLab = (slug: string): LabEntry | undefined =>
   labs.find((lab) => lab.meta.slug === slug);

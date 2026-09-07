@@ -10,8 +10,14 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variantClasses: Record<Variant, string> = {
+  // The brand navy, with a hairline in `accent` so the surface has an edge on
+  // a dark ground: #003588 alone sits at 1.75:1 against the page, which is
+  // under the 3:1 a control boundary needs. Hover lifts the fill slightly
+  // rather than jumping to a different colour — the old rule swapped in
+  // `accent/90` on hover, a 26x luminance jump from an almost invisible rest
+  // state.
   primary:
-    "bg-accent-fill text-accent-fg hover:bg-accent/90 active:bg-accent/80 shadow-[0_1px_0_rgb(255_255_255/0.15)_inset]",
+    "bg-accent-fill text-accent-fg border border-accent/50 hover:border-accent hover:bg-accent-fill/85 active:bg-accent-fill",
   secondary:
     "bg-ink-700 text-fg border border-line/10 hover:bg-ink-700/70 active:bg-ink-800",
   ghost: "text-fg-muted hover:text-fg hover:bg-line/5 active:bg-line/10",

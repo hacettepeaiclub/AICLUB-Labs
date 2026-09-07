@@ -22,6 +22,9 @@ export const en = {
     breadcrumb: "Breadcrumb",
     backToLabs: "← All labs",
     footerTagline: "AI Club Labs: Learn computer science by playing with it.",
+    byLine: "by",
+    parentOrg: "Hacettepe AI Club",
+    hashtag: "#AIForAll",
     footerRights: (year: number) => `© ${year} Hacettepe AI Club`,
     footerCredit: "A project by Hacettepe AI Club",
     minutes: (n: number) => `${n} min`,
@@ -42,8 +45,18 @@ export const en = {
 
   home: {
     kicker: "AI Club Labs",
+    // Restored from the original landing page. "Learn computer science by
+    // making it move" was shorter but named only half of what is here, and
+    // dropped the word visitors are actually looking for. This one says both
+    // fields out loud and still leads with the verb.
     title: "Play with the ideas behind computer science and artificial intelligence.",
-    lede: "Interactive experiments that let you touch algorithms, neural networks, and the machinery of computation — no lectures, just levers to pull.",
+    // Also the original copy, tightened: it now states the size of the
+    // collection, because the labs start one screen below and the count is
+    // the fastest way to say what this place is.
+    lede: "Nine interactive experiments — algorithms, neural networks and the machinery of computation. No lectures, just levers to pull.",
+    cta: "Start experimenting",
+    labs: "Labs",
+    labCount: (n: number) => `${n} instruments`,
     experiments: "Experiments",
     emptyTitle: "First experiments are brewing.",
     emptyBody: "The platform is ready — labs register themselves and appear here automatically.",

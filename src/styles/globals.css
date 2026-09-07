@@ -3,6 +3,66 @@
 @tailwind utilities;
 
 /* ------------------------------------------------------------------ */
+/* Typefaces — self-hosted, matching hacettepeaiclub.com.              */
+/*                                                                     */
+/* Outfit for display, Inter for body: the same pairing the community  */
+/* site uses, so the two properties read as one organisation. They are */
+/* served from `public/fonts` rather than Google's CDN because a       */
+/* third-party stylesheet in <head> is render-blocking on a domain we  */
+/* do not control.                                                     */
+/*                                                                     */
+/* Both are variable fonts, so one file covers every weight the type   */
+/* scale asks for. `unicode-range` splits latin from latin-ext, and    */
+/* the browser fetches the second file only when a page actually uses  */
+/* it — which for us means Turkish: ğ, ş, ı and İ live in latin-ext.   */
+/* An English reader never downloads it.                               */
+/*                                                                     */
+/* `font-display: swap` keeps text readable during the fetch; the      */
+/* fallback stacks below are metric-similar enough that the swap does  */
+/* not reflow the page noticeably.                                     */
+/* ------------------------------------------------------------------ */
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url("/fonts/inter-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url("/fonts/inter-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+    U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Outfit";
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url("/fonts/outfit-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Outfit";
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url("/fonts/outfit-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+    U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* ------------------------------------------------------------------ */
 /* Design tokens — single source of truth.                            */
 /* Values are raw RGB triplets so Tailwind can apply alpha.           */
 /*                                                                    */
@@ -39,17 +99,26 @@
   --fg-muted: 158 158 178;
   --fg-faint: 108 108 128;
 
-  /* Accent — brand navy blue (the club mark's colour).
-     Two tokens, because one cannot do both jobs: the mark's actual navy is too
-     dark to read as *text* on ink at 4.5:1, so `--accent` is lightened to an
-     electric blue for that role, while `--accent-fill` stays the true navy —
-     the surface a near-white label sits on.
-     `--accent` is the mark — text, rules, strokes, canvas paths.
-     `--accent-fill` is the surface a label sits on. */
-  --accent: 75 148 213;
-  --accent-fill: 18 25 51;
-  --accent-soft: 36 57 76;
-  --accent-fg: 240 246 255;
+  /* Accent — the club's navy, #003588.
+     Two tokens, because one colour cannot do both jobs. #003588 carries a
+     white label at 11.26:1 but reads at only 1.75:1 as *text* on ink, so:
+     `--accent-fill` is the brand navy itself — the surface a label sits on,
+        and the colour of anything the visitor may touch.
+     `--accent`      is that same navy lifted 45% toward white for the roles
+        where it has to be legible *on* ink: text, rules, strokes, focus
+        rings, canvas paths. Measured 6.08:1 on the page and 4.94:1 on the
+        lightest surface, so it clears AA everywhere the theme test checks.
+     Previously `--accent-fill` was #121933, which is not the club's colour
+     and sat at 1.14:1 against the page — a primary button with no surface. */
+  --accent: 115 144 190;
+  --accent-fill: 0 53 136;
+  --accent-soft: 24 44 82;
+  --accent-fg: 255 255 255;
+
+  /* Live data. Inherited from the community site, where this blue is the
+     dominant highlight; here it is narrowed to one job — the value that is
+     changing right now. Never structural, never decorative. */
+  --data: 79 195 247;
 
   /* Categorical signals (lab categories, data viz, states) */
   --signal-cyan: 34 211 238;
@@ -63,7 +132,7 @@
   --shadow-card-hover: 0 1px 2px rgb(0 0 0 / 0.4), 0 16px 40px -12px rgb(0 0 0 / 0.6);
 
   /* Typography */
-  --font-display: "Sora", "Inter", system-ui, sans-serif;
+  --font-display: "Outfit", "Inter", system-ui, sans-serif;
   --font-body: "Inter", system-ui, -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", monospace;
 }
@@ -97,13 +166,27 @@
   --fg-muted: 84 89 104;
   --fg-faint: 124 130 146;
 
-  /* Accent — the mark's actual navy, weighted for white. On a light ground
-     one value serves both roles: it is dark enough for white labels (11.3:1)
-     and dark enough to read as text on white (11.3:1). */
-  --accent: 18 25 51;
-  --accent-fill: 18 25 51;
-  --accent-soft: 219 235 250;
+  /* Accent — on a light ground the brand navy serves both roles unchanged:
+     dark enough to carry a white label (11.26:1) and dark enough to read as
+     text on the page (10.60:1). Same hex as the dark theme's fill, which is
+     what keeps the brand recognisable across the switch. */
+  --accent: 0 53 136;
+  --accent-fill: 0 53 136;
+  --accent-soft: 219 231 247;
   --accent-fg: 255 255 255;
+
+  /* Live data. #4FC3F7 falls to 1.89:1 on a light page, so the hue is
+     weighted down — but only as far as it has to go. The previous value,
+     #2B6B88, was darkened until it landed 1.91:1 from the brand navy, and
+     the two stopped being tellable apart: a "live" bar and a "settled" bar
+     sitting side by side in the same picture read as one colour.
+     #0891B2 is the shallowest darkening that still works. Every light-theme
+     use of this token is a graphical mark — bars, dots, signature fills — so
+     the bar is WCAG's 3:1 for non-text, which it clears on all four surfaces
+     (3.09:1 at worst, on `raised`), while sitting 3.06:1 away from #003588.
+     Going darker buys text contrast this token does not use and spends the
+     separation that is the entire point of having a second colour. */
+  --data: 8 145 178;
 
   /* Categorical signals at their 700 weights */
   --signal-cyan: 14 116 144;

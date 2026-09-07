@@ -10,6 +10,11 @@
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
+    <!-- The two faces every page paints with. Preloaded so the swap happens
+         before first paint rather than after it; the latin-ext companions are
+         left to `unicode-range`, which fetches them only for Turkish. -->
+    <link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/outfit-latin.woff2" as="font" type="font/woff2" crossorigin />
     <title>AI Club Labs</title>
     <script>
       // Runs before the stylesheet paints and before React exists, so a visitor

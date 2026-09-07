@@ -41,6 +41,10 @@ export default {
           soft: "rgb(var(--accent-soft) / <alpha-value>)",
           fg: "rgb(var(--accent-fg) / <alpha-value>)",
         },
+        // The value that is changing right now — charts, live readouts,
+        // active data. Deliberately separate from `accent`, which means
+        // "you may touch this".
+        data: "rgb(var(--data) / <alpha-value>)",
         // Semantic / categorical (lab categories, states)
         signal: {
           cyan: "rgb(var(--signal-cyan) / <alpha-value>)",
