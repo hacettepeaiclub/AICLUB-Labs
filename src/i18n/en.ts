@@ -45,16 +45,17 @@ export const en = {
 
   home: {
     kicker: "AI Club Labs",
-    title: "Learn computer science by making it move.",
-    lede: "Nine instruments you can take apart. Pull a lever, watch a real system answer, and read the idea off its behaviour instead of off a slide.",
+    // Restored from the original landing page. "Learn computer science by
+    // making it move" was shorter but named only half of what is here, and
+    // dropped the word visitors are actually looking for. This one says both
+    // fields out loud and still leads with the verb.
+    title: "Play with the ideas behind computer science and artificial intelligence.",
+    // Also the original copy, tightened: it now states the size of the
+    // collection, because the labs start one screen below and the count is
+    // the fastest way to say what this place is.
+    lede: "Nine interactive experiments — algorithms, neural networks and the machinery of computation. No lectures, just levers to pull.",
     cta: "Start experimenting",
-    ctaSecondary: (n: number) => `or browse all ${n} labs`,
-    previewAlt:
-      "A live miniature of the Sorting Race lab: a row of bars being put in order by a real insertion sort.",
-    previewCaption: "Live — the Sorting Race engine, actually sorting.",
-    startHere: "Start here",
-    startHereHint: "No background needed",
-    allLabs: "All labs",
+    labs: "Labs",
     labCount: (n: number) => `${n} instruments`,
     experiments: "Experiments",
     emptyTitle: "First experiments are brewing.",

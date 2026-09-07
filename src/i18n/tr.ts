@@ -57,16 +57,12 @@ export const tr: Translation = {
 
   home: {
     kicker: "AI Club Labs",
-    title: "Bilgisayar bilimini hareket ettirerek öğren.",
-    lede: "Söküp bakabileceğin dokuz düzenek. Bir kolu çek, gerçek bir sistemin verdiği yanıtı izle ve fikri slayttan değil davranıştan oku.",
+    // İlk sürümdeki başlık geri alındı: hem bilgisayar bilimini hem yapay
+    // zekâyı adıyla söylüyor ve yine bir eylemle başlıyor.
+    title: "Bilgisayar biliminin ve yapay zekânın arkasındaki fikirlerle oynayın.",
+    lede: "Dokuz etkileşimli deney — algoritmalar, yapay sinir ağları ve hesaplamanın işleyişi. Uzun anlatım yok, çevirip kaydıracağınız düğmeler var.",
     cta: "Denemeye başla",
-    ctaSecondary: (n: number) => `ya da ${n} labın tamamına göz at`,
-    previewAlt:
-      "Sıralama Yarışı labının canlı küçük hâli: gerçek bir insertion sort tarafından sıraya dizilen çubuklar.",
-    previewCaption: "Canlı — Sıralama Yarışı motoru, gerçekten sıralıyor.",
-    startHere: "Buradan başla",
-    startHereHint: "Ön bilgi gerekmiyor",
-    allLabs: "Tüm laboratuvarlar",
+    labs: "Laboratuvarlar",
     labCount: (n: number) => `${n} düzenek`,
     experiments: "Deneyler",
     emptyTitle: "İlk deneyler hazırlanıyor.",

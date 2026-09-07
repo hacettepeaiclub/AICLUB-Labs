@@ -15,8 +15,8 @@ import { createRng } from "@/lib/random";
  *
  * A live miniature means importing that lab's engine, and nine engine imports
  * in the entry chunk would undo the lazy registry — a visitor would download
- * all nine labs to look at the home page. The hero runs one real engine
- * (`SortingPreview`) because one is affordable; the grid draws instead.
+ * all nine labs to look at the home page. So the home page imports no engine
+ * at all: it draws instead.
  *
  * They stay honest about that: every shape here is generated from a fixed seed
  * and drawn once, so nothing pretends to be computing. No animation, no state,

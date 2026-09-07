@@ -12,20 +12,6 @@ export type LabCategory =
 export type LabDifficulty = "intro" | "intermediate" | "advanced";
 
 /**
- * Reading order for the collection.
- *
- * The home page used to list labs newest-first, which put the hardest lab in
- * the first slot and the three-minute introduction in the last one. Difficulty
- * is metadata every lab already carries, so ordering by it needs no new
- * taxonomy — just a rank the sort can use.
- */
-export const DIFFICULTY_RANK: Record<LabDifficulty, number> = {
-  intro: 0,
-  intermediate: 1,
-  advanced: 2,
-};
-
-/**
  * Static metadata for one experiment. Lives in `src/labs/<slug>/meta.ts` so
  * the home page can list every lab without loading any lab code.
  */
