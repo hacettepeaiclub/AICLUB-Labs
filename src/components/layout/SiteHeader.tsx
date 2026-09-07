@@ -23,19 +23,27 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-line/10 bg-ink-950/80 backdrop-blur-md">
-      <div className="shell flex h-16 items-center justify-between gap-3">
+      {/* The header takes a tighter gutter than `.shell` at the smallest
+          widths. At 360px the two preference pills plus the wordmark overran
+          the viewport by 18px; the page gutter is generous for reading and too
+          generous for a control bar. Everything else on the page keeps
+          `.shell`. */}
+      <div className="mx-auto flex min-h-16 w-full max-w-shell flex-wrap items-center justify-between gap-x-2 gap-y-1 px-4 py-2 sm:gap-x-3 sm:px-6 md:px-10">
         <Link to="/" className="flex shrink-0 items-center gap-2.5 rounded">
           <span aria-hidden className="grid size-8 shrink-0 place-items-center rounded bg-accent-fill p-1.5">
             <img src={logoMark} alt="" className="h-full w-full object-contain" />
           </span>
-          {/* The wordmark is the first thing to go when the two toggles and the
-              nav link stop fitting; the mark alone still gets you home. */}
-          <span className="hidden font-display text-body font-semibold tracking-tight text-fg sm:inline">
+          {/* The wordmark stays at every width. It used to be the first thing
+              dropped, which left a phone showing a 32px deer and two preference
+              toggles — a header where the controls outranked the product's own
+              name. The theme toggle yields instead; it is the least urgent
+              control on the page. */}
+          <span className="font-display text-body-sm font-semibold tracking-tight text-fg sm:text-body">
             {t.shell.brand} <span className="text-fg-muted">{t.shell.brandSuffix}</span>
           </span>
         </Link>
 
-        <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <nav aria-label={t.shell.primaryNav} className="hidden sm:block">
             <NavLink
               to="/"

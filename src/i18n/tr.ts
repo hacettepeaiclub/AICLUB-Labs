@@ -34,6 +34,9 @@ export const tr: Translation = {
     backToLabs: "← Tüm laboratuvarlar",
     footerTagline:
       "AI Club Labs: Bilgisayar bilimini oynayarak öğrenin.",
+    byLine: "bir",
+    parentOrg: "Hacettepe Yapay Zekâ Topluluğu",
+    hashtag: "#AIForAll",
     footerRights: (year: number) => `© ${year} Hacettepe AI Club`,
     footerCredit: "Hacettepe Yapay Zeka Topluluğu projesidir",
     minutes: (n: number) => `${n} dk`,
@@ -54,12 +57,20 @@ export const tr: Translation = {
 
   home: {
     kicker: "AI Club Labs",
-    title: "Bilgisayar biliminin ve yapay zekânın arkasındaki fikirlerle oynayın.",
-    lede: "Algoritmalara, yapay sinir ağlarına ve hesaplamanın işleyişine elinizle dokunabileceğiniz etkileşimli deneyler. Uzun anlatımlar yok, sadece oynayarak keşfedeceğiniz düğmeler ve kaydırıcılar var.",
+    title: "Bilgisayar bilimini hareket ettirerek öğren.",
+    lede: "Söküp bakabileceğin dokuz düzenek. Bir kolu çek, gerçek bir sistemin verdiği yanıtı izle ve fikri slayttan değil davranıştan oku.",
+    cta: "Denemeye başla",
+    ctaSecondary: (n: number) => `ya da ${n} labın tamamına göz at`,
+    previewAlt:
+      "Sıralama Yarışı labının canlı küçük hâli: gerçek bir insertion sort tarafından sıraya dizilen çubuklar.",
+    previewCaption: "Canlı — Sıralama Yarışı motoru, gerçekten sıralıyor.",
+    startHere: "Buradan başla",
+    startHereHint: "Ön bilgi gerekmiyor",
+    allLabs: "Tüm laboratuvarlar",
+    labCount: (n: number) => `${n} düzenek`,
     experiments: "Deneyler",
     emptyTitle: "İlk deneyler hazırlanıyor.",
-    emptyBody:
-      "Altyapı hazır. Laboratuvarlar kendilerini kaydediyor ve burada otomatik olarak beliriyor.",
+    emptyBody: "Platform hazır — laboratuvarlar kendilerini kaydeder ve burada otomatik olarak görünür.",
   },
 
   notFound: {
