@@ -43,24 +43,86 @@ const inert = "stroke-fg-faint/45";
 const structure = "stroke-accent";
 const live = "stroke-data";
 
+/**
+ * Fill steps for the hash digest, written out rather than interpolated: these
+ * strings have to survive Tailwind's source scan, and a template literal does
+ * not.
+ */
+const HASH_FILLS = ["fill-accent/25", "fill-accent/45", "fill-accent/70", "fill-accent"];
+
+/** `[x, width]` per input segment. Row 1 ends at 13.5, row 2 at 21. */
+const HASH_INPUTS = [
+  [
+    [3, 6],
+    [10.5, 3],
+  ],
+  [
+    [3, 4],
+    [8, 7],
+    [16, 5],
+  ],
+] as const;
+
 function Shape({ slug }: { slug: string }) {
   const rng = seeded(slug);
 
   switch (slug) {
     case "hash-playground": {
-      // Fixed-width blocks: any input, always the same number of bits out.
+      /*
+       * Two inputs of visibly different length, one function, two outputs of
+       * identical width and identical cell count.
+       *
+       * The previous drawing was a row of bars of varying height, which reads
+       * as a waveform and — worse — implies the output changes size with the
+       * input. That is the opposite of the lesson. Here the only thing that
+       * varies on the right is the fill inside cells whose geometry never
+       * moves, so the picture says what the lab says: different input, same
+       * shape of answer.
+       */
+      const CELLS = 7;
+      const CELL_W = 4.2;
+      const PITCH = 5.2;
+      const OUT_X = 26.6;
       return (
         <g>
-          {Array.from({ length: 16 }, (_, i) => (
-            <rect
-              key={i}
-              x={2 + i * 3.9}
-              y={20 - (4 + rng() * 12) / 2}
-              width={2.6}
-              height={4 + rng() * 12}
-              className={i === 6 ? "fill-data" : "fill-fg-faint/45"}
-            />
-          ))}
+          {HASH_INPUTS.map((segments, row) => {
+            const midY = row === 0 ? 10.5 : 28.5;
+            return (
+              <g key={row}>
+                {segments.map(([x, w], i) => (
+                  <rect
+                    key={`in-${row}-${i}`}
+                    x={x}
+                    y={midY - 1}
+                    width={w}
+                    height={2}
+                    rx={1}
+                    className="fill-fg-faint/55"
+                  />
+                ))}
+                {/* the function — the one thing both rows pass through */}
+                <polyline
+                  points={`22,${midY - 3} 24.6,${midY} 22,${midY + 3}`}
+                  fill="none"
+                  strokeWidth={1}
+                  className={structure}
+                />
+                {Array.from({ length: CELLS }, (_, i) => {
+                  const digest = HASH_FILLS[Math.floor(rng() * HASH_FILLS.length)] ?? "fill-accent";
+                  return (
+                    <rect
+                      key={`out-${row}-${i}`}
+                      x={OUT_X + i * PITCH}
+                      y={midY - 4.5}
+                      width={CELL_W}
+                      height={9}
+                      className={row === 1 && i === 4 ? "fill-data" : digest}
+                    />
+                  );
+                })}
+              </g>
+            );
+          })}
         </g>
       );
     }
@@ -98,19 +160,67 @@ function Shape({ slug }: { slug: string }) {
       );
     }
     case "pathfinding": {
+      /*
+       * A wavefront, not a chart.
+       *
+       * The previous drawing was a smooth polyline sloping down across a grid,
+       * which is a line graph — and, worse, the same gesture as the gradient
+       * descent signature two tiles away. Nothing in it showed the thing the
+       * lab is actually about: that a search does not walk to the goal, it
+       * spreads until it finds one.
+       *
+       * So the grid is shaded by distance from the start. The settled cells
+       * are dim, the ring at the edge of the search is bright — that ring is
+       * the frontier, the only place the algorithm can grow from — and the
+       * goal is still outside it, unreached. The route is drawn in right
+       * angles, because a grid search cannot move diagonally and a curve here
+       * would be a lie.
+       */
+      const COLS = 10;
+      const ROWS = 6;
+      const PITCH = 6.2;
+      const SIZE = 5.4;
+      const X0 = 1;
+      const Y0 = 1.4;
+      const cx = (c: number) => X0 + c * PITCH + SIZE / 2;
+      const cy = (r: number) => Y0 + r * PITCH + SIZE / 2;
+      const start = { c: 1, r: 3 };
+      const goal = { c: 8, r: 1 };
+      /** Where the frontier has got to. Cells at exactly this depth are it. */
+      const FRONTIER = 3;
       return (
-        <g fill="none" strokeWidth={0.6}>
-          {Array.from({ length: 6 }, (_, r) =>
-            Array.from({ length: 10 }, (_, c) => (
-              <rect key={`${r}-${c}`} x={2 + c * 6} y={4 + r * 5.4} width={5} height={4.4} className={inert} />
-            )),
+        <g>
+          {Array.from({ length: ROWS }, (_, r) =>
+            Array.from({ length: COLS }, (_, c) => {
+              const depth = Math.abs(c - start.c) + Math.abs(r - start.r);
+              const fill =
+                c === goal.c && r === goal.r
+                  ? "fill-data"
+                  : depth === 0
+                    ? "fill-accent"
+                    : depth === FRONTIER
+                      ? "fill-accent/55"
+                      : depth < FRONTIER
+                        ? "fill-accent/25"
+                        : "fill-fg-faint/20";
+              return (
+                <rect
+                  key={`${r}-${c}`}
+                  x={X0 + c * PITCH}
+                  y={Y0 + r * PITCH}
+                  width={SIZE}
+                  height={SIZE}
+                  className={fill}
+                />
+              );
+            }),
           )}
           <polyline
-            points="4.5,6 10.5,6 16.5,11 22.5,16 34.5,16 40.5,22 52.5,22 58.5,28"
+            points={`${cx(1)},${cy(3)} ${cx(3)},${cy(3)} ${cx(3)},${cy(2)} ${cx(5)},${cy(2)} ${cx(5)},${cy(1)} ${cx(8)},${cy(1)}`}
+            fill="none"
             strokeWidth={1.4}
             className={structure}
           />
-          <circle cx={58.5} cy={28} r={2} className="fill-data stroke-none" />
         </g>
       );
     }

@@ -175,9 +175,18 @@
   --accent-soft: 219 231 247;
   --accent-fg: 255 255 255;
 
-  /* Live data, darkened for white. #4FC3F7 falls to 1.89:1 on a light page,
-     so the light theme uses a weighted version of the same hue (5.55:1). */
-  --data: 43 107 136;
+  /* Live data. #4FC3F7 falls to 1.89:1 on a light page, so the hue is
+     weighted down — but only as far as it has to go. The previous value,
+     #2B6B88, was darkened until it landed 1.91:1 from the brand navy, and
+     the two stopped being tellable apart: a "live" bar and a "settled" bar
+     sitting side by side in the same picture read as one colour.
+     #0891B2 is the shallowest darkening that still works. Every light-theme
+     use of this token is a graphical mark — bars, dots, signature fills — so
+     the bar is WCAG's 3:1 for non-text, which it clears on all four surfaces
+     (3.09:1 at worst, on `raised`), while sitting 3.06:1 away from #003588.
+     Going darker buys text contrast this token does not use and spends the
+     separation that is the entire point of having a second colour. */
+  --data: 8 145 178;
 
   /* Categorical signals at their 700 weights */
   --signal-cyan: 14 116 144;

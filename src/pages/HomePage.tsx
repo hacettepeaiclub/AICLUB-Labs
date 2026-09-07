@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Badge } from "@/components/ui";
+import { cn } from "@/lib/cn";
 import { LabSignature } from "@/components/home/LabSignature";
 import { SortingPreview } from "@/components/home/SortingPreview";
 import { useLabMeta, useT } from "@/i18n";
@@ -173,10 +173,29 @@ function LabTile({ meta, step }: { meta: LabMeta; step?: number }) {
 
       <p className="mt-2 flex-1 text-body-sm text-fg-muted">{copy?.description ?? meta.description}</p>
 
-      <div className="mt-4 flex flex-wrap items-center gap-2">
-        <Badge dotClassName={category.dot}>{t.category[meta.category]}</Badge>
-        <Badge>{t.difficulty[meta.difficulty]}</Badge>
-        <Badge>{t.shell.minutes(meta.minutes)}</Badge>
+      {/*
+        One line, and it stays one line.
+
+        This row used to be three chips — category, difficulty, duration — and
+        on eight of the nine tiles the third one wrapped, orphaning "6 min"
+        below the others. The cards then disagreed about their own height and
+        the grid lost its rhythm over a number nobody picks a lab by.
+
+        Dropping the duration was not enough: measured across both languages,
+        "Machine Learning" + "intermediate" still wraps at 360px and at the
+        two-column 768px width. Chips cannot promise a single line, because
+        each one is a box with its own padding and the row can only respond by
+        breaking. A single run of text can: it fits, and `truncate` is the
+        floor if a longer category is ever added.
+
+        The duration still appears on the lab itself (LabShell), which is
+        where it is a decision rather than decoration.
+      */}
+      <div className="mt-4 flex items-center gap-2 text-caption text-fg-muted">
+        <span aria-hidden className={cn("size-1.5 shrink-0 rounded-pill", category.dot)} />
+        <span className="truncate">
+          {t.category[meta.category]} · {t.difficulty[meta.difficulty]}
+        </span>
       </div>
     </Link>
   );
