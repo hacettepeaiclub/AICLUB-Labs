@@ -1,12 +1,12 @@
 import { useCallback, useMemo, useRef, useState } from "react";
 import { useReducedMotion } from "framer-motion";
-import { Badge, Button } from "@/components/ui";
+import { Stage, Transport } from "@/components/lab";
 import { useT } from "@/i18n";
 import { buildPreset, SIZE } from "../arrays";
 import type { Algorithm } from "../engine";
 import { useSortRun } from "../useSortRun";
 import { BarCanvas } from "./BarCanvas";
-import { SortMetrics } from "./SortMetrics";
+import { SortFigures } from "./SortMetrics";
 
 /** Left panel, right panel. Deliberately not named on screen yet. */
 const PAIR: readonly Algorithm[] = ["selection", "insertion"];
@@ -22,6 +22,18 @@ const EVENTS_PER_FRAME = 3;
  *
  * Both panels take the same number of events per frame, so finishing first
  * means having done less work. No clock is involved and none is shown.
+ *
+ * ## Why both charts are one viewport
+ *
+ * `Stage` has a single viewport slot, and this section needs two charts. They
+ * go in together, because they are one picture: the comparison is the lesson,
+ * and the counters have to sit under their own chart for it to read. Nothing
+ * about the chassis had to change to allow that — the slot takes whatever the
+ * lab draws.
+ *
+ * The charts are shorter here than in the single-array sections. Two of them
+ * stacked on a phone would otherwise push the Run button off the screen, and a
+ * race you cannot start while looking at it is not a race.
  */
 export function RaceStage() {
   const t = useT();
@@ -37,6 +49,15 @@ export function RaceStage() {
     algorithms,
     reduced,
     eventsPerFrame: EVENTS_PER_FRAME,
+    // Both panels in one sentence: the comparison is the point, so reading
+    // them out separately would bury it.
+    describeFinish: (sorts) =>
+      [lab.sorterA, lab.sorterB]
+        .map((name, i) => {
+          const s = sorts[i];
+          return s ? `${name}: ${lab.state.done(s.comparisons, s.moves)}` : "";
+        })
+        .join(" "),
   });
 
   const leftRef = useRef(run.sortsRef.current[0] ?? null);
@@ -64,52 +85,65 @@ export function RaceStage() {
   ];
 
   return (
-    <div className="space-y-5">
-      <div className="grid gap-5 md:grid-cols-2">
-        {panels.map((panel) => (
-          <div key={panel.key} className="space-y-3">
-            <div className="flex items-baseline justify-between gap-3">
-              <h3 className="text-title text-fg">{panel.title}</h3>
-              {panel.metrics.status === "done" && (
-                <Badge dotClassName="bg-signal-green">sorted</Badge>
-              )}
+    <Stage
+      width="full"
+      caption={lab.race.caption}
+      announcement={run.announcement}
+      viewport={
+        <div className="grid gap-4 md:grid-cols-2">
+          {panels.map((panel) => (
+            <div key={panel.key} className="min-w-0 space-y-2">
+              <div className="flex items-baseline justify-between gap-3">
+                <h3 className="text-body-lg font-semibold text-fg">{panel.title}</h3>
+                {/* Not a badge: a word, in the colour that means "settled"
+                    everywhere else in this lab. */}
+                <span className="text-caption text-accent">
+                  {panel.metrics.status === "done" ? lab.race.sorted : " "}
+                </span>
+              </div>
+              <BarCanvas
+                valuesRef={valuesRef}
+                sortRef={panel.sortRef}
+                running={run.running}
+                // Both canvases repaint every frame, but only one of them
+                // advances the engines — that is what keeps the two panels in
+                // lockstep instead of racing each other's frame rates.
+                onFrame={panel.drives ? run.advanceFrame : noop}
+                revision={run.revision + round}
+                editable={false}
+                onEdit={() => undefined}
+                cursor={panel.key === "left" ? cursor : -1}
+                onCursorChange={setCursor}
+                heightClass="h-28 sm:h-40"
+                label={lab.race.panelLabel(
+                  panel.title,
+                  SIZE,
+                  panel.metrics.status === "done"
+                    ? lab.state.done(panel.metrics.comparisons, panel.metrics.moves)
+                    : lab.state.running(panel.metrics.comparisons, panel.metrics.moves),
+                )}
+              />
+              <div className="flex flex-wrap items-start gap-x-8 gap-y-2">
+                <SortFigures metrics={panel.metrics} compact />
+              </div>
             </div>
-            <BarCanvas
-              valuesRef={valuesRef}
-              sortRef={panel.sortRef}
-              running={run.running}
-              // Both canvases repaint every frame, but only one of them
-              // advances the engines — that is what keeps the two panels in
-              // lockstep instead of racing each other's frame rates.
-              onFrame={panel.drives ? run.advanceFrame : noop}
-              revision={run.revision + round}
-              editable={false}
-              onEdit={() => undefined}
-              cursor={panel.key === "left" ? cursor : -1}
-              onCursorChange={setCursor}
-              label={
-                `${panel.title}: bar chart of ${SIZE} values. ` +
-                (panel.metrics.status === "done"
-                  ? `Sorted with ${panel.metrics.comparisons} comparisons and ${panel.metrics.moves} moves.`
-                  : `${panel.metrics.comparisons} comparisons, ${panel.metrics.moves} moves so far.`)
-              }
-            />
-            <SortMetrics metrics={panel.metrics} compact />
-          </div>
-        ))}
-      </div>
-
-      <div className="flex flex-wrap items-center gap-3">
-        <Button onClick={run.start} className="min-w-24">
-          {run.running ? t.common.pause : lab.sort}
-        </Button>
-        <Button variant="ghost" onClick={handleReset}>
-          {t.common.reset}
-        </Button>
-        <p className="text-body-sm text-fg-muted" aria-live="polite">
+          ))}
+        </div>
+      }
+      readout={
+        <p className="text-caption text-fg-faint">
           {bothDone ? lab.race.bothDone : lab.race.oneButton}
         </p>
-      </div>
-    </div>
+      }
+      primary={
+        <Transport
+          running={run.running}
+          onRun={run.start}
+          onStep={run.stepOnce}
+          onReset={handleReset}
+          runLabel={lab.sort}
+        />
+      }
+    />
   );
 }

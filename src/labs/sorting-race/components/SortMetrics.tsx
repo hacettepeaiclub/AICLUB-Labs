@@ -1,4 +1,4 @@
-import { Figure, FigureRow } from "@/components/lab";
+import { Figure } from "@/components/lab";
 import { useT } from "@/i18n";
 import type { Algorithm } from "../engine";
 import type { RunMetrics } from "../useSortRun";
@@ -8,7 +8,7 @@ export function useAlgorithmLabel(): Record<Algorithm, string> {
   return useT().labs["sorting-race"].algorithms;
 }
 
-export interface SortMetricsProps {
+export interface SortFiguresProps {
   metrics: RunMetrics;
   /** Whichever number this section is really about, so the eye lands on it. */
   emphasis?: "comparisons" | "moves";
@@ -21,11 +21,14 @@ export interface SortMetricsProps {
  * Two numbers, and what they mean. Comparisons is questions asked; moves is
  * data actually relocated. Keeping them side by side is what lets the visitor
  * notice that each algorithm wins one of them.
+ *
+ * Rendered bare rather than in a `FigureRow`: inside a `Stage` the chassis is
+ * already the panel, and a second bordered surface would be a card in a card.
  */
-export function SortMetrics({ metrics, emphasis, inversions, compact }: SortMetricsProps) {
+export function SortFigures({ metrics, emphasis, inversions, compact }: SortFiguresProps) {
   const t = useT().labs["sorting-race"].metrics;
   return (
-    <FigureRow>
+    <>
       <Figure
         label={t.comparisons}
         value={metrics.comparisons.toLocaleString("en-US")}
@@ -39,6 +42,6 @@ export function SortMetrics({ metrics, emphasis, inversions, compact }: SortMetr
         tone={emphasis === "moves" ? "accent" : "default"}
       />
       {inversions !== undefined && <Figure label={t.disorder} value={t.inversions(inversions)} />}
-    </FigureRow>
+    </>
   );
 }

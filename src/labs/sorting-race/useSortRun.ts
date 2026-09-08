@@ -38,6 +38,16 @@ export interface SortRunOptions {
   reduced: boolean;
   /** Events per animation frame, shared by every panel so a race stays in lockstep. */
   eventsPerFrame: number;
+  /**
+   * Turns the finished sorts into one sentence for the live region.
+   *
+   * The hook holds no copy of its own — every section says something different
+   * about the same event, and only the components can reach the dictionary. It
+   * was previously not said at all: `finish` set metrics and stopped, so an
+   * animated run ended in silence for a screen reader while the reduced-motion
+   * path announced a hardcoded English string. Both go through here now.
+   */
+  describeFinish?: (sorts: readonly (Sort | null)[]) => string;
 }
 
 const metricsOf = (s: Sort | null): RunMetrics =>
@@ -64,6 +74,7 @@ export function useSortRun({
   algorithms,
   reduced,
   eventsPerFrame,
+  describeFinish,
 }: SortRunOptions): SortRun {
   const sortsRef = useRef<(Sort | null)[]>(algorithms.map(() => null));
   const [running, setRunning] = useState(false);
@@ -77,6 +88,10 @@ export function useSortRun({
   algorithmsRef.current = algorithms;
   const eventsRef = useRef(eventsPerFrame);
   eventsRef.current = eventsPerFrame;
+  // Held in a ref so `finish` stays stable while the sentence stays current
+  // with the active language.
+  const describeRef = useRef(describeFinish);
+  describeRef.current = describeFinish;
 
   const publish = useCallback(() => {
     setMetrics(sortsRef.current.map(metricsOf));
@@ -87,6 +102,8 @@ export function useSortRun({
     setMetrics(sortsRef.current.map(metricsOf));
     setResults(sortsRef.current.map((s) => (s ? resultOf(s) : null)));
     setRevision((r) => r + 1);
+    const describe = describeRef.current;
+    if (describe) setAnnouncement(describe(sortsRef.current));
   }, []);
 
   const create = useCallback(() => {
@@ -117,11 +134,6 @@ export function useSortRun({
     if (reduced) {
       for (const s of sortsRef.current) if (s) runToEnd(s);
       finish();
-      setAnnouncement(
-        sortsRef.current
-          .map((s) => (s ? `${s.algorithm}: ${s.comparisons} comparisons, ${s.moves} moves.` : ""))
-          .join(" "),
-      );
       return;
     }
 

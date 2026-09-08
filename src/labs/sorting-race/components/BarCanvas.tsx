@@ -38,6 +38,12 @@ export interface BarCanvasProps {
   onCursorChange: (index: number) => void;
   label: string;
   describedBy?: string;
+  /**
+   * Chart height. The race stacks two of these on a phone, and at the default
+   * height the Run button ended up below the fold — so that section asks for a
+   * shorter chart rather than the chassis growing a prop about it.
+   */
+  heightClass?: string;
   className?: string;
 }
 
@@ -60,6 +66,7 @@ export function BarCanvas({
   onCursorChange,
   label,
   describedBy,
+  heightClass = "h-40 sm:h-52 lg:h-64",
   className,
 }: BarCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -218,7 +225,8 @@ export function BarCanvas({
         onPointerUp={handleUp}
         onPointerCancel={handleUp}
         className={cn(
-          "block h-40 w-full touch-none sm:h-52",
+          "block w-full touch-none",
+          heightClass,
           editable ? "cursor-crosshair" : "cursor-default",
         )}
       />
