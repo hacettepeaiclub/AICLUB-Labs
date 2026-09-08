@@ -796,6 +796,18 @@ export const tr: Translation = {
 
     // -------------------------------------------------------- neural ----
     "neural-playground": {
+      question: "Tek bir katman asl\u0131nda neyi de\u011fi\u015ftiriyor?",
+      diagram: {
+        diagramLabel: (shape: string) =>
+          `A\u011f \u015femas\u0131: ${shape} n\u00f6ron. Her d\u00fc\u011f\u00fcm, o n\u00f6ronun girdi karesi boyunca neye tepki verdi\u011fini g\u00f6sterir.`,
+        neuron: (label: string) => `${label} n\u00f6ronu`,
+        inputNode: "girdi",
+        bias: "yanl\u0131l\u0131k",
+        eachSquare: "Her kare, bir n\u00f6ronun girdiye kendi bak\u0131\u015f\u0131.",
+        pushesUp: "yukar\u0131 iter",
+        pushesDown: "a\u015fa\u011f\u0131 iter",
+        thickness: "kal\u0131nl\u0131k g\u00fcc\u00fc g\u00f6sterir",
+      },
       title: "Yapay Sinir Ağı Laboratuvarı",
       description: "İki tür nokta çizin. Bir ağın onları ayırt etmeyi öğrenişini izleyin.",
       liveTraining: "Canlı eğitim",
@@ -839,6 +851,13 @@ export const tr: Translation = {
         descent: { headline: "Her şeyi yokuş aşağı it" },
       },
       playground: {
+        currentlyWrong: "\u015eu an yanl\u0131\u015f",
+        dataAndArchitecture: "Veri ve mimari",
+        drawHint: "Nokta eklemek i\u00e7in tuvale t\u0131klay\u0131n ya da s\u00fcr\u00fckleyin.",
+        caption:
+          "Solda: a\u011f\u0131n her yerde ne tahmin etti\u011fi. Sa\u011fda: ayn\u0131 a\u011f\u0131n i\u00e7eriden g\u00f6r\u00fcn\u00fcm\u00fc, n\u00f6ron ba\u015f\u0131na bir kare.",
+        noneLabel: "yok",
+        offLabel: "kapal\u0131",
         draw: "Çiz",
         data: "Veri",
         noise: "Gürültü",
@@ -869,6 +888,14 @@ export const tr: Translation = {
       },
 
       neuron: {
+        weightsAndBias: "A\u011f\u0131rl\u0131klar ve yanl\u0131l\u0131k",
+        caption:
+          "Yapamad\u0131\u011f\u0131n\u0131z \u015feye dikkat edin: bu \u00fc\u00e7 kayd\u0131r\u0131c\u0131y\u0131 nas\u0131l \u00e7ekerseniz \u00e7ekin s\u0131n\u0131r d\u00fcz bir \u00e7izgi olarak kal\u0131yor. Tek bir n\u00f6ronun b\u00fct\u00fcn s\u0131n\u0131r\u0131 bu \u2014 ve bir sonraki b\u00f6l\u00fcm\u00fcn var olma nedeni de bu.",
+        notes: {
+          tanh: "\u22121\u20261 aral\u0131\u011f\u0131na s\u0131k\u0131\u015ft\u0131r\u0131r. Yumu\u015fak, simetrik, g\u00fcvenli bir varsay\u0131lan.",
+          relu: "Pozitifleri ge\u00e7irir, negatifleri d\u00fczler. H\u0131zl\u0131 ve modern varsay\u0131lan.",
+          sigmoid: "0\u20261 aral\u0131\u011f\u0131na s\u0131k\u0131\u015ft\u0131r\u0131r. Tarihsel ve tak\u0131lmaya yatk\u0131n.",
+        },
         kicker: "Sonuna kadar yakınlaşın",
         title: "Bir nöron sandığınızdan küçüktür.",
         lede: "Belleği yok, mantığı yok, hiçbir marifeti yok. Üç sayı ve bir ezme işlemi: bütün alanın üzerine kurulduğu birim bundan ibaret.",
@@ -886,6 +913,8 @@ export const tr: Translation = {
       },
 
       layers: {
+        panelLabel: (title: string, accuracy: number, epoch: number) =>
+          `${title}: ${epoch} epok sonra XOR noktalar\u0131n\u0131n %${accuracy} kadar\u0131 do\u011fru s\u0131n\u0131fland\u0131r\u0131ld\u0131.`,
         kicker: "Katmanlar neden gerekli",
         title: "Yapay zekâyı on yıl durduran dört nokta.",
         lede: "XOR: karşılıklı köşelere yerleşmiş iki sınıf. Tek bir nöron bunları birbirinden ayıramaz ve 1969'da fark edilen bu gerçek, alanı neredeyse bitiriyordu. Çözümün tamamıysa tek bir gizli katmandan ibaret.",
@@ -900,6 +929,7 @@ export const tr: Translation = {
       },
 
       descent: {
+        slopeHint: "backprop'un her a\u011f\u0131rl\u0131\u011fa verdi\u011fi tek say\u0131",
         kicker: "Nasıl öğreniyor",
         title: "Yokuş aşağı, her seferinde küçük bir adım.",
         lede: "Öğrenme, ansızın gelen bir kavrayış değildir. Bir yamaçta gradyanın tersi yönünde yuvarlanan bir top gibidir ve her şeyi belirleyen, attığı adımların büyüklüğüdür.",
@@ -933,6 +963,7 @@ export const tr: Translation = {
             body: "Hatayı zincir kuralıyla katmanlar boyunca geriye taşıyın. Her bir ağırlık, hataya ne kadar katkıda bulunduğunu öğrenir: kendi gradyanını.",
           },
           descent: {
+        slopeHint: "backprop'un her a\u011f\u0131rl\u0131\u011fa verdi\u011fi tek say\u0131",
             title: "Gradyan inişi",
             body: "Her ağırlığı kendi gradyanının tersi yönde küçük bir adım kaydırın. Öğrenme oranı, o adımın büyüklüğüdür. Sonra bunu binlerce kez yineleyin.",
           },
@@ -940,6 +971,20 @@ export const tr: Translation = {
       },
 
       challenge: {
+        architecture: "Mimari",
+        neuronsUsed: "Kullan\u0131lan n\u00f6ron",
+        testAccuracy: "Test do\u011frulu\u011fu",
+        target: "Hedef",
+        objectiveLine: (accuracy: string) =>
+          `Spiralde ${accuracy} test do\u011frulu\u011funa ula\u015f\u0131n \u2014 olabildi\u011fince az gizli n\u00f6ron kullanarak.`,
+        solvedNote: "\u00c7\u00f6z\u00fcld\u00fc. \u015eimdi bir n\u00f6ron eksiltip yeniden deneyin.",
+        noBest: "Hen\u00fcz yok. Bol n\u00f6ronla ba\u015flay\u0131n, sonra bozulana kadar azalt\u0131n.",
+        bestLine: (neurons: number, accuracy: string, epoch: number) =>
+          `En iyi: ${neurons} gizli n\u00f6ron, ${epoch.toLocaleString("en-US")} epok sonra ${accuracy}.`,
+        canvasLabel: (neurons: number, accuracy: string, epoch: number) =>
+          `Spiral g\u00f6revi: ${neurons} gizli n\u00f6ron, ${epoch} epok sonra ${accuracy} test do\u011frulu\u011fu.`,
+        announceSolved: (neurons: number, accuracy: string) =>
+          `${neurons} gizli n\u00f6ronla, ${accuracy} test do\u011frulu\u011funda \u00e7\u00f6z\u00fcld\u00fc.`,
         kicker: "Görev",
         title: "Spirali olabildiğince az nöronla çözün.",
         lede: "On altı nöronla herkes çözer. Asıl soru, ağ şekli tutamaz hâle gelmeden önce kaça kadar inebildiğiniz.",
@@ -1050,6 +1095,20 @@ export const tr: Translation = {
           "Aynı yol, aynı maliyet. İncelenen sayısına bakın. Buradaki tahmin Manhattan uzaklığı; dört yönlü bir ızgarada kalan mesafeyi asla olduğundan fazla gösteremez, A*'ın ona güvenerek hiçbir şeyden ödün vermemesinin nedeni de tam olarak budur.",
       },
       challenge: {
+        architecture: "Mimari",
+        neuronsUsed: "Kullan\u0131lan n\u00f6ron",
+        testAccuracy: "Test do\u011frulu\u011fu",
+        target: "Hedef",
+        objectiveLine: (accuracy: string) =>
+          `Spiralde ${accuracy} test do\u011frulu\u011funa ula\u015f\u0131n \u2014 olabildi\u011fince az gizli n\u00f6ron kullanarak.`,
+        solvedNote: "\u00c7\u00f6z\u00fcld\u00fc. \u015eimdi bir n\u00f6ron eksiltip yeniden deneyin.",
+        noBest: "Hen\u00fcz yok. Bol n\u00f6ronla ba\u015flay\u0131n, sonra bozulana kadar azalt\u0131n.",
+        bestLine: (neurons: number, accuracy: string, epoch: number) =>
+          `En iyi: ${neurons} gizli n\u00f6ron, ${epoch.toLocaleString("en-US")} epok sonra ${accuracy}.`,
+        canvasLabel: (neurons: number, accuracy: string, epoch: number) =>
+          `Spiral g\u00f6revi: ${neurons} gizli n\u00f6ron, ${epoch} epok sonra ${accuracy} test do\u011frulu\u011fu.`,
+        announceSolved: (neurons: number, accuracy: string) =>
+          `${neurons} gizli n\u00f6ronla, ${accuracy} test do\u011frulu\u011funda \u00e7\u00f6z\u00fcld\u00fc.`,
         kicker: "Görev",
         title: "Aynı cevap, daha az iş.",
         lede: "Üç sabit harita. Her biri hem en ucuz yolu hem de bütçeden fazla hücre kesinleştirmeyen bir arama istiyor. Bunlardan biri tek başına kolay; asıl mesele ikisini birden sağlamak.",
@@ -1182,6 +1241,20 @@ export const tr: Translation = {
           "Terslik, sırası yanlış olan bir çifttir. Bu eklemeli sıralama, kendisine verilen dizideki her terslik için tam bir kez kaydırır — yani evinden çok uzaktaki tek bir değer, birkaç küçük hatadan daha pahalıya gelebilir.",
       },
       challenge: {
+        architecture: "Mimari",
+        neuronsUsed: "Kullan\u0131lan n\u00f6ron",
+        testAccuracy: "Test do\u011frulu\u011fu",
+        target: "Hedef",
+        objectiveLine: (accuracy: string) =>
+          `Spiralde ${accuracy} test do\u011frulu\u011funa ula\u015f\u0131n \u2014 olabildi\u011fince az gizli n\u00f6ron kullanarak.`,
+        solvedNote: "\u00c7\u00f6z\u00fcld\u00fc. \u015eimdi bir n\u00f6ron eksiltip yeniden deneyin.",
+        noBest: "Hen\u00fcz yok. Bol n\u00f6ronla ba\u015flay\u0131n, sonra bozulana kadar azalt\u0131n.",
+        bestLine: (neurons: number, accuracy: string, epoch: number) =>
+          `En iyi: ${neurons} gizli n\u00f6ron, ${epoch.toLocaleString("en-US")} epok sonra ${accuracy}.`,
+        canvasLabel: (neurons: number, accuracy: string, epoch: number) =>
+          `Spiral g\u00f6revi: ${neurons} gizli n\u00f6ron, ${epoch} epok sonra ${accuracy} test do\u011frulu\u011fu.`,
+        announceSolved: (neurons: number, accuracy: string) =>
+          `${neurons} gizli n\u00f6ronla, ${accuracy} test do\u011frulu\u011funda \u00e7\u00f6z\u00fcld\u00fc.`,
         kicker: "Meydan okuma",
         title: "Neyi saydığınıza göre ucuz değişir.",
         lede: "Üç sabit dizi, üç bütçe — ve bütçe her zaman aynı sayıyla ilgili değil.",
@@ -1374,6 +1447,20 @@ export const tr: Translation = {
       },
 
       challenge: {
+        architecture: "Mimari",
+        neuronsUsed: "Kullan\u0131lan n\u00f6ron",
+        testAccuracy: "Test do\u011frulu\u011fu",
+        target: "Hedef",
+        objectiveLine: (accuracy: string) =>
+          `Spiralde ${accuracy} test do\u011frulu\u011funa ula\u015f\u0131n \u2014 olabildi\u011fince az gizli n\u00f6ron kullanarak.`,
+        solvedNote: "\u00c7\u00f6z\u00fcld\u00fc. \u015eimdi bir n\u00f6ron eksiltip yeniden deneyin.",
+        noBest: "Hen\u00fcz yok. Bol n\u00f6ronla ba\u015flay\u0131n, sonra bozulana kadar azalt\u0131n.",
+        bestLine: (neurons: number, accuracy: string, epoch: number) =>
+          `En iyi: ${neurons} gizli n\u00f6ron, ${epoch.toLocaleString("en-US")} epok sonra ${accuracy}.`,
+        canvasLabel: (neurons: number, accuracy: string, epoch: number) =>
+          `Spiral g\u00f6revi: ${neurons} gizli n\u00f6ron, ${epoch} epok sonra ${accuracy} test do\u011frulu\u011fu.`,
+        announceSolved: (neurons: number, accuracy: string) =>
+          `${neurons} gizli n\u00f6ronla, ${accuracy} test do\u011frulu\u011funda \u00e7\u00f6z\u00fcld\u00fc.`,
         kicker: "Görev",
         title: "Tek bütçe. Onu kaçırmanın iki yolu.",
         lede: "İlk görevde tokenizer sabit, cümle sizin. İkincisinde cümle sabit, tokenizer sizin. Bunlardan yalnızca biri daha çok uğraşarak çözülebilir.",

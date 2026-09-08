@@ -56,8 +56,13 @@ const LossCurve = memo(function LossCurve({ history }: { history: readonly numbe
   );
 });
 
-/** The scoreboard: how well the network is doing, right now. */
-export function TrainingStats({ stats, history }: TrainingStatsProps) {
+/**
+ * The scoreboard: how well the network is doing, right now.
+ *
+ * Rendered bare — inside a `Stage` the chassis is already the panel, and a
+ * second bordered surface around four numbers is a card in a card.
+ */
+export function TrainingFigures({ stats, history }: TrainingStatsProps) {
   const t = useT().labs["neural-playground"].stats;
   // Stats publish 10x a second; announcing each one would be a running
   // commentary. This settles to whatever the figure is when training pauses
@@ -65,7 +70,7 @@ export function TrainingStats({ stats, history }: TrainingStatsProps) {
   const settledAccuracy = useDebouncedValue(Math.round(stats.accuracy * 100), 1200);
 
   return (
-    <div className="card-surface flex flex-wrap items-start justify-between gap-x-8 gap-y-4 p-5">
+    <>
       <div className="flex flex-wrap gap-x-8 gap-y-4">
         <Figure label={t.epoch} value={stats.epoch.toLocaleString("en-US")} tone="muted" />
         <Figure label={t.loss} value={formatNumber(stats.loss, 4)} />
@@ -76,6 +81,6 @@ export function TrainingStats({ stats, history }: TrainingStatsProps) {
       <p aria-live="polite" className="sr-only">
         {t.announce(settledAccuracy)}
       </p>
-    </div>
+    </>
   );
 }

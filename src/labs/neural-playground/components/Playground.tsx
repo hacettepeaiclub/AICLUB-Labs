@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 import { Button, Kbd, Segmented } from "@/components/ui";
-import { ControlPanel, LabSlider } from "@/components/lab";
+import { LabSlider, Stage, Transport } from "@/components/lab";
 import { useT } from "@/i18n";
 import { useKeyPress } from "@/hooks";
 import { formatNumber } from "@/lib/format";
@@ -17,7 +17,7 @@ import { ACTIVATIONS, type Activation } from "../engine";
 import { useTrainer } from "../useTrainer";
 import { DecisionCanvas } from "./DecisionCanvas";
 import { NetworkDiagram } from "./NetworkDiagram";
-import { TrainingStats } from "./TrainingStats";
+import { TrainingFigures } from "./TrainingStats";
 
 /** Log-spaced, because the interesting range of a learning rate is multiplicative. */
 const LEARNING_RATES = [0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1] as const;
@@ -28,19 +28,21 @@ const DEFAULT_DATASET: DatasetKind = "circle";
 const activationOptions = ACTIVATIONS.map((a) => ({ value: a.kind, label: a.label }));
 
 function Legend() {
+  const lab = useT().labs["neural-playground"];
   return (
     <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-caption text-fg-muted">
+      {/* Shape as well as hue: a disc, a square and a ring. */}
       <span className="inline-flex items-center gap-2">
         <span className="size-2.5 rounded-pill bg-accent-fill" />
-        Class A
+        {lab.classA}
       </span>
       <span className="inline-flex items-center gap-2">
         <span className="size-2.5 rounded-[2px] bg-signal-cyan" />
-        Class B
+        {lab.classB}
       </span>
       <span className="inline-flex items-center gap-2">
         <span className="size-2.5 rounded-pill ring-1 ring-signal-amber" />
-        Currently wrong
+        {lab.playground.currentlyWrong}
       </span>
     </div>
   );
@@ -144,138 +146,124 @@ export function Playground() {
   const canvasLabel = lab.canvasLabel(points.length, Math.round(stats.accuracy * 100));
 
   return (
-    <div className="space-y-6">
-      <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_18rem]">
-        <div className="space-y-4">
-          <DecisionCanvas
-            netRef={netRef}
-            points={points}
-            running={running}
-            revision={generation + revision}
-            onPaint={handlePaint}
-            ariaLabel={canvasLabel}
-          />
-          <div className="flex flex-wrap items-center justify-between gap-4">
+    <Stage
+      width="full"
+      secondaryLabel={p.dataAndArchitecture}
+      caption={p.caption}
+      announcement=""
+      viewport={
+        /* The network's two pictures, side by side: what it predicts across
+           the whole square, and what it is made of. The diagram used to sit at
+           the very bottom of the section, under the scoreboard and a heading —
+           the thing the lab is named after, last. */
+        <div className="grid gap-3 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+          <div className="min-w-0 space-y-2">
+            <DecisionCanvas
+              netRef={netRef}
+              points={points}
+              running={running}
+              revision={generation + revision}
+              onPaint={handlePaint}
+              ariaLabel={canvasLabel}
+            />
             <Legend />
-            <div className="flex items-center gap-3">
-              <Segmented
-                label={p.draw}
-                value={paintClass === 1 ? "a" : "b"}
-                options={[
-                  { value: "a", label: lab.classA },
-                  { value: "b", label: lab.classB },
-                ]}
-                onChange={(value) => setPaintClass(value === "a" ? 1 : -1)}
-              />
-              <Button variant="ghost" size="sm" onClick={() => setPoints([])}>
-                {p.clearPoints}
-              </Button>
-            </div>
           </div>
-          <p className="text-body-sm text-fg-muted">
-            Click or drag on the canvas to add your own points — the network has to deal with
-            whatever you draw.
-          </p>
+          <div className="min-w-0">
+            <NetworkDiagram
+              netRef={netRef}
+              sizes={sizes}
+              running={running}
+              revision={generation + revision}
+            />
+          </div>
         </div>
-
-        <div className="space-y-4">
-          <ControlPanel className="flex-col items-stretch">
+      }
+      readout={
+        <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
+          <div className="flex items-center gap-3">
             <Segmented
-              label={p.data}
-              value={dataset}
-              options={datasetOptions}
-              onChange={handleDataset}
+              label={p.draw}
+              value={paintClass === 1 ? "a" : "b"}
+              options={[
+                { value: "a", label: lab.classA },
+                { value: "b", label: lab.classB },
+              ]}
+              onChange={(value) => setPaintClass(value === "a" ? 1 : -1)}
             />
-            <p className="-mt-1 text-caption text-fg-faint">{hint}</p>
-            <LabSlider
-              label={p.noise}
-              value={noise}
-              min={0}
-              max={0.4}
-              step={0.02}
-              onChange={handleNoise}
-              format={(v) => formatNumber(v, 2)}
-            />
-            <Button variant="secondary" size="sm" onClick={handleReshuffle}>
-              {p.newSample}
+            <Button variant="ghost" onClick={() => setPoints([])} className="min-h-[44px]">
+              {p.clearPoints}
             </Button>
-          </ControlPanel>
-
-          <ControlPanel className="flex-col items-stretch">
-            <LabSlider
-              label={p.hiddenLayers}
-              value={layers}
-              min={0}
-              max={3}
-              onChange={setLayers}
-              format={(v) => (v === 0 ? "none" : String(v))}
-            />
-            <LabSlider
-              label={p.neuronsPerLayer}
-              value={neurons}
-              min={1}
-              max={8}
-              onChange={setNeurons}
-            />
-            <Segmented
-              label={p.activation}
-              value={activation}
-              options={activationOptions}
-              onChange={setActivation}
-            />
-            <LabSlider
-              label={p.learningRate}
-              value={rateIndex}
-              min={0}
-              max={LEARNING_RATES.length - 1}
-              onChange={setRateIndex}
-              format={(i) => String(LEARNING_RATES[i] ?? 0.03)}
-            />
-            <LabSlider
-              label={p.regularization}
-              value={l2Index}
-              min={0}
-              max={L2_RATES.length - 1}
-              onChange={setL2Index}
-              format={(i) => (i === 0 ? "off" : String(L2_RATES[i]))}
-            />
-            <LabSlider label={p.speed} value={speed} min={1} max={10} onChange={setSpeed} />
-          </ControlPanel>
-
-          <ControlPanel className="items-center">
-            <Button onClick={() => setRunning((value) => !value)} className="min-w-24">
-              {running ? p.pause : p.train}
-            </Button>
-            <Button variant="secondary" onClick={() => step(20)} disabled={running}>
-              Step 20
-            </Button>
-            <Button variant="secondary" onClick={handleRestart}>
-              Restart
-            </Button>
-            <p className="w-full text-caption text-fg-faint">
-              <Kbd>Space</Kbd> {lab.keyboardHint.trainPause} <Kbd>R</Kbd>{" "}
-              {lab.keyboardHint.restart}
-            </p>
-          </ControlPanel>
+          </div>
+          <p className="text-caption text-fg-faint">{p.drawHint}</p>
         </div>
-      </div>
-
-      <TrainingStats stats={stats} history={history} />
-
-      <div className="pt-6">
-        <h3 className="text-title text-fg">{p.insideTitle}</h3>
-        <p className="mt-2 max-w-prose text-body-sm text-fg-muted">
-          {p.insideBody}
-        </p>
-        <div className="mt-5">
-          <NetworkDiagram
-            netRef={netRef}
-            sizes={sizes}
-            running={running}
-            revision={generation + revision}
+      }
+      primary={
+        <Transport
+          running={running}
+          onRun={() => setRunning((value) => !value)}
+          onStep={() => step(20)}
+          onReset={handleRestart}
+          runLabel={p.train}
+          stepDisabled={running}
+        />
+      }
+      figures={<TrainingFigures stats={stats} history={history} />}
+      secondary={
+        <>
+          <Segmented label={p.data} value={dataset} options={datasetOptions} onChange={handleDataset} />
+          <p className="text-caption text-fg-faint">{hint}</p>
+          <LabSlider
+            label={p.noise}
+            value={noise}
+            min={0}
+            max={0.4}
+            step={0.02}
+            onChange={handleNoise}
+            format={(v) => formatNumber(v, 2)}
           />
-        </div>
-      </div>
-    </div>
+          <Button variant="secondary" onClick={handleReshuffle} className="min-h-[44px] w-full">
+            {p.newSample}
+          </Button>
+
+          <LabSlider
+            label={p.hiddenLayers}
+            value={layers}
+            min={0}
+            max={3}
+            onChange={setLayers}
+            format={(v) => (v === 0 ? p.noneLabel : String(v))}
+          />
+          <LabSlider label={p.neuronsPerLayer} value={neurons} min={1} max={8} onChange={setNeurons} />
+          <Segmented
+            label={p.activation}
+            value={activation}
+            options={activationOptions}
+            onChange={setActivation}
+          />
+          <LabSlider
+            label={p.learningRate}
+            value={rateIndex}
+            min={0}
+            max={LEARNING_RATES.length - 1}
+            onChange={setRateIndex}
+            format={(i) => String(LEARNING_RATES[i] ?? 0.03)}
+          />
+          <LabSlider
+            label={p.regularization}
+            value={l2Index}
+            min={0}
+            max={L2_RATES.length - 1}
+            onChange={setL2Index}
+            format={(i) => (i === 0 ? p.offLabel : String(L2_RATES[i]))}
+          />
+          <LabSlider label={p.speed} value={speed} min={1} max={10} onChange={setSpeed} />
+
+          <p className="text-caption text-fg-faint">
+            <Kbd>Space</Kbd> {lab.keyboardHint.trainPause} <Kbd>R</Kbd>{" "}
+            {lab.keyboardHint.restart}
+          </p>
+        </>
+      }
+    />
   );
 }

@@ -1,7 +1,5 @@
 import { useCallback, useRef, useState, type PointerEvent } from "react";
-import { useReducedMotion } from "framer-motion";
-import { Button } from "@/components/ui";
-import { ControlPanel, LabSlider } from "@/components/lab";
+import { Figure, LabSlider, Stage, Transport } from "@/components/lab";
 import { useT } from "@/i18n";
 import { useRafLoop } from "@/hooks";
 import { formatNumber } from "@/lib/format";
@@ -42,7 +40,6 @@ export function DescentLab() {
   const t = useT();
   const lab = t.labs["neural-playground"];
   const d = lab.descent;
-  const reduced = useReducedMotion();
   const [rateIndex, setRateIndex] = useState(3);
   const [w, setW] = useState(START_W);
   const [steps, setSteps] = useState(0);
@@ -109,9 +106,13 @@ export function DescentLab() {
   )},${toSvgY(loss(w) + gradient * tangentSpan)}`;
 
   return (
-    <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_18rem]">
-      <div className="space-y-4">
-        <div className="card-surface p-4 sm:p-6">
+    <Stage
+      width="wide"
+      secondaryLabel={d.learningRate}
+      caption={verdict}
+      announcement={verdict}
+      viewport={
+        <div className="rounded border border-line/10 bg-ink-950 p-4 sm:p-6">
           <svg
             viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
             className="w-full cursor-pointer touch-none"
@@ -149,69 +150,46 @@ export function DescentLab() {
               className="fill-accent"
             />
           </svg>
-          <p className="mt-3 text-center text-caption text-fg-faint">
-            Click anywhere on the curve to drop the weight somewhere else.
-          </p>
+          <p className="mt-3 text-center text-caption text-fg-faint">Click anywhere on the curve to drop the weight somewhere else.</p>
         </div>
-        <p className="text-body-sm text-fg-muted" aria-live="polite">
-          {verdict}
+      }
+      readout={
+        <p className="text-caption text-fg-faint">
+          {d.steps}: <span className="font-mono tabular-nums text-fg">{steps}</span>
         </p>
-      </div>
-
-      <div className="space-y-4">
-        <ControlPanel className="flex-col items-stretch">
-          <LabSlider
-            label={d.learningRate}
-            value={rateIndex}
-            min={0}
-            max={LEARNING_RATES.length - 1}
-            onChange={setRateIndex}
-            format={(i) => String(LEARNING_RATES[i] ?? 0.12)}
+      }
+      primary={
+        <Transport
+          running={running}
+          onRun={() => setRunning((value) => !value)}
+          onStep={takeStep}
+          onReset={restart}
+          stepDisabled={running}
+        />
+      }
+      figures={
+        <>
+          <Figure label={d.weight} value={formatNumber(w, 3)} />
+          <Figure label={d.loss} value={formatNumber(loss(w), 3)} tone="accent" />
+          <Figure label={d.slope} value={formatNumber(gradient, 3)} hint={d.slopeHint} />
+          {/* weight - rate x slope: the update, in the same numbers above it. */}
+          <Figure
+            label={d.nextStep}
+            value={formatNumber(w - learningRate * gradient, 3)}
+            tone="accent"
           />
-          <div className="grid w-full grid-cols-2 gap-2">
-            <Button onClick={() => setRunning((value) => !value)}>
-              {running ? t.common.pause : d.roll}
-            </Button>
-            <Button variant="secondary" onClick={takeStep} disabled={running}>
-              One step
-            </Button>
-            <Button variant="ghost" onClick={restart} className="col-span-2">
-              {t.common.reset}
-            </Button>
-          </div>
-        </ControlPanel>
-
-        <div className="card-surface space-y-3 p-5 font-mono text-body-sm">
-          <div className="flex justify-between gap-4">
-            <span className="text-fg-faint">{d.weight}</span>
-            <span className="tabular-nums text-fg">{formatNumber(w, 3)}</span>
-          </div>
-          <div className="flex justify-between gap-4">
-            <span className="text-fg-faint">{d.loss}</span>
-            <span className="tabular-nums text-fg">{formatNumber(loss(w), 3)}</span>
-          </div>
-          <div className="flex justify-between gap-4">
-            <span className="text-fg-faint">{d.slope}</span>
-            <span className="tabular-nums text-signal-amber">{formatNumber(gradient, 3)}</span>
-          </div>
-          <div className="flex justify-between gap-4 border-t border-line/10 pt-3">
-            <span className="text-fg-faint">{d.nextStep}</span>
-            <span className="tabular-nums text-accent">
-              {formatNumber(-learningRate * gradient, 3)}
-            </span>
-          </div>
-          <div className="flex justify-between gap-4">
-            <span className="text-fg-faint">{d.steps}</span>
-            <span className="tabular-nums text-fg-muted">{steps}</span>
-          </div>
-        </div>
-
-        {reduced && (
-          <p className="text-caption text-fg-faint">
-            Prefer it still? “One step” advances the ball a single move at a time.
-          </p>
-        )}
-      </div>
-    </div>
+        </>
+      }
+      secondary={
+        <LabSlider
+          label={d.learningRate}
+          value={rateIndex}
+          min={0}
+          max={LEARNING_RATES.length - 1}
+          onChange={setRateIndex}
+          format={(i) => String(LEARNING_RATES[i] ?? 0.12)}
+        />
+      }
+    />
   );
 }

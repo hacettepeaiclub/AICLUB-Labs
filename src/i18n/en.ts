@@ -801,6 +801,18 @@ export const en = {
 
     // -------------------------------------------------------- neural ----
     "neural-playground": {
+      question: "What does one layer actually change?",
+      diagram: {
+        diagramLabel: (shape: string) =>
+          `Network diagram: ${shape} neurons. Each node shows what that neuron responds to across the input square.`,
+        neuron: (label: string) => `Neuron ${label}`,
+        inputNode: "input",
+        bias: "bias",
+        eachSquare: "Each square is one neuron's own picture of the input.",
+        pushesUp: "pushes up",
+        pushesDown: "pushes down",
+        thickness: "thickness is strength",
+      },
       title: "Neural Playground",
       description: "Draw two kinds of dots. Watch a network learn to tell them apart.",
       liveTraining: "Live training",
@@ -844,6 +856,13 @@ export const en = {
         descent: { headline: "Nudge everything downhill" },
       },
       playground: {
+        currentlyWrong: "Currently wrong",
+        dataAndArchitecture: "Data and architecture",
+        drawHint: "Click or drag on the canvas to add points.",
+        caption:
+          "Left: what the network predicts everywhere. Right: the same network from the inside, one square per neuron.",
+        noneLabel: "none",
+        offLabel: "off",
         draw: "Draw",
         data: "Data",
         noise: "Noise",
@@ -874,6 +893,14 @@ export const en = {
       },
 
       neuron: {
+        weightsAndBias: "Weights and bias",
+        caption:
+          "Notice what you cannot do: however you drag these three sliders, the boundary stays a straight line. That is the whole limitation of one neuron \u2014 and the reason the next section exists.",
+        notes: {
+          tanh: "Squashes to \u22121\u20261. Smooth, symmetric, a safe default.",
+          relu: "Passes positives through, flattens negatives. Fast and the modern default.",
+          sigmoid: "Squashes to 0\u20261. Historic, and prone to stalling.",
+        },
         kicker: "Zoom all the way in",
         title: "A neuron is smaller than you think.",
         lede: "No memory, no logic, no cleverness. Three numbers and a squash — that is the entire unit the whole field is built from.",
@@ -891,6 +918,8 @@ export const en = {
       },
 
       layers: {
+        panelLabel: (title: string, accuracy: number, epoch: number) =>
+          `${title}: ${accuracy}% of the XOR points classified correctly after ${epoch} epochs.`,
         kicker: "Why layers",
         title: "Four dots that broke AI for a decade.",
         lede: "XOR: two classes arranged in opposite corners. A single neuron cannot separate them, and in 1969 that observation nearly ended the field. One hidden layer is the whole fix.",
@@ -905,6 +934,7 @@ export const en = {
       },
 
       descent: {
+        slopeHint: "the only number backprop hands each weight",
         kicker: "How it learns",
         title: "Downhill, one small step at a time.",
         lede: "Learning is not insight. It is a ball on a slope, moving against the gradient — and the size of its steps decides everything.",
@@ -938,6 +968,7 @@ export const en = {
             body: "Walk the error backwards through the layers with the chain rule. Every single weight learns how much it contributed — its gradient.",
           },
           descent: {
+        slopeHint: "the only number backprop hands each weight",
             title: "Gradient descent",
             body: "Move each weight a small step against its gradient. The learning rate is the size of that step. Then do it again, thousands of times.",
           },
@@ -945,6 +976,20 @@ export const en = {
       },
 
       challenge: {
+        architecture: "Architecture",
+        neuronsUsed: "Neurons used",
+        testAccuracy: "Test accuracy",
+        target: "Target",
+        objectiveLine: (accuracy: string) =>
+          `Reach ${accuracy} test accuracy on the spiral \u2014 using as few hidden neurons as you can.`,
+        solvedNote: "Solved. Now take a neuron away and try again.",
+        noBest: "Nothing yet. Start with plenty of neurons, then take them away until it breaks.",
+        bestLine: (neurons: number, accuracy: string, epoch: number) =>
+          `Best: ${neurons} hidden neurons, at ${accuracy} after ${epoch.toLocaleString("en-US")} epochs.`,
+        canvasLabel: (neurons: number, accuracy: string, epoch: number) =>
+          `Spiral challenge: ${neurons} hidden neurons, ${accuracy} test accuracy after ${epoch} epochs.`,
+        announceSolved: (neurons: number, accuracy: string) =>
+          `Solved with ${neurons} hidden neurons at ${accuracy} test accuracy.`,
         kicker: "The challenge",
         title: "Beat the spiral with as few neurons as you can.",
         lede: "Anyone can solve it with sixteen. The interesting question is how far down you can go before the network stops being able to hold the shape.",
@@ -1055,6 +1100,20 @@ export const en = {
           "Same path, same cost — look at Explored. The guess here is Manhattan distance, which can never overstate what is left on a four-way grid, and that is exactly why A* gives up nothing by trusting it.",
       },
       challenge: {
+        architecture: "Architecture",
+        neuronsUsed: "Neurons used",
+        testAccuracy: "Test accuracy",
+        target: "Target",
+        objectiveLine: (accuracy: string) =>
+          `Reach ${accuracy} test accuracy on the spiral \u2014 using as few hidden neurons as you can.`,
+        solvedNote: "Solved. Now take a neuron away and try again.",
+        noBest: "Nothing yet. Start with plenty of neurons, then take them away until it breaks.",
+        bestLine: (neurons: number, accuracy: string, epoch: number) =>
+          `Best: ${neurons} hidden neurons, at ${accuracy} after ${epoch.toLocaleString("en-US")} epochs.`,
+        canvasLabel: (neurons: number, accuracy: string, epoch: number) =>
+          `Spiral challenge: ${neurons} hidden neurons, ${accuracy} test accuracy after ${epoch} epochs.`,
+        announceSolved: (neurons: number, accuracy: string) =>
+          `Solved with ${neurons} hidden neurons at ${accuracy} test accuracy.`,
         kicker: "The challenge",
         title: "Same answer, less work.",
         lede: "Three fixed maps. Each one wants the cheapest path AND a search that settles no more cells than the budget. One of those is easy on its own; both together are the point.",
@@ -1189,6 +1248,20 @@ export const en = {
           "An inversion is a pair in the wrong order. This insertion sort shifts once for every inversion in the array it was given — so one value far from home can cost more than several small mistakes.",
       },
       challenge: {
+        architecture: "Architecture",
+        neuronsUsed: "Neurons used",
+        testAccuracy: "Test accuracy",
+        target: "Target",
+        objectiveLine: (accuracy: string) =>
+          `Reach ${accuracy} test accuracy on the spiral \u2014 using as few hidden neurons as you can.`,
+        solvedNote: "Solved. Now take a neuron away and try again.",
+        noBest: "Nothing yet. Start with plenty of neurons, then take them away until it breaks.",
+        bestLine: (neurons: number, accuracy: string, epoch: number) =>
+          `Best: ${neurons} hidden neurons, at ${accuracy} after ${epoch.toLocaleString("en-US")} epochs.`,
+        canvasLabel: (neurons: number, accuracy: string, epoch: number) =>
+          `Spiral challenge: ${neurons} hidden neurons, ${accuracy} test accuracy after ${epoch} epochs.`,
+        announceSolved: (neurons: number, accuracy: string) =>
+          `Solved with ${neurons} hidden neurons at ${accuracy} test accuracy.`,
         kicker: "The challenge",
         title: "Cheaper depends on what you count.",
         lede: "Three fixed arrays, three budgets — and the budget is not always about the same number.",
@@ -1381,6 +1454,20 @@ export const en = {
       },
 
       challenge: {
+        architecture: "Architecture",
+        neuronsUsed: "Neurons used",
+        testAccuracy: "Test accuracy",
+        target: "Target",
+        objectiveLine: (accuracy: string) =>
+          `Reach ${accuracy} test accuracy on the spiral \u2014 using as few hidden neurons as you can.`,
+        solvedNote: "Solved. Now take a neuron away and try again.",
+        noBest: "Nothing yet. Start with plenty of neurons, then take them away until it breaks.",
+        bestLine: (neurons: number, accuracy: string, epoch: number) =>
+          `Best: ${neurons} hidden neurons, at ${accuracy} after ${epoch.toLocaleString("en-US")} epochs.`,
+        canvasLabel: (neurons: number, accuracy: string, epoch: number) =>
+          `Spiral challenge: ${neurons} hidden neurons, ${accuracy} test accuracy after ${epoch} epochs.`,
+        announceSolved: (neurons: number, accuracy: string) =>
+          `Solved with ${neurons} hidden neurons at ${accuracy} test accuracy.`,
         kicker: "The challenge",
         title: "One budget. Two ways to miss it.",
         lede: "In the first puzzle the tokenizer is fixed and the sentence is yours. In the second the sentence is fixed and the tokenizer is yours. Only one of them can be solved by trying harder.",

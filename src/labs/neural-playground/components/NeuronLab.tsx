@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
 import { useCanvas2D, useLocalControls, useRepaintFlag } from "@/hooks";
-import { ControlPanel, LabSlider } from "@/components/lab";
+import { Figure, LabSlider, Stage } from "@/components/lab";
 import { useT } from "@/i18n";
 import { Segmented } from "@/components/ui";
 import { formatNumber } from "@/lib/format";
@@ -66,30 +66,57 @@ export function NeuronLab() {
     version,
   );
 
-  const note = ACTIVATIONS.find((a) => a.kind === state.activation)?.note ?? "";
+  // The engine also carries an English `note` per activation. It stays there,
+  // untouched; the sentence a visitor reads comes from the dictionary.
+  const note = n.notes[state.activation];
 
   return (
-    <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_18rem]">
-      <div className="space-y-4">
-        <canvas
-          ref={canvasRef}
-          role="img"
-          aria-label={`A single neuron's output across the input square, with weights ${formatNumber(
-            state.w1,
-            1,
-          )} and ${formatNumber(state.w2, 1)} and bias ${formatNumber(state.bias, 1)}.`}
-          className="aspect-square w-full rounded-card bg-ink-800"
-        />
-        <p className="text-center font-mono text-body-sm text-fg-muted">
-          output = {state.activation}(
-          <span className="text-accent">{formatNumber(state.w1, 2)}</span>·x₁ +{" "}
-          <span className="text-accent">{formatNumber(state.w2, 2)}</span>·x₂ +{" "}
-          <span className="text-signal-cyan">{formatNumber(state.bias, 2)}</span>)
-        </p>
-      </div>
-
-      <div className="space-y-4">
-        <ControlPanel className="flex-col items-stretch">
+    <Stage
+      width="wide"
+      secondaryLabel={n.weightsAndBias}
+      caption={n.caption}
+      viewport={
+        <div className="space-y-2">
+          <canvas
+            ref={canvasRef}
+            role="img"
+            aria-label={lab.neuronLabel(
+              formatNumber(state.w1, 1),
+              formatNumber(state.w2, 1),
+              formatNumber(state.bias, 1),
+            )}
+            className="aspect-square w-full rounded border border-line/10 bg-ink-950"
+          />
+          {/* The sum it is actually computing, in the same numbers the sliders
+              are setting. */}
+          <p className="text-center font-mono text-body-sm text-fg-muted">
+            output = {state.activation}(
+            <span className="text-accent">{formatNumber(state.w1, 2)}</span>·x₁ +{" "}
+            <span className="text-accent">{formatNumber(state.w2, 2)}</span>·x₂ +{" "}
+            <span className="text-data">{formatNumber(state.bias, 2)}</span>)
+          </p>
+        </div>
+      }
+      primary={
+        <div className="space-y-2">
+          <Segmented
+            label={n.activation}
+            value={state.activation}
+            options={activationOptions}
+            onChange={(activation) => set({ activation })}
+          />
+          <p className="text-caption text-fg-faint">{note}</p>
+        </div>
+      }
+      figures={
+        <>
+          <Figure label={n.weight1} value={formatNumber(state.w1, 2)} />
+          <Figure label={n.weight2} value={formatNumber(state.w2, 2)} />
+          <Figure label={n.bias} value={formatNumber(state.bias, 2)} tone="accent" />
+        </>
+      }
+      secondary={
+        <>
           <LabSlider
             label={n.weight1}
             value={state.w1}
@@ -117,23 +144,8 @@ export function NeuronLab() {
             onChange={(bias) => set({ bias })}
             format={(v) => formatNumber(v, 1)}
           />
-          <Segmented
-            label={n.activation}
-            value={state.activation}
-            options={activationOptions}
-            onChange={(activation) => set({ activation })}
-          />
-          <p className="text-caption text-fg-faint">{note}</p>
-        </ControlPanel>
-
-        <div className="card-surface p-5">
-          <p className="text-body-sm text-fg-muted">
-            Notice what you <em>cannot</em> do: however you drag these three sliders, the boundary
-            stays a straight line. That is the whole limitation of one neuron — and the reason the
-            next section exists.
-          </p>
-        </div>
-      </div>
-    </div>
+        </>
+      }
+    />
   );
 }
