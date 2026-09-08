@@ -658,146 +658,139 @@ export const tr: Translation = {
     "hash-playground": {
       title: "Hash Laboratuvarı",
       description: "Tek bir karakteri değiştirin. Her şeyin değiştiğini görün.",
-      inputLabel: "Bir şeyler yazın",
-      soundOn: "Ses açık",
-      soundOff: "Ses kapalı",
-      turnSoundOn: "Sesi aç",
-      turnSoundOff: "Sesi kapat",
+      inputLabel: "Mesajınız",
       inputPlaceholder: "merhaba dünya",
-      emptyNote: "Boş bir metnin bile bir hash değeri vardır.",
-      lengthNote: (chars: number) => `Girdi ${chars} karakter, çıktı 256 bit. Her zaman.`,
-      liveHashing: "Canlı özetleme",
-      digestBits: "64 onaltılık · 256 bit",
-      hoverPair: "İçini görmek için bir çiftin üzerine gelin",
       copy: "Kopyala",
-      copied: "Kopyalandı ✓",
-      hashCopied: "Hash kopyalandı",
-      bitsChangedLabel: "bit değişti",
-      copyHash: "Hash değerini panoya kopyala",
+      copied: "Kopyalandı",
+      copyHash: "Özeti kopyala",
+      hashCopied: "Özet kopyalandı",
+
+      figures: {
+        messageLength: "Mesaj",
+        characters: "karakter girdi",
+        digestLength: "Özet",
+        hexChars: "hex karakter çıktı",
+        digestBits: "Bit",
+        alwaysBits: "mesaj ne kadar uzun olursa olsun",
+        bitsChanged: "Değişen bit",
+        percentChanged: "Özetin",
+        expectedHalf: "yaklaşık yarısı beklenir",
+        charsChanged: "Değişen hex karakter",
+        ofSixtyFour: "64 karakterden",
+      },
+
+      hero: {
+        title: "Ne çıkıyor",
+        question: "İki farklı mesaj aynı uzunlukta çıktı üretebilir mi?",
+        digestLabel: "SHA-256 özeti",
+        caption:
+          "Ne isterseniz yazın. Mesaj ne kadar uzun olursa olsun tam 64 hex karakter geri döner — ve mesajın kendisi bunların içinde yoktur.",
+        help: "Bir mesaj yazın. SHA-256 özeti alanın altında görünür ve siz yazdıkça güncellenir.",
+        announce: (start: string) => `Özet güncellendi, artık ${start} ile başlıyor.`,
+      },
+
+      determinism: {
+        kicker: "Aynı mesaj, aynı özet",
+        title: "Her seferinde aynı yanıtı veriyor.",
+        lede: "Mesajı yeniden hash'leyin. Hiçbir şey önbelleğe alınmıyor ve önceki çalıştırmadan kopyalanmıyor — her basış, aynı metin üzerinde yeni bir SHA-256 çağrısı.",
+        hashAgain: "Yeniden hash'le",
+        enough: "Bu kadar çalıştırma yeter",
+        empty: "Henüz çalıştırma yok. Bu mesajı hash'lemek için düğmeye basın.",
+        run: (n: number) => `${n}. çalıştırma`,
+        runsLabel: "Çalıştırma",
+        distinctLabel: "Farklı özet",
+        distinctHint: "kaç kez çalıştırılırsa çalıştırılsın",
+        caption:
+          "Mesajı değiştirmek listeyi temizler, çünkü eski mesajın çalıştırması yenisi hakkında bir şey söylemez.",
+        announce: (runs: number, distinct: number) =>
+          `${runs} çalıştırma, ${distinct} farklı özet.`,
+      },
 
       avalanche: {
-        kicker: "Çığ etkisi",
-        title: "Tek bir tuş her şeyi baştan yazar.",
-        lede: "Son düzenlemenizden önceki ve sonraki hash değerlerini karşılaştırın. Girdi neredeyse hiç kımıldamadı; çıktı tanınmaz hâle geldi.",
+        kicker: "Tek küçük değişiklik",
+        title: "Tek bir tuş her şeyi yeniden yazıyor.",
+        lede: "Tek bir karakteri değiştirin ve iki özeti karşılaştırın. Farklı olan her karakter ikisinde de işaretlenir — gidende üstü çizili, yerine gelende altı çizili.",
         before: "Önce",
         after: "Sonra",
-        changed: (n: number) => `256 bitin ${n} tanesi değişti`,
-        expected: "Beklenen: %50",
-        editPrompt: "Yukarıdaki metinde bir karakter değiştirin.",
+        fieldLabel: "Bir karakteri değiştirin",
+        help: "Mesajı düzenleyin. Düzenlemeden önceki ve sonraki özetler yukarıda karakter karakter karşılaştırılır.",
+        editPrompt: "İki özeti karşılaştırmak için mesajdaki bir karakteri değiştirin.",
+        caption:
+          "Sayım, iki gerçek özet üzerinde bit bit ölçülüyor — tahmin edilmiyor ve bir sayıya doğru canlandırılmıyor.",
+        announce: (changed: number, total: number, percent: number) =>
+          `${total} bitten ${changed} tanesi değişti, özetin yüzde ${percent}'i.`,
       },
 
       bits: {
-        kicker: "Bit düzeyinde",
-        title: "Hash değeriniz, bit bit.",
-        lede: "256 bitin tamamı, 16×16'lık bir ızgara olarak. Yukarıda yazmayı sürdürün ve dalgayı izleyin. Tek bir biti görmek için herhangi bir kareye gelin.",
-        bitLabel: (index: number, value: number) => `Bit ${index}: ${value}`,
+        gridLabel: (total: number, ones: number, zeros: number, flipped: number) =>
+          `Mevcut özetin ${total} biti, 16'ya 16 ızgara olarak. ${ones} tanesi 1, ${zeros} tanesi 0. Son düzenlemede ${flipped} tanesi değişti.`,
+        legendOne: "bit 1",
+        legendZero: "bit 0",
+        legendChanged: "değişti",
       },
 
-      properties: {
-        kicker: "Neden işe yarıyor",
-        title: "Dört özellik, tek bir güç.",
-        lede: "Az önce gördüğünüz her şey bu dört güvenceden doğuyor.",
-        items: {
-          deterministic: {
-            title: "Deterministik",
-            top: "Aynı girdi",
-            bottom: "Aynı çıktı",
-            detail:
-              "“hello” metnini bugün, yarın ya da dünyanın herhangi bir makinesinde özetleyin: sonuç her zaman tıpatıp aynı 64 karakter olur.",
-          },
-          fixedLength: {
-            title: "Sabit uzunluk",
-            top: "Bir harf ya da bir kütüphane",
-            bottom: "Her zaman 256 bit",
-            detail: "Girdi istediği kadar büyük olabilir. Çıktı ne büyür ne küçülür.",
-          },
-          oneWay: {
-            title: "Tek yönlü",
-            top: "Hesaplaması kolay",
-            bottom: "Tersine çevirmesi olanaksız",
-            detail:
-              "Bir hash hesaplamak mikrosaniyeler sürer. Peki hash değerinden girdiyi geri elde etmek? Denemekten başka bilinen bir yol yok.",
-          },
-          avalanche: {
-            title: "Çığ etkisi",
-            top: "Küçücük bir değişiklik",
-            bottom: "Baştan aşağı farklı bir sonuç",
-            detail:
-              "Tek bir karakteri değiştirin; 256 bitin yaklaşık yarısı onunla birlikte değişir ve yeni hash tanınmaz olur.",
-          },
-        },
+      challenge: {
+        kicker: "Meydan okuma",
+        title: "İki farklı mesajın aynı özeti üretmesini sağlayabilir misiniz?",
+        lede: "Özetin tamamı değil — ilk karakterinden başlayın. Her tur bir karakter daha istiyor ve her tur bir öncekinden on altı kat daha düşük olasılıklı. Bu eğri, hash güvenliğinin tamamı; ve bunu dürüstçe hissetmenin tek yolu bu: burada bir çakışma bulunmuyor, uydurulmuyor da.",
+        inputA: "Mesaj A",
+        inputB: "Mesaj B",
+        identical:
+          "İki mesaj da aynı, dolayısıyla özetler tanım gereği eşleşiyor. Çakışma için iki farklı mesaj gerekir.",
+        target: (round: number, odds: string) =>
+          `${round}. tur: ilk ${round} hex karakteri paylaşsınlar. Deneme başına olasılık: ${odds}'de 1.`,
+        nextRound: (round: number) => `${round}. tur — on altı kat zor`,
+        keepTrying: "Denemeye devam",
+        maxRound: "İnsanların durduğu yer burası",
+        matchedLabel: "Ortak ön ek",
+        roundLabelFull: "Tur",
+        oddsHint: (odds: string) => `deneme başına ${odds}'de 1`,
+        bestLabel: "En iyi",
+        attemptsLabel: "Deneme",
+        ladderLabel: (matched: number, total: number, round: number) =>
+          `Ortak ön ek: ${total} hex karakterden ${matched} tanesi eşleşiyor. Bu tur ${round} tane istiyor.`,
+        caption:
+          "64 karakterin tamamının rastlantıyla eşleşmesi 2^256'da 1. Doğum günü kısayolu bile yaklaşık 2^128 hash gerektirir — saniyede bir trilyon hash'lense, kabaca 10^19 yıl.",
+        announce: (matched: number, total: number, best: number, round: number) =>
+          `${total} baştaki karakterden ${matched} tanesi eşleşiyor. En iyi ${best}. ${round}. tur ${round} tane istiyor.`,
       },
 
       usage: {
         kicker: "Gerçek hayatta",
-        title: "Bugün hash kullandınız. Muhtemelen binlerce kez.",
-        tablist: "Özetleme fonksiyonlarının gerçek kullanımları",
-        replay: "Tekrar oynat",
-        replayAnimation: "Animasyonu tekrar oynat",
+        title: "Özetlerin karşınıza çıktığı yerler.",
+        lede: "Aynı sabit boyutlu parmak izi, beş farklı biçimde kullanılıyor.",
         items: {
           git: {
             label: "Git",
-            headline: "Her commit bir hash değeridir",
-            body: "Git, her commit'i içeriğinin ve bir önceki commit'in hash değerinin özetiyle tanımlar. Geçmişteki herhangi bir satırı değiştirirseniz ondan sonraki bütün hash değerleri değişir, yani yapılan müdahale anında ortaya çıkar.",
-            steps: ["file.txt", "SHA-256", "commit a3f9c21", "✓ geçmiş doğrulandı"],
+            body: "Git her commit'i, içeriğini ve ebeveyninin hash'ini hash'leyerek tanımlar. Geçmişteki bir satırı değiştirin, sonraki bütün hash'ler değişir — kurcalama görünür olur.",
           },
           passwords: {
             label: "Parolalar",
-            headline: "Sunucular parolanızı saklamaz",
-            body: "Sakladıkları şey, parolanın (tuzlanmış) hash değeridir. Girişte parolanız yeniden özetlenir ve iki hash karşılaştırılır. Veritabanı sızsa bile tek yönlülük sayesinde saldırganın elinde parolalar değil, hash değerleri olur.",
-            steps: [
-              "hunter2",
-              "SHA-256 + tuz",
-              "veritabanı",
-              "saldırgan veritabanını çalar",
-              "✗ geri çeviremez",
-            ],
+            body: "Sunucular parolanın kendisini değil, tuzlanmış hash'ini saklar. Girişte parola yeniden hash'lenip karşılaştırılır; böylece sızan bir veritabanı parolaları değil hash'leri barındırır.",
           },
           https: {
             label: "HTTPS",
-            headline: "Hash, bağlantıyı dürüst tutar",
-            body: "TLS, sertifikaları parmak iziyle tanımlamak ve verinin yolda değiştirilmediğini doğrulamak için hash kullanır. Tek bir baytın değişmesi bile hash'i bozar, yani hiçbir müdahale gizlenemez.",
-            steps: ["mesaj", "SHA-256", "imza", "✓ varışta doğrulandı"],
+            body: "TLS, sertifikaları parmak izlemek ve verinin yolda değiştirilmediğini doğrulamak için hash kullanır. Tek bir bitin değişmesi hash'i bozar.",
           },
           blockchain: {
             label: "Blok zinciri",
-            headline: "Her blok bir öncekini özetler",
-            body: "Bir blok, kendinden önceki bloğun hash değerini içerir ve bloklar böylece birbirine zincirlenir. Eski bir bloğu değiştirirseniz ondan sonraki bütün hash değerleri bozulur; defteri müdahaleye karşı bu kadar dayanıklı kılan şey de budur. Madencilik ise belirli bir eşiğin altında kalan bir hash aramaktan ibarettir.",
-            steps: ["blok 41", "SHA-256", "blok 42", "✓ birini değiştir, hepsi bozulur"],
+            body: "Her blok bir öncekinin hash'ini içerir ve böylece birbirlerine zincirlenir. Eski bir bloğu değiştirin, sonraki bütün hash'ler bozulur; defteri kurcalamaya karşı görünür kılan da budur.",
           },
           signatures: {
             label: "İmzalar",
-            headline: "Belgeyi değil, hash değerini imzalarsınız",
-            body: "Dijital imzalar, belgenin hash değerini özel bir anahtarla şifreler. Herkes belgeyi yeniden özetleyip imzayı denetleyebilir; böylece hem kimin imzaladığı hem de o günden beri tek bir baytın bile değişmediği kanıtlanmış olur.",
-            steps: ["sozlesme.pdf", "SHA-256", "anahtarla imzalandı", "✓ herkes doğrulayabilir"],
+            body: "Dijital imza, belgenin kendisi üzerinde değil hash'i üzerinde atılır. Herkes belgeyi yeniden hash'leyip imzayı doğrulayabilir.",
           },
         },
       },
 
-      challenge: {
-        kicker: "Görev",
-        title: "Aynı hash değerini veren iki girdi bulun.",
-        lede: "Hadi, bir deneyin. İnternetin bütün güvenliği sizin bunu başaramayacağınıza güveniyor.",
-        inputA: "Girdi A",
-        inputB: "Girdi B",
-        rounds: "Turlar",
-        identical:
-          "İki girdi de birebir aynı; dolayısıyla hash değerleri tanım gereği eşleşiyor. Çakışma için iki farklı girdi gerekir.",
-        matching: (n: number) =>
-          n === 0 ? "Baştan hiçbir karakter eşleşmiyor." : `Baştan ${n} karakter eşleşiyor.`,
-        odds: (r: number) => `${r} olasılıkta 1`,
-        roundLabel: (r: number) => `T${r}`,
-      },
-
       recap: {
         lessons: [
-          "Deterministik: aynı girdi, her zaman aynı hash",
-          "Tek yönlü: hesaplaması kolay, geri dönüşü yok",
-          "Sabit uzunluk: girdi ne olursa olsun her zaman 256 bit",
-          "Çığ etkisi: tek bir karakter bitlerin yarısını değiştirir",
-          "Gerçek kullanımlar: Git, parolalar, HTTPS, blok zincirleri, imzalar",
+          "Aynı mesaj her zaman aynı özeti üretir ve özet, girene bakılmaksızın aynı uzunluktadır",
+          "Tek bir karakteri değiştirmek 256 bitin yaklaşık yarısını değiştirir — çığ etkisi, burada iddia edilmiyor ölçülüyor",
+          "İki özetin paylaştığı her ek hex karakter on altı kat daha düşük olasılıklıdır; 64'ünün birden eşleşmesinin erişilemez olmasının nedeni budur",
         ],
-        footer: "Yukarı kaydırıp yazmayı sürdürün, çığ etkisi hiç eskimiyor.",
+        footer:
+          "Bu sayfadaki hiçbir şey saklanmıyor ya da taklit edilmiyor: her özet, yazdığınız metin üzerinde tarayıcınızda çalışan crypto.subtle.digest(\"SHA-256\", …) çağrısının sonucu.",
       },
     },
 
