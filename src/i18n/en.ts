@@ -663,149 +663,139 @@ export const en = {
     "hash-playground": {
       title: "Hash Playground",
       description: "Change one character. Watch everything change.",
-      inputLabel: "Type anything",
-      soundOn: "Sound on",
-      soundOff: "Sound off",
-      turnSoundOn: "Turn sound on",
-      turnSoundOff: "Turn sound off",
+      inputLabel: "Your message",
       inputPlaceholder: "hello world",
-      emptyNote: "Even an empty string has a hash.",
-      lengthNote: (chars: number) =>
-        `${chars} character${chars === 1 ? "" : "s"} in — 256 bits out. Always.`,
-      liveHashing: "Live hashing",
-      digestBits: "64 hex · 256 bits",
-      hoverPair: "Hover a pair to see inside",
       copy: "Copy",
-      copied: "Copied ✓",
-      hashCopied: "Hash copied",
-      bitsChangedLabel: "bits changed",
-      copyHash: "Copy hash to clipboard",
+      copied: "Copied",
+      copyHash: "Copy digest",
+      hashCopied: "Digest copied",
+
+      figures: {
+        messageLength: "Message",
+        characters: "characters in",
+        digestLength: "Digest",
+        hexChars: "hex characters out",
+        digestBits: "Bits",
+        alwaysBits: "however long the message",
+        bitsChanged: "Bits changed",
+        percentChanged: "Of the digest",
+        expectedHalf: "about half is expected",
+        charsChanged: "Hex characters changed",
+        ofSixtyFour: "of 64",
+      },
+
+      hero: {
+        title: "What comes out",
+        question: "Can two different messages produce the same length of output?",
+        digestLabel: "SHA-256 digest",
+        caption:
+          "Type anything at all. However long the message, exactly 64 hex characters come back — and none of the message is in them.",
+        help: "Type a message. Its SHA-256 digest appears below the field and updates as you type.",
+        announce: (start: string) => `Digest updated, now starting ${start}.`,
+      },
+
+      determinism: {
+        kicker: "Same message, same digest",
+        title: "It answers the same way every time.",
+        lede: "Hash the message again. Nothing is cached and nothing is copied from the run before — each press is a fresh call to SHA-256 on the same string.",
+        hashAgain: "Hash it again",
+        enough: "That is enough runs",
+        empty: "No runs yet. Press the button to hash this message.",
+        run: (n: number) => `Run ${n}`,
+        runsLabel: "Runs",
+        distinctLabel: "Distinct digests",
+        distinctHint: "however many runs",
+        caption:
+          "Editing the message clears the list, because a run of the old message says nothing about the new one.",
+        announce: (runs: number, distinct: number) =>
+          `${runs} runs, ${distinct} distinct digest${distinct === 1 ? "" : "s"}.`,
+      },
 
       avalanche: {
-        kicker: "The avalanche effect",
+        kicker: "One tiny change",
         title: "One keystroke rewrites everything.",
-        lede: "Compare the hash before and after your last edit. The input barely moved — the output exploded.",
+        lede: "Change a single character and compare the two digests. Every character that differs is marked in both — struck through in the one that is gone, underlined in the one that replaced it.",
         before: "Before",
         after: "After",
-        changed: (n: number) => `${n} / 256 bits changed`,
-        expected: "Expected: 50%",
-        editPrompt: "Edit one character above.",
+        fieldLabel: "Change one character",
+        help: "Edit the message. The digest before your edit and the digest after it are compared character by character above.",
+        editPrompt: "Change a character in the message to compare two digests.",
+        caption:
+          "The count is measured across the two real digests, bit by bit — not estimated, and not animated towards a number.",
+        announce: (changed: number, total: number, percent: number) =>
+          `${changed} of ${total} bits changed, ${percent} percent of the digest.`,
       },
 
       bits: {
-        kicker: "Under the hood",
-        title: "Your hash, bit by bit.",
-        lede: "All 256 bits, as a 16×16 grid. Keep typing above and watch the wave. Hover any square to meet a single bit.",
-        bitLabel: (index: number, value: number) => `Bit ${index}: ${value}`,
-      },
-
-      properties: {
-        kicker: "Why it works",
-        title: "Four properties, one superpower.",
-        lede: "Everything you just saw comes from these four guarantees.",
-        items: {
-          deterministic: {
-            title: "Deterministic",
-            top: "Same input",
-            bottom: "Same output",
-            detail:
-              "Hash “hello” today, tomorrow, on any machine on Earth — you get the exact same 64 characters.",
-          },
-          fixedLength: {
-            title: "Fixed length",
-            top: "One letter or one library",
-            bottom: "Always 256 bits",
-            detail: "The input can be any size. The output never grows, never shrinks.",
-          },
-          oneWay: {
-            title: "One-way",
-            top: "Easy to hash",
-            bottom: "Impossible to reverse",
-            detail:
-              "Computing a hash takes microseconds. Recovering the input from a hash? There is no known way except guessing.",
-          },
-          avalanche: {
-            title: "Avalanche",
-            top: "Tiny change",
-            bottom: "Huge difference",
-            detail:
-              "Flip one character and about half of all 256 bits flip with it — the new hash is unrecognizable.",
-          },
-        },
-      },
-
-      usage: {
-        kicker: "In the wild",
-        title: "You used hashes today. Probably a thousand times.",
-        tablist: "Real-world uses of hashing",
-        replay: "Replay",
-        replayAnimation: "Replay animation",
-        items: {
-          git: {
-            label: "Git",
-            headline: "Every commit is a hash",
-            body: "Git identifies each commit by hashing its content and its parent's hash. Rewrite any line in history and every hash after it changes — tampering is instantly visible.",
-            steps: ["file.txt", "SHA-256", "commit a3f9c21", "✓ history verified"],
-          },
-          passwords: {
-            label: "Passwords",
-            headline: "Servers never store your password",
-            body: "They store its (salted) hash. At login, your password is hashed again and the hashes are compared. If the database leaks, the one-way property means attackers hold hashes, not passwords.",
-            steps: [
-              "hunter2",
-              "SHA-256 + salt",
-              "database",
-              "attacker steals DB",
-              "✗ can't reverse it",
-            ],
-          },
-          https: {
-            label: "HTTPS",
-            headline: "Hashes keep the connection honest",
-            body: "TLS uses hashes to fingerprint certificates and to verify no one altered the data in transit. A single flipped byte breaks the hash — so tampering can't hide.",
-            steps: ["message", "SHA-256", "signature", "✓ verified on arrival"],
-          },
-          blockchain: {
-            label: "Blockchain",
-            headline: "Each block hashes the one before",
-            body: "A block contains the previous block's hash, chaining them together. Change an old block and every later hash breaks — that's what makes the ledger tamper-evident. Mining is searching for a hash below a target.",
-            steps: ["block 41", "SHA-256", "block 42", "✓ change one, break all"],
-          },
-          signatures: {
-            label: "Signatures",
-            headline: "You sign the hash, not the document",
-            body: "Digital signatures encrypt a document's hash with a private key. Anyone can re-hash the document and check the signature — proving who signed it and that not a single byte changed since.",
-            steps: ["contract.pdf", "SHA-256", "signed with key", "✓ anyone can verify"],
-          },
-        },
+        gridLabel: (total: number, ones: number, zeros: number, flipped: number) =>
+          `The ${total} bits of the current digest as a 16 by 16 grid. ${ones} are 1, ${zeros} are 0. ${flipped} changed in the last edit.`,
+        legendOne: "bit is 1",
+        legendZero: "bit is 0",
+        legendChanged: "changed",
       },
 
       challenge: {
         kicker: "The challenge",
-        title: "Find two inputs with the same hash.",
-        lede: "Go ahead — the entire security of the internet bets you can't.",
-        inputA: "Input A",
-        inputB: "Input B",
-        rounds: "Rounds",
+        title: "Can you make two different messages produce the same digest?",
+        lede: "Not the whole digest — start with its first character. Each round asks for one more, and each round is sixteen times less likely than the one before. That curve is the whole of hash security, and this is the only honest way to feel it: no collision is found here, and none is faked.",
+        inputA: "Message A",
+        inputB: "Message B",
         identical:
-          "Both inputs are identical, so the hashes match by definition. A collision needs two different inputs.",
-        matching: (n: number) =>
-          n === 0
-            ? "No leading characters match."
-            : `${n} leading ${n === 1 ? "character matches" : "characters match"}.`,
-        odds: (r: number) => `1 in ${r}`,
-        roundLabel: (r: number) => `R${r}`,
+          "Both messages are identical, so the digests match by definition. A collision needs two different messages.",
+        target: (round: number, odds: string) =>
+          `Round ${round}: share the first ${round} hex character${round === 1 ? "" : "s"}. Odds per guess: 1 in ${odds}.`,
+        nextRound: (round: number) => `Round ${round} — sixteen times harder`,
+        keepTrying: "Keep trying",
+        maxRound: "That is where people stop",
+        matchedLabel: "Shared prefix",
+        roundLabelFull: "Round",
+        oddsHint: (odds: string) => `1 in ${odds} per guess`,
+        bestLabel: "Best so far",
+        attemptsLabel: "Attempts",
+        ladderLabel: (matched: number, total: number, round: number) =>
+          `Shared prefix: ${matched} of ${total} hex characters match. This round needs ${round}.`,
+        caption:
+          "Matching all 64 characters by chance is 1 in 2^256. Even the birthday shortcut needs about 2^128 hashes — hashing a trillion per second, roughly 10^19 years.",
+        announce: (matched: number, total: number, best: number, round: number) =>
+          `${matched} of ${total} leading characters match. Best so far ${best}. Round ${round} needs ${round}.`,
+      },
+
+      usage: {
+        kicker: "In the wild",
+        title: "Where digests turn up.",
+        lede: "The same fixed-size fingerprint, used five different ways.",
+        items: {
+          git: {
+            label: "Git",
+            body: "Git identifies each commit by hashing its content and its parent's hash. Rewrite any line in history and every hash after it changes — tampering is visible.",
+          },
+          passwords: {
+            label: "Passwords",
+            body: "Servers store a salted hash rather than the password. At login the password is hashed again and the hashes are compared, so a leaked database holds hashes, not passwords.",
+          },
+          https: {
+            label: "HTTPS",
+            body: "TLS uses hashes to fingerprint certificates and to verify that data was not altered in transit. A single flipped byte breaks the hash.",
+          },
+          blockchain: {
+            label: "Blockchain",
+            body: "A block contains the previous block's hash, chaining them together. Change an old block and every later hash breaks, which is what makes the ledger tamper-evident.",
+          },
+          signatures: {
+            label: "Signatures",
+            body: "A digital signature is made over a document's hash rather than the document. Anyone can re-hash the document and check the signature.",
+          },
+        },
       },
 
       recap: {
         lessons: [
-          "Deterministic — same input, same hash, every time",
-          "One-way — easy to compute, no way back",
-          "Fixed length — always 256 bits, whatever goes in",
-          "Avalanche effect — one character flips half the bits",
-          "Real-world applications — Git, passwords, HTTPS, blockchains, signatures",
+          "The same message always produces the same digest, and the digest is the same length whatever went in",
+          "Changing one character changes about half of the 256 bits — the avalanche effect, measured here rather than asserted",
+          "Each extra hex character two digests share is sixteen times less likely, which is why matching all 64 is out of reach",
         ],
-        footer: "Scroll back up and keep typing — the avalanche never gets old.",
+        footer:
+          "Nothing on this page is stored or simulated: every digest is crypto.subtle.digest(\"SHA-256\", …) on what you typed, computed in your browser.",
       },
     },
 
