@@ -4,7 +4,7 @@ import { Playground } from "./components/Playground";
 import { NeuronLab } from "./components/NeuronLab";
 import { LayersLab } from "./components/LayersLab";
 import { DescentLab } from "./components/DescentLab";
-import { ConceptCards } from "./components/ConceptCards";
+import { ConceptList } from "./components/ConceptList";
 import { SpiralChallenge } from "./components/SpiralChallenge";
 
 /**
@@ -18,13 +18,14 @@ export default function NeuralPlayground() {
   const t = useT().labs["neural-playground"];
 
   return (
-    <div className="space-y-24 md:space-y-32">
+    <div className="space-y-20 md:space-y-28">
       {/* 1 — The playground itself, plus the network's own view of the data */}
       <section aria-labelledby="playground-heading">
         {/* See the note in sorting-race: hidden heading, honest outline. */}
         <h2 id="playground-heading" className="sr-only">
           {t.liveTraining}
         </h2>
+        <p className="mb-6 max-w-prose text-body-lg text-fg">{t.question}</p>
         <Playground />
       </section>
 
@@ -61,7 +62,7 @@ export default function NeuralPlayground() {
         title={t.loop.title}
         lede={t.loop.lede}
       >
-        <ConceptCards />
+        <ConceptList />
       </LabSection>
 
       {/* 6 — Challenge */}

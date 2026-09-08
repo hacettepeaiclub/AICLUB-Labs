@@ -8,6 +8,7 @@ import {
   type MutableRefObject,
 } from "react";
 import { useCanvas2D, useElementSize, useRepaintFlag } from "@/hooks";
+import { useT } from "@/i18n";
 import { palette } from "@/design/tokens";
 import { formatNumber } from "@/lib/format";
 import { clamp } from "@/lib/math";
@@ -92,6 +93,7 @@ const rgbString = (triplet: string, alpha: number) => `rgb(${triplet} / ${alpha}
  * operable without one DOM node per connection.
  */
 export function NetworkDiagram({ netRef, sizes, running, revision = 0 }: NetworkDiagramProps) {
+  const d = useT().labs["neural-playground"].diagram;
   const tooltipId = useId();
   const [containerRef, { width }] = useElementSize<HTMLDivElement>();
   const layout = useMemo(() => computeLayout(sizes, width || 640), [sizes, width]);
@@ -143,11 +145,16 @@ export function NetworkDiagram({ netRef, sizes, running, revision = 0 }: Network
               ctx.moveTo(source.cx + source.size / 2, source.cy);
               ctx.lineTo(target.cx - target.size / 2, target.cy);
               ctx.lineWidth = 0.6 + strength * 3.2;
+              // Sign is carried twice: hue, and a dash. A weight that pushes
+              // down is drawn broken, so the two kinds of connection are still
+              // tellable apart in greyscale or with a colour deficiency.
+              ctx.setLineDash(weight >= 0 ? [] : [4, 3]);
               ctx.strokeStyle = rgbString(
                 weight >= 0 ? palette().accent : palette().signalCyan,
                 Number(alpha.toFixed(3)),
               );
               ctx.stroke();
+              ctx.setLineDash([]);
             }
           }
         }
@@ -195,13 +202,13 @@ export function NetworkDiagram({ netRef, sizes, running, revision = 0 }: Network
     hovered?.layer === node.layer && hovered.index === node.index;
 
   return (
-    <div className="card-surface p-4 sm:p-6">
+    <div className="rounded-card border border-line/10 bg-ink-950 p-4 sm:p-6">
       <div ref={containerRef} className="relative w-full" style={{ height: layout.height }}>
         <canvas ref={canvasRef} className="absolute inset-0 size-full" aria-hidden />
         <svg
           className="absolute inset-0 size-full"
           role="group"
-          aria-label={`Network diagram: ${sizes.join(" to ")} neurons. Each node shows what that neuron responds to across the input square.`}
+          aria-label={d.diagramLabel(sizes.join(" → "))}
         >
           {layout.columns.map((column) => (
             <text
@@ -230,7 +237,7 @@ export function NetworkDiagram({ netRef, sizes, running, revision = 0 }: Network
                 rx={6}
                 fill="transparent"
                 tabIndex={0}
-                aria-label={`Neuron ${node.label}`}
+                aria-label={d.neuron(node.label)}
                 aria-describedby={isFocused(node) ? tooltipId : undefined}
                 className="cursor-help focus-visible:stroke-accent focus-visible:stroke-2"
                 onMouseEnter={() => setHovered(node)}
@@ -257,15 +264,15 @@ export function NetworkDiagram({ netRef, sizes, running, revision = 0 }: Network
             role="tooltip"
             className="pointer-events-none absolute z-10 -translate-x-1/2 -translate-y-full
               whitespace-nowrap rounded border border-line/15 bg-ink-700 px-2.5 py-1.5
-              font-mono text-caption text-fg shadow-card"
+              font-mono text-caption text-fg"
             style={{ left: hovered.cx, top: hovered.cy - hovered.size / 2 - 6 }}
           >
             {hovered.label}
             {readout === null ? (
-              <span className="ml-1.5 text-fg-faint">input</span>
+              <span className="ml-1.5 text-fg-faint">{d.inputNode}</span>
             ) : (
               <>
-                <span className="mx-1.5 text-fg-faint">bias</span>
+                <span className="mx-1.5 text-fg-faint">{d.bias}</span>
                 <span className={readout >= 0 ? "text-accent" : "text-signal-cyan"}>
                   {formatNumber(readout, 2)}
                 </span>
@@ -275,10 +282,30 @@ export function NetworkDiagram({ netRef, sizes, running, revision = 0 }: Network
         )}
       </div>
 
-      <p className="mt-4 text-center text-caption text-fg-faint">
-        Each square is one neuron&rsquo;s own picture of the input. Lines are weights —
-        <span className="mx-1 text-accent">blue pushes up</span>,
-        <span className="mx-1 text-signal-cyan">cyan pushes down</span>, thickness is strength.
+      <p className="mt-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-center text-caption text-fg-faint">
+        <span>{d.eachSquare}</span>
+        <span>
+          {/* A solid rule and a dashed one: sign is legible without hue. */}
+          <svg width="26" height="8" aria-hidden className="mr-1.5 inline-block align-middle">
+            <line x1="1" y1="4" x2="25" y2="4" className="stroke-accent" strokeWidth="2" />
+          </svg>
+          {d.pushesUp}
+        </span>
+        <span>
+          <svg width="26" height="8" aria-hidden className="mr-1.5 inline-block align-middle">
+            <line
+              x1="1"
+              y1="4"
+              x2="25"
+              y2="4"
+              className="stroke-signal-cyan"
+              strokeWidth="2"
+              strokeDasharray="4 3"
+            />
+          </svg>
+          {d.pushesDown}
+        </span>
+        <span>{d.thickness}</span>
       </p>
     </div>
   );

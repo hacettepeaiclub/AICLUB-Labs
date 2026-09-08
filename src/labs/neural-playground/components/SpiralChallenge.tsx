@@ -1,10 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
-import { Badge, Button } from "@/components/ui";
-import { ControlPanel, LabSlider } from "@/components/lab";
+import { Badge } from "@/components/ui";
+import { Figure, LabSlider, Stage, Transport } from "@/components/lab";
 import { useT } from "@/i18n";
 import { useLocalStorage } from "@/hooks";
-import { spring } from "@/design/motion";
 import { formatPercent } from "@/lib/format";
 import { generateDataset, splitDataset } from "../datasets";
 import { useTrainer } from "../useTrainer";
@@ -37,7 +35,6 @@ const beats = (candidate: Attempt, best: Attempt | null): boolean =>
 export function SpiralChallenge() {
   const lab = useT().labs["neural-playground"];
   const c = lab.challenge;
-  const reduced = useReducedMotion();
   const [layers, setLayers] = useState(2);
   const [neurons, setNeurons] = useState(6);
   const [rateIndex, setRateIndex] = useState(2);
@@ -91,43 +88,53 @@ export function SpiralChallenge() {
   };
 
   return (
-    <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_18rem]">
-      <DecisionCanvas
-        netRef={trainer.netRef}
-        points={points}
-        running={running}
-        revision={trainer.generation + trainer.revision}
-        ariaLabel={`Spiral challenge: ${total} hidden neurons, ${formatPercent(
-          stats.testAccuracy,
-          1,
-        )} test accuracy after ${stats.epoch} epochs.`}
-      />
-
-      <div className="space-y-4">
-        <div className="card-surface p-5">
-          <p className="text-overline uppercase text-accent">{c.objective}</p>
-          <p className="mt-2 text-body text-fg">
-            Reach {formatPercent(TARGET, 0)} test accuracy on the spiral — using as few hidden
-            neurons as you can.
+    <Stage
+      width="wide"
+      secondaryLabel={c.architecture}
+      caption={solved ? c.solvedNote : c.objectiveLine(formatPercent(TARGET, 0))}
+      announcement={solved ? c.announceSolved(total, formatPercent(stats.testAccuracy, 1)) : ""}
+      viewport={
+        <DecisionCanvas
+          netRef={trainer.netRef}
+          points={points}
+          running={running}
+          revision={trainer.generation + trainer.revision}
+          ariaLabel={c.canvasLabel(total, formatPercent(stats.testAccuracy, 1), stats.epoch)}
+        />
+      }
+      readout={
+        <div className="flex flex-wrap items-center gap-2">
+          {/* A word as well as a colour: "Solved" / "Not yet". */}
+          <Badge dotClassName={solved ? "bg-signal-green" : "bg-fg-faint"}>
+            {solved ? lab.solvedBadge : lab.notYet}
+          </Badge>
+          <p className="text-caption text-fg-faint">
+            {best ? c.bestLine(best.neurons, formatPercent(best.accuracy, 1), best.epoch) : c.noBest}
           </p>
-          <div className="mt-4 flex flex-wrap items-center gap-2">
-            <Badge dotClassName={solved ? "bg-signal-green" : "bg-fg-faint"}>
-              {solved ? lab.solvedBadge : lab.notYet}
-            </Badge>
-            <Badge>{total} neurons</Badge>
-            <Badge>{formatPercent(stats.testAccuracy, 1)} test</Badge>
-          </div>
         </div>
-
-        <ControlPanel className="flex-col items-stretch">
+      }
+      primary={
+        <Transport
+          running={running}
+          onRun={() => setRunning((value) => !value)}
+          onStep={() => trainer.step(20)}
+          onReset={retry}
+          runLabel={c.train}
+          stepDisabled={running}
+        />
+      }
+      figures={
+        <>
+          <Figure label={c.neuronsUsed} value={String(total)} tone={solved ? "accent" : "default"} />
+          <Figure label={c.testAccuracy} value={formatPercent(stats.testAccuracy, 1)} />
+          <Figure label={c.target} value={formatPercent(TARGET, 0)} tone="muted" />
+          <Figure label={c.yourBest} value={best ? String(best.neurons) : "—"} />
+        </>
+      }
+      secondary={
+        <>
           <LabSlider label={c.hiddenLayers} value={layers} min={1} max={3} onChange={setLayers} />
-          <LabSlider
-            label={c.neuronsPerLayer}
-            value={neurons}
-            min={1}
-            max={8}
-            onChange={setNeurons}
-          />
+          <LabSlider label={c.neuronsPerLayer} value={neurons} min={1} max={8} onChange={setNeurons} />
           <LabSlider
             label={c.learningRate}
             value={rateIndex}
@@ -136,39 +143,8 @@ export function SpiralChallenge() {
             onChange={setRateIndex}
             format={(i) => String(LEARNING_RATES[i] ?? 0.1)}
           />
-          <div className="grid w-full grid-cols-2 gap-2">
-            <Button onClick={() => setRunning((value) => !value)}>
-              {running ? c.pause : c.train}
-            </Button>
-            <Button variant="secondary" onClick={retry}>
-              {c.newAttempt}
-            </Button>
-          </div>
-        </ControlPanel>
-
-        <motion.div
-          key={best ? `${best.neurons}-${best.epoch}` : "none"}
-          initial={reduced || !best ? false : { scale: 0.96, opacity: 0.6 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={spring.bouncy}
-          className="card-surface p-5"
-        >
-          <p className="text-overline uppercase text-fg-faint">{c.yourBest}</p>
-          {best ? (
-            <>
-              <p className="mt-2 font-mono text-display-md text-fg">{best.neurons}</p>
-              <p className="mt-1 text-body-sm text-fg-muted">
-                hidden neurons, at {formatPercent(best.accuracy, 1)} after{" "}
-                {best.epoch.toLocaleString("en-US")} epochs
-              </p>
-            </>
-          ) : (
-            <p className="mt-2 text-body-sm text-fg-muted">
-              Nothing yet. Start with plenty of neurons, then take them away until it breaks.
-            </p>
-          )}
-        </motion.div>
-      </div>
-    </div>
+        </>
+      }
+    />
   );
 }
