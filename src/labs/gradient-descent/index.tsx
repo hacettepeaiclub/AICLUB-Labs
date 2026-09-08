@@ -28,7 +28,8 @@ export default function GradientDescent() {
 
   return (
     <div className="space-y-24 md:space-y-32">
-      {/* 1 — Behaviour first: a map, a slider, a button, and no vocabulary. */}
+      {/* 1 — Behaviour first: a question, a map, a slider, a button, and no
+          vocabulary at all. η is not named until section 3. */}
       <section aria-labelledby="gd-find-heading">
         <h2 id="gd-find-heading" className="sr-only">
           {g.find.title}

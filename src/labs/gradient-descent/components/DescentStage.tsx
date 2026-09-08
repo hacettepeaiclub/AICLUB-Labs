@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useReducedMotion } from "framer-motion";
-import { ControlPanel, Figure, FigureRow, LabSlider } from "@/components/lab";
-import { Badge, Button } from "@/components/ui";
+import { Figure, LabSlider, Stage, Transport } from "@/components/lab";
+import { Badge } from "@/components/ui";
 import { useT } from "@/i18n";
 import { formatNumber } from "@/lib/format";
 import { cn } from "@/lib/cn";
@@ -102,6 +102,18 @@ export interface DescentStageProps {
  * vocabulary at all. Section 3 turns on everything the same stage can show —
  * the two thresholds marked on the slider track, the name of the regime the
  * current step size is in, and the objective plotted against step number.
+ *
+ * ## What the chassis changed
+ *
+ * The order used to be controls, then thresholds, then five figures, then the
+ * map — so the surface a step size changes was the fourth block down, and on a
+ * phone you moved the slider with the picture off-screen above you. It is now
+ * one `Stage`: map, then the step slider and the transport, then the counters.
+ *
+ * The scrubber moved with it. It is the map's time axis and it used to sit
+ * below everything else on the section, further from the picture it indexes
+ * than any other control; it now sits in the readout strip directly under the
+ * map, which is also where the threshold marks and the regime belong.
  */
 export function DescentStage({
   landscapeId,
@@ -148,117 +160,125 @@ export function DescentStage({
     g.status[view.status],
   );
 
+  const marks: Mark[] = [
+    {
+      key: "monotone",
+      position: ((LR_LIMIT_INDEX / 2) / LR_MAX_INDEX) * 100,
+      label: g.rate.marks.monotone,
+      value: formatNumber(facts.monotoneLimit, 5),
+    },
+    {
+      key: "stability",
+      position: (LR_LIMIT_INDEX / LR_MAX_INDEX) * 100,
+      label: g.rate.marks.stability,
+      value: formatNumber(facts.stabilityLimit, 5),
+      strong: true,
+    },
+  ];
+
   return (
-    <div className="space-y-4">
-      <ControlPanel>
-        <LabSlider
-          label={g.controls.learningRate}
-          value={lrIndex}
-          min={1}
-          max={LR_MAX_INDEX}
-          onChange={setLrIndex}
-          format={() => formatNumber(learningRate, 5)}
-          valueText={() => g.controls.learningRateValue(formatNumber(learningRate, 5))}
-          className="flex-1"
-        />
-        <div className="flex gap-2">
-          <Button onClick={run.play}>{run.playing ? g.controls.pause : g.controls.run}</Button>
-          <Button variant="secondary" onClick={run.stepOnce} disabled={run.atEnd}>
-            {g.controls.stepOnce}
-          </Button>
-          <Button variant="ghost" onClick={run.reset}>
-            {g.controls.reset}
-          </Button>
-        </div>
-      </ControlPanel>
-
-      {detailed && (
-        <div className="space-y-3">
-          {/* The two thresholds, on the same scale as the slider above. */}
-          <ThresholdMarks
-            marks={[
-              {
-                key: "monotone",
-                position: ((LR_LIMIT_INDEX / 2) / LR_MAX_INDEX) * 100,
-                label: g.rate.marks.monotone,
-                value: formatNumber(facts.monotoneLimit, 5),
-              },
-              {
-                key: "stability",
-                position: (LR_LIMIT_INDEX / LR_MAX_INDEX) * 100,
-                label: g.rate.marks.stability,
-                value: formatNumber(facts.stabilityLimit, 5),
-                strong: true,
-              },
-            ]}
+    <Stage
+      width="full"
+      secondaryLabel={g.controls.aboutThisSurface}
+      caption={caption}
+      announcement={announcement}
+      viewport={
+        <div
+          className={
+            detailed ? "grid gap-3 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:items-stretch" : ""
+          }
+        >
+          <LandscapeCanvas
+            landscape={preset.landscape}
+            extent={VIEW_EXTENT}
+            path={view.run.path}
+            pathLength={view.shown + 1}
+            start={preset.start}
+            current={view.position}
+            diverged={view.status === "diverged"}
+            label={summary}
           />
-          <div className="flex flex-wrap items-center gap-3">
-            <Badge>{g.rate.regimes[regime]}</Badge>
-            <p className="text-body-sm text-fg-muted">{g.rate.regimeNote[regime]}</p>
-          </div>
-        </div>
-      )}
-
-      <FigureRow>
-        <Figure label={g.figures.step} value={`${run.index} / ${run.total}`} />
-        <Figure
-          label={g.figures.objective}
-          value={formatNumber(view.objective, 4)}
-          tone="accent"
-          hint={g.figures.objectiveHint}
-        />
-        <Figure label={g.figures.gradientNorm} value={formatNumber(view.gradientNorm, 3)} />
-        <Figure label={g.figures.status} value={g.status[view.status]} />
-        {detailed && (
-          <Figure
-            label={g.figures.conditionNumber}
-            value={formatNumber(facts.conditionNumber, 0)}
-            hint={g.figures.conditionNumberHint}
-          />
-        )}
-      </FigureRow>
-
-      <div className={detailed ? "grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]" : ""}>
-        <LandscapeCanvas
-          landscape={preset.landscape}
-          extent={VIEW_EXTENT}
-          path={view.run.path}
-          pathLength={view.shown + 1}
-          start={preset.start}
-          current={view.position}
-          diverged={view.status === "diverged"}
-          label={summary}
-        />
-        {detailed && (
-          <div className="flex flex-col gap-4">
+          {detailed && (
+            /* Secondary read, so it is capped on a phone: the map keeps its
+               full square and the chart takes what is left. */
             <ObjectiveChart
               series={view.series}
               count={view.count}
               tolerance={TOLERANCE}
               cursor={view.shown}
               label={g.chart.label(formatNumber(view.objective, 4), run.index)}
-              className="flex-1"
+              className="h-32 md:h-auto"
             />
-            <p className="text-body-sm text-fg-faint">{g.rate.scope}</p>
-          </div>
-        )}
-      </div>
-
-      <LabSlider
-        label={g.controls.scrubber}
-        value={run.index}
-        min={0}
-        max={Math.max(1, run.total)}
-        onChange={run.setIndex}
-        format={(value) => `${value} / ${run.total}`}
-        valueText={(value) => g.controls.scrubberValue(value, run.total)}
-      />
-
-      {caption && <p className="max-w-prose text-body-sm text-fg-muted">{caption}</p>}
-
-      <p aria-live="polite" className="sr-only">
-        {announcement}
-      </p>
-    </div>
+          )}
+        </div>
+      }
+      readout={
+        <div className="space-y-2">
+          {detailed && (
+            <>
+              <ThresholdMarks marks={marks} />
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                <Badge>{g.rate.regimes[regime]}</Badge>
+                <p className="text-caption text-fg-muted">{g.rate.regimeNote[regime]}</p>
+              </div>
+              {/* Landscape metadata, not a run figure: it does not change as
+                  the run advances, and keeping it out of the figure row is
+                  what holds that row at four. */}
+              <p className="font-mono text-caption text-fg-faint">
+                {g.figures.conditionNumber} {formatNumber(facts.conditionNumber, 0)} —{" "}
+                {g.figures.conditionNumberHint}
+              </p>
+            </>
+          )}
+          {/* The map's time axis, against the map. */}
+          <LabSlider
+            label={g.controls.scrubber}
+            value={run.index}
+            min={0}
+            max={Math.max(1, run.total)}
+            onChange={run.setIndex}
+            format={(value) => `${value} / ${run.total}`}
+            valueText={(value) => g.controls.scrubberValue(value, run.total)}
+          />
+        </div>
+      }
+      primary={
+        <div className="space-y-3">
+          <LabSlider
+            label={detailed ? g.controls.learningRate : g.controls.stepSize}
+            value={lrIndex}
+            min={1}
+            max={LR_MAX_INDEX}
+            onChange={setLrIndex}
+            format={() => formatNumber(learningRate, 5)}
+            valueText={() => g.controls.learningRateValue(formatNumber(learningRate, 5))}
+          />
+          <Transport
+            running={run.playing}
+            onRun={run.play}
+            onStep={run.stepOnce}
+            onReset={run.reset}
+            runLabel={g.controls.run}
+            stepDisabled={run.atEnd}
+          />
+        </div>
+      }
+      figures={
+        <>
+          <Figure label={g.figures.step} value={`${run.index} / ${run.total}`} />
+          <Figure
+            label={g.figures.objective}
+            value={formatNumber(view.objective, 4)}
+            tone="accent"
+            hint={g.figures.objectiveHint}
+          />
+          <Figure label={g.figures.gradientNorm} value={formatNumber(view.gradientNorm, 3)} />
+          <Figure label={g.figures.status} value={g.status[view.status]} />
+        </>
+      }
+      secondary={
+        detailed ? <p className="text-caption text-fg-faint">{g.rate.scope}</p> : undefined
+      }
+    />
   );
 }

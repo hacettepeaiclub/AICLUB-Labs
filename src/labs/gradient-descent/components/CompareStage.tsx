@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useReducedMotion } from "framer-motion";
-import { ControlPanel, Figure, FigureRow, LabSlider } from "@/components/lab";
-import { Button } from "@/components/ui";
+import { Figure, LabSlider, Stage, Transport } from "@/components/lab";
 import { useT } from "@/i18n";
 import { formatNumber } from "@/lib/format";
 import type { OptimizerConfig } from "../engine";
@@ -42,6 +41,14 @@ export interface CompareStageProps {
  * — v ← βv + ∇f, θ ← θ − ηv — gives momentum η·max(a,b) < 2(1 + β), which is
  * *wider*. So momentum can take a larger step than plain descent, and what it
  * charges for the extra range is oscillation rather than blow-up.
+ *
+ * ## Why β is the primary control and η is not
+ *
+ * η is what section 3 was about, and repeating it here would make this section
+ * a second helping of that one. The thing that carries this section's argument
+ * is β: it is what moves the momentum limit along the step-size track, and
+ * watching that mark slide right while the run gets shorter — and then longer
+ * again — is the lesson. η keeps a useful default and goes in the disclosure.
  */
 export function CompareStage({
   landscapeId,
@@ -95,92 +102,100 @@ export function CompareStage({
   const momentumIndex = momentumLimitIndex(beta);
 
   return (
-    <div className="space-y-4">
-      <ControlPanel>
-        <LabSlider
-          label={g.controls.learningRate}
-          value={lrIndex}
-          min={1}
-          max={LR_MAX_INDEX}
-          onChange={setLrIndex}
-          format={() => formatNumber(learningRate, 5)}
-          valueText={() => g.controls.learningRateValue(formatNumber(learningRate, 5))}
-          className="flex-1"
-        />
-        <LabSlider
-          label={g.controls.beta}
-          value={betaPercent}
-          min={0}
-          max={95}
-          step={5}
-          onChange={setBetaPercent}
-          format={() => formatNumber(beta, 2)}
-          valueText={() => g.controls.betaValue(formatNumber(beta, 2))}
-          className="flex-1"
-        />
-        <div className="flex gap-2">
-          <Button onClick={runs.play}>{runs.playing ? g.controls.pause : g.controls.run}</Button>
-          <Button variant="ghost" onClick={runs.reset}>
-            {g.controls.reset}
-          </Button>
-        </div>
-      </ControlPanel>
-
-      {/* Both stability boundaries, on the same scale as the slider. The
-          momentum mark moves as β changes, and that movement is the lesson.
-          It sits on its own row because at β = 0 the two are the same number —
-          which is true, and would otherwise print one label over the other. */}
-      <ThresholdMarks
-        marks={[
-          {
-            key: "plain",
-            position: (LR_LIMIT_INDEX / LR_MAX_INDEX) * 100,
-            label: g.momentumSection.marks.plain,
-            value: formatNumber(facts.stabilityLimit, 5),
-          },
-          {
-            key: "momentum",
-            position: (momentumIndex / LR_MAX_INDEX) * 100,
-            label: g.momentumSection.marks.momentum,
-            value: formatNumber(learningRateAt(preset.landscape, momentumIndex), 5),
-            strong: true,
-            row: 1,
-          },
-        ]}
+    <>
+      <Stage
+        width="full"
+        secondaryLabel={g.controls.stepSizeAndScale}
+        caption={caption}
+        announcement={announcement}
+        viewport={
+          <div className="grid gap-3 sm:grid-cols-2">
+            <ComparePanel
+              title={g.optimizers.gd}
+              view={plain}
+              landscapeId={landscapeId}
+              index={runs.index}
+            />
+            <ComparePanel
+              title={g.optimizers.momentum}
+              view={withMomentum}
+              landscapeId={landscapeId}
+              index={runs.index}
+              highlight
+            />
+          </div>
+        }
+        readout={
+          <div className="space-y-2">
+            {/* Both stability boundaries, on the same scale as the step-size
+                slider in the disclosure. The momentum mark moves as β changes,
+                and that movement is the lesson. It sits on its own row because
+                at β = 0 the two are the same number — which is true, and would
+                otherwise print one label over the other. */}
+            <ThresholdMarks
+              marks={[
+                {
+                  key: "plain",
+                  position: (LR_LIMIT_INDEX / LR_MAX_INDEX) * 100,
+                  label: g.momentumSection.marks.plain,
+                  value: formatNumber(facts.stabilityLimit, 5),
+                },
+                {
+                  key: "momentum",
+                  position: (momentumIndex / LR_MAX_INDEX) * 100,
+                  label: g.momentumSection.marks.momentum,
+                  value: formatNumber(learningRateAt(preset.landscape, momentumIndex), 5),
+                  strong: true,
+                  row: 1,
+                },
+              ]}
+            />
+            <LabSlider
+              label={g.controls.scrubber}
+              value={runs.index}
+              min={0}
+              max={Math.max(1, runs.total)}
+              onChange={runs.setIndex}
+              format={(value) => `${value} / ${runs.total}`}
+              valueText={(value) => g.controls.scrubberValue(value, runs.total)}
+            />
+          </div>
+        }
+        primary={
+          <div className="space-y-3">
+            <LabSlider
+              label={g.controls.beta}
+              value={betaPercent}
+              min={0}
+              max={95}
+              step={5}
+              onChange={setBetaPercent}
+              format={() => formatNumber(beta, 2)}
+              valueText={() => g.controls.betaValue(formatNumber(beta, 2))}
+            />
+            <Transport
+              running={runs.playing}
+              onRun={runs.play}
+              onStep={runs.stepOnce}
+              onReset={runs.reset}
+              runLabel={g.controls.run}
+              stepDisabled={runs.atEnd}
+            />
+          </div>
+        }
+        secondary={
+          <LabSlider
+            label={g.controls.learningRate}
+            value={lrIndex}
+            min={1}
+            max={LR_MAX_INDEX}
+            onChange={setLrIndex}
+            format={() => formatNumber(learningRate, 5)}
+            valueText={() => g.controls.learningRateValue(formatNumber(learningRate, 5))}
+          />
+        }
       />
-
-      <div className="grid gap-4 lg:grid-cols-2">
-        <ComparePanel
-          title={g.optimizers.gd}
-          view={plain}
-          landscapeId={landscapeId}
-          index={runs.index}
-        />
-        <ComparePanel
-          title={g.optimizers.momentum}
-          view={withMomentum}
-          landscapeId={landscapeId}
-          index={runs.index}
-          highlight
-        />
-      </div>
-
-      <LabSlider
-        label={g.controls.scrubber}
-        value={runs.index}
-        min={0}
-        max={Math.max(1, runs.total)}
-        onChange={runs.setIndex}
-        format={(value) => `${value} / ${runs.total}`}
-        valueText={(value) => g.controls.scrubberValue(value, runs.total)}
-      />
-
-      {caption && <p className="max-w-prose text-body-sm text-fg-muted">{caption}</p>}
-
-      <p aria-live="polite" className="sr-only">
-        {announcement}
-      </p>
-    </div>
+    </>
   );
 }
 
@@ -203,9 +218,9 @@ function ComparePanel({
   if (!view) return null;
 
   return (
-    <div className="space-y-3">
+    <div className="min-w-0 space-y-2">
       <div className="flex items-baseline justify-between gap-3">
-        <h3 className="text-body font-medium text-fg">{title}</h3>
+        <h3 className="text-body-sm font-semibold text-fg">{title}</h3>
         <p className="font-mono text-caption text-fg-muted">
           {g.figures.stepsTaken(Math.min(index, view.count - 1))}
         </p>
@@ -218,6 +233,7 @@ function ComparePanel({
         start={preset.start}
         current={view.position}
         diverged={view.status === "diverged"}
+        sizeClass="h-40 w-full sm:aspect-square sm:h-auto"
         label={g.map.label(
           formatNumber(view.position.x, 3),
           formatNumber(view.position.y, 3),
@@ -227,14 +243,14 @@ function ComparePanel({
           g.status[view.status],
         )}
       />
-      <FigureRow>
+      <div className="flex flex-wrap items-start gap-x-8 gap-y-2">
         <Figure
           label={g.figures.objective}
           value={formatNumber(view.objective, 4)}
           tone={highlight ? "accent" : "default"}
         />
         <Figure label={g.figures.status} value={g.status[view.status]} />
-      </FigureRow>
+      </div>
     </div>
   );
 }

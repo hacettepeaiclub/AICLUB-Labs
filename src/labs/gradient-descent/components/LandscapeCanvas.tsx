@@ -19,6 +19,13 @@ export interface LandscapeCanvasProps extends Omit<Scene, "landscape" | "extent"
   onMovePoint?: (point: Point) => void;
   /** Where Home returns the point to. */
   homePoint?: Point;
+  /**
+   * Overrides the square aspect. Section 4 stacks two of these on a phone, and
+   * at full square height the transport ended up below the fold — so that
+   * section asks for a shorter map rather than the chassis growing a prop
+   * about it.
+   */
+  sizeClass?: string;
   className?: string;
 }
 
@@ -46,6 +53,7 @@ export function LandscapeCanvas({
   describedBy,
   onMovePoint,
   homePoint,
+  sizeClass = "aspect-square w-full",
   className,
 }: LandscapeCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -190,7 +198,7 @@ export function LandscapeCanvas({
         onPointerMove={interactive ? handleMove : undefined}
         onPointerUp={interactive ? handleUp : undefined}
         onPointerCancel={interactive ? handleUp : undefined}
-        className="block aspect-square w-full touch-none"
+        className={cn("block touch-none", sizeClass)}
       />
     </div>
   );

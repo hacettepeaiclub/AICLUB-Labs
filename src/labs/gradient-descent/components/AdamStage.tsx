@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useReducedMotion } from "framer-motion";
-import { ControlPanel, Figure, FigureRow, LabSlider } from "@/components/lab";
-import { Button } from "@/components/ui";
+import { Figure, LabSlider, Stage, Transport } from "@/components/lab";
 import { useT } from "@/i18n";
 import { formatNumber } from "@/lib/format";
 import { clamp } from "@/lib/math";
@@ -53,6 +52,13 @@ const logWidth = (value: number, lo: number, hi: number): number => {
  * free of tuning. Phase 1 measured the opposite on the valley below: a
  * well-chosen momentum setting reaches the tolerance in about 10 steps where
  * Adam's best over a 300-point sweep of step sizes is 17.
+ *
+ * ## The table is the explanation, so it comes first
+ *
+ * It sits above the stage rather than inside it: it is the argument the run
+ * then lets you push on, and an explanation belongs before the thing it
+ * explains. It is drawn on a hairline rather than a raised card — nothing in a
+ * lab needs a shadow to say it is a surface.
  */
 export function AdamStage() {
   const t = useT();
@@ -97,7 +103,7 @@ export function AdamStage() {
   return (
     <div className="space-y-8">
       {/* ---------------------------------------------- the surprising bit */}
-      <div className="card-surface p-5 md:p-6">
+      <div className="rounded-card border border-line/10 bg-ink-800 p-5 md:p-6">
         <h3 className="text-body font-medium text-fg">{g.adam.firstStepTitle}</h3>
         <p className="mt-2 max-w-prose text-body-sm text-fg-muted">
           {g.adam.firstStepLede(
@@ -148,81 +154,91 @@ export function AdamStage() {
       </div>
 
       {/* ------------------------------------------------------- the run */}
-      <div className="space-y-4">
-        <ControlPanel>
-          <LabSlider
-            label={g.adam.rate}
-            value={rateIndex}
-            min={1}
-            max={ADAM_INDEX_MAX}
-            onChange={setRateIndex}
-            format={() => formatNumber(learningRate, 2)}
-            valueText={() => g.controls.learningRateValue(formatNumber(learningRate, 2))}
-            className="flex-1"
-          />
-          <div className="flex gap-2">
-            <Button onClick={run.play}>{run.playing ? g.controls.pause : g.controls.run}</Button>
-            <Button variant="ghost" onClick={run.reset}>
-              {g.controls.reset}
-            </Button>
+      <Stage
+        width="full"
+        caption={g.adam.honesty}
+        announcement={announcement}
+        viewport={
+          <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:items-stretch">
+            <LandscapeCanvas
+              landscape={valley.landscape}
+              extent={VIEW_EXTENT}
+              path={view.run.path}
+              pathLength={view.shown + 1}
+              start={valley.start}
+              current={view.position}
+              diverged={view.status === "diverged"}
+              label={g.map.label(
+                formatNumber(view.position.x, 3),
+                formatNumber(view.position.y, 3),
+                run.index,
+                formatNumber(view.objective, 4),
+                formatNumber(view.gradientNorm, 3),
+                g.status[view.status],
+              )}
+            />
+            {/* Secondary read, capped on a phone so the map keeps its square. */}
+            <ObjectiveChart
+              series={view.series}
+              count={view.count}
+              tolerance={TOLERANCE}
+              cursor={view.shown}
+              label={g.chart.label(formatNumber(view.objective, 4), run.index)}
+              className="h-32 md:h-auto"
+            />
           </div>
-        </ControlPanel>
-
-        <FigureRow>
-          <Figure label={g.figures.step} value={`${run.index} / ${run.total}`} />
-          <Figure label={g.figures.objective} value={formatNumber(view.objective, 4)} tone="accent" />
-          <Figure label={g.figures.status} value={g.status[view.status]} />
-          {/* Held back until the run has actually been watched to the end.
-              Showing it at step 0 would answer the question before it is asked. */}
-          <Figure
-            label={g.figures.stepsToTolerance}
-            value={run.atEnd && view.run.status === "converged" ? String(view.run.t) : "—"}
+        }
+        readout={
+          <LabSlider
+            label={g.controls.scrubber}
+            value={run.index}
+            min={0}
+            max={Math.max(1, run.total)}
+            onChange={run.setIndex}
+            format={(value) => `${value} / ${run.total}`}
+            valueText={(value) => g.controls.scrubberValue(value, run.total)}
           />
-        </FigureRow>
-
-        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-          <LandscapeCanvas
-            landscape={valley.landscape}
-            extent={VIEW_EXTENT}
-            path={view.run.path}
-            pathLength={view.shown + 1}
-            start={valley.start}
-            current={view.position}
-            diverged={view.status === "diverged"}
-            label={g.map.label(
-              formatNumber(view.position.x, 3),
-              formatNumber(view.position.y, 3),
-              run.index,
-              formatNumber(view.objective, 4),
-              formatNumber(view.gradientNorm, 3),
-              g.status[view.status],
-            )}
-          />
-          <ObjectiveChart
-            series={view.series}
-            count={view.count}
-            tolerance={TOLERANCE}
-            cursor={view.shown}
-            label={g.chart.label(formatNumber(view.objective, 4), run.index)}
-          />
-        </div>
-
-        <LabSlider
-          label={g.controls.scrubber}
-          value={run.index}
-          min={0}
-          max={Math.max(1, run.total)}
-          onChange={run.setIndex}
-          format={(value) => `${value} / ${run.total}`}
-          valueText={(value) => g.controls.scrubberValue(value, run.total)}
-        />
-      </div>
-
-      <p className="max-w-prose text-body-sm text-fg-muted">{g.adam.honesty}</p>
-
-      <p aria-live="polite" className="sr-only">
-        {announcement}
-      </p>
+        }
+        primary={
+          <div className="space-y-3">
+            <LabSlider
+              label={g.adam.rate}
+              value={rateIndex}
+              min={1}
+              max={ADAM_INDEX_MAX}
+              onChange={setRateIndex}
+              format={() => formatNumber(learningRate, 2)}
+              valueText={() => g.controls.learningRateValue(formatNumber(learningRate, 2))}
+            />
+            <Transport
+              running={run.playing}
+              onRun={run.play}
+              onStep={run.stepOnce}
+              onReset={run.reset}
+              runLabel={g.controls.run}
+              stepDisabled={run.atEnd}
+            />
+          </div>
+        }
+        figures={
+          <>
+            <Figure label={g.figures.step} value={`${run.index} / ${run.total}`} />
+            <Figure
+              label={g.figures.objective}
+              value={formatNumber(view.objective, 4)}
+              tone="accent"
+            />
+            <Figure label={g.figures.status} value={g.status[view.status]} />
+            {/* Held back until the run has actually been watched to the end.
+                Showing it at step 0 would answer the question before it is
+                asked. */}
+            <Figure
+              label={g.figures.stepsToTolerance}
+              value={run.atEnd && view.run.status === "converged" ? String(view.run.t) : "—"}
+            />
+          </>
+        }
+      />
     </div>
   );
 }
