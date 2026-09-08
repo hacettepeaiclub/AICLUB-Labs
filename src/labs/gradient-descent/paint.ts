@@ -52,15 +52,26 @@ function inks(): Ink {
     contour: color("fgFaint", 0.28),
     contourStrong: color("fgFaint", 0.5),
     axis: color("fgFaint", 0.18),
+    /*
+     * The trajectory is the answer being built, so it is `accent`; the point
+     * standing on it is the value changing right now, so it is `--data`. Both
+     * used to be `accent`, which left the one thing actually moving the same
+     * colour as the trail it had already left.
+     *
+     * The goal line on the objective chart was `signalGreen`. It is a
+     * reference mark rather than a state, and with the cyan and amber arrows
+     * of section 2 it took this lab to four categorical signals; drawn faint
+     * and dashed it says the same thing and leaves the budget at two.
+     */
     path: color("accent", 0.85),
     pathNode: color("accent", 0.55),
-    current: color("accent"),
+    current: color("data"),
     start: color("fgMuted"),
     minimum: color("fg"),
     gradient: color("signalCyan"),
     target: color("signalAmber"),
     chartLine: color("accent"),
-    chartTolerance: color("signalGreen", 0.7),
+    chartTolerance: color("fgFaint", 0.55),
     chartCursor: color("fg", 0.35),
     warn: color("signalRose"),
   };

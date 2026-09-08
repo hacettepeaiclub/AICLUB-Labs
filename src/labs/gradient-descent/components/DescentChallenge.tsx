@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useReducedMotion } from "framer-motion";
-import { ControlPanel, Figure, FigureRow, LabSlider } from "@/components/lab";
-import { Badge, Button, Segmented } from "@/components/ui";
+import { Figure, LabSlider, Stage, Transport } from "@/components/lab";
+import { Badge, Segmented } from "@/components/ui";
 import { useT } from "@/i18n";
 import { formatNumber } from "@/lib/format";
 import { cn } from "@/lib/cn";
@@ -40,26 +40,49 @@ const ADAM_MAX_INDEX = 120;
  * graded by different arithmetic than the arithmetic that proved it solvable.
  * The verdict this component receives is a set of facts; every sentence it
  * shows comes from the dictionary.
+ *
+ * ## One puzzle at a time
+ *
+ * All three used to be mounted together: three landscapes, three control
+ * panels, three maps and three scrubbers stacked down the page, each running
+ * its own engine. That is three instruments where the visitor can use one, and
+ * on a phone it was an enormous amount of scrolling between a slider and the
+ * surface it moved.
+ *
+ * A picker selects one. Which puzzles have been beaten is held here rather
+ * than in the card, so switching away from a solved puzzle and back does not
+ * forget it — the card is keyed by id and resets to that puzzle's own defaults,
+ * which is what it should do, and the tally is not the card's business.
  */
 export function DescentChallenge() {
   const t = useT();
   const g = t.labs["gradient-descent"];
   const [solved, setSolved] = useState<ChallengeId[]>([]);
+  const [selected, setSelected] = useState<ChallengeId>(challengeOrder[0] ?? "c1");
+
+  const markSolved = useCallback((id: ChallengeId) => {
+    setSolved((current) => (current.includes(id) ? current : [...current, id]));
+  }, []);
+
+  const spec = CHALLENGES[selected];
 
   return (
-    <div className="space-y-6">
-      <p className="text-body-sm text-fg-muted">
-        {g.challenge.progress(solved.length, challengeOrder.length)}
-      </p>
-      {challengeOrder.map((id) => (
-        <ChallengeCard
-          key={id}
-          spec={CHALLENGES[id]}
-          onSolved={() =>
-            setSolved((current) => (current.includes(id) ? current : [...current, id]))
-          }
+    <div className="space-y-4">
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <Segmented
+          label={g.challenge.puzzle}
+          value={selected}
+          options={challengeOrder.map((id) => ({ value: id, label: g.challenge.items[id].title }))}
+          onChange={setSelected}
         />
-      ))}
+        <Badge
+          dotClassName={solved.length === challengeOrder.length ? "bg-signal-green" : "bg-fg-faint"}
+        >
+          {g.challenge.progress(solved.length, challengeOrder.length)}
+        </Badge>
+      </div>
+
+      <ChallengeCard key={selected} spec={spec} onSolved={() => markSolved(selected)} />
     </div>
   );
 }
@@ -120,85 +143,59 @@ function ChallengeCard({ spec, onSolved }: { spec: ChallengeSpec; onSolved: () =
   const rateMax = optimizer === "momentum" ? MOMENTUM_MAX_INDEX : GD_MAX_INDEX;
   const boundaryIndex = optimizer === "momentum" ? momentumLimitIndex(beta) : LR_LIMIT_INDEX;
 
+  const rateSlider =
+    optimizer === "adam" ? (
+      <LabSlider
+        label={g.adam.rate}
+        value={adamIndex}
+        min={1}
+        max={ADAM_MAX_INDEX}
+        onChange={setAdamIndex}
+        format={() => formatNumber(adamRate, 2)}
+        valueText={() => g.controls.learningRateValue(formatNumber(adamRate, 2))}
+      />
+    ) : (
+      <LabSlider
+        label={g.controls.learningRate}
+        value={rateIndex}
+        min={1}
+        max={rateMax}
+        onChange={setRateIndex}
+        format={() => formatNumber(scaledRate, 5)}
+        valueText={() => g.controls.learningRateValue(formatNumber(scaledRate, 5))}
+      />
+    );
+
   return (
-    <section className="card-surface p-5 md:p-6" aria-labelledby={`gd-${spec.id}`}>
-      <div className="flex flex-wrap items-baseline justify-between gap-3">
-        <h3 id={`gd-${spec.id}`} className="text-body-lg font-medium text-fg">
-          {g.challenge.items[spec.id].title}
-        </h3>
-        <Badge>{g.challenge.budget(spec.budget)}</Badge>
+    <div className="space-y-4">
+      <div>
+        <h3 className="text-body-lg font-semibold text-fg">{g.challenge.items[spec.id].title}</h3>
+        <p className="mt-2 max-w-prose text-body-sm text-fg-muted">
+          {g.challenge.items[spec.id].brief}
+        </p>
       </div>
-      <p className="mt-2 max-w-prose text-body-sm text-fg-muted">
-        {g.challenge.items[spec.id].brief}
-      </p>
-      <p className="mt-1 font-mono text-caption text-fg-faint">
-        {g.challenge.goal(spec.budget, spec.tolerance.toExponential(0))}
-      </p>
 
-      <div className="mt-5 space-y-4">
-        <ControlPanel>
-          {spec.allowed.length > 1 && (
-            <Segmented
-              label={g.controls.optimizer}
-              value={optimizer}
-              options={spec.allowed.map((kind) => ({ value: kind, label: g.optimizers[kind] }))}
-              onChange={setOptimizer}
-            />
-          )}
-          {optimizer === "adam" ? (
-            <LabSlider
-              label={g.adam.rate}
-              value={adamIndex}
-              min={1}
-              max={ADAM_MAX_INDEX}
-              onChange={setAdamIndex}
-              format={() => formatNumber(adamRate, 2)}
-              valueText={() => g.controls.learningRateValue(formatNumber(adamRate, 2))}
-              className="flex-1"
-            />
+      <Stage
+        width="full"
+        secondaryLabel={g.challenge.optimizerAndSettings}
+        announcement={announcement}
+        caption={
+          /* Earned in context: it appears only once a run has actually been
+             watched to the end, and it is a sentence rather than a badge. */
+          revealed ? (
+            <span
+              className={cn(verdict.kind === "solved" ? "text-signal-green" : "text-fg-muted")}
+            >
+              <span className="font-medium">
+                {verdict.kind === "solved" ? g.challenge.pass : g.challenge.notYet}
+              </span>{" "}
+              {verdictText(g, verdict)}
+            </span>
           ) : (
-            <LabSlider
-              label={g.controls.learningRate}
-              value={rateIndex}
-              min={1}
-              max={rateMax}
-              onChange={setRateIndex}
-              format={() => formatNumber(scaledRate, 5)}
-              valueText={() => g.controls.learningRateValue(formatNumber(scaledRate, 5))}
-              className="flex-1"
-            />
-          )}
-          {optimizer === "momentum" && (
-            <LabSlider
-              label={g.controls.beta}
-              value={betaPercent}
-              min={0}
-              max={95}
-              step={5}
-              onChange={setBetaPercent}
-              format={() => formatNumber(beta, 2)}
-              valueText={() => g.controls.betaValue(formatNumber(beta, 2))}
-              className="flex-1"
-            />
-          )}
-          <div className="flex gap-2">
-            <Button onClick={run.play}>{run.playing ? g.controls.pause : g.controls.run}</Button>
-            <Button variant="ghost" onClick={run.reset}>
-              {g.controls.reset}
-            </Button>
-          </div>
-        </ControlPanel>
-
-        {optimizer !== "adam" && (
-          <p className="font-mono text-caption text-fg-faint">
-            {g.challenge.boundaryHint(
-              formatNumber(learningRateAt(spec.landscape, boundaryIndex), 5),
-              formatNumber(facts.conditionNumber, 0),
-            )}
-          </p>
-        )}
-
-        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+            g.challenge.pressRun
+          )
+        }
+        viewport={
           <LandscapeCanvas
             landscape={spec.landscape}
             extent={VIEW_EXTENT}
@@ -216,70 +213,96 @@ function ChallengeCard({ spec, onSolved }: { spec: ChallengeSpec; onSolved: () =
               g.status[view.status],
             )}
           />
-
-          <div className="space-y-4">
-            <FigureRow>
-              <Figure label={g.figures.step} value={`${run.index} / ${run.total}`} />
-              <Figure label={g.figures.objective} value={formatNumber(view.objective, 4)} />
-              <Figure label={g.figures.status} value={g.status[view.status]} />
-            </FigureRow>
-
-            {revealed ? (
-              <p
-                className={cn(
-                  "rounded-card border p-4 text-body-sm",
-                  verdict.kind === "solved"
-                    ? "border-signal-green/30 bg-signal-green/5 text-fg"
-                    : "border-line/10 bg-ink-900 text-fg-muted",
+        }
+        readout={
+          <div className="space-y-2">
+            <p className="font-mono text-caption text-fg-faint">
+              {g.challenge.goal(spec.budget, spec.tolerance.toExponential(0))}
+            </p>
+            <LabSlider
+              label={g.controls.scrubber}
+              value={run.index}
+              min={0}
+              max={Math.max(1, run.total)}
+              onChange={run.setIndex}
+              format={(value) => `${value} / ${run.total}`}
+              valueText={(value) => g.controls.scrubberValue(value, run.total)}
+            />
+          </div>
+        }
+        primary={
+          <div className="space-y-3">
+            {rateSlider}
+            <Transport
+              running={run.playing}
+              onRun={run.play}
+              onStep={run.stepOnce}
+              onReset={run.reset}
+              runLabel={g.controls.run}
+              stepDisabled={run.atEnd}
+            />
+          </div>
+        }
+        figures={
+          <>
+            <Figure label={g.figures.step} value={`${run.index} / ${run.total}`} />
+            <Figure label={g.figures.objective} value={formatNumber(view.objective, 4)} />
+            <Figure label={g.figures.status} value={g.status[view.status]} />
+          </>
+        }
+        secondary={
+          <>
+            {spec.allowed.length > 1 && (
+              <Segmented
+                label={g.controls.optimizer}
+                value={optimizer}
+                options={spec.allowed.map((kind) => ({ value: kind, label: g.optimizers[kind] }))}
+                onChange={setOptimizer}
+              />
+            )}
+            {optimizer === "momentum" && (
+              <LabSlider
+                label={g.controls.beta}
+                value={betaPercent}
+                min={0}
+                max={95}
+                step={5}
+                onChange={setBetaPercent}
+                format={() => formatNumber(beta, 2)}
+                valueText={() => g.controls.betaValue(formatNumber(beta, 2))}
+              />
+            )}
+            {optimizer !== "adam" && (
+              <p className="font-mono text-caption text-fg-faint">
+                {g.challenge.boundaryHint(
+                  formatNumber(learningRateAt(spec.landscape, boundaryIndex), 5),
+                  formatNumber(facts.conditionNumber, 0),
                 )}
-              >
-                <span className="font-medium text-fg">
-                  {verdict.kind === "solved" ? g.challenge.pass : g.challenge.notYet}
-                </span>{" "}
-                {verdictText(g, verdict)}
-              </p>
-            ) : (
-              <p className="rounded-card border border-line/10 bg-ink-900 p-4 text-body-sm text-fg-faint">
-                {g.challenge.pressRun}
               </p>
             )}
-          </div>
+          </>
+        }
+      />
+
+      {moved && (
+        <div className="rounded-card border border-line/10 bg-ink-800 p-5">
+          <h4 className="text-body-sm font-medium text-fg">{g.challenge.transfer.title}</h4>
+          <p className="mt-2 max-w-prose text-body-sm text-fg-muted">
+            {moved.divergentHere && moved.convergesThere
+              ? g.challenge.transfer.divergesHereConvergesThere(
+                  formatNumber(scaledRate, 5),
+                  formatNumber(facts.stabilityLimit, 5),
+                  formatNumber(landscapeFacts(TRANSFER_LANDSCAPE).stabilityLimit, 5),
+                  moved.stepsThere ?? 0,
+                )
+              : moved.convergesThere
+                ? g.challenge.transfer.worksOnBoth(moved.stepsThere ?? 0)
+                : g.challenge.transfer.worksOnNeither}
+          </p>
+          <TransferPreview learningRate={scaledRate} tolerance={spec.tolerance} />
         </div>
-
-        <LabSlider
-          label={g.controls.scrubber}
-          value={run.index}
-          min={0}
-          max={Math.max(1, run.total)}
-          onChange={run.setIndex}
-          format={(value) => `${value} / ${run.total}`}
-          valueText={(value) => g.controls.scrubberValue(value, run.total)}
-        />
-
-        {moved && (
-          <div className="rounded-card border border-line/10 bg-ink-900 p-4">
-            <h4 className="text-body-sm font-medium text-fg">{g.challenge.transfer.title}</h4>
-            <p className="mt-2 max-w-prose text-body-sm text-fg-muted">
-              {moved.divergentHere && moved.convergesThere
-                ? g.challenge.transfer.divergesHereConvergesThere(
-                    formatNumber(scaledRate, 5),
-                    formatNumber(facts.stabilityLimit, 5),
-                    formatNumber(landscapeFacts(TRANSFER_LANDSCAPE).stabilityLimit, 5),
-                    moved.stepsThere ?? 0,
-                  )
-                : moved.convergesThere
-                  ? g.challenge.transfer.worksOnBoth(moved.stepsThere ?? 0)
-                  : g.challenge.transfer.worksOnNeither}
-            </p>
-            <TransferPreview learningRate={scaledRate} tolerance={spec.tolerance} />
-          </div>
-        )}
-      </div>
-
-      <p aria-live="polite" className="sr-only">
-        {announcement}
-      </p>
-    </section>
+      )}
+    </div>
   );
 }
 
@@ -313,13 +336,13 @@ function TransferPreview({ learningRate, tolerance }: { learningRate: number; to
           view.run.t,
         )}
       />
-      <FigureRow>
+      <div className="flex flex-wrap items-start gap-x-8 gap-y-3">
         <Figure label={g.figures.status} value={g.status[view.run.status]} />
         <Figure
           label={g.figures.stepsToTolerance}
           value={view.run.status === "converged" ? String(view.run.t) : "—"}
         />
-      </FigureRow>
+      </div>
     </div>
   );
 }

@@ -433,6 +433,9 @@ export const en = {
         stepOnce: "One step",
         scrubber: "Step",
         scrubberValue: (index: number, total: number) => `Step ${index} of ${total}`,
+        // Section 1 has no vocabulary yet, so the slider is named in words.
+        // η arrives in section 3, where the thresholds are named with it.
+        stepSize: "Step size",
         learningRate: "Step size η",
         learningRateValue: (value: string) => `Step size ${value}`,
         beta: "Momentum β",
@@ -441,6 +444,8 @@ export const en = {
         curvatureValue: (value: string) => `Condition number ${value}`,
         optimizer: "Optimizer",
         resetPoint: "Recentre",
+        aboutThisSurface: "About this surface",
+        stepSizeAndScale: "Step size",
       },
 
       optimizers: {
@@ -493,39 +498,38 @@ export const en = {
 
       find: {
         title: "Find the bottom",
-        question: "Which step size reaches the centre in the fewest steps?",
+        question: "How big a step can you take?",
         caption:
-          "Same starting point every time, and only one thing to change. Watch the shape of the route rather than the numbers: it does not head straight for the centre. It leans off to one side first, then comes back.",
+          "Same starting point every time, and one thing to change. Watch the shape of the route rather than the numbers.",
       },
 
       direction: {
         kicker: "Why that direction",
         title: "A gradient is a vector, and it is not a pointer to the answer.",
-        lede: "Two arrows leave the current point. The solid one is where a step actually goes — the negative gradient. The dashed one is the straight line to the minimum. Drag the point, then drag the curvature, and watch what happens to the angle between them.",
+        lede: "Two arrows leave the current point: the solid one is where a step actually goes, −∇f = −(a·x, b·y); the dashed one is the straight line to the minimum, −(x, y). Each coordinate is scaled by its own curvature, so the two agree only when the curvatures do. Drag the point, then drag the curvature.",
         descent: "Where a step goes: −∇f",
         target: "Straight line to the minimum",
-        equalLength:
-          "Both arrows are drawn at the same length, so the only thing being compared is their direction.",
+        equalLength: "Both arrows are drawn at the same length, so only their direction is being compared.",
         angle: "Angle between them",
         angleHint: "0° means the two agree",
-        aligned:
-          "The two curvatures are equal here, so −∇f = −(a·x, b·y) is a positive multiple of −(x, y) and the directions coincide exactly.",
-        apart:
-          "The directions differ. −∇f = −(a·x, b·y) scales each coordinate by that coordinate's own curvature, so on an unequal landscape the step is pulled towards the steeper axis instead of towards the minimum.",
-        onAxis:
-          "The point is on an axis, where one coordinate is already zero. The two directions agree here whatever the curvatures are, because there is nothing for the unequal scaling to act on. Move it off the axis to separate them.",
+        aligned: "The curvatures are equal here, so the two directions coincide exactly.",
+        apart: "The curvatures differ, so the step is pulled towards the steeper axis rather than towards the minimum.",
+        onAxis: "One coordinate is already zero, so there is nothing for the unequal scaling to act on. Move the point off the axis to separate the arrows.",
         dragHint: "Drag anywhere on the map to move the point, or focus the map and use",
         keyboardHint: "to move it, and this to send it back:",
+        keyboardHelp:
+          "Drag anywhere on the map to move the point. With the map focused, the arrow keys move it and Home returns it to the centre-right starting position.",
+        legendAndKeys: "Arrows and keyboard",
         label: (x: string, y: string, kappa: string, angle: string) =>
           `Contour map with a movable point at ${x}, ${y}. Condition number ${kappa}. The descent direction is ${angle} degrees away from the straight line to the minimum.`,
         caption:
-          "Slide the curvature ratio down to 1 and the two arrows fold into one. Away from the axes that is the only case where they agree — and it is a case a one-dimensional picture cannot show you at all, because along a single axis a gradient is just a sign.",
+          "Slide the curvature ratio down to 1 and the two arrows fold into one. Away from the axes that is the only case where they agree — and it is a case a one-dimensional picture cannot show at all, because along a single axis a gradient is just a sign.",
       },
 
       rate: {
         kicker: "The step size",
         title: "The ceiling belongs to the surface.",
-        lede: "Same landscape, same starting point, one number to change. The two marks under the slider are computed from this landscape's curvature; they were not chosen to make the demonstration work.",
+        lede: "Same landscape, same starting point, one number to change. The two marks under the map are computed from this landscape's curvature; they were not chosen to make the demonstration work.",
         marks: { monotone: "no overshoot", stability: "stability limit" },
         regimes: {
           monotone: "Approaching directly",
@@ -534,28 +538,24 @@ export const en = {
           divergent: "Diverging",
         },
         regimeNote: {
-          monotone:
-            "η is below 1/c for both curvatures, so neither coordinate passes the minimum on its way in.",
-          oscillating:
-            "η is past 1/c on the steeper axis. That coordinate changes sign every step but still shrinks, so the path zig-zags inward.",
-          boundary:
-            "η is exactly 2/c on the steeper axis. That coordinate is multiplied by −1 every step: it neither shrinks nor grows, and only the flatter axis makes progress.",
-          divergent:
-            "η is past 2/c on the steeper axis, so that coordinate grows every step and the run leaves the map.",
+          monotone: "η is below 1/c for both curvatures: neither coordinate overshoots.",
+          oscillating: "η is past 1/c on the steeper axis: it changes sign each step but still shrinks.",
+          boundary: "η is exactly 2/c on the steeper axis: that coordinate neither shrinks nor grows.",
+          divergent: "η is past 2/c on the steeper axis: that coordinate grows every step.",
         },
         scope:
-          "These thresholds are exact for the quadratic objective used here, whose curvature is the same at every point. On a surface where curvature changes as you move, the usable step size changes with it.",
+          "These thresholds are exact for the quadratic used here, whose curvature is the same at every point. Where curvature changes as you move, the usable step size changes with it.",
         caption:
-          "The stability limit is 2 ÷ the larger curvature, so it moves when the landscape does. That is why no step size is large or small on its own: the same η that leaves this landscape entirely settles quietly on a gentler one, which is what the second challenge is about.",
+          "The stability limit is 2 ÷ the larger curvature, so it moves when the landscape does. No step size is large or small on its own: the same η that leaves this landscape entirely settles quietly on a gentler one.",
       },
 
       momentumSection: {
         kicker: "Momentum",
         title: "Carrying something over from the last step.",
-        lede: "Momentum keeps a running velocity: v ← β·v + ∇f, and then θ ← θ − η·v. Pushes that keep pointing the same way accumulate; pushes that keep reversing cancel. Both panels start from the same point and advance one step at a time together, so finishing first means needing fewer steps rather than being quicker to compute.",
+        lede: "Momentum keeps a running velocity: v ← β·v + ∇f, then θ ← θ − η·v. Pushes that keep pointing the same way accumulate; pushes that keep reversing cancel. Raise β and watch the second mark move.",
         marks: { plain: "plain limit", momentum: "momentum limit" },
         caption:
-          "With this convention the stability condition is η·max(a,b) < 2(1+β), which is wider than plain descent's η·max(a,b) < 2 — so momentum can carry a larger step size than plain descent can. What it charges for that extra range is oscillation. Hold the step size still and raise β: the run gets shorter, and then past a point it gets longer again.",
+          "The stability condition is η·max(a,b) < 2(1+β), wider than plain descent's η·max(a,b) < 2 — so momentum can carry a larger step size than plain descent can. What it charges for that range is oscillation. Hold the step size still and raise β: the run gets shorter, and then past a point it gets longer again.",
         announce: (
           plainSteps: number,
           plainStatus: string,
@@ -581,16 +581,17 @@ export const en = {
         rowGd: (rate: string) => `Gradient descent step, η = ${rate}`,
         rowAdam: (rate: string) => `Adam step, η = ${rate}`,
         firstStepNote:
-          "After the bias correction the first moment is exactly g and the second is exactly g², so the first update is η·g ÷ (|g| + ε). The size of the gradient cancels, and both axes move by about η. That is what an adaptive per-parameter step means here — and it is why the correction has to be real rather than skipped.",
+          "After the bias correction the first update is η·g ÷ (|g| + ε). The size of the gradient cancels, and both axes move by about η — which is why the correction has to be real rather than skipped.",
         rate: "Adam step size η",
         honesty:
-          "None of that says Adam converges faster. On the κ = 60 valley above, sweeping 300 step sizes, Adam's quickest result is 17 steps, while a well-chosen momentum setting reaches the same tolerance in about 10 — and at a modest step size such as 0.10, Adam needs 66. There is still a step size to choose, and choosing it badly still costs. Those figures belong to this objective, this starting point and this search; they are not a ranking of optimizers.",
+          "None of that says Adam converges faster. On the κ = 60 valley above, sweeping 300 step sizes, Adam's quickest result is 17 steps, while a well-chosen momentum setting reaches the same tolerance in about 10 — and at a modest step size such as 0.10, Adam needs 66. There is still a step size to choose, and choosing it badly still costs.",
       },
 
       challenge: {
         kicker: "Three questions",
         title: "The budget is counted in steps.",
-        lede: "Each one fixes a landscape, a starting point and a number of steps. Arriving slowly is not a pass, and the three of them do not have the same answer.",
+        lede: "Each one fixes a landscape, a starting point and a number of steps. Arriving slowly is not a pass, and the three do not have the same answer.",
+        puzzle: "Question",
         budget: (n: number) => `${n} steps`,
         goal: (budget: number, tolerance: string) =>
           `Goal: objective ≤ ${tolerance} within ${budget} steps.`,
@@ -598,6 +599,7 @@ export const en = {
         pressRun: "Press Run, or drag the step slider to the end, to see how this attempt did.",
         pass: "Solved.",
         notYet: "Not yet.",
+        optimizerAndSettings: "Optimizer and settings",
         boundaryHint: (limit: string, kappa: string) =>
           `Stability limit for these settings: ${limit}. Condition number κ = ${kappa}.`,
         verdicts: {
@@ -648,11 +650,9 @@ export const en = {
       recap: {
         lessons: [
           "The negative gradient points downhill, not at the minimum. Away from the axes the two coincide only where the curvature is the same in every direction.",
-          "The largest step size a landscape tolerates is 2 ÷ its steepest curvature. That is a property of the surface, not of the algorithm — so no step size is large or small on its own.",
-          "Below half of that limit the approach is direct; between the two the path overshoots and still closes in; exactly at it the steep coordinate stops shrinking; above it the run leaves.",
+          "The largest step size a landscape tolerates is 2 ÷ its steepest curvature — a property of the surface, not of the algorithm. Below half of it the approach is direct, between the two the path overshoots and still closes in, and above it the run leaves.",
           "The condition number κ is the steeper curvature divided by the flatter one, and it is what stops a single step size from serving both directions: the flat axis is still crawling while the steep one is already at its ceiling.",
-          "Momentum accumulates past gradients. It widens the stable range to η·max(a,b) < 2(1+β) and can cut a long zig-zag short — and past a point, more of it makes the run longer again.",
-          "Adam scales each coordinate's step by that coordinate's own gradient history, so a millionfold gap in gradient size does not become a millionfold gap in step size. There is still a step size to choose.",
+          "Momentum widens the stable range to η·max(a,b) < 2(1+β) and can cut a long zig-zag short; Adam scales each coordinate by its own gradient history, so a millionfold gap in gradient size is not a millionfold gap in step size. Both still leave you a step size to choose.",
         ],
         footer:
           "Everything here is a convex quadratic: the curvature is the same at every point, the gradient is exact, and the answer is known before you start. Real training gives up all three. What survives is the relationship you have been moving back and forth — the shape of the surface decides what step size you are allowed to take.",

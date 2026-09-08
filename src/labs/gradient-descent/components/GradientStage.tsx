@@ -1,5 +1,5 @@
 import { useId, useState } from "react";
-import { ControlPanel, Figure, FigureRow, LabSlider } from "@/components/lab";
+import { Figure, LabSlider, Stage } from "@/components/lab";
 import { Button, Kbd } from "@/components/ui";
 import { useT } from "@/i18n";
 import { formatNumber } from "@/lib/format";
@@ -60,75 +60,86 @@ export function GradientStage() {
   const note = onAxis ? g.direction.onAxis : angle < 0.05 ? g.direction.aligned : g.direction.apart;
 
   return (
-    <div className="space-y-4">
-      <ControlPanel>
-        <LabSlider
-          label={g.controls.curvature}
-          value={kappaIndex}
-          min={0}
-          max={KAPPA_STEPS}
-          onChange={setKappaIndex}
-          format={() => `κ ${formatNumber(kappa, kappa < 10 ? 2 : 0)}`}
-          valueText={() => g.controls.curvatureValue(formatNumber(kappa, 2))}
-          className="flex-1"
-        />
-        <Button variant="ghost" onClick={() => setPoint(HOME)}>
-          {g.controls.resetPoint}
-        </Button>
-      </ControlPanel>
-
-      <FigureRow>
-        <Figure
-          label={g.figures.conditionNumber}
-          value={formatNumber(conditionNumber(landscape), 2)}
-          hint={g.figures.conditionNumberHint}
-        />
-        <Figure
-          label={g.direction.angle}
-          value={`${formatNumber(angle, 1)}°`}
-          tone="accent"
-          hint={g.direction.angleHint}
-        />
-        <Figure
-          label={g.figures.position}
-          value={`${formatNumber(point.x, 2)}, ${formatNumber(point.y, 2)}`}
-        />
-      </FigureRow>
-
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)]">
-        <LandscapeCanvas
-          landscape={landscape}
-          extent={VIEW_EXTENT}
-          current={point}
-          descentArrow={descent}
-          targetArrow={target}
-          onMovePoint={setPoint}
-          homePoint={HOME}
-          label={g.direction.label(
-            formatNumber(point.x, 2),
-            formatNumber(point.y, 2),
-            formatNumber(conditionNumber(landscape), 2),
-            formatNumber(angle, 1),
-          )}
-          describedBy={hintId}
-        />
-
-        <div className="space-y-4">
+    <Stage
+      width="full"
+      secondaryLabel={g.direction.legendAndKeys}
+      caption={g.direction.caption}
+      announcement={note}
+      viewport={
+        <>
+          <LandscapeCanvas
+            landscape={landscape}
+            extent={VIEW_EXTENT}
+            current={point}
+            descentArrow={descent}
+            targetArrow={target}
+            onMovePoint={setPoint}
+            homePoint={HOME}
+            label={g.direction.label(
+              formatNumber(point.x, 2),
+              formatNumber(point.y, 2),
+              formatNumber(conditionNumber(landscape), 2),
+              formatNumber(angle, 1),
+            )}
+            describedBy={hintId}
+          />
+          {/* Always in the DOM, never on screen: the description the map
+              points at must not depend on a disclosure being open. */}
+          <p id={hintId} className="sr-only">
+            {g.direction.keyboardHelp}
+          </p>
+        </>
+      }
+      readout={
+        /* Earned in context: it changes as the point and the curvature move,
+           and it is the answer to the question the arrows are asking. */
+        <p className="text-caption text-fg-muted">{note}</p>
+      }
+      primary={
+        <div className="space-y-3">
+          <LabSlider
+            label={g.controls.curvature}
+            value={kappaIndex}
+            min={0}
+            max={KAPPA_STEPS}
+            onChange={setKappaIndex}
+            format={() => `κ ${formatNumber(kappa, kappa < 10 ? 2 : 0)}`}
+            valueText={() => g.controls.curvatureValue(formatNumber(kappa, 2))}
+          />
+          <Button variant="secondary" onClick={() => setPoint(HOME)} className="min-h-[44px] w-full">
+            {g.controls.resetPoint}
+          </Button>
+        </div>
+      }
+      figures={
+        <>
+          <Figure
+            label={g.figures.conditionNumber}
+            value={formatNumber(conditionNumber(landscape), 2)}
+            hint={g.figures.conditionNumberHint}
+          />
+          <Figure
+            label={g.direction.angle}
+            value={`${formatNumber(angle, 1)}°`}
+            tone="accent"
+            hint={g.direction.angleHint}
+          />
+          <Figure
+            label={g.figures.position}
+            value={`${formatNumber(point.x, 2)}, ${formatNumber(point.y, 2)}`}
+          />
+        </>
+      }
+      secondary={
+        <>
           {/* The legend distinguishes the arrows by line style as well as by
               colour, so it survives being read in greyscale. */}
-          <ul className="card-surface space-y-3 p-5">
+          <ul className="space-y-2">
             <li className="flex items-center gap-3">
               <svg width="34" height="10" aria-hidden className="shrink-0">
-                <line
-                  x1="1"
-                  y1="5"
-                  x2="33"
-                  y2="5"
-                  className="stroke-signal-cyan"
-                  strokeWidth="2"
-                />
+                <line x1="1" y1="5" x2="33" y2="5" className="stroke-signal-cyan" strokeWidth="2" />
               </svg>
-              <span className="text-body-sm text-fg">{g.direction.descent}</span>
+              <span className="text-caption text-fg">{g.direction.descent}</span>
             </li>
             <li className="flex items-center gap-3">
               <svg width="34" height="10" aria-hidden className="shrink-0">
@@ -142,24 +153,19 @@ export function GradientStage() {
                   strokeDasharray="5 4"
                 />
               </svg>
-              <span className="text-body-sm text-fg">{g.direction.target}</span>
+              <span className="text-caption text-fg">{g.direction.target}</span>
             </li>
-            <li className="pt-1 text-body-sm text-fg-muted">{g.direction.equalLength}</li>
           </ul>
-
-          <p className="text-body-sm text-fg-muted">{note}</p>
-
-          <p id={hintId} className="text-body-sm text-fg-faint">
+          <p className="text-caption text-fg-faint">{g.direction.equalLength}</p>
+          <p className="text-caption text-fg-faint">
             {g.direction.dragHint}{" "}
             <span className="whitespace-nowrap">
               <Kbd>←</Kbd> <Kbd>→</Kbd> <Kbd>↑</Kbd> <Kbd>↓</Kbd>
             </span>{" "}
             {g.direction.keyboardHint} <Kbd>Home</Kbd>
           </p>
-        </div>
-      </div>
-
-      <p className="max-w-prose text-body-sm text-fg-muted">{g.direction.caption}</p>
-    </div>
+        </>
+      }
+    />
   );
 }
