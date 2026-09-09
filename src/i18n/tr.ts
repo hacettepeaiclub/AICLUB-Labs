@@ -414,6 +414,52 @@ export const tr: Translation = {
         footer:
           "Buradaki kelimelere elle yazılmış yedi özellik verildi; bu yüzden model bir kediyi bir toptan ayırabiliyor ama bir topu bir aynadan ayıramıyor. Gerçek Transformer'lar çok daha zengin temsiller kurmak için çok sayıda head ve katmanı üst üste yığar — bu, bu sayfanın anlattığından farklı ve çok daha uzun bir hikâye.",
       },
+      pickLabel: "Kelime",
+      wholeRowLabel: "Bütün paylar, cümle sırasıyla",
+      mixLabel: "Her birinin kattığı",
+
+      figures: {
+        selected: "Seçili",
+        biggestShare: "En büyük pay",
+        sharesTotal: "Payların toplamı",
+        matchedWith: "Yaslandığı",
+        rawMatch: "Eşleşme",
+        score: "Bölme sonrası",
+        axes: "Eksen",
+        divisor: "Bölen",
+        peakWith: "En büyük pay",
+        peakWithout: "Bölme olmasaydı",
+        aboveTen: "Onda birin üstündeki kelime",
+      },
+
+      scale: {
+        kicker: "Bölme neden var?",
+        title: "Böleni kaldırın, paylar çöküyor.",
+        lede: "Eksen sayısının kareköküne bölmek, etkisini sonuca bakarak göremeyeceğiniz tek adımdır — alternatifiyle karşılaştırana kadar sonuç her iki hâlde de makul görünür. Bu yüzden aynı satır burada iki kez var: bir kez bu modelin hesapladığı gibi, bir kez de bölme atlanarak.",
+        collapse:
+          "Bölme atlanınca puanlar daha büyük kalıyor ve daha büyük sayılar üzerindeki softmax daha keskin oluyor: bütçenin neredeyse tamamı tek bir kelimeye gidiyor, geri kalanı yuvarlanıp yok oluyor. Okunacak bir dağılımı ortada bırakan şey, bu bölme.",
+        note: "Her iki sütun da burada, aynı puanlar üzerinde aynı softmax ile hesaplanıyor. Sayfanın başka hiçbir yerinde bölünmemiş olan kullanılmıyor.",
+        tableCaption:
+          "En güçlü birkaç kelime için: eşleşme, bölme sonrası eşleşme ve her iki durumda payına düşen oran.",
+        colRaw: "Eşleşme",
+        colScaled: "Bölünmüş",
+        colWithout: "Bölmesiz pay",
+        colWith: "Bölmeli pay",
+      },
+
+      softmax: {
+        kicker: "Eşleşmelerden paylara",
+        title: "On puan, tek bir bütçe.",
+        lede: "Softmax, eşleşme satırını toplamı %100 olan bir pay satırına çevirir. Hiçbir şey atılmaz ve hiçbir şey seçilmez: her kelime bir pay alır ve paylar ancak birbirinden çıkabilir.",
+      },
+
+      mix: {
+        kicker: "Payların harcandığı yer",
+        title: "Paylar bir hüküm değil, birer katsayı.",
+        lede: "Bakılan her kelime, payı oranında kendi value vektörünü verir. Bunları toplayınca seçili kelimenin dönüştüğü şey ortaya çıkar — gerçek bir modelde bir sonraki katmana ulaşan da budur.",
+        tableCaption: "En çok katkı veren üç kelime için pay ve value vektörü.",
+        outputLabel: "Karışmış çıktı, eksen eksen",
+      },
     },
 
     // ------------------------------------------------ gradient descent ----
