@@ -15,10 +15,12 @@ import {
   COLS,
   DOWN,
   GOAL,
+  GOAL_REWARD,
   LEFT,
   RIGHT,
   ROWS,
   START,
+  STEP_REWARD,
   TILE,
   TILE_REWARD_MAX,
   TILE_REWARD_MIN,
@@ -268,4 +270,85 @@ export function routeBlindSpots(q: ArrayLike<number>): number {
     if (!walked.has(index)) count += 1;
   }
   return count;
+}
+
+// ------------------------------------------------------- the reward, itemised ---
+
+export type RewardKind = "step" | "tile" | "goal";
+
+export interface RewardPart {
+  readonly kind: RewardKind;
+  readonly amount: number;
+}
+
+/**
+ * One transition's reward, split into the clauses that produced it.
+ *
+ * `world.reward()` returns a single number, which is the right shape for the
+ * algorithm and the wrong shape for showing somebody *why* a move paid what it
+ * paid. This names the parts — and `lab.test.ts` checks that they add back up
+ * to exactly what the world says, for every transition in the room, so the two
+ * cannot drift.
+ */
+export function rewardParts(from: number, next: number, tileReward: number): RewardPart[] {
+  const parts: RewardPart[] = [{ kind: "step", amount: STEP_REWARD }];
+  if (next === TILE && next !== from) parts.push({ kind: "tile", amount: tileReward });
+  if (next === GOAL) parts.push({ kind: "goal", amount: GOAL_REWARD });
+  return parts;
+}
+
+// ------------------------------------------------------------ learning curve ---
+
+export interface CurvePoint {
+  readonly x: number;
+  readonly y: number;
+  readonly episode: number;
+  readonly value: number;
+}
+
+/**
+ * An episode series as points in a `0 0 100 100` box.
+ *
+ * The y-axis is scaled to the series' own range rather than to a fixed one:
+ * early on every episode is a large negative number and later they are all
+ * about the same, so a fixed axis would show a flat line at the top for most
+ * of the run. Returns an empty list below two points, because one point is not
+ * a curve.
+ */
+export function curve(values: readonly number[]): CurvePoint[] {
+  if (values.length < 2) return [];
+  let lo = Infinity;
+  let hi = -Infinity;
+  for (const value of values) {
+    if (value < lo) lo = value;
+    if (value > hi) hi = value;
+  }
+  const span = hi - lo || 1;
+  const last = values.length - 1;
+  return values.map((value, i) => ({
+    x: (i / last) * 100,
+    y: 100 - ((value - lo) / span) * 100,
+    episode: i + 1,
+    value,
+  }));
+}
+
+/**
+ * Episodes the trend line averages over. Lives here rather than in the two
+ * components that draw a curve, so they cannot drift apart — and so neither
+ * of them carries a bare number that reads like a pasted measurement.
+ */
+export const SMOOTHING_WINDOW = 10;
+
+/** A rolling mean, so a noisy series reads as a trend. Window clamps at the ends. */
+export function smooth(values: readonly number[], window: number): number[] {
+  if (window <= 1) return [...values];
+  const out: number[] = [];
+  for (let i = 0; i < values.length; i++) {
+    const from = Math.max(0, i - window + 1);
+    let sum = 0;
+    for (let j = from; j <= i; j++) sum += values[j]!;
+    out.push(sum / (i - from + 1));
+  }
+  return out;
 }
