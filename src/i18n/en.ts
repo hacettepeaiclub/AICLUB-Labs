@@ -157,6 +157,8 @@ export const en = {
         title: "Explore the universe",
         neighboursTitle: "Nearest words",
         announce: (word: string, gloss: string) => `Selected ${word}, ${gloss}.`,
+        selectedLabel: "Selected",
+        nearestLabel: "Nearest, cosine",
       },
 
       map: {
@@ -168,6 +170,10 @@ export const en = {
         pending: "Working out where the words sit…",
         linksNote:
           "The lines join the selected word to the eight listed beside it. They are a reading aid, not part of the model — the embedding has no links, only distances.",
+        pinnedLabel: (word: string, gloss: string) =>
+          `${word} (${gloss}), held for comparison`,
+        compareLabel: (a: string, b: string, score: string) =>
+          `${a} and ${b} have a similarity of ${score}.`,
       },
 
       search: {
@@ -251,6 +257,19 @@ export const en = {
           "The vectors are GloVe 6B 300d, pretrained by Stanford NLP on Wikipedia 2014 and Gigaword 5. This lab looks each word up in that published table and normalises it to unit length; nothing is trained, fine-tuned or generated here.",
         turkish:
           "The embedding space is English. Turkish words shown here are labels we added for reading — they were not embedded, and this is not a Turkish embedding space.",
+      },
+      compare: {
+        title: "Compare two words",
+        hold: "Hold this word",
+        holding: (word: string) => `Holding ${word}`,
+        release: "Let it go",
+        idle: "Hold a word, then pick another one on the map. The cosine between them is measured, not looked up.",
+        samePoint: "That is the word you are holding. Pick a different one.",
+        scoreLabel: "Similarity",
+        rankLabel: "Rank",
+        rankValue: (rank: number, total: number) => `${rank} of ${total}`,
+        sentence: (a: string, b: string, score: string, rank: number, total: number) =>
+          `The cosine between ${a} and ${b} is ${score}. Out of ${total} other words, ${b} is the ${rank}th closest to ${a}.`,
       },
     },
     // ------------------------------------------------ hypothesis testing ----

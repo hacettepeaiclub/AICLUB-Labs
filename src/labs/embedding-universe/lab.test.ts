@@ -41,6 +41,7 @@ const COMPONENTS = [
   "components/UniverseMap.tsx",
   "components/PredictionCard.tsx",
   "components/NeighbourList.tsx",
+  "components/ComparePanel.tsx",
   "components/WordSearch.tsx",
   "components/ProjectionReveal.tsx",
 ];

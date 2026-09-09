@@ -1,12 +1,13 @@
 import { useMemo, useRef, useState } from "react";
 import { useReducedMotion } from "framer-motion";
-import { LabRecap, LabSection } from "@/components/lab";
+import { Figure, LabRecap, LabSection, Stage } from "@/components/lab";
 import { useT } from "@/i18n";
 import { formatPercent } from "@/lib/format";
-import { nearestNeighbours, totalVarianceExplained, varianceExplained } from "./engine";
+import { cosine, nearestNeighbours, totalVarianceExplained, varianceExplained } from "./engine";
 import { VOCABULARY } from "./vocabulary";
 import { NEIGHBOUR_COUNT, PREDICTION, hiddenDimensions } from "./view";
 import { useUniverse } from "./useUniverse";
+import { ComparePanel } from "./components/ComparePanel";
 import { NeighbourList } from "./components/NeighbourList";
 import { PredictionCard, type PredictionChoice } from "./components/PredictionCard";
 import { ProjectionReveal, type RevealMode } from "./components/ProjectionReveal";
@@ -46,6 +47,8 @@ export default function EmbeddingUniverse() {
   const anchorIndex = useMemo(() => VOCABULARY.findIndex((w) => w.id === PREDICTION.anchor), []);
   const [selected, setSelected] = useState(anchorIndex);
   const [chosen, setChosen] = useState<number | null>(null);
+  /** A second word held for comparison. Null until the visitor holds one. */
+  const [held, setHeld] = useState<number | null>(null);
   const [mode, setMode] = useState<RevealMode>("none");
   const mapRef = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
@@ -88,7 +91,13 @@ export default function EmbeddingUniverse() {
   // editorial choice; where each of them lands is the engine's answer.
   const anchorRanking = useMemo(() => {
     if (!set || anchorIndex < 0) return null;
-    const ordered = nearestNeighbours(set.vectors, set.count, set.dimensions, anchorIndex, set.count);
+    const ordered = nearestNeighbours(
+      set.vectors,
+      set.count,
+      set.dimensions,
+      anchorIndex,
+      set.count,
+    );
     const byIndex = new Map(ordered.map((n, position) => [n.index, { rank: position + 1, ...n }]));
     return { ordered, byIndex, total: set.count - 1 };
   }, [set, anchorIndex]);
@@ -124,6 +133,22 @@ export default function EmbeddingUniverse() {
       similarity: best.similarity,
     };
   }, [anchorRanking]);
+
+  /**
+   * The held word against the selection: the real cosine, and where the
+   * selection lands in the held word's own ranking.
+   *
+   * `cosine` and `nearestNeighbours` are the same functions every other number
+   * on this page comes from — there is no second metric anywhere in this lab,
+   * and this does not introduce one.
+   */
+  const comparison = useMemo(() => {
+    if (!set || held === null || held === selected) return null;
+    const similarity = cosine(set.vectors, set.dimensions, held, selected);
+    const ordered = nearestNeighbours(set.vectors, set.count, set.dimensions, held, set.count);
+    const at = ordered.findIndex((n) => n.index === selected);
+    return { similarity, rank: at < 0 ? null : at + 1, total: set.count - 1 };
+  }, [set, held, selected]);
 
   const geometry = universe.geometry;
   const variance = geometry ? varianceExplained(geometry.projection) : null;
@@ -175,46 +200,81 @@ export default function EmbeddingUniverse() {
 
       {revealed && (
         <>
-          {/* The hero. One instance, shared by both sections.
-              No longer sticky: a pinned block had to be capped at 42vh to leave
-              the page usable, and that cap was the whole reason the universe
-              read as a small chart. Full size in the flow instead, with
-              section 2 bringing it back into view when it needs it. */}
+          {/* The hero, on the shared chassis. One instance, one projection —
+              section 2 does not mount a second map, it changes which two points
+              this one emphasises.
+
+              What the Stage changed is everything around it. The search box and
+              the neighbour list used to sit in a 44rem column *below* the map,
+              so on a desktop the instrument had no controls beside it and on a
+              phone you scrolled past the entire universe to reach the list of
+              what you had just selected. Now the map is the viewport, the list
+              is the readout directly under it, and the controls are the rail. */}
           <div ref={mapRef} className="scroll-mt-20">
-            <UniverseMap
-              viewport={geometry?.viewport ?? null}
-              vocabulary={VOCABULARY}
-              selected={selected}
-              neighbours={neighbours}
-              highlighted={highlighted}
-              formatScore={score}
-              onSelect={setSelected}
-              copy={copy.map}
+            <Stage
+              width="full"
+              caption={copy.map.linksNote}
+              viewport={
+                <UniverseMap
+                  viewport={geometry?.viewport ?? null}
+                  vocabulary={VOCABULARY}
+                  selected={selected}
+                  neighbours={neighbours}
+                  highlighted={highlighted}
+                  pinned={held}
+                  pinnedSimilarity={comparison?.similarity ?? null}
+                  formatScore={score}
+                  onSelect={setSelected}
+                  copy={copy.map}
+                />
+              }
+              readout={
+                <div className="rounded border border-line/10 bg-ink-950 p-4">
+                  <p className="sr-only" aria-live="polite">
+                    {copy.explore.announce(current.en, current.tr)}
+                  </p>
+                  <NeighbourList
+                    anchor={current}
+                    neighbours={neighbours}
+                    vocabulary={VOCABULARY}
+                    formatScore={score}
+                    onSelect={setSelected}
+                    copy={copy.neighbours}
+                  />
+                </div>
+              }
+              primary={
+                <WordSearch vocabulary={VOCABULARY} onSelect={setSelected} copy={copy.search} />
+              }
+              figures={
+                <>
+                  <Figure label={copy.explore.selectedLabel} value={current.en} />
+                  <Figure
+                    label={copy.explore.nearestLabel}
+                    value={neighbours[0] ? score(neighbours[0].similarity) : "—"}
+                    tone="accent"
+                    hint={
+                      neighbours[0] ? (VOCABULARY[neighbours[0].index]?.en ?? undefined) : undefined
+                    }
+                  />
+                </>
+              }
+              secondaryLabel={copy.compare.title}
+              secondary={
+                <ComparePanel
+                  current={current}
+                  held={held === null ? null : (VOCABULARY[held] ?? null)}
+                  similarity={comparison?.similarity ?? null}
+                  rank={comparison?.rank ?? null}
+                  total={comparison?.total ?? 0}
+                  onHold={() => setHeld(selected)}
+                  onRelease={() => setHeld(null)}
+                  formatScore={score}
+                  copy={copy.compare}
+                />
+              }
             />
           </div>
-
-          <section
-            aria-labelledby="eu-neighbours-heading"
-            className="mx-auto max-w-[44rem] !mt-10"
-          >
-            <h2 id="eu-neighbours-heading" className="sr-only">
-              {copy.explore.neighboursTitle}
-            </h2>
-            <p className="sr-only" aria-live="polite">
-              {copy.explore.announce(current.en, current.tr)}
-            </p>
-            <div className="space-y-8">
-              <WordSearch vocabulary={VOCABULARY} onSelect={setSelected} copy={copy.search} />
-              <NeighbourList
-                anchor={current}
-                neighbours={neighbours}
-                vocabulary={VOCABULARY}
-                formatScore={score}
-                onSelect={setSelected}
-                copy={copy.neighbours}
-              />
-            </div>
-          </section>
 
           {/* 2 — the same points, now saying something else. */}
           <div className="mx-auto max-w-[44rem]">

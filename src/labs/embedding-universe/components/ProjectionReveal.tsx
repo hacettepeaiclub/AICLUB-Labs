@@ -1,4 +1,4 @@
-import { Figure, FigureRow } from "@/components/lab";
+import { Figure } from "@/components/lab";
 import { Segmented } from "@/components/ui";
 import type { DistortionPair } from "../engine";
 import type { VocabularyItem } from "../vocabulary";
@@ -125,7 +125,10 @@ export function ProjectionReveal({
         {mode === "none" && copy.idle}
       </p>
 
-      <FigureRow>
+      {/* Bare, in a hairline panel rather than a raised card: this sits inside
+          a section that is already a surface, and a card in a card is one
+          border too many. */}
+      <div className="flex flex-wrap items-start gap-x-8 gap-y-4 rounded border border-line/10 bg-ink-950 p-4">
         <Figure
           label={copy.varianceLabel}
           value={formatPercent(combined, 4)}
@@ -140,7 +143,7 @@ export function ProjectionReveal({
           value={formatScore(rankCorrelation)}
           hint={copy.correlationHint}
         />
-      </FigureRow>
+      </div>
 
       <p className="max-w-prose text-body text-fg-muted">
         {copy.varianceBody(formatPercent(combined, 4), remainingDimensions)}

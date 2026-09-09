@@ -61,6 +61,8 @@ export interface UniverseMapCopy {
   readonly pointLabel: (word: string, gloss: string) => string;
   readonly neighbourLabel: (word: string, gloss: string, rank: number, score: string) => string;
   readonly selectedLabel: (word: string, gloss: string) => string;
+  readonly pinnedLabel: (word: string, gloss: string) => string;
+  readonly compareLabel: (a: string, b: string, score: string) => string;
   readonly pending: string;
   /** States plainly that the drawn lines are an overlay, not edges in the model. */
   readonly linksNote: string;
@@ -73,6 +75,10 @@ export interface UniverseMapProps {
   neighbours: readonly Neighbour[];
   /** Section 2's pair. When non-empty everything else dims. */
   highlighted: readonly number[];
+  /** A second word held for comparison, or null. Drawn as a ringed star. */
+  pinned: number | null;
+  /** Cosine between the pinned word and the selection, straight from the engine. */
+  pinnedSimilarity: number | null;
   formatScore: (value: number) => string;
   onSelect: (index: number) => void;
   copy: UniverseMapCopy;
@@ -112,6 +118,8 @@ export function UniverseMap({
   selected,
   neighbours,
   highlighted,
+  pinned,
+  pinnedSimilarity,
   formatScore,
   onSelect,
   copy,
@@ -140,8 +148,19 @@ export function UniverseMap({
   );
 
   const neighbourIndices = new Set(neighbours.map((n) => n.index));
-  const scoreOf = new Map(neighbours.map((n, rank) => [n.index, { rank: rank + 1, value: n.similarity }]));
-  const labels = points ? labelledPoints(selected, neighbours, hovered, highlighted) : new Set<number>();
+  const scoreOf = new Map(
+    neighbours.map((n, rank) => [n.index, { rank: rank + 1, value: n.similarity }]),
+  );
+  // `labelledPoints` decides who gets a name; a pinned word is added to that
+  // set here rather than inside it, so the tested pure function keeps its exact
+  // behaviour and the pin stays a presentation concern.
+  const labels = points
+    ? labelledPoints(selected, neighbours, hovered, highlighted)
+    : new Set<number>();
+  if (pinned !== null) labels.add(pinned);
+  // `pinned` is also the name of a LabelCandidate field, so the held word gets
+  // a distinct local name where the two would otherwise collide.
+  const heldIndex = pinned;
   const optionId = (index: number) => `${baseId}-point-${index}`;
   const glowId = `${baseId}-glow`;
   const coreId = `${baseId}-core`;
@@ -150,6 +169,7 @@ export function UniverseMap({
   // selection first, then neighbours in rank order, then whatever is hovered.
   const priority = [
     ...highlighted,
+    ...(pinned === null ? [] : [pinned]),
     ...(selected === null ? [] : [selected]),
     ...neighbours.map((n) => n.index),
     ...(hovered === null ? [] : [hovered]),
@@ -176,7 +196,11 @@ export function UniverseMap({
               // word" is the question this map has to answer. Only a hovered
               // point stays droppable, because it is transient and the panel
               // names it anyway.
-              pinned: index === selected || neighbourIndices.has(index) || highlighted.includes(index),
+              pinned:
+                index === selected ||
+                index === heldIndex ||
+                neighbourIndices.has(index) ||
+                highlighted.includes(index),
             },
           ];
         }),
@@ -243,6 +267,7 @@ export function UniverseMap({
     const item = vocabulary[index];
     if (!item) return "";
     if (index === selected) return copy.selectedLabel(item.en, item.tr);
+    if (index === pinned) return copy.pinnedLabel(item.en, item.tr);
     const score = scoreOf.get(index);
     return score
       ? copy.neighbourLabel(item.en, item.tr, score.rank, formatScore(score.value))
@@ -250,6 +275,9 @@ export function UniverseMap({
   };
 
   const ring = active !== null && showRing ? points?.[active] : undefined;
+  const heldPoint = heldIndex !== null && heldIndex !== selected ? points?.[heldIndex] : undefined;
+  const selectedPoint = selected !== null ? points?.[selected] : undefined;
+  const compare = heldPoint && selectedPoint ? { from: heldPoint, to: selectedPoint } : null;
   const pair =
     highlighted.length === 2 && points
       ? { from: points[highlighted[0]!], to: points[highlighted[1]!] }
@@ -284,6 +312,20 @@ export function UniverseMap({
           fact about the model and is not one. */}
       <p id={`${baseId}-links-note`} className="sr-only">
         {copy.linksNote}
+      </p>
+      {/* The drawn tether says the same thing as this sentence. Anyone who
+          cannot see the line still gets the measurement. */}
+      <p className="sr-only" aria-live="polite">
+        {heldIndex !== null &&
+        selected !== null &&
+        heldIndex !== selected &&
+        pinnedSimilarity !== null
+          ? copy.compareLabel(
+              vocabulary[heldIndex]?.en ?? "",
+              vocabulary[selected]?.en ?? "",
+              formatScore(pinnedSimilarity),
+            )
+          : ""}
       </p>
 
       {/* Keyframes for decoration and the one-shot reveal. Rendered at all only
@@ -421,6 +463,41 @@ export function UniverseMap({
                   opacity={0.14 + link.weight * 0.26}
                 />
               ))}
+            {/* The comparison tether: two words the visitor put side by side,
+                with the cosine the engine measured printed on it. Dashes and a
+                printed number, never colour alone — and it is the one line in
+                this map that carries a value rather than a rank. */}
+            {compare && (
+              <g>
+                <line
+                  x1={compare.from.x}
+                  y1={compare.from.y}
+                  x2={compare.to.x}
+                  y2={compare.to.y}
+                  className="stroke-fg"
+                  strokeWidth={0.22}
+                  strokeDasharray="2 1.4"
+                  opacity={0.55}
+                />
+                {pinnedSimilarity !== null && (
+                  <text
+                    x={(compare.from.x + compare.to.x) / 2}
+                    y={(compare.from.y + compare.to.y) / 2 - 1}
+                    textAnchor="middle"
+                    className="fill-fg font-mono"
+                    style={{
+                      fontSize: 3.2,
+                      paintOrder: "stroke",
+                      stroke: "rgb(var(--ink-950))",
+                      strokeWidth: 1.1,
+                      strokeLinejoin: "round",
+                    }}
+                  >
+                    {formatScore(pinnedSimilarity)}
+                  </text>
+                )}
+              </g>
+            )}
             {pair && pair.from && pair.to && (
               <line
                 x1={pair.from.x}
@@ -471,16 +548,25 @@ export function UniverseMap({
                       opacity={0.45}
                     />
                   )}
-                  <circle
-                    cx={point.x}
-                    cy={point.y}
-                    r={style.core}
-                    fill={`url(#${coreId})`}
-                  />
+                  <circle cx={point.x} cy={point.y} r={style.core} fill={`url(#${coreId})`} />
                 </g>
               );
             })}
           </g>
+
+          {/* The held word wears a ring. A second shape channel, so "pinned"
+              is not another shade of the same blue. */}
+          {heldPoint && (
+            <circle
+              cx={heldPoint.x}
+              cy={heldPoint.y}
+              r={3.4}
+              fill="none"
+              className="stroke-fg"
+              strokeWidth={0.3}
+              opacity={0.8}
+            />
+          )}
 
           {/* Drawn focus indicator: never depends on SVG focus-ring support. */}
           {ring && (
@@ -524,9 +610,7 @@ export function UniverseMap({
                     textAnchor="middle"
                     className={cn(
                       "font-mono",
-                      isSelected || highlighted.includes(label.index)
-                        ? "fill-fg"
-                        : "fill-fg-muted",
+                      isSelected || highlighted.includes(label.index) ? "fill-fg" : "fill-fg-muted",
                     )}
                     style={{
                       fontSize: label.size,
