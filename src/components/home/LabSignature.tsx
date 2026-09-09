@@ -317,6 +317,42 @@ function Shape({ slug }: { slug: string }) {
         </g>
       );
     }
+    case "hypothesis-testing": {
+      /*
+       * Two sampling distributions, a boundary, and the tail past it. The
+       * shape of the lab: the overlap is the problem and the vertical line is
+       * the decision. Both curves are the same normal drawn twice at an
+       * offset — the density formula, not a hand-drawn bell.
+       */
+      const bell = (centre: number, sd: number) => {
+        const pts: string[] = [];
+        for (let i = 0; i <= 48; i++) {
+          const x = 4 + (i / 48) * 56;
+          const z = (x - centre) / sd;
+          pts.push(`${x.toFixed(1)},${(34 - Math.exp(-0.5 * z * z) * 25).toFixed(1)}`);
+        }
+        return pts.join(" ");
+      };
+      const CUT = 38;
+      const tail: string[] = [];
+      for (let i = 0; i <= 20; i++) {
+        const x = CUT + (i / 20) * (60 - CUT);
+        const z = (x - 26) / 7;
+        tail.push(`${x.toFixed(1)},${(34 - Math.exp(-0.5 * z * z) * 25).toFixed(1)}`);
+      }
+      return (
+        <g fill="none" strokeWidth={0.9}>
+          <line x1={4} y1={34} x2={60} y2={34} className={inert} strokeWidth={0.5} />
+          <polygon
+            points={`${CUT},34 ${tail.join(" ")} 60,34`}
+            className="fill-fg-faint/30 stroke-none"
+          />
+          <polyline points={bell(26, 7)} className={structure} />
+          <polyline points={bell(42, 7)} className="stroke-data" strokeDasharray="2.5 2" />
+          <line x1={CUT} y1={6} x2={CUT} y2={34} className={inert} strokeDasharray="1.5 1.5" />
+        </g>
+      );
+    }
     case "embedding-universe":
     default: {
       const pts = Array.from({ length: 26 }, () => ({ x: 4 + rng() * 56, y: 4 + rng() * 32 }));

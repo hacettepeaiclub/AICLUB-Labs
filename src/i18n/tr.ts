@@ -248,6 +248,184 @@ export const tr: Translation = {
           "Gömme uzayı İngilizcedir. Buradaki Türkçe kelimeler okumayı kolaylaştırmak için bizim eklediğimiz etiketlerdir — gömülmediler ve bu bir Türkçe gömme uzayı değildir.",
       },
     },
+    // ------------------------------------------------ hypothesis testing ----
+    "hypothesis-testing": {
+      title: "Hipotez Testleri",
+      description:
+        "\u0130ki hipotezi birbirinden uzakla\u015ft\u0131r\u0131n ve emin olman\u0131n bedelini izleyin: red b\u00f6lgesi, kabul etti\u011finiz hatalar ve kar\u015f\u0131l\u0131\u011f\u0131nda ald\u0131\u011f\u0131n\u0131z g\u00fc\u00e7.",
+
+      scope:
+        "Bu kuramsal modeldir: ortalaman\u0131n iki normal \u00f6rnekleme da\u011f\u0131l\u0131m\u0131, ikisi de \u03c3/\u221an standart hatas\u0131yla ve \u03c3 bilinen kabul edilerek. S\u0131n\u0131r\u0131 t de\u011fil z yapan da budur. Bu laboratuvarda hi\u00e7bir yerde \u00f6rneklem \u00e7ekilmez \u2014 her say\u0131, g\u00f6sterilen denklemlerin kapal\u0131 form de\u011feridir; yani okudu\u011funuz \u015fey bir deneyin tek bir ko\u015fusu de\u011fil, modelin kendisidir.",
+
+      testType: {
+        right: "\u03bc\u2081 > \u03bc\u2080",
+        left: "\u03bc\u2081 < \u03bc\u2080",
+        two: "\u03bc\u2081 \u2260 \u03bc\u2080",
+      },
+
+      plot: {
+        h0: "H\u2080",
+        h1: "H\u2081",
+        alphaTag: (value: string) => `\u03b1 = ${value}`,
+        betaTag: (value: string) => `\u03b2 = ${value}`,
+        summary: (
+          mu0: string,
+          mu1: string,
+          se: string,
+          criticals: string,
+          alpha: string,
+          beta: string,
+          power: string,
+        ) =>
+          `\u0130ki normal e\u011fri. H\u2080 ${mu0} merkezli, H\u2081 ${mu1} merkezli, ikisinin de standart hatas\u0131 ${se}. S\u0131n\u0131r ${criticals} konumunda. H\u2080 alt\u0131nda s\u0131n\u0131r\u0131n \u00f6tesindeki taral\u0131 alan \u03b1 = ${alpha}; H\u2081 alt\u0131nda s\u0131n\u0131r\u0131n i\u00e7indeki taral\u0131 alan \u03b2 = ${beta}. G\u00fc\u00e7 ${power}.`,
+      },
+
+      controls: {
+        moreLabel: "Di\u011fer ayarlar",
+        note: "Her kontrol ayn\u0131 modeli yeniden ayarlar. Burada hi\u00e7bir \u015fey \u00f6rneklenmez.",
+        mu0: "\u03bc\u2080 \u2014 s\u0131f\u0131r hipotezi ortalamas\u0131",
+        mu0Value: (value: string) => `\u03bc\u2080 = ${value}`,
+        mu1: "\u03bc\u2081 \u2014 alternatif ortalama",
+        mu1Value: (value: string) => `\u03bc\u2081 = ${value}`,
+        sigma: "\u03c3 \u2014 kitle yay\u0131l\u0131m\u0131",
+        sigmaValue: (value: string) => `\u03c3 = ${value}`,
+        alpha: "\u03b1",
+        alphaValue: (value: string) => `\u03b1 = ${value}`,
+        n: "n \u2014 \u00f6rneklem b\u00fcy\u00fckl\u00fc\u011f\u00fc",
+        nValue: (value: number) => `n = ${value}`,
+      },
+
+      separation: {
+        title: "\u0130ki hipotez",
+        question: "\u0130ki hipotez birbirinden uzakla\u015ft\u0131\u011f\u0131nda ne olur?",
+        caption:
+          "Ayn\u0131 ortalama hakk\u0131nda iki iddia. Hi\u00e7biri veri de\u011fildir; ikisi de o iddia do\u011fru olsayd\u0131 n \u00f6l\u00e7\u00fcm\u00fcn ortalamas\u0131n\u0131n nas\u0131l davranaca\u011f\u0131d\u0131r.",
+        mu1Label: "\u03bc\u2081 \u2014 alternatifi hareket ettirin",
+        mu1Value: (value: string) => `\u03bc\u2081 = ${value}`,
+        mu1Hint: "\u03bc\u2080 \u00fczerinden ge\u00e7irip di\u011fer tarafa ta\u015f\u0131y\u0131n.",
+        mu0Label: "\u03bc\u2080",
+        mu1Figure: "\u03bc\u2081",
+        gapLabel: "Aral\u0131k",
+        gapHint: "standart hata cinsinden",
+        announce: (mu1: string, gap: string) =>
+          `\u03bc\u2081 = ${mu1}. \u0130ki ortalama aras\u0131nda ${gap} standart hata var.`,
+      },
+
+      alphaSection: {
+        kicker: "\u00c7izgiyi nereye \u00e7ekiyorsunuz",
+        title: "Tek bir s\u0131n\u0131r; \u00f6tesindeki her \u015fey kan\u0131t say\u0131l\u0131r.",
+        lede: "Bir testin kurala ihtiyac\u0131 vard\u0131r: sonu\u00e7 \u03bc\u2080'dan ne kadar uzakta d\u00fc\u015fmeli ki H\u2080'a inanmay\u0131 b\u0131rakas\u0131n\u0131z? Bu \u00e7izgi kritik de\u011ferdir ve \u03b1, H\u2080'\u0131n ne kadar\u0131n\u0131 bu \u00e7izginin yanl\u0131\u015f taraf\u0131nda b\u0131rakmaya raz\u0131 oldu\u011funuzdur.",
+        caption:
+          "\u03b1 yapt\u0131\u011f\u0131n\u0131z bir hata de\u011fildir. \u00d6nceden kan\u0131t saymay\u0131 kabul etti\u011finiz H\u2080 k\u00fctlesidir; kayd\u0131r\u0131c\u0131n\u0131n e\u011friyi de\u011fil \u00e7izgiyi oynatmas\u0131n\u0131n nedeni de budur.",
+        alphaLabel: "\u03b1 \u2014 kabul etti\u011finiz yanl\u0131\u015f alarm",
+        alphaValue: (value: string) => `\u03b1 = ${value}`,
+        alphaHint: "H\u2080 alt\u0131ndaki taral\u0131 alan tam olarak bu say\u0131d\u0131r.",
+        alphaFigure: "\u03b1",
+        criticalLabel: "Kritik de\u011fer",
+        criticalHint: "\u03bc\u2080 \u00b1 z\u00b7SE",
+        criticalLeft: "Alt s\u0131n\u0131r",
+        criticalRight: "\u00dcst s\u0131n\u0131r",
+        seLabel: "SE",
+        seHint: "\u03c3/\u221an",
+        oneSided: (value: string) =>
+          `\u03b1'n\u0131n tamam\u0131 tek kuyrukta: H\u2080'\u0131n ${value} kadar\u0131 s\u0131n\u0131r\u0131n \u00f6tesinde kal\u0131yor.`,
+        twoSided: (half: string) =>
+          `\u03b1 iki kuyru\u011fa b\u00f6l\u00fcn\u00fcr: her u\u00e7ta ${half}. B\u00f6ylece her s\u0131n\u0131r, tek y\u00f6nl\u00fc bir testin koyaca\u011f\u0131ndan daha d\u0131\u015farda durur.`,
+        announce: (alpha: string, criticals: string) =>
+          `\u03b1 = ${alpha}. S\u0131n\u0131r ${criticals} konumunda.`,
+      },
+
+      betaSection: {
+        kicker: "Kimsenin saymad\u0131\u011f\u0131 hata",
+        title: "\u03b2, H\u2081'in \u00e7izginin g\u00fcvenli taraf\u0131nda b\u0131rakt\u0131\u011f\u0131 k\u0131s\u0131md\u0131r.",
+        lede: "\u03b1 H\u2080 alt\u0131nda, \u03b2 H\u2081 alt\u0131nda ya\u015far; ayn\u0131 s\u0131n\u0131r\u0131n z\u0131t taraflar\u0131nda. Birini k\u00fc\u00e7\u00fcltmek i\u00e7in s\u0131n\u0131r\u0131 oynat\u0131n, di\u011feri b\u00fcy\u00fcr \u2014 testi hangi y\u00f6ne \u00e7evirdi\u011finizin, \u00e7izgiyi nereye koydu\u011funuz kadar \u00f6nemli olmas\u0131n\u0131n nedeni budur.",
+        caption:
+          "\u03b2, bu belirli H\u2081 do\u011fruyken H\u2080'\u0131 reddetmeme olas\u0131l\u0131\u011f\u0131d\u0131r. G\u00fc\u00e7 1 \u2212 \u03b2'd\u0131r. \u0130kisi de modelin \u00f6zellikleridir, herhangi bir \u00f6rneklemin de\u011fil.",
+        testTypeLabel: "H\u2081 ne iddia ediyor",
+        mu1Label: "\u03bc\u2081",
+        mu1Value: (value: string) => `\u03bc\u2081 = ${value}`,
+        betaLabel: "\u03b2",
+        betaHint: "reddedilmeyen H\u2081 k\u00fctlesi",
+        powerLabel: "G\u00fc\u00e7",
+        powerHint: "1 \u2212 \u03b2",
+        alphaLabel: "\u03b1",
+        reading: (beta: string) =>
+          `\u03b2 = ${beta}: H\u2081'in bu kadarl\u0131k k\u0131sm\u0131, testin H\u2080'\u0131 reddetmedi\u011fi b\u00f6lgeye d\u00fc\u015f\u00fcyor.`,
+        warning: {
+          left: "Test \u03bc\u2081 < \u03bc\u2080 ar\u0131yor, ancak \u03bc\u2081 \u03bc\u2080'\u0131n alt\u0131nda de\u011fil. Alternatif da\u011f\u0131l\u0131m red b\u00f6lgesinden uzakta duruyor, dolay\u0131s\u0131yla neredeyse hi\u00e7 yakalanm\u0131yor: \u03b2 1'e, g\u00fc\u00e7 0'a yak\u0131n.",
+          right: "Test \u03bc\u2081 > \u03bc\u2080 ar\u0131yor, ancak \u03bc\u2081 \u03bc\u2080'\u0131n \u00fczerinde de\u011fil. Alternatif da\u011f\u0131l\u0131m red b\u00f6lgesinden uzakta duruyor, dolay\u0131s\u0131yla neredeyse hi\u00e7 yakalanm\u0131yor: \u03b2 1'e, g\u00fc\u00e7 0'a yak\u0131n.",
+        },
+        announce: (beta: string, power: string) => `\u03b2 = ${beta}. G\u00fc\u00e7 = ${power}.`,
+      },
+
+      sampleSection: {
+        kicker: "\u0130kisine birden yarayan tek kol",
+        title: "Daha fazla veri her \u015feyi ayn\u0131 anda daralt\u0131r.",
+        lede: "E\u011friler ayn\u0131 geni\u015flikte kald\u0131\u011f\u0131 s\u00fcrece \u03b1 ile \u03b2 birbirine kar\u015f\u0131 takas edilir. Geni\u015fli\u011fi de\u011fi\u015ftiren \u015fey n'dir: SE = \u03c3/\u221an. B\u00f6ylece iki da\u011f\u0131l\u0131m da kendi ortalamas\u0131 etraf\u0131nda s\u0131k\u0131\u015f\u0131r ve kimse daha fazla yanl\u0131\u015f alarm kabul etmeden \u00f6rt\u00fc\u015fme azal\u0131r.",
+        caption:
+          "x ekseni \u00b14,5 SE olarak \u00e7izilir, yani pencere de e\u011frilerle birlikte daral\u0131r. Kayd\u0131r\u0131c\u0131n\u0131n ikinci yar\u0131s\u0131n\u0131n ilk yar\u0131s\u0131ndan \u00e7ok daha az kazand\u0131rmas\u0131n\u0131n nedeni \u221an'dir.",
+        nLabel: "n \u2014 \u00f6rneklem b\u00fcy\u00fckl\u00fc\u011f\u00fc",
+        nValue: (value: number) => `n = ${value}`,
+        formula: (se: string) => `SE = \u03c3/\u221an = ${se}`,
+        nFigure: "n",
+        seLabel: "SE",
+        seHint: "\u03c3/\u221an",
+        powerLabel: "G\u00fc\u00e7",
+        betaLabel: "\u03b2",
+        curveTitle: "\u00d6rneklem b\u00fcy\u00fckl\u00fc\u011f\u00fcne kar\u015f\u0131 g\u00fc\u00e7",
+        eighty: "0,80",
+        curveLabel: (from: number, to: number, first: string, last: string) =>
+          `Di\u011fer her \u015fey sabitken n = ${from}'den n = ${to}'e g\u00fc\u00e7. ${first} civar\u0131nda ba\u015fl\u0131yor ve yakla\u015f\u0131k ${last} de\u011ferine ula\u015f\u0131yor.`,
+        announce: (n: number, se: string, power: string) =>
+          `n = ${n}. SE = ${se}. G\u00fc\u00e7 = ${power}.`,
+      },
+
+      challenge: {
+        kicker: "\u015eimdi bir say\u0131y\u0131 tutturun",
+        title: "G\u00f6revin istedi\u011fi g\u00fcce ula\u015f\u0131n.",
+        lede: "\u0130ki g\u00f6rev. Her biri oynat\u0131lacak bir kontrol de\u011fil, ula\u015f\u0131lacak bir sonu\u00e7 belirtir; b\u00f6ylece hi\u00e7biri kayd\u0131r\u0131c\u0131y\u0131 belirli bir yere koyarak ge\u00e7ilemez \u2014 modelin o say\u0131y\u0131 ger\u00e7ekten bildirmesi gerekir.",
+        puzzleLabel: "G\u00f6rev",
+        reset: "Ba\u015fa d\u00f6n",
+        powerLabel: "G\u00fc\u00e7",
+        alphaLabel: "\u03b1",
+        seLabel: "SE",
+        target: (value: string) => `hedef ${value}`,
+        notYet: (power: string, target: string) => `G\u00fc\u00e7 ${power}. ${target} de\u011ferine ula\u015fmas\u0131 gerekiyor.`,
+        alphaTooHigh: (max: string) => `\u03b1 bu g\u00f6revin s\u0131n\u0131r\u0131n\u0131n \u00fczerinde: en fazla ${max} olabilir.`,
+        announceSolved: (power: string) => `\u00c7\u00f6z\u00fcld\u00fc. G\u00fc\u00e7 = ${power}.`,
+        announceAttempt: (power: string, alpha: string) => `G\u00fc\u00e7 ${power}, \u03b1 ${alpha}.`,
+        puzzles: {
+          "reach-power": {
+            title: "0,80'e ula\u015f",
+            brief: (power: string, alpha: string) =>
+              `Etki ger\u00e7ek ama k\u00fc\u00e7\u00fck: \u03bc\u2081, \u03bc\u2080'\u0131n yar\u0131m birim \u00fczerinde ve test bunu yanl\u0131\u015f alarm verdi\u011finden ancak biraz daha s\u0131k buluyor. \u03b1'y\u0131 ${alpha} de\u011ferinin \u00fczerine \u00e7\u0131karmadan g\u00fcc\u00fc ${power} de\u011ferine getirin.`,
+            lesson:
+              "\u0130ki kol da i\u015fe yarar ama ayn\u0131 takas de\u011fildir. \u03b1, daha fazla yanl\u0131\u015f alarm kabul ederek g\u00fc\u00e7 sat\u0131n al\u0131r; n ise SE'yi daraltarak al\u0131r ve bunun veriden ba\u015fka bedeli yoktur.",
+            solved: (power: string, alpha: string) =>
+              `G\u00fc\u00e7 ${power}, \u03b1 = ${alpha}. Buraya n ve \u03b1'n\u0131n hangi kar\u0131\u015f\u0131m\u0131yla geldiyseniz gelin, s\u0131n\u0131r SE'ye g\u00f6re \u03bc\u2080'a yeterince yakla\u015ft\u0131 ve H\u2081'in b\u00fcy\u00fck k\u0131sm\u0131 onun \u00f6tesine d\u00fc\u015ft\u00fc.`,
+          },
+          noisy: {
+            title: "Fazla g\u00fcr\u00fclt\u00fc",
+            brief: (power: string, alpha: string) =>
+              `\u03c3 = 3 ve test iki y\u00f6nl\u00fc; yani \u03b1 iki kuyru\u011fa b\u00f6l\u00fcn\u00fcyor ve her iki s\u0131n\u0131r da epey d\u0131\u015farda duruyor. \u03b1 en fazla ${alpha} olacak \u015fekilde ${power} g\u00fcce ula\u015f\u0131n.`,
+            lesson:
+              "\u0130ki y\u00f6nl\u00fc bir test, \u03b1'n\u0131n yar\u0131s\u0131n\u0131 alternatifin bulunmad\u0131\u011f\u0131 bir y\u00f6n\u00fc izlemeye harcar. Bir y\u00f6ne ba\u011flanmak bedava g\u00fc\u00e7t\u00fcr \u2014 ve yaln\u0131zca y\u00f6n konusunda hakl\u0131ysan\u0131z bedavad\u0131r.",
+            solved: (power: string, alpha: string) =>
+              `G\u00fc\u00e7 ${power}, \u03b1 = ${alpha}. \u03c3'y\u0131 k\u00fc\u00e7\u00fcltmek ya da n'yi b\u00fcy\u00fctmek SE'yi daralt\u0131r; tek y\u00f6nl\u00fc test ise \u03b1'n\u0131n tamam\u0131n\u0131 \u03bc\u2081'in ger\u00e7ekten bulundu\u011fu kuyru\u011fa koyar.`,
+          },
+        },
+      },
+
+      recap: {
+        lessons: [
+          "\u03b1, kritik de\u011ferin \u00f6tesindeki H\u2080 k\u00fctlesidir \u2014 hi\u00e7bir \u015fey g\u00f6rmeden \u00f6nce kabul etti\u011finiz yanl\u0131\u015f alarmlar.",
+          "\u03b2, s\u0131n\u0131r\u0131n i\u00e7inde kalan H\u2081 k\u00fctlesidir ve g\u00fc\u00e7 1 \u2212 \u03b2'd\u0131r. \u0130kisi de \"herhangi bir etkiye\" g\u00f6re de\u011fil, belirli bir \u03bc\u2081'e g\u00f6re hesaplan\u0131r.",
+          "S\u0131n\u0131r\u0131 oynatmak \u03b1 ile \u03b2'y\u0131 takas eder. \u0130kisini birden iyile\u015ftiren tek \u015fey SE = \u03c3/\u221an'dir; n'in taviz olmayan kol olmas\u0131n\u0131n nedeni budur.",
+        ],
+        footer:
+          "Buradaki her \u015fey \u03c3'n\u0131n bilindi\u011fi kapal\u0131 form normal modeldir: ortalaman\u0131n iki \u00f6rnekleme da\u011f\u0131l\u0131m\u0131, tek bir s\u0131n\u0131r ve s\u0131n\u0131r\u0131n iki yan\u0131ndaki alanlar. Ger\u00e7ek testlerde \u03c3'n\u0131n \u00f6rneklemden kestirilmesi gerekir \u2014 t da\u011f\u0131l\u0131m\u0131n\u0131 gerekli k\u0131lan da budur \u2014 ve y\u00f6n\u00fcn veriden \u00f6nce mi sonra m\u0131 se\u00e7ildi\u011fi ayr\u0131 bir sorundur. Bu laboratuvar, o zorluklar\u0131n \u00fczerine oturdu\u011fu geometriyi g\u00f6sterir.",
+      },
+    },
 
     // ------------------------------------------------ reward playground ----
     "reward-playground": {

@@ -20,15 +20,19 @@ describe("the collection has an order, and it is the one we chose", () => {
       "attention",
       "reward-playground",
       "embedding-universe",
+      "hypothesis-testing",
     ]);
   });
 
   it("shows every published lab, and only published labs", () => {
-    // Nine tiles, three rows of three. Nothing is curated away and nothing is
-    // held back behind a second click, so this count is also the promise the
-    // page makes in its own heading.
+    // Nothing is curated away and nothing is held back behind a second click,
+    // so this count is also the promise the page makes in its own heading.
+    //
+    // Ten no longer divides by three: the `lg:grid-cols-3` grid now ends on a
+    // single card. That is a home-page layout decision rather than a registry
+    // one, and it is left to the home page to answer.
     const shown = orderedLabs();
-    expect(shown).toHaveLength(9);
+    expect(shown).toHaveLength(10);
     expect(shown.map((lab) => lab.meta.slug).sort()).toEqual(
       publishedLabs()
         .map((lab) => lab.meta.slug)
