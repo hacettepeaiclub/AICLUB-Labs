@@ -88,7 +88,15 @@ describe("copy", () => {
     }
     // The first screen must not teach the vocabulary.
     const room = JSON.stringify(en.labs["reward-playground"].room);
-    for (const word of ["Q-learning", "Q-table", "Bellman", "epsilon", "gamma", "alpha", "policy"]) {
+    for (const word of [
+      "Q-learning",
+      "Q-table",
+      "Bellman",
+      "epsilon",
+      "gamma",
+      "alpha",
+      "policy",
+    ]) {
       expect(room.toLowerCase(), `room copy mentions "${word}"`).not.toContain(word.toLowerCase());
     }
   });
@@ -217,8 +225,12 @@ describe("the value map", () => {
 
   it("shows different tables at different points of the scrubber", () => {
     const run = runAt(0);
-    const early = valueCells(run.snapshots[2]!.q).map((c) => c.value).join(",");
-    const late = valueCells(run.snapshots[run.snapshots.length - 1]!.q).map((c) => c.value).join(",");
+    const early = valueCells(run.snapshots[2]!.q)
+      .map((c) => c.value)
+      .join(",");
+    const late = valueCells(run.snapshots[run.snapshots.length - 1]!.q)
+      .map((c) => c.value)
+      .join(",");
     expect(early).not.toBe(late);
   });
 
@@ -325,11 +337,18 @@ describe("keyboard navigation of the map", () => {
 // ============================== 9, 14. nothing hardcoded, nothing extra ======
 
 describe("the components", () => {
-  const SOURCES = [
-    "src/labs/reward-playground/index.tsx",
-    "src/labs/reward-playground/components/RoomView.tsx",
-    "src/labs/reward-playground/components/LearningTrace.tsx",
+  const PAGE = "src/labs/reward-playground/index.tsx";
+  /** Every component that draws a number or a route. */
+  const COMPONENTS = [
+    "src/labs/reward-playground/components/RoomGrid.tsx",
+    "src/labs/reward-playground/components/WorldStage.tsx",
+    "src/labs/reward-playground/components/TrainStage.tsx",
+    "src/labs/reward-playground/components/PolicyStage.tsx",
+    "src/labs/reward-playground/components/UpdateStage.tsx",
+    "src/labs/reward-playground/components/RulesStage.tsx",
+    "src/labs/reward-playground/components/ChallengeStage.tsx",
   ];
+  const SOURCES = [PAGE, ...COMPONENTS];
   const read = (path: string) => readFileSync(path, "utf8");
 
   it("contain none of the measured results the engine produces", () => {
@@ -358,40 +377,49 @@ describe("the components", () => {
     }
   });
 
-  it("derive every number through the view helpers or the engine", () => {
-    const room = read(SOURCES[1]!);
-    expect(room).toMatch(/from "\.\.\/view"/);
-    expect(room).toMatch(/roomCells|pathPoints|behaviourOf/);
-    const trace = read(SOURCES[2]!);
-    expect(trace).toMatch(/valueCells/);
-    expect(trace).toMatch(/cellActions/);
-    // Only the page runs training; the two views receive its result.
-    expect(read(SOURCES[0]!)).toMatch(/\btrain\s*\(/);
-    for (const path of SOURCES.slice(1)) {
-      expect(read(path), `${path} should not train`).not.toMatch(/\btrain\s*\(/);
+  it("derive every number through the view helpers, the engine or the learner", () => {
+    for (const path of COMPONENTS) {
+      expect(read(path), `${path} imports nothing it could derive from`).toMatch(
+        /from "\.\.\/(view|engine|learner|challenge|useTrainingRun)"/,
+      );
     }
+    // The room reads its route and its policy rather than holding one.
+    expect(read(SOURCES[1]!)).toMatch(/ARROWS|cellKind/);
+    // The update section shows a real record, never an example.
+    expect(read("src/labs/reward-playground/components/UpdateStage.tsx")).toMatch(/run\.last/);
   });
 
-  it("ship exactly two primary controls and nothing resembling a dashboard", () => {
-    const all = SOURCES.map(read).join("\n");
-    const sliders = all.match(/<LabSlider/g) ?? [];
-    expect(sliders).toHaveLength(2); // the reward, and the scrubber
-    for (const banned of [
-      "Run",
-      "Reset",
-      "Step ",
-      "epsilon",
-      "alpha",
-      "gamma",
-      "score",
-      "Leaderboard",
-      "badge",
-      "challenge",
-    ]) {
-      expect(all.includes(`>${banned}`), `a control named ${banned}`).toBe(false);
+  it("keep the learning in the engine layer and out of the components", () => {
+    // No component may run a training loop of its own, and none may perform an
+    // update: those live in engine.ts and learner.ts, which are tested.
+    // Comments discuss these functions on purpose — the components explain
+    // where the learning lives. What must not appear is a call.
+    const code = (path: string) =>
+      read(path)
+        .replace(/\/\*[\s\S]*?\*\//g, "")
+        .replace(/^\s*\/\/.*$/gm, "");
+
+    for (const path of COMPONENTS) {
+      const source = code(path);
+      for (const banned of ["train", "qUpdate", "createLearner", "chooseAction", "runEpisode"]) {
+        // Built rather than written as a literal: a word-boundary escape
+        // that does not survive whatever wrote this file turns the whole
+        // assertion into one that matches nothing and passes for free.
+        const pattern = new RegExp(String.raw`\b${banned}\s*\(`);
+        expect(pattern.test(source), `${path} calls ${banned}()`).toBe(false);
+      }
     }
-    // No <Button> at all: neither section needs one.
-    expect(all.includes("<Button")).toBe(false);
+    // Exactly one place owns the live run, and it is the hook.
+    expect(read("src/labs/reward-playground/useTrainingRun.ts")).toMatch(/createLearner/);
+  });
+
+  it("carry no gamification of any kind", () => {
+    const all = SOURCES.map(read).join(String.fromCharCode(10));
+    // Whole words: "coincidence" in a comment is not a coin.
+    for (const banned of ["XP", "streak", "leaderboard", "trophy", "coin", "level up", "points"]) {
+      const pattern = new RegExp(`\b${banned}\b`, "i");
+      expect(pattern.test(all), `a component mentions ${banned}`).toBe(false);
+    }
   });
 
   it("keep their prose in the dictionary", () => {
@@ -402,11 +430,18 @@ describe("the components", () => {
     }
   });
 
-  it("honour reduced motion in the one place anything moves", () => {
-    const room = read(SOURCES[1]!);
-    expect(room).toMatch(/useReducedMotion/);
-    // The walk is a finite transition, not a standing loop.
-    expect(room).toMatch(/cancelAnimationFrame/);
-    expect(read(SOURCES[2]!)).not.toMatch(/requestAnimationFrame/);
+  it("honour reduced motion where the run is paced", () => {
+    // Nothing tweens any more: what moves is the agent being somewhere else.
+    // The one thing that has a rate is the training loop, and it is the one
+    // thing that has to answer to the preference.
+    const hook = read("src/labs/reward-playground/useTrainingRun.ts");
+    expect(hook).toMatch(/useReducedMotion/);
+    expect(hook).toMatch(/clearInterval/);
+    // No standing frame loop anywhere in the lab.
+    for (const path of SOURCES) {
+      expect(read(path), `${path} runs an animation frame loop`).not.toMatch(
+        /requestAnimationFrame/,
+      );
+    }
   });
 });
