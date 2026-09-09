@@ -1643,6 +1643,203 @@ export const tr: Translation = {
           "Telefonunuzun bugüne kadar önerdiği her güzergâh buna benzer bir döngüden çıktı: bir sınır, kesinleşmiş bir küme ve sıradaki hücreyi seçen bir kural.",
       },
     },
+    // ------------------------------------------------------- probability ----
+    probability: {
+      title: "Olas\u0131l\u0131k Laboratuvar\u0131",
+      description:
+        "\u015eans hakk\u0131ndaki sezgine meydan okuyan d\u00f6rt deney. \u00d6nce tahmin edin, sonra tahminin ne kadar yanl\u0131\u015f oldu\u011funu g\u00f6r\u00fcn.",
+
+      scope:
+        "D\u00f6rt \u00e7\u00f6z\u00fcml\u00fc problem; olas\u0131l\u0131\u011f\u0131n geneline bir bak\u0131\u015f de\u011fil. Her biri belirtilmi\u015f bir model kullan\u0131r \u2014 iki kurala ba\u011fl\u0131 bir sunucu, e\u015fit olas\u0131l\u0131kl\u0131 365 do\u011fum g\u00fcn\u00fc, her biri ba\u011f\u0131ms\u0131z olarak erkek ya da k\u0131z olan iki \u00e7ocuk, yay\u0131mlanm\u0131\u015f tek bir klinik tablo \u2014 ve cevaplar bu modellere aittir. Bir say\u0131 sim\u00fclasyondan geliyorsa sim\u00fclasyon olarak etiketlenir: bir deneyi \u00e7ok kez \u00e7al\u0131\u015ft\u0131rmak bir sonucu g\u00f6sterir, kan\u0131tlamaz.",
+
+      prediction: {
+        yours: "Siz dediniz",
+        actual: "Ger\u00e7ekte",
+        agreed: "Sezginiz modelle ayn\u0131 fikirde.",
+        disagreed: "Sezginizle model ayn\u0131 fikirde de\u011fil. \u0130lgin\u00e7 olan k\u0131s\u0131m da bu.",
+      },
+
+      monty: {
+        title: "\u00dc\u00e7 kap\u0131",
+        question: "Kap\u0131y\u0131 de\u011fi\u015ftirmeli misin?",
+        caption:
+          "Sunucu iki kurala ba\u011fl\u0131d\u0131r: sizin kap\u0131n\u0131z\u0131 asla a\u00e7maz, arabay\u0131 asla a\u00e7maz. A\u00e7may\u0131 bilgilendirici k\u0131lan da bu kurallard\u0131r \u2014 rastgele kap\u0131 a\u00e7an bir sunucu iki se\u00e7ene\u011fi e\u015fit b\u0131rak\u0131rd\u0131.",
+        predictQuestion: "Oynamadan \u00f6nce: kalmak m\u0131 iyi, de\u011fi\u015ftirmek mi, yoksa fark etmez mi?",
+        predict: { stay: "Kal", switch: "De\u011fi\u015ftir", same: "Fark etmez" },
+        predictAnswer: (value: string) => `De\u011fi\u015ftirmek zaman\u0131n ${value} kadar\u0131nda kazan\u0131r`,
+        strategy: { stay: "Kal", switch: "De\u011fi\u015ftir" },
+        doorsIdle: "\u00dc\u00e7 kapal\u0131 kap\u0131. Birinin arkas\u0131nda araba, ikisinde ke\u00e7i var.",
+        doorsLabel: (picked: number, opened: number) =>
+          `\u00dc\u00e7 kap\u0131. ${picked}. kap\u0131y\u0131 se\u00e7tiniz. Sunucu ke\u00e7iyi g\u00f6stermek i\u00e7in ${opened}. kap\u0131y\u0131 a\u00e7t\u0131.`,
+        doorLabel: (n: number, state: string) => `${n}. kap\u0131, ${state}`,
+        doorState: {
+          closed: "kapal\u0131",
+          picked: "sizin se\u00e7iminiz",
+          opened: "sunucu a\u00e7t\u0131, ke\u00e7i",
+          revealed: "araba",
+        },
+        car: "araba",
+        goat: "ke\u00e7i",
+        won: "arabay\u0131 kazand\u0131n\u0131z",
+        lost: "arabay\u0131 kazanamad\u0131n\u0131z",
+        promptPick: "Bir kap\u0131 se\u00e7in.",
+        promptDecide: (opened: number, other: number) =>
+          `Sunucu ${opened}. kap\u0131y\u0131 a\u00e7t\u0131 ve arkas\u0131ndan ke\u00e7i \u00e7\u0131kt\u0131. Kap\u0131n\u0131zda kal\u0131n m\u0131, ${other}. kap\u0131ya m\u0131 ge\u00e7in?`,
+        resultLine: (strategy: string, result: string) => `${strategy} dediniz \u2014 ${result}.`,
+        again: "Yeniden oyna",
+        announceOpened: (n: number) => `Sunucu ${n}. kap\u0131y\u0131 a\u00e7t\u0131. Arkas\u0131ndan ke\u00e7i \u00e7\u0131kt\u0131.`,
+        announceResult: (result: string) => `Tur bitti: ${result}.`,
+        runBatch: (n: number) => `${n.toLocaleString("tr-TR")} tur \u00e7al\u0131\u015ft\u0131r`,
+        batchTitle: "Sim\u00fcle edilen turlar",
+        batchIdle: (n: number) =>
+          `Elle birka\u00e7 tur oynamak bunu \u00e7\u00f6zmez. ${n.toLocaleString("tr-TR")} tur \u00e7al\u0131\u015ft\u0131r\u0131n.`,
+        batchCaption: (n: number) =>
+          `${n} sim\u00fcle edilmi\u015f turda kalman\u0131n ve de\u011fi\u015ftirmenin kazanma oranlar\u0131, tam olas\u0131l\u0131klar\u0131n yan\u0131nda.`,
+        strategyHeader: "Strateji",
+        simulatedHeader: (n: number) => `Sim\u00fclasyon (${n.toLocaleString("tr-TR")})`,
+        exactHeader: "Tam de\u011fer",
+        wins: (wins: number, rounds: number) => `${wins}/${rounds}`,
+        playedLabel: "Oynad\u0131\u011f\u0131n\u0131z tur",
+        yourStayLabel: "Kalmak kazand\u0131r\u0131rd\u0131",
+        yourSwitchLabel: "De\u011fi\u015ftirmek kazand\u0131r\u0131rd\u0131",
+        handHint: "sizin turlar\u0131n\u0131zda",
+      },
+
+      birthday: {
+        kicker: "Sand\u0131\u011f\u0131n\u0131zdan k\u00fc\u00e7\u00fck bir oda",
+        title: "\u0130ki ki\u015finin do\u011fum g\u00fcn\u00fc tutmas\u0131 i\u00e7in ka\u00e7 ki\u015fi gerekir?",
+        lede: "183 de\u011fil. Soru birinin sizinle tutup tutmad\u0131\u011f\u0131 de\u011fil \u2014 herhangi iki ki\u015finin tutup tutmad\u0131\u011f\u0131; ve \u00e7ift say\u0131s\u0131 ki\u015fi say\u0131s\u0131ndan \u00e7ok daha h\u0131zl\u0131 b\u00fcy\u00fcr.",
+        caption:
+          "Model: e\u015fit olas\u0131l\u0131kl\u0131 365 do\u011fum g\u00fcn\u00fc, art\u0131k y\u0131l yok, herkes ba\u011f\u0131ms\u0131z. Ger\u00e7ek do\u011fum g\u00fcnleri mevsime g\u00f6re k\u00fcmelenir ve bu, ger\u00e7ek olas\u0131l\u0131\u011f\u0131 biraz y\u00fckseltir \u2014 yani buradaki, temkinli olan\u0131.",
+        predictQuestion: "Sizce olas\u0131l\u0131k ilk ne zaman %50'yi ge\u00e7er?",
+        predict: { count: (n: number) => `${n} kiÅi` },
+        predictAnswer: (n: number, value: string) => `${n} ki\u015fi, ${value} ile`,
+        peopleLabel: "Odadaki ki\u015fi",
+        peopleValue: (n: number, value: string) => `${n} ki\u015fi, ayn\u0131 do\u011fum g\u00fcn\u00fc olas\u0131l\u0131\u011f\u0131 ${value}`,
+        peopleHint: "Yirmili say\u0131lardan yava\u015f\u00e7a ge\u00e7irin.",
+        roomLabel: (n: number) => `${n} ki\u015filik bir oda. Hi\u00e7 kimsenin do\u011fum g\u00fcn\u00fc tutmuyor.`,
+        roomLabelMatch: (n: number, a: number, b: number, day: string) =>
+          `${n} ki\u015filik bir oda. ${a}. ve ${b}. ki\u015finin do\u011fum g\u00fcn\u00fc ayn\u0131: ${day}.`,
+        foundPair: (a: number, b: number, day: string) =>
+          `${a}. ve ${b}. ki\u015finin do\u011fum g\u00fcn\u00fc ayn\u0131: ${day}.`,
+        noPair: (n: number) => `${n} ki\u015filik bu odada herkesin do\u011fum g\u00fcn\u00fc farkl\u0131.`,
+        tableCaption: (n: number) => `${n} ki\u015fi aras\u0131nda ayn\u0131 do\u011fum g\u00fcn\u00fc olas\u0131l\u0131\u011f\u0131: tam de\u011fer ve sim\u00fclasyon.`,
+        exactRow: "Tam olas\u0131l\u0131k",
+        simulatedRow: (rooms: number) => `Sim\u00fclasyon (${rooms.toLocaleString("tr-TR")} oda)`,
+        stale: (n: number) => `yeniden \u00e7al\u0131\u015ft\u0131r\u0131n \u2014 son \u00e7al\u0131\u015fma ${n} ki\u015fiydi`,
+        reading: (n: number, pairs: number) =>
+          `${n} ki\u015fi ${pairs.toLocaleString("tr-TR")} farkl\u0131 \u00e7ift olu\u015fturur ve her biri tutma \u015fans\u0131d\u0131r.`,
+        peopleFigure: "Ki\u015fi",
+        pairsFigure: "\u00c7ift",
+        pairsHint: "tutma \u015fans\u0131",
+        chanceFigure: "Ayn\u0131 do\u011fum g\u00fcn\u00fc",
+        exactHint: "tam de\u011fer",
+        thresholdFigure: "%50'yi ge\u00e7ti\u011fi yer",
+        thresholdHint: "ki\u015fi",
+        simulateLabel: "Bunun yerine \u00e7al\u0131\u015ft\u0131r\u0131n",
+        runRooms: (n: number) => `${n.toLocaleString("tr-TR")} oda doldur`,
+        simulateNote: (days: number) =>
+          `Her oda, ki\u015fi ba\u015f\u0131na e\u015fit olas\u0131l\u0131kl\u0131 ${days} g\u00fcnden bir do\u011fum g\u00fcn\u00fc \u00e7eker, sonra tekrar arar.`,
+        announce: (n: number, value: string) => `${n} ki\u015fi. Ayn\u0131 do\u011fum g\u00fcn\u00fc olas\u0131l\u0131\u011f\u0131: ${value}.`,
+        months: ["Oca", "\u015eub", "Mar", "Nis", "May", "Haz", "Tem", "A\u011fu", "Eyl", "Eki", "Kas", "Ara"],
+      },
+
+      conditional: {
+        kicker: "\u0130\u015fi yapan \u015fey ipucu",
+        title: "\u0130ki \u00e7ocuk ve onlar hakk\u0131nda tek bir c\u00fcmle.",
+        lede: "\u0130ki \u00e7ocuk var. En az biri erkek. \u0130kisinin de erkek olma olas\u0131l\u0131\u011f\u0131 nedir? Cevap 1/2 de\u011fil \u2014 ve c\u00fcmle ba\u015fka t\u00fcrl\u00fc kurulursa yine de\u011fi\u015fir.",
+        caption:
+          "Burada her \u00e7ocu\u011fun ba\u011f\u0131ms\u0131z olarak 1/2 olas\u0131l\u0131kla erkek ya da k\u0131z oldu\u011fu ve ipucunun tam olarak yaz\u0131ld\u0131\u011f\u0131 gibi ge\u00e7erli oldu\u011fu varsay\u0131l\u0131r. \u00dc\u00e7\u00fcnc\u00fc bir okuma \u2014 \u00e7ocuklardan biriyle rastgele kar\u015f\u0131la\u015f\u0131p erkek oldu\u011funu g\u00f6rmek \u2014 yine 1/2 verir ve burada modellenmemi\u015ftir.",
+        predictQuestion: "\u0130ki \u00e7ocuk, en az biri erkek. \u0130kisinin de erkek olma olas\u0131l\u0131\u011f\u0131?",
+        predict: { half: "1/2", third: "1/3", quarter: "1/4" },
+        predictAnswer: (value: string) => `1/3, yani ${value}`,
+        clueLabel: "\u0130pucu",
+        clueShort: { atLeastOneBoy: "En az biri erkek", firstIsBoy: "\u0130lki erkek" },
+        clue: {
+          atLeastOneBoy: "En az biri erkek",
+          firstIsBoy: "\u0130lk \u00e7ocuk erkek",
+        },
+        clueHint: "Ayn\u0131 aile, farkl\u0131 c\u00fcmle. Hangi kutular\u0131n kald\u0131\u011f\u0131na bak\u0131n.",
+        outcome: { GG: "KK", GB: "KE", BG: "EK", BB: "EE" },
+        possible: "h\u00e2l\u00e2 m\u00fcmk\u00fcn",
+        counts: "ikisi de erkek",
+        ruledOut: "elendi",
+        matrixLabel: (clue: string, kept: string, value: string) =>
+          `E\u015fit olas\u0131l\u0131kl\u0131 d\u00f6rt sonu\u00e7. “${clue}” bilgisiyle h\u00e2l\u00e2 m\u00fcmk\u00fcn olanlar: ${kept}. Yani ikisinin de erkek olma olas\u0131l\u0131\u011f\u0131 ${value}.`,
+        fraction: (counts: string, value: string) => `kalan sonu\u00e7lar\u0131n ${counts} kadar\u0131 = ${value}`,
+        compareCaption: "\u0130ki ipucu, her birinin b\u0131rakt\u0131\u011f\u0131 sonu\u00e7lar ve \u00e7\u0131kan olas\u0131l\u0131k.",
+        clueHeader: "\u0130pucu",
+        leftHeader: "M\u00fcmk\u00fcn olanlar",
+        answerHeader: "\u0130kisi de erkek",
+        explain: {
+          atLeastOneBoy:
+            "KK elenince \u00fc\u00e7 sonu\u00e7 kal\u0131r ve bunlardan yaln\u0131zca biri EE'dir. \u0130pucu erke\u011fin hangi \u00e7ocuk oldu\u011funu s\u00f6ylemedi\u011fi i\u00e7in KE ve EK ikisi de ayakta kal\u0131r \u2014 ve birlikte EE'yi ikiye bir ge\u00e7erler.",
+          firstIsBoy:
+            "\u0130lk \u00e7ocu\u011fu adland\u0131rmak KK ile KE'yi birlikte eler ve geriye iki sonu\u00e7 kal\u0131r. Art\u0131k EE, \u00fc\u00e7te bir de\u011fil ikide birdir. Ailede hi\u00e7bir \u015fey de\u011fi\u015fmedi; c\u00fcmle de\u011fi\u015fti.",
+        },
+        keptFigure: "Kalan sonu\u00e7",
+        keptHint: "d\u00f6rtte",
+        bothFigure: "\u0130kisi de erkek",
+        bothHint: "kalanlar i\u00e7inde",
+        answerFigure: "Olas\u0131l\u0131k",
+        announce: (clue: string, kept: number, value: string) =>
+          `\u0130pucu: ${clue}. ${kept} sonu\u00e7 kald\u0131. \u0130kisinin de erkek olma olas\u0131l\u0131\u011f\u0131: ${value}.`,
+      },
+
+      simpson: {
+        kicker: "Her grupta daha iyi, toplamda daha k\u00f6t\u00fc",
+        title: "Simpson paradoksu.",
+        lede: "Bir tedavi hem k\u00fc\u00e7\u00fck ta\u015flarda hem b\u00fcy\u00fck ta\u015flarda di\u011ferini ge\u00e7iyor, ikisini toplay\u0131nca kaybediyor. Burada yuvarlama hatas\u0131 yok \u2014 iki hesap da do\u011fru.",
+        caption:
+          "Grup ba\u015f\u0131na ba\u015far\u0131 oranlar\u0131 Charig ve ark. (1986) \u00e7al\u0131\u015fmas\u0131ndan, iki b\u00f6brek ta\u015f\u0131 tedavisinin kar\u015f\u0131la\u015ft\u0131r\u0131lmas\u0131ndan geliyor. Kayd\u0131r\u0131c\u0131lar hastalar\u0131 gruplar aras\u0131nda ta\u015f\u0131r; oranlar yerinde kal\u0131r. Her y\u00fczde, yan\u0131nda yazan say\u0131lar\u0131n b\u00f6l\u00fcm\u00fcd\u00fcr.",
+        predictQuestion: "Bir tedavi her grupta kazan\u0131p toplamda kaybedebilir mi?",
+        predict: { impossible: "Hay\u0131r \u2014 bu imk\u00e2ns\u0131z", possible: "Evet \u2014 olabilir" },
+        predictAnswer: "Evet; a\u015fa\u011f\u0131daki tablo ger\u00e7ek bir \u00f6rnek",
+        tableCaption: "Grup ve tedavi baz\u0131nda ba\u015far\u0131 oranlar\u0131 ve say\u0131lar, toplamla birlikte.",
+        groupHeader: "Grup",
+        group: { small: "K\u00fc\u00e7\u00fck ta\u015flar", large: "B\u00fcy\u00fck ta\u015flar" },
+        treatment: { a: "Tedavi A", b: "Tedavi B" },
+        treatmentShort: { a: "A", b: "B" },
+        overall: "\u0130ki grup birlikte",
+        ahead: "\u00f6nde",
+        barsLabel: (
+          smallA: string,
+          smallB: string,
+          largeA: string,
+          largeB: string,
+          overallA: string,
+          overallB: string,
+        ) =>
+          `K\u00fc\u00e7\u00fck ta\u015flar: A ${smallA}, B ${smallB}. B\u00fcy\u00fck ta\u015flar: A ${largeA}, B ${largeB}. \u0130ki grup birlikte: A ${overallA}, B ${overallB}.`,
+        reversedBody:
+          "A her iki grupta \u00f6nde, toplamda geride. A \u00e7o\u011funlukla zor vakalara, B \u00e7o\u011funlukla kolay vakalara verilmi\u015f; yani toplam, iki tedaviyi de\u011fil iki farkl\u0131 hasta kar\u0131\u015f\u0131m\u0131n\u0131 kar\u015f\u0131la\u015ft\u0131r\u0131yor.",
+        notReversedBody:
+          "Gruplar b\u00f6yle da\u011f\u0131t\u0131ld\u0131\u011f\u0131nda toplam, gruplarla ayn\u0131 \u015feyi s\u00f6yl\u00fcyor. Ters d\u00f6nme i\u00e7in iki tedavinin farkl\u0131 hasta kar\u0131\u015f\u0131mlar\u0131na verilmesi gerekir.",
+        shareLabel: (treatment: string) => `${treatment}: k\u00fc\u00e7\u00fck ta\u015fl\u0131 hasta`,
+        shareValue: (treatment: string, small: number, large: number) =>
+          `${treatment}: ${small} k\u00fc\u00e7\u00fck ta\u015fl\u0131, ${large} b\u00fcy\u00fck ta\u015fl\u0131 hasta`,
+        shareHint: "Her tedavi 350 hastas\u0131n\u0131 ve grup ba\u015f\u0131na ba\u015far\u0131 oranlar\u0131n\u0131 korur. Yaln\u0131zca kar\u0131\u015f\u0131m de\u011fi\u015fir.",
+        restore: "Yay\u0131mlanm\u0131\u015f tabloya d\u00f6n",
+        overallA: "A toplam",
+        overallB: "B toplam",
+        reversedFigure: "Ters d\u00f6nd\u00fc m\u00fc?",
+        reversedYes: "Evet",
+        reversedNo: "Hay\u0131r",
+        announce: (a: string, b: string, reversed: string) =>
+          `Toplam: A ${a}, B ${b}. Ters d\u00f6nd\u00fc: ${reversed}.`,
+      },
+
+      recap: {
+        lessons: [
+          "Sezgi bir olas\u0131l\u0131k hesaplay\u0131c\u0131s\u0131 de\u011fildir. D\u00f6rt deneyin d\u00f6rd\u00fcnde de akla ilk gelen cevap yanl\u0131\u015f olan\u0131d\u0131r.",
+          "Bir ipucu hangi sonu\u00e7lar\u0131n m\u00fcmk\u00fcn kald\u0131\u011f\u0131n\u0131 de\u011fi\u015ftirir ve hangilerinin kalaca\u011f\u0131na c\u00fcmlenin kurulu\u015fu karar verir. \"En az biri erkek\" ile \"ilki erkek\" farkl\u0131 k\u00fcmeler b\u0131rak\u0131r.",
+          "Tutma meselesi ki\u015filerle de\u011fil \u00e7iftlerle ilgilidir. Yirmi \u00fc\u00e7 ki\u015fi 253 \u00e7ift olu\u015fturur; ayn\u0131 do\u011fum g\u00fcn\u00fcn\u00fcn hissedildi\u011finden \u00e7ok daha erken gelmesinin nedeni budur.",
+          "Gruplar\u0131 toplamak, gruplar ayn\u0131 bi\u00e7imde doldurulmam\u0131\u015fsa i\u00e7lerindeki kar\u015f\u0131la\u015ft\u0131rmay\u0131 tersine \u00e7evirebilir.",
+        ],
+        footer:
+          "Bunlar\u0131n her biri, belirtilmi\u015f bir modeli olan \u00e7\u00f6z\u00fcml\u00fc birer problemdir; \u015fansa dair genel bir kural de\u011fil. Tam olas\u0131l\u0131klar kapal\u0131 formda hesaplan\u0131r; sim\u00fcle edilenler ise deneyin tohumlanm\u0131\u015f bir \u00fcrete\u00e7le ger\u00e7ekten \u00e7al\u0131\u015ft\u0131r\u0131lmas\u0131ndan gelir ve her zaman b\u00f6yle etiketlenir. Bir soru ger\u00e7ekten belirsizse \u2014 en a\u00e7\u0131k \u00f6rnek iki \u00e7ocuk problemidir \u2014 varsay\u0131m sessizce se\u00e7ilmez, yaz\u0131l\u0131r.",
+      },
+    },
 
     // ------------------------------------------------------- sorting ----
     "sorting-race": {

@@ -45,10 +45,15 @@ describe("registry", () => {
     expect(labs.filter((lab) => lab.meta.slug === hypothesisTestingMeta.slug)).toHaveLength(1);
   });
 
-  it("shows up on the home page, at the end of the collection", () => {
+  it("shows up on the home page, placed after the machine-learning labs", () => {
+    // Deliberately not "last": a lab registered after this one is a normal
+    // event, and a test that breaks on it is testing the wrong thing. What
+    // matters is that this sits past the labs it assumes.
     const order = orderedLabs().map((lab) => lab.meta.slug);
     expect(order).toContain("hypothesis-testing");
-    expect(order[order.length - 1]).toBe("hypothesis-testing");
+    expect(order.indexOf("hypothesis-testing")).toBeGreaterThan(
+      order.indexOf("embedding-universe"),
+    );
     expect(publishedLabs().map((lab) => lab.meta.slug)).toContain("hypothesis-testing");
   });
 

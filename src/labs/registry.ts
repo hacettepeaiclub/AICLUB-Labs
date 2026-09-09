@@ -8,6 +8,7 @@ import { hashPlaygroundMeta } from "./hash-playground/meta";
 import { hypothesisTestingMeta } from "./hypothesis-testing/meta";
 import { neuralPlaygroundMeta } from "./neural-playground/meta";
 import { pathfindingMeta } from "./pathfinding/meta";
+import { probabilityMeta } from "./probability/meta";
 import { rewardPlaygroundMeta } from "./reward-playground/meta";
 import { sortingRaceMeta } from "./sorting-race/meta";
 import { tokenizerMeta } from "./tokenizer/meta";
@@ -41,6 +42,7 @@ export const labs: LabEntry[] = [
   { meta: hypothesisTestingMeta, Component: lazy(() => import("./hypothesis-testing")) },
   { meta: neuralPlaygroundMeta, Component: lazy(() => import("./neural-playground")) },
   { meta: pathfindingMeta, Component: lazy(() => import("./pathfinding")) },
+  { meta: probabilityMeta, Component: lazy(() => import("./probability")) },
   { meta: rewardPlaygroundMeta, Component: lazy(() => import("./reward-playground")) },
   { meta: sortingRaceMeta, Component: lazy(() => import("./sorting-race")) },
   { meta: tokenizerMeta, Component: lazy(() => import("./tokenizer")) },
@@ -80,6 +82,7 @@ const LAB_ORDER = [
   "reward-playground",
   "embedding-universe",
   "hypothesis-testing",
+  "probability",
 ] as const;
 
 const RANK = new Map<string, number>(LAB_ORDER.map((slug, index) => [slug, index]));
