@@ -161,6 +161,8 @@ export const tr: Translation = {
         title: "Evreni keşfet",
         neighboursTitle: "En yakın kelimeler",
         announce: (word: string, gloss: string) => `${word} seçildi, ${gloss}.`,
+        selectedLabel: "Seçili",
+        nearestLabel: "En yakın, kosinüs",
       },
 
       map: {
@@ -172,6 +174,10 @@ export const tr: Translation = {
         pending: "Kelimelerin nereye düştüğü hesaplanıyor…",
         linksNote:
           "Çizgiler, seçili kelimeyi yanında listelenen sekiz kelimeye bağlar. Bunlar okumayı kolaylaştırmak içindir, modelin parçası değildir — gömmede bağlantı yoktur, yalnızca mesafeler vardır.",
+        pinnedLabel: (word: string, gloss: string) =>
+          `${word} (${gloss}), karşılaştırma için tutuluyor`,
+        compareLabel: (a: string, b: string, score: string) =>
+          `${a} ile ${b} arasındaki benzerlik ${score}.`,
       },
 
       search: {
@@ -246,6 +252,19 @@ export const tr: Translation = {
           "Vektörler GloVe 6B 300d; Stanford NLP tarafından Wikipedia 2014 ve Gigaword 5 üzerinde önceden eğitildi. Bu lab her kelimeyi o yayımlanmış tablodan arayıp birim uzunluğa normalize ediyor; burada hiçbir şey eğitilmiyor, ince ayar yapılmıyor ya da üretilmiyor.",
         turkish:
           "Gömme uzayı İngilizcedir. Buradaki Türkçe kelimeler okumayı kolaylaştırmak için bizim eklediğimiz etiketlerdir — gömülmediler ve bu bir Türkçe gömme uzayı değildir.",
+      },
+      compare: {
+        title: "İki kelimeyi karşılaştırın",
+        hold: "Bu kelimeyi tut",
+        holding: (word: string) => `Tutulan: ${word}`,
+        release: "Bırak",
+        idle: "Bir kelimeyi tutun, sonra haritadan bir başkasını seçin. Aralarındaki kosinüs bir yerden bakılmıyor, ölçülüyor.",
+        samePoint: "Tuttuğunuz kelime bu. Başka birini seçin.",
+        scoreLabel: "Benzerlik",
+        rankLabel: "Sıra",
+        rankValue: (rank: number, total: number) => `${total} içinde ${rank}.`,
+        sentence: (a: string, b: string, score: string, rank: number, total: number) =>
+          `${a} ile ${b} arasındaki kosinüs ${score}. Diğer ${total} kelime arasında ${b}, ${a} kelimesine en yakın ${rank}. kelime.`,
       },
     },
 
