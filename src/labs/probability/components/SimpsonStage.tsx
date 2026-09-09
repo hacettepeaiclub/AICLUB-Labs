@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useReducedMotion } from "framer-motion";
 import { Figure, LabSlider, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
 import { useT } from "@/i18n";
@@ -38,6 +39,7 @@ export function SimpsonStage() {
   const copy = useT().labs.probability;
   const s = copy.simpson;
 
+  const reduced = useReducedMotion() ?? false;
   const [share, setShare] = useState<Record<TreatmentId, number>>({ ...DEFAULT_SMALL_SHARE });
   const [guess, setGuess] = useState<"impossible" | "possible" | null>(null);
 
@@ -140,18 +142,25 @@ export function SimpsonStage() {
                 label: s.group.small,
                 a: cellOf(table, "small", "a")?.rate ?? null,
                 b: cellOf(table, "small", "b")?.rate ?? null,
+                delay: 0,
               },
               {
                 key: "large",
                 label: s.group.large,
                 a: cellOf(table, "large", "a")?.rate ?? null,
                 b: cellOf(table, "large", "b")?.rate ?? null,
+                delay: 0,
               },
               {
                 key: "overall",
                 label: s.overall,
                 a: table.overall.a.rate,
                 b: table.overall.b.rate,
+                // The aggregate settles after the groups it is built from. Not
+                // decoration: the delay is the argument, because the overall bar is a
+                // consequence of the two above it and this is the only way the picture
+                // can say so.
+                delay: 180,
               },
             ].map((row) => (
               <div key={row.key}>
@@ -167,8 +176,12 @@ export function SimpsonStage() {
                           className={cn(
                             "block h-full rounded-pill",
                             t === "a" ? "bg-accent" : "bg-data",
+                            !reduced && "transition-[width] duration-base ease-out",
                           )}
-                          style={{ width: bar(row[t]) }}
+                          style={{
+                            width: bar(row[t]),
+                            ...(reduced ? {} : { transitionDelay: `${row.delay}ms` }),
+                          }}
                         />
                       </span>
                       <span className="w-14 shrink-0 text-right font-mono text-caption tabular-nums text-fg">
