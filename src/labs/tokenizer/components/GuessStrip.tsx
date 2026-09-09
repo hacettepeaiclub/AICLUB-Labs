@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useRef, useState } from "react";
 import { useReducedMotion } from "framer-motion";
+import { Figure, Stage } from "@/components/lab";
 import { Button, Kbd } from "@/components/ui";
 import { useT } from "@/i18n";
 import { cn } from "@/lib/cn";
@@ -90,174 +91,184 @@ export function GuessStrip() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="max-w-prose">
-        <h2 className="text-display-md text-fg">{g.heading}</h2>
-        <p className="mt-3 text-body text-fg-muted">{g.lede}</p>
-      </div>
+    <Stage
+      width="full"
+      caption={lab.honesty}
+      announcement={announcement}
+      viewport={
+        <div className="space-y-3">
+          {/* The strip. Character cells; a cut lives on a cell's left edge. */}
+          <div className="rounded border border-line/10 bg-ink-950 p-4 sm:p-5">
+            <div
+              role="group"
+              aria-label={g.stripLabel(GUESS_SENTENCE)}
+              onKeyDown={handleKeyDown}
+              className="flex flex-wrap gap-y-3 font-mono text-body sm:text-body-lg"
+            >
+              {characters.map((character, i) => {
+                const isGuess = guessed.has(i);
+                const isActual = revealed && actual.has(i);
+                const matched = isGuess && isActual;
+                const imagined = revealed && isGuess && !isActual;
+                const display = character === " " ? "·" : character;
 
-      {/* The strip. Character cells; a cut lives on a cell's left edge. */}
-      <div className="card-surface p-4 sm:p-6">
-        <div
-          role="group"
-          aria-label={g.stripLabel(GUESS_SENTENCE)}
-          onKeyDown={handleKeyDown}
-          className="flex flex-wrap gap-y-3 font-mono text-body sm:text-body-lg"
-        >
-          {characters.map((character, i) => {
-            const isGuess = guessed.has(i);
-            const isActual = revealed && actual.has(i);
-            const matched = isGuess && isActual;
-            const imagined = revealed && isGuess && !isActual;
-            const display = character === " " ? "·" : character;
+                const borderClass = isActual
+                  ? "border-l-accent"
+                  : isGuess
+                    ? revealed
+                      ? "border-l-fg-faint border-dashed"
+                      : "border-l-accent"
+                    : "border-l-transparent";
 
-            const borderClass = isActual
-              ? "border-l-accent"
-              : isGuess
-                ? revealed
-                  ? "border-l-fg-faint border-dashed"
-                  : "border-l-accent"
-                : "border-l-transparent";
+                const content = (
+                  <>
+                    <span className={character === " " ? "text-fg-faint" : undefined}>
+                      {display}
+                    </span>
+                    {(matched || imagined) && (
+                      // Pinned to the top of the cell, hard against the bar it is
+                      // annotating. At the bottom it drifted into the gap below and
+                      // read as belonging to the next line of the wrapped strip.
+                      <span
+                        aria-hidden
+                        className={cn(
+                          "absolute -top-0.5 left-0 -translate-x-1/2 text-[0.7rem] font-bold leading-none",
+                          matched ? "text-signal-green" : "text-fg-faint",
+                        )}
+                      >
+                        {matched ? "✓" : "✗"}
+                      </span>
+                    )}
+                  </>
+                );
 
-            const content = (
-              <>
-                <span className={character === " " ? "text-fg-faint" : undefined}>{display}</span>
-                {(matched || imagined) && (
-                  // Pinned to the top of the cell, hard against the bar it is
-                  // annotating. At the bottom it drifted into the gap below and
-                  // read as belonging to the next line of the wrapped strip.
-                  <span
-                    aria-hidden
+                const shared = cn(
+                  "relative flex h-11 min-w-[1.15rem] items-center justify-center border-l-2 px-px",
+                  borderClass,
+                );
+
+                // The very front of the string is a boundary by definition, so
+                // there is nothing there to guess.
+                if (i === 0) {
+                  return (
+                    <span key={i} className={cn(shared, "text-fg")}>
+                      {content}
+                    </span>
+                  );
+                }
+
+                return (
+                  <button
+                    key={i}
+                    ref={(element) => {
+                      cellRefs.current[i] = element;
+                    }}
+                    type="button"
+                    disabled={revealed}
+                    tabIndex={i === cursor ? 0 : -1}
+                    aria-pressed={isGuess}
+                    aria-label={g.cellLabel(character === " " ? g.theSpace : `“${character}”`, i)}
+                    onClick={() => {
+                      setCursor(i);
+                      toggle(i);
+                    }}
                     className={cn(
-                      "absolute -top-0.5 left-0 -translate-x-1/2 text-[0.7rem] font-bold leading-none",
-                      matched ? "text-signal-green" : "text-fg-faint",
+                      shared,
+                      "text-fg transition-colors duration-fast",
+                      !revealed && "hover:border-l-accent/40 hover:bg-line/5",
+                      revealed && "cursor-default",
                     )}
                   >
-                    {matched ? "✓" : "✗"}
-                  </span>
-                )}
-              </>
-            );
+                    {content}
+                  </button>
+                );
+              })}
+            </div>
 
-            const shared = cn(
-              "relative flex h-11 min-w-[1.15rem] items-center justify-center border-l-2 px-px",
-              borderClass,
-            );
-
-            // The very front of the string is a boundary by definition, so
-            // there is nothing there to guess.
-            if (i === 0) {
-              return (
-                <span key={i} className={cn(shared, "text-fg")}>
-                  {content}
+            {revealed ? (
+              // Three marks, three shapes. Nothing here is told apart by colour on
+              // its own: a solid rule, a dashed rule, and two different glyphs.
+              <div className="mt-4 flex flex-wrap gap-x-5 gap-y-1.5 text-caption text-fg-faint">
+                <span className="flex items-center gap-1.5">
+                  <span aria-hidden className="inline-block h-4 w-0 border-l-2 border-accent" />
+                  {g.legendReal}
                 </span>
-              );
-            }
-
-            return (
-              <button
-                key={i}
-                ref={(element) => {
-                  cellRefs.current[i] = element;
-                }}
-                type="button"
-                disabled={revealed}
-                tabIndex={i === cursor ? 0 : -1}
-                aria-pressed={isGuess}
-                aria-label={g.cellLabel(character === " " ? g.theSpace : `“${character}”`, i)}
-                onClick={() => {
-                  setCursor(i);
-                  toggle(i);
-                }}
-                className={cn(
-                  shared,
-                  "text-fg transition-colors duration-fast",
-                  !revealed && "hover:border-l-accent/40 hover:bg-line/5",
-                  revealed && "cursor-default",
-                )}
-              >
-                {content}
-              </button>
-            );
-          })}
-        </div>
-
-        {revealed ? (
-          // Three marks, three shapes. Nothing here is told apart by colour on
-          // its own: a solid rule, a dashed rule, and two different glyphs.
-          <div className="mt-4 flex flex-wrap gap-x-5 gap-y-1.5 text-caption text-fg-faint">
-            <span className="flex items-center gap-1.5">
-              <span aria-hidden className="inline-block h-4 w-0 border-l-2 border-accent" />
-              {g.legendReal}
-            </span>
-            <span className="flex items-center gap-1.5">
-              <span
-                aria-hidden
-                className="inline-block h-4 w-0 border-l-2 border-dashed border-fg-faint"
-              />
-              {g.legendImagined}
-            </span>
-            <span className="flex items-center gap-1.5">
-              <span aria-hidden className="font-bold text-signal-green">
-                ✓
-              </span>
-              {g.legendMatched}
-            </span>
-          </div>
-        ) : (
-          <p className="mt-4 text-caption text-fg-faint">
-            {g.hint} <Kbd>←</Kbd> <Kbd>→</Kbd> {g.hintMove} <Kbd>Space</Kbd> {g.hintPlace}{" "}
-            <span className="text-fg-muted">·</span> {g.hintSpace}
-          </p>
-        )}
-      </div>
-
-      <div className="flex flex-wrap items-center gap-2">
-        {!revealed ? (
-          <>
-            <Button onClick={reveal} disabled={!ready}>
-              {ready ? g.reveal : g.preparing}
-            </Button>
-            <Button variant="secondary" onClick={markEveryWord}>
-              {g.cutEveryWord}
-            </Button>
-            {guesses.length > 0 && (
-              <Button variant="ghost" onClick={reset}>
-                {t.common.clear}
-              </Button>
+                <span className="flex items-center gap-1.5">
+                  <span
+                    aria-hidden
+                    className="inline-block h-4 w-0 border-l-2 border-dashed border-fg-faint"
+                  />
+                  {g.legendImagined}
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span aria-hidden className="font-bold text-signal-green">
+                    ✓
+                  </span>
+                  {g.legendMatched}
+                </span>
+              </div>
+            ) : (
+              <p className="mt-4 text-caption text-fg-faint">
+                {g.hint} <Kbd>←</Kbd> <Kbd>→</Kbd> {g.hintMove} <Kbd>Space</Kbd> {g.hintPlace}{" "}
+                <span className="text-fg-muted">·</span> {g.hintSpace}
+              </p>
             )}
-          </>
-        ) : (
-          <Button variant="secondary" onClick={reset}>
-            {t.common.tryAgain}
-          </Button>
-        )}
-      </div>
-
-      {revealed && (
-        <div className="space-y-4">
-          <div className="card-surface p-5">
-            <p className="text-body text-fg">
-              {score.guessed === 1
-                ? g.resultOne(score.matched.length === 1)
-                : g.resultMany(score.guessed, score.matched.length)}{" "}
-              {g.resultTail(score.actual.length, tokens.length)}
-            </p>
-            <p className="mt-3 max-w-prose text-body-sm text-fg-muted">{g.explain}</p>
           </div>
+          {revealed && (
+            <div className="space-y-4">
+              <div className="rounded border border-line/10 bg-ink-950 p-5">
+                <p className="text-body text-fg">
+                  {score.guessed === 1
+                    ? g.resultOne(score.matched.length === 1)
+                    : g.resultMany(score.guessed, score.matched.length)}{" "}
+                  {g.resultTail(score.actual.length, tokens.length)}
+                </p>
+                <p className="mt-3 max-w-prose text-body-sm text-fg-muted">{g.explain}</p>
+              </div>
 
-          <TokenStrip
-            tokens={tokens}
-            label={g.actualLabel}
-            className="text-fg"
-          />
-          <p className="text-caption text-fg-faint">{lab.honesty}</p>
+              <TokenStrip tokens={tokens} label={g.actualLabel} className="text-fg" />
+            </div>
+          )}
         </div>
-      )}
-
-      <p aria-live="polite" className="sr-only">
-        {announcement}
-      </p>
-    </div>
+      }
+      primary={
+        <div className="flex flex-wrap items-center gap-2">
+          {!revealed ? (
+            <>
+              <Button onClick={reveal} disabled={!ready}>
+                {ready ? g.reveal : g.preparing}
+              </Button>
+              <Button variant="secondary" onClick={markEveryWord}>
+                {g.cutEveryWord}
+              </Button>
+              {guesses.length > 0 && (
+                <Button variant="ghost" onClick={reset}>
+                  {t.common.clear}
+                </Button>
+              )}
+            </>
+          ) : (
+            <Button variant="secondary" onClick={reset}>
+              {t.common.tryAgain}
+            </Button>
+          )}
+        </div>
+      }
+      figures={
+        <>
+          <Figure label={g.figures.yourCuts} value={String(score.guessed)} />
+          <Figure
+            label={g.figures.matched}
+            value={revealed ? String(score.matched.length) : "—"}
+            tone="accent"
+          />
+          <Figure
+            label={g.figures.actualCuts}
+            value={revealed ? String(score.actual.length) : "—"}
+          />
+          <Figure label={g.figures.tokens} value={revealed ? String(tokens.length) : "—"} />
+        </>
+      }
+    />
   );
 }

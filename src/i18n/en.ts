@@ -1370,6 +1370,12 @@ export const en = {
                     ? "1 is not there"
                     : `${imagined} are not there`
               }. You missed ${missed}. The tokenizer made ${actual} cuts, splitting the sentence into ${tokens} tokens.`,
+        figures: {
+          yourCuts: "Your cuts",
+          matched: "Matched",
+          actualCuts: "Real cuts",
+          tokens: "Pieces",
+        },
       },
 
       train: {
@@ -1400,6 +1406,9 @@ export const en = {
           "Training finished. No pair is left that occurs more than once, so there is nothing worth merging.",
         announceFinishedAfter: (merges: number) => `Training finished after ${merges} merges.`,
         announceReset: "Corpus reset. Nothing learned yet.",
+        mergesLabel: "Merges",
+        vocabularyLabel: "Vocabulary",
+        corpusTokensLabel: "Corpus pieces",
       },
 
       merge: {
@@ -1419,6 +1428,7 @@ export const en = {
         ready: "The tokenizer has finished training. Drag the merges slider.",
         explain:
           "At zero merges every character is its own token, because the tokenizer knows nothing but letters. Drag right and watch “·ev · ler · imiz · den” become “·ev · lerimiz · den” and then “·evlerimiz · den”. Those pieces are Turkish suffixes, and nothing in the algorithm knows what a suffix is — they are simply the neighbours that kept turning up together.",
+        jumpTo: "Jump to",
       },
 
       compare: {
@@ -1444,6 +1454,7 @@ export const en = {
           "en-room": "English",
           "en-bread": "English 2",
         },
+        sampleLabel: "Text",
       },
 
       metrics: {
@@ -1513,6 +1524,9 @@ export const en = {
             `${tokens} tokens, inside the budget of ${budget}.`,
           solvedAnnounce: (message: string) => `Solved. ${message}`,
         },
+        puzzleLabel: "Puzzle",
+        tokensLabel: "Tokens",
+        budgetLabel: "Budget",
       },
 
       recap: {
