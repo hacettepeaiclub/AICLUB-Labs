@@ -253,6 +253,184 @@ export const en = {
           "The embedding space is English. Turkish words shown here are labels we added for reading — they were not embedded, and this is not a Turkish embedding space.",
       },
     },
+    // ------------------------------------------------ hypothesis testing ----
+    "hypothesis-testing": {
+      title: "Hypothesis Testing",
+      description:
+        "Move two hypotheses apart and watch what it costs to be sure: the rejection region, the errors you accept, and the power you get back.",
+
+      scope:
+        "This is the theoretical model: two normal sampling distributions of the mean, both with standard error \u03c3/\u221an, with \u03c3 treated as known. That is what makes the boundary a z rather than a t. No data is sampled anywhere in this lab \u2014 every number is the closed-form value of the equations shown, so what you are reading is the model itself rather than one run of an experiment.",
+
+      testType: {
+        right: "\u03bc\u2081 > \u03bc\u2080",
+        left: "\u03bc\u2081 < \u03bc\u2080",
+        two: "\u03bc\u2081 \u2260 \u03bc\u2080",
+      },
+
+      plot: {
+        h0: "H\u2080",
+        h1: "H\u2081",
+        alphaTag: (value: string) => `\u03b1 = ${value}`,
+        betaTag: (value: string) => `\u03b2 = ${value}`,
+        summary: (
+          mu0: string,
+          mu1: string,
+          se: string,
+          criticals: string,
+          alpha: string,
+          beta: string,
+          power: string,
+        ) =>
+          `Two normal curves. H\u2080 is centred at ${mu0} and H\u2081 at ${mu1}, both with standard error ${se}. The boundary is at ${criticals}. The shaded area under H\u2080 past the boundary is \u03b1 = ${alpha}; the shaded area under H\u2081 inside it is \u03b2 = ${beta}. Power is ${power}.`,
+      },
+
+      controls: {
+        moreLabel: "The other settings",
+        note: "Every control retunes the same model. Nothing here is sampled.",
+        mu0: "\u03bc\u2080 \u2014 the null mean",
+        mu0Value: (value: string) => `\u03bc\u2080 is ${value}`,
+        mu1: "\u03bc\u2081 \u2014 the alternative mean",
+        mu1Value: (value: string) => `\u03bc\u2081 is ${value}`,
+        sigma: "\u03c3 \u2014 population spread",
+        sigmaValue: (value: string) => `\u03c3 is ${value}`,
+        alpha: "\u03b1",
+        alphaValue: (value: string) => `\u03b1 is ${value}`,
+        n: "n \u2014 sample size",
+        nValue: (value: number) => `n is ${value}`,
+      },
+
+      separation: {
+        title: "Two hypotheses",
+        question: "What happens when the two hypotheses move apart?",
+        caption:
+          "Two claims about the same mean. Neither is the data; both are what the average of n measurements would do if that claim were the true one.",
+        mu1Label: "\u03bc\u2081 \u2014 move the alternative",
+        mu1Value: (value: string) => `\u03bc\u2081 is ${value}`,
+        mu1Hint: "Drag it through \u03bc\u2080 and back out the other side.",
+        mu0Label: "\u03bc\u2080",
+        mu1Figure: "\u03bc\u2081",
+        gapLabel: "Gap",
+        gapHint: "in standard errors",
+        announce: (mu1: string, gap: string) =>
+          `\u03bc\u2081 is ${mu1}. The two means are ${gap} standard errors apart.`,
+      },
+
+      alphaSection: {
+        kicker: "Where you draw the line",
+        title: "One boundary, and everything past it counts as evidence.",
+        lede: "A test needs a rule: how far from \u03bc\u2080 does a result have to land before you stop believing \u03bc\u2080? That line is the critical value, and \u03b1 is how much of H\u2080 you are willing to leave on the wrong side of it.",
+        caption:
+          "\u03b1 is not a mistake you made. It is the H\u2080 mass you agreed in advance to treat as evidence, which is why moving the slider moves the line rather than the curve.",
+        alphaLabel: "\u03b1 \u2014 false alarms you accept",
+        alphaValue: (value: string) => `\u03b1 is ${value}`,
+        alphaHint: "The hatched area under H\u2080 is exactly this number.",
+        alphaFigure: "\u03b1",
+        criticalLabel: "Critical value",
+        criticalHint: "\u03bc\u2080 \u00b1 z\u00b7SE",
+        criticalLeft: "Lower bound",
+        criticalRight: "Upper bound",
+        seLabel: "SE",
+        seHint: "\u03c3/\u221an",
+        oneSided: (value: string) =>
+          `All of \u03b1 sits in one tail: ${value} of H\u2080 lies past the boundary.`,
+        twoSided: (half: string) =>
+          `\u03b1 is split between two tails: ${half} at each end, so each boundary sits further out than a one-sided test would put it.`,
+        announce: (alpha: string, criticals: string) =>
+          `\u03b1 is ${alpha}. The boundary is at ${criticals}.`,
+      },
+
+      betaSection: {
+        kicker: "The error nobody counts",
+        title: "\u03b2 is what H\u2081 leaves on the safe side of the line.",
+        lede: "\u03b1 lives under H\u2080 and \u03b2 lives under H\u2081, on opposite sides of the same boundary. Move it to shrink one and the other grows \u2014 which is why the direction you point the test matters as much as where you put the line.",
+        caption:
+          "\u03b2 is the probability of not rejecting H\u2080 when this particular H\u2081 is the true one. Power is 1 \u2212 \u03b2. Both are properties of the model, not of any sample.",
+        testTypeLabel: "What H\u2081 claims",
+        mu1Label: "\u03bc\u2081",
+        mu1Value: (value: string) => `\u03bc\u2081 is ${value}`,
+        betaLabel: "\u03b2",
+        betaHint: "H\u2081 mass not rejected",
+        powerLabel: "Power",
+        powerHint: "1 \u2212 \u03b2",
+        alphaLabel: "\u03b1",
+        reading: (beta: string) =>
+          `\u03b2 = ${beta}: that share of H\u2081 falls where the test does not reject H\u2080.`,
+        warning: {
+          left: "The test is looking for \u03bc\u2081 < \u03bc\u2080, but \u03bc\u2081 is not below \u03bc\u2080. The alternative sits away from the rejection region, so almost none of it is caught: \u03b2 is near 1 and power is near 0.",
+          right: "The test is looking for \u03bc\u2081 > \u03bc\u2080, but \u03bc\u2081 is not above \u03bc\u2080. The alternative sits away from the rejection region, so almost none of it is caught: \u03b2 is near 1 and power is near 0.",
+        },
+        announce: (beta: string, power: string) => `\u03b2 is ${beta}. Power is ${power}.`,
+      },
+
+      sampleSection: {
+        kicker: "The only lever that helps both",
+        title: "More data narrows everything at once.",
+        lede: "\u03b1 and \u03b2 trade against each other as long as the curves stay the same width. n is what changes their width: SE = \u03c3/\u221an, so both distributions tighten around their own mean and the overlap shrinks without anybody accepting more false alarms.",
+        caption:
+          "The x axis is drawn at \u00b14.5 SE, so the window narrows with the curves. \u221an is why the second half of the slider buys so much less than the first.",
+        nLabel: "n \u2014 sample size",
+        nValue: (value: number) => `n is ${value}`,
+        formula: (se: string) => `SE = \u03c3/\u221an = ${se}`,
+        nFigure: "n",
+        seLabel: "SE",
+        seHint: "\u03c3/\u221an",
+        powerLabel: "Power",
+        betaLabel: "\u03b2",
+        curveTitle: "Power against sample size",
+        eighty: "0.80",
+        curveLabel: (from: number, to: number, first: string, last: string) =>
+          `Power from n = ${from} to n = ${to}, holding everything else. It starts near ${first} and reaches about ${last}.`,
+        announce: (n: number, se: string, power: string) =>
+          `n is ${n}. SE is ${se}. Power is ${power}.`,
+      },
+
+      challenge: {
+        kicker: "Now hit a number",
+        title: "Reach the power the task asks for.",
+        lede: "Two tasks. Each states a result to reach rather than a control to move, so neither can be passed by putting a slider in a particular place \u2014 the model has to actually report the number.",
+        puzzleLabel: "Task",
+        reset: "Back to the start",
+        powerLabel: "Power",
+        alphaLabel: "\u03b1",
+        seLabel: "SE",
+        target: (value: string) => `target ${value}`,
+        notYet: (power: string, target: string) => `Power is ${power}. It needs to reach ${target}.`,
+        alphaTooHigh: (max: string) => `\u03b1 is above the limit for this task: it must stay at or below ${max}.`,
+        announceSolved: (power: string) => `Solved. Power is ${power}.`,
+        announceAttempt: (power: string, alpha: string) => `Power ${power} at \u03b1 ${alpha}.`,
+        puzzles: {
+          "reach-power": {
+            title: "Reach 0.80",
+            brief: (power: string, alpha: string) =>
+              `The effect is real but small: \u03bc\u2081 sits half a unit above \u03bc\u2080, and the test finds it barely more often than it raises a false alarm. Get power to ${power} without letting \u03b1 go above ${alpha}.`,
+            lesson:
+              "Both levers work, and they are not the same trade. \u03b1 buys power by accepting more false alarms; n buys it by narrowing SE, which costs nothing but data.",
+            solved: (power: string, alpha: string) =>
+              `Power is ${power} at \u03b1 = ${alpha}. Whatever mix of n and \u03b1 got you here, the boundary ended up close enough to \u03bc\u2080, relative to SE, for most of H\u2081 to land past it.`,
+          },
+          noisy: {
+            title: "Too much noise",
+            brief: (power: string, alpha: string) =>
+              `\u03c3 is 3 and the test is two-sided, so \u03b1 is split across two tails and both boundaries sit a long way out. Reach ${power} power with \u03b1 at or below ${alpha}.`,
+            lesson:
+              "A two-sided test spends half its \u03b1 watching a direction the alternative is not in. Committing to a direction is free power \u2014 and it is only free if you were right about the direction.",
+            solved: (power: string, alpha: string) =>
+              `Power is ${power} at \u03b1 = ${alpha}. Narrowing \u03c3 or raising n shrinks SE; going one-sided puts the whole of \u03b1 in the tail where \u03bc\u2081 actually is.`,
+          },
+        },
+      },
+
+      recap: {
+        lessons: [
+          "\u03b1 is the H\u2080 mass beyond the critical value \u2014 the false alarms you agreed to before seeing anything.",
+          "\u03b2 is the H\u2081 mass that stays inside it, and power is 1 \u2212 \u03b2. They are computed against one specific \u03bc\u2081, not against \"some effect\".",
+          "Moving the boundary trades \u03b1 against \u03b2. Only SE = \u03c3/\u221an improves both, which is why n is the lever that is not a compromise.",
+        ],
+        footer:
+          "Everything here is the closed-form normal model with \u03c3 known: two sampling distributions of the mean, one boundary, and the areas either side of it. Real testing has to estimate \u03c3 from the sample, which is what makes a t distribution necessary, and has to worry about whether the direction was chosen before the data or after it. This lab shows the geometry those complications sit on top of.",
+      },
+    },
 
     // ------------------------------------------------ reward playground ----
     "reward-playground": {

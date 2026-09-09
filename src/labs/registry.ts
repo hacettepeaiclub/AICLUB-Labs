@@ -5,6 +5,7 @@ import { embeddingUniverse3DMeta } from "./embedding-universe-3d/meta";
 import { embeddingUniverseMeta } from "./embedding-universe/meta";
 import { gradientDescentMeta } from "./gradient-descent/meta";
 import { hashPlaygroundMeta } from "./hash-playground/meta";
+import { hypothesisTestingMeta } from "./hypothesis-testing/meta";
 import { neuralPlaygroundMeta } from "./neural-playground/meta";
 import { pathfindingMeta } from "./pathfinding/meta";
 import { rewardPlaygroundMeta } from "./reward-playground/meta";
@@ -37,6 +38,7 @@ export const labs: LabEntry[] = [
   { meta: embeddingUniverse3DMeta, Component: lazy(() => import("./embedding-universe-3d")) },
   { meta: gradientDescentMeta, Component: lazy(() => import("./gradient-descent")) },
   { meta: hashPlaygroundMeta, Component: lazy(() => import("./hash-playground")) },
+  { meta: hypothesisTestingMeta, Component: lazy(() => import("./hypothesis-testing")) },
   { meta: neuralPlaygroundMeta, Component: lazy(() => import("./neural-playground")) },
   { meta: pathfindingMeta, Component: lazy(() => import("./pathfinding")) },
   { meta: rewardPlaygroundMeta, Component: lazy(() => import("./reward-playground")) },
@@ -77,6 +79,7 @@ const LAB_ORDER = [
   "attention",
   "reward-playground",
   "embedding-universe",
+  "hypothesis-testing",
 ] as const;
 
 const RANK = new Map<string, number>(LAB_ORDER.map((slug, index) => [slug, index]));
