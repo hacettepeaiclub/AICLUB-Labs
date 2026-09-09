@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "framer-motion";
-import { Button } from "@/components/ui";
+import { Figure, Stage, Transport } from "@/components/lab";
 import { useT } from "@/i18n";
 import { cn } from "@/lib/cn";
 import { DEMO_CORPUS } from "../corpora";
@@ -118,66 +118,67 @@ export function TrainPanel() {
   const vocabularySize = trainer.base.length + trainer.merges.length;
 
   return (
-    <div className="space-y-5">
-      <div className="card-surface p-4 sm:p-6">
-        <p className="text-overline uppercase text-fg-faint">{tr.corpusLabel}</p>
-        <div className="mt-3 flex flex-wrap gap-2">
-          {view.map((word, i) => (
-            <Word key={i} word={word} fused={event?.token ?? null} />
-          ))}
+    <Stage
+      width="full"
+      caption={tr.explain}
+      announcement={announcement}
+      viewport={
+        <div className="rounded border border-line/10 bg-ink-950 p-4 sm:p-5">
+          <p className="text-overline uppercase text-fg-faint">{tr.corpusLabel}</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {view.map((word, i) => (
+              <Word key={i} word={word} fused={event?.token ?? null} />
+            ))}
+          </div>
         </div>
-      </div>
-
-      {/* The readout, as a sentence rather than a wall of counters. */}
-      <div
-        className="min-h-[3.5rem] rounded-card border border-line/10 bg-ink-900 px-4 py-3"
-        aria-live="off"
-      >
-        {event ? (
-          <p className="text-body-sm text-fg-muted">
-            {tr.merged(
-              event.index + 1,
-              shown(event.left),
-              shown(event.right),
-              event.frequency,
-              shown(event.token),
-              event.vocabularySize,
-              event.corpusTokens,
-            )}
-          </p>
-        ) : exhausted ? (
-          <p className="text-body-sm text-fg-muted">
-            {tr.exhausted(trainer.merges.length, vocabularySize)}
-          </p>
-        ) : (
-          <p className="text-body-sm text-fg-muted">
-            {tr.untouched(trainer.base.length, trainer.corpusTokens)}
-          </p>
-        )}
-      </div>
-
-      <div className="flex flex-wrap gap-2">
-        <Button onClick={merge} disabled={exhausted || running}>
-          {tr.mergeNext}
-        </Button>
-        <Button variant="secondary" onClick={trainAll} disabled={exhausted || running}>
-          {running ? tr.training : tr.trainAll}
-        </Button>
-        {running && (
-          <Button variant="ghost" onClick={() => setRunning(false)}>
-            Pause
-          </Button>
-        )}
-        <Button variant="ghost" onClick={reset}>
-          Reset
-        </Button>
-      </div>
-
-      <p className="max-w-prose text-body-sm text-fg-muted">{tr.explain}</p>
-
-      <p aria-live="polite" className="sr-only">
-        {announcement}
-      </p>
-    </div>
+      }
+      readout={
+        /* The last merge, as a sentence rather than a wall of counters:
+           which pair, how often it occurred, and what it became. */
+        <div
+          className="min-h-[3.5rem] rounded border border-line/10 bg-ink-950 px-4 py-3"
+          aria-live="off"
+        >
+          {event ? (
+            <p className="text-body-sm text-fg-muted">
+              {tr.merged(
+                event.index + 1,
+                shown(event.left),
+                shown(event.right),
+                event.frequency,
+                shown(event.token),
+                event.vocabularySize,
+                event.corpusTokens,
+              )}
+            </p>
+          ) : exhausted ? (
+            <p className="text-body-sm text-fg-muted">
+              {tr.exhausted(trainer.merges.length, vocabularySize)}
+            </p>
+          ) : (
+            <p className="text-body-sm text-fg-muted">
+              {tr.untouched(trainer.base.length, trainer.corpusTokens)}
+            </p>
+          )}
+        </div>
+      }
+      primary={
+        <Transport
+          running={running}
+          onRun={() => (running ? setRunning(false) : trainAll())}
+          onStep={merge}
+          onReset={reset}
+          runLabel={tr.trainAll}
+          stepDisabled={exhausted || running}
+        />
+      }
+      figures={
+        <>
+          <Figure label={tr.mergesLabel} value={String(trainer.merges.length)} tone="accent" />
+          <Figure label={tr.vocabularyLabel} value={String(vocabularySize)} />
+          <Figure label={tr.corpusTokensLabel} value={String(trainer.corpusTokens)} />
+        </>
+      }
+    />
   );
 }

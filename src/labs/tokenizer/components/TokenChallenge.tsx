@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 import { LabSlider } from "@/components/lab";
+import { Figure, Stage } from "@/components/lab";
 import { Badge, Button, Segmented } from "@/components/ui";
 import { useLocalControls } from "@/hooks";
 import { useT } from "@/i18n";
@@ -56,20 +57,25 @@ export function TokenChallenge() {
 
   return (
     <div className="space-y-5">
-      <div className="flex flex-wrap items-center gap-2">
-        {CHALLENGES.map((candidate, i) => (
-          <Button
-            key={candidate.id}
-            size="sm"
-            variant={i === index ? "primary" : "secondary"}
-            onClick={() => setIndex(i)}
-          >
-            {isBeaten(progress, candidate.id) ? "✓ " : ""}
-            {c.puzzles[candidate.id].title}
-          </Button>
-        ))}
-        <Badge className="ml-auto">{t.common.solved(beaten, CHALLENGES.length)}</Badge>
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <Segmented
+          label={c.puzzleLabel}
+          value={spec.id}
+          options={CHALLENGES.map((candidate) => ({
+            value: candidate.id,
+            // A tick as well as a fill: solved is not carried by colour alone.
+            label: `${isBeaten(progress, candidate.id) ? "✓ " : ""}${c.puzzles[candidate.id].title}`,
+          }))}
+          onChange={(id) => setIndex(CHALLENGES.findIndex((x) => x.id === id))}
+        />
+        <Badge dotClassName={beaten === CHALLENGES.length ? "bg-signal-green" : "bg-fg-faint"}>
+          {t.common.solved(beaten, CHALLENGES.length)}
+        </Badge>
       </div>
+
+      {/* The task, then the machine. Inside the puzzles this sat in the
+          first row of the layout and read as part of the apparatus. */}
+      <Brief spec={spec} />
 
       {spec.lever === "text" ? (
         <TextPuzzle key={spec.id} spec={spec} reduced={reduced} onSolved={() => solve(spec)} />
@@ -180,58 +186,68 @@ function TextPuzzle({ spec, reduced, onSolved }: PuzzleProps) {
   const announcement = useVerdictEffects(verdict, onSolved);
 
   return (
-    <div className="space-y-4">
-      <Brief spec={spec} />
+    <Stage
+      width="full"
+      caption={lab.honesty}
+      announcement={announcement}
+      viewport={
+        <div className="space-y-3">
+          <TextEditor
+            label={c.rewriteLabel}
+            value={text}
+            onChange={setText}
+            rows={3}
+            hint={c.rewriteHint}
+          />
 
-      <TextEditor
-        label={c.rewriteLabel}
-        value={text}
-        onChange={setText}
-        rows={3}
-        hint={c.rewriteHint}
-      />
+          <div className="flex flex-wrap gap-1.5">
+            {spec.requires.map((word) => {
+              const present = !missing.includes(word);
+              return (
+                <span
+                  key={word}
+                  className={cn(
+                    "inline-flex items-center gap-1 rounded-pill border px-2 py-0.5 font-mono text-caption",
+                    present
+                      ? "border-line/10 bg-ink-700/60 text-fg-muted"
+                      : "border-dashed border-signal-amber/50 text-signal-amber",
+                  )}
+                >
+                  <span aria-hidden>{present ? "✓" : "○"}</span>
+                  {word}
+                </span>
+              );
+            })}
+          </div>
 
-      <div className="flex flex-wrap gap-1.5">
-        {spec.requires.map((word) => {
-          const present = !missing.includes(word);
-          return (
-            <span
-              key={word}
-              className={cn(
-                "inline-flex items-center gap-1 rounded-pill border px-2 py-0.5 font-mono text-caption",
-                present
-                  ? "border-line/10 bg-ink-700/60 text-fg-muted"
-                  : "border-dashed border-signal-amber/50 text-signal-amber",
-              )}
-            >
-              <span aria-hidden>{present ? "✓" : "○"}</span>
-              {word}
-            </span>
-          );
-        })}
-      </div>
+          <TokenStrip tokens={tokens} muted={!ready} label={c.rewriteStrip} size="sm" />
 
-      <TokenStrip tokens={tokens} muted={!ready} label={c.rewriteStrip} size="sm" />
-
-      {unknown > 0 && (
-        // Without this the opening state — almost every capital dashed and
-        // flagged — reads as something being broken. It is not: those really
-        // are characters the corpus never contained, and saying so turns the
-        // alarming part of the screen into the clue.
-        <p className="max-w-prose text-caption text-fg-faint">{c.unknownNote(unknown)}</p>
-      )}
-
-      <VerdictCard verdict={verdict} lesson={c.puzzles[spec.id].lesson} />
-
-      <Button variant="ghost" size="sm" onClick={() => setText(spec.start)}>
-        {t.common.startOver}
-      </Button>
-      <p className="text-caption text-fg-faint">{lab.honesty}</p>
-
-      <p aria-live="polite" className="sr-only">
-        {announcement}
-      </p>
-    </div>
+          {unknown > 0 && (
+            // Without this the opening state — almost every capital dashed and
+            // flagged — reads as something being broken. It is not: those really
+            // are characters the corpus never contained, and saying so turns the
+            // alarming part of the screen into the clue.
+            <p className="max-w-prose text-caption text-fg-faint">{c.unknownNote(unknown)}</p>
+          )}
+        </div>
+      }
+      readout={<VerdictCard verdict={verdict} lesson={c.puzzles[spec.id].lesson} />}
+      primary={
+        <Button variant="ghost" onClick={() => setText(spec.start)}>
+          {t.common.startOver}
+        </Button>
+      }
+      figures={
+        <>
+          <Figure
+            label={c.tokensLabel}
+            value={String(tokens.length)}
+            tone={verdict.kind === "passed" ? "accent" : "default"}
+          />
+          <Figure label={c.budgetLabel} value={String(spec.budget)} />
+        </>
+      }
+    />
   );
 }
 
@@ -253,28 +269,44 @@ function TokenizerPuzzle({ spec, reduced, onSolved }: PuzzleProps) {
   const announcement = useVerdictEffects(verdict, onSolved);
 
   return (
-    <div className="space-y-4">
-      <Brief spec={spec} />
-
-      <TextEditor
-        label={c.fixedLabel}
-        value={spec.start}
-        onChange={() => undefined}
-        readOnly
-        rows={2}
-      />
-
-      <div className="grid gap-4 sm:grid-cols-[minmax(0,14rem)_minmax(0,1fr)]">
-        <Segmented
-          label={c.trainedOn}
-          value={corpus}
-          options={[
-            { value: "english" as const, label: c.english },
-            { value: "turkish" as const, label: c.turkish },
-          ]}
-          onChange={setCorpus}
-        />
-        <div className="card-surface p-5">
+    <Stage
+      width="full"
+      caption={lab.honesty}
+      announcement={announcement}
+      viewport={
+        <div className="space-y-3">
+          <TextEditor
+            label={c.fixedLabel}
+            value={spec.start}
+            onChange={() => undefined}
+            readOnly
+            rows={2}
+          />
+          <TokenStrip tokens={tokens} muted={!ready} label={c.fixedStrip} size="sm" />
+        </div>
+      }
+      readout={
+        <div className="space-y-2">
+          <VerdictCard verdict={verdict} lesson={c.puzzles[spec.id].lesson} />
+          {corpus === "english" && verdict.kind === "over-budget" && merges === MAX_MERGES && (
+            <p className="max-w-prose text-body-sm text-fg-muted">{c.englishCeiling}</p>
+          )}
+        </div>
+      }
+      primary={
+        // Both levers stay in the open. Training is the one a visitor reaches
+        // for first, and the corpus is the one that actually decides it — so
+        // hiding the corpus behind the disclosure would hide the answer.
+        <div className="space-y-4">
+          <Segmented
+            label={c.trainedOn}
+            value={corpus}
+            options={[
+              { value: "english" as const, label: c.english },
+              { value: "turkish" as const, label: c.turkish },
+            ]}
+            onChange={setCorpus}
+          />
           <LabSlider
             label={c.mergesLearned}
             value={position}
@@ -286,20 +318,17 @@ function TokenizerPuzzle({ spec, reduced, onSolved }: PuzzleProps) {
             className="w-full min-w-0"
           />
         </div>
-      </div>
-
-      <TokenStrip tokens={tokens} muted={!ready} label={c.fixedStrip} size="sm" />
-      <VerdictCard verdict={verdict} lesson={c.puzzles[spec.id].lesson} />
-
-      {corpus === "english" && verdict.kind === "over-budget" && merges === MAX_MERGES && (
-        <p className="max-w-prose text-body-sm text-fg-muted">{c.englishCeiling}</p>
-      )}
-
-      <p className="text-caption text-fg-faint">{lab.honesty}</p>
-
-      <p aria-live="polite" className="sr-only">
-        {announcement}
-      </p>
-    </div>
+      }
+      figures={
+        <>
+          <Figure
+            label={c.tokensLabel}
+            value={String(tokens.length)}
+            tone={verdict.kind === "passed" ? "accent" : "default"}
+          />
+          <Figure label={c.budgetLabel} value={String(spec.budget)} />
+        </>
+      }
+    />
   );
 }

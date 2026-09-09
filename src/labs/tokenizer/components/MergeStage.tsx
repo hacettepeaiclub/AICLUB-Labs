@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useReducedMotion } from "framer-motion";
-import { LabSlider } from "@/components/lab";
+import { LabSlider, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
 import { useT } from "@/i18n";
 import { MAX_MERGES, SEED_SENTENCE } from "../corpora";
@@ -55,88 +55,82 @@ export function MergeStage() {
   }, [ready, m]);
 
   return (
-    <div className="space-y-5">
-      <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_18rem]">
-        <div className="space-y-4">
+    <Stage
+      width="full"
+      secondaryLabel={m.jumpTo}
+      caption={m.explain}
+      announcement={announcement}
+      viewport={
+        <div className="space-y-3">
           <TextEditor
             label={m.sentenceLabel}
             value={text}
             onChange={setText}
             hint={m.sentenceHint}
           />
-          <TokenStrip
-            tokens={tokens}
-            muted={!ready}
-            label={m.stripLabel(merges)}
-          />
+          <TokenStrip tokens={tokens} muted={!ready} label={m.stripLabel(merges)} />
         </div>
-
-        <div className="space-y-4">
-          <div className="card-surface p-5">
-            <LabSlider
-              label={m.mergesLearned}
-              value={position}
-              min={0}
-              max={SLIDER_STEPS}
-              onChange={setPosition}
-              format={() => `${merges}`}
-              valueText={(p) => m.mergesValueText(mergesAt(p), MAX_MERGES)}
-              className="w-full min-w-0"
-            />
-            {/* The track is curved, so a tick has to be drawn where its merge
-                count actually falls. Spacing these evenly would put 40 and 160
-                in the wrong place — a small lie, in a lab about not telling
-                them. */}
-            <div aria-hidden className="relative mt-1 h-4 font-mono text-caption text-fg-faint">
-              {TICKS.map((tick) => {
-                const percent = (positionOf(tick) / SLIDER_STEPS) * 100;
-                return (
-                  <span
-                    key={tick}
-                    className="absolute -translate-x-1/2"
-                    style={{ left: `${Math.min(Math.max(percent, 3), 97)}%` }}
-                  >
-                    {tick}
-                  </span>
-                );
-              })}
-            </div>
-            <div className="mt-3 grid grid-cols-2 gap-2">
-              {[0, 50, 100, MAX_MERGES].map((target) => (
-                <Button
-                  key={target}
-                  size="sm"
-                  variant={merges === target ? "primary" : "secondary"}
-                  onClick={() => setPosition(positionOf(target))}
-                >
-                  {target === 0 ? m.untrained : target === MAX_MERGES ? m.full : String(target)}
-                </Button>
-              ))}
-            </div>
-          </div>
-
-          <TokenMetrics
-            tokens={tokens.length}
-            characters={countCharacters(text)}
-            words={countWords(text)}
-            merges={merges}
-            emphasis="merges"
-            compact
+      }
+      primary={
+        <div>
+          <LabSlider
+            label={m.mergesLearned}
+            value={position}
+            min={0}
+            max={SLIDER_STEPS}
+            onChange={setPosition}
+            format={() => `${merges}`}
+            valueText={(p) => m.mergesValueText(mergesAt(p), MAX_MERGES)}
+            className="w-full min-w-0"
           />
-
+          {/* The track is curved, so a tick has to be drawn where its merge
+              count actually falls. Spacing these evenly would put 40 and 160
+              in the wrong place — a small lie, in a lab about not telling
+              them. */}
+          <div aria-hidden className="relative mt-1 h-4 font-mono text-caption text-fg-faint">
+            {TICKS.map((tick) => {
+              const percent = (positionOf(tick) / SLIDER_STEPS) * 100;
+              return (
+                <span
+                  key={tick}
+                  className="absolute -translate-x-1/2"
+                  style={{ left: `${Math.min(Math.max(percent, 3), 97)}%` }}
+                >
+                  {tick}
+                </span>
+              );
+            })}
+          </div>
           {!ready && (
-            <p className="text-caption text-fg-faint" role="status">
+            <p className="mt-2 text-caption text-fg-faint" role="status">
               {m.trainingProgress(trained, MAX_MERGES)}
             </p>
           )}
         </div>
-      </div>
-
-      <p className="max-w-prose text-body-sm text-fg-muted">{m.explain}</p>
-
-      <p aria-live="polite" className="sr-only">
-        {announcement}
-      </p>
-    </div>
+      }
+      figures={
+        <TokenMetrics
+          tokens={tokens.length}
+          characters={countCharacters(text)}
+          words={countWords(text)}
+          merges={merges}
+          emphasis="merges"
+        />
+      }
+      secondary={
+        <div className="grid grid-cols-2 gap-2">
+          {[0, 50, 100, MAX_MERGES].map((target) => (
+            <Button
+              key={target}
+              variant={merges === target ? "primary" : "secondary"}
+              onClick={() => setPosition(positionOf(target))}
+              className="min-h-[44px]"
+            >
+              {target === 0 ? m.untrained : target === MAX_MERGES ? m.full : String(target)}
+            </Button>
+          ))}
+        </div>
+      }
+    />
   );
 }

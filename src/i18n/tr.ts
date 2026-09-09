@@ -1362,6 +1362,12 @@ export const tr: Translation = {
             : `${guessed} kesik işaretlediniz. Bunlardan ${matched} tanesi gerçek. ` +
               `${imagined} tanesi orada değil. ${missed} tanesini kaçırdınız. ` +
               `Tokenizer toplam ${actual} kesik yaptı ve cümleyi ${tokens} tokene ayırdı.`,
+        figures: {
+          yourCuts: "Sizin kesikleriniz",
+          matched: "Tutan",
+          actualCuts: "Gerçek kesikler",
+          tokens: "Parça",
+        },
       },
 
       train: {
@@ -1393,6 +1399,9 @@ export const tr: Translation = {
         announceFinishedAfter: (merges: number) =>
           `Eğitim ${merges} birleştirmeden sonra tamamlandı.`,
         announceReset: "Derlem sıfırlandı. Henüz hiçbir şey öğrenilmedi.",
+        mergesLabel: "Birleştirme",
+        vocabularyLabel: "Sözlük",
+        corpusTokensLabel: "Derlem parçası",
       },
 
       merge: {
@@ -1412,6 +1421,7 @@ export const tr: Translation = {
         ready: "Tokenizer'ın eğitimi tamamlandı. Birleştirme kaydırıcısını sürükleyin.",
         explain:
           "Sıfır birleştirmede her karakter kendi başına bir tokendir, çünkü tokenizer harflerden başka bir şey bilmiyordur. Sağa doğru sürükleyin ve “·ev · ler · imiz · den” dizisinin önce “·ev · lerimiz · den”e, sonra “·evlerimiz · den”e dönüşmesini izleyin. Bu parçalar Türkçe ekler ama algoritmanın hiçbir yerinde ekin ne olduğu yazmıyor; bunlar yalnızca sürekli yan yana çıkan komşular.",
+        jumpTo: "Atla",
       },
 
       compare: {
@@ -1437,6 +1447,7 @@ export const tr: Translation = {
           "en-room": "İngilizce",
           "en-bread": "İngilizce 2",
         },
+        sampleLabel: "Metin",
       },
 
       metrics: {
@@ -1506,6 +1517,9 @@ export const tr: Translation = {
             `${tokens} token, ${budget} bütçesinin içinde.`,
           solvedAnnounce: (message: string) => `Çözüldü. ${message}`,
         },
+        puzzleLabel: "Bulmaca",
+        tokensLabel: "Token",
+        budgetLabel: "Bütçe",
       },
 
       recap: {

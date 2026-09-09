@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { useReducedMotion } from "framer-motion";
-import { Button } from "@/components/ui";
+import { Figure, Stage } from "@/components/lab";
+import { Segmented } from "@/components/ui";
 import { useT } from "@/i18n";
 import { cn } from "@/lib/cn";
 import { SAMPLES } from "../corpora";
@@ -21,10 +22,7 @@ interface SideProps {
 
 function Side({ title, subtitle, vocabulary, text, winner, count }: SideProps) {
   const c = useT().labs.tokenizer.compare;
-  const tokens = useMemo(
-    () => (vocabulary ? tokenize(text, vocabulary) : []),
-    [vocabulary, text],
-  );
+  const tokens = useMemo(() => (vocabulary ? tokenize(text, vocabulary) : []), [vocabulary, text]);
 
   return (
     <div
@@ -46,9 +44,7 @@ function Side({ title, subtitle, vocabulary, text, winner, count }: SideProps) {
         </p>
       </div>
       <TokenStrip tokens={tokens} size="sm" label={`${title}: ${text}`} muted={!vocabulary} />
-      {winner && (
-        <p className="text-caption text-accent">{c.cheaper}</p>
-      )}
+      {winner && <p className="text-caption text-accent">{c.cheaper}</p>}
     </div>
   );
 }
@@ -85,9 +81,10 @@ export function CompareStage() {
   );
 
   const both = english.vocabulary !== null && turkish.vocabulary !== null;
-  const ratio = both && Math.min(englishCount, turkishCount) > 0
-    ? Math.max(englishCount, turkishCount) / Math.min(englishCount, turkishCount)
-    : 0;
+  const ratio =
+    both && Math.min(englishCount, turkishCount) > 0
+      ? Math.max(englishCount, turkishCount) / Math.min(englishCount, turkishCount)
+      : 0;
 
   const pick = (sample: string, label: string) => {
     setText(sample);
@@ -95,56 +92,66 @@ export function CompareStage() {
   };
 
   return (
-    <div className="space-y-5">
-      <div className="flex flex-wrap gap-2">
-        {SAMPLES.map((sample) => (
-          <Button
-            key={sample.id}
-            size="sm"
-            variant={sample.text === text ? "primary" : "secondary"}
-            onClick={() => pick(sample.text, c.samples[sample.id])}
-          >
-            {c.samples[sample.id]}
-          </Button>
-        ))}
-      </div>
-
-      <TextEditor
-        label={c.textLabel}
-        value={text}
-        onChange={setText}
-        rows={2}
-        hint={c.textHint}
-      />
-
-      <div className="grid gap-4 lg:grid-cols-2">
-        <Side
-          title={c.trainedOnEnglish}
-          subtitle={c.englishCorpus}
-          vocabulary={english.vocabulary}
-          text={text}
-          count={englishCount}
-          winner={both && englishCount < turkishCount}
+    <Stage
+      width="full"
+      caption={both && ratio > 1 ? c.ratio(ratio.toFixed(1)) : lab.honesty}
+      announcement={announcement}
+      viewport={
+        <div className="space-y-3">
+          <TextEditor
+            label={c.textLabel}
+            value={text}
+            onChange={setText}
+            rows={2}
+            hint={c.textHint}
+          />
+          {/* Same sentence, two tokenizers, side by side — the only difference
+              between them is the text each was trained on. */}
+          <div className="grid gap-3 lg:grid-cols-2">
+            <Side
+              title={c.trainedOnEnglish}
+              subtitle={c.englishCorpus}
+              vocabulary={english.vocabulary}
+              text={text}
+              count={englishCount}
+              winner={both && englishCount < turkishCount}
+            />
+            <Side
+              title={c.trainedOnTurkish}
+              subtitle={c.turkishCorpus}
+              vocabulary={turkish.vocabulary}
+              text={text}
+              count={turkishCount}
+              winner={both && turkishCount < englishCount}
+            />
+          </div>
+        </div>
+      }
+      primary={
+        <Segmented
+          label={c.sampleLabel}
+          value={SAMPLES.find((s) => s.text === text)?.id ?? ""}
+          options={SAMPLES.map((sample) => ({ value: sample.id, label: c.samples[sample.id] }))}
+          onChange={(id) => {
+            const sample = SAMPLES.find((s) => s.id === id);
+            if (sample) pick(sample.text, c.samples[sample.id]);
+          }}
         />
-        <Side
-          title={c.trainedOnTurkish}
-          subtitle={c.turkishCorpus}
-          vocabulary={turkish.vocabulary}
-          text={text}
-          count={turkishCount}
-          winner={both && turkishCount < englishCount}
-        />
-      </div>
-
-      {both && ratio > 1 && (
-        <p className="text-body-sm text-fg-muted">{c.ratio(ratio.toFixed(1))}</p>
-      )}
-
-      <p className="text-caption text-fg-faint">{lab.honesty}</p>
-
-      <p aria-live="polite" className="sr-only">
-        {announcement}
-      </p>
-    </div>
+      }
+      figures={
+        <>
+          <Figure
+            label={c.trainedOnEnglish}
+            value={String(englishCount)}
+            tone={both && englishCount < turkishCount ? "accent" : "default"}
+          />
+          <Figure
+            label={c.trainedOnTurkish}
+            value={String(turkishCount)}
+            tone={both && turkishCount < englishCount ? "accent" : "default"}
+          />
+        </>
+      }
+    />
   );
 }

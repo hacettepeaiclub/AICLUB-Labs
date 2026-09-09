@@ -12,7 +12,6 @@ export interface TokenMetricsProps {
   emphasis?: "tokens" | "merges";
   /** Repeat the scope note. On by default — see the comment below. */
   honest?: boolean;
-  compact?: boolean;
   className?: string;
 }
 
@@ -35,15 +34,15 @@ export function TokenMetrics({
   merges,
   emphasis = "tokens",
   honest = true,
-  compact,
   className,
 }: TokenMetricsProps) {
   const t = useT().labs.tokenizer;
   return (
-    <div className={cn("card-surface", compact ? "p-4" : "p-5", className)}>
-      {/* A fixed two-column grid, not a wrap. This panel lives in the stage
-          sidebar, where four figures never fit on one line — and a wrapped row
-          leaves the second line hanging off the first one's columns. */}
+    <div className={cn("min-w-0", className)}>
+      {/* A fixed two-column grid, not a wrap. These sit in the stage rail,
+          where four figures never fit on one line — and a wrapped row leaves
+          the second line hanging off the first one's columns. Rendered bare:
+          inside a Stage the chassis is already the panel. */}
       <div className="grid grid-cols-2 gap-x-6 gap-y-4">
         <Figure
           label={t.metrics.tokens}
@@ -60,7 +59,7 @@ export function TokenMetrics({
           />
         )}
       </div>
-      {honest && <p className="mt-4 text-caption text-fg-faint">{t.honesty}</p>}
+      {honest && <p className="mt-3 text-caption text-fg-faint">{t.honesty}</p>}
     </div>
   );
 }
