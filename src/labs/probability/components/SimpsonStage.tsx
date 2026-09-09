@@ -142,25 +142,26 @@ export function SimpsonStage() {
                 label: s.group.small,
                 a: cellOf(table, "small", "a")?.rate ?? null,
                 b: cellOf(table, "small", "b")?.rate ?? null,
-                delay: 0,
               },
               {
                 key: "large",
                 label: s.group.large,
                 a: cellOf(table, "large", "a")?.rate ?? null,
                 b: cellOf(table, "large", "b")?.rate ?? null,
-                delay: 0,
               },
               {
+                // The aggregate carries no delay of its own. It briefly did —
+                // the overall bars settled 180ms after the groups, to stage the
+                // order the arithmetic runs in. But the table above already
+                // reads top to bottom with the totals last, and the counts are
+                // printed beside every bar, so the delay was restating
+                // something the static layout says perfectly well. Waiting for
+                // a number that is already correct is a cost with no lesson
+                // attached.
                 key: "overall",
                 label: s.overall,
                 a: table.overall.a.rate,
                 b: table.overall.b.rate,
-                // The aggregate settles after the groups it is built from. Not
-                // decoration: the delay is the argument, because the overall bar is a
-                // consequence of the two above it and this is the only way the picture
-                // can say so.
-                delay: 180,
               },
             ].map((row) => (
               <div key={row.key}>
@@ -178,10 +179,7 @@ export function SimpsonStage() {
                             t === "a" ? "bg-accent" : "bg-data",
                             !reduced && "transition-[width] duration-base ease-out",
                           )}
-                          style={{
-                            width: bar(row[t]),
-                            ...(reduced ? {} : { transitionDelay: `${row.delay}ms` }),
-                          }}
+                          style={{ width: bar(row[t]) }}
                         />
                       </span>
                       <span className="w-14 shrink-0 text-right font-mono text-caption tabular-nums text-fg">

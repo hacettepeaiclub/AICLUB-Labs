@@ -406,12 +406,17 @@ describe("motion is presentation everywhere else too", () => {
     expect(source).not.toMatch(/\.filter\([^)]*satisfies/);
   });
 
-  it("simpson settles the aggregate after the groups it is built from", () => {
+  it("simpson stages nothing artificially — the aggregate has no delay", () => {
+    // The overall bars briefly settled 180ms after the group bars, to stage the
+    // order the arithmetic runs in. The table already reads top to bottom with
+    // the totals last and prints the counts beside every bar, so the delay was
+    // restating what the static layout says. Removed, and kept out.
     const source = stripComments(read("components/SimpsonStage.tsx"));
-    expect(source).toMatch(/delay: 180/);
-    expect(source).toMatch(/transitionDelay/);
-    // And not at all when motion is off.
-    expect(source).toMatch(/reduced \? \{\} : \{ transitionDelay/);
+    expect(source).not.toMatch(/transitionDelay/);
+    expect(source).not.toMatch(/delay:/);
+    // The bar still grows to its new width — that is the value changing, not a
+    // stage-managed sequence.
+    expect(source).toMatch(/transition-\[width\]/);
   });
 
   it("adds no animation library and no frame loop", () => {
