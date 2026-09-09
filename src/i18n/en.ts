@@ -1702,6 +1702,15 @@ export const en = {
         yourStayLabel: "Staying would have won",
         yourSwitchLabel: "Switching would have won",
         handHint: "in your rounds",
+        hostThinking: "The host is choosing a door to openâ¦",
+        hostOpening: "Opening a doorâ¦",
+        opening: "Openingâ¦",
+        announceRevealed: (n: number) =>
+          `The host opened door ${n} and it was a goat. Stay or switch is now available.`,
+        announceFinal: (strategy: string, door: string, result: string) =>
+          `You chose to ${strategy.toLowerCase()}. Door ${door} opened â ${result}.`,
+        stayWith: (n: number) => `Stay with door ${n}`,
+        switchTo: (n: number) => `Switch to door ${n}`,
       },
 
       birthday: {

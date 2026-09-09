@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useReducedMotion } from "framer-motion";
 import { Figure, LabSlider, Stage } from "@/components/lab";
 import { useT } from "@/i18n";
 import { cn } from "@/lib/cn";
@@ -15,6 +16,17 @@ import { Prediction } from "./Prediction";
 
 const MAX_PEOPLE = 60;
 const ROOMS = 2000;
+
+/**
+ * Stagger between people arriving, and the cap on how long the whole arrival
+ * can take.
+ *
+ * Dragging the slider from 5 to 60 must not queue fifty-five animations: the
+ * stagger shrinks so that a large jump still finishes inside `ARRIVAL_CAP`.
+ * Anybody who drags quickly is asking to see the room, not a queue.
+ */
+const STAGGER = 26;
+const ARRIVAL_CAP = 420;
 
 /**
  * Section 2 — a room filling up, and the odds climbing faster than expected.
@@ -41,7 +53,21 @@ export function BirthdayStage() {
   const copy = useT().labs.probability;
   const b = copy.birthday;
 
+  const reduced = useReducedMotion() ?? false;
   const [people, setPeople] = useState(5);
+  /**
+   * Who is new since the last render, so only they animate.
+   *
+   * Existing people must not re-enter every time the count changes — the
+   * arrival is meant to read as one more person walking in, and re-animating
+   * the room would say something false about what just happened.
+   */
+  const previous = useRef(people);
+  const [arrivedFrom, setArrivedFrom] = useState(people);
+  useEffect(() => {
+    setArrivedFrom(people > previous.current ? previous.current : people);
+    previous.current = people;
+  }, [people]);
   const [guess, setGuess] = useState<string | null>(null);
   const [trial, setTrial] = useState<{ n: number; withMatch: number; rooms: number } | null>(null);
 
@@ -55,6 +81,8 @@ export function BirthdayStage() {
   };
 
   const matchSet = new Set(room.match ?? []);
+  const arriving = Math.max(0, people - arrivedFrom);
+  const stagger = arriving > 0 ? Math.min(STAGGER, ARRIVAL_CAP / arriving) : 0;
   const rows = Math.ceil(Math.max(people, 1) / COLUMNS);
 
   return (
@@ -78,6 +106,17 @@ export function BirthdayStage() {
             }
             className="rounded border border-line/10 bg-ink-950 p-4"
           >
+            {/* Local keyframes, rendered only when motion is allowed: under
+                `prefers-reduced-motion` the rule does not exist, so a person
+                cannot animate even if the class were applied. */}
+            {!reduced && (
+              <style>{`
+@keyframes prob-arrive {
+  from { opacity: 0; transform: scale(0.4); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.prob-arrive { animation: prob-arrive 200ms ease-out both; }`}</style>
+            )}
             <div
               className="grid gap-1.5"
               style={{ gridTemplateColumns: `repeat(${COLUMNS}, minmax(0, 1fr))` }}
@@ -86,16 +125,24 @@ export function BirthdayStage() {
                 if (i >= people) return <span key={i} aria-hidden />;
                 const isMatch = matchSet.has(i);
                 const { col } = seatOf(i);
+                const isNew = !reduced && i >= arrivedFrom;
                 return (
                   <span
                     key={i}
                     aria-hidden
-                    style={{ gridColumnStart: col + 1 }}
+                    style={{
+                      gridColumnStart: col + 1,
+                      // Only the new arrivals carry a delay, and only until
+                      // their own animation has run once.
+                      ...(isNew ? { animationDelay: `${(i - arrivedFrom) * stagger}ms` } : {}),
+                    }}
                     className={cn(
                       "flex aspect-square items-center justify-center rounded-full border text-[0.5rem]",
                       isMatch
                         ? "border-accent bg-accent/25 font-semibold text-fg"
                         : "border-line/15 bg-ink-900 text-transparent",
+                      !reduced && "transition-colors duration-base",
+                      isNew && "prob-arrive",
                     )}
                   >
                     {/* A ring and a printed mark, so the pair is not found by

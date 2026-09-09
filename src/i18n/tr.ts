@@ -1703,6 +1703,15 @@ export const tr: Translation = {
         yourStayLabel: "Kalmak kazand\u0131r\u0131rd\u0131",
         yourSwitchLabel: "De\u011fi\u015ftirmek kazand\u0131r\u0131rd\u0131",
         handHint: "sizin turlar\u0131n\u0131zda",
+        hostThinking: "Sunucu aÃ§acaÄÄ± kapÄ±yÄ± seÃ§iyorâ¦",
+        hostOpening: "KapÄ± aÃ§Ä±lÄ±yorâ¦",
+        opening: "AÃ§Ä±lÄ±yorâ¦",
+        announceRevealed: (n: number) =>
+          `Sunucu ${n}. kapÄ±yÄ± aÃ§tÄ±, arkasÄ±ndan keÃ§i Ã§Ä±ktÄ±. ArtÄ±k kalabilir ya da deÄiÅtirebilirsiniz.`,
+        announceFinal: (strategy: string, door: string, result: string) =>
+          `${strategy} dediniz. ${door}. kapÄ± aÃ§Ä±ldÄ± â ${result}.`,
+        stayWith: (n: number) => `${n}. kapÄ±da kal`,
+        switchTo: (n: number) => `${n}. kapÄ±ya geÃ§`,
       },
 
       birthday: {

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useReducedMotion } from "framer-motion";
 import { Figure, Stage } from "@/components/lab";
 import { Segmented } from "@/components/ui";
 import { useT } from "@/i18n";
@@ -31,6 +32,7 @@ export function ConditionalStage() {
   const copy = useT().labs.probability;
   const c = copy.conditional;
 
+  const reduced = useReducedMotion() ?? false;
   const [clue, setClue] = useState<ClueId>("atLeastOneBoy");
   const [guess, setGuess] = useState<"half" | "third" | "quarter" | null>(null);
 
@@ -64,6 +66,13 @@ export function ConditionalStage() {
                       "relative rounded border p-3 text-center",
                       kept ? "border-line/20 bg-ink-900" : "border-line/10 bg-ink-950",
                       kept && both && "border-accent bg-accent/10",
+                      // An outcome the clue rules out sinks and fades rather
+                      // than vanishing: the lesson is that a possibility was
+                      // removed, and something that was never there cannot be
+                      // seen to go. It keeps its place in the grid so the four
+                      // boxes stay comparable between the two clues.
+                      !reduced && "transition-all duration-base ease-out",
+                      !kept && "translate-y-1 opacity-45",
                     )}
                   >
                     <p

@@ -305,3 +305,128 @@ describe("Simpson's table as the lab presents it", () => {
     expect(build({ a: 175, b: 175 }).reversed).toBe(false);
   });
 });
+
+// ================================== the reveal is presentation only ========
+
+describe("the Monty Hall phase machine", () => {
+  const monty = () => stripComments(read("components/MontyStage.tsx"));
+
+  it("settles the round at pick time, before anything is drawn", () => {
+    // `resolve` is called in the pick handler, not in a timer. If the round
+    // were decided when a phase advanced, animation timing would be able to
+    // change the mathematics.
+    const source = monty();
+    const pickBody = source.slice(source.indexOf("const pick ="), source.indexOf("const decide ="));
+    expect(pickBody).toMatch(/resolve\(/);
+    // Nothing inside a timer callback resolves or re-draws a round.
+    const timerBodies = [...source.matchAll(/later\([^,]+,\s*\(\)\s*=>\s*\{([\s\S]*?)\}\)/g)].map(
+      (match) => match[1] ?? "",
+    );
+    expect(timerBodies.length).toBeGreaterThan(0);
+    for (const body of timerBodies) {
+      expect(body).not.toMatch(/resolve\(|createRng|Math\.floor/);
+      // Timers only move the phase along.
+      expect(body).toMatch(/setPhase/);
+    }
+  });
+
+  it("gates the decision on the reveal having landed", () => {
+    const source = monty();
+    // The guard is on the phase, and the buttons are disabled by the same
+    // condition — so neither a click nor a keypress can get in early.
+    expect(source).toMatch(/phase !== "hostRevealed"\) return;/);
+    expect(source).toMatch(/const canDecide = phase === "hostRevealed";/);
+    expect(source).toMatch(/disabled=\{!canDecide\}/);
+  });
+
+  it("names every phase it can be in, and opens the host's door in four of them", () => {
+    const source = monty();
+    for (const phase of [
+      "idle",
+      "selected",
+      "hostRevealing",
+      "hostRevealed",
+      "finalRevealing",
+      "result",
+    ]) {
+      expect(source, phase).toContain(`"${phase}"`);
+    }
+  });
+
+  it("skips every beat when motion is off, without a second code path", () => {
+    const source = monty();
+    // One `later`, and reduced motion makes it synchronous.
+    expect(source).toMatch(/if \(reduced\) \{\s*run\(\);/);
+    // And exactly one such branch in the whole component: every other use of
+    // `reduced` is a class or a style, never control flow. A second one would
+    // be a second version of the experiment.
+    expect(source.match(/if \(reduced\)/g) ?? []).toHaveLength(1);
+    // The phase transitions all go through `later`, so none of them can be
+    // reached by a reduced-motion shortcut that skips a state.
+    expect(source.match(/setPhase\(/g) ?? []).not.toHaveLength(0);
+    for (const line of source.split(String.fromCharCode(10))) {
+      if (line.includes("setPhase(")) expect(line, line.trim()).not.toContain("reduced");
+    }
+  });
+
+  it("clears its timers on reset and on unmount", () => {
+    const source = monty();
+    expect(source).toMatch(/clearTimeout/);
+    expect(source).toMatch(/useEffect\(\(\) => clearTimers, \[clearTimers\]\)/);
+    expect(source).toMatch(/const again = \(\) => \{\s*clearTimers\(\);/);
+  });
+
+  it("runs no animation loop", () => {
+    expect(monty()).not.toMatch(/requestAnimationFrame|setInterval/);
+  });
+});
+
+describe("motion is presentation everywhere else too", () => {
+  it("birthday animates only the people who just arrived", () => {
+    const source = stripComments(read("components/BirthdayStage.tsx"));
+    // The class is applied by index against the previous count, so nobody
+    // already seated re-enters.
+    expect(source).toMatch(/i >= arrivedFrom/);
+    expect(source).toMatch(/isNew && "prob-arrive"/);
+    // And a large jump is capped rather than queued person by person.
+    expect(source).toMatch(/ARRIVAL_CAP/);
+  });
+
+  it("birthday defines its keyframes only when motion is allowed", () => {
+    const source = stripComments(read("components/BirthdayStage.tsx"));
+    expect(source).toMatch(/\{!reduced && \(\s*<style>/);
+  });
+
+  it("conditional keeps eliminated outcomes in place rather than removing them", () => {
+    const source = stripComments(read("components/ConditionalStage.tsx"));
+    // Four boxes always render; the clue changes their state, which is what
+    // makes the two clues comparable.
+    expect(source).toMatch(/OUTCOMES\.map/);
+    expect(source).toMatch(/!kept && "translate-y-1 opacity-45"/);
+    expect(source).not.toMatch(/\.filter\([^)]*satisfies/);
+  });
+
+  it("simpson stages nothing artificially — the aggregate has no delay", () => {
+    // The overall bars briefly settled 180ms after the group bars, to stage the
+    // order the arithmetic runs in. The table already reads top to bottom with
+    // the totals last and prints the counts beside every bar, so the delay was
+    // restating what the static layout says. Removed, and kept out.
+    const source = stripComments(read("components/SimpsonStage.tsx"));
+    expect(source).not.toMatch(/transitionDelay/);
+    expect(source).not.toMatch(/delay:/);
+    // The bar still grows to its new width — that is the value changing, not a
+    // stage-managed sequence.
+    expect(source).toMatch(/transition-\[width\]/);
+  });
+
+  it("adds no animation library and no frame loop", () => {
+    for (const file of COMPONENTS) {
+      const source = stripComments(read(file));
+      expect(source, file).not.toMatch(/requestAnimationFrame|setInterval/);
+      // framer-motion is used only for the reduced-motion hook the repo
+      // already standardises on, never for animating anything here.
+      const framer = source.match(/from "framer-motion"[\s\S]{0,2}/);
+      if (framer) expect(source).toMatch(/import \{ useReducedMotion \} from "framer-motion"/);
+    }
+  });
+});

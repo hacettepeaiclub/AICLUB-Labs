@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useReducedMotion } from "framer-motion";
 import { Figure, LabSlider, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
 import { useT } from "@/i18n";
@@ -38,6 +39,7 @@ export function SimpsonStage() {
   const copy = useT().labs.probability;
   const s = copy.simpson;
 
+  const reduced = useReducedMotion() ?? false;
   const [share, setShare] = useState<Record<TreatmentId, number>>({ ...DEFAULT_SMALL_SHARE });
   const [guess, setGuess] = useState<"impossible" | "possible" | null>(null);
 
@@ -148,6 +150,14 @@ export function SimpsonStage() {
                 b: cellOf(table, "large", "b")?.rate ?? null,
               },
               {
+                // The aggregate carries no delay of its own. It briefly did —
+                // the overall bars settled 180ms after the groups, to stage the
+                // order the arithmetic runs in. But the table above already
+                // reads top to bottom with the totals last, and the counts are
+                // printed beside every bar, so the delay was restating
+                // something the static layout says perfectly well. Waiting for
+                // a number that is already correct is a cost with no lesson
+                // attached.
                 key: "overall",
                 label: s.overall,
                 a: table.overall.a.rate,
@@ -167,6 +177,7 @@ export function SimpsonStage() {
                           className={cn(
                             "block h-full rounded-pill",
                             t === "a" ? "bg-accent" : "bg-data",
+                            !reduced && "transition-[width] duration-base ease-out",
                           )}
                           style={{ width: bar(row[t]) }}
                         />
