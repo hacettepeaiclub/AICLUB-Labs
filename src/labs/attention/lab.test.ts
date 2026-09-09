@@ -4,7 +4,7 @@ import { labs, publishedLabs } from "../registry";
 import { en } from "@/i18n/en";
 import { tr } from "@/i18n/tr";
 import { attentionMeta } from "./meta";
-import { attend, ranked, rowWeights, weightAt } from "./engine";
+import { attend, ranked, rowScores, rowWeights, weightAt } from "./engine";
 import { LAB_MODEL } from "./lexicon";
 import {
   QUERY_INDEX,
@@ -19,8 +19,10 @@ import {
   MAX_ARCS,
   arcTargets,
   isNearTie,
+  peak,
   percent,
   rowPercents,
+  scaleComparison,
   tokenViews,
   topTargets,
 } from "./view";
@@ -197,14 +199,67 @@ describe("presentation rules", () => {
   });
 });
 
+// ============================================ the scaling demonstration =====
+
+describe("showing what the divisor buys", () => {
+  it("recovers the undivided dot products exactly", () => {
+    const root = Math.sqrt(BASE.dK);
+    for (let selected = 0; selected < TOKEN_COUNT; selected++) {
+      const c = scaleComparison(BASE, selected);
+      expect(c.root).toBeCloseTo(root, 12);
+      for (let j = 0; j < TOKEN_COUNT; j++) {
+        expect(c.raw[j]!).toBeCloseTo(c.scaled[j]! * root, 12);
+      }
+    }
+  });
+
+  it("leaves the row the rest of the lab draws untouched", () => {
+    for (let selected = 0; selected < TOKEN_COUNT; selected++) {
+      const c = scaleComparison(BASE, selected);
+      expect([...c.weights]).toEqual([...rowWeights(BASE, selected)]);
+      expect([...c.scaled]).toEqual([...rowScores(BASE, selected)]);
+    }
+  });
+
+  it("produces a real distribution for the undivided column too", () => {
+    for (let selected = 0; selected < TOKEN_COUNT; selected++) {
+      const c = scaleComparison(BASE, selected);
+      const total = [...c.weightsUnscaled].reduce((sum, value) => sum + value, 0);
+      expect(total).toBeCloseTo(1, 12);
+      for (const value of c.weightsUnscaled) expect(value).toBeGreaterThan(0);
+    }
+  });
+
+  it("is a demonstration and not a decoration — the divisor really does flatten", () => {
+    // If skipping the division changed nothing, the stage would be showing a
+    // difference that is not there. On a decisive row it must be large.
+    const decisive = scaleComparison(BASE, QUERY_INDEX);
+    expect(peak(decisive.weightsUnscaled)).toBeGreaterThan(peak(decisive.weights) + 0.3);
+
+    // And it never goes the other way: dividing cannot sharpen a row.
+    for (let selected = 0; selected < TOKEN_COUNT; selected++) {
+      const c = scaleComparison(BASE, selected);
+      expect(peak(c.weightsUnscaled)).toBeGreaterThanOrEqual(peak(c.weights) - 1e-12);
+    }
+  });
+});
+
 // ================================= no hardcoded attention values in the UI ===
 
 describe("no hardcoded attention values in the UI", () => {
-  const SOURCES = [
-    "src/labs/attention/index.tsx",
+  const PAGE = "src/labs/attention/index.tsx";
+  /** Every component that draws a number. The gate is worth nothing if a new
+   *  stage can be added outside it. */
+  const COMPONENTS = [
     "src/labs/attention/components/SentenceView.tsx",
-    "src/labs/attention/components/AttentionTrace.tsx",
+    "src/labs/attention/components/CompareStage.tsx",
+    "src/labs/attention/components/ScaleStage.tsx",
+    "src/labs/attention/components/SoftmaxStage.tsx",
+    "src/labs/attention/components/MixStage.tsx",
+    "src/labs/attention/components/Bars.tsx",
+    "src/labs/attention/components/TokenPicker.tsx",
   ];
+  const SOURCES = [PAGE, ...COMPONENTS];
   const read = (path: string) => readFileSync(path, "utf8");
 
   /** Every weight the engine actually produces, in the shapes it would be pasted in. */
@@ -257,21 +312,39 @@ describe("no hardcoded attention values in the UI", () => {
   });
 
   it("keeps the calculation out of the components entirely", () => {
-    for (const path of SOURCES.slice(1)) {
+    for (const path of COMPONENTS) {
       expect(read(path), `${path} should not run the engine`).not.toMatch(/\battend\s*\(/);
     }
     // Exactly one place calls it.
-    expect(read(SOURCES[0]!)).toMatch(/\battend\s*\(/);
+    expect(read(PAGE)).toMatch(/\battend\s*\(/);
   });
 
   it("derives everything it shows from the view helpers", () => {
-    const sentence = read(SOURCES[1]!);
+    const sentence = read("src/labs/attention/components/SentenceView.tsx");
     expect(sentence).toMatch(/from "\.\.\/view"/);
     expect(sentence).toMatch(/tokenViews/);
     expect(sentence).toMatch(/topTargets/);
-    const trace = read(SOURCES[2]!);
-    expect(trace).toMatch(/from "\.\.\/engine"/);
-    expect(trace).toMatch(/rowWeights|ranked/);
+
+    // Every stage that prints a weight reads it from the engine or the view
+    // helpers rather than holding one of its own.
+    for (const path of [
+      "src/labs/attention/components/CompareStage.tsx",
+      "src/labs/attention/components/ScaleStage.tsx",
+      "src/labs/attention/components/SoftmaxStage.tsx",
+      "src/labs/attention/components/MixStage.tsx",
+    ]) {
+      expect(read(path), path).toMatch(/from "\.\.\/(engine|view)"/);
+    }
+  });
+
+  it("computes the unscaled comparison rather than describing one", () => {
+    // The scaling stage is the only place in the lab that runs a softmax the
+    // engine did not already run, so it is the one most exposed to being
+    // faked. It must call the shared helper, and the helper must call the
+    // engine's own softmax.
+    const stage = read("src/labs/attention/components/ScaleStage.tsx");
+    expect(stage).toMatch(/scaleComparison/);
+    expect(read("src/labs/attention/view.ts")).toMatch(/softmaxInPlace/);
   });
 
   it("has no prose of its own — every string comes from the dictionary", () => {

@@ -418,6 +418,52 @@ export const en = {
         footer:
           "The words here were given seven hand-written features, so the model can tell a cat from a ball but not a ball from a mirror. Real Transformers stack many heads and many layers to build far richer representations — which is a different and much longer story than the one this page tells.",
       },
+      pickLabel: "Word",
+      wholeRowLabel: "Every share, in sentence order",
+      mixLabel: "What each one hands over",
+
+      figures: {
+        selected: "Selected",
+        biggestShare: "Biggest share",
+        sharesTotal: "Shares add up to",
+        matchedWith: "Leans on",
+        rawMatch: "Match",
+        score: "After dividing",
+        axes: "Axes",
+        divisor: "Divided by",
+        peakWith: "Biggest share",
+        peakWithout: "Without dividing",
+        aboveTen: "Words above a tenth",
+      },
+
+      scale: {
+        kicker: "Why divide at all?",
+        title: "Take the divisor away and the shares collapse.",
+        lede: "Dividing by the square root of the number of axes is the one step whose effect you cannot see in the answer — the result looks reasonable either way until you compare it with the alternative. So here is the same row twice: once as this model computes it, and once with the division skipped.",
+        collapse:
+          "Skipping it leaves the scores larger, and a softmax over larger numbers is sharper: almost the whole budget goes to one word and the rest round away to nothing. The division is what leaves a distribution there to read at all.",
+        note: "Both columns are computed here by the same softmax, on the same scores. Only the divided one is used anywhere else on this page.",
+        tableCaption:
+          "For the strongest few words: the match, the match after dividing, and the share each one ends up with in both cases.",
+        colRaw: "Match",
+        colScaled: "Divided",
+        colWithout: "Share without",
+        colWith: "Share with",
+      },
+
+      softmax: {
+        kicker: "From matches to portions",
+        title: "Ten scores, one budget.",
+        lede: "Softmax turns the row of matches into a row of shares that adds up to 100%. Nothing is discarded and nothing is chosen: every word gets a portion, and the portions can only come out of each other.",
+      },
+
+      mix: {
+        kicker: "What the shares are spent on",
+        title: "The shares are coefficients, not a verdict.",
+        lede: "Each word that was attended to hands over its value vector in proportion to its share. Add those up and you have what the selected word becomes — which is what the next layer of a real model would receive.",
+        tableCaption: "Share and value vector for the three heaviest contributors.",
+        outputLabel: "The blended output, axis by axis",
+      },
     },
 
     // ------------------------------------------------ gradient descent ----

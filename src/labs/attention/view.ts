@@ -11,7 +11,14 @@
  * percentage literal ever appears in them.
  */
 
-import { ranked, rowWeights, type Attention, type RankedWeight } from "./engine";
+import {
+  ranked,
+  rowScores,
+  rowWeights,
+  softmaxInPlace,
+  type Attention,
+  type RankedWeight,
+} from "./engine";
 
 /**
  * The weight at which a token is drawn at full strength.
@@ -124,3 +131,50 @@ export function rowPercents(attention: Attention, selected: number): number[] {
   for (let i = 0; i < attention.n; i++) out.push(percent(row[i] ?? 0));
   return out;
 }
+
+export interface ScaleComparison {
+  /** √dK — the divisor itself. */
+  readonly root: number;
+  /** Q·K before the division. */
+  readonly raw: Float64Array;
+  /** What the engine actually used: Q·K / √dK. */
+  readonly scaled: Float64Array;
+  /** The row the lab draws everywhere else. */
+  readonly weights: Float64Array;
+  /** The same row had the division been skipped. */
+  readonly weightsUnscaled: Float64Array;
+}
+
+/**
+ * The same row, with and without the `/ √dK`.
+ *
+ * The division is the one step in the pipeline a visitor cannot see the point
+ * of, because its effect is invisible in the result — you only learn what it
+ * bought you by taking it away. So this recovers the undivided dot products
+ * (multiplying back by √dK, which is exact) and pushes them through the
+ * engine's *own* `softmaxInPlace`. Both columns are therefore real arithmetic
+ * on real numbers; neither is an illustration.
+ *
+ * Nothing here feeds back into the lab's output. `attention.weights` stays the
+ * single source for every other number on the page.
+ */
+export function scaleComparison(attention: Attention, selected: number): ScaleComparison {
+  const n = attention.n;
+  const root = Math.sqrt(attention.dK);
+  const scaled = rowScores(attention, selected);
+
+  const raw = new Float64Array(n);
+  for (let j = 0; j < n; j++) raw[j] = scaled[j]! * root;
+
+  const weightsUnscaled = new Float64Array(raw);
+  softmaxInPlace(weightsUnscaled, 0, n);
+
+  return { root, raw, scaled, weights: rowWeights(attention, selected), weightsUnscaled };
+}
+
+/** The largest weight in a row. What "how decisive is this token" means, plainly. */
+export const peak = (row: Float64Array): number => {
+  let hi = 0;
+  for (let i = 0; i < row.length; i++) if (row[i]! > hi) hi = row[i]!;
+  return hi;
+};
