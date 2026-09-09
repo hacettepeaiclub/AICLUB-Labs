@@ -353,6 +353,50 @@ function Shape({ slug }: { slug: string }) {
         </g>
       );
     }
+    case "probability": {
+      /*
+       * Three doors, one of them open. The lab's opening experiment, and the
+       * only one of its four whose shape survives at this size. The open door
+       * is the host's move — the thing that carries the information — so it is
+       * the one that differs.
+       */
+      const DOOR_W = 14;
+      const GAP = 7;
+      const left = (i: number) => 8 + i * (DOOR_W + GAP);
+      return (
+        <g strokeWidth={0.9}>
+          {[0, 1, 2].map((i) => (
+            <rect
+              key={i}
+              x={left(i)}
+              y={7}
+              width={DOOR_W}
+              height={26}
+              rx={1}
+              fill="none"
+              className={i === 1 ? inert : structure}
+              strokeDasharray={i === 1 ? "2 1.6" : undefined}
+            />
+          ))}
+          {/* The opened door: swung back, with nothing behind it. */}
+          <polyline
+            points={`${left(1)},7 ${left(1) - 5},11 ${left(1) - 5},29 ${left(1)},33`}
+            fill="none"
+            className={inert}
+          />
+          {/* Handles, so a rectangle reads as a door. */}
+          {[0, 2].map((i) => (
+            <circle
+              key={i}
+              cx={left(i) + DOOR_W - 3}
+              cy={20}
+              r={1.1}
+              className={i === 2 ? "fill-data stroke-none" : "fill-fg-faint/60 stroke-none"}
+            />
+          ))}
+        </g>
+      );
+    }
     case "embedding-universe":
     default: {
       const pts = Array.from({ length: 26 }, () => ({ x: 4 + rng() * 56, y: 4 + rng() * 32 }));

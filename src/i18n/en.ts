@@ -1642,6 +1642,203 @@ export const en = {
           "Every route your phone has ever suggested came out of a loop like this one — a frontier, a settled set, and a rule for which cell to look at next.",
       },
     },
+    // ------------------------------------------------------- probability ----
+    probability: {
+      title: "Probability Lab",
+      description:
+        "Four experiments that challenge your intuition about chance. Guess first, then find out how wrong the guess was.",
+
+      scope:
+        "Four worked problems, not a survey of probability. Each uses a stated model \u2014 a host bound by two rules, 365 equally likely birthdays, two children each independently a boy or a girl, one published clinical table \u2014 and the answers belong to those models. Where a number is simulated it is labelled as simulated: running an experiment many times illustrates a result, it does not prove one.",
+
+      prediction: {
+        yours: "You said",
+        actual: "It is",
+        agreed: "Your intuition agreed with the model.",
+        disagreed: "Your intuition and the model disagree. That is the interesting part.",
+      },
+
+      monty: {
+        title: "Three doors",
+        question: "Should you switch?",
+        caption:
+          "The host is bound by two rules: never open your door, never open the car. Those rules are what make the reveal informative \u2014 a host opening at random would leave both choices equal.",
+        predictQuestion: "Before you play: is it better to stay, to switch, or does it not matter?",
+        predict: { stay: "Stay", switch: "Switch", same: "No difference" },
+        predictAnswer: (value: string) => `Switching wins ${value} of the time`,
+        strategy: { stay: "Stay", switch: "Switch" },
+        doorsIdle: "Three closed doors. One hides a car, two hide goats.",
+        doorsLabel: (picked: number, opened: number) =>
+          `Three doors. You picked door ${picked}. The host opened door ${opened} to show a goat.`,
+        doorLabel: (n: number, state: string) => `Door ${n}, ${state}`,
+        doorState: {
+          closed: "closed",
+          picked: "your pick",
+          opened: "opened by the host, a goat",
+          revealed: "the car",
+        },
+        car: "car",
+        goat: "goat",
+        won: "you won the car",
+        lost: "you did not win the car",
+        promptPick: "Pick a door.",
+        promptDecide: (opened: number, other: number) =>
+          `The host opened door ${opened} and it was a goat. Keep your door, or take door ${other}?`,
+        resultLine: (strategy: string, result: string) => `You chose to ${strategy.toLowerCase()} \u2014 ${result}.`,
+        again: "Play again",
+        announceOpened: (n: number) => `The host opened door ${n}. It was a goat.`,
+        announceResult: (result: string) => `Round over: ${result}.`,
+        runBatch: (n: number) => `Run ${n.toLocaleString("en-US")} rounds`,
+        batchTitle: "Simulated rounds",
+        batchIdle: (n: number) =>
+          `Playing a few rounds by hand will not settle this. Run ${n.toLocaleString("en-US")} of them.`,
+        batchCaption: (n: number) =>
+          `Win rates for staying and for switching over ${n} simulated rounds, beside the exact probabilities.`,
+        strategyHeader: "Strategy",
+        simulatedHeader: (n: number) => `Simulated (${n.toLocaleString("en-US")})`,
+        exactHeader: "Exact",
+        wins: (wins: number, rounds: number) => `${wins}/${rounds}`,
+        playedLabel: "Rounds you played",
+        yourStayLabel: "Staying would have won",
+        yourSwitchLabel: "Switching would have won",
+        handHint: "in your rounds",
+      },
+
+      birthday: {
+        kicker: "A smaller room than you think",
+        title: "How many people before two share a birthday?",
+        lede: "Not 183. The question is not whether someone matches you \u2014 it is whether any two people match, and the number of pairs grows far faster than the number of people.",
+        caption:
+          "The model: 365 equally likely birthdays, no leap years, everyone independent. Real birthdays cluster by season, which nudges the true chance slightly higher \u2014 so this is the conservative version.",
+        predictQuestion: "Where do you think the chance first passes 50%?",
+        predict: { count: (n: number) => `${n} people` },
+        predictAnswer: (n: number, value: string) => `${n} people, at ${value}`,
+        peopleLabel: "People in the room",
+        peopleValue: (n: number, value: string) => `${n} people, ${value} chance of a shared birthday`,
+        peopleHint: "Drag it slowly through the twenties.",
+        roomLabel: (n: number) => `A room of ${n} people. No two share a birthday.`,
+        roomLabelMatch: (n: number, a: number, b: number, day: string) =>
+          `A room of ${n} people. Person ${a} and person ${b} both have a birthday on ${day}.`,
+        foundPair: (a: number, b: number, day: string) =>
+          `Person ${a} and person ${b} share a birthday: ${day}.`,
+        noPair: (n: number) => `In this particular room of ${n}, everyone has a different birthday.`,
+        tableCaption: (n: number) => `Exact and simulated chance of a shared birthday among ${n} people.`,
+        exactRow: "Exact probability",
+        simulatedRow: (rooms: number) => `Simulated (${rooms.toLocaleString("en-US")} rooms)`,
+        stale: (n: number) => `run again \u2014 last run was ${n} people`,
+        reading: (n: number, pairs: number) =>
+          `${n} people make ${pairs.toLocaleString("en-US")} different pairs, and every one of them is a chance to match.`,
+        peopleFigure: "People",
+        pairsFigure: "Pairs",
+        pairsHint: "chances to match",
+        chanceFigure: "Shared birthday",
+        exactHint: "exact",
+        thresholdFigure: "Passes 50% at",
+        thresholdHint: "people",
+        simulateLabel: "Run it instead",
+        runRooms: (n: number) => `Fill ${n.toLocaleString("en-US")} rooms`,
+        simulateNote: (days: number) =>
+          `Each room draws one birthday per person from ${days} equally likely days, then looks for a repeat.`,
+        announce: (n: number, value: string) => `${n} people. Chance of a shared birthday: ${value}.`,
+        months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      },
+
+      conditional: {
+        kicker: "The clue does the work",
+        title: "Two children, and one sentence about them.",
+        lede: "Two children. At least one is a boy. What is the chance both are? The answer is not 1/2 \u2014 and it changes again if the sentence is worded differently.",
+        caption:
+          "This assumes each child is independently a boy or a girl with probability 1/2, and that the clue is exactly as written. A third version \u2014 you meet one child at random and it is a boy \u2014 gives 1/2 again, and is not modelled here.",
+        predictQuestion: "Two children, at least one a boy. Chance both are boys?",
+        predict: { half: "1/2", third: "1/3", quarter: "1/4" },
+        predictAnswer: (value: string) => `1/3, or ${value}`,
+        clueLabel: "The clue",
+        clueShort: { atLeastOneBoy: "At least one is a boy", firstIsBoy: "The first is a boy" },
+        clue: {
+          atLeastOneBoy: "At least one is a boy",
+          firstIsBoy: "The first child is a boy",
+        },
+        clueHint: "Same family, different sentence. Watch which boxes survive.",
+        outcome: { GG: "GG", GB: "GB", BG: "BG", BB: "BB" },
+        possible: "still possible",
+        counts: "both boys",
+        ruledOut: "ruled out",
+        matrixLabel: (clue: string, kept: string, value: string) =>
+          `Four equally likely outcomes. Given that ${clue.toLowerCase()}, the ones still possible are ${kept}, so the chance both are boys is ${value}.`,
+        fraction: (counts: string, value: string) => `${counts} of the remaining outcomes = ${value}`,
+        compareCaption: "The two clues, the outcomes each leaves standing, and the resulting probability.",
+        clueHeader: "Clue",
+        leftHeader: "Still possible",
+        answerHeader: "Both boys",
+        explain: {
+          atLeastOneBoy:
+            "Ruling out GG leaves three outcomes, and only one of them is BB. The clue says nothing about which child is the boy, so GB and BG both survive \u2014 and together they outnumber BB two to one.",
+          firstIsBoy:
+            "Naming the first child rules out GG and GB together, leaving two outcomes. Now BB is one of two rather than one of three. Nothing about the family changed; the sentence did.",
+        },
+        keptFigure: "Outcomes left",
+        keptHint: "out of four",
+        bothFigure: "Both boys",
+        bothHint: "of what is left",
+        answerFigure: "Probability",
+        announce: (clue: string, kept: number, value: string) =>
+          `Clue: ${clue}. ${kept} outcomes remain. Chance both are boys: ${value}.`,
+      },
+
+      simpson: {
+        kicker: "Better in every group, worse overall",
+        title: "Simpson's paradox.",
+        lede: "One treatment beats the other on small stones and on large stones, and loses when you add the two together. Nothing here is a rounding error \u2014 both calculations are correct.",
+        caption:
+          "The per-group success rates are from Charig et al. (1986), a comparison of two kidney-stone treatments. The sliders move patients between the groups; the rates stay put. Every percentage is the counts printed next to it.",
+        predictQuestion: "Can one treatment win in every group and still lose overall?",
+        predict: { impossible: "No \u2014 that is impossible", possible: "Yes \u2014 it can happen" },
+        predictAnswer: "Yes, and the table below is a real example",
+        tableCaption: "Success rates and counts per group and treatment, with the aggregate.",
+        groupHeader: "Group",
+        group: { small: "Small stones", large: "Large stones" },
+        treatment: { a: "Treatment A", b: "Treatment B" },
+        treatmentShort: { a: "A", b: "B" },
+        overall: "Both groups",
+        ahead: "ahead",
+        barsLabel: (
+          smallA: string,
+          smallB: string,
+          largeA: string,
+          largeB: string,
+          overallA: string,
+          overallB: string,
+        ) =>
+          `Small stones: A ${smallA}, B ${smallB}. Large stones: A ${largeA}, B ${largeB}. Both groups combined: A ${overallA}, B ${overallB}.`,
+        reversedBody:
+          "A is ahead in both groups and behind overall. A was given mostly to the hard cases and B mostly to the easy ones, so the aggregate is comparing two different mixes of patient rather than two treatments.",
+        notReversedBody:
+          "With the groups allocated like this, the aggregate agrees with the groups. The reversal needs the two treatments to be given to different mixes of patient.",
+        shareLabel: (treatment: string) => `${treatment}: patients with small stones`,
+        shareValue: (treatment: string, small: number, large: number) =>
+          `${treatment}: ${small} small-stone patients, ${large} large-stone`,
+        shareHint: "Each treatment keeps 350 patients and its per-group success rates. Only the mix moves.",
+        restore: "Back to the published table",
+        overallA: "A overall",
+        overallB: "B overall",
+        reversedFigure: "Reversed?",
+        reversedYes: "Yes",
+        reversedNo: "No",
+        announce: (a: string, b: string, reversed: string) =>
+          `Overall: A ${a}, B ${b}. Reversed: ${reversed}.`,
+      },
+
+      recap: {
+        lessons: [
+          "Intuition is not a probability calculator. In all four experiments the common first answer is the wrong one.",
+          "A clue changes which outcomes are still possible, and the wording decides which ones. \"At least one is a boy\" and \"the first is a boy\" leave different sets standing.",
+          "Collisions are about pairs, not people. Twenty-three people make 253 pairs, which is why a shared birthday arrives so much sooner than it feels like it should.",
+          "Adding groups together can reverse the comparison inside them, whenever the groups were not filled the same way.",
+        ],
+        footer:
+          "Each of these is a worked problem with a stated model, not a general rule about chance. The exact probabilities are computed in closed form; the simulated ones come from running the experiment against a seeded generator and are always labelled as such. Where a question is genuinely ambiguous \u2014 the two-children problem is the clearest case \u2014 the assumption is written down rather than chosen quietly.",
+      },
+    },
 
     // ------------------------------------------------------- sorting ----
     "sorting-race": {

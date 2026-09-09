@@ -21,6 +21,7 @@ describe("the collection has an order, and it is the one we chose", () => {
       "reward-playground",
       "embedding-universe",
       "hypothesis-testing",
+      "probability",
     ]);
   });
 
@@ -32,7 +33,7 @@ describe("the collection has an order, and it is the one we chose", () => {
     // single card. That is a home-page layout decision rather than a registry
     // one, and it is left to the home page to answer.
     const shown = orderedLabs();
-    expect(shown).toHaveLength(10);
+    expect(shown).toHaveLength(11);
     expect(shown.map((lab) => lab.meta.slug).sort()).toEqual(
       publishedLabs()
         .map((lab) => lab.meta.slug)
