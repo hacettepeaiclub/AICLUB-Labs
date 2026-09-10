@@ -59,6 +59,11 @@ export function LayersLab() {
   return (
     <Stage
       width="full"
+      // One button, two networks, and the whole point is watching them race.
+      // In the rail this left a 288px column empty for 422px beside the
+      // canvases; centred underneath, Run sits between the two things it
+      // starts.
+      controls="stack"
       caption={decided ? lab.layersCaption.solved : lab.layersCaption.idle}
       announcement={decided ? lab.layersCaption.solved : ""}
       viewport={
@@ -80,6 +85,9 @@ export function LayersLab() {
                   Math.round(column.trainer.stats.accuracy * 100),
                   column.trainer.stats.epoch,
                 )}
+                /* Two pictures to compare, not two billboards: given the
+                   full width they grew to 511px square each. */
+                className="mx-auto max-w-sm"
               />
               <div className="flex flex-wrap items-start gap-x-8 gap-y-2">
                 <Figure

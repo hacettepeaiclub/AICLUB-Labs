@@ -18,6 +18,7 @@ const COMPONENTS = [
   "components/ConditionalStage.tsx",
   "components/SimpsonStage.tsx",
   "components/Prediction.tsx",
+  "components/Framing.tsx",
 ];
 const read = (path: string) => readFileSync(DIR + path, "utf8");
 const stripComments = (text: string) =>
@@ -291,6 +292,107 @@ describe("view helpers", () => {
     expect(seatOf(0)).toEqual({ row: 0, col: 0 });
     expect(seatOf(COLUMNS)).toEqual({ row: 1, col: 0 });
     expect(seatOf(COLUMNS * 2 + 3)).toEqual({ row: 2, col: 3 });
+  });
+});
+
+// ========================================== the situation comes first ======
+
+describe("a beginner can start", () => {
+  it("states the rules of each situation before asking anything", () => {
+    for (const dict of [en, tr]) {
+      const copy = dict.labs.probability;
+      for (const section of ["monty", "birthday", "conditional", "simpson"] as const) {
+        const setup = copy[section].setup;
+        expect(setup.length, section).toBeGreaterThanOrEqual(3);
+        for (const line of setup) {
+          // One fact per line, in a sentence — not a paragraph, not a label.
+          expect(line.length, `${section}: ${line}`).toBeGreaterThan(20);
+          expect(line.length, `${section}: ${line}`).toBeLessThan(180);
+        }
+      }
+    }
+  });
+
+  it("renders every setup, and renders it above its experiment", () => {
+    const index = read("index.tsx");
+    for (const section of ["monty", "birthday", "conditional", "simpson"] as const) {
+      expect(index, section).toMatch(new RegExp(`Setup rules=\\{copy\\.${section}\\.setup\\}`));
+    }
+    // The Setup precedes the stage it introduces, in every case.
+    for (const [section, stage] of [
+      ["monty", "MontyStage"],
+      ["birthday", "BirthdayStage"],
+      ["conditional", "ConditionalStage"],
+      ["simpson", "SimpsonStage"],
+    ] as const) {
+      const setupAt = index.indexOf(`copy.${section}.setup`);
+      const stageAt = index.indexOf(`<${stage} />`);
+      expect(setupAt, section).toBeGreaterThan(-1);
+      expect(stageAt, section).toBeGreaterThan(setupAt);
+    }
+  });
+
+  it("does not name the result before the visitor has seen it", () => {
+    // The section headings are questions and situations. "Simpson's paradox"
+    // used to be the title of section 4; it is now introduced underneath the
+    // table, once the reversal is on screen.
+    for (const dict of [en, tr]) {
+      const s = dict.labs.probability.simpson;
+      expect(s.title.toLowerCase()).not.toMatch(/simpson/);
+      expect(s.kicker.toLowerCase()).not.toMatch(/simpson|paradok|paradox/);
+      expect(s.named.toLowerCase()).toMatch(/simpson/);
+    }
+    const simpson = stripComments(read("components/SimpsonStage.tsx"));
+    // Shown only on the reversed reading.
+    expect(simpson).toMatch(/table\.reversed && .*s\.named/s);
+  });
+
+  it("asks Monty's strategy question only after a round has been played", () => {
+    const monty = stripComments(read("components/MontyStage.tsx"));
+    expect(monty).toMatch(/played\.rounds > 0 && \(\s*<Prediction/);
+  });
+
+  it("lets the birthday room fill one person at a time", () => {
+    const birthday = stripComments(read("components/BirthdayStage.tsx"));
+    expect(birthday).toMatch(/b\.addPerson/);
+    expect(birthday).toMatch(/Math\.min\(n \+ 1, MAX_PEOPLE\)/);
+  });
+});
+
+// ================================================= the coach explains ======
+
+describe("the coach", () => {
+  it("offers three questions per experiment in both languages", () => {
+    for (const dict of [en, tr]) {
+      const copy = dict.labs.probability;
+      for (const section of ["monty", "birthday", "conditional", "simpson"] as const) {
+        const coach = copy[section].coach;
+        expect(Object.keys(coach), section).toHaveLength(3);
+        expect(copy[section].coachLabel.length, section).toBeGreaterThan(3);
+      }
+    }
+  });
+
+  it("never computes a probability of its own", () => {
+    // The whole architectural point: the coach explains numbers, it does not
+    // produce them. Any value in an answer arrives as an argument.
+    const framing = stripComments(read("components/Framing.tsx"));
+    for (const banned of ["Math.", "engine/", "probability", "simulate"]) {
+      expect({ banned, found: framing.includes(banned) }).toEqual({ banned, found: false });
+    }
+  });
+
+  it("is fed from the engines by every stage that shows it", () => {
+    for (const [file, source] of [
+      ["components/MontyStage.tsx", /THEORETICAL\.stay/],
+      ["components/BirthdayStage.tsx", /pairCount\(threshold\)/],
+      ["components/ConditionalStage.tsx", /analyse\("atLeastOneBoy"\)\.probability/],
+    ] as const) {
+      const code = stripComments(read(file));
+      const coachAt = code.indexOf("const coach = [");
+      expect(coachAt, file).toBeGreaterThan(-1);
+      expect(code.slice(coachAt, coachAt + 500), file).toMatch(source);
+    }
   });
 });
 

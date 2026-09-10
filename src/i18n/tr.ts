@@ -1661,10 +1661,32 @@ export const tr: Translation = {
 
       monty: {
         title: "\u00dc\u00e7 kap\u0131",
-        question: "Kap\u0131y\u0131 de\u011fi\u015ftirmeli misin?",
+        question: "Sunucuyu yenebilir misin?",
+        setup: [
+          "\u00dc\u00e7 kap\u0131. Birinin arkas\u0131nda bir araba, di\u011fer ikisinin arkas\u0131nda birer ke\u00e7i.",
+          "Bir kap\u0131 se\u00e7ersin. Kap\u0131 kapal\u0131 kal\u0131r.",
+          "Sunucu araban\u0131n yerini bilir ve di\u011fer ikisinden birini a\u00e7ar \u2014 her zaman arkas\u0131nda ke\u00e7i olan\u0131.",
+          "Sonra se\u00e7ersin: kendi kap\u0131nda kal ya da sunucunun dokunmad\u0131\u011f\u0131 kap\u0131y\u0131 al.",
+        ],
+        coachLabel: "Herkesin sordu\u011fu sorular",
+        coach: {
+          notHalf: {
+            q: "\u0130ki kap\u0131 kald\u0131. Neden 50/50 de\u011fil?",
+            a: "\u00c7\u00fcnk\u00fc iki kap\u0131 buraya ayn\u0131 yoldan gelmedi. Seninkini hi\u00e7bir \u015fey bilmezken se\u00e7tin. Di\u011feri ise araban\u0131n yerini tam olarak bilen ve onu asla a\u00e7mayacak olan birinin se\u00e7iminden sa\u011f \u00e7\u0131kt\u0131.",
+          },
+          whySwitch: {
+            q: "De\u011fi\u015ftirmek neden daha iyi?",
+            a: (stay: string, swap: string) =>
+              `\u0130lk se\u00e7imin zaman\u0131n ${stay} kadar\u0131nda arabad\u0131r ve kalmak yaln\u0131zca o zaman kazan\u0131r. Kalan ${swap} kadar\u0131nda araba se\u00e7medi\u011fin iki kap\u0131dan birinin arkas\u0131ndad\u0131r \u2014 sunucu da az \u00f6nce bu ikisinden hangisinde olmad\u0131\u011f\u0131n\u0131 g\u00f6sterdi.`,
+          },
+          hostKnows: {
+            q: "Sunucunun biliyor olmas\u0131 \u00f6nemli mi?",
+            a: "Her \u015fey o. Rastgele kap\u0131 a\u00e7an \u2014 bazen kazara arabay\u0131 g\u00f6steren \u2014 bir sunucu, kalmakla de\u011fi\u015ftirmeyi e\u015fit k\u0131lard\u0131. A\u00e7\u0131lan kap\u0131y\u0131 bilgilendirici yapan \u015fey, sunucunun bilmesi.",
+          },
+        },
         caption:
           "Sunucu iki kurala ba\u011fl\u0131d\u0131r: sizin kap\u0131n\u0131z\u0131 asla a\u00e7maz, arabay\u0131 asla a\u00e7maz. A\u00e7may\u0131 bilgilendirici k\u0131lan da bu kurallard\u0131r \u2014 rastgele kap\u0131 a\u00e7an bir sunucu iki se\u00e7ene\u011fi e\u015fit b\u0131rak\u0131rd\u0131.",
-        predictQuestion: "Oynamadan \u00f6nce: kalmak m\u0131 iyi, de\u011fi\u015ftirmek mi, yoksa fark etmez mi?",
+        predictQuestion: "Bir el oynad\u0131n. \u00c7ok say\u0131da elde hangisi daha iyi gider?",
         predict: { stay: "Kal", switch: "De\u011fi\u015ftir", same: "Fark etmez" },
         predictAnswer: (value: string) => `De\u011fi\u015ftirmek zaman\u0131n ${value} kadar\u0131nda kazan\u0131r`,
         strategy: { stay: "Kal", switch: "De\u011fi\u015ftir" },
@@ -1708,7 +1730,30 @@ export const tr: Translation = {
       birthday: {
         kicker: "Sand\u0131\u011f\u0131n\u0131zdan k\u00fc\u00e7\u00fck bir oda",
         title: "\u0130ki ki\u015finin do\u011fum g\u00fcn\u00fc tutmas\u0131 i\u00e7in ka\u00e7 ki\u015fi gerekir?",
-        lede: "183 de\u011fil. Soru birinin sizinle tutup tutmad\u0131\u011f\u0131 de\u011fil \u2014 herhangi iki ki\u015finin tutup tutmad\u0131\u011f\u0131; ve \u00e7ift say\u0131s\u0131 ki\u015fi say\u0131s\u0131ndan \u00e7ok daha h\u0131zl\u0131 b\u00fcy\u00fcr.",
+        setup: [
+          "\u0130nsanlar odaya teker teker giriyor.",
+          "Herkesin do\u011fum g\u00fcn\u00fc 365 g\u00fcnden biri ve her g\u00fcn e\u015fit olas\u0131l\u0131kta.",
+          "Soru, birinin seninle ayn\u0131 do\u011fum g\u00fcn\u00fcne sahip olup olmad\u0131\u011f\u0131 de\u011fil. Odadaki herhangi iki ki\u015finin tutup tutmad\u0131\u011f\u0131.",
+        ],
+        addPerson: "Bir ki\u015fi ekle",
+        addPersonHint: "\u00c7ift say\u0131s\u0131na ne oldu\u011funa bak.",
+        roomFull: "Oda doldu.",
+        coachLabel: "Herkesin sordu\u011fu sorular",
+        coach: {
+          soonWhy: {
+            q: (n: number) => `${n} ki\u015fi nas\u0131l yaz\u0131 tura oluyor?`,
+            a: (n: number, pairs: string) =>
+              `Ki\u015fileri de\u011fil \u00e7iftleri say. ${n} ki\u015fi ${pairs} farkl\u0131 \u00e7ift yapar ve her \u00e7ift kendi ba\u015f\u0131na bir tutma \u015fans\u0131d\u0131r. Bir ki\u015fi daha ekledi\u011finde odadaki herkesle yeni birer \u00e7ift getirir; yani \u015fanslar kalabal\u0131ktan \u00e7ok daha h\u0131zl\u0131 birikir.`,
+          },
+          notMine: {
+            q: "Bu benim do\u011fum g\u00fcn\u00fcmle ilgili de\u011fil mi?",
+            a: "Sezginin yapt\u0131\u011f\u0131 takas bu ve o \u00e7ok daha zor bir soru. Birinin tam olarak seninle tutmas\u0131 i\u00e7in yakla\u015f\u0131k 253 ki\u015fi gerekir. Herhangi iki ki\u015finin birbiriyle tutmas\u0131 i\u00e7in 23.",
+          },
+          realBirthdays: {
+            q: "Do\u011fum g\u00fcnleri ger\u00e7ekten e\u015fit mi da\u011f\u0131l\u0131r?",
+            a: "Hay\u0131r \u2014 ger\u00e7ek do\u011fum g\u00fcnleri mevsime g\u00f6re k\u00fcmelenir ve k\u00fcmelenme tutmay\u0131 daha olas\u0131 k\u0131lar, daha az de\u011fil. Yani buradaki e\u015fit da\u011f\u0131l\u0131m modeli temkinli cevab\u0131 verir; ger\u00e7ekte %50 biraz daha erken ge\u00e7ilir.",
+          },
+        },
         caption:
           "Model: e\u015fit olas\u0131l\u0131kl\u0131 365 do\u011fum g\u00fcn\u00fc, art\u0131k y\u0131l yok, herkes ba\u011f\u0131ms\u0131z. Ger\u00e7ek do\u011fum g\u00fcnleri mevsime g\u00f6re k\u00fcmelenir ve bu, ger\u00e7ek olas\u0131l\u0131\u011f\u0131 biraz y\u00fckseltir \u2014 yani buradaki, temkinli olan\u0131.",
         predictQuestion: "Sizce olas\u0131l\u0131k ilk ne zaman %50'yi ge\u00e7er?",
@@ -1746,8 +1791,29 @@ export const tr: Translation = {
 
       conditional: {
         kicker: "\u0130\u015fi yapan \u015fey ipucu",
-        title: "\u0130ki \u00e7ocuk ve onlar hakk\u0131nda tek bir c\u00fcmle.",
-        lede: "\u0130ki \u00e7ocuk var. En az biri erkek. \u0130kisinin de erkek olma olas\u0131l\u0131\u011f\u0131 nedir? Cevap 1/2 de\u011fil \u2014 ve c\u00fcmle ba\u015fka t\u00fcrl\u00fc kurulursa yine de\u011fi\u015fir.",
+        title: "Bir ailenin iki \u00e7ocu\u011fu var. \u0130kisi de erkek mi?",
+        setup: [
+          "Bir ailenin iki \u00e7ocu\u011fu var: biri b\u00fcy\u00fck, biri k\u00fc\u00e7\u00fck.",
+          "Her \u00e7ocuk erkek ya da k\u0131z ve ikisi de e\u015fit olas\u0131l\u0131kta \u2014 yani e\u015fit olas\u0131l\u0131kl\u0131 d\u00f6rt aile var.",
+          "Biri sana bu aile hakk\u0131nda do\u011fru tek bir c\u00fcmle s\u00f6yl\u00fcyor.",
+          "Senin sorun: ikisinin de erkek olma olas\u0131l\u0131\u011f\u0131 nedir?",
+        ],
+        coachLabel: "Herkesin sordu\u011fu sorular",
+        coach: {
+          notHalf: {
+            q: "\u00c7ocuklardan biri erkek, o zaman di\u011feri 50/50 de\u011fil mi?",
+            a: (value: string) =>
+              `Bu, ba\u015fka bir c\u00fcmlenin cevab\u0131 olurdu: \u201cb\u00fcy\u00fck olan erkek\u201d. Sana s\u00f6ylenen, ikisinden en az birinin erkek oldu\u011fu \u2014 hangisi oldu\u011fu de\u011fil. D\u00f6rt aileden \u00fc\u00e7\u00fc bu c\u00fcmleye uyar ve bunlardan yaln\u0131zca biri iki erkektir; yani olas\u0131l\u0131k ${value}.`,
+          },
+          twoWays: {
+            q: "Erkek-sonra-k\u0131z ile k\u0131z-sonra-erkek neden ayr\u0131 say\u0131l\u0131yor?",
+            a: "\u00c7\u00fcnk\u00fc bunlar farkl\u0131 aileler ve her biri iki erkek kadar olas\u0131. Bir erkek bir k\u0131zl\u0131 aileye d\u00fc\u015fmek, iki erkekli bir aileye d\u00fc\u015fmekten iki kat kolayd\u0131r \u2014 birine iki yol \u00e7\u0131kar, di\u011ferine bir.",
+          },
+          wording: {
+            q: "C\u00fcmlenin kurulu\u015fu cevab\u0131 nas\u0131l de\u011fi\u015ftiriyor?",
+            a: "C\u00fcmle, kan\u0131t\u0131n kendisi. \u201cEn az biri erkek\u201d bir aileyi eler; \u201cb\u00fcy\u00fck olan erkek\u201d iki aileyi eler. Geriye daha az aile kal\u0131r ve iki erkek, kalan\u0131n i\u00e7inde daha b\u00fcy\u00fck bir pay tutar. Hi\u00e7bir ailede bir \u015fey de\u011fi\u015fmedi \u2014 yaln\u0131zca sana s\u00f6ylenen de\u011fi\u015fti.",
+          },
+        },
         caption:
           "Burada her \u00e7ocu\u011fun ba\u011f\u0131ms\u0131z olarak 1/2 olas\u0131l\u0131kla erkek ya da k\u0131z oldu\u011fu ve ipucunun tam olarak yaz\u0131ld\u0131\u011f\u0131 gibi ge\u00e7erli oldu\u011fu varsay\u0131l\u0131r. \u00dc\u00e7\u00fcnc\u00fc bir okuma \u2014 \u00e7ocuklardan biriyle rastgele kar\u015f\u0131la\u015f\u0131p erkek oldu\u011funu g\u00f6rmek \u2014 yine 1/2 verir ve burada modellenmemi\u015ftir.",
         predictQuestion: "\u0130ki \u00e7ocuk, en az biri erkek. \u0130kisinin de erkek olma olas\u0131l\u0131\u011f\u0131?",
@@ -1787,9 +1853,31 @@ export const tr: Translation = {
       },
 
       simpson: {
-        kicker: "Her grupta daha iyi, toplamda daha k\u00f6t\u00fc",
-        title: "Simpson paradoksu.",
-        lede: "Bir tedavi hem k\u00fc\u00e7\u00fck ta\u015flarda hem b\u00fcy\u00fck ta\u015flarda di\u011ferini ge\u00e7iyor, ikisini toplay\u0131nca kaybediyor. Burada yuvarlama hatas\u0131 yok \u2014 iki hesap da do\u011fru.",
+        kicker: "\u0130ki tedavi, tek bir karar",
+        title: "Hangi tedaviyi se\u00e7erdin?",
+        setup: [
+          "B\u00f6brek ta\u015f\u0131 i\u00e7in iki tedavi, A ve B \u2014 1986 tarihli ger\u00e7ek bir \u00e7al\u0131\u015fmadan.",
+          "Hastalar ya k\u00fc\u00e7\u00fck ta\u015fla ya da b\u00fcy\u00fck ta\u015fla geliyor; b\u00fcy\u00fck olanlar zor vakalar.",
+          "Tablo her tedavinin her grupta ve iki grubun toplam\u0131nda ne yapt\u0131\u011f\u0131n\u0131 g\u00f6steriyor.",
+          "Tabloyu oku ve isteyece\u011fin tedaviyi se\u00e7.",
+        ],
+        named:
+          "Bakt\u0131\u011f\u0131n \u015feyin bir ad\u0131 var: Simpson paradoksu \u2014 gruplar topland\u0131\u011f\u0131nda tersine d\u00f6nen bir kar\u015f\u0131la\u015ft\u0131rma.",
+        coachLabel: "Herkesin sordu\u011fu sorular",
+        coach: {
+          howBoth: {
+            q: "A her iki grupta kazan\u0131p toplamda nas\u0131l kaybedebilir?",
+            a: "\u00c7\u00fcnk\u00fc iki tedavi ayn\u0131 t\u00fcr hastaya verilmedi. A \u00e7o\u011funlukla zor vakalarda, B \u00e7o\u011funlukla kolay vakalarda kullan\u0131ld\u0131. Gruplar\u0131 toplamak \u201changi tedavi\u201d ile \u201changi hastalar\u201d sorusunu birbirine kar\u0131\u015ft\u0131r\u0131r ve hasta kar\u0131\u015f\u0131m\u0131 daha g\u00fc\u00e7l\u00fc etkidir.",
+          },
+          whichWrong: {
+            q: "Say\u0131lardan biri yanl\u0131\u015f m\u0131?",
+            a: "\u0130kisi de de\u011fil. \u0130kisi de ayn\u0131 say\u0131mlar \u00fczerinde aritmetik ve her y\u00fczdeyi yan\u0131ndaki iki say\u0131yla kar\u015f\u0131la\u015ft\u0131r\u0131p do\u011frulayabilirsin. Bunlar iki farkl\u0131 sorunun do\u011fru cevaplar\u0131.",
+          },
+          whichBelieve: {
+            q: "Peki hangi say\u0131ya inanmal\u0131y\u0131m?",
+            a: "Tek bir hasta i\u00e7in tedavi se\u00e7erken grup sat\u0131rlar\u0131na \u2014 \u00e7\u00fcnk\u00fc o hastan\u0131n ya k\u00fc\u00e7\u00fck ta\u015f\u0131 vard\u0131r ya b\u00fcy\u00fck, ikisinin ortalamas\u0131 asla olmaz. Toplam sat\u0131r\u0131 ba\u015fka bir soruyu yan\u0131tlar: bu belirli hasta kar\u0131\u015f\u0131m\u0131na ne oldu.",
+          },
+        },
         caption:
           "Grup ba\u015f\u0131na ba\u015far\u0131 oranlar\u0131 Charig ve ark. (1986) \u00e7al\u0131\u015fmas\u0131ndan, iki b\u00f6brek ta\u015f\u0131 tedavisinin kar\u015f\u0131la\u015ft\u0131r\u0131lmas\u0131ndan geliyor. Kayd\u0131r\u0131c\u0131lar hastalar\u0131 gruplar aras\u0131nda ta\u015f\u0131r; oranlar yerinde kal\u0131r. Her y\u00fczde, yan\u0131nda yazan say\u0131lar\u0131n b\u00f6l\u00fcm\u00fcd\u00fcr.",
         predictQuestion: "Bir tedavi her grupta kazan\u0131p toplamda kaybedebilir mi?",

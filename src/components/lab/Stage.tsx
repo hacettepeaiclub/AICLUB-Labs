@@ -23,7 +23,8 @@ import { cn } from "@/lib/cn";
  *
  * So: one chassis, a recessed screen, and the controls on the same object.
  *
- *   >= lg   viewport left, an 18rem rail on the right
+ *   >= lg   viewport left, an 18rem rail on the right — or, with
+ *           `controls="stack"`, the controls centred under the viewport
  *   <  lg   viewport, then the primary control, then the figures, then
  *           everything else behind a disclosure
  *
@@ -79,6 +80,22 @@ export interface StageProps {
   /** Names what the disclosure holds. Never "Advanced", never a gear icon. */
   secondaryLabel?: string;
   width?: StageWidth;
+  /**
+   * Where the controls sit on a wide screen.
+   *
+   * `rail` puts them in a column beside the viewport, which is right when
+   * there are enough of them to fill it. `stack` puts them under the viewport,
+   * centred, and gives the viewport the whole width.
+   *
+   * The choice is not cosmetic. A rail is a fixed 18rem column whose height is
+   * whatever the viewport beside it happens to be, so a stage with one picker
+   * and a tall canvas leaves a tall empty column — 422px of it in this
+   * collection's worst case, and 7,806px across all eleven labs. Worse, it
+   * puts the one thing you are meant to touch off to the side of the thing it
+   * changes. Where the controls are few, `stack` keeps them under the
+   * mechanism, where the eye already is.
+   */
+  controls?: "rail" | "stack";
   className?: string;
 }
 
@@ -92,16 +109,24 @@ export function Stage({
   announcement,
   secondaryLabel,
   width = "wide",
+  controls = "rail",
   className,
 }: StageProps) {
   const t = useT();
+  const stacked = controls === "stack";
 
   return (
     <div className={cn("mx-auto", WIDTH[width], className)}>
       {/* The chassis. A hairline, no shadow: this houses a measurement, it is
           not a card that wants to be clicked. */}
       <div className="rounded-card border border-line/10 bg-ink-800 p-3 md:p-4">
-        <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_18rem] lg:gap-4">
+        <div
+          className={cn(
+            // `items-start` so the rail is as tall as its own contents rather
+            // than stretching to match the viewport beside it.
+            !stacked && "lg:grid lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start lg:gap-4",
+          )}
+        >
           {/* ------------------------------------------------ the screen -- */}
           <div className="min-w-0 space-y-2">
             {viewport}
@@ -112,7 +137,14 @@ export function Stage({
           <div
             role="group"
             aria-label={t.common.controlsLabel}
-            className="mt-3 space-y-3 lg:mt-0 lg:flex lg:flex-col lg:gap-3 lg:space-y-0"
+            className={cn(
+              "mt-3 space-y-3",
+              stacked
+                ? // Under the viewport: the action sits centred beneath the
+                  // thing it acts on, and the figures read as one line.
+                  "flex flex-col items-center gap-3 space-y-0 text-center"
+                : "lg:mt-0 lg:flex lg:flex-col lg:gap-3 lg:space-y-0",
+            )}
           >
             {/* One reading order at every width: the control you press, then
                 what it produced, then the things you touch less often. An
@@ -120,17 +152,29 @@ export function Stage({
                 above the buttons, which put "Clear" at the top of the column —
                 a destructive action in the most prominent position, with the
                 Run button pushed below a paragraph of keyboard help. */}
-            <div>{primary}</div>
+            <div className={cn(stacked && "w-full max-w-md")}>{primary}</div>
 
             {figures && (
-              <div className="flex flex-wrap items-start gap-x-8 gap-y-3">{figures}</div>
+              <div
+                className={cn(
+                  "flex flex-wrap items-start gap-x-8 gap-y-3",
+                  stacked && "justify-center text-left",
+                )}
+              >
+                {figures}
+              </div>
             )}
 
             {secondary && (
               <>
                 {/* Below lg: a real <details>. No JS, no ARIA to get wrong,
                     and the browser's own disclosure semantics. */}
-                <details className="group rounded border border-line/10 lg:hidden">
+                <details
+                  className={cn(
+                    "group rounded border border-line/10",
+                    stacked ? "w-full text-left" : "lg:hidden",
+                  )}
+                >
                   <summary
                     className="flex min-h-[44px] cursor-pointer select-none items-center justify-between
                       gap-2 px-3 text-body-sm text-fg-muted transition-colors duration-fast
@@ -147,8 +191,10 @@ export function Stage({
                   <div className="space-y-3 border-t border-line/10 p-3">{secondary}</div>
                 </details>
 
-                {/* At lg and up there is room for all of it, so nothing hides. */}
-                <div className="hidden space-y-3 lg:block">{secondary}</div>
+                {/* At lg and up the rail has room for all of it, so nothing
+                    hides. Stacked, the disclosure above is the only copy —
+                    a second one would repeat every control. */}
+                {!stacked && <div className="hidden space-y-3 lg:block">{secondary}</div>}
               </>
             )}
           </div>

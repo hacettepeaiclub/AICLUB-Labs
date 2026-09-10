@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
 import { useCanvas2D, useLocalControls, useRepaintFlag } from "@/hooks";
-import { Figure, LabSlider, Stage } from "@/components/lab";
+import { LabSlider, Stage } from "@/components/lab";
 import { useT } from "@/i18n";
 import { Segmented } from "@/components/ui";
 import { formatNumber } from "@/lib/format";
@@ -49,17 +49,14 @@ export function NeuronLab() {
   useEffect(markDirty, [state, markDirty]);
 
   const canvasRef = useCanvas2D(
-    useCallback(
-      ({ ctx, width, height }) => {
-        painterRef.current ??= createScalarFieldPainter(72);
-        const { w1, w2, bias, activation } = stateRef.current;
-        painterRef.current.draw(ctx, width, height, (x, y) =>
-          squash(activation, w1 * x + w2 * y + bias),
-        );
-        drawAxes(ctx, width, height);
-      },
-      [],
-    ),
+    useCallback(({ ctx, width, height }) => {
+      painterRef.current ??= createScalarFieldPainter(72);
+      const { w1, w2, bias, activation } = stateRef.current;
+      painterRef.current.draw(ctx, width, height, (x, y) =>
+        squash(activation, w1 * x + w2 * y + bias),
+      );
+      drawAxes(ctx, width, height);
+    }, []),
     // Nothing here animates on its own, so there is no frame loop at all —
     // each control change repaints exactly once.
     false,
@@ -73,7 +70,7 @@ export function NeuronLab() {
   return (
     <Stage
       width="wide"
-      secondaryLabel={n.weightsAndBias}
+      secondaryLabel={n.activation}
       caption={n.caption}
       viewport={
         <div className="space-y-2">
@@ -85,7 +82,7 @@ export function NeuronLab() {
               formatNumber(state.w2, 1),
               formatNumber(state.bias, 1),
             )}
-            className="aspect-square w-full rounded border border-line/10 bg-ink-950"
+            className="mx-auto aspect-square w-full max-w-sm rounded border border-line/10 bg-ink-950"
           />
           {/* The sum it is actually computing, in the same numbers the sliders
               are setting. */}
@@ -97,26 +94,15 @@ export function NeuronLab() {
           </p>
         </div>
       }
+      /* The three sliders are the lesson — the whole claim of this section is
+         that you can feel a weight tilt the line and the bias slide it. They
+         used to sit in `secondary`, which on a phone put them behind a
+         disclosure below the picture they move, and on desktop put them at the
+         bottom of the rail under three figures that only repeated the numbers
+         the sliders already show. They are the primary control now, and the
+         duplicate figures are gone. */
       primary={
-        <div className="space-y-2">
-          <Segmented
-            label={n.activation}
-            value={state.activation}
-            options={activationOptions}
-            onChange={(activation) => set({ activation })}
-          />
-          <p className="text-caption text-fg-faint">{note}</p>
-        </div>
-      }
-      figures={
-        <>
-          <Figure label={n.weight1} value={formatNumber(state.w1, 2)} />
-          <Figure label={n.weight2} value={formatNumber(state.w2, 2)} />
-          <Figure label={n.bias} value={formatNumber(state.bias, 2)} tone="accent" />
-        </>
-      }
-      secondary={
-        <>
+        <div className="space-y-3">
           <LabSlider
             label={n.weight1}
             value={state.w1}
@@ -144,7 +130,18 @@ export function NeuronLab() {
             onChange={(bias) => set({ bias })}
             format={(v) => formatNumber(v, 1)}
           />
-        </>
+        </div>
+      }
+      secondary={
+        <div className="space-y-2">
+          <Segmented
+            label={n.activation}
+            value={state.activation}
+            options={activationOptions}
+            onChange={(activation) => set({ activation })}
+          />
+          <p className="text-caption text-fg-faint">{note}</p>
+        </div>
       }
     />
   );
