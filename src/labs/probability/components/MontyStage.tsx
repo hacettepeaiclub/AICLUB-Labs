@@ -18,7 +18,7 @@ import {
   type Tally,
 } from "../engine/montyHall";
 import { percent } from "../view";
-import { Coach } from "./Framing";
+import { Coach, Explain } from "./Framing";
 import { Prediction } from "./Prediction";
 
 const BATCH = 1000;
@@ -217,15 +217,38 @@ export function MontyStage() {
         }
         readout={
           <div className="rounded border border-line/10 bg-ink-950 p-4">
-            <p className="text-body-sm text-fg-muted">
+            {/* The host, speaking. The rule that makes this puzzle work — that
+                the door opened was never going to be the car — is far easier
+                to believe from the person bound by it than from a caption
+                further down the page. */}
+            <p className="text-body-sm text-fg">
               {phase === "picking"
-                ? m.promptPick
+                ? m.hostPick
                 : phase === "opened" && round
-                  ? m.promptDecide(round.opened + 1, round.other + 1)
+                  ? m.hostReveal(round.opened + 1)
                   : outcome
-                    ? m.resultLine(m.strategy[outcome.strategy], outcome.won ? m.won : m.lost)
+                    ? outcome.won
+                      ? m.hostWon
+                      : m.hostLost
                     : ""}
             </p>
+            <p className="mt-1 text-body-sm text-fg-muted">
+              {phase === "opened" && round
+                ? m.hostDecide(round.other + 1)
+                : outcome
+                  ? m.resultLine(m.strategy[outcome.strategy], outcome.won ? m.won : m.lost)
+                  : m.promptPick}
+            </p>
+            {/* Only once a round has been finished: an explanation read before
+                the surprise is just prose. */}
+            {played.rounds > 0 && (
+              <Explain
+                what={m.explainWhat}
+                why={m.explainWhy}
+                maths={m.explainMaths(percent(THEORETICAL.stay), percent(THEORETICAL.switch))}
+                copy={copy.explain}
+              />
+            )}
           </div>
         }
         primary={
@@ -276,9 +299,16 @@ export function MontyStage() {
                 offered to somebody who had not yet opened a door. It arrives
                 once there is something to test. */}
             {played.rounds > 0 && (
-              <Button variant="ghost" onClick={runBatch} className="min-h-11 w-full justify-center">
-                {m.runBatch(BATCH)}
-              </Button>
+              <div className="space-y-2">
+                {batch === null && <p className="text-caption text-fg-muted">{m.batchInvite}</p>}
+                <Button
+                  variant="ghost"
+                  onClick={runBatch}
+                  className="min-h-11 w-full justify-center"
+                >
+                  {m.runBatch(BATCH)}
+                </Button>
+              </div>
             )}
           </div>
         }
