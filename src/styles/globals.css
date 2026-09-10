@@ -269,8 +269,11 @@
   /* It is still a native <input type="range">, so keyboard, stepping  */
   /* and screen-reader semantics are untouched.                        */
   /* ---------------------------------------------------------------- */
+  /* The element is 44px tall so it can be hit with a thumb; the track it
+     paints stays 6px and stays centred, so nothing looks different — the
+     grabbable area around it is simply no longer 24px. */
   .lab-range {
-    @apply h-6 w-full cursor-pointer appearance-none bg-transparent;
+    @apply h-11 w-full cursor-pointer appearance-none bg-transparent;
     background-image: linear-gradient(
       to right,
       rgb(var(--accent)) var(--range-fill, 50%),

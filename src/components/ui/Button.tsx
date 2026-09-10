@@ -23,9 +23,14 @@ const variantClasses: Record<Variant, string> = {
   ghost: "text-fg-muted hover:text-fg hover:bg-line/5 active:bg-line/10",
 };
 
+// `md` is 44px rather than 40 because the labs had already decided that:
+// nineteen call sites across six labs pinned `min-h-11` onto a Button to reach
+// it. The default now is what they were reaching for, and those overrides
+// become no-ops instead of the house style being a thing you opt into.
+// `sm` stays 32px for genuinely dense secondary controls, `lg` 48px.
 const sizeClasses: Record<Size, string> = {
   sm: "h-8 px-3 text-body-sm rounded",
-  md: "h-10 px-4 text-body-sm rounded",
+  md: "h-11 px-4 text-body-sm rounded",
   lg: "h-12 px-6 text-body rounded",
 };
 
