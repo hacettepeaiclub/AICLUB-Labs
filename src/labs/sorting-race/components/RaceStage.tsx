@@ -87,6 +87,9 @@ export function RaceStage() {
   return (
     <Stage
       width="full"
+      // Three buttons beside two races left a 288px column empty for 249px.
+      // Sort belongs between the two things it starts, not off to their right.
+      controls="stack"
       caption={lab.race.caption}
       announcement={run.announcement}
       viewport={

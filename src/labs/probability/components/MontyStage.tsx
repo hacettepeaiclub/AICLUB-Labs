@@ -270,9 +270,16 @@ export function MontyStage() {
               </Button>
             )}
 
-            <Button variant="ghost" onClick={runBatch} className="min-h-11 w-full justify-center">
-              {m.runBatch(BATCH)}
-            </Button>
+            {/* "Now test it at scale", not "click this before playing". Before
+                the first round this was the only control in the rail and so the
+                most prominent thing on the stage — a thousand simulated rounds
+                offered to somebody who had not yet opened a door. It arrives
+                once there is something to test. */}
+            {played.rounds > 0 && (
+              <Button variant="ghost" onClick={runBatch} className="min-h-11 w-full justify-center">
+                {m.runBatch(BATCH)}
+              </Button>
+            )}
           </div>
         }
         figures={

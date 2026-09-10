@@ -188,6 +188,8 @@ function TextPuzzle({ spec, reduced, onSolved }: PuzzleProps) {
   return (
     <Stage
       width="full"
+      // The rail held 101px of content beside a 396px viewport.
+      controls="stack"
       caption={lab.honesty}
       announcement={announcement}
       viewport={
@@ -271,6 +273,8 @@ function TokenizerPuzzle({ spec, reduced, onSolved }: PuzzleProps) {
   return (
     <Stage
       width="full"
+      // The rail held 101px of content beside a 396px viewport.
+      controls="stack"
       caption={lab.honesty}
       announcement={announcement}
       viewport={

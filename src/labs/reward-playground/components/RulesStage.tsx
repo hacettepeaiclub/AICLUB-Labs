@@ -57,6 +57,10 @@ export function RulesStage({ run, settings, onChange, onRestore, changed }: Rule
   return (
     <Stage
       width="full"
+      // Inverted: 738px of dials beside a 77px viewport, so the dead column
+      // was on the left, under the thing being explained. The dials read as a
+      // row under it instead.
+      controls="stack"
       caption={rules.caption}
       viewport={
         <div className="rounded border border-line/10 bg-ink-950 p-4">

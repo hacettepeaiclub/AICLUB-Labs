@@ -97,7 +97,10 @@
   /* Text */
   --fg: 237 237 244;
   --fg-muted: 158 158 178;
-  --fg-faint: 108 108 128;
+  /* Lifted from 108 108 128: that measured 3.85:1 on the page and 3.13:1 on
+     a raised chip, under the 4.5:1 that AA asks for the 11px and 12px text
+     this tier carries. Same hue, enough of it to read. */
+  --fg-faint: 134 134 154;
 
   /* Accent — the club's navy, #003588.
      Two tokens, because one colour cannot do both jobs. #003588 carries a
@@ -164,7 +167,9 @@
   /* Text */
   --fg: 17 19 27;
   --fg-muted: 84 89 104;
-  --fg-faint: 124 130 146;
+  /* Darkened from 124 130 146 for the same reason: 3.22:1 on the raised
+     surface, 4.53:1 on the worst of them now. */
+  --fg-faint: 100 106 122;
 
   /* Accent — on a light ground the brand navy serves both roles unchanged:
      dark enough to carry a white label (11.26:1) and dark enough to read as
