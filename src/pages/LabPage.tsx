@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { useParams } from "react-router-dom";
 import { LabShell } from "@/components/lab";
+import { ErrorBoundary } from "@/components/layout/ErrorBoundary";
 import { useT } from "@/i18n";
 import { findLab } from "@/labs/registry";
 import { NotFoundPage } from "./NotFoundPage";
@@ -28,9 +29,18 @@ export function LabPage() {
   const { meta, Component } = lab;
   return (
     <LabShell meta={meta}>
-      <Suspense fallback={<LabLoading />}>
-        <Component />
-      </Suspense>
+      {/* A second boundary, inside the lab's own shell. The one in PageShell
+          would already prevent the blank page, but it would take the lab's
+          title and breadcrumb down with the experiment; here the visitor keeps
+          their bearings and only the experiment is replaced.
+
+          It also catches the common case: a lazy chunk that fails to load
+          throws out of this Suspense. */}
+      <ErrorBoundary resetKey={meta.slug}>
+        <Suspense fallback={<LabLoading />}>
+          <Component />
+        </Suspense>
+      </ErrorBoundary>
     </LabShell>
   );
 }

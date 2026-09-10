@@ -42,6 +42,12 @@ export const tr: Translation = {
     minutes: (n: number) => `${n} dk`,
     loadingLab: "Laboratuvar yükleniyor",
     openLab: "Laboratuvarı aç →",
+
+    errorTitle: "Sayfanın bu bölümü yüklenemedi.",
+    errorBody:
+      "Gösterilirken bir şeyler ters gitti. Yeniden denemek genellikle sorunu çözer — özellikle bu sayfa bir süredir açıksa.",
+    errorRetry: "Yeniden dene",
+    errorBackToLabs: "Tüm laboratuvarlara dön",
   },
 
   preferences: {
@@ -1148,6 +1154,15 @@ export const tr: Translation = {
       copied: "Kopyalandı",
       copyHash: "Özeti kopyala",
       hashCopied: "Özet kopyalandı",
+
+      unavailable: {
+        title: "Bu laboratuvar burada çalışamıyor.",
+        insecureContext:
+          "Bu laboratuvarın tarayıcınızda özet hesaplayabilmesi için güvenli bir bağlantı (HTTPS) gerekiyor. Sayfayı https:// ile açmak sorunu çözecektir.",
+        unsupported:
+          "Tarayıcınız yerleşik özetleme özelliğini (Web Crypto) kullanıma sunmadı, bu yüzden gösterilecek bir özet yok. Bir ayar ya da bir eklenti bunu kapatmış olabilir.",
+        note: "Burada hiçbir şey taklit edilmiyor — tarayıcının gerçek SHA-256'sı olmadan dürüstçe gösterilebilecek bir şey yok.",
+      },
 
       figures: {
         messageLength: "Mesaj",
