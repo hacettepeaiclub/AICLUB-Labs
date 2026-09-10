@@ -51,8 +51,10 @@ export function CollisionStage() {
   });
   const { round, best } = progress;
   const [attempts, setAttempts] = useState(0);
-  const hashA = useSha256(inputA);
-  const hashB = useSha256(inputB);
+  // Only the digests are needed here; the entry point owns the
+  // "hashing is unavailable" branch, so this never renders without one.
+  const { hash: hashA } = useSha256(inputA);
+  const { hash: hashB } = useSha256(inputB);
 
   const sameInput = inputA === inputB;
   const matched = hashA && hashB && !sameInput ? commonHexPrefix(hashA, hashB) : 0;

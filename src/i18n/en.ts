@@ -30,6 +30,20 @@ export const en = {
     minutes: (n: number) => `${n} min`,
     loadingLab: "Loading lab",
     openLab: "Open lab →",
+
+    /**
+     * What a visitor sees when something below the header failed to render.
+     *
+     * No stack trace and no error code: the underlying message is a developer's
+     * sentence, and a visitor can do nothing with it. What they can do is try
+     * again — a reload is the fix for the common cause, which is an old tab
+     * meeting a new deployment.
+     */
+    errorTitle: "This part of the page did not load.",
+    errorBody:
+      "Something went wrong while showing it. Trying again usually fixes it — especially if this page has been open for a while.",
+    errorRetry: "Try again",
+    errorBackToLabs: "Back to all labs",
   },
 
   preferences: {
@@ -1147,6 +1161,22 @@ export const en = {
       copied: "Copied",
       copyHash: "Copy digest",
       hashCopied: "Digest copied",
+
+      /**
+       * When the browser will not hash.
+       *
+       * Two causes, two sentences: the lab says the one it actually detected
+       * rather than blaming HTTPS for every failure. Nothing here is faked —
+       * without the real SHA-256 there is no experiment to show.
+       */
+      unavailable: {
+        title: "This lab cannot run here.",
+        insecureContext:
+          "This lab needs a secure connection (HTTPS) to compute hashes in your browser. Opening this page over https:// should fix it.",
+        unsupported:
+          "Your browser did not make its hashing built-in (Web Crypto) available, so there is no digest to show. It may be disabled by a setting or an extension.",
+        note: "Nothing is faked here — without the browser's real SHA-256 there is nothing honest to display.",
+      },
 
       figures: {
         messageLength: "Message",

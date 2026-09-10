@@ -44,10 +44,14 @@ export function DeterminismStage({ input }: DeterminismStageProps) {
 
   const hashAgain = useCallback(() => {
     setBusy(true);
-    void sha256Hex(input)
+    sha256Hex(input)
       .then((hex) => {
         setRuns((current) => (current.length >= MAX_RUNS ? current : [...current, hex]));
       })
+      // A failed run must not look like a run that produced nothing: the
+      // entry point already explains an unavailable Web Crypto, so this only
+      // has to avoid an unhandled rejection and leave the count honest.
+      .catch((cause: unknown) => console.error("SHA-256 failed:", cause))
       .finally(() => setBusy(false));
   }, [input]);
 

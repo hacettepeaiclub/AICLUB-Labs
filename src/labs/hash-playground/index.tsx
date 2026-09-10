@@ -32,7 +32,7 @@ import { UsageList } from "./components/UsageList";
 export default function HashPlayground() {
   const t = useT().labs["hash-playground"];
   const [input, setInput] = useState("hello world");
-  const hash = useSha256(input);
+  const { hash, unavailable } = useSha256(input);
   const { prev, current } = useHashHistory(hash);
 
   const derived = useMemo(() => {
@@ -45,6 +45,24 @@ export default function HashPlayground() {
     };
   }, [prev, current]);
 
+  // The browser cannot hash. Say so, in the shell, rather than rendering an
+  // empty page: `return null` here used to leave a lab with a title and
+  // nothing under it, and no clue why.
+  if (unavailable) {
+    return (
+      <div role="alert" className="card-surface mx-auto max-w-prose p-6">
+        <h2 className="text-title text-fg">{t.unavailable.title}</h2>
+        <p className="mt-2 text-body-sm text-fg-muted">
+          {unavailable === "insecure-context"
+            ? t.unavailable.insecureContext
+            : t.unavailable.unsupported}
+        </p>
+        <p className="mt-3 text-caption text-fg-faint">{t.unavailable.note}</p>
+      </div>
+    );
+  }
+
+  // Still computing the first digest. A brief null, not a failure.
   if (!current || !derived) return null;
 
   return (

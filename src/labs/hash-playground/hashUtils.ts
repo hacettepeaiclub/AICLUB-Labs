@@ -6,7 +6,30 @@
 export const HASH_BITS = 256;
 export const HEX_CHARS = 64;
 
-/** SHA-256 of a UTF-8 string via the Web Crypto API, as lowercase hex. */
+/**
+ * Why hashing is not available, or null when it is.
+ *
+ * `crypto.subtle` is undefined outside a secure context, so a lab served over
+ * plain HTTP on a LAN address has no hashing at all. That is the likely cause
+ * and worth naming precisely — but it is not the only one (a hardened or
+ * unusual browser can withhold the API in a secure context too), so the two
+ * cases stay separate and the copy for each says only what it knows.
+ */
+export type HashUnavailable = "insecure-context" | "unsupported";
+
+export function hashingUnavailable(): HashUnavailable | null {
+  if (typeof crypto !== "undefined" && crypto.subtle) return null;
+  const secure = typeof window !== "undefined" ? window.isSecureContext : true;
+  return secure ? "unsupported" : "insecure-context";
+}
+
+/**
+ * SHA-256 of a UTF-8 string via the Web Crypto API, as lowercase hex.
+ *
+ * Throws when the API is missing or refuses. The algorithm is unchanged and
+ * there is deliberately no fallback implementation: a lab whose whole subject
+ * is a real digest must not quietly substitute something else for it.
+ */
 export async function sha256Hex(input: string): Promise<string> {
   const data = new TextEncoder().encode(input);
   const digest = await crypto.subtle.digest("SHA-256", data);

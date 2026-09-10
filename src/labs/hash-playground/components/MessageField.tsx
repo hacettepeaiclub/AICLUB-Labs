@@ -42,6 +42,10 @@ export function MessageField({
       <input
         id={id}
         type="text"
+        // Defence in depth. SHA-256 is native and asynchronous, so this is
+        // nowhere near as costly as the tokenizer input — but a message this
+        // long is already far past anything the lesson needs.
+        maxLength={2000}
         value={value}
         onChange={(event) => onChange(event.target.value)}
         aria-describedby={describedBy}

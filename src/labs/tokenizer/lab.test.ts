@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { labs, publishedLabs } from "../registry";
 import { tokenizerMeta } from "./meta";
@@ -150,5 +151,36 @@ describe("section fixtures still behave the way the copy claims", () => {
         expect(detokenize(tokenize(fixture, vocabulary, 0))).toBe(fixture);
       }
     }
+  });
+});
+
+describe("the text under test is bounded", () => {
+  // Encoding is synchronous and re-runs on every change, and its cost grows
+  // faster than the input: 42ms at 2,000 characters, 268ms at 10,000, 1.95s at
+  // 40,000, and a locked tab past that. The cap is on the input only — the
+  // merge limit and the encode itself are untouched.
+  const editor = readFileSync("src/labs/tokenizer/components/TextEditor.tsx", "utf8");
+
+  it("caps the editor at a length the lesson never needs", () => {
+    expect(editor).toMatch(/export const MAX_TEXT_LENGTH = (\d+);/);
+    const limit = Number(/MAX_TEXT_LENGTH = (\d+)/.exec(editor)?.[1]);
+    expect(limit).toBeGreaterThanOrEqual(1000);
+    expect(limit).toBeLessThanOrEqual(10000);
+  });
+
+  it("puts the cap on the textarea itself", () => {
+    expect(editor).toMatch(/maxLength=\{MAX_TEXT_LENGTH\}/);
+  });
+
+  it("leaves every built-in fixture comfortably inside it", () => {
+    // A cap that truncated the lab's own sentences would be a bug, not a fix.
+    const limit = Number(/MAX_TEXT_LENGTH = (\d+)/.exec(editor)?.[1]);
+    for (const fixture of [GUESS_SENTENCE, SEED_SENTENCE, ...SAMPLES.map((s) => s.text)]) {
+      expect(fixture.length, fixture.slice(0, 30)).toBeLessThan(limit);
+    }
+  });
+
+  it("changes nothing about training", () => {
+    expect(MAX_MERGES).toBe(360);
   });
 });
