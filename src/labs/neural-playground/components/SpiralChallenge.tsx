@@ -100,6 +100,9 @@ export function SpiralChallenge() {
           running={running}
           revision={trainer.generation + trainer.revision}
           ariaLabel={c.canvasLabel(total, formatPercent(stats.testAccuracy, 1), stats.epoch)}
+          /* Nothing is drawn on this one by hand, so it does not need the
+             full column: at 558px square it left the rail beside it empty. */
+          className="mx-auto max-w-md"
         />
       }
       readout={

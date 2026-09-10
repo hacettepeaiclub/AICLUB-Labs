@@ -1,6 +1,7 @@
 import { LabRecap, LabSection } from "@/components/lab";
 import { useT } from "@/i18n";
 import { BirthdayStage } from "./components/BirthdayStage";
+import { Setup } from "./components/Framing";
 import { ConditionalStage } from "./components/ConditionalStage";
 import { MontyStage } from "./components/MontyStage";
 import { SimpsonStage } from "./components/SimpsonStage";
@@ -37,35 +38,37 @@ export default function ProbabilityLab() {
 
   return (
     <div className="space-y-20 md:space-y-28">
+      {/* Every section now opens the same way: the rules of the situation,
+          then the thing itself. What used to sit here was a lede that named
+          the result — "the answer is not 1/2", "Simpson's paradox" — which
+          spends the surprise before the visitor has touched anything. The
+          names arrive further down, after the behaviour. */}
+
       {/* 1 — a game with an answer nobody believes at first. */}
       <section aria-labelledby="prob-monty-heading">
         <h2 id="prob-monty-heading" className="sr-only">
           {copy.monty.title}
         </h2>
-        <p className="mb-6 max-w-prose text-body-lg text-fg">{copy.monty.question}</p>
+        <p className="mb-4 max-w-prose text-body-lg text-fg">{copy.monty.question}</p>
+        <Setup rules={copy.monty.setup} />
         <MontyStage />
       </section>
 
       {/* 2 — how few people it takes. */}
-      <LabSection
-        kicker={copy.birthday.kicker}
-        title={copy.birthday.title}
-        lede={copy.birthday.lede}
-      >
+      <LabSection kicker={copy.birthday.kicker} title={copy.birthday.title}>
+        <Setup rules={copy.birthday.setup} />
         <BirthdayStage />
       </LabSection>
 
       {/* 3 — the clue, and what its wording rules out. */}
-      <LabSection
-        kicker={copy.conditional.kicker}
-        title={copy.conditional.title}
-        lede={copy.conditional.lede}
-      >
+      <LabSection kicker={copy.conditional.kicker} title={copy.conditional.title}>
+        <Setup rules={copy.conditional.setup} />
         <ConditionalStage />
       </LabSection>
 
       {/* 4 — better in every group, worse overall. */}
-      <LabSection kicker={copy.simpson.kicker} title={copy.simpson.title} lede={copy.simpson.lede}>
+      <LabSection kicker={copy.simpson.kicker} title={copy.simpson.title}>
+        <Setup rules={copy.simpson.setup} />
         <SimpsonStage />
         <p className="mt-8 max-w-prose text-body-sm text-fg-faint">{copy.scope}</p>
       </LabSection>

@@ -1660,10 +1660,32 @@ export const en = {
 
       monty: {
         title: "Three doors",
-        question: "Should you switch?",
+        question: "Can you beat the host?",
+        setup: [
+          "Three doors. A car behind one of them, a goat behind each of the other two.",
+          "You pick a door. It stays shut.",
+          "The host knows where the car is, and opens one of the other two — always one with a goat behind it.",
+          "Now you choose: keep your door, or take the one the host left alone.",
+        ],
+        coachLabel: "Questions people ask",
+        coach: {
+          notHalf: {
+            q: "Two doors are left. Why isn't it 50/50?",
+            a: "Because the two doors did not arrive here the same way. You chose yours while you knew nothing. The other one survived a choice made by somebody who knew exactly where the car was — and who was never going to open it.",
+          },
+          whySwitch: {
+            q: "Why is switching better?",
+            a: (stay: string, swap: string) =>
+              `Your first pick is the car ${stay} of the time, and that is the only time staying wins. The other ${swap} of the time the car is behind one of the two doors you did not pick — and the host has just shown you which of those two it is not.`,
+          },
+          hostKnows: {
+            q: "Does it matter that the host knows?",
+            a: "It is the whole thing. A host opening a door at random — sometimes revealing the car by accident — would leave staying and switching equally good. The host's knowledge is what makes the opened door tell you something.",
+          },
+        },
         caption:
           "The host is bound by two rules: never open your door, never open the car. Those rules are what make the reveal informative \u2014 a host opening at random would leave both choices equal.",
-        predictQuestion: "Before you play: is it better to stay, to switch, or does it not matter?",
+        predictQuestion: "You have played a round. Over many rounds, which does better?",
         predict: { stay: "Stay", switch: "Switch", same: "No difference" },
         predictAnswer: (value: string) => `Switching wins ${value} of the time`,
         strategy: { stay: "Stay", switch: "Switch" },
@@ -1707,7 +1729,30 @@ export const en = {
       birthday: {
         kicker: "A smaller room than you think",
         title: "How many people before two share a birthday?",
-        lede: "Not 183. The question is not whether someone matches you \u2014 it is whether any two people match, and the number of pairs grows far faster than the number of people.",
+        setup: [
+          "People walk into a room, one at a time.",
+          "Everybody's birthday is one of 365 days, and every day is equally likely.",
+          "The question is not whether somebody shares your birthday. It is whether any two people in the room share one.",
+        ],
+        addPerson: "Add a person",
+        addPersonHint: "Watch what happens to the number of pairs.",
+        roomFull: "The room is full.",
+        coachLabel: "Questions people ask",
+        coach: {
+          soonWhy: {
+            q: (n: number) => `How do ${n} people get to a coin flip?`,
+            a: (n: number, pairs: string) =>
+              `Count pairs rather than people. ${n} people make ${pairs} different pairs, and every single pair is its own chance to match. Add one more person and they bring a new pair with everybody already in the room, so the chances pile up much faster than the crowd does.`,
+          },
+          notMine: {
+            q: "Isn't this about my birthday?",
+            a: "That is the swap your intuition makes, and it is a much harder question. For somebody to match your birthday specifically you need about 253 people. For any two people to match each other you need 23.",
+          },
+          realBirthdays: {
+            q: "Are birthdays really spread evenly?",
+            a: "No \u2014 real birthdays cluster by season, and clustering makes matches more likely, not less. So the even-spread model used here gives the cautious answer; reality passes 50% slightly sooner.",
+          },
+        },
         caption:
           "The model: 365 equally likely birthdays, no leap years, everyone independent. Real birthdays cluster by season, which nudges the true chance slightly higher \u2014 so this is the conservative version.",
         predictQuestion: "Where do you think the chance first passes 50%?",
@@ -1745,8 +1790,29 @@ export const en = {
 
       conditional: {
         kicker: "The clue does the work",
-        title: "Two children, and one sentence about them.",
-        lede: "Two children. At least one is a boy. What is the chance both are? The answer is not 1/2 \u2014 and it changes again if the sentence is worded differently.",
+        title: "A family has two children. Are both boys?",
+        setup: [
+          "A family has two children, an older one and a younger one.",
+          "Each child is a boy or a girl, and each is equally likely \u2014 so there are four equally likely families.",
+          "Somebody tells you one true sentence about this family.",
+          "Your question: what are the chances both children are boys?",
+        ],
+        coachLabel: "Questions people ask",
+        coach: {
+          notHalf: {
+            q: "One child is a boy, so isn't the other one just 50/50?",
+            a: (value: string) =>
+              `That would be the answer to a different sentence \u2014 \u201cthe older one is a boy\u201d. What you were told is that at least one of the two is a boy, which does not say which one. Three of the four families fit that sentence and only one of them is two boys, so the chance is ${value}.`,
+          },
+          twoWays: {
+            q: "Why do boy-then-girl and girl-then-boy count separately?",
+            a: "Because they are different families, and they are each as likely as two boys. A family with one of each is twice as easy to end up with as a family with two boys \u2014 there are two ways to get it and only one way to get BB.",
+          },
+          wording: {
+            q: "How can the wording change the answer?",
+            a: "The wording is the evidence. \u201cAt least one is a boy\u201d rules out one family; \u201cthe older one is a boy\u201d rules out two. Fewer families left, and the two boys are a bigger share of what remains. Nothing about any family changed \u2014 only what you were told.",
+          },
+        },
         caption:
           "This assumes each child is independently a boy or a girl with probability 1/2, and that the clue is exactly as written. A third version \u2014 you meet one child at random and it is a boy \u2014 gives 1/2 again, and is not modelled here.",
         predictQuestion: "Two children, at least one a boy. Chance both are boys?",
@@ -1786,9 +1852,33 @@ export const en = {
       },
 
       simpson: {
-        kicker: "Better in every group, worse overall",
-        title: "Simpson's paradox.",
-        lede: "One treatment beats the other on small stones and on large stones, and loses when you add the two together. Nothing here is a rounding error \u2014 both calculations are correct.",
+        kicker: "Two treatments, one decision",
+        title: "Which treatment would you choose?",
+        setup: [
+          "Two treatments for kidney stones, A and B, from a real 1986 study.",
+          "Patients arrive with either small stones or large stones \u2014 large ones are the harder cases.",
+          "The table shows how each treatment did in each group, and how it did across both groups together.",
+          "Read it, and pick the treatment you would want.",
+        ],
+        // The name arrives here, after the reversal has been seen and not
+        // before: it is a label for something the visitor has already noticed.
+        named:
+          "What you are looking at has a name: Simpson's paradox \u2014 a comparison that reverses when the groups are added together.",
+        coachLabel: "Questions people ask",
+        coach: {
+          howBoth: {
+            q: "How can A win both groups and still lose overall?",
+            a: "Because the two treatments were not given to the same kind of patient. A was used mostly on the hard cases and B mostly on the easy ones. Adding the groups together mixes \u201cwhich treatment\u201d with \u201cwhich patients\u201d, and the patient mix is the stronger effect.",
+          },
+          whichWrong: {
+            q: "Is one of the numbers wrong?",
+            a: "Neither. Both are arithmetic on the same counts, and you can check every percentage against the two numbers printed beside it. They are correct answers to two different questions.",
+          },
+          whichBelieve: {
+            q: "So which number should I believe?",
+            a: "The group rows, when you are choosing a treatment for one patient \u2014 because that patient has either small stones or large ones, never an average of both. The combined row answers a different question: what happened to this particular mix of patients.",
+          },
+        },
         caption:
           "The per-group success rates are from Charig et al. (1986), a comparison of two kidney-stone treatments. The sliders move patients between the groups; the rates stay put. Every percentage is the counts printed next to it.",
         predictQuestion: "Can one treatment win in every group and still lose overall?",
