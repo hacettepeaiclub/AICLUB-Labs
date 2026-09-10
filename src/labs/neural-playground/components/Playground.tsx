@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 import { Button, Kbd, Segmented } from "@/components/ui";
 import { LabSlider, Stage, Transport } from "@/components/lab";
@@ -55,11 +55,41 @@ function Legend() {
  * All simulation state lives here; the canvas and the diagram read the network
  * out of a ref every frame, so training at 60fps costs no re-renders.
  */
+/**
+ * Whether the two pictures fit side by side.
+ *
+ * The diagram sits beside the decision surface from `xl` up. Below that they
+ * stack, and the diagram then sits between the canvas and the Train button —
+ * which put that button 1,206px down the page on a phone, so a visitor
+ * scrolled past the entire network to reach the control that starts it.
+ *
+ * Reading the breakpoint in JS rather than duplicating the diagram behind two
+ * CSS visibility rules keeps it to a single mount, which matters here: it
+ * repaints on every training frame.
+ */
+function useSideBySide() {
+  const [wide, setWide] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(min-width: 1280px)").matches,
+  );
+  useEffect(() => {
+    const query = window.matchMedia("(min-width: 1280px)");
+    const sync = () => setWide(query.matches);
+    sync();
+    query.addEventListener("change", sync);
+    return () => query.removeEventListener("change", sync);
+  }, []);
+  return wide;
+}
+
 export function Playground() {
   const t = useT();
   const lab = t.labs["neural-playground"];
   const p = lab.playground;
-  const datasetOptions = DATASETS.map((d) => ({ value: d.kind, label: lab.datasets[d.kind].label }));
+  const sideBySide = useSideBySide();
+  const datasetOptions = DATASETS.map((d) => ({
+    value: d.kind,
+    label: lab.datasets[d.kind].label,
+  }));
   const reduced = useReducedMotion();
 
   const [dataset, setDataset] = useState<DatasetKind>(DEFAULT_DATASET);
@@ -168,13 +198,41 @@ export function Playground() {
             />
             <Legend />
           </div>
+          {/* Side by side when there is room; folded away when there is not,
+              so the Train button follows the canvas instead of the network. */}
           <div className="min-w-0">
-            <NetworkDiagram
-              netRef={netRef}
-              sizes={sizes}
-              running={running}
-              revision={generation + revision}
-            />
+            {sideBySide ? (
+              <NetworkDiagram
+                netRef={netRef}
+                sizes={sizes}
+                running={running}
+                revision={generation + revision}
+              />
+            ) : (
+              <details className="group rounded border border-line/10">
+                <summary
+                  className="flex min-h-11 cursor-pointer select-none items-center justify-between
+                    gap-2 px-3 text-body-sm text-fg-muted transition-colors duration-fast
+                    hover:text-fg focus-visible:text-fg"
+                >
+                  {p.insideTitle}
+                  <span aria-hidden className="text-fg-faint group-open:hidden">
+                    +
+                  </span>
+                  <span aria-hidden className="hidden text-fg-faint group-open:inline">
+                    −
+                  </span>
+                </summary>
+                <div className="border-t border-line/10 p-3">
+                  <NetworkDiagram
+                    netRef={netRef}
+                    sizes={sizes}
+                    running={running}
+                    revision={generation + revision}
+                  />
+                </div>
+              </details>
+            )}
           </div>
         </div>
       }
@@ -210,7 +268,12 @@ export function Playground() {
       figures={<TrainingFigures stats={stats} history={history} />}
       secondary={
         <>
-          <Segmented label={p.data} value={dataset} options={datasetOptions} onChange={handleDataset} />
+          <Segmented
+            label={p.data}
+            value={dataset}
+            options={datasetOptions}
+            onChange={handleDataset}
+          />
           <p className="text-caption text-fg-faint">{hint}</p>
           <LabSlider
             label={p.noise}
@@ -233,7 +296,13 @@ export function Playground() {
             onChange={setLayers}
             format={(v) => (v === 0 ? p.noneLabel : String(v))}
           />
-          <LabSlider label={p.neuronsPerLayer} value={neurons} min={1} max={8} onChange={setNeurons} />
+          <LabSlider
+            label={p.neuronsPerLayer}
+            value={neurons}
+            min={1}
+            max={8}
+            onChange={setNeurons}
+          />
           <Segmented
             label={p.activation}
             value={activation}
@@ -259,8 +328,7 @@ export function Playground() {
           <LabSlider label={p.speed} value={speed} min={1} max={10} onChange={setSpeed} />
 
           <p className="text-caption text-fg-faint">
-            <Kbd>Space</Kbd> {lab.keyboardHint.trainPause} <Kbd>R</Kbd>{" "}
-            {lab.keyboardHint.restart}
+            <Kbd>Space</Kbd> {lab.keyboardHint.trainPause} <Kbd>R</Kbd> {lab.keyboardHint.restart}
           </p>
         </>
       }

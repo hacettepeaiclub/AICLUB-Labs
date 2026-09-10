@@ -48,6 +48,11 @@ export function SimpsonStage() {
 
   const bar = (rate: number | null) => `${Math.round((rate ?? 0) * 100)}%`;
 
+  // The table is what the visitor is asked to read, so it stays. What waits
+  // for the guess is the verdict on it: the sentence naming the reversal, the
+  // word "Simpson", and the figure that answers "reversed?" outright.
+  const answered = guess !== null;
+
   const coach = [
     { q: s.coach.howBoth.q, a: s.coach.howBoth.a },
     { q: s.coach.whichWrong.q, a: s.coach.whichWrong.a },
@@ -59,11 +64,15 @@ export function SimpsonStage() {
       <Stage
         width="full"
         caption={s.caption}
-        announcement={s.announce(
-          percent(table.overall.a.rate ?? 0),
-          percent(table.overall.b.rate ?? 0),
-          table.reversed ? s.reversedYes : s.reversedNo,
-        )}
+        announcement={
+          answered
+            ? s.announce(
+                percent(table.overall.a.rate ?? 0),
+                percent(table.overall.b.rate ?? 0),
+                table.reversed ? s.reversedYes : s.reversedNo,
+              )
+            : ""
+        }
         viewport={
           <div className="space-y-3">
             <div className="overflow-x-auto rounded border border-line/10 bg-ink-950 p-4">
@@ -193,18 +202,20 @@ export function SimpsonStage() {
           </div>
         }
         readout={
-          <div
-            className={cn(
-              "rounded border px-4 py-3",
-              table.reversed ? "border-accent/40 bg-accent/10" : "border-line/10 bg-ink-950",
-            )}
-          >
-            <p className="text-body-sm text-fg">
-              {table.reversed ? s.reversedBody : s.notReversedBody}
-            </p>
-            {/* The name, and only once the thing it names is on screen. */}
-            {table.reversed && <p className="mt-2 text-body-sm text-fg-muted">{s.named}</p>}
-          </div>
+          answered ? (
+            <div
+              className={cn(
+                "rounded border px-4 py-3",
+                table.reversed ? "border-accent/40 bg-accent/10" : "border-line/10 bg-ink-950",
+              )}
+            >
+              <p className="text-body-sm text-fg">
+                {table.reversed ? s.reversedBody : s.notReversedBody}
+              </p>
+              {/* The name, and only once the thing it names is on screen. */}
+              {table.reversed && <p className="mt-2 text-body-sm text-fg-muted">{s.named}</p>}
+            </div>
+          ) : undefined
         }
         primary={
           <div className="space-y-4">
@@ -257,11 +268,13 @@ export function SimpsonStage() {
               value={percent(table.overall.b.rate ?? 0)}
               hint={ratio(table.overall.b.successes, table.overall.b.trials)}
             />
-            <Figure
-              label={s.reversedFigure}
-              value={table.reversed ? s.reversedYes : s.reversedNo}
-              tone={table.reversed ? "accent" : "default"}
-            />
+            {answered && (
+              <Figure
+                label={s.reversedFigure}
+                value={table.reversed ? s.reversedYes : s.reversedNo}
+                tone={table.reversed ? "accent" : "default"}
+              />
+            )}
           </>
         }
       />
