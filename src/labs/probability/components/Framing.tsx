@@ -41,6 +41,62 @@ export function Setup({ rules }: SetupProps) {
   );
 }
 
+/** The two disclosure labels. The result line itself is per-experiment. */
+export interface ExplainCopy {
+  readonly why: string;
+  readonly maths: string;
+}
+
+export interface ExplainProps {
+  /** One sentence naming what just happened. Always visible. */
+  what: string;
+  /** The intuition, a short paragraph. Behind the first disclosure. */
+  why: string;
+  /** The arithmetic, for whoever wants it. Behind the second. */
+  maths: string;
+  copy: ExplainCopy;
+}
+
+/**
+ * The result, then the reason, then the sums — in that order and no other.
+ *
+ * A visitor who has just been surprised wants one sentence, not a lecture, and
+ * a visitor who wants the derivation should not have to hunt for it. So the
+ * sentence is always on; the paragraph and the formula are each one click
+ * away, and both stay closed until asked for.
+ *
+ * The headings are questions because that is what the reader is thinking at
+ * that moment: "why?" and then, if at all, "what is the actual sum?".
+ */
+export function Explain({ what, why, maths, copy }: ExplainProps) {
+  return (
+    <div className="mt-3 space-y-1">
+      <p className="text-body-sm text-fg">{what}</p>
+      {[
+        { label: copy.why, body: why },
+        { label: copy.maths, body: maths },
+      ].map((step) => (
+        <details key={step.label} className="group">
+          <summary
+            className="flex min-h-11 cursor-pointer select-none items-center gap-2
+              text-body-sm text-fg-muted transition-colors duration-fast hover:text-fg
+              focus-visible:text-fg"
+          >
+            <span aria-hidden className="text-fg-faint group-open:hidden">
+              +
+            </span>
+            <span aria-hidden className="hidden text-fg-faint group-open:inline">
+              −
+            </span>
+            {step.label}
+          </summary>
+          <p className="pb-2 pl-5 text-body-sm text-fg-muted">{step.body}</p>
+        </details>
+      ))}
+    </div>
+  );
+}
+
 export interface CoachQuestion {
   /** The question in the visitor's words, not the textbook's. */
   readonly q: string;

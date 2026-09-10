@@ -13,7 +13,7 @@ import {
   type TreatmentId,
 } from "../engine/simpson";
 import { percent, ratio } from "../view";
-import { Coach } from "./Framing";
+import { Coach, Explain } from "./Framing";
 import { Prediction } from "./Prediction";
 
 /**
@@ -40,18 +40,49 @@ export function SimpsonStage() {
   const s = copy.simpson;
 
   const [share, setShare] = useState<Record<TreatmentId, number>>({ ...DEFAULT_SMALL_SHARE });
-  const [guess, setGuess] = useState<"impossible" | "possible" | null>(null);
+
+  /**
+   * How much of the table has been shown.
+   *
+   * The published allocation is reversed from the start — that is what the
+   * data says, and none of it changes here. What changed is the order it
+   * arrives in. Opening on the finished table meant the visitor read the
+   * paradox instead of walking into it: both group rows and the total, all at
+   * once, with the answer already visible in the aggregate.
+   *
+   * So: the easy cases, then the hard ones, then a question about what they
+   * both plainly say, and only then the total that contradicts it.
+   */
+  const [step, setStep] = useState<"small" | "large" | "overall">("small");
+  const [choice, setChoice] = useState<TreatmentId | null>(null);
+
+  const showLarge = step !== "small";
+  const showOverall = step === "overall";
 
   const table = build(share);
   const leader: TreatmentId =
     (table.overall.a.rate ?? 0) >= (table.overall.b.rate ?? 0) ? "a" : "b";
 
+  /** Who wins a group, read off the same cells the table prints. */
+  const groupLeader = (group: "small" | "large"): TreatmentId =>
+    (cellOf(table, group, "a")?.rate ?? 0) >= (cellOf(table, group, "b")?.rate ?? 0) ? "a" : "b";
+  // True at the published allocation, and the reason the question below is
+  // worth asking: both groups name the same treatment.
+  const groupsAgree = groupLeader("small") === groupLeader("large");
+
   const bar = (rate: number | null) => `${Math.round((rate ?? 0) * 100)}%`;
 
-  // The table is what the visitor is asked to read, so it stays. What waits
-  // for the guess is the verdict on it: the sentence naming the reversal, the
-  // word "Simpson", and the figure that answers "reversed?" outright.
-  const answered = guess !== null;
+  /**
+   * Whether the verdict may be shown.
+   *
+   * The total row is only reachable through the choice — the button that adds
+   * the groups together is disabled until one is made — so by the time this is
+   * true the visitor has committed to an answer and then watched the table
+   * disagree with it. That is the whole experiment, and it is why there is no
+   * second question afterwards asking whether the thing they just saw can
+   * happen.
+   */
+  const answered = showOverall && choice !== null;
 
   const coach = [
     { q: s.coach.howBoth.q, a: s.coach.howBoth.a },
@@ -85,13 +116,22 @@ export function SimpsonStage() {
                     </th>
                     {TREATMENTS.map((t) => (
                       <th key={t} scope="col" className="py-1.5 text-right font-normal">
-                        {s.treatment[t]}
+                        {/* What the two arms actually were. "A" and "B" give a
+                            beginner nothing to think with, and the lopsided
+                            allocation only makes sense once you know one of
+                            them is the bigger operation. */}
+                        <span className="block text-body-sm normal-case text-fg">
+                          {s.treatmentName[t]}
+                        </span>
+                        <span className="block text-caption normal-case tracking-normal text-fg-faint">
+                          {s.treatmentNote[t]}
+                        </span>
                       </th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
-                  {GROUPS.map((group) => (
+                  {GROUPS.filter((group) => group === "small" || showLarge).map((group) => (
                     <tr key={group} className="border-t border-line/10">
                       <th scope="row" className="py-2 text-left font-normal text-fg-muted">
                         {s.group[group]}
@@ -110,35 +150,51 @@ export function SimpsonStage() {
                     </tr>
                   ))}
                   {/* The aggregate is separated by a heavier rule: it is a
-                    different question from the two rows above it. */}
-                  <tr className="border-t-2 border-line/25">
-                    <th scope="row" className="py-2 text-left font-normal text-fg">
-                      {s.overall}
-                    </th>
-                    {TREATMENTS.map((t) => (
-                      <td
-                        key={t}
-                        className={cn(
-                          "py-2 text-right font-mono tabular-nums",
-                          leader === t ? "text-accent" : "text-fg",
-                        )}
-                      >
-                        {percent(table.overall[t].rate ?? 0)}
-                        <span className="ml-2 text-caption text-fg-faint">
-                          {ratio(table.overall[t].successes, table.overall[t].trials)}
-                        </span>
-                        {/* Named, not just tinted. */}
-                        {leader === t && (
-                          <span className="ml-2 text-overline uppercase text-accent">
-                            {s.ahead}
+                    different question from the two rows above it — and it is
+                    the punchline, so it arrives last and by request. */}
+                  {showOverall && (
+                    <tr className="border-t-2 border-line/25">
+                      <th scope="row" className="py-2 text-left font-normal text-fg">
+                        {s.overall}
+                      </th>
+                      {TREATMENTS.map((t) => (
+                        <td
+                          key={t}
+                          className={cn(
+                            "py-2 text-right font-mono tabular-nums",
+                            leader === t ? "text-accent" : "text-fg",
+                          )}
+                        >
+                          {percent(table.overall[t].rate ?? 0)}
+                          <span className="ml-2 text-caption text-fg-faint">
+                            {ratio(table.overall[t].successes, table.overall[t].trials)}
                           </span>
-                        )}
-                      </td>
-                    ))}
-                  </tr>
+                          {/* Named, not just tinted. */}
+                          {leader === t && (
+                            <span className="ml-2 text-overline uppercase text-accent">
+                              {s.ahead}
+                            </span>
+                          )}
+                        </td>
+                      ))}
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>
+
+            {/* One button at a time, under the thing it adds to. */}
+            {!showOverall && (
+              <div className="flex justify-center">
+                <Button
+                  onClick={() => setStep(showLarge ? "overall" : "large")}
+                  className="min-h-11"
+                  disabled={showLarge && choice === null}
+                >
+                  {showLarge ? s.stepOverallButton : s.stepLargeButton}
+                </Button>
+              </div>
+            )}
 
             {/* The same rates as bars, labelled with their own numbers. */}
             <div
@@ -172,32 +228,39 @@ export function SimpsonStage() {
                   a: table.overall.a.rate,
                   b: table.overall.b.rate,
                 },
-              ].map((row) => (
-                <div key={row.key}>
-                  <p className="text-caption text-fg-faint">{row.label}</p>
-                  <div className="mt-1 space-y-1">
-                    {(["a", "b"] as const).map((t) => (
-                      <div key={t} className="flex items-center gap-2">
-                        <span className="w-6 shrink-0 font-mono text-caption text-fg-muted">
-                          {s.treatmentShort[t]}
-                        </span>
-                        <span aria-hidden className="h-2.5 flex-1 rounded-pill bg-line/10">
-                          <span
-                            className={cn(
-                              "block h-full rounded-pill",
-                              t === "a" ? "bg-accent" : "bg-data",
-                            )}
-                            style={{ width: bar(row[t]) }}
-                          />
-                        </span>
-                        <span className="w-14 shrink-0 text-right font-mono text-caption tabular-nums text-fg">
-                          {row[t] === null ? "—" : percent(row[t])}
-                        </span>
-                      </div>
-                    ))}
+              ]
+                .filter(
+                  (row) =>
+                    row.key === "small" ||
+                    (row.key === "large" && showLarge) ||
+                    (row.key === "overall" && showOverall),
+                )
+                .map((row) => (
+                  <div key={row.key}>
+                    <p className="text-caption text-fg-faint">{row.label}</p>
+                    <div className="mt-1 space-y-1">
+                      {(["a", "b"] as const).map((t) => (
+                        <div key={t} className="flex items-center gap-2">
+                          <span className="w-6 shrink-0 font-mono text-caption text-fg-muted">
+                            {s.treatmentShort[t]}
+                          </span>
+                          <span aria-hidden className="h-2.5 flex-1 rounded-pill bg-line/10">
+                            <span
+                              className={cn(
+                                "block h-full rounded-pill",
+                                t === "a" ? "bg-accent" : "bg-data",
+                              )}
+                              style={{ width: bar(row[t]) }}
+                            />
+                          </span>
+                          <span className="w-14 shrink-0 text-right font-mono text-caption tabular-nums text-fg">
+                            {row[t] === null ? "—" : percent(row[t])}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
             </div>
           </div>
         }
@@ -214,23 +277,37 @@ export function SimpsonStage() {
               </p>
               {/* The name, and only once the thing it names is on screen. */}
               {table.reversed && <p className="mt-2 text-body-sm text-fg-muted">{s.named}</p>}
+              <Explain
+                what={s.explainWhat}
+                why={s.explainWhy}
+                maths={s.explainMaths}
+                copy={copy.explain}
+              />
+              <p className="mt-3 text-caption text-fg-faint">{s.illustrative}</p>
             </div>
           ) : undefined
         }
         primary={
           <div className="space-y-4">
-            <Prediction
-              question={s.predictQuestion}
-              options={[
-                { value: "impossible" as const, label: s.predict.impossible },
-                { value: "possible" as const, label: s.predict.possible },
-              ]}
-              chosen={guess}
-              onChoose={setGuess}
-              answer={s.predictAnswer}
-              matched={guess === null ? undefined : guess === "possible"}
-              copy={copy.prediction}
-            />
+            {/* Asked between the two group rows and the total: both groups
+                have named the same winner, so this is a question with an
+                obvious answer — which is exactly what makes the next row
+                land. There is no wrong choice here and nothing is scored. */}
+            {showLarge && !showOverall && (
+              <div className="space-y-2">
+                {groupsAgree && <p className="text-caption text-fg-muted">{s.seenBoth}</p>}
+                <Prediction
+                  question={s.chooseQuestion}
+                  options={TREATMENTS.map((t) => ({ value: t, label: s.choose[t] }))}
+                  chosen={choice}
+                  onChoose={setChoice}
+                  // The group winner, not the overall one: the aggregate is
+                  // what the next step exists to deliver.
+                  answer={s.chooseAnswer(s.treatmentName[groupLeader("small")])}
+                  copy={copy.prediction}
+                />
+              </div>
+            )}
 
             {TREATMENTS.map((t) => (
               <LabSlider

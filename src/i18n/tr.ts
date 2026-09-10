@@ -1659,6 +1659,12 @@ export const tr: Translation = {
         disagreed: "Sezginizle model ayn\u0131 fikirde de\u011fil. \u0130lgin\u00e7 olan k\u0131s\u0131m da bu.",
       },
 
+      // Her sonucun alt\u0131ndaki iki ad\u0131m: \u00f6nce nedeni, sonra hesab\u0131.
+      explain: {
+        why: "Bu neden b\u00f6yle oluyor?",
+        maths: "Say\u0131lar\u0131 g\u00f6ster",
+      },
+
       monty: {
         title: "\u00dc\u00e7 kap\u0131",
         question: "Sunucuyu yenebilir misin?",
@@ -1725,6 +1731,20 @@ export const tr: Translation = {
         yourStayLabel: "Kalmak kazand\u0131r\u0131rd\u0131",
         yourSwitchLabel: "De\u011fi\u015ftirmek kazand\u0131r\u0131rd\u0131",
         handHint: "sizin turlar\u0131n\u0131zda",
+
+        hostPick: "Bir kap\u0131 se\u00e7. Hangisi olursa.",
+        hostReveal: (opened: number) =>
+          `\u00dc\u00e7\u00fcn\u00fcn de arkas\u0131n\u0131 biliyorum. Bak \u2014 ${opened}. kap\u0131da ke\u00e7i var.`,
+        hostDecide: (other: number) =>
+          `\u015eimdi: se\u00e7ti\u011fin kap\u0131da kal ya da ${other}. kap\u0131y\u0131 al. Karar senin.`,
+        hostWon: "Arabay\u0131 kazand\u0131n.",
+        hostLost: "Ke\u00e7i. Yeniden oynayal\u0131m m\u0131?",
+        explainWhat: "De\u011fi\u015ftirmek, kalmaktan yakla\u015f\u0131k iki kat daha s\u0131k kazan\u0131r.",
+        explainWhy:
+          "\u0130lk se\u00e7imin \u00fc\u00e7 kap\u0131dan biriydi, yani \u00fc\u00e7 seferde bir arabayd\u0131. Geriye kalan iki kap\u0131ya birlikte \u00fc\u00e7 seferde iki d\u00fc\u015f\u00fcyor \u2014 ve sunucu az \u00f6nce o ikisinden zaten araba olmayan\u0131 a\u00e7t\u0131.",
+        explainMaths: (stay: string, swap: string) =>
+          `Kalmak yaln\u0131zca ilk se\u00e7imin ba\u015ftan araba oldu\u011funda kazan\u0131r: ${stay}. De\u011fi\u015ftirmek di\u011fer b\u00fct\u00fcn durumlarda kazan\u0131r: ${swap}.`,
+        batchInvite: "\u0130ki kap\u0131 kald\u0131 ve bu bir yaz\u0131 tura de\u011fil. 1.000 oyunda g\u00f6relim mi?",
       },
 
       birthday: {
@@ -1781,6 +1801,19 @@ export const tr: Translation = {
         exactHint: "tam de\u011fer",
         thresholdFigure: "%50'yi ge\u00e7ti\u011fi yer",
         thresholdHint: "ki\u015fi",
+
+        personName: (n: number) => `${n}. ki\u015fi`,
+        personLabel: (n: number, day: string) => `${n}. ki\u015fi, do\u011fum g\u00fcn\u00fc ${day}`,
+        personMatchLabel: (n: number, day: string, other: number) =>
+          `${n}. ki\u015fi, do\u011fum g\u00fcn\u00fc ${day} \u2014 ${other}. ki\u015fiyle ayn\u0131 g\u00fcn`,
+        justArrived: "yeni geldi",
+        sameDay: "ayn\u0131 g\u00fcn",
+        roomEmpty: "Odada hen\u00fcz kimse yok.",
+        explainWhat: "\u00c7o\u011fu ki\u015finin tahmin etti\u011finden \u00e7ok daha az insan yetiyor.",
+        explainWhy:
+          "Soru, birinin seninle tutup tutmad\u0131\u011f\u0131 de\u011fil. Herhangi iki ki\u015finin birbiriyle tutup tutmad\u0131\u011f\u0131 \u2014 ve odaya giren her yeni ki\u015fi, i\u00e7erideki herkesle yeni bir \u00e7ift kuruyor. \u00c7iftler, insanlardan \u00e7ok daha h\u0131zl\u0131 birikiyor.",
+        explainMaths: (n: number, pairs: string, value: string) =>
+          `${n} ki\u015fiyle ${pairs} \u00e7ift olur. Hi\u00e7bir \u00e7iftin tutmama olas\u0131l\u0131\u011f\u0131 365/365 \u00d7 364/365 \u00d7 \u2026 \u00e7arp\u0131m\u0131d\u0131r; bunun bire t\u00fcmleyeni ${value}.`,
         simulateLabel: "Bunun yerine \u00e7al\u0131\u015ft\u0131r\u0131n",
         runRooms: (n: number) => `${n.toLocaleString("tr-TR")} oda doldur`,
         simulateNote: (days: number) =>
@@ -1848,6 +1881,19 @@ export const tr: Translation = {
         bothFigure: "\u0130kisi de erkek",
         bothHint: "kalanlar i\u00e7inde",
         answerFigure: "Olas\u0131l\u0131k",
+
+        older: "B\u00fcy\u00fck",
+        younger: "K\u00fc\u00e7\u00fck",
+        boy: "Erkek",
+        girl: "K\u0131z",
+        familyLabel: (older: string, younger: string) =>
+          `B\u00fcy\u00fck \u00e7ocu\u011fu ${older}, k\u00fc\u00e7\u00fck \u00e7ocu\u011fu ${younger} olan aile`,
+        familiesTitle: "E\u015fit olas\u0131l\u0131kl\u0131 d\u00f6rt aile",
+        explainWhat: "Bir \u00e7ocuk hakk\u0131nda bilgi almak, di\u011ferinin ne olma ihtimalini de\u011fi\u015ftirir.",
+        explainWhy:
+          "\u201cEn az biri erkek\u201d hangisi oldu\u011funu s\u00f6ylemez. Yaln\u0131zca iki k\u0131zl\u0131 aileyi eler ve kalan \u00fc\u00e7 aileden ikisinde bir k\u0131z vard\u0131r. Bunun yerine \u201cb\u00fcy\u00fck olan erkek\u201d dersen bir de\u011fil iki aile elenir \u2014 ayn\u0131 aile, farkl\u0131 c\u00fcmle, farkl\u0131 cevap.",
+        explainMaths: (kept: number, value: string) =>
+          `D\u00f6rt aileden ${kept} tanesi ipucuna uyuyor ve bu ${kept} aileden biri iki erkek: ${value}.`,
         announce: (clue: string, kept: number, value: string) =>
           `\u0130pucu: ${clue}. ${kept} sonu\u00e7 kald\u0131. \u0130kisinin de erkek olma olas\u0131l\u0131\u011f\u0131: ${value}.`,
       },
@@ -1913,6 +1959,27 @@ export const tr: Translation = {
         reversedFigure: "Ters d\u00f6nd\u00fc m\u00fc?",
         reversedYes: "Evet",
         reversedNo: "Hay\u0131r",
+
+        treatmentName: { a: "A\u00e7\u0131k ameliyat", b: "Kapal\u0131 y\u00f6ntem" },
+        treatmentNote: {
+          a: "b\u00fcy\u00fck olan ameliyat",
+          b: "k\u00fc\u00e7\u00fck bir kesi, a\u00e7\u0131k ameliyat yok",
+        },
+        stepSmallTitle: "Kolay vakalarla ba\u015flayal\u0131m",
+        stepLargeButton: "\u015eimdi b\u00fcy\u00fck ta\u015flar\u0131 g\u00f6ster",
+        stepOverallButton: "\u0130ki grubu topla",
+        seenBoth: "Her iki grupta da kazanan ayn\u0131.",
+        chooseQuestion: "\u0130ki grup da ayn\u0131 \u015feyi s\u00f6yl\u00fcyor. Sen hangi tedaviyi se\u00e7erdin?",
+        choose: { a: "A\u00e7\u0131k ameliyat", b: "Kapal\u0131 y\u00f6ntem" },
+        chooseAnswer: (leader: string) =>
+          `\u0130ki grup da ${leader} diyor. \u015eimdi iki grubu topla.`,
+        explainWhat: "Her grupta kazanan taraf, gruplar toplan\u0131nca kaybedebilir.",
+        explainWhy:
+          "\u0130ki tedavi ayn\u0131 t\u00fcr hastaya verilmedi. A\u00e7\u0131k ameliyat b\u00fcy\u00fck ta\u015flar\u0131n \u00e7o\u011funu \u2014 zor vakalar\u0131 \u2014 \u00fcstlendi, kapal\u0131 y\u00f6ntem ise k\u00fc\u00e7\u00fck ta\u015flar\u0131n \u00e7o\u011funu. Gruplar\u0131 toplamak \u201changi tedavi\u201d ile \u201changi hastalar\u201d sorusunu birbirine kar\u0131\u015ft\u0131r\u0131r ve hasta kar\u0131\u015f\u0131m\u0131 daha g\u00fc\u00e7l\u00fc etkidir.",
+        explainMaths:
+          "Her toplam oran, o tedavinin iki grup oran\u0131n\u0131n a\u011f\u0131rl\u0131kl\u0131 ortalamas\u0131d\u0131r; a\u011f\u0131rl\u0131klar da her gruptaki hasta say\u0131s\u0131d\u0131r. A\u011f\u0131rl\u0131klar de\u011fi\u015fince ortalama da de\u011fi\u015fir \u2014 grup oranlar\u0131 sabit kalsa bile.",
+        illustrative:
+          "Say\u0131lar 1986 tarihli yay\u0131mlanm\u0131\u015f bir kar\u015f\u0131la\u015ft\u0131rmadan; burada veride bir etkiyi g\u00f6stermek i\u00e7in kullan\u0131l\u0131yor. T\u0131bbi tavsiye de\u011fildir.",
         announce: (a: string, b: string, reversed: string) =>
           `Toplam: A ${a}, B ${b}. Ters d\u00f6nd\u00fc: ${reversed}.`,
       },

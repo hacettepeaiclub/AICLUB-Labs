@@ -5,7 +5,7 @@ import { useT } from "@/i18n";
 import { cn } from "@/lib/cn";
 import { OUTCOMES, analyse, isBothBoys, satisfies, type ClueId } from "../engine/conditional";
 import { percent, ratio } from "../view";
-import { Coach } from "./Framing";
+import { Coach, Explain } from "./Framing";
 import { Prediction } from "./Prediction";
 
 /**
@@ -73,30 +73,55 @@ export function ConditionalStage() {
               )}
               className="rounded border border-line/10 bg-ink-950 p-4"
             >
+              <p className="mb-2 text-caption text-fg-faint">{c.familiesTitle}</p>
               <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
                 {OUTCOMES.map((outcome) => {
                   const kept = satisfies(outcome, clue);
                   const both = isBothBoys(outcome);
+                  // The engine stores birth order oldest first; these are the
+                  // same two children, said in words.
+                  const [older, younger] = outcome.children;
+                  const name = (child: "B" | "G") => (child === "B" ? c.boy : c.girl);
                   return (
                     <div
                       key={outcome.id}
+                      // Lowercased here rather than in the dictionary: the
+                      // i18n coverage test calls every interpolated string
+                      // with a probe value, so they have to stay pure.
+                      aria-label={c.familyLabel(
+                        name(older).toLocaleLowerCase(),
+                        name(younger).toLocaleLowerCase(),
+                      )}
                       className={cn(
-                        "relative rounded border p-3 text-center",
+                        "relative rounded border p-3",
                         kept ? "border-line/20 bg-ink-900" : "border-line/10 bg-ink-950",
                         kept && both && "border-accent bg-accent/10",
                       )}
                     >
-                      <p
-                        className={cn(
-                          "font-mono text-body",
-                          kept ? "text-fg" : "text-fg-faint line-through",
-                        )}
-                      >
-                        {c.outcome[outcome.id as keyof typeof c.outcome]}
-                      </p>
+                      {/* Two named children, not two initials. "BG" is only
+                          shorter if you already know the convention, and which
+                          child is which is the entire difficulty here. */}
+                      <dl className={cn("space-y-0.5", !kept && "opacity-60")}>
+                        {[
+                          [c.older, name(older)],
+                          [c.younger, name(younger)],
+                        ].map(([role, value]) => (
+                          <div key={role} className="flex items-baseline justify-between gap-2">
+                            <dt className="text-caption text-fg-faint">{role}</dt>
+                            <dd
+                              className={cn(
+                                "text-body-sm font-medium",
+                                kept ? "text-fg" : "text-fg-faint line-through",
+                              )}
+                            >
+                              {value}
+                            </dd>
+                          </div>
+                        ))}
+                      </dl>
                       {/* Struck through and labelled, so "ruled out" is not a
                         shade of grey anybody has to interpret. */}
-                      <p className="mt-1 text-caption text-fg-faint">
+                      <p className="mt-2 border-t border-line/10 pt-1.5 text-caption text-fg-faint">
                         {kept ? (both ? c.counts : c.possible) : c.ruledOut}
                       </p>
                     </div>
@@ -173,6 +198,12 @@ export function ConditionalStage() {
           answered ? (
             <div className="rounded border border-line/10 bg-ink-950 p-4">
               <p className="text-body-sm text-fg-muted">{c.explain[clue]}</p>
+              <Explain
+                what={c.explainWhat}
+                why={c.explainWhy}
+                maths={c.explainMaths(analysis.kept.length, percent(analysis.probability))}
+                copy={copy.explain}
+              />
             </div>
           ) : undefined
         }
