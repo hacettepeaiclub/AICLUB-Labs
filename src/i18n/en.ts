@@ -1658,6 +1658,12 @@ export const en = {
         disagreed: "Your intuition and the model disagree. That is the interesting part.",
       },
 
+      // The two steps below every result: the reason, then the arithmetic.
+      explain: {
+        why: "Why does that happen?",
+        maths: "Show me the numbers",
+      },
+
       monty: {
         title: "Three doors",
         question: "Can you beat the host?",
@@ -1724,6 +1730,23 @@ export const en = {
         yourStayLabel: "Staying would have won",
         yourSwitchLabel: "Switching would have won",
         handHint: "in your rounds",
+
+        // The host, speaking. The rule that makes the puzzle work is easier to
+        // believe from the person bound by it than from a caption.
+        hostPick: "Pick a door. Any of them.",
+        hostReveal: (opened: number) =>
+          `I know what is behind all three. Look — door ${opened} has a goat.`,
+        hostDecide: (other: number) =>
+          `So: keep the door you picked, or take door ${other}. Your call.`,
+        hostWon: "You won the car.",
+        hostLost: "A goat. Play again?",
+        // After the round, in three widening steps.
+        explainWhat: "Switching wins about twice as often as staying.",
+        explainWhy:
+          "Your first pick was one door out of three, so it was the car one time in three. That leaves two times in three for the other two doors together — and the host has just opened the one of those two that was never the car.",
+        explainMaths: (stay: string, swap: string) =>
+          `Staying wins exactly when your first pick was already the car: ${stay}. Switching wins in every other case: ${swap}.`,
+        batchInvite: "Two doors, and it is not a coin flip. Want to see it over 1,000 games?",
       },
 
       birthday: {
@@ -1780,6 +1803,21 @@ export const en = {
         exactHint: "exact",
         thresholdFigure: "Passes 50% at",
         thresholdHint: "people",
+
+        // Each person is a card with a date on it, so "two of these match" is
+        // something you can see rather than a claim about the room.
+        personName: (n: number) => `Person ${n}`,
+        personLabel: (n: number, day: string) => `Person ${n}, born ${day}`,
+        personMatchLabel: (n: number, day: string, other: number) =>
+          `Person ${n}, born ${day} — the same day as person ${other}`,
+        justArrived: "just arrived",
+        sameDay: "same day",
+        roomEmpty: "Nobody is in the room yet.",
+        explainWhat: "It takes far fewer people than most people guess.",
+        explainWhy:
+          "You are not asking whether somebody matches you. You are asking whether any two people match each other, and every new arrival makes a new pair with everybody already in the room. The pairs pile up much faster than the people do.",
+        explainMaths: (n: number, pairs: string, value: string) =>
+          `With ${n} people there are ${pairs} pairs. The chance that no pair matches is 365/365 × 364/365 × … , and one minus that is ${value}.`,
         simulateLabel: "Run it instead",
         runRooms: (n: number) => `Fill ${n.toLocaleString("en-US")} rooms`,
         simulateNote: (days: number) =>
@@ -1847,6 +1885,22 @@ export const en = {
         bothFigure: "Both boys",
         bothHint: "of what is left",
         answerFigure: "Probability",
+
+        // Words, not initials. "BG" is only shorter if you already know the
+        // convention, and the whole difficulty of this problem is that birth
+        // order is what "at least one" refuses to tell you.
+        older: "Older",
+        younger: "Younger",
+        boy: "Boy",
+        girl: "Girl",
+        familyLabel: (older: string, younger: string) =>
+          `A family whose older child is a ${older} and whose younger child is a ${younger}`,
+        familiesTitle: "The four families, all equally likely",
+        explainWhat: "Being told about one child changes what the other one probably is.",
+        explainWhy:
+          "“At least one is a boy” does not say which one. It only rules out the family with two girls, and two of the three families left have a girl in them. Say instead that the older child is a boy and you rule out two families, not one — same family, different sentence, different answer.",
+        explainMaths: (kept: number, value: string) =>
+          `${kept} of the four families fit the clue, and one of those ${kept} is two boys: ${value}.`,
         announce: (clue: string, kept: number, value: string) =>
           `Clue: ${clue}. ${kept} outcomes remain. Chance both are boys: ${value}.`,
       },
@@ -1914,6 +1968,32 @@ export const en = {
         reversedFigure: "Reversed?",
         reversedYes: "Yes",
         reversedNo: "No",
+
+        // The two treatments Charig et al. actually compared. Naming them is
+        // not decoration: "A" and "B" give a beginner nothing to think with,
+        // and the reason the allocation was lopsided is that surgeons sent the
+        // harder cases to the operation.
+        treatmentName: { a: "Open surgery", b: "Keyhole procedure" },
+        treatmentNote: {
+          a: "the bigger operation",
+          b: "a small incision, no open surgery",
+        },
+        // The staged reveal: one group, then the other, then the total.
+        stepSmallTitle: "Start with the easier cases",
+        stepLargeButton: "Now show the large stones",
+        stepOverallButton: "Add the two groups together",
+        seenBoth: "Same winner in both groups.",
+        chooseQuestion: "Both groups agree. Which treatment would you take?",
+        choose: { a: "Open surgery", b: "Keyhole procedure" },
+        chooseAnswer: (leader: string) =>
+          `Both groups point to ${leader}. Now add the two groups together.`,
+        explainWhat: "The winner in every group can lose once the groups are added up.",
+        explainWhy:
+          "The two treatments were not given to the same kind of patient. Open surgery took most of the large stones — the hard cases — and the keyhole procedure took most of the small ones. Adding the groups together mixes “which treatment” with “which patients”, and the patient mix is the stronger effect.",
+        explainMaths:
+          "Each overall rate is a weighted average of that treatment's two group rates, weighted by how many patients were in each group. Different weights, different average — even with the group rates fixed.",
+        illustrative:
+          "Counts from a 1986 published comparison, used here to show an effect in data. Not medical advice.",
         announce: (a: string, b: string, reversed: string) =>
           `Overall: A ${a}, B ${b}. Reversed: ${reversed}.`,
       },

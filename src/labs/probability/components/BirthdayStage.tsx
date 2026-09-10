@@ -11,8 +11,8 @@ import {
   sharedProbability,
   simulate,
 } from "../engine/birthday";
-import { COLUMNS, dayLabel, percent, seatOf } from "../view";
-import { Coach } from "./Framing";
+import { dayLabel, percent } from "../view";
+import { Coach, Explain } from "./Framing";
 import { Prediction } from "./Prediction";
 
 const MAX_PEOPLE = 60;
@@ -62,7 +62,6 @@ export function BirthdayStage() {
   const answered = guess !== null;
 
   const matchSet = new Set(room.match ?? []);
-  const rows = Math.ceil(Math.max(people, 1) / COLUMNS);
 
   // Both numbers are this room's own: the head count on screen and the pair
   // count the engine derives from it.
@@ -97,33 +96,65 @@ export function BirthdayStage() {
               }
               className="rounded border border-line/10 bg-ink-950 p-4"
             >
-              <div
-                className="grid gap-1.5"
-                style={{ gridTemplateColumns: `repeat(${COLUMNS}, minmax(0, 1fr))` }}
-              >
-                {Array.from({ length: rows * COLUMNS }, (_, i) => {
-                  if (i >= people) return <span key={i} aria-hidden />;
+              {/* Every person carries the date they were born on.
+                  This used to be a grid of blank circles, which showed that a
+                  room was filling up but not what was being compared in it —
+                  a visitor could not see a birthday, so "two of these are the
+                  same" was a claim rather than something on screen. */}
+              <ul className="grid grid-cols-[repeat(auto-fill,minmax(4.75rem,1fr))] gap-1.5">
+                {Array.from({ length: people }, (_, i) => {
                   const isMatch = matchSet.has(i);
-                  const { col } = seatOf(i);
+                  const isNewest = i === people - 1;
+                  const day = dayLabel(room.birthdays[i] ?? 0, b.months);
+                  const other = room.match ? room.match.find((n) => n !== i) : undefined;
                   return (
-                    <span
+                    <li
                       key={i}
-                      aria-hidden
-                      style={{ gridColumnStart: col + 1 }}
                       className={cn(
-                        "flex aspect-square items-center justify-center rounded-full border text-[0.5rem]",
+                        "rounded border px-1.5 py-1 text-center",
                         isMatch
-                          ? "border-accent bg-accent/25 font-semibold text-fg"
-                          : "border-line/15 bg-ink-900 text-transparent",
+                          ? "border-accent bg-accent/10"
+                          : isNewest
+                            ? "border-line/35 bg-ink-900"
+                            : "border-line/15 bg-ink-900",
                       )}
                     >
-                      {/* A ring and a printed mark, so the pair is not found by
-                        colour alone. */}
-                      {isMatch ? "●" : "·"}
-                    </span>
+                      <span className="sr-only">
+                        {isMatch && other !== undefined
+                          ? b.personMatchLabel(i + 1, day, other + 1)
+                          : b.personLabel(i + 1, day)}
+                      </span>
+                      <span aria-hidden className="block text-[0.6rem] leading-tight text-fg-faint">
+                        {b.personName(i + 1)}
+                      </span>
+                      <span
+                        aria-hidden
+                        className={cn(
+                          "block font-mono text-caption tabular-nums",
+                          isMatch ? "font-semibold text-fg" : "text-fg-muted",
+                        )}
+                      >
+                        {day}
+                      </span>
+                      {/* Named, so the pair is never found by colour alone. */}
+                      {isMatch && (
+                        <span aria-hidden className="block text-[0.6rem] leading-tight text-accent">
+                          {b.sameDay}
+                        </span>
+                      )}
+                      {isNewest && !isMatch && (
+                        <span
+                          aria-hidden
+                          className="block text-[0.6rem] leading-tight text-fg-faint"
+                        >
+                          {b.justArrived}
+                        </span>
+                      )}
+                    </li>
                   );
                 })}
-              </div>
+              </ul>
+              {people === 0 && <p className="text-body-sm text-fg-muted">{b.roomEmpty}</p>}
               <p className="mt-3 text-caption text-fg-muted">
                 {room.match
                   ? b.foundPair(
@@ -163,6 +194,14 @@ export function BirthdayStage() {
         readout={
           <div className="rounded border border-line/10 bg-ink-950 p-4">
             <p className="text-body-sm text-fg-muted">{b.reading(people, pairCount(people))}</p>
+            {answered && (
+              <Explain
+                what={b.explainWhat}
+                why={b.explainWhy}
+                maths={b.explainMaths(people, String(pairCount(people)), percent(exact))}
+                copy={copy.explain}
+              />
+            )}
           </div>
         }
         primary={

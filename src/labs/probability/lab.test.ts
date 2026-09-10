@@ -5,7 +5,7 @@ import { en } from "@/i18n/en";
 import { tr } from "@/i18n/tr";
 import { probabilityMeta } from "./meta";
 import { THEORETICAL, simulate as montySimulate } from "./engine/montyHall";
-import { firstAbove, sharedProbability } from "./engine/birthday";
+import { fillRoom, firstAbove, sharedProbability } from "./engine/birthday";
 import { analyse } from "./engine/conditional";
 import { build, published } from "./engine/simpson";
 import { COLUMNS, dayLabel, percent, ratio, seatOf } from "./view";
@@ -386,7 +386,12 @@ describe("nothing answers the question before it is asked", () => {
     ];
     for (const [file, patterns] of gated) {
       const code = stripComments(read(file));
-      expect(code, `${file} defines the flag`).toMatch(/const answered = guess !== null;/);
+      // Simpson's gate is stronger than the others': the total row is only
+      // reachable through the choice, so `answered` there means "chose, then
+      // asked for the total" rather than "chose".
+      expect(code, `${file} defines the flag`).toMatch(
+        /const answered = (guess !== null|showOverall && choice !== null);/,
+      );
       for (const pattern of patterns) {
         expect(code, `${file} :: ${pattern}`).toMatch(pattern);
       }
@@ -418,7 +423,171 @@ describe("nothing answers the question before it is asked", () => {
 
   it("offers the thousand-round batch only once a round has been played", () => {
     const monty = stripComments(read("components/MontyStage.tsx"));
-    expect(monty).toMatch(/\{played\.rounds > 0 && \(\s*<Button\s+variant="ghost"/);
+    const at = monty.indexOf("played.rounds > 0 && (");
+    expect(at, "the batch control is gated").toBeGreaterThan(-1);
+    // Whatever wraps it, `runBatch` is inside that gate and nowhere else.
+    expect(monty.slice(at).indexOf("runBatch")).toBeGreaterThan(-1);
+    expect(monty.slice(0, at)).not.toMatch(/onClick=\{runBatch\}/);
+  });
+});
+
+// ============================== the redesign, state by state ===============
+
+describe("Monty Hall is a game show", () => {
+  it("lets the host speak in every phase", () => {
+    for (const dict of [en, tr]) {
+      const m = dict.labs.probability.monty;
+      expect(m.hostPick.length).toBeGreaterThan(8);
+      expect(m.hostReveal(2)).toContain("2");
+      expect(m.hostDecide(3)).toContain("3");
+      expect(m.hostWon.length).toBeGreaterThan(5);
+      expect(m.hostLost.length).toBeGreaterThan(5);
+    }
+    const monty = stripComments(read("components/MontyStage.tsx"));
+    for (const line of ["hostPick", "hostReveal", "hostDecide", "hostWon", "hostLost"]) {
+      expect(monty, line).toMatch(new RegExp("m\\." + line));
+    }
+  });
+
+  it("never says the host chose at random", () => {
+    // The host's constraint is the whole puzzle; copy that softened it would
+    // be describing a different problem with a different answer.
+    for (const dict of [en, tr]) {
+      const m = dict.labs.probability.monty;
+      expect(m.hostReveal(2).toLowerCase()).toMatch(/know|bili/);
+    }
+  });
+
+  it("explains only after a round has been finished", () => {
+    const monty = stripComments(read("components/MontyStage.tsx"));
+    const at = monty.indexOf("<Explain");
+    expect(at).toBeGreaterThan(-1);
+    expect(monty.slice(Math.max(0, at - 200), at)).toMatch(/played\.rounds > 0/);
+  });
+});
+
+describe("the birthday room is made of people", () => {
+  it("prints a date on every person, and says so to a screen reader", () => {
+    const birthday = stripComments(read("components/BirthdayStage.tsx"));
+    expect(birthday).toMatch(/dayLabel\(room\.birthdays\[i\]/);
+    expect(birthday).toMatch(/b\.personLabel\(/);
+    expect(birthday).toMatch(/b\.personMatchLabel\(/);
+    // The match is named, never carried by colour alone.
+    expect(birthday).toMatch(/b\.sameDay/);
+  });
+
+  it("keeps the room's dates coming from the engine's own draw", () => {
+    // `fillRoom` draws sequentially from a seeded generator, so the first k
+    // people are the same whatever k the room grows to: adding a person adds
+    // a person rather than re-rolling everybody.
+    const five = fillRoom(4242, 5);
+    const six = fillRoom(4242, 6);
+    expect(six.birthdays.slice(0, 5)).toEqual([...five.birthdays]);
+  });
+});
+
+describe("two children are described, not abbreviated", () => {
+  it("names both children by birth order", () => {
+    for (const dict of [en, tr]) {
+      const c = dict.labs.probability.conditional;
+      for (const key of ["older", "younger", "boy", "girl"] as const) {
+        expect(c[key].length, key).toBeGreaterThan(2);
+      }
+      expect(c.familyLabel(c.boy, c.girl).length).toBeGreaterThan(20);
+    }
+    const code = stripComments(read("components/ConditionalStage.tsx"));
+    expect(code).toMatch(/c\.older/);
+    expect(code).toMatch(/c\.younger/);
+    expect(code).toMatch(/c\.familyLabel\(/);
+  });
+
+  it("no longer prints the bare two-letter code as the family", () => {
+    const code = stripComments(read("components/ConditionalStage.tsx"));
+    const grid = code.slice(code.indexOf("OUTCOMES.map"), code.indexOf("compareCaption"));
+    expect(grid).not.toMatch(/c\.outcome\[outcome\.id/);
+  });
+
+  it("still gets 1/3 from the unchanged model", () => {
+    expect(analyse("atLeastOneBoy").probability).toBeCloseTo(1 / 3, 12);
+    expect(analyse("firstIsBoy").probability).toBeCloseTo(1 / 2, 12);
+  });
+});
+
+describe("Simpson is discovered, not displayed", () => {
+  const code = stripComments(read("components/SimpsonStage.tsx"));
+
+  it("shows one group, then the other, then the total", () => {
+    expect(code).toMatch(/useState<"small" \| "large" \| "overall">\("small"\)/);
+    expect(code).toMatch(/group === "small" \|\| showLarge/);
+    expect(code).toMatch(/\{showOverall && \(/);
+  });
+
+  it("asks which treatment to take before adding the groups up", () => {
+    expect(code).toMatch(/s\.chooseQuestion/);
+    // The step button cannot be pressed until the choice is made.
+    expect(code).toMatch(/disabled=\{showLarge && choice === null\}/);
+  });
+
+  it("does not put the aggregate in the question's own answer", () => {
+    // The reveal on that question points at the groups; the total is what the
+    // next step is for.
+    expect(code).toMatch(/s\.chooseAnswer\(s\.treatmentName\[groupLeader\("small"\)\]\)/);
+    for (const dict of [en, tr]) {
+      expect(dict.labs.probability.simpson.chooseAnswer("X")).not.toMatch(/700/);
+    }
+  });
+
+  it("names the treatments the study actually compared", () => {
+    for (const dict of [en, tr]) {
+      const s = dict.labs.probability.simpson;
+      expect(s.treatmentName.a.length).toBeGreaterThan(4);
+      expect(s.treatmentName.b.length).toBeGreaterThan(4);
+      expect(s.treatmentName.a).not.toBe(s.treatmentName.b);
+      // And says what the numbers are, and are not, for.
+      expect(s.illustrative.toLowerCase()).toMatch(/not medical advice|tıbbi tavsiye değildir/);
+    }
+    expect(code).toMatch(/s\.treatmentName\[t\]/);
+  });
+
+  it("keeps the published table and the reversal exactly as they were", () => {
+    const table = published();
+    expect(table.reversed).toBe(true);
+    expect(ratio(table.overall.a.successes, table.overall.a.trials)).toBe("273 / 350");
+    expect(build({ a: 175, b: 175 }).reversed).toBe(false);
+  });
+});
+
+describe("every result widens in the same three steps", () => {
+  it("carries a what, a why and the numbers, in both languages", () => {
+    for (const dict of [en, tr]) {
+      const copy = dict.labs.probability;
+      expect(copy.explain.why.length).toBeGreaterThan(5);
+      expect(copy.explain.maths.length).toBeGreaterThan(5);
+      for (const section of ["monty", "birthday", "conditional", "simpson"] as const) {
+        expect(copy[section].explainWhat.length, section).toBeGreaterThan(20);
+        expect(copy[section].explainWhy.length, section).toBeGreaterThan(80);
+      }
+    }
+  });
+
+  it("is used by all four stages", () => {
+    for (const file of [
+      "components/MontyStage.tsx",
+      "components/BirthdayStage.tsx",
+      "components/ConditionalStage.tsx",
+      "components/SimpsonStage.tsx",
+    ]) {
+      expect(stripComments(read(file)), file).toMatch(/<Explain/);
+    }
+  });
+
+  it("keeps the deeper steps closed until they are asked for", () => {
+    // <details> with no `open`: the reason and the arithmetic are one click
+    // away, not two paragraphs in the way.
+    const framing = stripComments(read("components/Framing.tsx"));
+    const explain = framing.slice(framing.indexOf("export function Explain"));
+    expect(explain).toMatch(/<details/);
+    expect(explain).not.toMatch(/<details[^>]*\sopen/);
   });
 });
 
