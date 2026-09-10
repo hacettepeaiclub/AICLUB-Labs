@@ -38,6 +38,13 @@ export function ConditionalStage() {
   const analysis = analyse(clue);
   const other = analyse(clue === "atLeastOneBoy" ? "firstIsBoy" : "atLeastOneBoy");
 
+  // What the guess is for: "chance both are boys?". So the quotient, the
+  // table of both clues' answers, and the paragraph explaining them wait for
+  // it. The four boxes stay — they are the question. A visitor who counts
+  // three survivors and sees one marked "both boys" has worked it out, and
+  // that is the discovery the section is for.
+  const answered = guess !== null;
+
   // The one number in the coach's answers is this analysis's own.
   const coach = [
     { q: c.coach.notHalf.q, a: c.coach.notHalf.a(percent(analyse("atLeastOneBoy").probability)) },
@@ -50,7 +57,11 @@ export function ConditionalStage() {
       <Stage
         width="full"
         caption={c.caption}
-        announcement={c.announce(c.clue[clue], analysis.kept.length, percent(analysis.probability))}
+        announcement={
+          answered
+            ? c.announce(c.clue[clue], analysis.kept.length, percent(analysis.probability))
+            : ""
+        }
         viewport={
           <div className="space-y-3">
             <div
@@ -93,67 +104,77 @@ export function ConditionalStage() {
                 })}
               </div>
 
-              <p className="mt-4 font-mono text-body-sm text-fg">
-                {c.fraction(
-                  ratio(analysis.favourable, analysis.kept.length),
-                  percent(analysis.probability),
-                )}
-              </p>
+              {answered && (
+                <p className="mt-4 font-mono text-body-sm text-fg">
+                  {c.fraction(
+                    ratio(analysis.favourable, analysis.kept.length),
+                    percent(analysis.probability),
+                  )}
+                </p>
+              )}
             </div>
 
-            {/* The comparison, always on screen: one clue's answer means little
-              without the other's beside it. */}
-            <div className="rounded border border-line/10 bg-ink-950 p-4">
-              <table className="w-full border-collapse text-body-sm">
-                <caption className="sr-only">{c.compareCaption}</caption>
-                <thead>
-                  <tr className="text-overline uppercase text-fg-faint">
-                    <th scope="col" className="py-1.5 text-left font-normal">
-                      {c.clueHeader}
-                    </th>
-                    <th scope="col" className="py-1.5 text-right font-normal">
-                      {c.leftHeader}
-                    </th>
-                    <th scope="col" className="py-1.5 text-right font-normal">
-                      {c.answerHeader}
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {[analysis, other].map((entry) => (
-                    <tr
-                      key={entry.clue}
-                      className={cn(
-                        "border-t border-line/10",
-                        entry.clue === clue && "text-fg",
-                        entry.clue !== clue && "text-fg-muted",
-                      )}
-                    >
-                      <td className="py-2">
-                        {entry.clue === clue && (
-                          <span aria-hidden className="mr-1.5 text-accent">
-                            ▸
-                          </span>
-                        )}
-                        {c.clue[entry.clue]}
-                      </td>
-                      <td className="py-2 text-right font-mono tabular-nums">
-                        {entry.kept.map((o) => c.outcome[o.id as keyof typeof c.outcome]).join(" ")}
-                      </td>
-                      <td className="py-2 text-right font-mono tabular-nums">
-                        {percent(entry.probability)}
-                      </td>
+            {/* The comparison: one clue's answer means little without the
+              other's beside it — but both of them together are the answer to
+              the question still being asked in the rail, so it arrives with
+              the reveal rather than before it. */}
+            {answered && (
+              <div className="rounded border border-line/10 bg-ink-950 p-4">
+                <table className="w-full border-collapse text-body-sm">
+                  <caption className="sr-only">{c.compareCaption}</caption>
+                  <thead>
+                    <tr className="text-overline uppercase text-fg-faint">
+                      <th scope="col" className="py-1.5 text-left font-normal">
+                        {c.clueHeader}
+                      </th>
+                      <th scope="col" className="py-1.5 text-right font-normal">
+                        {c.leftHeader}
+                      </th>
+                      <th scope="col" className="py-1.5 text-right font-normal">
+                        {c.answerHeader}
+                      </th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {[analysis, other].map((entry) => (
+                      <tr
+                        key={entry.clue}
+                        className={cn(
+                          "border-t border-line/10",
+                          entry.clue === clue && "text-fg",
+                          entry.clue !== clue && "text-fg-muted",
+                        )}
+                      >
+                        <td className="py-2">
+                          {entry.clue === clue && (
+                            <span aria-hidden className="mr-1.5 text-accent">
+                              ▸
+                            </span>
+                          )}
+                          {c.clue[entry.clue]}
+                        </td>
+                        <td className="py-2 text-right font-mono tabular-nums">
+                          {entry.kept
+                            .map((o) => c.outcome[o.id as keyof typeof c.outcome])
+                            .join(" ")}
+                        </td>
+                        <td className="py-2 text-right font-mono tabular-nums">
+                          {percent(entry.probability)}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         }
         readout={
-          <div className="rounded border border-line/10 bg-ink-950 p-4">
-            <p className="text-body-sm text-fg-muted">{c.explain[clue]}</p>
-          </div>
+          answered ? (
+            <div className="rounded border border-line/10 bg-ink-950 p-4">
+              <p className="text-body-sm text-fg-muted">{c.explain[clue]}</p>
+            </div>
+          ) : undefined
         }
         primary={
           <div className="space-y-4">
@@ -186,12 +207,20 @@ export function ConditionalStage() {
         figures={
           <>
             <Figure label={c.keptFigure} value={String(analysis.kept.length)} hint={c.keptHint} />
-            <Figure
-              label={c.bothFigure}
-              value={ratio(analysis.favourable, analysis.kept.length)}
-              hint={c.bothHint}
-            />
-            <Figure label={c.answerFigure} value={percent(analysis.probability)} tone="accent" />
+            {answered && (
+              <>
+                <Figure
+                  label={c.bothFigure}
+                  value={ratio(analysis.favourable, analysis.kept.length)}
+                  hint={c.bothHint}
+                />
+                <Figure
+                  label={c.answerFigure}
+                  value={percent(analysis.probability)}
+                  tone="accent"
+                />
+              </>
+            )}
           </>
         }
       />

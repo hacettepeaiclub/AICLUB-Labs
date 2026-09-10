@@ -53,7 +53,10 @@ export function LandscapeCanvas({
   describedBy,
   onMovePoint,
   homePoint,
-  sizeClass = "aspect-square w-full",
+  // Square, but not as square as the column happens to be: at the full width
+  // of a wide stage this drew a 734px landscape and pushed the descent path —
+  // the thing the lab is about — below the fold.
+  sizeClass = "mx-auto aspect-square w-full max-w-[30rem]",
   className,
 }: LandscapeCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);

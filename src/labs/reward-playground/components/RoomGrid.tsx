@@ -83,7 +83,10 @@ export function RoomGrid({
       className={cn("rounded border border-line/10 bg-ink-950 p-3", className)}
       {...(interactive ? {} : { role: "img", "aria-label": label })}
     >
-      <div className="relative aspect-square w-full">
+      {/* Capped so the whole room fits on one screen: at full column width
+          the grid ran past the fold and you could not see where you were
+          going. */}
+      <div className="relative mx-auto aspect-square w-full max-w-[30rem]">
         <div
           className="absolute inset-0 grid grid-cols-6 grid-rows-6 gap-1"
           {...(interactive ? { role: "grid", "aria-label": label } : { "aria-hidden": true })}

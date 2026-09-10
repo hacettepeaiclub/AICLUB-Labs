@@ -359,6 +359,69 @@ describe("a beginner can start", () => {
   });
 });
 
+// =============================== the answer waits for the guess ============
+
+describe("nothing answers the question before it is asked", () => {
+  // Monty Hall was already built this way. The other three showed their
+  // result beside the guess that was still being offered, which makes the
+  // guess decorative — the whole device of the lab is that you commit first.
+  it("holds each experiment's answer behind its own prediction", () => {
+    const gated: Array<[string, RegExp[]]> = [
+      // The threshold is the answer to "where does it first pass 50%?".
+      [
+        "components/BirthdayStage.tsx",
+        [/\{answered && \(\s*<Figure\s+label=\{b\.thresholdFigure\}/],
+      ],
+      // The quotient, the two-clue table, the explanation and both answer figures.
+      [
+        "components/ConditionalStage.tsx",
+        [
+          /\{answered && \(\s*<p[^>]*>\s*\{c\.fraction\(/,
+          /answered \? \(/,
+          /\{answered && \(\s*<>/,
+        ],
+      ],
+      // The verdict on the table, not the table.
+      ["components/SimpsonStage.tsx", [/answered \? \(/, /\{answered && \(\s*<Figure/]],
+    ];
+    for (const [file, patterns] of gated) {
+      const code = stripComments(read(file));
+      expect(code, `${file} defines the flag`).toMatch(/const answered = guess !== null;/);
+      for (const pattern of patterns) {
+        expect(code, `${file} :: ${pattern}`).toMatch(pattern);
+      }
+    }
+  });
+
+  it("says nothing through the live region either", () => {
+    // A gated screen that still announces the number has only hidden it from
+    // people who can see.
+    for (const file of ["components/ConditionalStage.tsx", "components/SimpsonStage.tsx"]) {
+      const code = stripComments(read(file));
+      const at = code.indexOf("announcement=");
+      expect(at, file).toBeGreaterThan(-1);
+      expect(code.slice(at, at + 220), file).toMatch(/answered/);
+    }
+  });
+
+  it("still asks the question while the answer is held back", () => {
+    // Gate the answer, not the question: every stage keeps its Prediction.
+    for (const file of [
+      "components/BirthdayStage.tsx",
+      "components/ConditionalStage.tsx",
+      "components/SimpsonStage.tsx",
+      "components/MontyStage.tsx",
+    ]) {
+      expect(stripComments(read(file)), file).toMatch(/<Prediction/);
+    }
+  });
+
+  it("offers the thousand-round batch only once a round has been played", () => {
+    const monty = stripComments(read("components/MontyStage.tsx"));
+    expect(monty).toMatch(/\{played\.rounds > 0 && \(\s*<Button\s+variant="ghost"/);
+  });
+});
+
 // ================================================= the coach explains ======
 
 describe("the coach", () => {
