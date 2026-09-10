@@ -50,7 +50,12 @@ export function Segmented<T extends string>({
               <label
                 htmlFor={id}
                 className={cn(
-                  "cursor-pointer select-none rounded px-3 py-1.5 text-body-sm",
+                  // The label is the whole target — the input itself is
+                  // screen-reader-only — so it carries the 44px minimum
+                  // rather than the padding deciding it. Measured at 37.6px
+                  // before this line existed, in nine of the eleven labs.
+                  "flex min-h-11 cursor-pointer select-none items-center justify-center",
+                  "rounded px-3 py-1.5 text-body-sm",
                   "transition-colors duration-fast",
                   "peer-focus-visible:ring-2 peer-focus-visible:ring-accent",
                   "peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-ink-950",

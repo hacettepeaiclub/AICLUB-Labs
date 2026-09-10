@@ -54,7 +54,12 @@ export function PreferenceToggle<T extends string>({
             title={option.title}
             onClick={() => onChange(option.value)}
             className={cn(
-              "min-w-11 rounded-pill px-2.5 py-1.5 text-caption font-medium",
+              // `min-w-11` was here alone, and the height came out at 37.6px
+              // only because `text-caption` was being dropped at merge time.
+              // With the size applying, padding alone would leave a 28.8px
+              // target — so the minimum is stated in both directions now.
+              "inline-flex min-h-11 min-w-11 items-center justify-center",
+              "rounded-pill px-2.5 py-1.5 text-caption font-medium",
               "transition-colors duration-fast",
               selected
                 ? "bg-accent-fill text-accent-fg"
