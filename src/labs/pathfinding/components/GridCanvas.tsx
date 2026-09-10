@@ -227,7 +227,7 @@ export function GridCanvas({
       onFocus={() => {
         if (cursor < 0) onCursorChange(gridRef.current.start);
       }}
-      className="rounded-card border border-line/10 bg-ink-900 p-1"
+      className="mx-auto w-full max-w-[36rem] rounded-card border border-line/10 bg-ink-900 p-1"
     >
       <canvas
         ref={canvasRef}

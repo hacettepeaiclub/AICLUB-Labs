@@ -18,9 +18,13 @@ const variantClasses: Record<Variant, string> = {
   // state.
   primary:
     "bg-accent-fill text-accent-fg border border-accent/50 hover:border-accent hover:bg-accent-fill/85 active:bg-accent-fill",
-  secondary:
-    "bg-ink-700 text-fg border border-line/10 hover:bg-ink-700/70 active:bg-ink-800",
-  ghost: "text-fg-muted hover:text-fg hover:bg-line/5 active:bg-line/10",
+  secondary: "bg-ink-700 text-fg border border-line/10 hover:bg-ink-700/70 active:bg-ink-800",
+  // A hairline at rest, and nothing else: these are real actions — "Run 1,000
+  // rounds", "Back to the start" — and with no boundary at all they read as a
+  // line of muted text, which is what the visual QA found. Still lighter than
+  // `secondary`, which carries a fill as well as an edge.
+  ghost:
+    "border border-line/20 text-fg-muted hover:border-line/35 hover:bg-line/5 hover:text-fg active:bg-line/10",
 };
 
 // `md` is 44px rather than 40 because the labs had already decided that:

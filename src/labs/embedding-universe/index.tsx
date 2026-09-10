@@ -178,7 +178,45 @@ export default function EmbeddingUniverse() {
 
   return (
     <div className="space-y-16">
-      {/* 1 — a question, and no map behind it. */}
+      {/* 1 — the question, over a universe that has not been read out yet.
+
+          There used to be no map here at all, on the reasoning that a labelled
+          map answers the question before it is asked. That is true of a
+          *labelled* map. This one is mounted in its neutral state — nothing
+          selected, no neighbours, nothing pinned — and `UniverseMap` names a
+          word only when it is selected or a neighbour, so every point is
+          anonymous. What it shows is that there is a universe and the words in
+          it have places; what it withholds is which place is which.
+
+          Inert and hidden from assistive technology: the real instrument, with
+          its listbox semantics and its keyboard handling, is the one that
+          arrives after the guess. This is the same component drawing the same
+          projection, not a decorative substitute. */}
+      {!revealed && (
+        // A window onto it, not the whole instrument: at full width the map is
+        // square and 1,152px tall, which would push the question it introduces
+        // off the bottom of the screen. Cropped to a band, which is also the
+        // honest shape for a hint — there is more of this than you can see.
+        <div
+          aria-hidden
+          className="pointer-events-none -mb-2 max-h-[20rem] select-none overflow-hidden opacity-40"
+        >
+          <UniverseMap
+            viewport={geometry?.viewport ?? null}
+            vocabulary={VOCABULARY}
+            selected={null}
+            neighbours={[]}
+            highlighted={[]}
+            pinned={null}
+            pinnedSimilarity={null}
+            formatScore={score}
+            onSelect={() => undefined}
+            copy={copy.map}
+          />
+        </div>
+      )}
+
+      {/* 2 — the question itself. */}
       <section aria-labelledby="eu-explore-heading" className="!mb-10">
         <h2 id="eu-explore-heading" className="sr-only">
           {copy.explore.title}
@@ -305,16 +343,23 @@ export default function EmbeddingUniverse() {
       )}
 
       {/* 3 — three lines, then where the vectors came from. The technical
-          provenance lives here, after the interaction, never in front of it. */}
-      <LabRecap
-        lessons={copy.recap.lessons}
-        footer={
-          <>
-            <span className="block">{copy.honesty.source}</span>
-            <span className="mt-3 block">{copy.honesty.turkish}</span>
-          </>
-        }
-      />
+          provenance lives here, after the interaction, never in front of it.
+
+          It used to render unconditionally, which meant that before the guess
+          the page was a question, three buttons, and then "Today you learned"
+          with the lesson in it — the conclusion arriving first, and the
+          universe nowhere on screen. It waits for the reveal now. */}
+      {revealed && (
+        <LabRecap
+          lessons={copy.recap.lessons}
+          footer={
+            <>
+              <span className="block">{copy.honesty.source}</span>
+              <span className="mt-3 block">{copy.honesty.turkish}</span>
+            </>
+          }
+        />
+      )}
     </div>
   );
 }

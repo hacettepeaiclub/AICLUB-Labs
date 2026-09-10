@@ -56,6 +56,11 @@ export function BirthdayStage() {
     setTrial({ n: people, withMatch: result.withMatch, rooms: result.rooms });
   };
 
+  // The guess is "where does this first pass 50%?", so the one number that
+  // answers it waits for the guess. Everything else on screen describes the
+  // room you are building, which is the question rather than the answer.
+  const answered = guess !== null;
+
   const matchSet = new Set(room.match ?? []);
   const rows = Math.ceil(Math.max(people, 1) / COLUMNS);
 
@@ -219,7 +224,9 @@ export function BirthdayStage() {
               tone="accent"
               hint={b.exactHint}
             />
-            <Figure label={b.thresholdFigure} value={String(threshold)} hint={b.thresholdHint} />
+            {answered && (
+              <Figure label={b.thresholdFigure} value={String(threshold)} hint={b.thresholdHint} />
+            )}
           </>
         }
         secondaryLabel={b.simulateLabel}

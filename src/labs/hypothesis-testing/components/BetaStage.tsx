@@ -33,6 +33,8 @@ export function BetaStage({ result, onChange }: BetaStageProps) {
   return (
     <Stage
       width="full"
+      // 597px of controls beside a 345px plot: the gap sat under the curve.
+      controls="stack"
       caption={b.caption}
       announcement={b.announce(prob(result.beta), prob(result.power))}
       viewport={<DistributionPlot result={result} />}
