@@ -436,7 +436,7 @@ export const en = {
           "reach-power": {
             title: "Reach 0.80",
             brief: (power: string, alpha: string) =>
-              `The effect is real but small: \u03bc\u2081 sits half a unit above \u03bc\u2080, and the test finds it barely more often than it raises a false alarm. Get power to ${power} without letting \u03b1 go above ${alpha}.`,
+              `The effect is real but small: \u03bc\u2081 sits half a unit above \u03bc\u2080, and the test still misses it more often than it finds it. Get power to ${power} without letting \u03b1 go above ${alpha}.`,
             lesson:
               "Both levers work, and they are not the same trade. \u03b1 buys power by accepting more false alarms; n buys it by narrowing SE, which costs nothing but data.",
             solved: (power: string, alpha: string) =>
@@ -1245,7 +1245,7 @@ export const en = {
       challenge: {
         kicker: "The challenge",
         title: "Can you make two different messages produce the same digest?",
-        lede: "Not the whole digest. Start with its first character. Each round asks for one more, and each round is sixteen times less likely than the one before. That curve is the whole of hash security, and this is the only honest way to feel it: no collision is found here, and none is faked.",
+        lede: "Not the whole digest. Start with its first character. Each round asks for one more, and each round is sixteen times less likely than the one before. That curve is the heart of collision resistance, and this is the only honest way to feel it: no collision is found here, and none is faked.",
         inputA: "Message A",
         inputB: "Message B",
         identical:
@@ -1279,7 +1279,7 @@ export const en = {
           },
           passwords: {
             label: "Passwords",
-            body: "Servers store a salted hash rather than the password. At login the password is hashed again and the hashes are compared, so a leaked database holds hashes, not passwords.",
+            body: "Servers store a salted password hash, so a leaked database holds hashes rather than passwords. The function is not SHA-256 though: password storage uses a deliberately slow hash such as Argon2id, scrypt, bcrypt or PBKDF2, so that guessing stays expensive.",
           },
           https: {
             label: "HTTPS",
@@ -2106,7 +2106,7 @@ export const en = {
         title: "It isn't how many are wrong.",
         lede: "Start from the ordered shape. Drag one bar far from where it belongs, then instead nudge three bars slightly. Compare what each costs.",
         caption:
-          "An inversion is a pair in the wrong order. This insertion sort shifts once for every inversion in the array it was given, so one value far from home can cost more than several small mistakes.",
+          "An inversion is a pair in the wrong order. This insertion sort shifts once for every inversion in the array it was given, so one value far from home can cost more than several small mistakes. Moves counts those shifts plus the one write that lands each relocated value, which is why it sits a little above Disorder.",
       },
       challenge: {
         architecture: "Architecture",
@@ -2167,7 +2167,7 @@ export const en = {
         lessons: [
           "Two algorithms can reach the same answer having done wildly different amounts of work",
           "Selection sort rescans the whole remainder every pass, so its cost is fixed; insertion sort walks back only as far as it must, so its cost is a property of the data",
-          "An inversion is a pair out of order and this insertion sort shifts once for each, but asking fewer questions is not the same goal as writing less data",
+          "An inversion is a pair out of order and this insertion sort shifts once for each; Moves adds the write that lands each relocated value, but asking fewer questions is not the same goal as writing less data",
         ],
         footer:
           "Real sorting libraries lean on exactly this: they hand nearly-ordered runs to an insertion sort, because on that shape the work has almost already been done.",
