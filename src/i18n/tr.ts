@@ -423,7 +423,7 @@ export const tr: Translation = {
           "reach-power": {
             title: "0,80'e ula\u015f",
             brief: (power: string, alpha: string) =>
-              `Etki ger\u00e7ek ama k\u00fc\u00e7\u00fck: \u03bc\u2081, \u03bc\u2080'\u0131n yar\u0131m birim \u00fczerinde ve test bunu yanl\u0131\u015f alarm verdi\u011finden ancak biraz daha s\u0131k buluyor. \u03b1'y\u0131 ${alpha} de\u011ferinin \u00fczerine \u00e7\u0131karmadan g\u00fcc\u00fc ${power} de\u011ferine getirin.`,
+              `Etki ger\u00e7ek ama k\u00fc\u00e7\u00fck: \u03bc\u2081, \u03bc\u2080'\u0131n yar\u0131m birim \u00fczerinde ve test bunu buldu\u011fundan daha s\u0131k ka\u00e7\u0131r\u0131yor. \u03b1'y\u0131 ${alpha} de\u011ferinin \u00fczerine \u00e7\u0131karmadan g\u00fcc\u00fc ${power} de\u011ferine getirin.`,
             lesson:
               "\u0130ki kol da i\u015fe yarar ama ayn\u0131 takas de\u011fildir. \u03b1, daha fazla yanl\u0131\u015f alarm kabul ederek g\u00fc\u00e7 sat\u0131n al\u0131r; n ise SE'yi daraltarak al\u0131r ve bunun veriden ba\u015fka bedeli yoktur.",
             solved: (power: string, alpha: string) =>
@@ -1231,7 +1231,7 @@ export const tr: Translation = {
       challenge: {
         kicker: "Meydan okuma",
         title: "İki farklı mesajın aynı özeti üretmesini sağlayabilir misiniz?",
-        lede: "Özetin tamamı değil: ilk karakterinden başlayın. Her tur bir karakter daha istiyor ve her tur bir öncekinden on altı kat daha düşük olasılıklı. Bu eğri, hash güvenliğinin tamamı; ve bunu dürüstçe hissetmenin tek yolu bu: burada bir çakışma bulunmuyor, uydurulmuyor da.",
+        lede: "Özetin tamamı değil: ilk karakterinden başlayın. Her tur bir karakter daha istiyor ve her tur bir öncekinden on altı kat daha düşük olasılıklı. Bu eğri, çakışma direncinin kalbi; ve bunu dürüstçe hissetmenin tek yolu bu: burada bir çakışma bulunmuyor, uydurulmuyor da.",
         inputA: "Mesaj A",
         inputB: "Mesaj B",
         identical:
@@ -1265,7 +1265,7 @@ export const tr: Translation = {
           },
           passwords: {
             label: "Parolalar",
-            body: "Sunucular parolanın kendisini değil, tuzlanmış hash'ini saklar. Girişte parola yeniden hash'lenip karşılaştırılır; böylece sızan bir veritabanı parolaları değil hash'leri barındırır.",
+            body: "Sunucular parolanın kendisini değil, tuzlanmış parola hash'ini saklar; böylece sızan bir veritabanı parolaları değil hash'leri barındırır. Ama kullanılan fonksiyon SHA-256 değildir: parola saklamada Argon2id, scrypt, bcrypt ya da PBKDF2 gibi kasıtlı olarak yavaş bir hash kullanılır, böylece deneme yapmak pahalı kalır.",
           },
           https: {
             label: "HTTPS",
@@ -2075,7 +2075,7 @@ export const tr: Translation = {
         title: "Mesele kaç tanesinin yanlış olduğu değil.",
         lede: "Sıralı biçimden başlayın. Bir çubuğu ait olduğu yerden çok uzağa sürükleyin, sonra bunun yerine üç çubuğu hafifçe oynatın. Her birinin maliyetini karşılaştırın.",
         caption:
-          "Terslik, sırası yanlış olan bir çifttir. Bu eklemeli sıralama, kendisine verilen dizideki her terslik için tam bir kez kaydırır, yani evinden çok uzaktaki tek bir değer, birkaç küçük hatadan daha pahalıya gelebilir.",
+          "Terslik, sırası yanlış olan bir çifttir. Bu eklemeli sıralama, kendisine verilen dizideki her terslik için tam bir kez kaydırır, yani evinden çok uzaktaki tek bir değer, birkaç küçük hatadan daha pahalıya gelebilir. Taşıma ise bu kaydırmalara, yeri değişen her değeri yerine yazan son işlemi de ekler; bu yüzden Düzensizlik'in biraz üzerinde durur.",
       },
       challenge: {
         architecture: "Mimari",
@@ -2138,7 +2138,7 @@ export const tr: Translation = {
         lessons: [
           "İki algoritma aynı sonuca, birbirinden çok farklı miktarda iş yaparak ulaşabilir",
           "Seçmeli sıralama her turda kalanın tamamını yeniden tarar, bu yüzden maliyeti sabittir; eklemeli sıralama yalnızca gerektiği kadar geriye yürür, bu yüzden maliyeti verinin bir özelliğidir",
-          "Terslik, sırası yanlış olan bir çifttir ve bu eklemeli sıralama her biri için bir kez kaydırır, ama daha az soru sormak, daha az veri yazmakla aynı hedef değildir",
+          "Terslik, sırası yanlış olan bir çifttir ve bu eklemeli sıralama her biri için bir kez kaydırır; Taşıma buna her değeri yerine yazan son işlemi de ekler, ama daha az soru sormak, daha az veri yazmakla aynı hedef değildir",
         ],
         footer:
           "Gerçek sıralama kütüphaneleri tam olarak buna yaslanır: neredeyse sıralı parçaları eklemeli sıralamaya devrederler, çünkü o biçimde işin neredeyse tamamı zaten yapılmıştır.",
