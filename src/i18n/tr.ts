@@ -38,14 +38,14 @@ export const tr: Translation = {
     parentOrg: "Hacettepe Yapay Zekâ Topluluğu",
     hashtag: "#AIForAll",
     footerRights: (year: number) => `© ${year} Hacettepe AI Club`,
-    footerCredit: "Hacettepe Yapay Zeka Topluluğu projesidir",
+    footerCredit: "Hacettepe Yapay Zekâ Topluluğu projesidir",
     minutes: (n: number) => `${n} dk`,
     loadingLab: "Laboratuvar yükleniyor",
     openLab: "Laboratuvarı aç →",
 
     errorTitle: "Sayfanın bu bölümü yüklenemedi.",
     errorBody:
-      "Gösterilirken bir şeyler ters gitti. Yeniden denemek genellikle sorunu çözer — özellikle bu sayfa bir süredir açıksa.",
+      "Gösterilirken bir şeyler ters gitti. Yeniden denemek genellikle sorunu çözer, özellikle bu sayfa bir süredir açıksa.",
     errorRetry: "Yeniden dene",
     errorBackToLabs: "Tüm laboratuvarlara dön",
   },
@@ -66,13 +66,13 @@ export const tr: Translation = {
     // İlk sürümdeki başlık geri alındı: hem bilgisayar bilimini hem yapay
     // zekâyı adıyla söylüyor ve yine bir eylemle başlıyor.
     title: "Bilgisayar biliminin ve yapay zekânın arkasındaki fikirlerle oynayın.",
-    lede: "Dokuz etkileşimli deney — algoritmalar, yapay sinir ağları ve hesaplamanın işleyişi. Uzun anlatım yok, çevirip kaydıracağınız düğmeler var.",
+    lede: "On bir etkileşimli deney: algoritmalar, yapay sinir ağları ve hesaplamanın işleyişi. Uzun anlatım yok, çevirip kaydıracağınız düğmeler var.",
     cta: "Denemeye başla",
     labs: "Laboratuvarlar",
     labCount: (n: number) => `${n} düzenek`,
     experiments: "Deneyler",
     emptyTitle: "İlk deneyler hazırlanıyor.",
-    emptyBody: "Platform hazır — laboratuvarlar kendilerini kaydeder ve burada otomatik olarak görünür.",
+    emptyBody: "Platform hazır: laboratuvarlar kendilerini kaydeder ve burada otomatik olarak görünür.",
   },
 
   notFound: {
@@ -114,12 +114,12 @@ export const tr: Translation = {
   labs: {
     // ------------------------------- embedding universe (3D prototype) ----
   "embedding-universe-3d": {
-      title: "Gömme Evreni — 3B prototip",
+      title: "Gömme Evreni, 3B prototip",
       description:
         "Bir deney: aynı 318 kelime, iki yerine üç PCA eksenine indirgenmiş hâliyle.",
       lede: "Aynı kelimeler, aynı vektörler, bir eksen daha. Bulutu döndürmek için sürükle.",
       honesty:
-        "Bu, gömmenin gerçek görüntüsü değildir. Uzayın 300 boyutu var; döndürdüğün şey, onun üç PCA eksenine indirgenmiş bir görünümü — düz haritadan bir eksen fazla, yine de neredeyse hiçbiri.",
+        "Bu, gömmenin gerçek görüntüsü değildir. Uzayın 300 boyutu var; döndürdüğün şey, onun üç PCA eksenine indirgenmiş bir görünümü: düz haritadan bir eksen fazla, yine de neredeyse hiçbiri.",
       compare:
         "Bu bir prototip ve dersten bilerek ayrı tutuldu. Derinlik, bulutu bir mekân gibi hissettiriyor; ama projeksiyonu daha doğru yapmıyor. Bu takasın öğretmeye değip değmediğine karar vermek, prototipi yapmanın asıl sebebi.",
       error: "Kelime vektörleri yüklenemedi.",
@@ -129,7 +129,7 @@ export const tr: Translation = {
       recapTitle: "Bu prototip ne gösteriyor",
       recap: {
         lessons: [
-          "Üç eksen, uzayın ikiden biraz fazlasını taşıyor — yine de neredeyse hiçbirini.",
+          "Üç eksen, uzayın ikiden biraz fazlasını taşıyor, yine de neredeyse hiçbirini.",
           "Derinlik bulutu bir mekân gibi hissettiriyor; bu, bilgilendirici olsun ya da olmasın ikna edici.",
           "Kelimeler, vektörler ve en yakın komşular düz haritayla birebir aynı; değişen yalnızca görüş.",
         ],
@@ -154,10 +154,10 @@ export const tr: Translation = {
 
       predict: {
         question: (word: string) => `${word} kelimesine en yakın hangisi?`,
-        hint: "Üçü de ilgili — sen hangisini beklersin?",
+        hint: "Üçü de ilgili, sen hangisini beklersin?",
         loading: "Kelime vektörleri yükleniyor…",
         chose: (word: string, rank: number, total: number, score: string) =>
-          `${word} dedin — ${total} kelime içinde ${rank}. sırada, ${score} benzerlikle.`,
+          `${word} dedin: ${total} kelime içinde ${rank}. sırada, ${score} benzerlikle.`,
         nearest: (word: string, score: string) => `En yakını ${word}, ${score} benzerlikle.`,
         because:
           "Bu vektörler kelimelerin ne anlama geldiğinden değil, nasıl kullanıldığından öğrenildi. Haber ve ansiklopedi metinlerinde apple, meyvelerden çok software ile yan yana geçiyor.",
@@ -179,7 +179,7 @@ export const tr: Translation = {
         selectedLabel: (word: string, gloss: string) => `${word}, ${gloss}. Seçili`,
         pending: "Kelimelerin nereye düştüğü hesaplanıyor…",
         linksNote:
-          "Çizgiler, seçili kelimeyi yanında listelenen sekiz kelimeye bağlar. Bunlar okumayı kolaylaştırmak içindir, modelin parçası değildir — gömmede bağlantı yoktur, yalnızca mesafeler vardır.",
+          "Çizgiler, seçili kelimeyi yanında listelenen sekiz kelimeye bağlar. Bunlar okumayı kolaylaştırmak içindir, modelin parçası değildir: gömmede bağlantı yoktur, yalnızca mesafeler vardır.",
         pinnedLabel: (word: string, gloss: string) =>
           `${word} (${gloss}), karşılaştırma için tutuluyor`,
         compareLabel: (a: string, b: string, score: string) =>
@@ -222,7 +222,7 @@ export const tr: Translation = {
           score: string,
           percent: string,
         ) =>
-          `${a} ile ${b}, ${total} çift içinde ${rank} en yakın çift, ${score} benzerlikle. Projeksiyon onları haritanın ${percent} kadarı uzağına koydu — resme bakarak ilişkili olduklarını asla tahmin edemezdin.`,
+          `${a} ile ${b}, ${total} çift içinde ${rank} en yakın çift, ${score} benzerlikle. Projeksiyon onları haritanın ${percent} kadarı uzağına koydu: resme bakarak ilişkili olduklarını asla tahmin edemezdin.`,
         falseBody: (
           a: string,
           b: string,
@@ -235,7 +235,7 @@ export const tr: Translation = {
         varianceLabel: "Açıklanan varyans",
         varianceHint: (first: string, second: string) => `PC1 ${first} + PC2 ${second}`,
         varianceBody: (percent: string, remaining: number) =>
-          `Bu iki eksen, bu veri kümesindeki varyansın ${percent} kadarını açıklıyor. Geri kalan değişim hiçbir yere gitmedi — düz bir ekranda yeri olmayan diğer ${remaining} yönde duruyor.`,
+          `Bu iki eksen, bu veri kümesindeki varyansın ${percent} kadarını açıklıyor. Geri kalan değişim hiçbir yere gitmedi: düz bir ekranda yeri olmayan diğer ${remaining} yönde duruyor.`,
         correlationLabel: "Mesafe uyumu",
         correlationHint: "−1.00 olsaydı harita hiçbir şey kaybetmemiş olurdu",
         pending: "Projeksiyon hesaplanıyor…",
@@ -257,7 +257,7 @@ export const tr: Translation = {
         source:
           "Vektörler GloVe 6B 300d; Stanford NLP tarafından Wikipedia 2014 ve Gigaword 5 üzerinde önceden eğitildi. Bu lab her kelimeyi o yayımlanmış tablodan arayıp birim uzunluğa normalize ediyor; burada hiçbir şey eğitilmiyor, ince ayar yapılmıyor ya da üretilmiyor.",
         turkish:
-          "Gömme uzayı İngilizcedir. Buradaki Türkçe kelimeler okumayı kolaylaştırmak için bizim eklediğimiz etiketlerdir — gömülmediler ve bu bir Türkçe gömme uzayı değildir.",
+          "Gömme uzayı İngilizcedir. Buradaki Türkçe kelimeler okumayı kolaylaştırmak için bizim eklediğimiz etiketlerdir: gömülmediler ve bu bir Türkçe gömme uzayı değildir.",
       },
       compare: {
         title: "İki kelimeyi karşılaştırın",
@@ -280,7 +280,7 @@ export const tr: Translation = {
         "\u0130ki hipotezi birbirinden uzakla\u015ft\u0131r\u0131n ve emin olman\u0131n bedelini izleyin: red b\u00f6lgesi, kabul etti\u011finiz hatalar ve kar\u015f\u0131l\u0131\u011f\u0131nda ald\u0131\u011f\u0131n\u0131z g\u00fc\u00e7.",
 
       scope:
-        "Bu kuramsal modeldir: ortalaman\u0131n iki normal \u00f6rnekleme da\u011f\u0131l\u0131m\u0131, ikisi de \u03c3/\u221an standart hatas\u0131yla ve \u03c3 bilinen kabul edilerek. S\u0131n\u0131r\u0131 t de\u011fil z yapan da budur. Bu laboratuvarda hi\u00e7bir yerde \u00f6rneklem \u00e7ekilmez \u2014 her say\u0131, g\u00f6sterilen denklemlerin kapal\u0131 form de\u011feridir; yani okudu\u011funuz \u015fey bir deneyin tek bir ko\u015fusu de\u011fil, modelin kendisidir.",
+        "Bu kuramsal modeldir: ortalaman\u0131n iki normal \u00f6rnekleme da\u011f\u0131l\u0131m\u0131, ikisi de \u03c3/\u221an standart hatas\u0131yla ve \u03c3 bilinen kabul edilerek. S\u0131n\u0131r\u0131 t de\u011fil z yapan da budur. Bu laboratuvarda hi\u00e7bir yerde \u00f6rneklem \u00e7ekilmez: her say\u0131, g\u00f6sterilen denklemlerin kapal\u0131 form de\u011feridir; yani okudu\u011funuz \u015fey bir deneyin tek bir ko\u015fusu de\u011fil, modelin kendisidir.",
 
       testType: {
         right: "\u03bc\u2081 > \u03bc\u2080",
@@ -308,15 +308,15 @@ export const tr: Translation = {
       controls: {
         moreLabel: "Di\u011fer ayarlar",
         note: "Her kontrol ayn\u0131 modeli yeniden ayarlar. Burada hi\u00e7bir \u015fey \u00f6rneklenmez.",
-        mu0: "\u03bc\u2080 \u2014 s\u0131f\u0131r hipotezi ortalamas\u0131",
+        mu0: "\u03bc\u2080: s\u0131f\u0131r hipotezi ortalamas\u0131",
         mu0Value: (value: string) => `\u03bc\u2080 = ${value}`,
-        mu1: "\u03bc\u2081 \u2014 alternatif ortalama",
+        mu1: "\u03bc\u2081: alternatif ortalama",
         mu1Value: (value: string) => `\u03bc\u2081 = ${value}`,
-        sigma: "\u03c3 \u2014 kitle yay\u0131l\u0131m\u0131",
+        sigma: "\u03c3: kitle yay\u0131l\u0131m\u0131",
         sigmaValue: (value: string) => `\u03c3 = ${value}`,
         alpha: "\u03b1",
         alphaValue: (value: string) => `\u03b1 = ${value}`,
-        n: "n \u2014 \u00f6rneklem b\u00fcy\u00fckl\u00fc\u011f\u00fc",
+        n: "n: \u00f6rneklem b\u00fcy\u00fckl\u00fc\u011f\u00fc",
         nValue: (value: number) => `n = ${value}`,
       },
 
@@ -325,7 +325,7 @@ export const tr: Translation = {
         question: "\u0130ki hipotez birbirinden uzakla\u015ft\u0131\u011f\u0131nda ne olur?",
         caption:
           "Ayn\u0131 ortalama hakk\u0131nda iki iddia. Hi\u00e7biri veri de\u011fildir; ikisi de o iddia do\u011fru olsayd\u0131 n \u00f6l\u00e7\u00fcm\u00fcn ortalamas\u0131n\u0131n nas\u0131l davranaca\u011f\u0131d\u0131r.",
-        mu1Label: "\u03bc\u2081 \u2014 alternatifi hareket ettirin",
+        mu1Label: "\u03bc\u2081: alternatifi hareket ettirin",
         mu1Value: (value: string) => `\u03bc\u2081 = ${value}`,
         mu1Hint: "\u03bc\u2080 \u00fczerinden ge\u00e7irip di\u011fer tarafa ta\u015f\u0131y\u0131n.",
         mu0Label: "\u03bc\u2080",
@@ -339,10 +339,10 @@ export const tr: Translation = {
       alphaSection: {
         kicker: "\u00c7izgiyi nereye \u00e7ekiyorsunuz",
         title: "Tek bir s\u0131n\u0131r; \u00f6tesindeki her \u015fey kan\u0131t say\u0131l\u0131r.",
-        lede: "Bir testin kurala ihtiyac\u0131 vard\u0131r: sonu\u00e7 \u03bc\u2080'dan ne kadar uzakta d\u00fc\u015fmeli ki H\u2080'a inanmay\u0131 b\u0131rakas\u0131n\u0131z? Bu \u00e7izgi kritik de\u011ferdir ve \u03b1, H\u2080'\u0131n ne kadar\u0131n\u0131 bu \u00e7izginin yanl\u0131\u015f taraf\u0131nda b\u0131rakmaya raz\u0131 oldu\u011funuzdur.",
+        lede: "Bir testin kurala ihtiyac\u0131 vard\u0131r: sonu\u00e7 \u03bc\u2080'dan ne kadar uzakta d\u00fc\u015fmeli ki H\u2080'a inanmay\u0131 b\u0131rakas\u0131n\u0131z? Bu \u00e7izgi kritik de\u011ferdir; anlaml\u0131l\u0131k d\u00fczeyi \u03b1 ise H\u2080'\u0131n ne kadar\u0131n\u0131 bu \u00e7izginin yanl\u0131\u015f taraf\u0131nda b\u0131rakmaya raz\u0131 oldu\u011funuzdur.",
         caption:
-          "\u03b1 yapt\u0131\u011f\u0131n\u0131z bir hata de\u011fildir. \u00d6nceden kan\u0131t saymay\u0131 kabul etti\u011finiz H\u2080 k\u00fctlesidir; kayd\u0131r\u0131c\u0131n\u0131n e\u011friyi de\u011fil \u00e7izgiyi oynatmas\u0131n\u0131n nedeni de budur.",
-        alphaLabel: "\u03b1 \u2014 kabul etti\u011finiz yanl\u0131\u015f alarm",
+          "\u03b1 yapt\u0131\u011f\u0131n\u0131z bir hata de\u011fildir. \u00d6nceden kan\u0131t saymay\u0131 kabul etti\u011finiz H\u2080 k\u00fctlesidir; kayd\u0131r\u0131c\u0131n\u0131n e\u011friyi de\u011fil \u00e7izgiyi oynatmas\u0131n\u0131n nedeni de budur. H\u2080 do\u011fruyken onu reddetmek I. tip hatad\u0131r ve \u03b1, bunu ne s\u0131kl\u0131kta kabul etti\u011finizdir.",
+        alphaLabel: "\u03b1: kabul etti\u011finiz yanl\u0131\u015f alarm",
         alphaValue: (value: string) => `\u03b1 = ${value}`,
         alphaHint: "H\u2080 alt\u0131ndaki taral\u0131 alan tam olarak bu say\u0131d\u0131r.",
         alphaFigure: "\u03b1",
@@ -363,9 +363,9 @@ export const tr: Translation = {
       betaSection: {
         kicker: "Kimsenin saymad\u0131\u011f\u0131 hata",
         title: "\u03b2, H\u2081'in \u00e7izginin g\u00fcvenli taraf\u0131nda b\u0131rakt\u0131\u011f\u0131 k\u0131s\u0131md\u0131r.",
-        lede: "\u03b1 H\u2080 alt\u0131nda, \u03b2 H\u2081 alt\u0131nda ya\u015far; ayn\u0131 s\u0131n\u0131r\u0131n z\u0131t taraflar\u0131nda. Birini k\u00fc\u00e7\u00fcltmek i\u00e7in s\u0131n\u0131r\u0131 oynat\u0131n, di\u011feri b\u00fcy\u00fcr \u2014 testi hangi y\u00f6ne \u00e7evirdi\u011finizin, \u00e7izgiyi nereye koydu\u011funuz kadar \u00f6nemli olmas\u0131n\u0131n nedeni budur.",
+        lede: "\u03b1 H\u2080 alt\u0131nda, \u03b2 H\u2081 alt\u0131nda ya\u015far; ayn\u0131 s\u0131n\u0131r\u0131n z\u0131t taraflar\u0131nda. Birini k\u00fc\u00e7\u00fcltmek i\u00e7in s\u0131n\u0131r\u0131 oynat\u0131n, di\u011feri b\u00fcy\u00fcr: testi hangi y\u00f6ne \u00e7evirdi\u011finizin, \u00e7izgiyi nereye koydu\u011funuz kadar \u00f6nemli olmas\u0131n\u0131n nedeni budur.",
         caption:
-          "\u03b2, bu belirli H\u2081 do\u011fruyken H\u2080'\u0131 reddetmeme olas\u0131l\u0131\u011f\u0131d\u0131r. G\u00fc\u00e7 1 \u2212 \u03b2'd\u0131r. \u0130kisi de modelin \u00f6zellikleridir, herhangi bir \u00f6rneklemin de\u011fil.",
+          "\u03b2, bu belirli H\u2081 do\u011fruyken H\u2080'\u0131 reddetmeme olas\u0131l\u0131\u011f\u0131d\u0131r, yani II. tip hatad\u0131r. G\u00fc\u00e7 1 \u2212 \u03b2'd\u0131r. \u0130kisi de modelin \u00f6zellikleridir, herhangi bir \u00f6rneklemin de\u011fil.",
         testTypeLabel: "H\u2081 ne iddia ediyor",
         mu1Label: "\u03bc\u2081",
         mu1Value: (value: string) => `\u03bc\u2081 = ${value}`,
@@ -389,7 +389,7 @@ export const tr: Translation = {
         lede: "E\u011friler ayn\u0131 geni\u015flikte kald\u0131\u011f\u0131 s\u00fcrece \u03b1 ile \u03b2 birbirine kar\u015f\u0131 takas edilir. Geni\u015fli\u011fi de\u011fi\u015ftiren \u015fey n'dir: SE = \u03c3/\u221an. B\u00f6ylece iki da\u011f\u0131l\u0131m da kendi ortalamas\u0131 etraf\u0131nda s\u0131k\u0131\u015f\u0131r ve kimse daha fazla yanl\u0131\u015f alarm kabul etmeden \u00f6rt\u00fc\u015fme azal\u0131r.",
         caption:
           "x ekseni \u00b14,5 SE olarak \u00e7izilir, yani pencere de e\u011frilerle birlikte daral\u0131r. Kayd\u0131r\u0131c\u0131n\u0131n ikinci yar\u0131s\u0131n\u0131n ilk yar\u0131s\u0131ndan \u00e7ok daha az kazand\u0131rmas\u0131n\u0131n nedeni \u221an'dir.",
-        nLabel: "n \u2014 \u00f6rneklem b\u00fcy\u00fckl\u00fc\u011f\u00fc",
+        nLabel: "n: \u00f6rneklem b\u00fcy\u00fckl\u00fc\u011f\u00fc",
         nValue: (value: number) => `n = ${value}`,
         formula: (se: string) => `SE = \u03c3/\u221an = ${se}`,
         nFigure: "n",
@@ -408,7 +408,7 @@ export const tr: Translation = {
       challenge: {
         kicker: "\u015eimdi bir say\u0131y\u0131 tutturun",
         title: "G\u00f6revin istedi\u011fi g\u00fcce ula\u015f\u0131n.",
-        lede: "\u0130ki g\u00f6rev. Her biri oynat\u0131lacak bir kontrol de\u011fil, ula\u015f\u0131lacak bir sonu\u00e7 belirtir; b\u00f6ylece hi\u00e7biri kayd\u0131r\u0131c\u0131y\u0131 belirli bir yere koyarak ge\u00e7ilemez \u2014 modelin o say\u0131y\u0131 ger\u00e7ekten bildirmesi gerekir.",
+        lede: "\u0130ki g\u00f6rev. Her biri oynat\u0131lacak bir kontrol de\u011fil, ula\u015f\u0131lacak bir sonu\u00e7 belirtir; b\u00f6ylece hi\u00e7biri kayd\u0131r\u0131c\u0131y\u0131 belirli bir yere koyarak ge\u00e7ilemez: modelin o say\u0131y\u0131 ger\u00e7ekten bildirmesi gerekir.",
         puzzleLabel: "G\u00f6rev",
         reset: "Ba\u015fa d\u00f6n",
         powerLabel: "G\u00fc\u00e7",
@@ -434,7 +434,7 @@ export const tr: Translation = {
             brief: (power: string, alpha: string) =>
               `\u03c3 = 3 ve test iki y\u00f6nl\u00fc; yani \u03b1 iki kuyru\u011fa b\u00f6l\u00fcn\u00fcyor ve her iki s\u0131n\u0131r da epey d\u0131\u015farda duruyor. \u03b1 en fazla ${alpha} olacak \u015fekilde ${power} g\u00fcce ula\u015f\u0131n.`,
             lesson:
-              "\u0130ki y\u00f6nl\u00fc bir test, \u03b1'n\u0131n yar\u0131s\u0131n\u0131 alternatifin bulunmad\u0131\u011f\u0131 bir y\u00f6n\u00fc izlemeye harcar. Bir y\u00f6ne ba\u011flanmak bedava g\u00fc\u00e7t\u00fcr \u2014 ve yaln\u0131zca y\u00f6n konusunda hakl\u0131ysan\u0131z bedavad\u0131r.",
+              "\u0130ki y\u00f6nl\u00fc bir test, \u03b1'n\u0131n yar\u0131s\u0131n\u0131 alternatifin bulunmad\u0131\u011f\u0131 bir y\u00f6n\u00fc izlemeye harcar. Bir y\u00f6ne ba\u011flanmak bedava g\u00fc\u00e7t\u00fcr, ve yaln\u0131zca y\u00f6n konusunda hakl\u0131ysan\u0131z bedavad\u0131r.",
             solved: (power: string, alpha: string) =>
               `G\u00fc\u00e7 ${power}, \u03b1 = ${alpha}. \u03c3'y\u0131 k\u00fc\u00e7\u00fcltmek ya da n'yi b\u00fcy\u00fctmek SE'yi daralt\u0131r; tek y\u00f6nl\u00fc test ise \u03b1'n\u0131n tamam\u0131n\u0131 \u03bc\u2081'in ger\u00e7ekten bulundu\u011fu kuyru\u011fa koyar.`,
           },
@@ -443,12 +443,12 @@ export const tr: Translation = {
 
       recap: {
         lessons: [
-          "\u03b1, kritik de\u011ferin \u00f6tesindeki H\u2080 k\u00fctlesidir \u2014 hi\u00e7bir \u015fey g\u00f6rmeden \u00f6nce kabul etti\u011finiz yanl\u0131\u015f alarmlar.",
+          "\u03b1, kritik de\u011ferin \u00f6tesindeki H\u2080 k\u00fctlesidir: hi\u00e7bir \u015fey g\u00f6rmeden \u00f6nce kabul etti\u011finiz yanl\u0131\u015f alarmlar.",
           "\u03b2, s\u0131n\u0131r\u0131n i\u00e7inde kalan H\u2081 k\u00fctlesidir ve g\u00fc\u00e7 1 \u2212 \u03b2'd\u0131r. \u0130kisi de \"herhangi bir etkiye\" g\u00f6re de\u011fil, belirli bir \u03bc\u2081'e g\u00f6re hesaplan\u0131r.",
           "S\u0131n\u0131r\u0131 oynatmak \u03b1 ile \u03b2'y\u0131 takas eder. \u0130kisini birden iyile\u015ftiren tek \u015fey SE = \u03c3/\u221an'dir; n'in taviz olmayan kol olmas\u0131n\u0131n nedeni budur.",
         ],
         footer:
-          "Buradaki her \u015fey \u03c3'n\u0131n bilindi\u011fi kapal\u0131 form normal modeldir: ortalaman\u0131n iki \u00f6rnekleme da\u011f\u0131l\u0131m\u0131, tek bir s\u0131n\u0131r ve s\u0131n\u0131r\u0131n iki yan\u0131ndaki alanlar. Ger\u00e7ek testlerde \u03c3'n\u0131n \u00f6rneklemden kestirilmesi gerekir \u2014 t da\u011f\u0131l\u0131m\u0131n\u0131 gerekli k\u0131lan da budur \u2014 ve y\u00f6n\u00fcn veriden \u00f6nce mi sonra m\u0131 se\u00e7ildi\u011fi ayr\u0131 bir sorundur. Bu laboratuvar, o zorluklar\u0131n \u00fczerine oturdu\u011fu geometriyi g\u00f6sterir.",
+          "Buradaki her \u015fey \u03c3'n\u0131n bilindi\u011fi kapal\u0131 form normal modeldir: ortalaman\u0131n iki \u00f6rnekleme da\u011f\u0131l\u0131m\u0131, tek bir s\u0131n\u0131r ve s\u0131n\u0131r\u0131n iki yan\u0131ndaki alanlar. Ger\u00e7ek testlerde \u03c3'n\u0131n \u00f6rneklemden kestirilmesi gerekir (t da\u011f\u0131l\u0131m\u0131n\u0131 gerekli k\u0131lan da budur) ve y\u00f6n\u00fcn veriden \u00f6nce mi sonra m\u0131 se\u00e7ildi\u011fi ayr\u0131 bir sorundur. Bu laboratuvar, o zorluklar\u0131n \u00fczerine oturdu\u011fu geometriyi g\u00f6sterir.",
       },
     },
 
@@ -461,7 +461,7 @@ export const tr: Translation = {
       room: {
         title: "Oda",
         question:
-          "Bu robota çıkış yolunu kimse göstermedi. Yolu deneyerek buldu — neyi önemseyeceğine ise siz karar veriyorsunuz.",
+          "Bu robota çıkış yolunu kimse göstermedi. Yolu deneyerek buldu: neyi önemseyeceğine ise siz karar veriyorsunuz.",
         sliderLabel: "İşaretli kare robot için ne kadar değerli?",
         sliderValue: (value: string) => `İşaretli karenin değeri ${value}`,
         hint: "Sürükleyin. Her oynattığınızda yol sıfırdan yeniden öğreniliyor.",
@@ -480,7 +480,7 @@ export const tr: Translation = {
       learn: {
         kicker: "Bunu nasıl çözdü?",
         title: "Yapabileceği her hamle için bir sayı tuttu.",
-        lede: "Buradaki hiçbir şey robotun öğrenmiş olabileceğinin bir resmi değil — kaydırıcıyı getirdiğiniz anda gerçekten öğrenmiş olduğu şey. Yukarıdaki kaydırıcıyı oynatın; bu sayfadaki her sayı yeni bir çalıştırmadan baştan hesaplanır.",
+        lede: "Buradaki hiçbir şey robotun öğrenmiş olabileceğinin bir resmi değil: kaydırıcıyı getirdiğiniz anda gerçekten öğrenmiş olduğu şey. Yukarıdaki kaydırıcıyı oynatın; bu sayfadaki her sayı yeni bir çalıştırmadan baştan hesaplanır.",
 
         scrubber: "Ne kadar deneme yaptığı",
         episode: (n: number) => `${n}. deneme`,
@@ -495,11 +495,11 @@ export const tr: Translation = {
         wallCell: (row: number, col: number) => `Satır ${row}, sütun ${col}. Duvar.`,
 
         actions: { 0: "yukarı", 1: "aşağı", 2: "sola", 3: "sağa" },
-        noAction: "hiçbir yere — burası kapı",
+        noAction: "hiçbir yere: burası kapı",
         bestAction: "en iyi",
         selectedTitle: (row: number, col: number) => `Satır ${row}, sütun ${col}`,
         chain: (row: number, col: number, action: string, value: string) =>
-          `Satır ${row}, sütun ${col} üzerindeyken robotun yapabileceği dört hamle ve her biri için bir sayı var. En büyüğünü seçiyor — ${action} giderek elde ettiği ${value} — çünkü o hamle en son denediğinde onu daha iyi bir yere götürmüştü. Bunu birkaç yüz kez tekrarlayın, sayılar değişmeyi bırakır.`,
+          `Satır ${row}, sütun ${col} üzerindeyken robotun yapabileceği dört hamle ve her biri için bir sayı var. En büyüğünü seçiyor (${action} giderek elde ettiği ${value}), çünkü o hamle en son denediğinde onu daha iyi bir yere götürmüştü. Bunu birkaç yüz kez tekrarlayın, sayılar değişmeyi bırakır.`,
 
         unexploredLabel: "Uğramadığı kare",
         unexploredHint: "oraya gitmeyi bıraktı",
@@ -512,7 +512,7 @@ export const tr: Translation = {
           "Şöyle okuyun: az önce yaptığınız hamlenin sayısını, gerçekte elde ettiğiniz ödüle ve vardığınız yerden artık mümkün gördüğünüz en iyi değere doğru biraz kaydırın. α bu kaydırmanın büyüklüğü, γ ise ileride gelecek bir ödülün şimdikine kıyasla ne kadar değerli sayıldığı.",
 
         honesty:
-          "Robot odanın tamamını öğrenmedi. İşine yarayan bir yol öğrendi ve geri kalanını keşfetmeyi bıraktı; bu yüzden bazı kareler hâlâ en baştaki tahminini taşıyor. Bu yöntemin bir kusuru değil — yalnızca kendi deneyiminden öğrenmek tam olarak böyle görünür.",
+          "Robot odanın tamamını öğrenmedi. İşine yarayan bir yol öğrendi ve geri kalanını keşfetmeyi bıraktı; bu yüzden bazı kareler hâlâ en baştaki tahminini taşıyor. Bu yöntemin bir kusuru değil: yalnızca kendi deneyiminden öğrenmek tam olarak böyle görünür.",
 
         scheduleWarning:
           "Kaydedilen denemeler eşit aralıklı, bu da öğrenmenin gerçekleştiği kısmı gizliyor.",
@@ -520,18 +520,18 @@ export const tr: Translation = {
 
       recap: {
         lessons: [
-          "Ödül bir talimat değildir. Bir puandır ve robot en yüksek puanı veren davranışı bulur — aklınızdan hiç geçmemiş olanı bile.",
+          "Ödül bir talimat değildir. Bir puandır ve robot en yüksek puanı veren davranışı bulur: aklınızdan hiç geçmemiş olanı bile.",
           "Deneyerek öğrenir: her hamle bir sayıyı günceller ve işe yarayan sayılar, ilk kez iyi giden şeyden dışa doğru yayılır.",
           "Aklınızdaki sonucu değil, gerçekten yazdığınız ödülü optimize eder.",
         ],
         footer:
-          "Bu, küçük ve deterministic bir grid üzerinde gerçek tabular Q-learning'dir: yirmi yedi kare, dört hamle, her ikili için bir sayı. Gerçek robotlar ve büyük pekiştirmeli öğrenme sistemleri bundan çok daha karmaşıktır — ama verdiğiniz ödülle istediğiniz sonuç arasındaki açık, sistemler büyüdükçe kapanmıyor.",
+          "Bu, küçük ve deterministic bir grid üzerinde gerçek tabular Q-learning'dir: yirmi yedi kare, dört hamle, her ikili için bir sayı. Gerçek robotlar ve büyük pekiştirmeli öğrenme sistemleri bundan çok daha karmaşıktır, ama verdiğiniz ödülle istediğiniz sonuç arasındaki açık, sistemler büyüdükçe kapanmıyor.",
       },
       world: {
         title: "Oda",
         question: "Ajan ne yapmalı?",
         sliderHint:
-          "Dünyaya dair karar verebileceğiniz tek şey bu. Geri kalan her şey — duvarlar, kapı, bir hamlenin maliyeti — sabit.",
+          "Dünyaya dair karar verebileceğiniz tek şey bu. Geri kalan her şey (duvarlar, kapı, bir hamlenin maliyeti) sabit.",
         caption:
           "Henüz hiçbir şey öğrenmiyor. Kontrol sizde. Her hamle 0,5 götürür, işaretli kare her girişte sizin belirlediğiniz kadar öder, kapı ise 20 öder ve turu bitirir.",
         mapLabel: (moves: number, total: string) =>
@@ -563,7 +563,7 @@ export const tr: Translation = {
       train: {
         kicker: "Kimse ona yolu göstermedi",
         title: "Deniyor; öğrenme de zaten bu deneme.",
-        lede: "Eğit'e basın. Ajan köşeden hiçbir şey bilmeden başlar, dolanır ve sonunda kapıya tesadüfen düşer. O andan itibaren elinde bir şey vardır. Aşağıdaki her ok, her sayı ve eğrideki her nokta o koşunun kendisidir — kaydı değil.",
+        lede: "Eğit'e basın. Ajan köşeden hiçbir şey bilmeden başlar, dolanır ve sonunda kapıya tesadüfen düşer. O andan itibaren elinde bir şey vardır. Aşağıdaki her ok, her sayı ve eğrideki her nokta o koşunun kendisidir, kaydı değil.",
         caption:
           "Adım'a bir basış bir hamledir: seç, hareket et, ödülü topla, bir sayıyı güncelle. Eğit aynı şeyi tur tur tekrarlar.",
         runLabel: "Eğit",
@@ -594,12 +594,12 @@ export const tr: Translation = {
       policy: {
         kicker: "Bunu yaparken ne kurdu",
         title: "Her hamle için bir sayı, ve onlardan düşen bir rota.",
-        lede: "Ajan hiçbir zaman bir rota saklamadı. Kare başına, yön başına tek bir sayı sakladı — o hamlenin ne kadar iyi çıktığını — ve rota, hep en büyüğünü seçtiğinizde ortaya çıkan şeydir. Solda: tek bir tur öncesi. Sağda: şu an.",
+        lede: "Ajan hiçbir zaman bir rota saklamadı. Kare başına, yön başına tek bir sayı sakladı (o hamlenin ne kadar iyi çıktığını) ve rota, hep en büyüğünü seçtiğinizde ortaya çıkan şeydir. Solda: tek bir tur öncesi. Sağda: şu an.",
         caption:
           "Bir ok, Q-değeri değildir. O karedeki en büyük Q-değerine sahip hamledir; politika kelimesinin anlamı da budur. Seçildiği dört sayı aşağıda.",
         beforeTitle: "Eğitimden önce",
         beforeLabel:
-          "Hiç eğitim yapılmadan önceki oda. Bütün sayılar sıfır olduğu için her kare aynı yönü gösteriyor — hiçbir şey bilmemek böyle görünür.",
+          "Hiç eğitim yapılmadan önceki oda. Bütün sayılar sıfır olduğu için her kare aynı yönü gösteriyor: hiçbir şey bilmemek böyle görünür.",
         afterTitle: (episode: number) => `${episode} tur sonra`,
         afterLabel: (episode: number) =>
           `${episode} tur sonrasında oda. Her kare, politikanın orada seçtiği hamleyi ve oradaki en iyi hamlenin ne kadar iyi olduğunu gösteriyor. Dört sayısını da görmek için bir kare seçin.`,
@@ -618,7 +618,7 @@ export const tr: Translation = {
       update: {
         kicker: "Bunu neden öğrendi?",
         title: "Tek bir sayı değişti. Bütün nedeni burada.",
-        lede: "Her hamleden sonra ajan tam olarak bir sayıyı değiştirir: az önce yaptığı hamleninkini. Aşağıdaki her şey yukarıdaki koşudan gelen en son güncellemedir — elindeki sayılar, dünyanın ödediği ve şimdi elinde tuttuğu.",
+        lede: "Her hamleden sonra ajan tam olarak bir sayıyı değiştirir: az önce yaptığı hamleninkini. Aşağıdaki her şey yukarıdaki koşudan gelen en son güncellemedir: elindeki sayılar, dünyanın ödediği ve şimdi elinde tuttuğu.",
         caption:
           "Bu sayfada hiçbir şey örnek değildir. Hiç hamle yapılmadıysa hiçbir şey gösterilmez; çünkü gerçekleşmemiş bir güncellemeye bakmanın değeri yoktur.",
         nothingYet: "Henüz hamle yapılmadı. Yukarıdan ya da buradan Adım'a basın.",
@@ -633,7 +633,7 @@ export const tr: Translation = {
           landed: string,
           reward: string,
         ) =>
-          `${row}. satır, ${col}. sütundan ${action} yönüne hareket etti — ${choice}. ${landed} ve dünya ${reward} ödedi.`,
+          `${row}. satır, ${col}. sütundan ${action} yönüne hareket etti: ${choice}. ${landed} ve dünya ${reward} ödedi.`,
         choice: {
           explored: "rastgele bir hamle, mevcut en iyisi değil",
           exploited: "mevcut en iyi hamlesi",
@@ -655,9 +655,9 @@ export const tr: Translation = {
         tableCaption: "Güncellemenin her terimi ve bu hamlede aldığı değer.",
         terms: {
           before: "Q(s,a) önce",
-          reward: "r — toplanan",
-          bootstrap: "γ · max Q(s′,a′) — indiği yerden en iyisi",
-          target: "r + γ · max Q(s′,a′) — hedeflediği",
+          reward: "r: toplanan",
+          bootstrap: "γ · max Q(s′,a′), indiği yerden en iyisi",
+          target: "r + γ · max Q(s′,a′), hedeflediği",
           error: "kapattığı fark",
           after: "Q(s,a) sonra",
         },
@@ -673,7 +673,7 @@ export const tr: Translation = {
         title: "Üç kadran ve her birinin gerçekte neyi değiştirdiği.",
         lede: "Bunlardan birini oynattığınızda koşu birinci turdan yeniden başlar; çünkü öğrenme oranını yarı yolda değiştirmek diye bir şey yoktur. Sonra yukarıdaki bölümde Eğit'e basıp eğriyi izleyin.",
         caption:
-          "Bu oda küçük. Üçünü de taradığımızda ajanın neredeyse her ayarla odayı çözdüğü görüldü — bunların değiştirdiği şey, eğrinin ne kadar hızlı oturduğu, yolda ne kadar gürültülü olduğu ve oturup oturmadığı.",
+          "Bu oda küçük. Üçünü de taradığımızda ajanın neredeyse her ayarla odayı çözdüğü görüldü: bunların değiştirdiği şey, eğrinin ne kadar hızlı oturduğu, yolda ne kadar gürültülü olduğu ve oturup oturmadığı.",
         curveTitle: "Bu koşuda tur başına ödül",
         curveEmpty: "Doldurmak için yukarıdan Eğit'e basın.",
         curveHint: "On tur üzerinden yumuşatıldı. Her nokta çalıştırılmış bir tur.",
@@ -692,7 +692,7 @@ export const tr: Translation = {
         epsilon: {
           label: "Keşif ε",
           valueText: (value: string) => `Keşif ${value}`,
-          what: "Mevcut en iyisi yerine ne sıklıkta rastgele hamle yaptığı. Koşu boyunca azalır.",
+          what: "Mevcut en iyisinden yararlanmak yerine ne sıklıkta rastgele keşfe çıktığı. Bu değiş tokuşun adı var: keşif ve yararlanma. Koşu boyunca azalır.",
         },
         restore: "Varsayılanlara dön",
         settledLabel: "Oturduğu tur",
@@ -710,7 +710,7 @@ export const tr: Translation = {
       challenge: {
         kicker: "Şimdi ödülü siz belirleyin",
         title: "Bunu ona öğretebilir misiniz?",
-        lede: "Üç görev. Her birinde ajan sizin istemediğiniz bir şey yapıyor ve değiştirebileceğiniz tek bir sayı var. Hiçbiri kaydırıcıyı belirli bir yere koyarak geçilemez — ajanın o şeyi gerçekten yapması gerekir.",
+        lede: "Üç görev. Her birinde ajan sizin istemediğiniz bir şey yapıyor ve değiştirebileceğiniz tek bir sayı var. Hiçbiri kaydırıcıyı belirli bir yere koyarak geçilemez: ajanın o şeyi gerçekten yapması gerekir.",
         puzzleLabel: "Görev",
         levers: {
           tileReward: "İşaretli karenin ödediği",
@@ -725,14 +725,14 @@ export const tr: Translation = {
           cross: {
             title: "Üstünden geçsin",
             brief:
-              "Kare −3 değerinde, bu yüzden ajan iki fazla hamle yapıp etrafından dolaşıyor. Bunun yerine kapıya giderken karenin üstünden geçmesini sağlayın — ama orada durmasına yol açmadan.",
+              "Kare −3 değerinde, bu yüzden ajan iki fazla hamle yapıp etrafından dolaşıyor. Bunun yerine kapıya giderken karenin üstünden geçmesini sağlayın, ama orada durmasına yol açmadan.",
             lesson:
               "Bir eşik değil, bir aralık var. Karenin değeri, kazandırdığı dolambaçtan fazla ve yerini alacağı kapıdan az olmalı.",
           },
           camp: {
             title: "Kapıdan vazgeçsin",
             brief:
-              "Kare hiçbir şey etmiyor, bu yüzden ajan üstünden geçip yoluna devam ediyor. Kapıya hiç gitmemesini sağlayın. Kapıyı ya da duvarları oynatamazsınız — yalnızca karenin ödediğini.",
+              "Kare hiçbir şey etmiyor, bu yüzden ajan üstünden geçip yoluna devam ediyor. Kapıya hiç gitmemesini sağlayın. Kapıyı ya da duvarları oynatamazsınız, yalnızca karenin ödediğini.",
             lesson:
               "Ona durmasını hiç söylemediniz. Karenin bitirmekten daha değerli olduğunu söylediniz, o da size inandı. Tek bir kaydırıcıda bütün laboratuvar.",
           },
@@ -747,7 +747,7 @@ export const tr: Translation = {
         behaviour: {
           avoided: "karenin etrafından dolaşıp kapıya ulaşıyor",
           passed: "yolda karenin üstünden geçip kapıya ulaşıyor",
-          stayed: "kapıya hiç ulaşmıyor — karenin yanında kalıyor",
+          stayed: "kapıya hiç ulaşmıyor, karenin yanında kalıyor",
         },
         behaviourShort: {
           avoided: "etrafından dolaşıyor",
@@ -761,7 +761,7 @@ export const tr: Translation = {
         verdict: {
           solved: "İşte bu. Ajan görevin istediğini yapıyor.",
           untouched: "Kaydırıcıyı oynatın, ajan sıfırdan yeniden eğitilsin.",
-          notYet: (behaviour: string) => `Henüz değil — ${behaviour}.`,
+          notYet: (behaviour: string) => `Henüz değil, ${behaviour}.`,
         },
         mapLabel: (behaviour: string, steps: number) =>
           `Bu ayarlarla eğitim sonrası oda: ${steps} hamlede ${behaviour}.`,
@@ -794,14 +794,14 @@ export const tr: Translation = {
 
       swapLabel: "Bir kelimeyi değiştirin",
       swapHint:
-        "Beşinci kelimeyi değiştirin ve seçili kelimeye ne olduğuna bakın — ona hiç dokunmadığınız hâlde.",
+        "Beşinci kelimeyi değiştirin ve seçili kelimeye ne olduğuna bakın, ona hiç dokunmadığınız hâlde.",
       dogNote:
         "Artık iki canlı var ve model dikkatini ikisi arasında neredeyse eşit paylaştırdı. Dağılım değişti ama hangisinin yorgun olduğunu hâlâ ayırt edemiyor.",
 
       reveal: {
         kicker: "Nasıl karar verdi?",
         title: "Tek bir sayı, baştan sona.",
-        lede: "Bu bölüm yukarıda seçili olan kelimeyi izler. Seçimi ya da değiştirilen kelimeyi değiştirin; buradaki her adım onunla birlikte değişir — çünkü bu, aynı hesabın kendisidir, ikinci bir kopyası değil.",
+        lede: "Bu bölüm yukarıda seçili olan kelimeyi izler. Seçimi ya da değiştirilen kelimeyi değiştirin; buradaki her adım onunla birlikte değişir, çünkü bu, aynı hesabın kendisidir, ikinci bir kopyası değil.",
       },
 
       trace: {
@@ -811,12 +811,12 @@ export const tr: Translation = {
           "Aşağıdaki her şey, bu tek kelimenin diğerlerinin her biriyle sırayla karşılaştırılmasıdır.",
 
         step2: "Ne aradığı",
-        step2Title: (word: string) => `“${word}” bunu istiyor — query'si`,
+        step2Title: (word: string) => `“${word}” bunu istiyor, query'si`,
         step2Note:
-          "Sağa uzanan bir çubuk kelimenin istediği bir özelliktir; sola uzanan ise özellikle aramadığı bir özelliktir. Bunlar modelin ne istediğine dair kendi ifadeleridir, okunabilir hâle getirilmiştir — gerçek bir modelinkiler hiç okunabilir değildir.",
+          "Sağa uzanan bir çubuk kelimenin istediği bir özelliktir; sola uzanan ise özellikle aramadığı bir özelliktir. Bunlar modelin ne istediğine dair kendi ifadeleridir, okunabilir hâle getirilmiştir: gerçek bir modelinkiler hiç okunabilir değildir.",
 
         step3: "Diğer kelimenin sunduğu",
-        step3Title: (word: string) => `“${word}” bunu sunuyor — key'i`,
+        step3Title: (word: string) => `“${word}” bunu sunuyor, key'i`,
         step3Note:
           "Query ve key bilerek iki farklı projeksiyondan gelir: bir kelimenin sunduğu şey, istediği şeyle aynı değildir. Attention'ın benzerlik ölçmekten fazlası olmasının nedeni budur.",
 
@@ -852,11 +852,11 @@ export const tr: Translation = {
       recap: {
         lessons: [
           "Attention, bağlam üzerine sabit bir %100'lük odağı dağıtır; yani her kelime evet ya da hayır değil, bir pay alır.",
-          "Bir kelimeyi değiştirmek diğerlerinin paylarını da değiştirir — dokunmadığınız kelimeler dahil, çünkü hepsi aynı %100'ü paylaşıyor.",
+          "Bir kelimeyi değiştirmek diğerlerinin paylarını da değiştirir: dokunmadığınız kelimeler dahil, çünkü hepsi aynı %100'ü paylaşıyor.",
           "Attention, çok daha büyük bir modelin içindeki tek bir mekanizmadır. Nereye bakılacağına ve neyin karıştırılacağına karar verir; tek başına cümleyi anlamaz.",
         ],
         footer:
-          "Buradaki kelimelere elle yazılmış yedi özellik verildi; bu yüzden model bir kediyi bir toptan ayırabiliyor ama bir topu bir aynadan ayıramıyor. Gerçek Transformer'lar çok daha zengin temsiller kurmak için çok sayıda head ve katmanı üst üste yığar — bu, bu sayfanın anlattığından farklı ve çok daha uzun bir hikâye.",
+          "Buradaki kelimelere elle yazılmış yedi özellik verildi; bu yüzden model bir kediyi bir toptan ayırabiliyor ama bir topu bir aynadan ayıramıyor. Gerçek Transformer'lar çok daha zengin temsiller kurmak için çok sayıda head ve katmanı üst üste yığar: bu, bu sayfanın anlattığından farklı ve çok daha uzun bir hikâye.",
       },
       pickLabel: "Kelime",
       wholeRowLabel: "Bütün paylar, cümle sırasıyla",
@@ -879,7 +879,7 @@ export const tr: Translation = {
       scale: {
         kicker: "Bölme neden var?",
         title: "Böleni kaldırın, paylar çöküyor.",
-        lede: "Eksen sayısının kareköküne bölmek, etkisini sonuca bakarak göremeyeceğiniz tek adımdır — alternatifiyle karşılaştırana kadar sonuç her iki hâlde de makul görünür. Bu yüzden aynı satır burada iki kez var: bir kez bu modelin hesapladığı gibi, bir kez de bölme atlanarak.",
+        lede: "Eksen sayısının kareköküne bölmek, etkisini sonuca bakarak göremeyeceğiniz tek adımdır: alternatifiyle karşılaştırana kadar sonuç her iki hâlde de makul görünür. Bu yüzden aynı satır burada iki kez var: bir kez bu modelin hesapladığı gibi, bir kez de bölme atlanarak.",
         collapse:
           "Bölme atlanınca puanlar daha büyük kalıyor ve daha büyük sayılar üzerindeki softmax daha keskin oluyor: bütçenin neredeyse tamamı tek bir kelimeye gidiyor, geri kalanı yuvarlanıp yok oluyor. Okunacak bir dağılımı ortada bırakan şey, bu bölme.",
         note: "Her iki sütun da burada, aynı puanlar üzerinde aynı softmax ile hesaplanıyor. Sayfanın başka hiçbir yerinde bölünmemiş olan kullanılmıyor.",
@@ -900,7 +900,7 @@ export const tr: Translation = {
       mix: {
         kicker: "Payların harcandığı yer",
         title: "Paylar bir hüküm değil, birer katsayı.",
-        lede: "Bakılan her kelime, payı oranında kendi value vektörünü verir. Bunları toplayınca seçili kelimenin dönüştüğü şey ortaya çıkar — gerçek bir modelde bir sonraki katmana ulaşan da budur.",
+        lede: "Bakılan her kelime, payı oranında kendi value vektörünü verir. Bunları toplayınca seçili kelimenin dönüştüğü şey ortaya çıkar: gerçek bir modelde bir sonraki katmana ulaşan da budur.",
         tableCaption: "En çok katkı veren üç kelime için pay ve value vektörü.",
         outputLabel: "Karışmış çıktı, eksen eksen",
       },
@@ -949,7 +949,7 @@ export const tr: Translation = {
         step: "Adım",
         objective: "Amaç değeri",
         objectiveHint: "f fonksiyonunun buradaki değeri",
-        gradientNorm: "Gradient büyüklüğü",
+        gradientNorm: "Gradyan büyüklüğü",
         position: "Konum",
         status: "Sonuç",
         conditionNumber: "Koşul sayısı",
@@ -967,7 +967,7 @@ export const tr: Translation = {
           gradient: string,
           status: string,
         ) =>
-          `Amaç fonksiyonunun eşyükselti haritası. Adım ${step}. Konum ${x}, ${y}. Amaç değeri ${objective}. Gradient büyüklüğü ${gradient}. ${status}.`,
+          `Amaç fonksiyonunun eşyükselti haritası. Adım ${step}. Konum ${x}, ${y}. Amaç değeri ${objective}. Gradyan büyüklüğü ${gradient}. ${status}.`,
       },
 
       chart: {
@@ -989,7 +989,7 @@ export const tr: Translation = {
 
       direction: {
         kicker: "Neden o yön",
-        title: "Gradient bir vektördür ve cevabı gösteren bir işaret değildir.",
+        title: "Gradyan bir vektördür ve cevabı gösteren bir işaret değildir.",
         lede: "Mevcut noktadan iki ok çıkıyor: düz olan, adımın gerçekte gittiği yön, −∇f = −(a·x, b·y); kesikli olan ise minimuma giden doğru, −(x, y). Her koordinat kendi eğriliğiyle ölçekleniyor; bu yüzden iki yön ancak eğrilikler eşitken çakışır. Önce noktayı, sonra eğriliği sürükleyin.",
         descent: "Adımın gittiği yön: −∇f",
         target: "Minimuma giden doğru",
@@ -1007,7 +1007,7 @@ export const tr: Translation = {
         label: (x: string, y: string, kappa: string, angle: string) =>
           `Taşınabilir noktası olan eşyükselti haritası. Nokta ${x}, ${y} konumunda. Koşul sayısı ${kappa}. İniş yönü, minimuma giden doğrudan ${angle} derece sapmış durumda.`,
         caption:
-          "Eğrilik oranını 1'e indirin; iki ok tek bir oka dönüşür. Eksenlerin dışında bu, ikisinin çakıştığı tek durumdur — ve tek boyutlu bir resmin hiçbir şekilde gösteremeyeceği bir durumdur, çünkü tek eksende gradient yalnızca bir işarettir.",
+          "Eğrilik oranını 1'e indirin; iki ok tek bir oka dönüşür. Eksenlerin dışında bu, ikisinin çakıştığı tek durumdur, ve tek boyutlu bir resmin hiçbir şekilde gösteremeyeceği bir durumdur, çünkü tek eksende gradyan yalnızca bir işarettir.",
       },
 
       rate: {
@@ -1052,20 +1052,20 @@ export const tr: Translation = {
       adam: {
         kicker: "Adam",
         title: "Her parametre için ayrı bir adım boyu.",
-        lede: "Adam, her koordinatın adımını o koordinatın kendi gradient büyüklüğüne dair yürüyen bir tahmine böler. m ortalama gradient, s ise ortalama karesel gradienttir; ikisi de sıfırdan başlamanın yarattığı sapmaya karşı düzeltilir ve güncelleme η·m̂ ÷ (√ŝ + ε) olur.",
+        lede: "Adam, her koordinatın adımını o koordinatın kendi gradyan büyüklüğüne dair yürüyen bir tahmine böler. m ortalama gradyan, s ise ortalama karesel gradyandır; ikisi de sıfırdan başlamanın yarattığı sapmaya karşı düzeltilir ve güncelleme η·m̂ ÷ (√ŝ + ε) olur.",
         firstStepTitle: "İki eğriliğin bir milyon kat ayrıldığı yerde ilk adım",
         firstStepLede: (a: string, b: string) =>
-          `Bir eksende eğrilik ${a}, diğerinde ${b}. Gradient'in iki bileşeni arasında yaklaşık bir milyon kat fark var. Aşağıdaki her sayı, engine tek adım çalıştırılarak ölçülüyor.`,
+          `Bir eksende eğrilik ${a}, diğerinde ${b}. Gradyanın iki bileşeni arasında yaklaşık bir milyon kat fark var. Aşağıdaki her sayı, engine tek adım çalıştırılarak ölçülüyor.`,
         tableCaption:
-          "Her eksende gradient büyüklüğü ve ilk adımın boyutu; gradient descent ve Adam için.",
+          "Her eksende gradyan büyüklüğü ve ilk adımın boyutu; gradient descent ve Adam için.",
         colQuantity: "Büyüklük",
         colX: "Dik eksen",
         colY: "Düz eksen",
-        rowGradient: "Gradient büyüklüğü",
+        rowGradient: "Gradyan büyüklüğü",
         rowGd: (rate: string) => `Gradient descent adımı, η = ${rate}`,
         rowAdam: (rate: string) => `Adam adımı, η = ${rate}`,
         firstStepNote:
-          "Sapma düzeltmesinden sonra ilk güncelleme η·g ÷ (|g| + ε) hâline gelir. Gradient'in büyüklüğü sadeleşir ve iki eksen de yaklaşık η kadar hareket eder — düzeltmenin atlanmayıp gerçekten uygulanmasının nedeni budur.",
+          "Sapma düzeltmesinden sonra ilk güncelleme η·g ÷ (|g| + ε) hâline gelir. Gradyanın büyüklüğü sadeleşir ve iki eksen de yaklaşık η kadar hareket eder: düzeltmenin atlanmayıp gerçekten uygulanmasının nedeni budur.",
         rate: "Adam adım boyu η",
         honesty:
           "Bunların hiçbiri Adam daha hızlı yakınsar demek değildir. Yukarıdaki κ = 60 vadisinde 300 adım boyu taranarak ölçüldüğünde Adam'ın en iyi sonucu 17 adımdır; iyi seçilmiş bir momentum ayarı ise aynı toleransa yaklaşık 10 adımda ulaşır. 0,10 gibi ölçülü bir adım boyunda Adam'ın ihtiyacı 66 adımdır. Seçilecek bir adım boyu hâlâ vardır ve onu kötü seçmenin bedeli hâlâ ödenir.",
@@ -1107,7 +1107,7 @@ export const tr: Translation = {
           ) =>
             `η = ${rate}, bu yüzeyin ${limitHere} olan kararlılık sınırının üzerinde; bu yüzden çalışma patlıyor. Daha yumuşak yüzeyin sınırı ${limitThere} ve tam olarak aynı η orada ${steps} adımda yerleşiyor. Değişen adım boyu değil, yüzeydi.`,
           worksOnBoth: (steps: number) =>
-            `Bu η iki yüzeyde de yakınsıyor — burada ve daha yumuşak olanda ${steps} adımda. Yukarı doğru itin ve hangisinin önce pes ettiğine bakın.`,
+            `Bu η iki yüzeyde de yakınsıyor: burada ve daha yumuşak olanda ${steps} adımda. Yukarı doğru itin ve hangisinin önce pes ettiğine bakın.`,
           worksOnNeither:
             "Bu η, izin verilen adım sayısı içinde hiçbir yüzeyde hedefe ulaşmıyor. Sorun büyük olması değil, küçük olması.",
           mapLabel: (rate: string, status: string, steps: number) =>
@@ -1122,7 +1122,7 @@ export const tr: Translation = {
           c2: {
             title: "Fazla büyük",
             brief:
-              "Bu, kararlılık sınırının üzerinde başlıyor ve ilk Çalıştır'da patlıyor. İşe yarayan bir adım boyu bulun — sonra aynı sayının daha yumuşak bir yüzeyde ne yaptığına bakın.",
+              "Bu, kararlılık sınırının üzerinde başlıyor ve ilk Çalıştır'da patlıyor. İşe yarayan bir adım boyu bulun: sonra aynı sayının daha yumuşak bir yüzeyde ne yaptığına bakın.",
           },
           c3: {
             title: "Dar vadi",
@@ -1134,13 +1134,13 @@ export const tr: Translation = {
 
       recap: {
         lessons: [
-          "Negatif gradient yokuş aşağıyı gösterir, minimumu değil. Eksenlerin dışında ikisi ancak eğrilik her yönde aynıyken çakışır.",
-          "Bir yüzeyin kaldırabileceği en büyük adım boyu, 2 bölü onun en dik eğriliğidir — algoritmanın değil, yüzeyin bir özelliği. Bunun yarısının altında yaklaşım doğrudandır, ikisinin arasında yol aşar ama yine de yaklaşır, üstünde ise çalışma yüzeyi terk eder.",
+          "Negatif gradyan yokuş aşağıyı gösterir, minimumu değil. Eksenlerin dışında ikisi ancak eğrilik her yönde aynıyken çakışır.",
+          "Bir yüzeyin kaldırabileceği en büyük adım boyu, 2 bölü onun en dik eğriliğidir: algoritmanın değil, yüzeyin bir özelliği. Bunun yarısının altında yaklaşım doğrudandır, ikisinin arasında yol aşar ama yine de yaklaşır, üstünde ise çalışma yüzeyi terk eder.",
           "Koşul sayısı κ, dik eğriliğin düz eğriliğe bölümüdür ve tek bir adım boyunun iki yöne birden hizmet etmesini engelleyen şey odur: düz eksen hâlâ emeklerken dik eksen çoktan tavanındadır.",
-          "Momentum kararlı aralığı η·max(a,b) < 2(1+β) değerine genişletir ve uzun bir zikzağı kısaltabilir; Adam her koordinatı kendi gradient geçmişiyle ölçekler, böylece gradient büyüklüğündeki bir milyon katlık fark adım boyunda bir milyon kat olmaz. Yine de ikisinde de seçilecek bir adım boyu kalır.",
+          "Momentum kararlı aralığı η·max(a,b) < 2(1+β) değerine genişletir ve uzun bir zikzağı kısaltabilir; Adam her koordinatı kendi gradyan geçmişiyle ölçekler, böylece gradyan büyüklüğündeki bir milyon katlık fark adım boyunda bir milyon kat olmaz. Yine de ikisinde de seçilecek bir adım boyu kalır.",
         ],
         footer:
-          "Buradaki her şey konveks ve ikinci dereceden: eğrilik her noktada aynı, gradient tam, cevap daha başlamadan biliniyor. Gerçek eğitim bu üçünü de bırakır. Geriye kalan, ileri geri oynadığınız ilişkidir — yüzeyin biçimi, atmanıza izin verilen adımın boyutunu belirler.",
+          "Buradaki her şey konveks ve ikinci dereceden: eğrilik her noktada aynı, gradyan tam, cevap daha başlamadan biliniyor. Gerçek eğitim bu üçünü de bırakır. Geriye kalan, ileri geri oynadığınız ilişkidir: yüzeyin biçimi, atmanıza izin verilen adımın boyutunu belirler.",
       },
     },
 
@@ -1161,7 +1161,7 @@ export const tr: Translation = {
           "Bu laboratuvarın tarayıcınızda özet hesaplayabilmesi için güvenli bir bağlantı (HTTPS) gerekiyor. Sayfayı https:// ile açmak sorunu çözecektir.",
         unsupported:
           "Tarayıcınız yerleşik özetleme özelliğini (Web Crypto) kullanıma sunmadı, bu yüzden gösterilecek bir özet yok. Bir ayar ya da bir eklenti bunu kapatmış olabilir.",
-        note: "Burada hiçbir şey taklit edilmiyor — tarayıcının gerçek SHA-256'sı olmadan dürüstçe gösterilebilecek bir şey yok.",
+        note: "Burada hiçbir şey taklit edilmiyor: tarayıcının gerçek SHA-256'sı olmadan dürüstçe gösterilebilecek bir şey yok.",
       },
 
       figures: {
@@ -1183,7 +1183,7 @@ export const tr: Translation = {
         question: "İki farklı mesaj aynı uzunlukta çıktı üretebilir mi?",
         digestLabel: "SHA-256 özeti",
         caption:
-          "Ne isterseniz yazın. Mesaj ne kadar uzun olursa olsun tam 64 hex karakter geri döner — ve mesajın kendisi bunların içinde yoktur.",
+          "Ne isterseniz yazın. Mesaj ne kadar uzun olursa olsun tam 64 hex karakter geri döner, ve mesajın kendisi bunların içinde yoktur.",
         help: "Bir mesaj yazın. SHA-256 özeti alanın altında görünür ve siz yazdıkça güncellenir.",
         announce: (start: string) => `Özet güncellendi, artık ${start} ile başlıyor.`,
       },
@@ -1191,7 +1191,7 @@ export const tr: Translation = {
       determinism: {
         kicker: "Aynı mesaj, aynı özet",
         title: "Her seferinde aynı yanıtı veriyor.",
-        lede: "Mesajı yeniden hash'leyin. Hiçbir şey önbelleğe alınmıyor ve önceki çalıştırmadan kopyalanmıyor — her basış, aynı metin üzerinde yeni bir SHA-256 çağrısı.",
+        lede: "Mesajı yeniden hash'leyin. Hiçbir şey önbelleğe alınmıyor ve önceki çalıştırmadan kopyalanmıyor: her basış, aynı metin üzerinde yeni bir SHA-256 çağrısı.",
         hashAgain: "Yeniden hash'le",
         enough: "Bu kadar çalıştırma yeter",
         empty: "Henüz çalıştırma yok. Bu mesajı hash'lemek için düğmeye basın.",
@@ -1208,14 +1208,14 @@ export const tr: Translation = {
       avalanche: {
         kicker: "Tek küçük değişiklik",
         title: "Tek bir tuş her şeyi yeniden yazıyor.",
-        lede: "Tek bir karakteri değiştirin ve iki özeti karşılaştırın. Farklı olan her karakter ikisinde de işaretlenir — gidende üstü çizili, yerine gelende altı çizili.",
+        lede: "Tek bir karakteri değiştirin ve iki özeti karşılaştırın. Farklı olan her karakter ikisinde de işaretlenir: gidende üstü çizili, yerine gelende altı çizili.",
         before: "Önce",
         after: "Sonra",
         fieldLabel: "Bir karakteri değiştirin",
         help: "Mesajı düzenleyin. Düzenlemeden önceki ve sonraki özetler yukarıda karakter karakter karşılaştırılır.",
         editPrompt: "İki özeti karşılaştırmak için mesajdaki bir karakteri değiştirin.",
         caption:
-          "Sayım, iki gerçek özet üzerinde bit bit ölçülüyor — tahmin edilmiyor ve bir sayıya doğru canlandırılmıyor.",
+          "Sayım, iki gerçek özet üzerinde bit bit ölçülüyor: tahmin edilmiyor ve bir sayıya doğru canlandırılmıyor.",
         announce: (changed: number, total: number, percent: number) =>
           `${total} bitten ${changed} tanesi değişti, özetin yüzde ${percent}'i.`,
       },
@@ -1231,14 +1231,14 @@ export const tr: Translation = {
       challenge: {
         kicker: "Meydan okuma",
         title: "İki farklı mesajın aynı özeti üretmesini sağlayabilir misiniz?",
-        lede: "Özetin tamamı değil — ilk karakterinden başlayın. Her tur bir karakter daha istiyor ve her tur bir öncekinden on altı kat daha düşük olasılıklı. Bu eğri, hash güvenliğinin tamamı; ve bunu dürüstçe hissetmenin tek yolu bu: burada bir çakışma bulunmuyor, uydurulmuyor da.",
+        lede: "Özetin tamamı değil: ilk karakterinden başlayın. Her tur bir karakter daha istiyor ve her tur bir öncekinden on altı kat daha düşük olasılıklı. Bu eğri, hash güvenliğinin tamamı; ve bunu dürüstçe hissetmenin tek yolu bu: burada bir çakışma bulunmuyor, uydurulmuyor da.",
         inputA: "Mesaj A",
         inputB: "Mesaj B",
         identical:
           "İki mesaj da aynı, dolayısıyla özetler tanım gereği eşleşiyor. Çakışma için iki farklı mesaj gerekir.",
         target: (round: number, odds: string) =>
           `${round}. tur: ilk ${round} hex karakteri paylaşsınlar. Deneme başına olasılık: ${odds}'de 1.`,
-        nextRound: (round: number) => `${round}. tur — on altı kat zor`,
+        nextRound: (round: number) => `${round}. tur, on altı kat zor`,
         keepTrying: "Denemeye devam",
         maxRound: "İnsanların durduğu yer burası",
         matchedLabel: "Ortak ön ek",
@@ -1249,7 +1249,7 @@ export const tr: Translation = {
         ladderLabel: (matched: number, total: number, round: number) =>
           `Ortak ön ek: ${total} hex karakterden ${matched} tanesi eşleşiyor. Bu tur ${round} tane istiyor.`,
         caption:
-          "64 karakterin tamamının rastlantıyla eşleşmesi 2^256'da 1. Doğum günü kısayolu bile yaklaşık 2^128 hash gerektirir — saniyede bir trilyon hash'lense, kabaca 10^19 yıl.",
+          "64 karakterin tamamının rastlantıyla eşleşmesi 2^256'da 1. Doğum günü kısayolu bile yaklaşık 2^128 hash gerektirir: saniyede bir trilyon hash'lense, kabaca 10^19 yıl.",
         announce: (matched: number, total: number, best: number, round: number) =>
           `${total} baştaki karakterden ${matched} tanesi eşleşiyor. En iyi ${best}. ${round}. tur ${round} tane istiyor.`,
       },
@@ -1261,7 +1261,7 @@ export const tr: Translation = {
         items: {
           git: {
             label: "Git",
-            body: "Git her commit'i, içeriğini ve ebeveyninin hash'ini hash'leyerek tanımlar. Geçmişteki bir satırı değiştirin, sonraki bütün hash'ler değişir — kurcalama görünür olur.",
+            body: "Git her commit'i, içeriğini ve ebeveyninin hash'ini hash'leyerek tanımlar. Geçmişteki bir satırı değiştirin, sonraki bütün hash'ler değişir, kurcalama görünür olur.",
           },
           passwords: {
             label: "Parolalar",
@@ -1285,7 +1285,7 @@ export const tr: Translation = {
       recap: {
         lessons: [
           "Aynı mesaj her zaman aynı özeti üretir ve özet, girene bakılmaksızın aynı uzunluktadır",
-          "Tek bir karakteri değiştirmek 256 bitin yaklaşık yarısını değiştirir — çığ etkisi, burada iddia edilmiyor ölçülüyor",
+          "Tek bir karakteri değiştirmek 256 bitin yaklaşık yarısını değiştirir: çığ etkisi, burada iddia edilmiyor ölçülüyor",
           "İki özetin paylaştığı her ek hex karakter on altı kat daha düşük olasılıklıdır; 64'ünün birden eşleşmesinin erişilemez olmasının nedeni budur",
         ],
         footer:
@@ -1301,7 +1301,7 @@ export const tr: Translation = {
           `A\u011f \u015femas\u0131: ${shape} n\u00f6ron. Her d\u00fc\u011f\u00fcm, o n\u00f6ronun girdi karesi boyunca neye tepki verdi\u011fini g\u00f6sterir.`,
         neuron: (label: string) => `${label} n\u00f6ronu`,
         inputNode: "girdi",
-        bias: "yanl\u0131l\u0131k",
+        bias: "bias",
         eachSquare: "Her kare, bir n\u00f6ronun girdiye kendi bak\u0131\u015f\u0131.",
         pushesUp: "yukar\u0131 iter",
         pushesDown: "a\u015fa\u011f\u0131 iter",
@@ -1387,9 +1387,9 @@ export const tr: Translation = {
       },
 
       neuron: {
-        weightsAndBias: "A\u011f\u0131rl\u0131klar ve yanl\u0131l\u0131k",
+        weightsAndBias: "A\u011f\u0131rl\u0131klar ve bias",
         caption:
-          "Yapamad\u0131\u011f\u0131n\u0131z \u015feye dikkat edin: bu \u00fc\u00e7 kayd\u0131r\u0131c\u0131y\u0131 nas\u0131l \u00e7ekerseniz \u00e7ekin s\u0131n\u0131r d\u00fcz bir \u00e7izgi olarak kal\u0131yor. Tek bir n\u00f6ronun b\u00fct\u00fcn s\u0131n\u0131r\u0131 bu \u2014 ve bir sonraki b\u00f6l\u00fcm\u00fcn var olma nedeni de bu.",
+          "Yapamad\u0131\u011f\u0131n\u0131z \u015feye dikkat edin: bu \u00fc\u00e7 kayd\u0131r\u0131c\u0131y\u0131 nas\u0131l \u00e7ekerseniz \u00e7ekin s\u0131n\u0131r d\u00fcz bir \u00e7izgi olarak kal\u0131yor. Tek bir n\u00f6ronun b\u00fct\u00fcn s\u0131n\u0131r\u0131 bu, ve bir sonraki b\u00f6l\u00fcm\u00fcn var olma nedeni de bu.",
         notes: {
           tanh: "\u22121\u20261 aral\u0131\u011f\u0131na s\u0131k\u0131\u015ft\u0131r\u0131r. Yumu\u015fak, simetrik, g\u00fcvenli bir varsay\u0131lan.",
           relu: "Pozitifleri ge\u00e7irir, negatifleri d\u00fczler. H\u0131zl\u0131 ve modern varsay\u0131lan.",
@@ -1475,7 +1475,7 @@ export const tr: Translation = {
         testAccuracy: "Test do\u011frulu\u011fu",
         target: "Hedef",
         objectiveLine: (accuracy: string) =>
-          `Spiralde ${accuracy} test do\u011frulu\u011funa ula\u015f\u0131n \u2014 olabildi\u011fince az gizli n\u00f6ron kullanarak.`,
+          `Spiralde ${accuracy} test do\u011frulu\u011funa ula\u015f\u0131n: olabildi\u011fince az gizli n\u00f6ron kullanarak.`,
         solvedNote: "\u00c7\u00f6z\u00fcld\u00fc. \u015eimdi bir n\u00f6ron eksiltip yeniden deneyin.",
         noBest: "Hen\u00fcz yok. Bol n\u00f6ronla ba\u015flay\u0131n, sonra bozulana kadar azalt\u0131n.",
         bestLine: (neurons: number, accuracy: string, epoch: number) =>
@@ -1589,25 +1589,11 @@ export const tr: Translation = {
       astar: {
         kicker: "Aramaya bir ipucu verin",
         title: "Aynı doğru cevap, çok daha az arama.",
-        lede: "Dijkstra hedefin nerede olduğunu bilmez, bu yüzden her yöne eşit yayılır. A* ise kalan uzaklık için bir tahmin ekler ve onu izler: f = g + h; burada g şu ana kadarki maliyet, h ise tahmindir.",
+        lede: "Dijkstra hedefin nerede olduğunu bilmez, bu yüzden her yöne eşit yayılır. A* ise kalan uzaklık için bir tahmin ekler ve onu izler: f = g + h; burada g şu ana kadarki maliyet, h ise sezgisel, yani kalan mesafenin tahminidir.",
         caption:
-          "Aynı yol, aynı maliyet. İncelenen sayısına bakın. Buradaki tahmin Manhattan uzaklığı; dört yönlü bir ızgarada kalan mesafeyi asla olduğundan fazla gösteremez, A*'ın ona güvenerek hiçbir şeyden ödün vermemesinin nedeni de tam olarak budur.",
+          "Aynı yol, aynı maliyet. İncelenen sayısına bakın. Buradaki sezgisel fonksiyon Manhattan uzaklığı. Dört yönlü bir ızgarada kalan mesafeyi asla olduğundan fazla gösteremez, yani kabul edilebilir; A*'ın ona güvenerek hiçbir şeyden ödün vermemesinin nedeni de tam olarak budur.",
       },
       challenge: {
-        architecture: "Mimari",
-        neuronsUsed: "Kullan\u0131lan n\u00f6ron",
-        testAccuracy: "Test do\u011frulu\u011fu",
-        target: "Hedef",
-        objectiveLine: (accuracy: string) =>
-          `Spiralde ${accuracy} test do\u011frulu\u011funa ula\u015f\u0131n \u2014 olabildi\u011fince az gizli n\u00f6ron kullanarak.`,
-        solvedNote: "\u00c7\u00f6z\u00fcld\u00fc. \u015eimdi bir n\u00f6ron eksiltip yeniden deneyin.",
-        noBest: "Hen\u00fcz yok. Bol n\u00f6ronla ba\u015flay\u0131n, sonra bozulana kadar azalt\u0131n.",
-        bestLine: (neurons: number, accuracy: string, epoch: number) =>
-          `En iyi: ${neurons} gizli n\u00f6ron, ${epoch.toLocaleString("en-US")} epok sonra ${accuracy}.`,
-        canvasLabel: (neurons: number, accuracy: string, epoch: number) =>
-          `Spiral g\u00f6revi: ${neurons} gizli n\u00f6ron, ${epoch} epok sonra ${accuracy} test do\u011frulu\u011fu.`,
-        announceSolved: (neurons: number, accuracy: string) =>
-          `${neurons} gizli n\u00f6ronla, ${accuracy} test do\u011frulu\u011funda \u00e7\u00f6z\u00fcld\u00fc.`,
         kicker: "Görev",
         title: "Aynı cevap, daha az iş.",
         lede: "Üç sabit harita. Her biri hem en ucuz yolu hem de bütçeden fazla hücre kesinleştirmeyen bir arama istiyor. Bunlardan biri tek başına kolay; asıl mesele ikisini birden sağlamak.",
@@ -1665,7 +1651,7 @@ export const tr: Translation = {
         "\u015eans hakk\u0131ndaki sezgine meydan okuyan d\u00f6rt deney. \u00d6nce tahmin edin, sonra tahminin ne kadar yanl\u0131\u015f oldu\u011funu g\u00f6r\u00fcn.",
 
       scope:
-        "D\u00f6rt \u00e7\u00f6z\u00fcml\u00fc problem; olas\u0131l\u0131\u011f\u0131n geneline bir bak\u0131\u015f de\u011fil. Her biri belirtilmi\u015f bir model kullan\u0131r \u2014 iki kurala ba\u011fl\u0131 bir sunucu, e\u015fit olas\u0131l\u0131kl\u0131 365 do\u011fum g\u00fcn\u00fc, her biri ba\u011f\u0131ms\u0131z olarak erkek ya da k\u0131z olan iki \u00e7ocuk, yay\u0131mlanm\u0131\u015f tek bir klinik tablo \u2014 ve cevaplar bu modellere aittir. Bir say\u0131 sim\u00fclasyondan geliyorsa sim\u00fclasyon olarak etiketlenir: bir deneyi \u00e7ok kez \u00e7al\u0131\u015ft\u0131rmak bir sonucu g\u00f6sterir, kan\u0131tlamaz.",
+        "D\u00f6rt \u00e7\u00f6z\u00fcml\u00fc problem; olas\u0131l\u0131\u011f\u0131n geneline bir bak\u0131\u015f de\u011fil. Her biri belirtilmi\u015f bir model kullan\u0131r (iki kurala ba\u011fl\u0131 bir sunucu, e\u015fit olas\u0131l\u0131kl\u0131 365 do\u011fum g\u00fcn\u00fc, her biri ba\u011f\u0131ms\u0131z olarak erkek ya da k\u0131z olan iki \u00e7ocuk, yay\u0131mlanm\u0131\u015f tek bir klinik tablo) ve cevaplar bu modellere aittir. Bir say\u0131 sim\u00fclasyondan geliyorsa sim\u00fclasyon olarak etiketlenir: bir deneyi \u00e7ok kez \u00e7al\u0131\u015ft\u0131rmak bir sonucu g\u00f6sterir, kan\u0131tlamaz.",
 
       prediction: {
         yours: "Siz dediniz",
@@ -1686,7 +1672,7 @@ export const tr: Translation = {
         setup: [
           "\u00dc\u00e7 kap\u0131. Birinin arkas\u0131nda bir araba, di\u011fer ikisinin arkas\u0131nda birer ke\u00e7i.",
           "Bir kap\u0131 se\u00e7ersin. Kap\u0131 kapal\u0131 kal\u0131r.",
-          "Sunucu araban\u0131n yerini bilir ve di\u011fer ikisinden birini a\u00e7ar \u2014 her zaman arkas\u0131nda ke\u00e7i olan\u0131.",
+          "Sunucu araban\u0131n yerini bilir ve di\u011fer ikisinden birini a\u00e7ar: her zaman arkas\u0131nda ke\u00e7i olan\u0131.",
           "Sonra se\u00e7ersin: kendi kap\u0131nda kal ya da sunucunun dokunmad\u0131\u011f\u0131 kap\u0131y\u0131 al.",
         ],
         coachLabel: "Herkesin sordu\u011fu sorular",
@@ -1698,15 +1684,15 @@ export const tr: Translation = {
           whySwitch: {
             q: "De\u011fi\u015ftirmek neden daha iyi?",
             a: (stay: string, swap: string) =>
-              `\u0130lk se\u00e7imin zaman\u0131n ${stay} kadar\u0131nda arabad\u0131r ve kalmak yaln\u0131zca o zaman kazan\u0131r. Kalan ${swap} kadar\u0131nda araba se\u00e7medi\u011fin iki kap\u0131dan birinin arkas\u0131ndad\u0131r \u2014 sunucu da az \u00f6nce bu ikisinden hangisinde olmad\u0131\u011f\u0131n\u0131 g\u00f6sterdi.`,
+              `\u0130lk se\u00e7imin zaman\u0131n ${stay} kadar\u0131nda arabad\u0131r ve kalmak yaln\u0131zca o zaman kazan\u0131r. Kalan ${swap} kadar\u0131nda araba se\u00e7medi\u011fin iki kap\u0131dan birinin arkas\u0131ndad\u0131r: sunucu da az \u00f6nce bu ikisinden hangisinde olmad\u0131\u011f\u0131n\u0131 g\u00f6sterdi.`,
           },
           hostKnows: {
             q: "Sunucunun biliyor olmas\u0131 \u00f6nemli mi?",
-            a: "Her \u015fey o. Rastgele kap\u0131 a\u00e7an \u2014 bazen kazara arabay\u0131 g\u00f6steren \u2014 bir sunucu, kalmakla de\u011fi\u015ftirmeyi e\u015fit k\u0131lard\u0131. A\u00e7\u0131lan kap\u0131y\u0131 bilgilendirici yapan \u015fey, sunucunun bilmesi.",
+            a: "Her \u015fey o. Rastgele kap\u0131 a\u00e7an (bazen kazara arabay\u0131 g\u00f6steren) bir sunucu, kalmakla de\u011fi\u015ftirmeyi e\u015fit k\u0131lard\u0131. A\u00e7\u0131lan kap\u0131y\u0131 bilgilendirici yapan \u015fey, sunucunun bilmesi.",
           },
         },
         caption:
-          "Sunucu iki kurala ba\u011fl\u0131d\u0131r: sizin kap\u0131n\u0131z\u0131 asla a\u00e7maz, arabay\u0131 asla a\u00e7maz. A\u00e7may\u0131 bilgilendirici k\u0131lan da bu kurallard\u0131r \u2014 rastgele kap\u0131 a\u00e7an bir sunucu iki se\u00e7ene\u011fi e\u015fit b\u0131rak\u0131rd\u0131.",
+          "Sunucu iki kurala ba\u011fl\u0131d\u0131r: sizin kap\u0131n\u0131z\u0131 asla a\u00e7maz, arabay\u0131 asla a\u00e7maz. A\u00e7may\u0131 bilgilendirici k\u0131lan da bu kurallard\u0131r: rastgele kap\u0131 a\u00e7an bir sunucu iki se\u00e7ene\u011fi e\u015fit b\u0131rak\u0131rd\u0131.",
         predictQuestion: "Bir el oynad\u0131n. \u00c7ok say\u0131da elde hangisi daha iyi gider?",
         predict: { stay: "Kal", switch: "De\u011fi\u015ftir", same: "Fark etmez" },
         predictAnswer: (value: string) => `De\u011fi\u015ftirmek zaman\u0131n ${value} kadar\u0131nda kazan\u0131r`,
@@ -1728,7 +1714,7 @@ export const tr: Translation = {
         promptPick: "Bir kap\u0131 se\u00e7in.",
         promptDecide: (opened: number, other: number) =>
           `Sunucu ${opened}. kap\u0131y\u0131 a\u00e7t\u0131 ve arkas\u0131ndan ke\u00e7i \u00e7\u0131kt\u0131. Kap\u0131n\u0131zda kal\u0131n m\u0131, ${other}. kap\u0131ya m\u0131 ge\u00e7in?`,
-        resultLine: (strategy: string, result: string) => `${strategy} dediniz \u2014 ${result}.`,
+        resultLine: (strategy: string, result: string) => `${strategy} dediniz, ${result}.`,
         again: "Yeniden oyna",
         announceOpened: (n: number) => `Sunucu ${n}. kap\u0131y\u0131 a\u00e7t\u0131. Arkas\u0131ndan ke\u00e7i \u00e7\u0131kt\u0131.`,
         announceResult: (result: string) => `Tur bitti: ${result}.`,
@@ -1749,14 +1735,14 @@ export const tr: Translation = {
 
         hostPick: "Bir kap\u0131 se\u00e7. Hangisi olursa.",
         hostReveal: (opened: number) =>
-          `\u00dc\u00e7\u00fcn\u00fcn de arkas\u0131n\u0131 biliyorum. Bak \u2014 ${opened}. kap\u0131da ke\u00e7i var.`,
+          `\u00dc\u00e7\u00fcn\u00fcn de arkas\u0131n\u0131 biliyorum. Bak, ${opened}. kap\u0131da ke\u00e7i var.`,
         hostDecide: (other: number) =>
           `\u015eimdi: se\u00e7ti\u011fin kap\u0131da kal ya da ${other}. kap\u0131y\u0131 al. Karar senin.`,
         hostWon: "Arabay\u0131 kazand\u0131n.",
         hostLost: "Ke\u00e7i. Yeniden oynayal\u0131m m\u0131?",
         explainWhat: "De\u011fi\u015ftirmek, kalmaktan yakla\u015f\u0131k iki kat daha s\u0131k kazan\u0131r.",
         explainWhy:
-          "\u0130lk se\u00e7imin \u00fc\u00e7 kap\u0131dan biriydi, yani \u00fc\u00e7 seferde bir arabayd\u0131. Geriye kalan iki kap\u0131ya birlikte \u00fc\u00e7 seferde iki d\u00fc\u015f\u00fcyor \u2014 ve sunucu az \u00f6nce o ikisinden zaten araba olmayan\u0131 a\u00e7t\u0131.",
+          "\u0130lk se\u00e7imin \u00fc\u00e7 kap\u0131dan biriydi, yani \u00fc\u00e7 seferde bir arabayd\u0131. Geriye kalan iki kap\u0131ya birlikte \u00fc\u00e7 seferde iki d\u00fc\u015f\u00fcyor, ve sunucu az \u00f6nce o ikisinden zaten araba olmayan\u0131 a\u00e7t\u0131.",
         explainMaths: (stay: string, swap: string) =>
           `Kalmak yaln\u0131zca ilk se\u00e7imin ba\u015ftan araba oldu\u011funda kazan\u0131r: ${stay}. De\u011fi\u015ftirmek di\u011fer b\u00fct\u00fcn durumlarda kazan\u0131r: ${swap}.`,
         batchInvite: "\u0130ki kap\u0131 kald\u0131 ve bu bir yaz\u0131 tura de\u011fil. 1.000 oyunda g\u00f6relim mi?",
@@ -1786,11 +1772,11 @@ export const tr: Translation = {
           },
           realBirthdays: {
             q: "Do\u011fum g\u00fcnleri ger\u00e7ekten e\u015fit mi da\u011f\u0131l\u0131r?",
-            a: "Hay\u0131r \u2014 ger\u00e7ek do\u011fum g\u00fcnleri mevsime g\u00f6re k\u00fcmelenir ve k\u00fcmelenme tutmay\u0131 daha olas\u0131 k\u0131lar, daha az de\u011fil. Yani buradaki e\u015fit da\u011f\u0131l\u0131m modeli temkinli cevab\u0131 verir; ger\u00e7ekte %50 biraz daha erken ge\u00e7ilir.",
+            a: "Hay\u0131r: ger\u00e7ek do\u011fum g\u00fcnleri mevsime g\u00f6re k\u00fcmelenir ve k\u00fcmelenme tutmay\u0131 daha olas\u0131 k\u0131lar, daha az de\u011fil. Yani buradaki e\u015fit da\u011f\u0131l\u0131m modeli temkinli cevab\u0131 verir; ger\u00e7ekte %50 biraz daha erken ge\u00e7ilir.",
           },
         },
         caption:
-          "Model: e\u015fit olas\u0131l\u0131kl\u0131 365 do\u011fum g\u00fcn\u00fc, art\u0131k y\u0131l yok, herkes ba\u011f\u0131ms\u0131z. Ger\u00e7ek do\u011fum g\u00fcnleri mevsime g\u00f6re k\u00fcmelenir ve bu, ger\u00e7ek olas\u0131l\u0131\u011f\u0131 biraz y\u00fckseltir \u2014 yani buradaki, temkinli olan\u0131.",
+          "Model: e\u015fit olas\u0131l\u0131kl\u0131 365 do\u011fum g\u00fcn\u00fc, art\u0131k y\u0131l yok, herkes ba\u011f\u0131ms\u0131z. Ger\u00e7ek do\u011fum g\u00fcnleri mevsime g\u00f6re k\u00fcmelenir ve bu, ger\u00e7ek olas\u0131l\u0131\u011f\u0131 biraz y\u00fckseltir, yani buradaki, temkinli olan\u0131.",
         predictQuestion: "Sizce olas\u0131l\u0131k ilk ne zaman %50'yi ge\u00e7er?",
         predict: { count: (n: number) => `${n} kiÅi` },
         predictAnswer: (n: number, value: string) => `${n} ki\u015fi, ${value} ile`,
@@ -1806,7 +1792,7 @@ export const tr: Translation = {
         tableCaption: (n: number) => `${n} ki\u015fi aras\u0131nda ayn\u0131 do\u011fum g\u00fcn\u00fc olas\u0131l\u0131\u011f\u0131: tam de\u011fer ve sim\u00fclasyon.`,
         exactRow: "Tam olas\u0131l\u0131k",
         simulatedRow: (rooms: number) => `Sim\u00fclasyon (${rooms.toLocaleString("tr-TR")} oda)`,
-        stale: (n: number) => `yeniden \u00e7al\u0131\u015ft\u0131r\u0131n \u2014 son \u00e7al\u0131\u015fma ${n} ki\u015fiydi`,
+        stale: (n: number) => `yeniden \u00e7al\u0131\u015ft\u0131r\u0131n, son \u00e7al\u0131\u015fma ${n} ki\u015fiydi`,
         reading: (n: number, pairs: number) =>
           `${n} ki\u015fi ${pairs.toLocaleString("tr-TR")} farkl\u0131 \u00e7ift olu\u015fturur ve her biri tutma \u015fans\u0131d\u0131r.`,
         peopleFigure: "Ki\u015fi",
@@ -1820,13 +1806,13 @@ export const tr: Translation = {
         personName: (n: number) => `${n}. ki\u015fi`,
         personLabel: (n: number, day: string) => `${n}. ki\u015fi, do\u011fum g\u00fcn\u00fc ${day}`,
         personMatchLabel: (n: number, day: string, other: number) =>
-          `${n}. ki\u015fi, do\u011fum g\u00fcn\u00fc ${day} \u2014 ${other}. ki\u015fiyle ayn\u0131 g\u00fcn`,
+          `${n}. ki\u015fi, do\u011fum g\u00fcn\u00fc ${day}, ${other}. ki\u015fiyle ayn\u0131 g\u00fcn`,
         justArrived: "yeni geldi",
         sameDay: "ayn\u0131 g\u00fcn",
         roomEmpty: "Odada hen\u00fcz kimse yok.",
         explainWhat: "\u00c7o\u011fu ki\u015finin tahmin etti\u011finden \u00e7ok daha az insan yetiyor.",
         explainWhy:
-          "Soru, birinin seninle tutup tutmad\u0131\u011f\u0131 de\u011fil. Herhangi iki ki\u015finin birbiriyle tutup tutmad\u0131\u011f\u0131 \u2014 ve odaya giren her yeni ki\u015fi, i\u00e7erideki herkesle yeni bir \u00e7ift kuruyor. \u00c7iftler, insanlardan \u00e7ok daha h\u0131zl\u0131 birikiyor.",
+          "Soru, birinin seninle tutup tutmad\u0131\u011f\u0131 de\u011fil. Herhangi iki ki\u015finin birbiriyle tutup tutmad\u0131\u011f\u0131, ve odaya giren her yeni ki\u015fi, i\u00e7erideki herkesle yeni bir \u00e7ift kuruyor. \u00c7iftler, insanlardan \u00e7ok daha h\u0131zl\u0131 birikiyor.",
         explainMaths: (n: number, pairs: string, value: string) =>
           `${n} ki\u015fiyle ${pairs} \u00e7ift olur. Hi\u00e7bir \u00e7iftin tutmama olas\u0131l\u0131\u011f\u0131 365/365 \u00d7 364/365 \u00d7 \u2026 \u00e7arp\u0131m\u0131d\u0131r; bunun bire t\u00fcmleyeni ${value}.`,
         simulateLabel: "Bunun yerine \u00e7al\u0131\u015ft\u0131r\u0131n",
@@ -1842,7 +1828,7 @@ export const tr: Translation = {
         title: "Bir ailenin iki \u00e7ocu\u011fu var. \u0130kisi de erkek mi?",
         setup: [
           "Bir ailenin iki \u00e7ocu\u011fu var: biri b\u00fcy\u00fck, biri k\u00fc\u00e7\u00fck.",
-          "Her \u00e7ocuk erkek ya da k\u0131z ve ikisi de e\u015fit olas\u0131l\u0131kta \u2014 yani e\u015fit olas\u0131l\u0131kl\u0131 d\u00f6rt aile var.",
+          "Her \u00e7ocuk erkek ya da k\u0131z ve ikisi de e\u015fit olas\u0131l\u0131kta, yani e\u015fit olas\u0131l\u0131kl\u0131 d\u00f6rt aile var.",
           "Biri sana bu aile hakk\u0131nda do\u011fru tek bir c\u00fcmle s\u00f6yl\u00fcyor.",
           "Senin sorun: ikisinin de erkek olma olas\u0131l\u0131\u011f\u0131 nedir?",
         ],
@@ -1851,19 +1837,19 @@ export const tr: Translation = {
           notHalf: {
             q: "\u00c7ocuklardan biri erkek, o zaman di\u011feri 50/50 de\u011fil mi?",
             a: (value: string) =>
-              `Bu, ba\u015fka bir c\u00fcmlenin cevab\u0131 olurdu: \u201cb\u00fcy\u00fck olan erkek\u201d. Sana s\u00f6ylenen, ikisinden en az birinin erkek oldu\u011fu \u2014 hangisi oldu\u011fu de\u011fil. D\u00f6rt aileden \u00fc\u00e7\u00fc bu c\u00fcmleye uyar ve bunlardan yaln\u0131zca biri iki erkektir; yani olas\u0131l\u0131k ${value}.`,
+              `Bu, ba\u015fka bir c\u00fcmlenin cevab\u0131 olurdu: \u201cb\u00fcy\u00fck olan erkek\u201d. Sana s\u00f6ylenen, ikisinden en az birinin erkek oldu\u011fu: hangisi oldu\u011fu de\u011fil. D\u00f6rt aileden \u00fc\u00e7\u00fc bu c\u00fcmleye uyar ve bunlardan yaln\u0131zca biri iki erkektir; yani olas\u0131l\u0131k ${value}.`,
           },
           twoWays: {
             q: "Erkek-sonra-k\u0131z ile k\u0131z-sonra-erkek neden ayr\u0131 say\u0131l\u0131yor?",
-            a: "\u00c7\u00fcnk\u00fc bunlar farkl\u0131 aileler ve her biri iki erkek kadar olas\u0131. Bir erkek bir k\u0131zl\u0131 aileye d\u00fc\u015fmek, iki erkekli bir aileye d\u00fc\u015fmekten iki kat kolayd\u0131r \u2014 birine iki yol \u00e7\u0131kar, di\u011ferine bir.",
+            a: "\u00c7\u00fcnk\u00fc bunlar farkl\u0131 aileler ve her biri iki erkek kadar olas\u0131. Bir erkek bir k\u0131zl\u0131 aileye d\u00fc\u015fmek, iki erkekli bir aileye d\u00fc\u015fmekten iki kat kolayd\u0131r: birine iki yol \u00e7\u0131kar, di\u011ferine bir.",
           },
           wording: {
             q: "C\u00fcmlenin kurulu\u015fu cevab\u0131 nas\u0131l de\u011fi\u015ftiriyor?",
-            a: "C\u00fcmle, kan\u0131t\u0131n kendisi. \u201cEn az biri erkek\u201d bir aileyi eler; \u201cb\u00fcy\u00fck olan erkek\u201d iki aileyi eler. Geriye daha az aile kal\u0131r ve iki erkek, kalan\u0131n i\u00e7inde daha b\u00fcy\u00fck bir pay tutar. Hi\u00e7bir ailede bir \u015fey de\u011fi\u015fmedi \u2014 yaln\u0131zca sana s\u00f6ylenen de\u011fi\u015fti.",
+            a: "C\u00fcmle, kan\u0131t\u0131n kendisi. \u201cEn az biri erkek\u201d bir aileyi eler; \u201cb\u00fcy\u00fck olan erkek\u201d iki aileyi eler. Geriye daha az aile kal\u0131r ve iki erkek, kalan\u0131n i\u00e7inde daha b\u00fcy\u00fck bir pay tutar. Hi\u00e7bir ailede bir \u015fey de\u011fi\u015fmedi, yaln\u0131zca sana s\u00f6ylenen de\u011fi\u015fti.",
           },
         },
         caption:
-          "Burada her \u00e7ocu\u011fun ba\u011f\u0131ms\u0131z olarak 1/2 olas\u0131l\u0131kla erkek ya da k\u0131z oldu\u011fu ve ipucunun tam olarak yaz\u0131ld\u0131\u011f\u0131 gibi ge\u00e7erli oldu\u011fu varsay\u0131l\u0131r. \u00dc\u00e7\u00fcnc\u00fc bir okuma \u2014 \u00e7ocuklardan biriyle rastgele kar\u015f\u0131la\u015f\u0131p erkek oldu\u011funu g\u00f6rmek \u2014 yine 1/2 verir ve burada modellenmemi\u015ftir.",
+          "Burada her \u00e7ocu\u011fun ba\u011f\u0131ms\u0131z olarak 1/2 olas\u0131l\u0131kla erkek ya da k\u0131z oldu\u011fu ve ipucunun tam olarak yaz\u0131ld\u0131\u011f\u0131 gibi ge\u00e7erli oldu\u011fu varsay\u0131l\u0131r. \u00dc\u00e7\u00fcnc\u00fc bir okuma (\u00e7ocuklardan biriyle rastgele kar\u015f\u0131la\u015f\u0131p erkek oldu\u011funu g\u00f6rmek) yine 1/2 verir ve burada modellenmemi\u015ftir.",
         predictQuestion: "\u0130ki \u00e7ocuk, en az biri erkek. \u0130kisinin de erkek olma olas\u0131l\u0131\u011f\u0131?",
         predict: { half: "1/2", third: "1/3", quarter: "1/4" },
         predictAnswer: (value: string) => `1/3, yani ${value}`,
@@ -1887,7 +1873,7 @@ export const tr: Translation = {
         answerHeader: "\u0130kisi de erkek",
         explain: {
           atLeastOneBoy:
-            "KK elenince \u00fc\u00e7 sonu\u00e7 kal\u0131r ve bunlardan yaln\u0131zca biri EE'dir. \u0130pucu erke\u011fin hangi \u00e7ocuk oldu\u011funu s\u00f6ylemedi\u011fi i\u00e7in KE ve EK ikisi de ayakta kal\u0131r \u2014 ve birlikte EE'yi ikiye bir ge\u00e7erler.",
+            "KK elenince \u00fc\u00e7 sonu\u00e7 kal\u0131r ve bunlardan yaln\u0131zca biri EE'dir. \u0130pucu erke\u011fin hangi \u00e7ocuk oldu\u011funu s\u00f6ylemedi\u011fi i\u00e7in KE ve EK ikisi de ayakta kal\u0131r, ve birlikte EE'yi ikiye bir ge\u00e7erler.",
           firstIsBoy:
             "\u0130lk \u00e7ocu\u011fu adland\u0131rmak KK ile KE'yi birlikte eler ve geriye iki sonu\u00e7 kal\u0131r. Art\u0131k EE, \u00fc\u00e7te bir de\u011fil ikide birdir. Ailede hi\u00e7bir \u015fey de\u011fi\u015fmedi; c\u00fcmle de\u011fi\u015fti.",
         },
@@ -1906,7 +1892,7 @@ export const tr: Translation = {
         familiesTitle: "E\u015fit olas\u0131l\u0131kl\u0131 d\u00f6rt aile",
         explainWhat: "Bir \u00e7ocuk hakk\u0131nda bilgi almak, di\u011ferinin ne olma ihtimalini de\u011fi\u015ftirir.",
         explainWhy:
-          "\u201cEn az biri erkek\u201d hangisi oldu\u011funu s\u00f6ylemez. Yaln\u0131zca iki k\u0131zl\u0131 aileyi eler ve kalan \u00fc\u00e7 aileden ikisinde bir k\u0131z vard\u0131r. Bunun yerine \u201cb\u00fcy\u00fck olan erkek\u201d dersen bir de\u011fil iki aile elenir \u2014 ayn\u0131 aile, farkl\u0131 c\u00fcmle, farkl\u0131 cevap.",
+          "\u201cEn az biri erkek\u201d hangisi oldu\u011funu s\u00f6ylemez. Yaln\u0131zca iki k\u0131zl\u0131 aileyi eler ve kalan \u00fc\u00e7 aileden ikisinde bir k\u0131z vard\u0131r. Bunun yerine \u201cb\u00fcy\u00fck olan erkek\u201d dersen bir de\u011fil iki aile elenir: ayn\u0131 aile, farkl\u0131 c\u00fcmle, farkl\u0131 cevap.",
         explainMaths: (kept: number, value: string) =>
           `D\u00f6rt aileden ${kept} tanesi ipucuna uyuyor ve bu ${kept} aileden biri iki erkek: ${value}.`,
         announce: (clue: string, kept: number, value: string) =>
@@ -1917,13 +1903,13 @@ export const tr: Translation = {
         kicker: "\u0130ki tedavi, tek bir karar",
         title: "Hangi tedaviyi se\u00e7erdin?",
         setup: [
-          "B\u00f6brek ta\u015f\u0131 i\u00e7in iki tedavi, A ve B \u2014 1986 tarihli ger\u00e7ek bir \u00e7al\u0131\u015fmadan.",
+          "B\u00f6brek ta\u015f\u0131 i\u00e7in iki tedavi, A ve B: 1986 tarihli ger\u00e7ek bir \u00e7al\u0131\u015fmadan.",
           "Hastalar ya k\u00fc\u00e7\u00fck ta\u015fla ya da b\u00fcy\u00fck ta\u015fla geliyor; b\u00fcy\u00fck olanlar zor vakalar.",
           "Tablo her tedavinin her grupta ve iki grubun toplam\u0131nda ne yapt\u0131\u011f\u0131n\u0131 g\u00f6steriyor.",
           "Tabloyu oku ve isteyece\u011fin tedaviyi se\u00e7.",
         ],
         named:
-          "Bakt\u0131\u011f\u0131n \u015feyin bir ad\u0131 var: Simpson paradoksu \u2014 gruplar topland\u0131\u011f\u0131nda tersine d\u00f6nen bir kar\u015f\u0131la\u015ft\u0131rma.",
+          "Bakt\u0131\u011f\u0131n \u015feyin bir ad\u0131 var: Simpson paradoksu: gruplar topland\u0131\u011f\u0131nda tersine d\u00f6nen bir kar\u015f\u0131la\u015ft\u0131rma.",
         coachLabel: "Herkesin sordu\u011fu sorular",
         coach: {
           howBoth: {
@@ -1936,13 +1922,13 @@ export const tr: Translation = {
           },
           whichBelieve: {
             q: "Peki hangi say\u0131ya inanmal\u0131y\u0131m?",
-            a: "Tek bir hasta i\u00e7in tedavi se\u00e7erken grup sat\u0131rlar\u0131na \u2014 \u00e7\u00fcnk\u00fc o hastan\u0131n ya k\u00fc\u00e7\u00fck ta\u015f\u0131 vard\u0131r ya b\u00fcy\u00fck, ikisinin ortalamas\u0131 asla olmaz. Toplam sat\u0131r\u0131 ba\u015fka bir soruyu yan\u0131tlar: bu belirli hasta kar\u0131\u015f\u0131m\u0131na ne oldu.",
+            a: "Tek bir hasta i\u00e7in tedavi se\u00e7erken grup sat\u0131rlar\u0131na, \u00e7\u00fcnk\u00fc o hastan\u0131n ya k\u00fc\u00e7\u00fck ta\u015f\u0131 vard\u0131r ya b\u00fcy\u00fck, ikisinin ortalamas\u0131 asla olmaz. Toplam sat\u0131r\u0131 ba\u015fka bir soruyu yan\u0131tlar: bu belirli hasta kar\u0131\u015f\u0131m\u0131na ne oldu.",
           },
         },
         caption:
           "Grup ba\u015f\u0131na ba\u015far\u0131 oranlar\u0131 Charig ve ark. (1986) \u00e7al\u0131\u015fmas\u0131ndan, iki b\u00f6brek ta\u015f\u0131 tedavisinin kar\u015f\u0131la\u015ft\u0131r\u0131lmas\u0131ndan geliyor. Kayd\u0131r\u0131c\u0131lar hastalar\u0131 gruplar aras\u0131nda ta\u015f\u0131r; oranlar yerinde kal\u0131r. Her y\u00fczde, yan\u0131nda yazan say\u0131lar\u0131n b\u00f6l\u00fcm\u00fcd\u00fcr.",
         predictQuestion: "Bir tedavi her grupta kazan\u0131p toplamda kaybedebilir mi?",
-        predict: { impossible: "Hay\u0131r \u2014 bu imk\u00e2ns\u0131z", possible: "Evet \u2014 olabilir" },
+        predict: { impossible: "Hay\u0131r, bu imk\u00e2ns\u0131z", possible: "Evet, olabilir" },
         predictAnswer: "Evet; a\u015fa\u011f\u0131daki tablo ger\u00e7ek bir \u00f6rnek",
         tableCaption: "Grup ve tedavi baz\u0131nda ba\u015far\u0131 oranlar\u0131 ve say\u0131lar, toplamla birlikte.",
         groupHeader: "Grup",
@@ -1990,9 +1976,9 @@ export const tr: Translation = {
           `\u0130ki grup da ${leader} diyor. \u015eimdi iki grubu topla.`,
         explainWhat: "Her grupta kazanan taraf, gruplar toplan\u0131nca kaybedebilir.",
         explainWhy:
-          "\u0130ki tedavi ayn\u0131 t\u00fcr hastaya verilmedi. A\u00e7\u0131k ameliyat b\u00fcy\u00fck ta\u015flar\u0131n \u00e7o\u011funu \u2014 zor vakalar\u0131 \u2014 \u00fcstlendi, kapal\u0131 y\u00f6ntem ise k\u00fc\u00e7\u00fck ta\u015flar\u0131n \u00e7o\u011funu. Gruplar\u0131 toplamak \u201changi tedavi\u201d ile \u201changi hastalar\u201d sorusunu birbirine kar\u0131\u015ft\u0131r\u0131r ve hasta kar\u0131\u015f\u0131m\u0131 daha g\u00fc\u00e7l\u00fc etkidir.",
+          "\u0130ki tedavi ayn\u0131 t\u00fcr hastaya verilmedi. A\u00e7\u0131k ameliyat b\u00fcy\u00fck ta\u015flar\u0131n \u00e7o\u011funu (zor vakalar\u0131) \u00fcstlendi, kapal\u0131 y\u00f6ntem ise k\u00fc\u00e7\u00fck ta\u015flar\u0131n \u00e7o\u011funu. Gruplar\u0131 toplamak \u201changi tedavi\u201d ile \u201changi hastalar\u201d sorusunu birbirine kar\u0131\u015ft\u0131r\u0131r ve hasta kar\u0131\u015f\u0131m\u0131 daha g\u00fc\u00e7l\u00fc etkidir.",
         explainMaths:
-          "Her toplam oran, o tedavinin iki grup oran\u0131n\u0131n a\u011f\u0131rl\u0131kl\u0131 ortalamas\u0131d\u0131r; a\u011f\u0131rl\u0131klar da her gruptaki hasta say\u0131s\u0131d\u0131r. A\u011f\u0131rl\u0131klar de\u011fi\u015fince ortalama da de\u011fi\u015fir \u2014 grup oranlar\u0131 sabit kalsa bile.",
+          "Her toplam oran, o tedavinin iki grup oran\u0131n\u0131n a\u011f\u0131rl\u0131kl\u0131 ortalamas\u0131d\u0131r; a\u011f\u0131rl\u0131klar da her gruptaki hasta say\u0131s\u0131d\u0131r. A\u011f\u0131rl\u0131klar de\u011fi\u015fince ortalama da de\u011fi\u015fir: grup oranlar\u0131 sabit kalsa bile.",
         illustrative:
           "Say\u0131lar 1986 tarihli yay\u0131mlanm\u0131\u015f bir kar\u015f\u0131la\u015ft\u0131rmadan; burada veride bir etkiyi g\u00f6stermek i\u00e7in kullan\u0131l\u0131yor. T\u0131bbi tavsiye de\u011fildir.",
         announce: (a: string, b: string, reversed: string) =>
@@ -2007,7 +1993,7 @@ export const tr: Translation = {
           "Gruplar\u0131 toplamak, gruplar ayn\u0131 bi\u00e7imde doldurulmam\u0131\u015fsa i\u00e7lerindeki kar\u015f\u0131la\u015ft\u0131rmay\u0131 tersine \u00e7evirebilir.",
         ],
         footer:
-          "Bunlar\u0131n her biri, belirtilmi\u015f bir modeli olan \u00e7\u00f6z\u00fcml\u00fc birer problemdir; \u015fansa dair genel bir kural de\u011fil. Tam olas\u0131l\u0131klar kapal\u0131 formda hesaplan\u0131r; sim\u00fcle edilenler ise deneyin tohumlanm\u0131\u015f bir \u00fcrete\u00e7le ger\u00e7ekten \u00e7al\u0131\u015ft\u0131r\u0131lmas\u0131ndan gelir ve her zaman b\u00f6yle etiketlenir. Bir soru ger\u00e7ekten belirsizse \u2014 en a\u00e7\u0131k \u00f6rnek iki \u00e7ocuk problemidir \u2014 varsay\u0131m sessizce se\u00e7ilmez, yaz\u0131l\u0131r.",
+          "Bunlar\u0131n her biri, belirtilmi\u015f bir modeli olan \u00e7\u00f6z\u00fcml\u00fc birer problemdir; \u015fansa dair genel bir kural de\u011fil. Tam olas\u0131l\u0131klar kapal\u0131 formda hesaplan\u0131r; sim\u00fcle edilenler ise deneyin tohumlanm\u0131\u015f bir \u00fcrete\u00e7le ger\u00e7ekten \u00e7al\u0131\u015ft\u0131r\u0131lmas\u0131ndan gelir ve her zaman b\u00f6yle etiketlenir. Bir soru ger\u00e7ekten belirsizse (en a\u00e7\u0131k \u00f6rnek iki \u00e7ocuk problemidir), varsay\u0131m sessizce se\u00e7ilmez, yaz\u0131l\u0131r.",
       },
     },
 
@@ -2064,7 +2050,7 @@ export const tr: Translation = {
       race: {
         question: "Hangisi önce bitirir?",
         oneButton: "Tek düğme. İkisi de aynı veriden başlıyor.",
-        bothDone: "Aynı sonuç — ama biri diğerinin sorduğu soruların çok azını sordu.",
+        bothDone: "Aynı sonuç, ama biri diğerinin sorduğu soruların çok azını sordu.",
         sorted: "sıralandı",
         caption: "Aynı dizi, aynı sonuç. Sayaçlar değil.",
         panelLabel: (title: string, size: number, state: string) =>
@@ -2080,7 +2066,7 @@ export const tr: Translation = {
       data: {
         kicker: "Veriyi çizin",
         title: "İş verinin içinde.",
-        lede: "Grafiği yeniden biçimlendirin — üzerinde sürükleyin ya da bir biçim seçin — sonra yeniden sıralayın.",
+        lede: "Grafiği yeniden biçimlendirin (üzerinde sürükleyin ya da bir biçim seçin), sonra yeniden sıralayın.",
         caption:
           "Seçmeli Sıralama burada her seferinde 496 soru sorar; sıralı, karışık ya da ters fark etmez, çünkü kalan her çifti yine de kontrol eder. Eklemeli Sıralama'nın sayısı ise çizdiğiniz biçimle birlikte değişir.",
       },
@@ -2089,7 +2075,7 @@ export const tr: Translation = {
         title: "Mesele kaç tanesinin yanlış olduğu değil.",
         lede: "Sıralı biçimden başlayın. Bir çubuğu ait olduğu yerden çok uzağa sürükleyin, sonra bunun yerine üç çubuğu hafifçe oynatın. Her birinin maliyetini karşılaştırın.",
         caption:
-          "Terslik, sırası yanlış olan bir çifttir. Bu eklemeli sıralama, kendisine verilen dizideki her terslik için tam bir kez kaydırır — yani evinden çok uzaktaki tek bir değer, birkaç küçük hatadan daha pahalıya gelebilir.",
+          "Terslik, sırası yanlış olan bir çifttir. Bu eklemeli sıralama, kendisine verilen dizideki her terslik için tam bir kez kaydırır, yani evinden çok uzaktaki tek bir değer, birkaç küçük hatadan daha pahalıya gelebilir.",
       },
       challenge: {
         architecture: "Mimari",
@@ -2097,7 +2083,7 @@ export const tr: Translation = {
         testAccuracy: "Test do\u011frulu\u011fu",
         target: "Hedef",
         objectiveLine: (accuracy: string) =>
-          `Spiralde ${accuracy} test do\u011frulu\u011funa ula\u015f\u0131n \u2014 olabildi\u011fince az gizli n\u00f6ron kullanarak.`,
+          `Spiralde ${accuracy} test do\u011frulu\u011funa ula\u015f\u0131n: olabildi\u011fince az gizli n\u00f6ron kullanarak.`,
         solvedNote: "\u00c7\u00f6z\u00fcld\u00fc. \u015eimdi bir n\u00f6ron eksiltip yeniden deneyin.",
         noBest: "Hen\u00fcz yok. Bol n\u00f6ronla ba\u015flay\u0131n, sonra bozulana kadar azalt\u0131n.",
         bestLine: (neurons: number, accuracy: string, epoch: number) =>
@@ -2108,7 +2094,7 @@ export const tr: Translation = {
           `${neurons} gizli n\u00f6ronla, ${accuracy} test do\u011frulu\u011funda \u00e7\u00f6z\u00fcld\u00fc.`,
         kicker: "Meydan okuma",
         title: "Neyi saydığınıza göre ucuz değişir.",
-        lede: "Üç sabit dizi, üç bütçe — ve bütçe her zaman aynı sayıyla ilgili değil.",
+        lede: "Üç sabit dizi, üç bütçe, ve bütçe her zaman aynı sayıyla ilgili değil.",
         budget: "Bütçe",
         atMost: (unit: string) => `en fazla ${unit}`,
         barsChanged: "değişen çubuk",
@@ -2132,7 +2118,7 @@ export const tr: Translation = {
           },
           "fewest-writes": {
             title: "En az yazma",
-            brief: "İstediğiniz kadar soru sorun — yeter ki fazla veri taşımayın.",
+            brief: "İstediğiniz kadar soru sorun: yeter ki fazla veri taşımayın.",
           },
           "three-edits": {
             title: "Üç düzenleme",
@@ -2152,7 +2138,7 @@ export const tr: Translation = {
         lessons: [
           "İki algoritma aynı sonuca, birbirinden çok farklı miktarda iş yaparak ulaşabilir",
           "Seçmeli sıralama her turda kalanın tamamını yeniden tarar, bu yüzden maliyeti sabittir; eklemeli sıralama yalnızca gerektiği kadar geriye yürür, bu yüzden maliyeti verinin bir özelliğidir",
-          "Terslik, sırası yanlış olan bir çifttir ve bu eklemeli sıralama her biri için bir kez kaydırır — ama daha az soru sormak, daha az veri yazmakla aynı hedef değildir",
+          "Terslik, sırası yanlış olan bir çifttir ve bu eklemeli sıralama her biri için bir kez kaydırır, ama daha az soru sormak, daha az veri yazmakla aynı hedef değildir",
         ],
         footer:
           "Gerçek sıralama kütüphaneleri tam olarak buna yaslanır: neredeyse sıralı parçaları eklemeli sıralamaya devrederler, çünkü o biçimde işin neredeyse tamamı zaten yapılmıştır.",
@@ -2314,7 +2300,7 @@ export const tr: Translation = {
         testAccuracy: "Test do\u011frulu\u011fu",
         target: "Hedef",
         objectiveLine: (accuracy: string) =>
-          `Spiralde ${accuracy} test do\u011frulu\u011funa ula\u015f\u0131n \u2014 olabildi\u011fince az gizli n\u00f6ron kullanarak.`,
+          `Spiralde ${accuracy} test do\u011frulu\u011funa ula\u015f\u0131n: olabildi\u011fince az gizli n\u00f6ron kullanarak.`,
         solvedNote: "\u00c7\u00f6z\u00fcld\u00fc. \u015eimdi bir n\u00f6ron eksiltip yeniden deneyin.",
         noBest: "Hen\u00fcz yok. Bol n\u00f6ronla ba\u015flay\u0131n, sonra bozulana kadar azalt\u0131n.",
         bestLine: (neurons: number, accuracy: string, epoch: number) =>

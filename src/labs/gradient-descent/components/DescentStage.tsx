@@ -225,7 +225,7 @@ export function DescentStage({
                   the run advances, and keeping it out of the figure row is
                   what holds that row at four. */}
               <p className="font-mono text-caption text-fg-faint">
-                {g.figures.conditionNumber} {formatNumber(facts.conditionNumber, 0)} —{" "}
+                {g.figures.conditionNumber} {formatNumber(facts.conditionNumber, 0)}:{" "}
                 {g.figures.conditionNumberHint}
               </p>
             </>

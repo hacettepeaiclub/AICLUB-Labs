@@ -10,7 +10,7 @@ import type { LabMeta } from "../types";
  */
 export const embeddingUniverse3DMeta: LabMeta = {
   slug: "embedding-universe-3d",
-  title: "Embedding Universe — 3D prototype",
+  title: "Embedding Universe: 3D prototype",
   description:
     "An experiment: the same 318 words projected onto three PCA axes instead of two.",
   category: "machine-learning",

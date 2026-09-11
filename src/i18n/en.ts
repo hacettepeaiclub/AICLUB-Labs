@@ -41,7 +41,7 @@ export const en = {
      */
     errorTitle: "This part of the page did not load.",
     errorBody:
-      "Something went wrong while showing it. Trying again usually fixes it — especially if this page has been open for a while.",
+      "Something went wrong while showing it. Trying again usually fixes it, especially if this page has been open for a while.",
     errorRetry: "Try again",
     errorBackToLabs: "Back to all labs",
   },
@@ -67,17 +67,17 @@ export const en = {
     // Also the original copy, tightened: it now states the size of the
     // collection, because the labs start one screen below and the count is
     // the fastest way to say what this place is.
-    lede: "Nine interactive experiments — algorithms, neural networks and the machinery of computation. No lectures, just levers to pull.",
+    lede: "Eleven interactive experiments: algorithms, neural networks and the machinery of computation. No lectures, just levers to pull.",
     cta: "Start experimenting",
     labs: "Labs",
     labCount: (n: number) => `${n} instruments`,
     experiments: "Experiments",
     emptyTitle: "First experiments are brewing.",
-    emptyBody: "The platform is ready — labs register themselves and appear here automatically.",
+    emptyBody: "The platform is ready: labs register themselves and appear here automatically.",
   },
 
   notFound: {
-    title: "This lab doesn't exist — yet.",
+    title: "This lab doesn't exist. Yet.",
     body: "Maybe it's still an idea on a whiteboard somewhere.",
     back: "Back to all labs",
   },
@@ -118,14 +118,14 @@ export const en = {
   labs: {
     // ------------------------------- embedding universe (3D prototype) ----
   "embedding-universe-3d": {
-      title: "Embedding Universe — 3D prototype",
+      title: "Embedding Universe: 3D prototype",
       description:
         "An experiment: the same 318 words projected onto three PCA axes instead of two.",
       lede: "The same words, the same vectors, one more axis. Drag to turn the cloud.",
       honesty:
         "This is not what the embedding looks like. The space has 300 dimensions; what you are turning is a view of it reduced to three PCA axes, which is one more than the flat map and still almost none of them.",
       compare:
-        "A prototype, kept apart from the lesson on purpose. Depth makes the cloud feel like a place, but it does not make the projection more truthful — and judging whether that trade is worth teaching is the point of building it.",
+        "A prototype, kept apart from the lesson on purpose. Depth makes the cloud feel like a place, but it does not make the projection more truthful, and judging whether that trade is worth teaching is the point of building it.",
       error: "The word vectors could not be loaded.",
       varianceLabel: "Variance explained",
       varianceHint: (dimensions: number) => `three axes of ${dimensions}`,
@@ -133,7 +133,7 @@ export const en = {
       recapTitle: "What this prototype shows",
       recap: {
         lessons: [
-          "Three axes carry a little more of the space than two — and still almost none of it.",
+          "Three axes carry a little more of the space than two, and still almost none of it.",
           "Depth makes the cloud feel like a place, which is persuasive whether or not it is informative.",
           "The words, the vectors and the nearest neighbours are identical to the flat map; only the view changed.",
         ],
@@ -158,10 +158,10 @@ export const en = {
 
       predict: {
         question: (word: string) => `Which word is closest to ${word}?`,
-        hint: "All three are related — pick the one you would expect.",
+        hint: "All three are related. Pick the one you would expect.",
         loading: "Loading word vectors…",
         chose: (word: string, rank: number, total: number, score: string) =>
-          `You picked ${word} — the ${rank}th closest of ${total}, at ${score}.`,
+          `You picked ${word}: the ${rank}th closest of ${total}, at ${score}.`,
         nearest: (word: string, score: string) => `The closest is ${word}, at ${score}.`,
         because:
           "These vectors were learned from how words are used, not from what they mean. In news and encyclopedia text, apple keeps company with software far more often than with fruit.",
@@ -183,7 +183,7 @@ export const en = {
         selectedLabel: (word: string, gloss: string) => `${word}, ${gloss}. Selected`,
         pending: "Working out where the words sit…",
         linksNote:
-          "The lines join the selected word to the eight listed beside it. They are a reading aid, not part of the model — the embedding has no links, only distances.",
+          "The lines join the selected word to the eight listed beside it. They are a reading aid, not part of the model: the embedding has no links, only distances.",
         pinnedLabel: (word: string, gloss: string) =>
           `${word} (${gloss}), held for comparison`,
         compareLabel: (a: string, b: string, score: string) =>
@@ -235,7 +235,7 @@ export const en = {
           score: string,
           percent: string,
         ) =>
-          `${a} and ${b} are the ${rank} closest pair out of ${total}, at ${score}. The projection put them ${percent} of the map apart — looking at the picture, you would never guess they were related.`,
+          `${a} and ${b} are the ${rank} closest pair out of ${total}, at ${score}. The projection put them ${percent} of the map apart: looking at the picture, you would never guess they were related.`,
         falseBody: (
           a: string,
           b: string,
@@ -248,7 +248,7 @@ export const en = {
         varianceLabel: "Variance explained",
         varianceHint: (first: string, second: string) => `PC1 ${first} + PC2 ${second}`,
         varianceBody: (percent: string, remaining: number) =>
-          `These two axes explain ${percent} of the variance in this dataset. The rest of the variation has not gone anywhere — it lies along the other ${remaining} directions, which a flat screen has no room for.`,
+          `These two axes explain ${percent} of the variance in this dataset. The rest of the variation has not gone anywhere: it lies along the other ${remaining} directions, which a flat screen has no room for.`,
         correlationLabel: "Distance agreement",
         correlationHint: "−1.00 would mean the map lost nothing",
         pending: "Working out the projection…",
@@ -270,7 +270,7 @@ export const en = {
         source:
           "The vectors are GloVe 6B 300d, pretrained by Stanford NLP on Wikipedia 2014 and Gigaword 5. This lab looks each word up in that published table and normalises it to unit length; nothing is trained, fine-tuned or generated here.",
         turkish:
-          "The embedding space is English. Turkish words shown here are labels we added for reading — they were not embedded, and this is not a Turkish embedding space.",
+          "The embedding space is English. Turkish words shown here are labels we added for reading: they were not embedded, and this is not a Turkish embedding space.",
       },
       compare: {
         title: "Compare two words",
@@ -293,7 +293,7 @@ export const en = {
         "Move two hypotheses apart and watch what it costs to be sure: the rejection region, the errors you accept, and the power you get back.",
 
       scope:
-        "This is the theoretical model: two normal sampling distributions of the mean, both with standard error \u03c3/\u221an, with \u03c3 treated as known. That is what makes the boundary a z rather than a t. No data is sampled anywhere in this lab \u2014 every number is the closed-form value of the equations shown, so what you are reading is the model itself rather than one run of an experiment.",
+        "This is the theoretical model: two normal sampling distributions of the mean, both with standard error \u03c3/\u221an, with \u03c3 treated as known. That is what makes the boundary a z rather than a t. No data is sampled anywhere in this lab: every number is the closed-form value of the equations shown, so what you are reading is the model itself rather than one run of an experiment.",
 
       testType: {
         right: "\u03bc\u2081 > \u03bc\u2080",
@@ -321,15 +321,15 @@ export const en = {
       controls: {
         moreLabel: "The other settings",
         note: "Every control retunes the same model. Nothing here is sampled.",
-        mu0: "\u03bc\u2080 \u2014 the null mean",
+        mu0: "\u03bc\u2080: the null mean",
         mu0Value: (value: string) => `\u03bc\u2080 is ${value}`,
-        mu1: "\u03bc\u2081 \u2014 the alternative mean",
+        mu1: "\u03bc\u2081: the alternative mean",
         mu1Value: (value: string) => `\u03bc\u2081 is ${value}`,
-        sigma: "\u03c3 \u2014 population spread",
+        sigma: "\u03c3: population spread",
         sigmaValue: (value: string) => `\u03c3 is ${value}`,
         alpha: "\u03b1",
         alphaValue: (value: string) => `\u03b1 is ${value}`,
-        n: "n \u2014 sample size",
+        n: "n: sample size",
         nValue: (value: number) => `n is ${value}`,
       },
 
@@ -338,7 +338,7 @@ export const en = {
         question: "What happens when the two hypotheses move apart?",
         caption:
           "Two claims about the same mean. Neither is the data; both are what the average of n measurements would do if that claim were the true one.",
-        mu1Label: "\u03bc\u2081 \u2014 move the alternative",
+        mu1Label: "\u03bc\u2081: move the alternative",
         mu1Value: (value: string) => `\u03bc\u2081 is ${value}`,
         mu1Hint: "Drag it through \u03bc\u2080 and back out the other side.",
         mu0Label: "\u03bc\u2080",
@@ -352,10 +352,10 @@ export const en = {
       alphaSection: {
         kicker: "Where you draw the line",
         title: "One boundary, and everything past it counts as evidence.",
-        lede: "A test needs a rule: how far from \u03bc\u2080 does a result have to land before you stop believing \u03bc\u2080? That line is the critical value, and \u03b1 is how much of H\u2080 you are willing to leave on the wrong side of it.",
+        lede: "A test needs a rule: how far from \u03bc\u2080 does a result have to land before you stop believing \u03bc\u2080? That line is the critical value, and \u03b1, the significance level, is how much of H\u2080 you are willing to leave on the wrong side of it.",
         caption:
-          "\u03b1 is not a mistake you made. It is the H\u2080 mass you agreed in advance to treat as evidence, which is why moving the slider moves the line rather than the curve.",
-        alphaLabel: "\u03b1 \u2014 false alarms you accept",
+          "\u03b1 is not a mistake you made. It is the H\u2080 mass you agreed in advance to treat as evidence, which is why moving the slider moves the line rather than the curve. Rejecting H\u2080 when it was true is a Type I error, and \u03b1 is how often you accept that.",
+        alphaLabel: "\u03b1: false alarms you accept",
         alphaValue: (value: string) => `\u03b1 is ${value}`,
         alphaHint: "The hatched area under H\u2080 is exactly this number.",
         alphaFigure: "\u03b1",
@@ -376,9 +376,9 @@ export const en = {
       betaSection: {
         kicker: "The error nobody counts",
         title: "\u03b2 is what H\u2081 leaves on the safe side of the line.",
-        lede: "\u03b1 lives under H\u2080 and \u03b2 lives under H\u2081, on opposite sides of the same boundary. Move it to shrink one and the other grows \u2014 which is why the direction you point the test matters as much as where you put the line.",
+        lede: "\u03b1 lives under H\u2080 and \u03b2 lives under H\u2081, on opposite sides of the same boundary. Move it to shrink one and the other grows, which is why the direction you point the test matters as much as where you put the line.",
         caption:
-          "\u03b2 is the probability of not rejecting H\u2080 when this particular H\u2081 is the true one. Power is 1 \u2212 \u03b2. Both are properties of the model, not of any sample.",
+          "\u03b2 is the probability of not rejecting H\u2080 when this particular H\u2081 is the true one, a Type II error. Power is 1 \u2212 \u03b2. Both are properties of the model, not of any sample.",
         testTypeLabel: "What H\u2081 claims",
         mu1Label: "\u03bc\u2081",
         mu1Value: (value: string) => `\u03bc\u2081 is ${value}`,
@@ -402,7 +402,7 @@ export const en = {
         lede: "\u03b1 and \u03b2 trade against each other as long as the curves stay the same width. n is what changes their width: SE = \u03c3/\u221an, so both distributions tighten around their own mean and the overlap shrinks without anybody accepting more false alarms.",
         caption:
           "The x axis is drawn at \u00b14.5 SE, so the window narrows with the curves. \u221an is why the second half of the slider buys so much less than the first.",
-        nLabel: "n \u2014 sample size",
+        nLabel: "n: sample size",
         nValue: (value: number) => `n is ${value}`,
         formula: (se: string) => `SE = \u03c3/\u221an = ${se}`,
         nFigure: "n",
@@ -421,7 +421,7 @@ export const en = {
       challenge: {
         kicker: "Now hit a number",
         title: "Reach the power the task asks for.",
-        lede: "Two tasks. Each states a result to reach rather than a control to move, so neither can be passed by putting a slider in a particular place \u2014 the model has to actually report the number.",
+        lede: "Two tasks. Each states a result to reach rather than a control to move, so neither can be passed by putting a slider in a particular place: the model has to actually report the number.",
         puzzleLabel: "Task",
         reset: "Back to the start",
         powerLabel: "Power",
@@ -447,7 +447,7 @@ export const en = {
             brief: (power: string, alpha: string) =>
               `\u03c3 is 3 and the test is two-sided, so \u03b1 is split across two tails and both boundaries sit a long way out. Reach ${power} power with \u03b1 at or below ${alpha}.`,
             lesson:
-              "A two-sided test spends half its \u03b1 watching a direction the alternative is not in. Committing to a direction is free power \u2014 and it is only free if you were right about the direction.",
+              "A two-sided test spends half its \u03b1 watching a direction the alternative is not in. Committing to a direction is free power, and it is only free if you were right about the direction.",
             solved: (power: string, alpha: string) =>
               `Power is ${power} at \u03b1 = ${alpha}. Narrowing \u03c3 or raising n shrinks SE; going one-sided puts the whole of \u03b1 in the tail where \u03bc\u2081 actually is.`,
           },
@@ -456,7 +456,7 @@ export const en = {
 
       recap: {
         lessons: [
-          "\u03b1 is the H\u2080 mass beyond the critical value \u2014 the false alarms you agreed to before seeing anything.",
+          "\u03b1 is the H\u2080 mass beyond the critical value: the false alarms you agreed to before seeing anything.",
           "\u03b2 is the H\u2081 mass that stays inside it, and power is 1 \u2212 \u03b2. They are computed against one specific \u03bc\u2081, not against \"some effect\".",
           "Moving the boundary trades \u03b1 against \u03b2. Only SE = \u03c3/\u221an improves both, which is why n is the lever that is not a compromise.",
         ],
@@ -473,7 +473,7 @@ export const en = {
       room: {
         title: "The room",
         question:
-          "Nobody showed this robot the way out. It worked the route out by trying things — and you get to decide what it cares about.",
+          "Nobody showed this robot the way out. It worked the route out by trying things, and you get to decide what it cares about.",
         sliderLabel: "What is the marked square worth to the robot?",
         sliderValue: (value: string) => `The marked square is worth ${value}`,
         hint: "Drag it. The route is worked out again from scratch every time you move it.",
@@ -492,7 +492,7 @@ export const en = {
       learn: {
         kicker: "How did it work this out?",
         title: "It kept a number for every move it could make.",
-        lede: "Nothing here is a picture of what the robot might have learned — it is what it did learn, at the moment you scrub to. Move the slider above and every number on this page is recomputed from a fresh run.",
+        lede: "Nothing here is a picture of what the robot might have learned: it is what it did learn, at the moment you scrub to. Move the slider above and every number on this page is recomputed from a fresh run.",
 
         scrubber: "How much practice it has had",
         episode: (n: number) => `attempt ${n}`,
@@ -507,11 +507,11 @@ export const en = {
         wallCell: (row: number, col: number) => `Row ${row}, column ${col}. Wall.`,
 
         actions: { 0: "up", 1: "down", 2: "left", 3: "right" },
-        noAction: "nowhere — this is the door",
+        noAction: "nowhere: this is the door",
         bestAction: "best",
         selectedTitle: (row: number, col: number) => `Row ${row}, column ${col}`,
         chain: (row: number, col: number, action: string, value: string) =>
-          `Standing at row ${row}, column ${col}, the robot has four moves it could make and a number for each one. It keeps the largest — ${value}, by moving ${action} — because that move led somewhere better the last time it tried. Repeat that a few hundred times and the numbers stop changing.`,
+          `Standing at row ${row}, column ${col}, the robot has four moves it could make and a number for each one. It keeps the largest (${value}, by moving ${action}) because that move led somewhere better the last time it tried. Repeat that a few hundred times and the numbers stop changing.`,
 
         unexploredLabel: "Squares its route skips",
         unexploredHint: "it stopped going there",
@@ -524,7 +524,7 @@ export const en = {
           "Read it as: nudge the number for the move you just made towards what you actually got, plus the best you now think is available from where you landed. α is how big a nudge, γ is how much a later reward is worth compared with one right now.",
 
         honesty:
-          "The robot did not learn the whole room. It learned a route that works and stopped exploring the rest, so some squares still carry whatever it happened to think early on. That is not a fault in the method — it is what learning only from your own experience looks like.",
+          "The robot did not learn the whole room. It learned a route that works and stopped exploring the rest, so some squares still carry whatever it happened to think early on. That is not a fault in the method: it is what learning only from your own experience looks like.",
 
         scheduleWarning:
           "The saved attempts are evenly spaced, which hides the part where the learning happens.",
@@ -532,18 +532,18 @@ export const en = {
 
       recap: {
         lessons: [
-          "A reward is not an instruction. It is a score, and the robot will find whatever behaviour scores highest — including one you never had in mind.",
+          "A reward is not an instruction. It is a score, and the robot will find whatever behaviour scores highest, including one you never had in mind.",
           "It learns by trying: each move updates a number, and the useful numbers spread outward from the first thing that ever went well.",
           "It optimises the reward you actually wrote down, not the outcome you were picturing when you wrote it.",
         ],
         footer:
-          "This is real tabular Q-learning on a small deterministic grid: twenty-seven squares, four moves, one number per pair. Real robots and large reinforcement-learning systems are far more complicated — but the gap between what you rewarded and what you wanted does not get smaller as they grow.",
+          "This is real tabular Q-learning on a small deterministic grid: twenty-seven squares, four moves, one number per pair. Real robots and large reinforcement-learning systems are far more complicated, but the gap between what you rewarded and what you wanted does not get smaller as they grow.",
       },
       world: {
         title: "The room",
         question: "What should the agent do?",
         sliderHint:
-          "This is the only thing about the world you get to decide. Everything else — the walls, the door, the cost of a move — is fixed.",
+          "This is the only thing about the world you get to decide. Everything else (the walls, the door, the cost of a move) is fixed.",
         caption:
           "Nothing is learning yet. You are driving. Every move costs 0.5, the marked square pays what you set it to each time it is entered, and the door pays 20 and ends the run.",
         mapLabel: (moves: number, total: string) =>
@@ -576,7 +576,7 @@ export const en = {
       train: {
         kicker: "Nobody showed it the way",
         title: "It tries, and the trying is the training.",
-        lede: "Press Run. The agent starts from the corner knowing nothing, wanders, and eventually falls through the door by accident. From then on it has something to go on. Every arrow, every number and every point on the curve below is that run — not a recording of one.",
+        lede: "Press Run. The agent starts from the corner knowing nothing, wanders, and eventually falls through the door by accident. From then on it has something to go on. Every arrow, every number and every point on the curve below is that run, not a recording of one.",
         caption:
           "One press of Step is one action: choose, move, collect the reward, update one number. Run does the same thing repeatedly, an episode at a time.",
         runLabel: "Train",
@@ -607,12 +607,12 @@ export const en = {
       policy: {
         kicker: "What it built while doing that",
         title: "A number for every move, and a route that falls out of them.",
-        lede: "The agent never stored a route. It stored one number per square per direction — how good that move turned out to be — and the route is simply what you get by always taking the largest. Left: before a single episode. Right: now.",
+        lede: "The agent never stored a route. It stored one number per square per direction (how good that move turned out to be), and the route is simply what you get by always taking the largest. Left: before a single episode. Right: now.",
         caption:
           "An arrow is not a Q-value. It is the action with the largest Q-value in that square, which is what the word policy means. The four numbers it was chosen from are below.",
         beforeTitle: "Before training",
         beforeLabel:
-          "The room before any training. Every number is zero, so every square points the same way — which is what knowing nothing looks like.",
+          "The room before any training. Every number is zero, so every square points the same way, which is what knowing nothing looks like.",
         afterTitle: (episode: number) => `After ${episode} episodes`,
         afterLabel: (episode: number) =>
           `The room after ${episode} episodes. Each square shows the action the policy selects there and how good the best move from it is. Select a square to see all four of its numbers.`,
@@ -631,7 +631,7 @@ export const en = {
       update: {
         kicker: "Why did it learn that?",
         title: "One number moved. Here is the whole reason.",
-        lede: "After every single move the agent changes exactly one number: the one for the move it just made. Everything below is the most recent update from the run above — the numbers it held, what the world paid, and what it holds now.",
+        lede: "After every single move the agent changes exactly one number: the one for the move it just made. Everything below is the most recent update from the run above: the numbers it held, what the world paid, and what it holds now.",
         caption:
           "Nothing on this page is an example. If no move has been made, nothing is shown, because an update that did not happen is not worth looking at.",
         nothingYet: "No move has been made yet. Press Step, above or here.",
@@ -646,7 +646,7 @@ export const en = {
           landed: string,
           reward: string,
         ) =>
-          `From row ${row}, column ${col} it moved ${action} — ${choice}. It ${landed}, and the world paid ${reward}.`,
+          `From row ${row}, column ${col} it moved ${action}: ${choice}. It ${landed}, and the world paid ${reward}.`,
         choice: {
           explored: "a random move, not its current best",
           exploited: "its current best move",
@@ -668,9 +668,9 @@ export const en = {
         tableCaption: "Every term of the update, with the value it had for this move.",
         terms: {
           before: "Q(s,a) before",
-          reward: "r — collected",
-          bootstrap: "γ · max Q(s′,a′) — best from where it landed",
-          target: "r + γ · max Q(s′,a′) — what it aims at",
+          reward: "r: collected",
+          bootstrap: "γ · max Q(s′,a′): best from where it landed",
+          target: "r + γ · max Q(s′,a′): what it aims at",
           error: "the gap it is closing",
           after: "Q(s,a) after",
         },
@@ -686,7 +686,7 @@ export const en = {
         title: "Three dials, and what each one actually changes.",
         lede: "Move any of these and the run restarts from episode one, because there is no such thing as changing the learning rate halfway through. Then press Train in the section above and watch the curve.",
         caption:
-          "This room is small. Sweeping all three showed the agent solves it from almost any setting — what these change is how fast the curve settles, how noisy it is on the way, and whether it settles at all.",
+          "This room is small. Sweeping all three showed the agent solves it from almost any setting: what these change is how fast the curve settles, how noisy it is on the way, and whether it settles at all.",
         curveTitle: "Reward per episode, this run",
         curveEmpty: "Press Train above to fill this in.",
         curveHint: "Smoothed over ten episodes. Every point is an episode that ran.",
@@ -705,7 +705,7 @@ export const en = {
         epsilon: {
           label: "Exploration ε",
           valueText: (value: string) => `Exploration ${value}`,
-          what: "How often it takes a random move instead of its current best. Decays across the run.",
+          what: "How often it explores at random instead of exploiting its current best. That trade has a name: exploration against exploitation. Decays across the run.",
         },
         restore: "Back to the defaults",
         settledLabel: "Settled at episode",
@@ -723,7 +723,7 @@ export const en = {
       challenge: {
         kicker: "Now you set the reward",
         title: "Can you make it learn this?",
-        lede: "Three tasks. In each one the agent is doing something you did not ask for, and one number is yours to change. None of them can be passed by putting a slider anywhere in particular — the agent has to actually do the thing.",
+        lede: "Three tasks. In each one the agent is doing something you did not ask for, and one number is yours to change. None of them can be passed by putting a slider anywhere in particular: the agent has to actually do the thing.",
         puzzleLabel: "Task",
         levers: { tileReward: "What the marked square pays", epsilon: "Exploration ε, held constant" },
         leverValue: (name: string, value: string) => `${name}: ${value}`,
@@ -735,14 +735,14 @@ export const en = {
           cross: {
             title: "Walk over it",
             brief:
-              "The square is worth −3, so the agent takes the two extra moves to walk around it. Make it walk over the square on its way to the door instead — without making it stop there.",
+              "The square is worth −3, so the agent takes the two extra moves to walk around it. Make it walk over the square on its way to the door instead, without making it stop there.",
             lesson:
               "There is a band, not a threshold. The square has to be worth more than the detour it saves and less than the door it would replace.",
           },
           camp: {
             title: "Make it give up on the door",
             brief:
-              "The square is worth nothing, so the agent crosses it and carries on. Make it stop going to the door at all. You are not allowed to move the door or the walls — only what the square pays.",
+              "The square is worth nothing, so the agent crosses it and carries on. Make it stop going to the door at all. You are not allowed to move the door or the walls: only what the square pays.",
             lesson:
               "You never told it to stop. You told it the square was worth more than finishing, and it believed you. This is the whole lab in one slider.",
           },
@@ -757,7 +757,7 @@ export const en = {
         behaviour: {
           avoided: "it walks around the square and reaches the door",
           passed: "it crosses the square on the way and reaches the door",
-          stayed: "it never reaches the door — it stays by the square",
+          stayed: "it never reaches the door: it stays by the square",
         },
         behaviourShort: { avoided: "walks around", passed: "walks over", stayed: "stays put" },
         behaviourLabel: "What it does",
@@ -767,7 +767,7 @@ export const en = {
         verdict: {
           solved: "That is it. The agent does what the task asked.",
           untouched: "Move the slider and the agent retrains from scratch.",
-          notYet: (behaviour: string) => `Not yet — ${behaviour}.`,
+          notYet: (behaviour: string) => `Not yet: ${behaviour}.`,
         },
         mapLabel: (behaviour: string, steps: number) =>
           `The room after training with these settings: ${behaviour} in ${steps} moves.`,
@@ -800,14 +800,14 @@ export const en = {
 
       swapLabel: "Change one word",
       swapHint:
-        "Swap the fifth word and watch what happens to the word you have selected — even though you did not touch it.",
+        "Swap the fifth word and watch what happens to the word you have selected, even though you did not touch it.",
       dogNote:
         "Two animals now, and the model split its attention almost evenly between them. It moved, but it still cannot tell which one was tired.",
 
       reveal: {
         kicker: "How did it decide?",
         title: "One number, from beginning to end.",
-        lede: "This follows whatever word is selected above. Change the selection, or change the swapped word, and every step here changes with it — because it is the same calculation, not a second copy of it.",
+        lede: "This follows whatever word is selected above. Change the selection, or change the swapped word, and every step here changes with it, because it is the same calculation, not a second copy of it.",
       },
 
       trace: {
@@ -817,12 +817,12 @@ export const en = {
           "Everything below is this one word comparing itself with each of the others, in order.",
 
         step2: "What it is looking for",
-        step2Title: (word: string) => `“${word}” asks for this — its query`,
+        step2Title: (word: string) => `“${word}” asks for this: its query`,
         step2Note:
-          "A bar to the right is a property the word wants; a bar to the left is one it is actively not looking for. These are the model's own words for what it wants, made readable — a real model's are not readable at all.",
+          "A bar to the right is a property the word wants; a bar to the left is one it is actively not looking for. These are the model's own words for what it wants, made readable: a real model's are not readable at all.",
 
         step3: "What the other word offers",
-        step3Title: (word: string) => `“${word}” offers this — its key`,
+        step3Title: (word: string) => `“${word}” offers this: its key`,
         step3Note:
           "Query and key come from two different projections on purpose: what a word offers is not the same as what it wants. That is why attention is more than measuring similarity.",
 
@@ -834,7 +834,7 @@ export const en = {
         step5: "Share of 100%",
         step5Title: (share: number) => `Which becomes ${share}% of the attention`,
         step5Note:
-          "The shares always add up to 100%, so they are not scores — they are portions. That is the whole reason a new competitor makes every other share smaller, even the ones you were watching.",
+          "The shares always add up to 100%, so they are not scores: they are portions. That is the whole reason a new competitor makes every other share smaller, even the ones you were watching.",
         tableCaption: "Match and share of attention for the strongest few words.",
         colToken: "Word",
         colScore: "Match",
@@ -853,16 +853,16 @@ export const en = {
       },
 
       honesty:
-        "This is a tiny educational self-attention model. Its seven features and three projection matrices were written by hand for this experiment — they were not learned from text. A real model learns representations nobody named, in hundreds of dimensions. What is real here is the arithmetic: the same comparison, scaling, softmax and weighted sum a Transformer performs.",
+        "This is a tiny educational self-attention model. Its seven features and three projection matrices were written by hand for this experiment: they were not learned from text. A real model learns representations nobody named, in hundreds of dimensions. What is real here is the arithmetic: the same comparison, scaling, softmax and weighted sum a Transformer performs.",
 
       recap: {
         lessons: [
           "Attention hands out a fixed 100% of focus across the context, so every word gets a share rather than a yes or a no.",
-          "Changing one word changes the shares of the others — including words you did not touch, because they are all dividing the same 100%.",
+          "Changing one word changes the shares of the others, including words you did not touch, because they are all dividing the same 100%.",
           "Attention is one mechanism inside a much larger model. It decides where to look and what to mix in; it does not, on its own, understand the sentence.",
         ],
         footer:
-          "The words here were given seven hand-written features, so the model can tell a cat from a ball but not a ball from a mirror. Real Transformers stack many heads and many layers to build far richer representations — which is a different and much longer story than the one this page tells.",
+          "The words here were given seven hand-written features, so the model can tell a cat from a ball but not a ball from a mirror. Real Transformers stack many heads and many layers to build far richer representations, which is a different and much longer story than the one this page tells.",
       },
       pickLabel: "Word",
       wholeRowLabel: "Every share, in sentence order",
@@ -885,7 +885,7 @@ export const en = {
       scale: {
         kicker: "Why divide at all?",
         title: "Take the divisor away and the shares collapse.",
-        lede: "Dividing by the square root of the number of axes is the one step whose effect you cannot see in the answer — the result looks reasonable either way until you compare it with the alternative. So here is the same row twice: once as this model computes it, and once with the division skipped.",
+        lede: "Dividing by the square root of the number of axes is the one step whose effect you cannot see in the answer: the result looks reasonable either way until you compare it with the alternative. So here is the same row twice: once as this model computes it, and once with the division skipped.",
         collapse:
           "Skipping it leaves the scores larger, and a softmax over larger numbers is sharper: almost the whole budget goes to one word and the rest round away to nothing. The division is what leaves a distribution there to read at all.",
         note: "Both columns are computed here by the same softmax, on the same scores. Only the divided one is used anywhere else on this page.",
@@ -906,7 +906,7 @@ export const en = {
       mix: {
         kicker: "What the shares are spent on",
         title: "The shares are coefficients, not a verdict.",
-        lede: "Each word that was attended to hands over its value vector in proportion to its share. Add those up and you have what the selected word becomes — which is what the next layer of a real model would receive.",
+        lede: "Each word that was attended to hands over its value vector in proportion to its share. Add those up and you have what the selected word becomes, which is what the next layer of a real model would receive.",
         tableCaption: "Share and value vector for the three heaviest contributors.",
         outputLabel: "The blended output, axis by axis",
       },
@@ -1015,7 +1015,7 @@ export const en = {
         label: (x: string, y: string, kappa: string, angle: string) =>
           `Contour map with a movable point at ${x}, ${y}. Condition number ${kappa}. The descent direction is ${angle} degrees away from the straight line to the minimum.`,
         caption:
-          "Slide the curvature ratio down to 1 and the two arrows fold into one. Away from the axes that is the only case where they agree — and it is a case a one-dimensional picture cannot show at all, because along a single axis a gradient is just a sign.",
+          "Slide the curvature ratio down to 1 and the two arrows fold into one. Away from the axes that is the only case where they agree, and it is a case a one-dimensional picture cannot show at all, because along a single axis a gradient is just a sign.",
       },
 
       rate: {
@@ -1047,7 +1047,7 @@ export const en = {
         lede: "Momentum keeps a running velocity: v ← β·v + ∇f, then θ ← θ − η·v. Pushes that keep pointing the same way accumulate; pushes that keep reversing cancel. Raise β and watch the second mark move.",
         marks: { plain: "plain limit", momentum: "momentum limit" },
         caption:
-          "The stability condition is η·max(a,b) < 2(1+β), wider than plain descent's η·max(a,b) < 2 — so momentum can carry a larger step size than plain descent can. What it charges for that range is oscillation. Hold the step size still and raise β: the run gets shorter, and then past a point it gets longer again.",
+          "The stability condition is η·max(a,b) < 2(1+β), wider than plain descent's η·max(a,b) < 2, so momentum can carry a larger step size than plain descent can. What it charges for that range is oscillation. Hold the step size still and raise β: the run gets shorter, and then past a point it gets longer again.",
         announce: (
           plainSteps: number,
           plainStatus: string,
@@ -1073,10 +1073,10 @@ export const en = {
         rowGd: (rate: string) => `Gradient descent step, η = ${rate}`,
         rowAdam: (rate: string) => `Adam step, η = ${rate}`,
         firstStepNote:
-          "After the bias correction the first update is η·g ÷ (|g| + ε). The size of the gradient cancels, and both axes move by about η — which is why the correction has to be real rather than skipped.",
+          "After the bias correction the first update is η·g ÷ (|g| + ε). The size of the gradient cancels, and both axes move by about η, which is why the correction has to be real rather than skipped.",
         rate: "Adam step size η",
         honesty:
-          "None of that says Adam converges faster. On the κ = 60 valley above, sweeping 300 step sizes, Adam's quickest result is 17 steps, while a well-chosen momentum setting reaches the same tolerance in about 10 — and at a modest step size such as 0.10, Adam needs 66. There is still a step size to choose, and choosing it badly still costs.",
+          "None of that says Adam converges faster. On the κ = 60 valley above, sweeping 300 step sizes, Adam's quickest result is 17 steps, while a well-chosen momentum setting reaches the same tolerance in about 10, and at a modest step size such as 0.10, Adam needs 66. There is still a step size to choose, and choosing it badly still costs.",
       },
 
       challenge: {
@@ -1114,7 +1114,7 @@ export const en = {
           ) =>
             `η = ${rate} is above this landscape's stability limit of ${limitHere}, so the run explodes. The gentler landscape's limit is ${limitThere}, and the very same η settles there in ${steps} steps. The step size did not change. The surface did.`,
           worksOnBoth: (steps: number) =>
-            `This η converges on both landscapes — here, and in ${steps} steps on the gentler one. Push it upwards and watch which of the two gives out first.`,
+            `This η converges on both landscapes: here, and in ${steps} steps on the gentler one. Push it upwards and watch which of the two gives out first.`,
           worksOnNeither:
             "This η reaches the goal on neither landscape within the steps allowed. It is too small rather than too large.",
           mapLabel: (rate: string, status: string, steps: number) =>
@@ -1129,7 +1129,7 @@ export const en = {
           c2: {
             title: "Too big",
             brief:
-              "This begins above the stability limit and explodes on the first Run. Find a step size that works — then look at what that same number does on a gentler surface.",
+              "This begins above the stability limit and explodes on the first Run. Find a step size that works, then look at what that same number does on a gentler surface.",
           },
           c3: {
             title: "Narrow valley",
@@ -1142,12 +1142,12 @@ export const en = {
       recap: {
         lessons: [
           "The negative gradient points downhill, not at the minimum. Away from the axes the two coincide only where the curvature is the same in every direction.",
-          "The largest step size a landscape tolerates is 2 ÷ its steepest curvature — a property of the surface, not of the algorithm. Below half of it the approach is direct, between the two the path overshoots and still closes in, and above it the run leaves.",
+          "The largest step size a landscape tolerates is 2 ÷ its steepest curvature: a property of the surface, not of the algorithm. Below half of it the approach is direct, between the two the path overshoots and still closes in, and above it the run leaves.",
           "The condition number κ is the steeper curvature divided by the flatter one, and it is what stops a single step size from serving both directions: the flat axis is still crawling while the steep one is already at its ceiling.",
           "Momentum widens the stable range to η·max(a,b) < 2(1+β) and can cut a long zig-zag short; Adam scales each coordinate by its own gradient history, so a millionfold gap in gradient size is not a millionfold gap in step size. Both still leave you a step size to choose.",
         ],
         footer:
-          "Everything here is a convex quadratic: the curvature is the same at every point, the gradient is exact, and the answer is known before you start. Real training gives up all three. What survives is the relationship you have been moving back and forth — the shape of the surface decides what step size you are allowed to take.",
+          "Everything here is a convex quadratic: the curvature is the same at every point, the gradient is exact, and the answer is known before you start. Real training gives up all three. What survives is the relationship you have been moving back and forth: the shape of the surface decides what step size you are allowed to take.",
       },
     },
 
@@ -1175,7 +1175,7 @@ export const en = {
           "This lab needs a secure connection (HTTPS) to compute hashes in your browser. Opening this page over https:// should fix it.",
         unsupported:
           "Your browser did not make its hashing built-in (Web Crypto) available, so there is no digest to show. It may be disabled by a setting or an extension.",
-        note: "Nothing is faked here — without the browser's real SHA-256 there is nothing honest to display.",
+        note: "Nothing is faked here: without the browser's real SHA-256 there is nothing honest to display.",
       },
 
       figures: {
@@ -1197,7 +1197,7 @@ export const en = {
         question: "Can two different messages produce the same length of output?",
         digestLabel: "SHA-256 digest",
         caption:
-          "Type anything at all. However long the message, exactly 64 hex characters come back — and none of the message is in them.",
+          "Type anything at all. However long the message, exactly 64 hex characters come back, and none of the message is in them.",
         help: "Type a message. Its SHA-256 digest appears below the field and updates as you type.",
         announce: (start: string) => `Digest updated, now starting ${start}.`,
       },
@@ -1205,7 +1205,7 @@ export const en = {
       determinism: {
         kicker: "Same message, same digest",
         title: "It answers the same way every time.",
-        lede: "Hash the message again. Nothing is cached and nothing is copied from the run before — each press is a fresh call to SHA-256 on the same string.",
+        lede: "Hash the message again. Nothing is cached and nothing is copied from the run before: each press is a fresh call to SHA-256 on the same string.",
         hashAgain: "Hash it again",
         enough: "That is enough runs",
         empty: "No runs yet. Press the button to hash this message.",
@@ -1222,14 +1222,14 @@ export const en = {
       avalanche: {
         kicker: "One tiny change",
         title: "One keystroke rewrites everything.",
-        lede: "Change a single character and compare the two digests. Every character that differs is marked in both — struck through in the one that is gone, underlined in the one that replaced it.",
+        lede: "Change a single character and compare the two digests. Every character that differs is marked in both: struck through in the one that is gone, underlined in the one that replaced it.",
         before: "Before",
         after: "After",
         fieldLabel: "Change one character",
         help: "Edit the message. The digest before your edit and the digest after it are compared character by character above.",
         editPrompt: "Change a character in the message to compare two digests.",
         caption:
-          "The count is measured across the two real digests, bit by bit — not estimated, and not animated towards a number.",
+          "The count is measured across the two real digests, bit by bit, not estimated, and not animated towards a number.",
         announce: (changed: number, total: number, percent: number) =>
           `${changed} of ${total} bits changed, ${percent} percent of the digest.`,
       },
@@ -1245,14 +1245,14 @@ export const en = {
       challenge: {
         kicker: "The challenge",
         title: "Can you make two different messages produce the same digest?",
-        lede: "Not the whole digest — start with its first character. Each round asks for one more, and each round is sixteen times less likely than the one before. That curve is the whole of hash security, and this is the only honest way to feel it: no collision is found here, and none is faked.",
+        lede: "Not the whole digest. Start with its first character. Each round asks for one more, and each round is sixteen times less likely than the one before. That curve is the whole of hash security, and this is the only honest way to feel it: no collision is found here, and none is faked.",
         inputA: "Message A",
         inputB: "Message B",
         identical:
           "Both messages are identical, so the digests match by definition. A collision needs two different messages.",
         target: (round: number, odds: string) =>
           `Round ${round}: share the first ${round} hex character${round === 1 ? "" : "s"}. Odds per guess: 1 in ${odds}.`,
-        nextRound: (round: number) => `Round ${round} — sixteen times harder`,
+        nextRound: (round: number) => `Round ${round}, sixteen times harder`,
         keepTrying: "Keep trying",
         maxRound: "That is where people stop",
         matchedLabel: "Shared prefix",
@@ -1263,7 +1263,7 @@ export const en = {
         ladderLabel: (matched: number, total: number, round: number) =>
           `Shared prefix: ${matched} of ${total} hex characters match. This round needs ${round}.`,
         caption:
-          "Matching all 64 characters by chance is 1 in 2^256. Even the birthday shortcut needs about 2^128 hashes — hashing a trillion per second, roughly 10^19 years.",
+          "Matching all 64 characters by chance is 1 in 2^256. Even the birthday shortcut needs about 2^128 hashes: hashing a trillion per second, roughly 10^19 years.",
         announce: (matched: number, total: number, best: number, round: number) =>
           `${matched} of ${total} leading characters match. Best so far ${best}. Round ${round} needs ${round}.`,
       },
@@ -1275,7 +1275,7 @@ export const en = {
         items: {
           git: {
             label: "Git",
-            body: "Git identifies each commit by hashing its content and its parent's hash. Rewrite any line in history and every hash after it changes — tampering is visible.",
+            body: "Git identifies each commit by hashing its content and its parent's hash. Rewrite any line in history and every hash after it changes, tampering is visible.",
           },
           passwords: {
             label: "Passwords",
@@ -1299,7 +1299,7 @@ export const en = {
       recap: {
         lessons: [
           "The same message always produces the same digest, and the digest is the same length whatever went in",
-          "Changing one character changes about half of the 256 bits — the avalanche effect, measured here rather than asserted",
+          "Changing one character changes about half of the 256 bits: the avalanche effect, measured here rather than asserted",
           "Each extra hex character two digests share is sixteen times less likely, which is why matching all 64 is out of reach",
         ],
         footer:
@@ -1329,7 +1329,7 @@ export const en = {
         `${points} points in two classes. The network currently gets ${accuracy}% of the training points right; the shaded background is the class it predicts everywhere else.`,
       datasets: {
         gauss: { label: "Two blobs", hint: "One straight line is enough." },
-        circle: { label: "Circle", hint: "Needs a curve — no line can do it." },
+        circle: { label: "Circle", hint: "Needs a curve: no line can do it." },
         xor: { label: "XOR", hint: "The classic: impossible without a hidden layer." },
         spiral: { label: "Spiral", hint: "Brutal. Bring neurons and patience." },
       },
@@ -1342,15 +1342,15 @@ export const en = {
         idle: "Run them side by side and watch where the left one gives up.",
       },
       layersPanels: {
-        flat: { title: "No hidden layer", subtitle: "Two inputs wired straight to the output — a single neuron." },
+        flat: { title: "No hidden layer", subtitle: "Two inputs wired straight to the output, a single neuron." },
         deep: { title: "One hidden layer", subtitle: "The same thing, with four neurons in between." },
       },
       descentNote: {
         overshoot:
-          "Overshot. Each step jumps past the bottom and lands further up the far wall — the loss explodes.",
+          "Overshot. Each step jumps past the bottom and lands further up the far wall, the loss explodes.",
         deep: "Settled in the deepest valley. This is what a healthy training run looks like.",
         shallow:
-          "Settled — but in the shallow basin on the right. Gradient descent only ever sees the slope under its feet, never the whole landscape.",
+          "Settled, but in the shallow basin on the right. Gradient descent only ever sees the slope under its feet, never the whole landscape.",
         rolling: "Follow the tangent line: its steepness is the only information the step gets.",
       },
       neuronLabel: (w1: string, w2: string, bias: string) =>
@@ -1386,7 +1386,7 @@ export const en = {
         newSample: "New sample",
         insideTitle: "The network, from the inside",
         insideBody:
-          "Same network, second view. Every square is one neuron’s own answer across the whole input square — the features the layer before it built, and what the next layer has to work with.",
+          "Same network, second view. Every square is one neuron’s own answer across the whole input square: the features the layer before it built, and what the next layer has to work with.",
         canvasLabel: "Decision surface with the training data drawn on top.",
         playPause: "Space",
       },
@@ -1403,7 +1403,7 @@ export const en = {
       neuron: {
         weightsAndBias: "Weights and bias",
         caption:
-          "Notice what you cannot do: however you drag these three sliders, the boundary stays a straight line. That is the whole limitation of one neuron \u2014 and the reason the next section exists.",
+          "Notice what you cannot do: however you drag these three sliders, the boundary stays a straight line. That is the whole limitation of one neuron, and the reason the next section exists.",
         notes: {
           tanh: "Squashes to \u22121\u20261. Smooth, symmetric, a safe default.",
           relu: "Passes positives through, flattens negatives. Fast and the modern default.",
@@ -1411,12 +1411,12 @@ export const en = {
         },
         kicker: "Zoom all the way in",
         title: "A neuron is smaller than you think.",
-        lede: "No memory, no logic, no cleverness. Three numbers and a squash — that is the entire unit the whole field is built from.",
+        lede: "No memory, no logic, no cleverness. Three numbers and a squash: that is the entire unit the whole field is built from.",
         weight1: "Weight on x₁",
         weight2: "Weight on x₂",
         bias: "Bias",
         activation: "Activation",
-        note: "Notice what you cannot do: however you drag these three sliders, the boundary stays a straight line. That is the whole limitation of one neuron — and the reason the next section exists.",
+        note: "Notice what you cannot do: however you drag these three sliders, the boundary stays a straight line. That is the whole limitation of one neuron, and the reason the next section exists.",
         canvasLabel: "The output of a single neuron across the input square.",
         activations: {
           tanh: "Squashes to −1…1. Smooth, symmetric, a safe default.",
@@ -1445,7 +1445,7 @@ export const en = {
         slopeHint: "the only number backprop hands each weight",
         kicker: "How it learns",
         title: "Downhill, one small step at a time.",
-        lede: "Learning is not insight. It is a ball on a slope, moving against the gradient — and the size of its steps decides everything.",
+        lede: "Learning is not insight. It is a ball on a slope, moving against the gradient, and the size of its steps decides everything.",
         learningRate: "Learning rate",
         roll: "Roll",
         oneStep: "One step",
@@ -1469,11 +1469,11 @@ export const en = {
           },
           loss: {
             title: "Loss",
-            body: "Compare the guess to the true label and square the difference. One number for the whole network — and the only thing it is ever trying to make smaller.",
+            body: "Compare the guess to the true label and square the difference. One number for the whole network, and the only thing it is ever trying to make smaller.",
           },
           backprop: {
             title: "Backpropagation",
-            body: "Walk the error backwards through the layers with the chain rule. Every single weight learns how much it contributed — its gradient.",
+            body: "Walk the error backwards through the layers with the chain rule. Every single weight learns how much it contributed, its gradient.",
           },
           descent: {
         slopeHint: "the only number backprop hands each weight",
@@ -1489,7 +1489,7 @@ export const en = {
         testAccuracy: "Test accuracy",
         target: "Target",
         objectiveLine: (accuracy: string) =>
-          `Reach ${accuracy} test accuracy on the spiral \u2014 using as few hidden neurons as you can.`,
+          `Reach ${accuracy} test accuracy on the spiral: using as few hidden neurons as you can.`,
         solvedNote: "Solved. Now take a neuron away and try again.",
         noBest: "Nothing yet. Start with plenty of neurons, then take them away until it breaks.",
         bestLine: (neurons: number, accuracy: string, epoch: number) =>
@@ -1520,15 +1520,15 @@ export const en = {
 
       recap: {
         lessons: [
-          "A neuron is a weighted sum and a squash — on its own, only ever a straight line",
+          "A neuron is a weighted sum and a squash: on its own, only ever a straight line",
           "Hidden layers bend that line; XOR is impossible without one",
           "Every neuron learns its own feature, and the next layer combines them",
           "Loss says how wrong the network is; backprop says which weight to blame",
-          "Gradient descent nudges every weight downhill — the learning rate is the step size",
+          "Gradient descent nudges every weight downhill: the learning rate is the step size",
           "Too small and it crawls, too large and it overshoots, and neither ever sees the whole landscape",
         ],
         footer:
-          "Everything you just watched was 300 lines of plain arithmetic. The models behind today’s AI are the same four steps — with a great many more weights.",
+          "Everything you just watched was 300 lines of plain arithmetic. The models behind today’s AI are the same four steps: with a great many more weights.",
       },
     },
 
@@ -1584,12 +1584,12 @@ export const en = {
         // without telling them what to watch for.
         question: "Which square does it look at first?",
         caption:
-          "Draw a few walls, then press Run. Watch where the search actually goes — including everywhere the goal isn't.",
+          "Draw a few walls, then press Run. Watch where the search actually goes, including everywhere the goal isn't.",
       },
       bfs: {
         kicker: "Watch it think",
         title: "It spreads in layers, not lines.",
-        lede: "Step through it. Cells with a ring are known but unvisited — the frontier. Filled cells are settled: the search already knows the fewest moves to each one and will never look again.",
+        lede: "Step through it. Cells with a ring are known but unvisited: the frontier. Filled cells are settled: the search already knows the fewest moves to each one and will never look again.",
         caption:
           "Taking cells first-in, first-out is the whole trick: it settles them in order of distance, so the first route to reach the goal is the shortest one. That is breadth-first search.",
       },
@@ -1598,30 +1598,16 @@ export const en = {
         title: "Some ground is slower.",
         lede: "Mud costs 5 to enter; open ground costs 1. Run BFS across it, then Dijkstra, and compare the two numbers under the grid.",
         caption:
-          "BFS still takes the fewest moves — straight through the swamp. Dijkstra takes more steps and pays less, because it always settles the cheapest cell it knows about rather than the nearest one.",
+          "BFS still takes the fewest moves: straight through the swamp. Dijkstra takes more steps and pays less, because it always settles the cheapest cell it knows about rather than the nearest one.",
       },
       astar: {
         kicker: "Give the search a hint",
         title: "Right answer, far less looking.",
-        lede: "Dijkstra has no idea where the goal is, so it spreads evenly in every direction. A* adds an estimate of the distance left and follows it: f = g + h, where g is the cost so far and h is the guess.",
+        lede: "Dijkstra has no idea where the goal is, so it spreads evenly in every direction. A* adds an estimate of the distance left and follows it: f = g + h, where g is the cost so far and h is the heuristic, an estimate of what is left.",
         caption:
-          "Same path, same cost — look at Explored. The guess here is Manhattan distance, which can never overstate what is left on a four-way grid, and that is exactly why A* gives up nothing by trusting it.",
+          "Same path, same cost. Look at Explored. The heuristic here is Manhattan distance. It can never overstate what is left on a four-way grid, which makes it admissible, and that is exactly why A* gives up nothing by trusting it.",
       },
       challenge: {
-        architecture: "Architecture",
-        neuronsUsed: "Neurons used",
-        testAccuracy: "Test accuracy",
-        target: "Target",
-        objectiveLine: (accuracy: string) =>
-          `Reach ${accuracy} test accuracy on the spiral \u2014 using as few hidden neurons as you can.`,
-        solvedNote: "Solved. Now take a neuron away and try again.",
-        noBest: "Nothing yet. Start with plenty of neurons, then take them away until it breaks.",
-        bestLine: (neurons: number, accuracy: string, epoch: number) =>
-          `Best: ${neurons} hidden neurons, at ${accuracy} after ${epoch.toLocaleString("en-US")} epochs.`,
-        canvasLabel: (neurons: number, accuracy: string, epoch: number) =>
-          `Spiral challenge: ${neurons} hidden neurons, ${accuracy} test accuracy after ${epoch} epochs.`,
-        announceSolved: (neurons: number, accuracy: string) =>
-          `Solved with ${neurons} hidden neurons at ${accuracy} test accuracy.`,
         kicker: "The challenge",
         title: "Same answer, less work.",
         lede: "Three fixed maps. Each one wants the cheapest path AND a search that settles no more cells than the budget. One of those is easy on its own; both together are the point.",
@@ -1652,7 +1638,7 @@ export const en = {
           solved: (cost: number, explored: number) =>
             `Solved. Cost ${cost}, and only ${explored} cells settled.`,
           overBudget: (explored: number, budget: number) =>
-            `Optimal path — but you explored ${explored} cells. Budget: ${budget}.`,
+            `Optimal path, but you explored ${explored} cells. Budget: ${budget}.`,
           suboptimal: (explored: number, cost: number, optimal: number) =>
             `You explored only ${explored} cells, but your path costs ${cost}. Optimal cost: ${optimal}.`,
           both: (cost: number, optimal: number, explored: number, budget: number) =>
@@ -1661,7 +1647,7 @@ export const en = {
       },
       recap: {
         lessons: [
-          "A search does not head for the goal — it spreads until the goal is one of the things it has reached",
+          "A search does not head for the goal: it spreads until the goal is one of the things it has reached",
           "BFS takes cells first-in, first-out, so it settles them in order of fewest moves",
           "Fewest moves and cheapest route are different questions once the ground stops being uniform",
           "Dijkstra always settles the cheapest cell it knows about, which is why its answer is the cheapest one",
@@ -1669,7 +1655,7 @@ export const en = {
           "The estimate never overstates the distance, so A* gives up nothing to get there faster",
         ],
         footer:
-          "Every route your phone has ever suggested came out of a loop like this one — a frontier, a settled set, and a rule for which cell to look at next.",
+          "Every route your phone has ever suggested came out of a loop like this one: a frontier, a settled set, and a rule for which cell to look at next.",
       },
     },
     // ------------------------------------------------------- probability ----
@@ -1679,7 +1665,7 @@ export const en = {
         "Four experiments that challenge your intuition about chance. Guess first, then find out how wrong the guess was.",
 
       scope:
-        "Four worked problems, not a survey of probability. Each uses a stated model \u2014 a host bound by two rules, 365 equally likely birthdays, two children each independently a boy or a girl, one published clinical table \u2014 and the answers belong to those models. Where a number is simulated it is labelled as simulated: running an experiment many times illustrates a result, it does not prove one.",
+        "Four worked problems, not a survey of probability. Each uses a stated model (a host bound by two rules, 365 equally likely birthdays, two children each independently a boy or a girl, one published clinical table), and the answers belong to those models. Where a number is simulated it is labelled as simulated: running an experiment many times illustrates a result, it does not prove one.",
 
       prediction: {
         yours: "You said",
@@ -1700,27 +1686,27 @@ export const en = {
         setup: [
           "Three doors. A car behind one of them, a goat behind each of the other two.",
           "You pick a door. It stays shut.",
-          "The host knows where the car is, and opens one of the other two — always one with a goat behind it.",
+          "The host knows where the car is, and opens one of the other two: always one with a goat behind it.",
           "Now you choose: keep your door, or take the one the host left alone.",
         ],
         coachLabel: "Questions people ask",
         coach: {
           notHalf: {
             q: "Two doors are left. Why isn't it 50/50?",
-            a: "Because the two doors did not arrive here the same way. You chose yours while you knew nothing. The other one survived a choice made by somebody who knew exactly where the car was — and who was never going to open it.",
+            a: "Because the two doors did not arrive here the same way. You chose yours while you knew nothing. The other one survived a choice made by somebody who knew exactly where the car was, and who was never going to open it.",
           },
           whySwitch: {
             q: "Why is switching better?",
             a: (stay: string, swap: string) =>
-              `Your first pick is the car ${stay} of the time, and that is the only time staying wins. The other ${swap} of the time the car is behind one of the two doors you did not pick — and the host has just shown you which of those two it is not.`,
+              `Your first pick is the car ${stay} of the time, and that is the only time staying wins. The other ${swap} of the time the car is behind one of the two doors you did not pick, and the host has just shown you which of those two it is not.`,
           },
           hostKnows: {
             q: "Does it matter that the host knows?",
-            a: "It is the whole thing. A host opening a door at random — sometimes revealing the car by accident — would leave staying and switching equally good. The host's knowledge is what makes the opened door tell you something.",
+            a: "It is the whole thing. A host opening a door at random (sometimes revealing the car by accident) would leave staying and switching equally good. The host's knowledge is what makes the opened door tell you something.",
           },
         },
         caption:
-          "The host is bound by two rules: never open your door, never open the car. Those rules are what make the reveal informative \u2014 a host opening at random would leave both choices equal.",
+          "The host is bound by two rules: never open your door, never open the car. Those rules are what make the reveal informative: a host opening at random would leave both choices equal.",
         predictQuestion: "You have played a round. Over many rounds, which does better?",
         predict: { stay: "Stay", switch: "Switch", same: "No difference" },
         predictAnswer: (value: string) => `Switching wins ${value} of the time`,
@@ -1742,7 +1728,7 @@ export const en = {
         promptPick: "Pick a door.",
         promptDecide: (opened: number, other: number) =>
           `The host opened door ${opened} and it was a goat. Keep your door, or take door ${other}?`,
-        resultLine: (strategy: string, result: string) => `You chose to ${strategy.toLowerCase()} \u2014 ${result}.`,
+        resultLine: (strategy: string, result: string) => `You chose to ${strategy.toLowerCase()}, ${result}.`,
         again: "Play again",
         announceOpened: (n: number) => `The host opened door ${n}. It was a goat.`,
         announceResult: (result: string) => `Round over: ${result}.`,
@@ -1765,7 +1751,7 @@ export const en = {
         // believe from the person bound by it than from a caption.
         hostPick: "Pick a door. Any of them.",
         hostReveal: (opened: number) =>
-          `I know what is behind all three. Look — door ${opened} has a goat.`,
+          `I know what is behind all three. Look: door ${opened} has a goat.`,
         hostDecide: (other: number) =>
           `So: keep the door you picked, or take door ${other}. Your call.`,
         hostWon: "You won the car.",
@@ -1773,7 +1759,7 @@ export const en = {
         // After the round, in three widening steps.
         explainWhat: "Switching wins about twice as often as staying.",
         explainWhy:
-          "Your first pick was one door out of three, so it was the car one time in three. That leaves two times in three for the other two doors together — and the host has just opened the one of those two that was never the car.",
+          "Your first pick was one door out of three, so it was the car one time in three. That leaves two times in three for the other two doors together, and the host has just opened the one of those two that was never the car.",
         explainMaths: (stay: string, swap: string) =>
           `Staying wins exactly when your first pick was already the car: ${stay}. Switching wins in every other case: ${swap}.`,
         batchInvite: "Two doors, and it is not a coin flip. Want to see it over 1,000 games?",
@@ -1803,11 +1789,11 @@ export const en = {
           },
           realBirthdays: {
             q: "Are birthdays really spread evenly?",
-            a: "No \u2014 real birthdays cluster by season, and clustering makes matches more likely, not less. So the even-spread model used here gives the cautious answer; reality passes 50% slightly sooner.",
+            a: "No: real birthdays cluster by season, and clustering makes matches more likely, not less. So the even-spread model used here gives the cautious answer; reality passes 50% slightly sooner.",
           },
         },
         caption:
-          "The model: 365 equally likely birthdays, no leap years, everyone independent. Real birthdays cluster by season, which nudges the true chance slightly higher \u2014 so this is the conservative version.",
+          "The model: 365 equally likely birthdays, no leap years, everyone independent. Real birthdays cluster by season, which nudges the true chance slightly higher, so this is the conservative version.",
         predictQuestion: "Where do you think the chance first passes 50%?",
         predict: { count: (n: number) => `${n} people` },
         predictAnswer: (n: number, value: string) => `${n} people, at ${value}`,
@@ -1823,7 +1809,7 @@ export const en = {
         tableCaption: (n: number) => `Exact and simulated chance of a shared birthday among ${n} people.`,
         exactRow: "Exact probability",
         simulatedRow: (rooms: number) => `Simulated (${rooms.toLocaleString("en-US")} rooms)`,
-        stale: (n: number) => `run again \u2014 last run was ${n} people`,
+        stale: (n: number) => `run again: last run was ${n} people`,
         reading: (n: number, pairs: number) =>
           `${n} people make ${pairs.toLocaleString("en-US")} different pairs, and every one of them is a chance to match.`,
         peopleFigure: "People",
@@ -1839,7 +1825,7 @@ export const en = {
         personName: (n: number) => `Person ${n}`,
         personLabel: (n: number, day: string) => `Person ${n}, born ${day}`,
         personMatchLabel: (n: number, day: string, other: number) =>
-          `Person ${n}, born ${day} — the same day as person ${other}`,
+          `Person ${n}, born ${day}: the same day as person ${other}`,
         justArrived: "just arrived",
         sameDay: "same day",
         roomEmpty: "Nobody is in the room yet.",
@@ -1861,7 +1847,7 @@ export const en = {
         title: "A family has two children. Are both boys?",
         setup: [
           "A family has two children, an older one and a younger one.",
-          "Each child is a boy or a girl, and each is equally likely \u2014 so there are four equally likely families.",
+          "Each child is a boy or a girl, and each is equally likely, so there are four equally likely families.",
           "Somebody tells you one true sentence about this family.",
           "Your question: what are the chances both children are boys?",
         ],
@@ -1870,19 +1856,19 @@ export const en = {
           notHalf: {
             q: "One child is a boy, so isn't the other one just 50/50?",
             a: (value: string) =>
-              `That would be the answer to a different sentence \u2014 \u201cthe older one is a boy\u201d. What you were told is that at least one of the two is a boy, which does not say which one. Three of the four families fit that sentence and only one of them is two boys, so the chance is ${value}.`,
+              `That would be the answer to a different sentence: \u201cthe older one is a boy\u201d. What you were told is that at least one of the two is a boy, which does not say which one. Three of the four families fit that sentence and only one of them is two boys, so the chance is ${value}.`,
           },
           twoWays: {
             q: "Why do boy-then-girl and girl-then-boy count separately?",
-            a: "Because they are different families, and they are each as likely as two boys. A family with one of each is twice as easy to end up with as a family with two boys \u2014 there are two ways to get it and only one way to get BB.",
+            a: "Because they are different families, and they are each as likely as two boys. A family with one of each is twice as easy to end up with as a family with two boys: there are two ways to get it and only one way to get BB.",
           },
           wording: {
             q: "How can the wording change the answer?",
-            a: "The wording is the evidence. \u201cAt least one is a boy\u201d rules out one family; \u201cthe older one is a boy\u201d rules out two. Fewer families left, and the two boys are a bigger share of what remains. Nothing about any family changed \u2014 only what you were told.",
+            a: "The wording is the evidence. \u201cAt least one is a boy\u201d rules out one family; \u201cthe older one is a boy\u201d rules out two. Fewer families left, and the two boys are a bigger share of what remains. Nothing about any family changed: only what you were told.",
           },
         },
         caption:
-          "This assumes each child is independently a boy or a girl with probability 1/2, and that the clue is exactly as written. A third version \u2014 you meet one child at random and it is a boy \u2014 gives 1/2 again, and is not modelled here.",
+          "This assumes each child is independently a boy or a girl with probability 1/2, and that the clue is exactly as written. A third version (you meet one child at random and it is a boy) gives 1/2 again, and is not modelled here.",
         predictQuestion: "Two children, at least one a boy. Chance both are boys?",
         predict: { half: "1/2", third: "1/3", quarter: "1/4" },
         predictAnswer: (value: string) => `1/3, or ${value}`,
@@ -1906,7 +1892,7 @@ export const en = {
         answerHeader: "Both boys",
         explain: {
           atLeastOneBoy:
-            "Ruling out GG leaves three outcomes, and only one of them is BB. The clue says nothing about which child is the boy, so GB and BG both survive \u2014 and together they outnumber BB two to one.",
+            "Ruling out GG leaves three outcomes, and only one of them is BB. The clue says nothing about which child is the boy, so GB and BG both survive, and together they outnumber BB two to one.",
           firstIsBoy:
             "Naming the first child rules out GG and GB together, leaving two outcomes. Now BB is one of two rather than one of three. Nothing about the family changed; the sentence did.",
         },
@@ -1928,7 +1914,7 @@ export const en = {
         familiesTitle: "The four families, all equally likely",
         explainWhat: "Being told about one child changes what the other one probably is.",
         explainWhy:
-          "“At least one is a boy” does not say which one. It only rules out the family with two girls, and two of the three families left have a girl in them. Say instead that the older child is a boy and you rule out two families, not one — same family, different sentence, different answer.",
+          "“At least one is a boy” does not say which one. It only rules out the family with two girls, and two of the three families left have a girl in them. Say instead that the older child is a boy and you rule out two families, not one: same family, different sentence, different answer.",
         explainMaths: (kept: number, value: string) =>
           `${kept} of the four families fit the clue, and one of those ${kept} is two boys: ${value}.`,
         announce: (clue: string, kept: number, value: string) =>
@@ -1940,14 +1926,14 @@ export const en = {
         title: "Which treatment would you choose?",
         setup: [
           "Two treatments for kidney stones, A and B, from a real 1986 study.",
-          "Patients arrive with either small stones or large stones \u2014 large ones are the harder cases.",
+          "Patients arrive with either small stones or large stones: large ones are the harder cases.",
           "The table shows how each treatment did in each group, and how it did across both groups together.",
           "Read it, and pick the treatment you would want.",
         ],
         // The name arrives here, after the reversal has been seen and not
         // before: it is a label for something the visitor has already noticed.
         named:
-          "What you are looking at has a name: Simpson's paradox \u2014 a comparison that reverses when the groups are added together.",
+          "What you are looking at has a name: Simpson's paradox: a comparison that reverses when the groups are added together.",
         coachLabel: "Questions people ask",
         coach: {
           howBoth: {
@@ -1960,13 +1946,13 @@ export const en = {
           },
           whichBelieve: {
             q: "So which number should I believe?",
-            a: "The group rows, when you are choosing a treatment for one patient \u2014 because that patient has either small stones or large ones, never an average of both. The combined row answers a different question: what happened to this particular mix of patients.",
+            a: "The group rows, when you are choosing a treatment for one patient, because that patient has either small stones or large ones, never an average of both. The combined row answers a different question: what happened to this particular mix of patients.",
           },
         },
         caption:
           "The per-group success rates are from Charig et al. (1986), a comparison of two kidney-stone treatments. The sliders move patients between the groups; the rates stay put. Every percentage is the counts printed next to it.",
         predictQuestion: "Can one treatment win in every group and still lose overall?",
-        predict: { impossible: "No \u2014 that is impossible", possible: "Yes \u2014 it can happen" },
+        predict: { impossible: "No, that is impossible", possible: "Yes, it can happen" },
         predictAnswer: "Yes, and the table below is a real example",
         tableCaption: "Success rates and counts per group and treatment, with the aggregate.",
         groupHeader: "Group",
@@ -2019,9 +2005,9 @@ export const en = {
           `Both groups point to ${leader}. Now add the two groups together.`,
         explainWhat: "The winner in every group can lose once the groups are added up.",
         explainWhy:
-          "The two treatments were not given to the same kind of patient. Open surgery took most of the large stones — the hard cases — and the keyhole procedure took most of the small ones. Adding the groups together mixes “which treatment” with “which patients”, and the patient mix is the stronger effect.",
+          "The two treatments were not given to the same kind of patient. Open surgery took most of the large stones (the hard cases) and the keyhole procedure took most of the small ones. Adding the groups together mixes “which treatment” with “which patients”, and the patient mix is the stronger effect.",
         explainMaths:
-          "Each overall rate is a weighted average of that treatment's two group rates, weighted by how many patients were in each group. Different weights, different average — even with the group rates fixed.",
+          "Each overall rate is a weighted average of that treatment's two group rates, weighted by how many patients were in each group. Different weights, different average, even with the group rates fixed.",
         illustrative:
           "Counts from a 1986 published comparison, used here to show an effect in data. Not medical advice.",
         announce: (a: string, b: string, reversed: string) =>
@@ -2036,7 +2022,7 @@ export const en = {
           "Adding groups together can reverse the comparison inside them, whenever the groups were not filled the same way.",
         ],
         footer:
-          "Each of these is a worked problem with a stated model, not a general rule about chance. The exact probabilities are computed in closed form; the simulated ones come from running the experiment against a seeded generator and are always labelled as such. Where a question is genuinely ambiguous \u2014 the two-children problem is the clearest case \u2014 the assumption is written down rather than chosen quietly.",
+          "Each of these is a worked problem with a stated model, not a general rule about chance. The exact probabilities are computed in closed form; the simulated ones come from running the experiment against a seeded generator and are always labelled as such. Where a question is genuinely ambiguous (the two-children problem is the clearest case), the assumption is written down rather than chosen quietly.",
       },
     },
 
@@ -2095,7 +2081,7 @@ export const en = {
       race: {
         question: "Which one finishes first?",
         oneButton: "One button. Both start from the same data.",
-        bothDone: "Same answer — and one of them asked a fraction of the questions.",
+        bothDone: "Same answer, and one of them asked a fraction of the questions.",
         sorted: "sorted",
         caption: "Same array, same answer. The counters are not.",
         panelLabel: (title: string, size: number, state: string) =>
@@ -2111,7 +2097,7 @@ export const en = {
       data: {
         kicker: "Draw the data",
         title: "The work is in the data.",
-        lede: "Reshape the chart — drag across it, or pick a shape — then sort it again.",
+        lede: "Reshape the chart (drag across it, or pick a shape), then sort it again.",
         caption:
           "Selection Sort asks 496 questions here every time, sorted or shuffled or reversed, because it checks every remaining pair regardless. Insertion Sort's number moves with the shape you draw.",
       },
@@ -2120,7 +2106,7 @@ export const en = {
         title: "It isn't how many are wrong.",
         lede: "Start from the ordered shape. Drag one bar far from where it belongs, then instead nudge three bars slightly. Compare what each costs.",
         caption:
-          "An inversion is a pair in the wrong order. This insertion sort shifts once for every inversion in the array it was given — so one value far from home can cost more than several small mistakes.",
+          "An inversion is a pair in the wrong order. This insertion sort shifts once for every inversion in the array it was given, so one value far from home can cost more than several small mistakes.",
       },
       challenge: {
         architecture: "Architecture",
@@ -2128,7 +2114,7 @@ export const en = {
         testAccuracy: "Test accuracy",
         target: "Target",
         objectiveLine: (accuracy: string) =>
-          `Reach ${accuracy} test accuracy on the spiral \u2014 using as few hidden neurons as you can.`,
+          `Reach ${accuracy} test accuracy on the spiral: using as few hidden neurons as you can.`,
         solvedNote: "Solved. Now take a neuron away and try again.",
         noBest: "Nothing yet. Start with plenty of neurons, then take them away until it breaks.",
         bestLine: (neurons: number, accuracy: string, epoch: number) =>
@@ -2139,7 +2125,7 @@ export const en = {
           `Solved with ${neurons} hidden neurons at ${accuracy} test accuracy.`,
         kicker: "The challenge",
         title: "Cheaper depends on what you count.",
-        lede: "Three fixed arrays, three budgets — and the budget is not always about the same number.",
+        lede: "Three fixed arrays, three budgets, and the budget is not always about the same number.",
         budget: "Budget",
         atMost: (unit: string) => `${unit} at most`,
         barsChanged: "bars changed",
@@ -2161,7 +2147,7 @@ export const en = {
           },
           "fewest-writes": {
             title: "Fewest writes",
-            brief: "Ask as many questions as you like — just don't move much data.",
+            brief: "Ask as many questions as you like: just don't move much data.",
           },
           "three-edits": {
             title: "Three edits",
@@ -2181,7 +2167,7 @@ export const en = {
         lessons: [
           "Two algorithms can reach the same answer having done wildly different amounts of work",
           "Selection sort rescans the whole remainder every pass, so its cost is fixed; insertion sort walks back only as far as it must, so its cost is a property of the data",
-          "An inversion is a pair out of order and this insertion sort shifts once for each — but asking fewer questions is not the same goal as writing less data",
+          "An inversion is a pair out of order and this insertion sort shifts once for each, but asking fewer questions is not the same goal as writing less data",
         ],
         footer:
           "Real sorting libraries lean on exactly this: they hand nearly-ordered runs to an insertion sort, because on that shape the work has almost already been done.",
@@ -2194,7 +2180,7 @@ export const en = {
       description:
         "Train a tokenizer by hand and find out why what it read decides what is cheap to say.",
       honesty:
-        "A small BPE tokenizer trained for this lab on a few kilobytes of text — not the tokenizer any GPT model uses.",
+        "A small BPE tokenizer trained for this lab on a few kilobytes of text, not the tokenizer any GPT model uses.",
       nothingToTokenize: "Nothing to tokenize yet.",
       stripSummary: (label: string, count: number, list: string) =>
         `${label}. ${count} tokens: ${list}`,
@@ -2202,7 +2188,7 @@ export const en = {
       guess: {
         sectionLabel: "Guess the cuts",
         heading: "Where do you think this gets cut?",
-        lede: "A language model never sees this sentence as letters, and never quite sees it as words either. Before we say what it does see — mark the places you think it breaks the sentence apart. Then reveal.",
+        lede: "A language model never sees this sentence as letters, and never quite sees it as words either. Before we say what it does see: mark the places you think it breaks the sentence apart. Then reveal.",
         stripLabel: (sentence: string) =>
           `The sentence “${sentence}”. Mark where you think it gets cut. Use left and right arrows to move, space to place or remove a cut.`,
         cellLabel: (character: string, position: number) =>
@@ -2274,9 +2260,9 @@ export const en = {
         ) =>
           `Merge ${index}: the commonest neighbouring pair was ${left} + ${right}, seen ${frequency} times. They are now one token: ${token}. Vocabulary: ${vocabulary} pieces. The corpus costs ${tokens} tokens.`,
         exhausted: (merges: number, vocabulary: number) =>
-          `Nothing left to merge — no pair occurs more than once any more, so fusing one would be memorising rather than learning. It stopped at ${merges} merges, a vocabulary of ${vocabulary} pieces.`,
+          `Nothing left to merge: no pair occurs more than once any more, so fusing one would be memorising rather than learning. It stopped at ${merges} merges, a vocabulary of ${vocabulary} pieces.`,
         explain:
-          "That is byte-pair encoding. Count every neighbouring pair, fuse the commonest one, count again. The pieces it ends up with are its vocabulary, and each fusion is a merge. Nobody told it that “·read” is a word — it is simply what the first four rounds of counting produced, one pair at a time. Note that the space came along from the very first merge: the piece it learned is “·read”, not “read”. And “·every” stays in pieces to the end, because it only ever appears once.",
+          "That is byte-pair encoding. Count every neighbouring pair, fuse the commonest one, count again. The pieces it ends up with are its vocabulary, and each fusion is a merge. Nobody told it that “·read” is a word: it is simply what the first four rounds of counting produced, one pair at a time. Note that the space came along from the very first merge: the piece it learned is “·read”, not “read”. And “·every” stays in pieces to the end, because it only ever appears once.",
         announceFinished:
           "Training finished. No pair is left that occurs more than once, so there is nothing worth merging.",
         announceFinishedAfter: (merges: number) => `Training finished after ${merges} merges.`,
@@ -2292,7 +2278,7 @@ export const en = {
         lede: "This tokenizer read a few kilobytes of Turkish. Drag the slider to rewind its training, and edit the sentence to anything you like. The pieces are recomputed for real at every position.",
         sentenceLabel: "Your sentence",
         sentenceHint:
-          "Edit it, or write your own. Turkish or English — the tokenizer will answer either way.",
+          "Edit it, or write your own. Turkish or English: the tokenizer will answer either way.",
         mergesLearned: "Merges learned",
         mergesValueText: (merges: number, max: number) => `${merges} of ${max} merges`,
         untrained: "Untrained",
@@ -2302,14 +2288,14 @@ export const en = {
           `Training the tokenizer… ${done} of ${total} merges.`,
         ready: "The tokenizer has finished training. Drag the merges slider.",
         explain:
-          "At zero merges every character is its own token, because the tokenizer knows nothing but letters. Drag right and watch “·ev · ler · imiz · den” become “·ev · lerimiz · den” and then “·evlerimiz · den”. Those pieces are Turkish suffixes, and nothing in the algorithm knows what a suffix is — they are simply the neighbours that kept turning up together.",
+          "At zero merges every character is its own token, because the tokenizer knows nothing but letters. Drag right and watch “·ev · ler · imiz · den” become “·ev · lerimiz · den” and then “·evlerimiz · den”. Those pieces are Turkish suffixes, and nothing in the algorithm knows what a suffix is: they are simply the neighbours that kept turning up together.",
         jumpTo: "Jump to",
       },
 
       compare: {
         kicker: "Trained on what?",
         title: "It cheapens whatever it has read.",
-        lede: "Two tokenizers, same algorithm, same amount of training, different reading. Give them both the same text and watch the bill diverge — then try to write something that closes the gap.",
+        lede: "Two tokenizers, same algorithm, same amount of training, different reading. Give them both the same text and watch the bill diverge, then try to write something that closes the gap.",
         textLabel: "The text both tokenizers get",
         textHint:
           "Change it to anything. You will not find a sentence that makes either tokenizer fluent in a language it never read.",
@@ -2318,9 +2304,9 @@ export const en = {
         englishCorpus: "a few kilobytes of English prose",
         turkishCorpus: "a few kilobytes of Turkish prose",
         tokens: "tokens",
-        cheaper: "Cheaper here — this is a language it has read.",
+        cheaper: "Cheaper here: this is a language it has read.",
         ratio: (ratio: string) =>
-          `Same characters, same algorithm, same number of merges — and one of them costs ${ratio}× what the other does. The difference is entirely in what each one was given to read.`,
+          `Same characters, same algorithm, same number of merges, and one of them costs ${ratio}× what the other does. The difference is entirely in what each one was given to read.`,
         sampleLoaded: (label: string, words: number, characters: number) =>
           `${label} sample loaded: ${words} words, ${characters} characters.`,
         samples: {
@@ -2345,7 +2331,7 @@ export const en = {
         testAccuracy: "Test accuracy",
         target: "Target",
         objectiveLine: (accuracy: string) =>
-          `Reach ${accuracy} test accuracy on the spiral \u2014 using as few hidden neurons as you can.`,
+          `Reach ${accuracy} test accuracy on the spiral: using as few hidden neurons as you can.`,
         solvedNote: "Solved. Now take a neuron away and try again.",
         noBest: "Nothing yet. Start with plenty of neurons, then take them away until it breaks.",
         bestLine: (neurons: number, accuracy: string, epoch: number) =>
@@ -2369,9 +2355,9 @@ export const en = {
         turkish: "Turkish",
         mergesLearned: "Merges learned",
         unknownNote: (unknown: number) =>
-          `${unknown} ${unknown === 1 ? "piece is" : "pieces are"} dashed and marked ? — characters this tokenizer has never seen. It read ordinary prose, and prose is almost all lower-case.`,
+          `${unknown} ${unknown === 1 ? "piece is" : "pieces are"} dashed and marked ?: characters this tokenizer has never seen. It read ordinary prose, and prose is almost all lower-case.`,
         englishCeiling:
-          "That is the English tokenizer fully trained — as good as it will ever get on this sentence. More training is not the missing ingredient.",
+          "That is the English tokenizer fully trained: as good as it will ever get on this sentence. More training is not the missing ingredient.",
         puzzles: {
           "say-it-cheaper": {
             title: "Say it cheaper",
@@ -2394,7 +2380,7 @@ export const en = {
           missingWords: (words: readonly string[]) =>
             `Still needs ${words.map((w) => `“${w}”`).join(", ")}. The whole sentence has to survive.`,
           overBudget: (tokens: number, budget: number) =>
-            `${tokens} tokens — ${tokens - budget} over the budget of ${budget}.`,
+            `${tokens} tokens: ${tokens - budget} over the budget of ${budget}.`,
           passed: (tokens: number, budget: number) =>
             `${tokens} tokens, inside the budget of ${budget}.`,
           solvedAnnounce: (message: string) => `Solved. ${message}`,
@@ -2406,7 +2392,7 @@ export const en = {
 
       recap: {
         lessons: [
-          "A tokenizer does not split text into words — it splits it into pieces that happened to be common",
+          "A tokenizer does not split text into words: it splits it into pieces that happened to be common",
           "Those pieces are learned by counting: fuse the commonest neighbouring pair, then count again",
           "How many merges it has learned decides what counts as one token, and the gains arrive early",
           "A leading space belongs to the word after it, so spacing and capitals have a price",
@@ -2414,7 +2400,7 @@ export const en = {
           "Turkish suffixes become single tokens only for a tokenizer that has actually read Turkish",
         ],
         footer:
-          "Real models are trained this way too, on far more text and on raw bytes rather than characters — which is why a language that is scarce in the training data stays expensive to write in, long after the model has learned to speak it.",
+          "Real models are trained this way too, on far more text and on raw bytes rather than characters, which is why a language that is scarce in the training data stays expensive to write in, long after the model has learned to speak it.",
       },
     },
   },
