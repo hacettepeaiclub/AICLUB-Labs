@@ -6,6 +6,7 @@ import { tr } from "@/i18n/tr";
 import { embeddingUniverseMeta } from "./meta";
 import { VOCABULARY } from "./vocabulary";
 import { decodeInt16, type DatasetMeta } from "./dataset";
+import { pointDrift } from "./view";
 import { nearestNeighbours, pca, similarityRanks, totalVarianceExplained } from "./engine";
 import {
   NEIGHBOUR_COUNT,
@@ -685,42 +686,87 @@ describe("decorative stars are decoration and nothing else", () => {
     expect(decor).not.toMatch(/role="option"/);
   });
 
-  it("only decoration is animated, and only when motion is allowed", () => {
+  it("animates only when motion is allowed, and only through the two named drifts", () => {
     const source = read("components/UniverseMap.tsx");
     // The keyframes exist at all only when motion is permitted.
     expect(source).toMatch(/!reduced && \(\s*<style>/);
-    // Every `animation:` in the file is guarded on `reduced`.
+    // Every `animation:` is guarded, either by `reduced` directly or by a value
+    // that only exists when motion is allowed. `driftOf` is the second kind, so
+    // the assertion below pins the thing that makes it safe: the drift table is
+    // built under `!reduced` and is empty otherwise.
+    expect(source).toMatch(/points && !reduced \? pointDrift\(/);
     for (const at of [...source.matchAll(/animation:/g)].map((m) => m.index ?? 0)) {
       const before = source.slice(Math.max(0, at - 220), at);
-      expect({ at, guarded: /reduced/.test(before) }).toMatchObject({ guarded: true });
+      expect({ at, guarded: /reduced|driftOf/.test(before) }).toMatchObject({ guarded: true });
     }
-    // Only the decorative drift moves anything. The other two keyframes are
-    // opacity-only, so nothing that carries data can ever change position.
+    // Exactly two keyframes may move anything, and they are named separately so
+    // the decoration and the data can never be confused for one another. The
+    // rest are opacity, which cannot misplace a word.
     const keyframes = source.slice(source.indexOf("@keyframes"), source.indexOf("</style>"));
     const moving = [...keyframes.matchAll(/@keyframes\s+([\w-]+)\s*\{([^@]*?)\}\s*(?=@|$)/g)].filter(
       (m) => /transform|translate|\bcx\b|\bcy\b/.test(m[2] ?? ""),
     );
-    expect(moving.map((m) => m[1])).toEqual(["eu-drift"]);
-    // …and the drift is applied inside the decorative group only.
+    expect(moving.map((m) => m[1]).sort()).toEqual(["eu-drift", "eu-float"]);
+    // Stars drift, words float, and neither borrows the other's keyframe.
     const decor = source.slice(
       source.indexOf('aria-hidden="true"'),
       source.indexOf("One transparent surface"),
     );
+    const words = source.slice(source.indexOf("the 318 words"));
     expect(decor).toMatch(/eu-drift/);
-    expect(source.slice(source.indexOf("the 318 words"))).not.toMatch(/eu-drift/);
+    expect(decor).not.toMatch(/eu-float/);
+    expect(words).toMatch(/eu-float/);
+    expect(words).not.toMatch(/eu-drift/);
   });
 
-  it("no embedding point is moved by anything", () => {
+  it("moves a word only by a bounded offset, never by its coordinate", () => {
     const source = read("components/UniverseMap.tsx");
     const pointsBlock = source.slice(
       source.indexOf("the 318 words"),
       source.indexOf("Drawn focus indicator"),
     );
-    // A selected star may pulse — that is opacity. Nothing may translate it.
-    expect(pointsBlock).not.toMatch(/transform=/);
-    expect(pointsBlock).not.toMatch(/eu-drift/);
+    // Whatever the motion layer does, every glyph is still drawn at the
+    // projected coordinate. The offsets ride on wrappers; nothing is allowed to
+    // reach into `cx`/`cy`, which is what keeps the picture honest.
     expect(pointsBlock).toMatch(/cx=\{point\.x\}/);
     expect(pointsBlock).toMatch(/cy=\{point\.y\}/);
+    expect(pointsBlock).not.toMatch(/cx=\{point\.x \+/);
+    expect(pointsBlock).not.toMatch(/cy=\{point\.y \+/);
+    // …and the hit test is given the untouched projection, so what a click
+    // resolves to can never disagree with what the maths says is there.
+    expect(source).toMatch(/nearestPoint\(points,/);
+
+    // The breath is capped in `view.ts`, well under the radius of the dot it
+    // moves. A generous cap here would let a future edit quietly turn a
+    // sub-pixel shimmer into a word that wanders.
+    const view = read("view.ts");
+    const amplitude = Number(/const AMPLITUDE = ([\d.]+);/.exec(view)?.[1]);
+    expect(amplitude).toBeLessThanOrEqual(0.1);
+    // The lean a neighbour takes, and the nudge the pointer gives, are capped
+    // for the same reason and on the same scale.
+    const response = Number(/const RESPONSE = ([\d.]+);/.exec(source)?.[1]);
+    const push = Number(/const FIELD_PUSH = ([\d.]+);/.exec(source)?.[1]);
+    expect(response).toBeLessThanOrEqual(0.4);
+    expect(push).toBeLessThanOrEqual(0.4);
+  });
+
+  it("drifts every word deterministically, and never past the cap", () => {
+    // Same seed, same field, every load: a map that re-randomised itself would
+    // imply the embedding had changed.
+    const a = pointDrift(318);
+    const b = pointDrift(318);
+    expect(a).toEqual(b);
+    expect(a).toHaveLength(318);
+
+    const amplitude = Number(/const AMPLITUDE = ([\d.]+);/.exec(read("view.ts"))?.[1]);
+    for (const d of a) {
+      expect(Math.hypot(d.dx, d.dy)).toBeLessThanOrEqual(amplitude + 1e-9);
+      // Long enough that no visitor can perceive the cycle, and staggered so
+      // the field never pulses in unison.
+      expect(d.duration).toBeGreaterThanOrEqual(40);
+      expect(d.delay).toBeLessThanOrEqual(0);
+    }
+    expect(new Set(a.map((d) => d.duration)).size).toBeGreaterThan(200);
   });
 });
 

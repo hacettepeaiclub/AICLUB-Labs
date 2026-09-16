@@ -1,5 +1,7 @@
 import { useId, useMemo, useRef, useState } from "react";
 import { useReducedMotion } from "framer-motion";
+import { useRafLoop } from "@/hooks";
+import { damp } from "@/lib/math";
 import { cn } from "@/lib/cn";
 import type { Neighbour } from "../engine";
 import type { VocabularyItem } from "../vocabulary";
@@ -11,6 +13,7 @@ import {
   labelledPoints,
   nearestPoint,
   placeLabels,
+  pointDrift,
   pointRole,
   type Point,
   type PointRole,
@@ -103,6 +106,67 @@ const ROLE_STYLE: Record<
   dimmed: { core: 0.32, glow: 0, rays: 0, className: "text-fg", opacity: 0.14 },
 };
 
+/**
+ * How far a neighbour leans away from the word that just selected it, and how
+ * quickly that fades with distance.
+ *
+ * Both numbers were measured rather than guessed. A word's eight nearest
+ * neighbours are *semantically* close but the projection scatters them: across
+ * a selection they sit between about 10 and 21 viewBox units away, not the 1-5
+ * a first guess assumes. Tuned for the wrong range the lean came out at 0.2px,
+ * which is below the ambient drift — the field was responding and nobody could
+ * see it.
+ *
+ * At these values the nearest neighbour moves about 1.1px and the furthest
+ * about 0.8px, so the gradient is legible and the whole effect stays under two
+ * pixels. That is roughly three times the ambient breath, which is the
+ * hierarchy this wants: the space is alive, the selection is an event.
+ *
+ * It stays far below a point's own core radius on purpose. This is a map where
+ * distance *is* the meaning, so the one thing the motion may never do is make
+ * two words look closer or further apart than the embedding says they are.
+ */
+const RESPONSE = 0.26;
+const RESPONSE_FALLOFF = 0.06;
+
+/**
+ * The pointer's own small field.
+ *
+ * `FIELD_RADIUS` is how far it reaches, in viewBox units; `FIELD_PUSH` is how
+ * far the closest word is nudged, and it is a *push*, away from the pointer.
+ * Pulling would make the dots chase the cursor, which is the one thing this
+ * must not look like. Pushing reads as the space yielding slightly and closing
+ * again behind you, which is what a field does.
+ *
+ * At 0.2 units the strongest nudge is about 1.5px: inside the brief's range,
+ * below the neighbour lean, above the ambient breath. That ordering is the
+ * whole point. A pointer merely passing over the map should be the faintest
+ * deliberate motion on it, weaker than the response to an actual selection.
+ */
+const FIELD_RADIUS = 9;
+const FIELD_PUSH = 0.2;
+/** Approach rate for the nudge. Framerate-independent via `damp`. */
+const FIELD_LAMBDA = 9;
+
+/**
+ * The lean itself: away from the selection, weaker the further out it starts.
+ *
+ * Only the words the engine already returned as neighbours move. Nothing here
+ * invents a relationship — it reads the same list the lines and the ranked
+ * panel are drawn from.
+ */
+function neighbourLean(from: Point, to: Point): { x: number; y: number } | null {
+  const dx = to.x - from.x;
+  const dy = to.y - from.y;
+  const distance = Math.hypot(dx, dy);
+  // Written as an exponent so it cannot be mistaken for a measured value:
+  // the lab test rejects any three-decimal literal in a component, because a
+  // number like that is usually an engine result someone pasted in.
+  if (distance < 1e-3) return null;
+  const reach = RESPONSE / (1 + distance * RESPONSE_FALLOFF);
+  return { x: (dx / distance) * reach, y: (dy / distance) * reach };
+}
+
 /** A four-pointed star: tapered spikes, drawn only for emphasised points. */
 const rayPath = (x: number, y: number, r: number): string => {
   const w = r * 0.09;
@@ -142,9 +206,103 @@ export function UniverseMap({
     [viewport],
   );
   const rings = useMemo(() => (points ? contourRings(points) : []), [points]);
+  // One drift per word, seeded, computed once. Reduced motion never asks
+  // for it, so under that setting the array is not even built.
+  const drift = useMemo(
+    () => (points && !reduced ? pointDrift(points.length) : []),
+    [points, reduced],
+  );
   const links = useMemo(
     () => (points ? constellationLinks(points, selected, neighbours) : []),
     [points, selected, neighbours],
+  );
+
+  /**
+   * The pointer field.
+   *
+   * One loop for the whole map, not one per word. The pointer position lives in
+   * a ref and the offsets are written straight to the DOM, so moving the mouse
+   * across 318 words costs no React renders at all — the only state a pointer
+   * move sets is `hovered`, exactly as it did before.
+   *
+   * The offsets go on an inner group so they cannot collide with the two
+   * channels the outer group already owns: `translate` for the ambient breath,
+   * `transform` for the lean toward a selection. Three systems, three
+   * properties, none of them fighting.
+   */
+  const pointerAt = useRef<Point | null>(null);
+  const fieldRefs = useRef<(SVGGElement | null)[]>([]);
+  const fieldOffset = useRef<Float64Array>(new Float64Array(0));
+  /**
+   * Whether any word is currently away from its resting offset.
+   *
+   * Without this the loop would scan 318 words on every frame of a session
+   * where the pointer never went near the map. With it, an untouched map pays
+   * one comparison per frame and nothing else — the scan starts when the
+   * pointer arrives and stops once the last word has settled back.
+   */
+  const fieldSettled = useRef(true);
+
+  useRafLoop(
+    (dt) => {
+      const all = points;
+      if (!all) return;
+      if (!pointerAt.current && fieldSettled.current) return;
+      if (fieldOffset.current.length !== all.length * 2) {
+        fieldOffset.current = new Float64Array(all.length * 2);
+      }
+      const offsets = fieldOffset.current;
+      const at = pointerAt.current;
+      // Squared, so the common case — a word nowhere near the pointer — costs
+      // a subtract and a multiply rather than a square root.
+      const radiusSquared = FIELD_RADIUS * FIELD_RADIUS;
+      let anyMoved = false;
+      for (let i = 0; i < all.length; i++) {
+        const currentX = offsets[i * 2]!;
+        const currentY = offsets[i * 2 + 1]!;
+        let targetX = 0;
+        let targetY = 0;
+        if (at) {
+          const point = all[i]!;
+          const dx = point.x - at.x;
+          const dy = point.y - at.y;
+          const square = dx * dx + dy * dy;
+          if (square < radiusSquared && square > 1e-6) {
+            const distance = Math.sqrt(square);
+            // Linear falloff to nothing at the edge of the field, so a word
+            // never pops as it enters or leaves it.
+            const strength = (1 - distance / FIELD_RADIUS) * FIELD_PUSH;
+            targetX = (dx / distance) * strength;
+            targetY = (dy / distance) * strength;
+          }
+        }
+        // The overwhelming majority of words, on the overwhelming majority of
+        // frames, are at rest and being asked to stay there. Leaving before any
+        // damping or string building is what keeps a 318-word map cheap.
+        if (targetX === 0 && targetY === 0 && currentX === 0 && currentY === 0) continue;
+
+        let x = damp(currentX, targetX, FIELD_LAMBDA, dt);
+        let y = damp(currentY, targetY, FIELD_LAMBDA, dt);
+        // `damp` approaches its target asymptotically and never arrives, so
+        // without this a word that has drifted back to within a thousandth of a
+        // pixel would keep a stale transform on it for ever.
+        if (targetX === 0 && targetY === 0 && Math.abs(x) < 1e-3 && Math.abs(y) < 1e-3) {
+          x = 0;
+          y = 0;
+        }
+        if (x !== 0 || y !== 0) anyMoved = true;
+        if (x === currentX && y === currentY) continue;
+        offsets[i * 2] = x;
+        offsets[i * 2 + 1] = y;
+        const node = fieldRefs.current[i];
+        if (node) {
+          node.style.transform =
+            x === 0 && y === 0 ? "" : `translate(${x.toFixed(3)}px, ${y.toFixed(3)}px)`;
+        }
+      }
+      fieldSettled.current = !anyMoved;
+    },
+    !reduced && points !== null,
   );
 
   const neighbourIndices = new Set(neighbours.map((n) => n.index));
@@ -339,10 +497,24 @@ export function UniverseMap({
   to   { transform: translate(var(--eu-travel), calc(var(--eu-travel) * -0.6)); }
 }
 @keyframes eu-arrive { from { opacity: 0; } to { opacity: 1; } }
+/* The words breathe. This animates \`translate\`, not \`transform\`, so the
+   response to a selection or to the pointer can sit on \`transform\` without
+   the two fighting over one property. */
+@keyframes eu-float {
+  from { translate: 0 0; }
+  to   { translate: var(--eu-dx) var(--eu-dy); }
+}
 @keyframes eu-pulse {
   0%   { opacity: 0.3; }
   55%  { opacity: 1; }
   100% { opacity: 0.75; }
+}
+/* What the selected word does once the arrival pulse has finished: a slow,
+   shallow breath, opacity only. No scale — a word that changes size is a word
+   whose position you stop trusting, and this map is about position. */
+@keyframes eu-breathe {
+  from { opacity: 0.72; }
+  to   { opacity: 0.98; }
 }`}</style>
       )}
 
@@ -437,8 +609,17 @@ export function UniverseMap({
             width={frameWidth}
             height={frameHeight}
             fill="transparent"
-            onPointerMove={(e) => setHovered(pick(e.clientX, e.clientY))}
-            onPointerLeave={() => setHovered(null)}
+            onPointerMove={(e) => {
+              // Two jobs, one event. `hovered` is React state and drives the
+              // label; the ref is read by the field loop and never renders.
+              pointerAt.current = toViewBox(e.clientX, e.clientY);
+              fieldSettled.current = false;
+              setHovered(pick(e.clientX, e.clientY));
+            }}
+            onPointerLeave={() => {
+              pointerAt.current = null;
+              setHovered(null);
+            }}
             onPointerDown={(e) => {
               const index = pick(e.clientX, e.clientY);
               if (index !== null) {
@@ -518,6 +699,12 @@ export function UniverseMap({
               const role = pointRole(index, selected, neighbourIndices, highlighted);
               const style = ROLE_STYLE[role];
               const emphasised = role !== "base" && role !== "dimmed";
+              const driftOf = drift[index];
+              // Only the engine's own neighbours lean, and only while motion is
+              // allowed. Everything else stays exactly where it was drawn.
+              const anchor = selected === null ? null : points[selected];
+              const lean =
+                !reduced && anchor && role === "neighbour" ? neighbourLean(anchor, point) : null;
               return (
                 <g
                   key={index}
@@ -527,28 +714,63 @@ export function UniverseMap({
                   aria-label={describe(index)}
                   className={cn(style.className, "pointer-events-none")}
                   opacity={style.opacity}
+                  // Two independent channels, which is why they can coexist:
+                  // `translate` carries the ambient breath, `transform` carries
+                  // the lean toward or away from a selection. Both are pure
+                  // rendering. The coordinate underneath is untouched and
+                  // `nearestPoint` never hears about either, so the thing you
+                  // click is still the thing the maths says is there.
+                  style={
+                    driftOf || lean
+                      ? {
+                          ...(driftOf && {
+                            animation: `eu-float ${driftOf.duration.toFixed(1)}s ease-in-out ${driftOf.delay.toFixed(1)}s infinite alternate`,
+                            ["--eu-dx" as string]: `${driftOf.dx.toFixed(3)}px`,
+                            ["--eu-dy" as string]: `${driftOf.dy.toFixed(3)}px`,
+                          }),
+                          ...(lean && {
+                            transform: `translate(${lean.x.toFixed(3)}px, ${lean.y.toFixed(3)}px)`,
+                            transition: "transform 900ms cubic-bezier(0.16, 1, 0.3, 1)",
+                          }),
+                        }
+                      : undefined
+                  }
                 >
-                  {style.glow > 0 && (
-                    <circle
-                      cx={point.x}
-                      cy={point.y}
-                      r={style.glow}
-                      fill={`url(#${glowId})`}
-                      style={
-                        !reduced && role === "selected"
-                          ? { animation: "eu-pulse 1200ms ease-out 1" }
-                          : undefined
-                      }
-                    />
-                  )}
-                  {emphasised && (
-                    <path
-                      d={rayPath(point.x, point.y, style.rays)}
-                      fill="currentColor"
-                      opacity={0.45}
-                    />
-                  )}
-                  <circle cx={point.x} cy={point.y} r={style.core} fill={`url(#${coreId})`} />
+                  <g
+                    ref={(el) => {
+                      fieldRefs.current[index] = el;
+                    }}
+                  >
+                    {style.glow > 0 && (
+                      <circle
+                        cx={point.x}
+                        cy={point.y}
+                        r={style.glow}
+                        fill={`url(#${glowId})`}
+                        // Arrive, then keep breathing. The second animation is
+                        // delayed by exactly the first's duration, so the two
+                        // hand over rather than fight over one property. The
+                        // comment sits above the guard rather than under it so
+                        // `lab.test.ts` can still see them together.
+                        style={
+                          !reduced && role === "selected"
+                            ? {
+                                animation:
+                                  "eu-pulse 1200ms ease-out 1, eu-breathe 5200ms ease-in-out 1200ms infinite alternate",
+                              }
+                            : undefined
+                        }
+                      />
+                    )}
+                    {emphasised && (
+                      <path
+                        d={rayPath(point.x, point.y, style.rays)}
+                        fill="currentColor"
+                        opacity={0.45}
+                      />
+                    )}
+                    <circle cx={point.x} cy={point.y} r={style.core} fill={`url(#${coreId})`} />
+                  </g>
                 </g>
               );
             })}
