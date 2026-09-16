@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { useLocation } from "react-router-dom";
 import { ErrorBoundary } from "./ErrorBoundary";
 import { SiteHeader } from "./SiteHeader";
@@ -11,6 +11,7 @@ import { useT } from "@/i18n";
 export function PageShell({ children }: { children: ReactNode }) {
   const t = useT();
   const { pathname } = useLocation();
+  const reduced = useReducedMotion();
   return (
     <div className="flex min-h-dvh flex-col">
       <a href="#main" className="skip-link">
@@ -20,7 +21,7 @@ export function PageShell({ children }: { children: ReactNode }) {
       <motion.main
         id="main"
         className="flex-1"
-        variants={pageTransition}
+        variants={pageTransition(reduced)}
         initial="initial"
         animate="enter"
         exit="exit"

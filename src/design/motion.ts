@@ -58,12 +58,26 @@ export const staggerChildren = (staggerSec = 0.06): Variants => ({
   visible: { transition: { staggerChildren: staggerSec } },
 });
 
-/** Page-level transition used by the router shell. */
-export const pageTransition: Variants = {
-  initial: { opacity: 0, y: 8 },
-  enter: { opacity: 1, y: 0, transition: { duration: duration.base, ease: ease.out } },
+/**
+ * Page-level transition used by the router shell.
+ *
+ * Takes `reduced` for the same reason `fadeUp` does, and it is not optional
+ * here: the `prefers-reduced-motion` block in `globals.css` clamps CSS
+ * animations and transitions, and this is neither. Framer Motion drives the
+ * transform itself, so a visitor who has asked the system for less movement
+ * was still being given an 8px slide on every navigation. Under `reduced` the
+ * rise is dropped and only the fade is left, which carries the same "this is a
+ * different page" signal without moving anything.
+ */
+export const pageTransition = (reduced: boolean | null = false): Variants => ({
+  initial: { opacity: 0, y: reduced ? 0 : 8 },
+  enter: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: duration.base, ease: ease.out },
+  },
   exit: { opacity: 0, transition: { duration: duration.fast } },
-};
+});
 
 /** Hover/press treatment for interactive cards. */
 export const cardInteraction = {
