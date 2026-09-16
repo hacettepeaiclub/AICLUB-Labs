@@ -166,10 +166,25 @@ export function SentenceView({
                     key={arc.index}
                     d={`M ${from.x} ${from.y} Q ${mid} ${from.y - lift} ${to.x} ${to.y}`}
                     fill="none"
-                    className="stroke-accent"
+                    className={cn(
+                      "stroke-accent",
+                      // Same duration as the weight bars below, deliberately:
+                      // the bar and the arc are two readings of one number, and
+                      // when they moved at different speeds they read as two
+                      // separate events. Width and opacity only — the curve
+                      // itself jumps, because a path that slides to a new
+                      // anchor draws a shape the model never computed.
+                      !reduced && "transition-[stroke-width,opacity] duration-fast",
+                    )}
                     strokeLinecap="round"
-                    strokeWidth={1 + arc.weight * 5}
-                    opacity={0.35 + arc.weight * 0.55}
+                    // Inline style rather than the SVG attributes: a presentation
+                    // attribute is a low-priority CSS declaration, and setting
+                    // these as real CSS properties is what makes the transition
+                    // above dependable rather than browser-dependent.
+                    style={{
+                      strokeWidth: 1 + arc.weight * 5,
+                      opacity: 0.35 + arc.weight * 0.55,
+                    }}
                   />
                 );
               })}
