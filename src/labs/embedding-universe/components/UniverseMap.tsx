@@ -555,14 +555,23 @@ export function UniverseMap({
           </g>
 
           {/* The held word wears a ring. A second shape channel, so "pinned"
-              is not another shade of the same blue. */}
+              is not another shade of the same blue.
+
+              `pointer-events-none` is not optional on either of the two rings
+              below. An SVG shape defaults to `visiblePainted`, and that counts
+              the *stroke* even when the fill is `none` — so a hairline ring
+              drawn around the current word was quietly eating every click that
+              landed on its circumference. That band sits exactly where the
+              neighbours are, which made the points hardest to reach precisely
+              when the visitor had just found something worth exploring. The
+              rings say where you are; they were never meant to be a target. */}
           {heldPoint && (
             <circle
               cx={heldPoint.x}
               cy={heldPoint.y}
               r={3.4}
               fill="none"
-              className="stroke-fg"
+              className="pointer-events-none stroke-fg"
               strokeWidth={0.3}
               opacity={0.8}
             />
@@ -575,7 +584,7 @@ export function UniverseMap({
               cy={ring.y}
               r={4.6}
               fill="none"
-              className="stroke-accent"
+              className="pointer-events-none stroke-accent"
               strokeWidth={0.4}
               strokeDasharray="1.6 1.2"
             />
