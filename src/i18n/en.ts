@@ -1721,8 +1721,6 @@ export const en = {
           opened: "opened by the host, a goat",
           revealed: "the car",
         },
-        car: "car",
-        goat: "goat",
         won: "you won the car",
         lost: "you did not win the car",
         promptPick: "Pick a door.",

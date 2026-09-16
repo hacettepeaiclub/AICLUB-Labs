@@ -1,4 +1,5 @@
 import { useCallback, useRef, useState } from "react";
+import { useReducedMotion } from "framer-motion";
 import { Figure, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
 import { useT } from "@/i18n";
@@ -19,6 +20,7 @@ import {
 } from "../engine/montyHall";
 import { percent } from "../view";
 import { Coach, Explain } from "./Framing";
+import { MontyDoor } from "./MontyDoor";
 import { Prediction } from "./Prediction";
 
 const BATCH = 1000;
@@ -39,6 +41,7 @@ type Phase = "picking" | "opened" | "done";
  * in this component decides where the car is or which door opens.
  */
 export function MontyStage() {
+  const reduced = useReducedMotion() ?? false;
   const copy = useT().labs.probability;
   const m = copy.monty;
 
@@ -135,7 +138,7 @@ export function MontyStage() {
                       onClick={() => pick(door)}
                       aria-label={m.doorLabel(door + 1, m.doorState[state])}
                       className={cn(
-                        "relative flex aspect-[3/4] min-h-11 flex-col items-center justify-center rounded",
+                        "relative flex aspect-[3/4] min-h-11 flex-col items-center justify-start rounded",
                         "border-2 transition-colors duration-fast",
                         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
                         "focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950",
@@ -146,20 +149,34 @@ export function MontyStage() {
                         phase !== "picking" && "cursor-default",
                       )}
                     >
-                      {/* The number is the identity; the glyph and the word carry
-                        the state. Nothing here is colour alone. */}
-                      <span aria-hidden className="font-mono text-body-lg text-fg-muted">
+                      {/* The drawn door, underneath everything the visitor
+                          reads. It is `aria-hidden` and takes no pointer
+                          events, so the button is still the whole target and
+                          the number and the pick marker still carry
+                          the state on their own — exactly as they did before
+                          there was any artwork. */}
+                      <MontyDoor
+                        state={state}
+                        prize={
+                          state === "revealed" ? "car" : state === "opened" ? "goat" : null
+                        }
+                      />
+                      {/* The number is the identity, and the only text on the
+                        door. What is behind it is never written down: before
+                        the reveal because that would give the game away, and
+                        after it because the artwork says it better. The state
+                        still reaches a screen reader through the button's own
+                        `aria-label`, which changes only when the host acts. */}
+                      <span
+                        aria-hidden
+                        className="relative mt-2.5 font-mono text-body-lg text-fg drop-shadow-[0_1px_2px_rgb(0_0_0_/_0.9)]"
+                      >
                         {door + 1}
                       </span>
-                      {open && (
-                        <span aria-hidden className="mt-1 font-mono text-caption text-fg">
-                          {state === "revealed" ? m.car : m.goat}
-                        </span>
-                      )}
                       {state === "picked" && (
                         <span
                           aria-hidden
-                          className="absolute inset-x-2 top-1 h-0.5 rounded-pill bg-accent"
+                          className="absolute inset-x-2 top-1 z-10 h-0.5 rounded-pill bg-accent"
                         />
                       )}
                     </button>
@@ -216,7 +233,28 @@ export function MontyStage() {
           </div>
         }
         readout={
-          <div className="rounded border border-line/10 bg-ink-950 p-4">
+          <div className="relative rounded border border-line/10 bg-ink-950 p-4">
+            {/* The host himself, beside the line he is saying.
+
+                He stands here rather than among the doors on purpose: the
+                readout is already his voice, and a figure next to the doors
+                would cover the thing the visitor is trying to click. He is
+                `aria-hidden` and takes no pointer events, so he cannot reach a
+                door target even in principle. The gesture is one short fade and
+                a few pixels of rise when he has something to say — he is
+                presenting a reveal, not performing. */}
+            <img
+              src="/labs/probability/monty/host.webp"
+              alt=""
+              aria-hidden
+              draggable={false}
+              className={cn(
+                "pointer-events-none absolute bottom-0 right-2 hidden h-28 select-none object-contain",
+                "object-bottom sm:block",
+                reduced ? undefined : "transition-[opacity,transform] duration-slow ease-out",
+                phase === "picking" ? "translate-y-1 opacity-0" : "translate-y-0 opacity-90",
+              )}
+            />
             {/* The host, speaking. The rule that makes this puzzle work — that
                 the door opened was never going to be the car — is far easier
                 to believe from the person bound by it than from a caption
