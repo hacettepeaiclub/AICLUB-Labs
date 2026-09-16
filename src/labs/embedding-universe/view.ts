@@ -377,8 +377,9 @@ export interface DecorStar {
  * seeded, so the same stars appear in the same places on every load — a
  * background that reshuffled itself would imply something had changed.
  *
- * Only these may move. The 318 embedding points are fixed by the projection and
- * nothing in this file animates them.
+ * These drift the furthest of anything on the map, which is the right way
+ * round: they are the only thing here that carries no meaning, so they are the
+ * only thing that can afford to move.
  */
 export function decorativeStars(frameWidth: number, frameHeight: number, count = 24): DecorStar[] {
   const rng = createRng(0xd3c0);
@@ -398,7 +399,69 @@ export function decorativeStars(frameWidth: number, frameHeight: number, count =
   });
 }
 
+// -------------------------------------------------------------- drift ---
+
+export interface PointDrift {
+  /** Offset at the far end of the cycle, in viewBox units. */
+  readonly dx: number;
+  readonly dy: number;
+  readonly duration: number;
+  readonly delay: number;
+}
+
+/**
+ * The amount by which each word is allowed to breathe around where it is.
+ *
+ * ## Why this does not make the map lie
+ *
+ * The projection is still the only thing that decides where a word *is*. This
+ * adds a rendering offset on top of a coordinate it never touches:
+ *
+ *     drawn = projected + drift
+ *
+ * and `drift` is capped at `AMPLITUDE` viewBox units, which on the sizes this
+ * map is drawn at works out at roughly a third of a pixel. That is below the
+ * radius of the dot it moves, so a word can never drift far enough to read as
+ * being somewhere else, to change which cluster it appears to belong to, or to
+ * cross another word. `nearestPoint` is not told about it at all: the hit test
+ * still runs against the projected coordinate, so what you click is what the
+ * maths says is there, whatever the pixels are doing.
+ *
+ * ## Why it is seeded
+ *
+ * Same reason the stars are. A field that re-randomised itself on every load
+ * would imply the embedding had changed, and the one thing this lab cannot
+ * afford is a visitor wondering whether the map they are looking at is the map
+ * they looked at a minute ago.
+ *
+ * ## Why the periods are long and all different
+ *
+ * `alternate` over 40-90 seconds gives each word an 80-180 second round trip,
+ * and no two words share one. Nothing in the field ever lines up, so there is
+ * no pulse to notice — which is the point. The moment a visitor can see the
+ * rhythm, it has stopped being a space and started being an animation.
+ */
+const AMPLITUDE = 0.05;
+
+export function pointDrift(count: number): PointDrift[] {
+  const rng = createRng(0x5a1f);
+  return Array.from({ length: count }, () => {
+    const duration = 40 + rng() * 50;
+    // A direction, not a box: sampling dx and dy independently would crowd the
+    // diagonals and leave the axes thin.
+    const angle = rng() * Math.PI * 2;
+    const reach = AMPLITUDE * (0.45 + rng() * 0.55);
+    return {
+      dx: Math.cos(angle) * reach,
+      dy: Math.sin(angle) * reach,
+      duration,
+      delay: -rng() * duration,
+    };
+  });
+}
+
 // ------------------------------------------------------- constellation ---
+
 
 export interface Link {
   readonly from: Point;
