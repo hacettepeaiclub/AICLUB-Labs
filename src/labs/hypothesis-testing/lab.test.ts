@@ -111,6 +111,42 @@ describe("copy", () => {
     }
   });
 
+  it("credits the original work without claiming it", () => {
+    // The lab is an adaptation of someone else's project. The note has to
+    // name her, has to point at the profile, and must not quietly promote
+    // "inspired by" into authorship, collaboration or endorsement.
+    for (const [name, copy] of [
+      ["en", en.labs["hypothesis-testing"]],
+      ["tr", tr.labs["hypothesis-testing"]],
+    ] as const) {
+      const credit = copy.credit;
+      expect({ name, names: credit.inspiration.includes("Dolunay Ezgi Seyhan") }).toEqual({
+        name,
+        names: true,
+      });
+      expect({ name, saysAdapted: /adaptation|esinlen/i.test(credit.adaptation) }).toEqual({
+        name,
+        saysAdapted: true,
+      });
+      expect(credit.profile.length).toBeGreaterThan(5);
+
+      const all = JSON.stringify(credit).toLowerCase();
+      for (const banned of ["endorse", "collaborat", "onaylad", "birlikte geli"]) {
+        expect({ name, banned, found: all.includes(banned) }).toEqual({
+          name,
+          banned,
+          found: false,
+        });
+      }
+    }
+
+    // One address, in the component rather than in either dictionary, opened
+    // safely.
+    const index = read("index.tsx");
+    expect(index).toContain("https://stat.hacettepe.edu.tr/tr/dolunay_ezgi_gumusbas-949");
+    expect(index).toContain('rel="noreferrer"');
+  });
+
   it("does not claim more than the engine computes", () => {
     // No p-values: the engine has none. No "proves"/"significant" language,
     // which this model does not license.

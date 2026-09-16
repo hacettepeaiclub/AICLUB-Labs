@@ -294,6 +294,12 @@ export const en = {
 
       scope:
         "This is the theoretical model: two normal sampling distributions of the mean, both with standard error \u03c3/\u221an, with \u03c3 treated as known. That is what makes the boundary a z rather than a t. No data is sampled anywhere in this lab: every number is the closed-form value of the equations shown, so what you are reading is the model itself rather than one run of an experiment.",
+      credit: {
+        inspiration: "Inspired by the work of Ar\u015f. G\u00f6r. Dolunay Ezgi Seyhan.",
+        adaptation:
+          "This interactive laboratory was developed as an educational adaptation inspired by her original hypothesis testing project.",
+        profile: "View faculty profile →",
+      },
 
       testType: {
         right: "\u03bc\u2081 > \u03bc\u2080",

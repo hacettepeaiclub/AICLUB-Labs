@@ -17,6 +17,10 @@ import { HypothesisChallenge } from "./components/HypothesisChallenge";
 import { SampleSizeStage } from "./components/SampleSizeStage";
 import { SeparationStage } from "./components/SeparationStage";
 
+/** Where the credit at the top of the lab points. One address, not a
+    translated one. */
+const PROFILE_URL = "https://stat.hacettepe.edu.tr/tr/dolunay_ezgi_gumusbas-949";
+
 /**
  * Hypothesis Testing.
  *
@@ -65,6 +69,28 @@ export default function HypothesisTesting() {
 
   return (
     <div className="space-y-20 md:space-y-28">
+      {/* An attribution, not a badge. It sits between the header and the first
+          experiment because that is where a reader looks for provenance, and
+          it is set in the smallest muted type the system has so that it stays
+          under the lab title and under the work itself. The wording keeps the
+          two things apart on purpose: the original project is hers, this
+          interactive adaptation is not. */}
+      <aside className="max-w-prose text-caption leading-relaxed text-fg-muted">
+        <p>{copy.credit.inspiration}</p>
+        <p className="mt-1">
+          {copy.credit.adaptation}{" "}
+          <a
+            href={PROFILE_URL}
+            target="_blank"
+            rel="noreferrer"
+            className="whitespace-nowrap underline decoration-line/30 underline-offset-2
+              transition-colors duration-fast hover:text-fg"
+          >
+            {copy.credit.profile}
+          </a>
+        </p>
+      </aside>
+
       {/* 1 — two curves, and nothing named. */}
       <section aria-labelledby="ht-separation-heading">
         <h2 id="ht-separation-heading" className="sr-only">

@@ -281,6 +281,12 @@ export const tr: Translation = {
 
       scope:
         "Bu kuramsal modeldir: ortalaman\u0131n iki normal \u00f6rnekleme da\u011f\u0131l\u0131m\u0131, ikisi de \u03c3/\u221an standart hatas\u0131yla ve \u03c3 bilinen kabul edilerek. S\u0131n\u0131r\u0131 t de\u011fil z yapan da budur. Bu laboratuvarda hi\u00e7bir yerde \u00f6rneklem \u00e7ekilmez: her say\u0131, g\u00f6sterilen denklemlerin kapal\u0131 form de\u011feridir; yani okudu\u011funuz \u015fey bir deneyin tek bir ko\u015fusu de\u011fil, modelin kendisidir.",
+      credit: {
+        inspiration: "Ar\u015f. G\u00f6r. Dolunay Ezgi Seyhan'\u0131n \u00e7al\u0131\u015fmas\u0131ndan esinlenilmi\u015ftir.",
+        adaptation:
+          "Bu interaktif laboratuvar, hocan\u0131n \u00f6zg\u00fcn hipotez testleri projesinden esinlenerek e\u011fitim amac\u0131yla geli\u015ftirilmi\u015ftir.",
+        profile: "Akademik profili g\u00f6r\u00fcnt\u00fcle →",
+      },
 
       testType: {
         right: "\u03bc\u2081 > \u03bc\u2080",
