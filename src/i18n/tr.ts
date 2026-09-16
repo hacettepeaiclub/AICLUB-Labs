@@ -1707,8 +1707,6 @@ export const tr: Translation = {
           opened: "sunucu a\u00e7t\u0131, ke\u00e7i",
           revealed: "araba",
         },
-        car: "araba",
-        goat: "ke\u00e7i",
         won: "arabay\u0131 kazand\u0131n\u0131z",
         lost: "arabay\u0131 kazanamad\u0131n\u0131z",
         promptPick: "Bir kap\u0131 se\u00e7in.",
