@@ -490,7 +490,7 @@ export const tr: Translation = {
       },
       title: "Ödül Laboratuvarı",
       description:
-        "Bir robot için bir karenin ne kadar değerli olduğuna siz karar verin ve tam olarak dediğinizi yapmasını izleyin.",
+        "Bir karenin robot için değerine siz karar verin; robot tam olarak dediğinizi yapar.",
 
       room: {
         title: "Oda",
@@ -559,7 +559,7 @@ export const tr: Translation = {
           "Aklınızdaki sonucu değil, gerçekten yazdığınız ödülü optimize eder.",
         ],
         footer:
-          "Bu, küçük ve deterministic bir grid üzerinde gerçek tabular Q-learning'dir: yirmi yedi kare, dört hamle, her ikili için bir sayı. Gerçek robotlar ve büyük pekiştirmeli öğrenme sistemleri bundan çok daha karmaşıktır, ama verdiğiniz ödülle istediğiniz sonuç arasındaki açık, sistemler büyüdükçe kapanmıyor.",
+          "Bu, küçük ve deterministik bir ızgara üzerinde gerçek, tablo tabanlı Q-öğrenmedir: yirmi yedi kare, dört hamle, her ikili için bir sayı. Gerçek robotlar ve büyük pekiştirmeli öğrenme sistemleri bundan çok daha karmaşıktır, ama verdiğiniz ödülle istediğiniz sonuç arasındaki açık, sistemler büyüdükçe kapanmıyor.",
       },
       world: {
         title: "Oda",
@@ -738,7 +738,7 @@ export const tr: Translation = {
         stepsHint: "son 50'nin ortalaması",
         scopeLabel: "Bunun göstermediği",
         scope:
-          "Bu üçü, 27 kareli deterministik bir ızgarada tablo tabanlı Q-learning'in parametreleridir. Daha büyük bir pekiştirmeli öğrenme sisteminin aynı biçimde sahip olacağı ayarlar değildir ve herhangi birinin buradaki etkisi, başka yerdeki etkisinin büyüklüğü hakkında bir şey söylemez.",
+          "Bu üçü, 27 kareli deterministik bir ızgarada tablo tabanlı Q-öğrenmenin parametreleridir. Daha büyük bir pekiştirmeli öğrenme sisteminin aynı biçimde sahip olacağı ayarlar değildir ve herhangi birinin buradaki etkisi, başka yerdeki etkisinin büyüklüğü hakkında bir şey söylemez.",
       },
 
       challenge: {
@@ -812,7 +812,7 @@ export const tr: Translation = {
           "Bu laboratuvar\u0131n hesaplad\u0131\u011f\u0131 \u00f6l\u00e7eklenmi\u015f nokta \u00e7arp\u0131m\u0131 dikkatini destekler. Laboratuvar tek bir ba\u015fl\u0131\u011f\u0131 elle kurar; makalenin tan\u0131tt\u0131\u011f\u0131 mimarinin tamam\u0131n\u0131 uygulamaz.",
       },
       title: "Attention Laboratuvarı",
-      description: "Bir kelime seçin ve modelin cümlenin hangi kısmına yaslandığını izleyin.",
+      description: "Bir kelime seçin; modelin cümlede neye yaslandığı ağırlıklardan okunur.",
 
       hero: {
         title: "Bu kelime nereye bakıyor?",
@@ -956,7 +956,7 @@ export const tr: Translation = {
       },
       title: "Gradient Descent",
       description:
-        "Bir yüzeyin biçiminin, atmanıza izin verilen adımın boyutunu nasıl belirlediğini görün.",
+        "Yüzeyin biçimi, atabileceğiniz adımın boyutunu belirler; nedenini inceleyin.",
 
       controls: {
         run: "Çalıştır",
@@ -1092,7 +1092,7 @@ export const tr: Translation = {
           momentumSteps: number,
           momentumStatus: string,
         ) =>
-          `Gradient descent: ${plainSteps} adım, ${plainStatus}. Momentum: ${momentumSteps} adım, ${momentumStatus}.`,
+          `Gradyan ini\u015fi: ${plainSteps} adım, ${plainStatus}. Momentum: ${momentumSteps} adım, ${momentumStatus}.`,
       },
 
       adam: {
@@ -1103,12 +1103,12 @@ export const tr: Translation = {
         firstStepLede: (a: string, b: string) =>
           `Bir eksende eğrilik ${a}, diğerinde ${b}. Gradyanın iki bileşeni arasında yaklaşık bir milyon kat fark var. Aşağıdaki her sayı, engine tek adım çalıştırılarak ölçülüyor.`,
         tableCaption:
-          "Her eksende gradyan büyüklüğü ve ilk adımın boyutu; gradient descent ve Adam için.",
+          "Her eksende gradyan büyüklüğü ve ilk adımın boyutu; gradyan inişi ve Adam için.",
         colQuantity: "Büyüklük",
         colX: "Dik eksen",
         colY: "Düz eksen",
         rowGradient: "Gradyan büyüklüğü",
-        rowGd: (rate: string) => `Gradient descent adımı, η = ${rate}`,
+        rowGd: (rate: string) => `Gradyan inişi adımı, η = ${rate}`,
         rowAdam: (rate: string) => `Adam adımı, η = ${rate}`,
         firstStepNote:
           "Sapma düzeltmesinden sonra ilk güncelleme η·g ÷ (|g| + ε) hâline gelir. Gradyanın büyüklüğü sadeleşir ve iki eksen de yaklaşık η kadar hareket eder: düzeltmenin atlanmayıp gerçekten uygulanmasının nedeni budur.",
@@ -1163,7 +1163,7 @@ export const tr: Translation = {
           c1: {
             title: "Tam nokta",
             brief:
-              "Tek bir yüzey, düz gradient descent ve dar bir bütçe. Oraya çabucak ulaştıran bir adım boyu var; ulaştırmayan pek çok adım boyu da var.",
+              "Tek bir yüzey, düz gradyan inişi ve dar bir bütçe. Oraya çabucak ulaştıran bir adım boyu var; ulaştırmayan pek çok adım boyu da var.",
           },
           c2: {
             title: "Fazla büyük",
@@ -1173,7 +1173,7 @@ export const tr: Translation = {
           c3: {
             title: "Dar vadi",
             brief:
-              "κ = 60 olan bir vadi. Hiçbir adım boyu, düz gradient descent'in bu bütçe içinde bitirmesini sağlamıyor; diğer iki optimizer'ın var olma nedeni de bu.",
+              "κ = 60 olan bir vadi. Hiçbir adım boyu, düz gradyan inişinin bu bütçe içinde bitirmesini sağlamıyor; diğer iki optimizer'ın var olma nedeni de bu.",
           },
         },
       },
@@ -1198,7 +1198,7 @@ export const tr: Translation = {
           "Bu laboratuvar\u0131n taray\u0131c\u0131n\u0131n Web Crypto uygulamas\u0131ndan istedi\u011fi SHA-256 \u00f6zetini tan\u0131mlar. Laboratuvar \u00f6zet i\u015flevini kendisi uygulamaz.",
       },
       title: "Hash Laboratuvarı",
-      description: "Tek bir karakteri değiştirin. Her şeyin değiştiğini görün.",
+      description: "Tek bir karakteri değiştirin; özetin tamamı başka bir şeye dönüşür.",
       inputLabel: "Mesajınız",
       inputPlaceholder: "merhaba dünya",
       copy: "Kopyala",
@@ -1364,7 +1364,7 @@ export const tr: Translation = {
         thickness: "kal\u0131nl\u0131k g\u00fcc\u00fc g\u00f6sterir",
       },
       title: "Yapay Sinir Ağı Laboratuvarı",
-      description: "İki tür nokta çizin. Bir ağın onları ayırt etmeyi öğrenişini izleyin.",
+      description: "İki tür nokta çizin; bir ağ aralarındaki sınırı adım adım öğrensin.",
       liveTraining: "Canlı eğitim",
 
       canvasLabel: (points: number, accuracy: number) =>
@@ -1584,7 +1584,7 @@ export const tr: Translation = {
           "Sezgisel kapat\u0131ld\u0131\u011f\u0131nda laboratuvar\u0131n \u00e7al\u0131\u015ft\u0131rd\u0131\u011f\u0131 en k\u0131sa yol y\u00f6ntemini ve bu y\u00f6ntemin varsayd\u0131\u011f\u0131 negatif olmayan kenar maliyetlerini destekler.",
       },
       title: "Yol Bulma",
-      description: "Engeller çizin; BFS, Dijkstra ve A* algoritmalarının yol arayışını izleyin.",
+      description: "Engelleri siz çizin; aynı ızgarada BFS, Dijkstra ve A* birbirinden farklı yollar arar.",
       findTheWay: "Yolu bulun",
       algorithm: "Algoritma",
       draw: "Çiz",
@@ -1712,7 +1712,7 @@ export const tr: Translation = {
       sources: {
         title: "Kaynaklar",
         statisticalInference:
-          "\u0130ki \u00e7ocuk deneyinin arkas\u0131ndaki ko\u015fullu olas\u0131l\u0131k kurallar\u0131n\u0131 (ko\u015fullu olas\u0131l\u0131k, s. 20; problemin kendisi Al\u0131\u015ft\u0131rma 1.25, s. 40), Pascal sat\u0131r\u0131n\u0131n arkas\u0131ndaki binom katsay\u0131lar\u0131n\u0131 (s. 15) ve b\u00fcy\u00fck say\u0131lar kanununu (zay\u0131f, s. 232; g\u00fc\u00e7l\u00fc, s. 235) destekler. Buradaki benzetimler bu sonu\u00e7lar\u0131 g\u00f6sterir; onlar\u0131 temellendirmez.",
+          "\u0130ki \u00e7ocuk deneyinin arkas\u0131ndaki ko\u015fullu olas\u0131l\u0131k kurallar\u0131n\u0131 (ko\u015fullu olas\u0131l\u0131k, s. 20; problemin kendisi Al\u0131\u015ft\u0131rma 1.25, s. 40), Pascal sat\u0131r\u0131n\u0131n arkas\u0131ndaki binom katsay\u0131lar\u0131n\u0131 (s. 15) ve b\u00fcy\u00fck say\u0131lar yasas\u0131n\u0131 (zay\u0131f, s. 232; g\u00fc\u00e7l\u00fc, s. 235) destekler. Buradaki benzetimler bu sonu\u00e7lar\u0131 g\u00f6sterir; onlar\u0131 temellendirmez.",
         simpson:
           "D\u00f6rd\u00fcnc\u00fc deneyin g\u00f6sterdi\u011fi tersine d\u00f6nmeyi destekler: her alt grupta ge\u00e7erli olan bir ili\u015fkinin, alt gruplar birle\u015ftirildi\u011finde y\u00f6n de\u011fi\u015ftirmesi.",
       },
@@ -2139,7 +2139,7 @@ export const tr: Translation = {
       },
 
       largeNumbers: {
-        kicker: "B\u00fcy\u00fck Say\u0131lar Kanunu",
+        kicker: "B\u00fcy\u00fck Say\u0131lar Yasas\u0131",
         title: "Karar\u0131 tekrarlay\u0131n; oran yerine oturur.",
         setup: [
           "Tek bir \u00e7ivi, tek bir adil karar: sol ya da sa\u011f.",
@@ -2147,7 +2147,7 @@ export const tr: Translation = {
           "Sa\u011fa gidenlerin oran\u0131 teorik olas\u0131l\u0131kla kar\u015f\u0131la\u015ft\u0131r\u0131l\u0131r.",
         ],
         caption:
-          "Kanun, ba\u011f\u0131ms\u0131z denemeler biriktik\u00e7e g\u00f6zlenen oran\u0131n teorik olas\u0131l\u0131\u011fa yakla\u015fma e\u011filiminde oldu\u011funu s\u00f6yler. Aradaki fark\u0131n her ad\u0131mda k\u00fc\u00e7\u00fclece\u011fini s\u00f6ylemez; bu ko\u015fuda da k\u00fc\u00e7\u00fclmez: \u00e7izgi yerine oturmadan \u00f6nce uzakla\u015ft\u0131\u011f\u0131 yerleri izleyin.",
+          "Yasa, ba\u011f\u0131ms\u0131z denemeler biriktik\u00e7e g\u00f6zlenen oran\u0131n teorik olas\u0131l\u0131\u011fa yakla\u015fma e\u011filiminde oldu\u011funu s\u00f6yler. Aradaki fark\u0131n her ad\u0131mda k\u00fc\u00e7\u00fclece\u011fini s\u00f6ylemez; bu ko\u015fuda da k\u00fc\u00e7\u00fclmez: \u00e7izgi yerine oturmadan \u00f6nce uzakla\u015ft\u0131\u011f\u0131 yerleri izleyin.",
         predictQuestion: "Deneme say\u0131s\u0131 artt\u0131k\u00e7a g\u00f6zlenen oran ne yapar?",
         predict: {
           settles: "Teorik de\u011ferin yak\u0131n\u0131nda durulur",
@@ -2205,7 +2205,7 @@ export const tr: Translation = {
           },
           howMany: {
             q: "Ka\u00e7 deneme yeterlidir?",
-            a: "Ne kadar yak\u0131n olman\u0131z gerekti\u011fine ve bundan ne kadar emin olmak istedi\u011finize ba\u011fl\u0131d\u0131r. Kanun bir takvim de\u011fil bir e\u011filim tarif eder ve g\u00f6zlenen oran\u0131n teorik olas\u0131l\u0131\u011f\u0131n yak\u0131n\u0131nda kalaca\u011f\u0131n\u0131 garanti eden bir say\u0131 vermez.",
+            a: "Ne kadar yak\u0131n olman\u0131z gerekti\u011fine ve bundan ne kadar emin olmak istedi\u011finize ba\u011fl\u0131d\u0131r. Yasa bir takvim de\u011fil bir e\u011filim tarif eder ve g\u00f6zlenen oran\u0131n teorik olas\u0131l\u0131\u011f\u0131n yak\u0131n\u0131nda kalaca\u011f\u0131n\u0131 garanti eden bir say\u0131 vermez.",
           },
         },
       },
@@ -2226,7 +2226,7 @@ export const tr: Translation = {
     "sorting-race": {
       title: "Sıralama Yarışı",
       description:
-        "Veriyi siz çizin; her algoritmanın onu sıralamak için ne kadar iş yaptığını görün.",
+        "Diziyi kendiniz çizin; iki algoritmanın aynı diziyi sıralarken harcadığı işi karşılaştırın.",
       theRace: "Yarış",
       algorithm: "Algoritma",
       shape: "Biçim",
@@ -2379,7 +2379,7 @@ export const tr: Translation = {
       },
       title: "Tokenizer Laboratuvarı",
       description:
-        "Bir tokenizer'ı elinizle eğitin ve ne okuduğunun, neyi söylemenin ucuz olduğunu nasıl belirlediğini görün.",
+        "Bir tokenizer'ı elinizle eğitin: hangi metinle eğitildiği, neyin kaç token tuttuğunu belirler.",
       honesty:
         "Bu laboratuvar için birkaç kilobaytlık metin üzerinde eğitilmiş küçük bir BPE tokenizer'ı. Herhangi bir GPT modelinin kullandığı tokenizer değil.",
       nothingToTokenize: "Henüz tokenleştirilecek bir şey yok.",
