@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from "react";
 import { useReducedMotion } from "framer-motion";
-import { Figure, LabRecap, LabSection, Stage } from "@/components/lab";
+import { Figure, LabRecap, LabSection, LabSources, Stage } from "@/components/lab";
 import { useT } from "@/i18n";
 import { formatPercent } from "@/lib/format";
 import { cosine, nearestNeighbours, totalVarianceExplained, varianceExplained } from "./engine";
@@ -360,6 +360,10 @@ export default function EmbeddingUniverse() {
           }
         />
       )}
+      <LabSources
+        title={copy.sources.title}
+        entries={[{ id: "gloveVectors", supports: copy.sources.gloveVectors }]}
+      />
     </div>
   );
 }

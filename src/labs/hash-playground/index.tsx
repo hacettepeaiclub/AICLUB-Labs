@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { LabRecap, LabSection } from "@/components/lab";
+import { LabRecap, LabSection, LabSources } from "@/components/lab";
 import { useT } from "@/i18n";
 import { changedBitFlags, changedHexChars, countChangedBits, hexToBits } from "./hashUtils";
 import { useHashHistory, useSha256 } from "./useSha256";
@@ -112,6 +112,10 @@ export default function HashPlayground() {
       </LabSection>
 
       <LabRecap lessons={t.recap.lessons} footer={t.recap.footer} />
+      <LabSources
+        title={t.sources.title}
+        entries={[{ id: "sha2", supports: t.sources.sha2 }]}
+      />
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
-import { LabRecap, LabSection, LabSlider } from "@/components/lab";
+import { LabRecap, LabSection, LabSlider, LabSources } from "@/components/lab";
 import { useT } from "@/i18n";
 import { formatNumber } from "@/lib/format";
 import { ALPHA, EPSILON_MIN, EPSILON_START, GAMMA } from "./engine";
@@ -140,6 +140,10 @@ export default function RewardPlayground() {
       </LabSection>
 
       <LabRecap lessons={copy.recap.lessons} footer={copy.recap.footer} />
+      <LabSources
+        title={copy.sources.title}
+        entries={[{ id: "qLearning", supports: copy.sources.qLearning }]}
+      />
     </div>
   );
 }

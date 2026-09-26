@@ -1,4 +1,4 @@
-import { LabRecap, LabSection } from "@/components/lab";
+import { LabRecap, LabSection, LabSources } from "@/components/lab";
 import { useT } from "@/i18n";
 import { AdamStage } from "./components/AdamStage";
 import { CompareStage } from "./components/CompareStage";
@@ -90,6 +90,10 @@ export default function GradientDescent() {
       </LabSection>
 
       <LabRecap lessons={g.recap.lessons} footer={g.recap.footer} />
+      <LabSources
+        title={g.sources.title}
+        entries={[{ id: "momentum", supports: g.sources.momentum },{ id: "adam", supports: g.sources.adam }]}
+      />
     </div>
   );
 }
