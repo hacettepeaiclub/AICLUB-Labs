@@ -138,6 +138,29 @@ export default function HypothesisTesting() {
       </LabSection>
 
       <LabRecap lessons={copy.recap.lessons} footer={copy.recap.footer} />
+
+      {/* Where the theory comes from and where the experiment comes from are
+          two different kinds of source, so they are listed apart. The theory
+          is the textbook's; the port is hers; the interface is ours. Page
+          numbers are the printed pages of the copy that was actually read,
+          and the year is absent because that copy does not carry one. */}
+      <section aria-labelledby="ht-sources-heading" className="max-w-prose">
+        <h2 id="ht-sources-heading" className="font-mono text-caption uppercase tracking-wide text-fg-muted">
+          {copy.sources.title}
+        </h2>
+        <dl className="mt-3 space-y-3 text-caption leading-relaxed text-fg-muted">
+          <div>
+            <dt className="text-fg-faint">{copy.sources.theoryLabel}</dt>
+            <dd>{copy.sources.theory}</dd>
+          </div>
+          <div>
+            <dt className="text-fg-faint">{copy.sources.implementationLabel}</dt>
+            <dd>{copy.sources.implementation}</dd>
+          </div>
+        </dl>
+        <p className="mt-3 text-caption leading-relaxed text-fg-faint">{copy.sources.notation}</p>
+        <p className="mt-2 text-caption leading-relaxed text-fg-faint">{copy.sources.pages}</p>
+      </section>
     </div>
   );
 }
