@@ -802,7 +802,7 @@ describe("Pascal's balls and the law of large numbers", () => {
     expect(trMaths).toMatch(/binom katsay/);
     expect(trMaths).toMatch(/binom dağıl/);
 
-    expect(tr.labs.probability.largeNumbers.kicker).toMatch(/Büyük Sayılar Kanunu/);
+    expect(tr.labs.probability.largeNumbers.kicker).toMatch(/Büyük Sayılar Yasası/);
     expect(tr.labs.probability.largeNumbers.observedFigure).toMatch(/Gözlenen oran/i);
     expect(tr.labs.probability.largeNumbers.deviationFigure).toMatch(/Sapma/);
     expect(tr.labs.probability.largeNumbers.theoreticalFigure).toMatch(/Teorik olasılık/);
