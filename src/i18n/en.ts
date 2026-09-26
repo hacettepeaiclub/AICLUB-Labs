@@ -1681,7 +1681,7 @@ export const en = {
     probability: {
       title: "Probability Lab",
       description:
-        "Four experiments that challenge your intuition about chance. Guess first, then find out how wrong the guess was.",
+        "Six experiments that challenge your intuition about chance. Guess first, then find out how wrong the guess was.",
 
       scope:
         "Four worked problems, not a survey of probability. Each uses a stated model (a host bound by two rules, 365 equally likely birthdays, two children each independently a boy or a girl, one published clinical table), and the answers belong to those models. Where a number is simulated it is labelled as simulated: running an experiment many times illustrates a result, it does not prove one.",
@@ -2029,6 +2029,156 @@ export const en = {
           "Counts from a 1986 published comparison, used here to show an effect in data. Not medical advice.",
         announce: (a: string, b: string, reversed: string) =>
           `Overall: A ${a}, B ${b}. Reversed: ${reversed}.`,
+      },
+
+      bridge:
+        "Two models of one board, disagreeing about the same bins. The next experiment fixes the model first, so that what changes is only how many times it is run.",
+
+      pascal: {
+        kicker: "Pascal's balls",
+        title: "Two models of the same board.",
+        setup: [
+          "A ball is released above a triangle of pegs and falls under gravity.",
+          "Every change of direction comes from a collision, not from a coin.",
+          "It is counted in whichever bin it finally comes to rest in.",
+        ],
+        caption:
+          "The ideal model treats each row as an independent left or right step, which gives the binomial distribution. The board on screen has no steps in it: gravity, contact geometry, restitution and friction decide where a ball goes. The two are different mechanisms, and the table keeps them in separate columns.",
+        predictQuestion: "Drop some balls. Where do they come to rest?",
+        predict: {
+          edges: "At the two edges",
+          centre: "In the middle",
+          even: "Evenly across the bins",
+        },
+        predictAnswer: (bin: number, share: string) =>
+          `bin ${bin} under the ideal model, which gives it ${share}`,
+        dropLabel: "Drop balls",
+        dropBatch: (n: number) => (n === 1 ? "1 ball" : `${n} balls`),
+        dropHint: "Every ball here is simulated by the physics engine. Nothing is added by arithmetic.",
+        falling: (n: number) => `${n} still falling`,
+        boardLabel: (dropped: number, rows: number) =>
+          `A board of ${rows} rows of pegs. ${dropped} balls have physically fallen through it and come to rest in the bins below.`,
+        boardEmptyLabel: (rows: number) => `A board of ${rows} rows of pegs, with empty bins below.`,
+        tableCaption: (rows: number, dropped: number) =>
+          `Each bin of a ${rows} row board: the number of routes the ideal model counts, the share it predicts, and the share actually reached by ${dropped} physically simulated balls.`,
+        binColumn: "Bin",
+        pathsColumn: "Routes",
+        idealColumn: "Ideal model",
+        physicalColumn: "Physical board",
+        shapeColumn: "Shape",
+        legend:
+          "Upper bar: the ideal binomial model. Lower bar: the physical outcomes. Where they differ, the board is telling you something the arithmetic does not model.",
+        reading: (dropped: number, rows: number) =>
+          `${dropped} balls, each through ${rows} rows of pegs, every one of them simulated.`,
+        readingEmpty: "The bins are empty. Drop a ball and watch gravity and the pegs decide for it.",
+        explainWhat:
+          "Both models put most balls near the middle, and they do not agree about how many.",
+        explainWhy:
+          "The ideal model asks a counting question: of all the left and right sequences a board of this size allows, how many end in each bin? On the physical board nothing takes a sequence of steps. A ball arrives at a peg with a speed and an angle, leaves with whatever the contact gives it, and loses some sideways motion to friction on the way to the next one. That loss pulls it back towards the middle, so this board concentrates more tightly than the counting argument predicts. Neither answer is the wrong one. They are answers to different questions.",
+        explainMaths: (rows: number, paths: string, total: string) =>
+          `In the ideal model a board of ${rows} rows allows ${total} routes, one per sequence of decisions, and the number ending in a given bin is that bin's entry in Pascal's row. The busiest bin is reached by ${paths} of them, so its share is that count over ${total}. Those entries are the binomial coefficients and the shares are the binomial distribution. The physical column is not computed from any of this: it is a tally of where the simulated balls stopped.`,
+        ballsFigure: "Balls simulated",
+        ballsHint: "Each one a physical trial",
+        rowsFigure: "Rows",
+        pathsFigure: "Routes in the ideal model",
+        pathsHint: "2 raised to the number of rows",
+        peakFigure: "Busiest bin",
+        peakHint: (ideal: number) => `The ideal model's busiest is ${ideal}`,
+        boardSettings: "The board",
+        rowsLabel: "Rows of pegs",
+        rowsValue: (rows: number, paths: string) => `${rows} rows, ${paths} routes in the ideal model`,
+        rowsHint: "Rebuilding the board empties the bins: a different board is a different experiment.",
+        emptyBoard: "Empty the bins",
+        announce: (dropped: number, bin: number) =>
+          `${dropped} balls simulated. Bin ${bin} holds the most.`,
+        coachLabel: "Questions people ask",
+        coach: {
+          twoModels: {
+            q: "Why are there two distributions?",
+            a: "Because there are two models. One counts routes through an idealised board where each row is an independent fair step. The other is a rigid-body simulation with gravity, contact and friction in it. They describe the same picture and they are not the same thing, so they are shown in separate columns rather than averaged into one.",
+          },
+          whyDiffer: {
+            q: "Which one is correct?",
+            a: "Both, for what each is about. The binomial distribution is exactly right about the counting model. The physical column is exactly what this simulated board did. A model is an idealisation of a mechanism, and when the mechanism has more in it than the idealisation, the two part company. Noticing where they part company is the useful part.",
+          },
+          whyMiddle: {
+            q: "Why does the middle fill up in either model?",
+            a: (paths: string, total: string) =>
+              `In the ideal model it is a matter of counting: of the ${total} routes the board allows, ${paths} end in the busiest bin and exactly one ends in each outer bin. On the physical board a ball would have to be deflected the same way at every row to reach an edge, and each contact takes a little of its sideways speed away, which makes that run of luck rarer still.`,
+          },
+        },
+      },
+
+      largeNumbers: {
+        kicker: "The law of large numbers",
+        title: "Repeat the decision, and the proportion settles.",
+        setup: [
+          "One peg, one fair decision: left or right.",
+          "The decision is repeated, independently, many times.",
+          "The share that went right is compared with the theoretical probability.",
+        ],
+        caption:
+          "The law says that as independent trials accumulate the observed proportion tends towards the theoretical probability. It does not say the gap shrinks at every step, and this run does not: watch the line move away before it settles.",
+        predictQuestion: "As the number of trials grows, what does the observed proportion do?",
+        predict: {
+          settles: "Settles near the theoretical value",
+          swings: "Keeps swinging just as widely",
+          exact: "Becomes exactly the theoretical value",
+        },
+        predictAnswer: "settling near it, without ever having to land on it exactly",
+        thousands: ",",
+        scaleLabel: "Number of trials",
+        watchHint: "Small enough to watch each decision arrive.",
+        acceleratedHint: "Too many to draw one at a time. Every trial is still counted.",
+        chartLabel: (trials: string, observed: string, theoretical: string) =>
+          `The observed proportion over ${trials} trials, on a logarithmic scale. It ends at ${observed} against a theoretical probability of ${theoretical}, drawn as a flat reference line.`,
+        axisStart: "1 trial",
+        axisEnd: (trials: string) => `${trials} trials`,
+        outcomesLabel: (n: number) => `The first ${n} decisions, in order`,
+        outcomeLabel: (index: number, side: string) => `Trial ${index}: ${side}`,
+        right: "right",
+        left: "left",
+        rightMark: "R",
+        leftMark: "L",
+        tableCaption:
+          "The same run read at each scale it has passed through: the theoretical probability, the observed proportion, and the distance between them.",
+        trialsColumn: "Trials",
+        theoreticalColumn: "Theoretical",
+        observedColumn: "Observed",
+        deviationColumn: "Deviation",
+        tableNote:
+          "Read the deviation column downwards. It tends to fall, and it is not required to fall at every line.",
+        reading: (trials: string) =>
+          `${trials} independent decisions, from one seed. The same seed gives the same run every time.`,
+        explainWhat:
+          "The proportion wanders early, then settles close to the theoretical probability.",
+        explainWhy:
+          "Each new trial moves the running proportion by less than the one before it, because it is one outcome among ever more of them. Early on a single result can shift the share by a tenth; after ten thousand trials it cannot shift it by more than a ten-thousandth. The wandering does not stop, it just stops being visible at this scale.",
+        explainMaths:
+          "The observed proportion is the number of rights divided by the number of trials, and the deviation is the distance from that proportion to the theoretical probability. Both are read from the run itself rather than from a formula, which is why the deviation column goes back up now and then.",
+        theoreticalFigure: "Theoretical probability",
+        theoreticalHint: "A fair decision, stated rather than measured",
+        observedFigure: "Observed proportion",
+        deviationFigure: "Deviation",
+        deviationHint: "Distance from the theoretical value",
+        trialsFigure: "Trials",
+        announce: (trials: string, observed: string) =>
+          `${trials} trials. The observed proportion is ${observed}.`,
+        coachLabel: "Questions people ask",
+        coach: {
+          notEvenly: {
+            q: "Shouldn't the two sides even out exactly?",
+            a: "No. The share of rights approaches one half, but the difference between the counts is free to grow. A run can finish ten thousand ahead on one side and still sit very close to half in proportion, because the proportion is divided by a much larger number.",
+          },
+          dueForOne: {
+            q: "After a run of lefts, is a right due?",
+            a: "No. Each decision is independent, so the next one is as likely to go either way as the first was. What corrects a lopsided start is not a compensating run the other way, but the sheer number of later trials diluting it.",
+          },
+          howMany: {
+            q: "How many trials are enough?",
+            a: "That depends on how close you need to be and how sure you want to be of it. The law describes a tendency rather than a schedule, and gives no number after which the observed proportion is guaranteed to stay near the theoretical one.",
+          },
+        },
       },
 
       recap: {

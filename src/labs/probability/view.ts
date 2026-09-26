@@ -11,6 +11,14 @@
 /** Probabilities as whole-tenth percentages: enough to see 50.7 cross 50. */
 export const percent = (value: number): string => `${(value * 100).toFixed(1)}%`;
 
+/**
+ * A count with its thousands grouped, using the separator the dictionary
+ * supplies. Deliberately not `toLocaleString`: that reads the browser's
+ * locale, so an English page on a Turkish machine printed "1.000".
+ */
+export const grouped = (value: number, separator: string): string =>
+  String(value).replace(/(\d)(?=(\d{3})+$)/g, `$1${separator}`);
+
 /** Counts inside a fraction, e.g. "273 / 350". */
 export const ratio = (part: number, whole: number): string => `${part} / ${whole}`;
 
@@ -40,3 +48,20 @@ export const seatOf = (index: number): { row: number; col: number } => ({
   row: Math.floor(index / COLUMNS),
   col: index % COLUMNS,
 });
+
+// ------------------------------------------------- the convergence chart ---
+
+/**
+ * Trials on a logarithmic axis.
+ *
+ * Ten to a hundred thousand is four decades, and on a linear axis the first
+ * three of them are a smudge against the left edge. The early trials are
+ * exactly where the proportion swings hardest, so they get the same room as
+ * the late ones.
+ */
+export const logX = (trials: number, max: number): number =>
+  max <= 1 ? 0 : (Math.log10(Math.max(trials, 1)) / Math.log10(max)) * 100;
+
+/** A proportion, placed in a window that the caller sizes from the data. */
+export const bandY = (value: number, low: number, high: number): number =>
+  high === low ? 50 : ((high - value) / (high - low)) * 100;

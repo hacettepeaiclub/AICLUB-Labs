@@ -3,7 +3,9 @@ import { useT } from "@/i18n";
 import { BirthdayStage } from "./components/BirthdayStage";
 import { Setup } from "./components/Framing";
 import { ConditionalStage } from "./components/ConditionalStage";
+import { LargeNumbersStage } from "./components/LargeNumbersStage";
 import { MontyStage } from "./components/MontyStage";
+import { PascalStage } from "./components/PascalStage";
 import { SimpsonStage } from "./components/SimpsonStage";
 
 /**
@@ -70,6 +72,24 @@ export default function ProbabilityLab() {
       <LabSection kicker={copy.simpson.kicker} title={copy.simpson.title}>
         <Setup rules={copy.simpson.setup} />
         <SimpsonStage />
+      </LabSection>
+
+      {/* 5 — a random route, and a shape that is not random. The first four
+          experiments each end in a number that surprises; these last two are
+          a pair, and they end in a shape and then in a limit. */}
+      <LabSection kicker={copy.pascal.kicker} title={copy.pascal.title}>
+        <Setup rules={copy.pascal.setup} />
+        <PascalStage />
+      </LabSection>
+
+      {/* The bridge. One sentence, on the page's own ground, because the two
+          sections that surround it are one argument rather than two. */}
+      <p className="max-w-prose text-body-lg text-fg-muted">{copy.bridge}</p>
+
+      {/* 6 — the same single decision, repeated until its proportion settles. */}
+      <LabSection kicker={copy.largeNumbers.kicker} title={copy.largeNumbers.title}>
+        <Setup rules={copy.largeNumbers.setup} />
+        <LargeNumbersStage />
         <p className="mt-8 max-w-prose text-body-sm text-fg-faint">{copy.scope}</p>
       </LabSection>
 
