@@ -1,4 +1,4 @@
-import { LabRecap, LabSection } from "@/components/lab";
+import { LabRecap, LabSection, LabSources } from "@/components/lab";
 import { useT } from "@/i18n";
 import { BirthdayStage } from "./components/BirthdayStage";
 import { Setup } from "./components/Framing";
@@ -94,6 +94,10 @@ export default function ProbabilityLab() {
       </LabSection>
 
       <LabRecap lessons={copy.recap.lessons} footer={copy.recap.footer} />
+      <LabSources
+        title={copy.sources.title}
+        entries={[{ id: "statisticalInference", supports: copy.sources.statisticalInference },{ id: "simpson", supports: copy.sources.simpson }]}
+      />
     </div>
   );
 }

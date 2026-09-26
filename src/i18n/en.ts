@@ -118,6 +118,11 @@ export const en = {
   labs: {
     // ------------------------------- embedding universe (3D prototype) ----
   "embedding-universe-3d": {
+    sources: {
+      title: "Sources",
+      gloveVectors:
+        "Supports the vectors this lab reads. The three-dimensional view changes the projection, not the embeddings underneath it.",
+    },
       title: "Embedding Universe: 3D prototype",
       description:
         "An experiment: the same 318 words projected onto three PCA axes instead of two.",
@@ -152,6 +157,11 @@ export const en = {
 
     // ------------------------------------------------ embedding universe ----
     "embedding-universe": {
+      sources: {
+        title: "Sources",
+        gloveVectors:
+          "Supports the vectors this lab actually ships: it reads pretrained GloVe embeddings rather than implementing an embedding method of its own.",
+      },
       title: "Embedding Universe",
       description:
         "Guess which word a model thinks is closest to APPLE, then find out what the map of those words is hiding.",
@@ -486,6 +496,11 @@ export const en = {
 
     // ------------------------------------------------ reward playground ----
     "reward-playground": {
+      sources: {
+        title: "Sources",
+        qLearning:
+          "Supports the tabular Q-learning update rule and the conditions under which it converges. The grid, the rewards and the tile the visitor sets are the lab's own.",
+      },
       title: "Reward Playground",
       description: "Decide what one square is worth to a robot, and watch it obey you exactly.",
 
@@ -797,6 +812,11 @@ export const en = {
 
     // ------------------------------------------------------- attention ----
     attention: {
+      sources: {
+        title: "Sources",
+        transformer:
+          "Supports the scaled dot-product attention this lab computes. The lab builds a single head by hand and does not implement the full architecture the paper introduces.",
+      },
       title: "Attention Playground",
       description: "Pick a word and watch which part of the sentence the model leans on.",
 
@@ -933,6 +953,13 @@ export const en = {
 
     // ------------------------------------------------ gradient descent ----
     "gradient-descent": {
+      sources: {
+        title: "Sources",
+        momentum:
+          "Supports the momentum method the lab offers, and the heavy-ball update it comes from.",
+        adam:
+          "Supports the Adam optimiser the lab offers, including the moment estimates and the bias correction the engine computes.",
+      },
       title: "Gradient Descent",
       description:
         "Watch how the shape of a landscape decides how big a step you are allowed to take.",
@@ -1172,6 +1199,11 @@ export const en = {
 
     // ---------------------------------------------------------- hash ----
     "hash-playground": {
+      sources: {
+        title: "Sources",
+        sha2:
+          "Defines SHA-256, the digest this lab asks the browser's Web Crypto implementation for. The lab does not implement the hash itself.",
+      },
       title: "Hash Playground",
       description: "Change one character. Watch everything change.",
       inputLabel: "Your message",
@@ -1328,6 +1360,11 @@ export const en = {
 
     // -------------------------------------------------------- neural ----
     "neural-playground": {
+      sources: {
+        title: "Sources",
+        backpropagation:
+          "Supports backpropagation, the method this lab trains with. The network here is a small teaching model rather than the one the paper describes.",
+      },
       question: "What does one layer actually change?",
       diagram: {
         diagramLabel: (shape: string) =>
@@ -1553,6 +1590,13 @@ export const en = {
 
     // --------------------------------------------------- pathfinding ----
     pathfinding: {
+      sources: {
+        title: "Sources",
+        astar:
+          "Supports the A* formulation the lab runs: a best-first search ordered by cost-so-far plus a heuristic estimate, and the admissibility condition that heuristic has to meet.",
+        dijkstra:
+          "Supports the shortest-path method the lab runs when the heuristic is switched off, and the non-negative edge costs it assumes.",
+      },
       title: "Pathfinding",
       description: "Draw obstacles and watch BFS, Dijkstra, and A* search for a path.",
       findTheWay: "Find the way",
@@ -1679,6 +1723,13 @@ export const en = {
     },
     // ------------------------------------------------------- probability ----
     probability: {
+      sources: {
+        title: "Sources",
+        statisticalInference:
+          "Supports the conditional-probability rules behind the two-children experiment (conditional probability, p. 20; the problem itself appears as Exercise 1.25, p. 40), the binomial coefficients behind Pascal's row (p. 15), and the law of large numbers (weak, p. 232; strong, p. 235). The simulations here illustrate those results; they do not establish them.",
+        simpson:
+          "Supports the reversal the fourth experiment shows: an association that holds within every subgroup and turns around once the subgroups are pooled.",
+      },
       title: "Probability Lab",
       description:
         "Six experiments that challenge your intuition about chance. Guess first, then find out how wrong the guess was.",
@@ -2343,6 +2394,11 @@ export const en = {
 
     // ----------------------------------------------------- tokenizer ----
     tokenizer: {
+      sources: {
+        title: "Sources",
+        subwordBpe:
+          "Supports byte-pair encoding as a subword segmentation method. The vocabulary here is trained on this lab's own small corpus and is not any production model's tokenizer.",
+      },
       title: "Tokenizer Lab",
       description:
         "Train a tokenizer by hand and find out why what it read decides what is cheap to say.",

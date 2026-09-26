@@ -114,6 +114,11 @@ export const tr: Translation = {
   labs: {
     // ------------------------------- embedding universe (3D prototype) ----
   "embedding-universe-3d": {
+    sources: {
+      title: "Kaynaklar",
+      gloveVectors:
+        "Bu laboratuvar\u0131n okudu\u011fu vekt\u00f6rleri destekler. \u00dc\u00e7 boyutlu g\u00f6r\u00fcn\u00fcm izd\u00fc\u015f\u00fcm\u00fc de\u011fi\u015ftirir, alt\u0131ndaki g\u00f6mmeleri de\u011fil.",
+    },
       title: "Gömme Evreni, 3B prototip",
       description:
         "Bir deney: aynı 318 kelime, iki yerine üç PCA eksenine indirgenmiş hâliyle.",
@@ -148,6 +153,11 @@ export const tr: Translation = {
 
     // ------------------------------------------------ embedding universe ----
     "embedding-universe": {
+      sources: {
+        title: "Kaynaklar",
+        gloveVectors:
+          "Bu laboratuvar\u0131n ger\u00e7ekten kulland\u0131\u011f\u0131 vekt\u00f6rleri destekler: kendi g\u00f6mme y\u00f6ntemini uygulamaz, \u00f6nceden e\u011fitilmi\u015f GloVe vekt\u00f6rlerini okur.",
+      },
       title: "Gömme Evreni",
       description:
         "Bir modelin APPLE'a en yakın gördüğü kelimeyi tahmin et, sonra bu kelime haritasının neyi sakladığını gör.",
@@ -473,6 +483,11 @@ export const tr: Translation = {
 
     // ------------------------------------------------ reward playground ----
     "reward-playground": {
+      sources: {
+        title: "Kaynaklar",
+        qLearning:
+          "Tablo tabanl\u0131 Q-\u00f6\u011frenme g\u00fcncelleme kural\u0131n\u0131 ve yak\u0131nsama ko\u015fullar\u0131n\u0131 destekler. Izgara, \u00f6d\u00fcller ve ziyaret\u00e7inin ayarlad\u0131\u011f\u0131 karo laboratuvara aittir.",
+      },
       title: "Ödül Laboratuvarı",
       description:
         "Bir robot için bir karenin ne kadar değerli olduğuna siz karar verin ve tam olarak dediğinizi yapmasını izleyin.",
@@ -791,6 +806,11 @@ export const tr: Translation = {
 
     // ------------------------------------------------------- attention ----
     attention: {
+      sources: {
+        title: "Kaynaklar",
+        transformer:
+          "Bu laboratuvar\u0131n hesaplad\u0131\u011f\u0131 \u00f6l\u00e7eklenmi\u015f nokta \u00e7arp\u0131m\u0131 dikkatini destekler. Laboratuvar tek bir ba\u015fl\u0131\u011f\u0131 elle kurar; makalenin tan\u0131tt\u0131\u011f\u0131 mimarinin tamam\u0131n\u0131 uygulamaz.",
+      },
       title: "Attention Laboratuvarı",
       description: "Bir kelime seçin ve modelin cümlenin hangi kısmına yaslandığını izleyin.",
 
@@ -927,6 +947,13 @@ export const tr: Translation = {
 
     // ------------------------------------------------ gradient descent ----
     "gradient-descent": {
+      sources: {
+        title: "Kaynaklar",
+        momentum:
+          "Laboratuvar\u0131n sundu\u011fu momentum y\u00f6ntemini ve bu y\u00f6ntemin t\u00fcredi\u011fi a\u011f\u0131r top g\u00fcncellemesini destekler.",
+        adam:
+          "Laboratuvar\u0131n sundu\u011fu Adam eniyileyicisini, motorun hesaplad\u0131\u011f\u0131 moment kestirimleri ve yanl\u0131l\u0131k d\u00fczeltmesi dahil olmak \u00fczere destekler.",
+      },
       title: "Gradient Descent",
       description:
         "Bir yüzeyin biçiminin, atmanıza izin verilen adımın boyutunu nasıl belirlediğini görün.",
@@ -1165,6 +1192,11 @@ export const tr: Translation = {
 
     // ---------------------------------------------------------- hash ----
     "hash-playground": {
+      sources: {
+        title: "Kaynaklar",
+        sha2:
+          "Bu laboratuvar\u0131n taray\u0131c\u0131n\u0131n Web Crypto uygulamas\u0131ndan istedi\u011fi SHA-256 \u00f6zetini tan\u0131mlar. Laboratuvar \u00f6zet i\u015flevini kendisi uygulamaz.",
+      },
       title: "Hash Laboratuvarı",
       description: "Tek bir karakteri değiştirin. Her şeyin değiştiğini görün.",
       inputLabel: "Mesajınız",
@@ -1314,6 +1346,11 @@ export const tr: Translation = {
 
     // -------------------------------------------------------- neural ----
     "neural-playground": {
+      sources: {
+        title: "Kaynaklar",
+        backpropagation:
+          "Bu laboratuvar\u0131n e\u011fitimde kulland\u0131\u011f\u0131 geri yay\u0131l\u0131m y\u00f6ntemini destekler. Buradaki a\u011f, makalede anlat\u0131lan a\u011f de\u011fil, k\u00fc\u00e7\u00fck bir \u00f6\u011fretim modelidir.",
+      },
       question: "Tek bir katman asl\u0131nda neyi de\u011fi\u015ftiriyor?",
       diagram: {
         diagramLabel: (shape: string) =>
@@ -1539,6 +1576,13 @@ export const tr: Translation = {
 
     // --------------------------------------------------- pathfinding ----
     pathfinding: {
+      sources: {
+        title: "Kaynaklar",
+        astar:
+          "Laboratuvarda \u00e7al\u0131\u015fan A* kurgusunu destekler: \u015fimdiye kadarki maliyet ile sezgisel tahminin toplam\u0131na g\u00f6re s\u0131ralanan en-iyi-\u00f6nce arama ve bu sezgiselin sa\u011flamas\u0131 gereken kabul edilebilirlik ko\u015fulu.",
+        dijkstra:
+          "Sezgisel kapat\u0131ld\u0131\u011f\u0131nda laboratuvar\u0131n \u00e7al\u0131\u015ft\u0131rd\u0131\u011f\u0131 en k\u0131sa yol y\u00f6ntemini ve bu y\u00f6ntemin varsayd\u0131\u011f\u0131 negatif olmayan kenar maliyetlerini destekler.",
+      },
       title: "Yol Bulma",
       description: "Engeller çizin; BFS, Dijkstra ve A* algoritmalarının yol arayışını izleyin.",
       findTheWay: "Yolu bulun",
@@ -1665,6 +1709,13 @@ export const tr: Translation = {
     },
     // ------------------------------------------------------- probability ----
     probability: {
+      sources: {
+        title: "Kaynaklar",
+        statisticalInference:
+          "\u0130ki \u00e7ocuk deneyinin arkas\u0131ndaki ko\u015fullu olas\u0131l\u0131k kurallar\u0131n\u0131 (ko\u015fullu olas\u0131l\u0131k, s. 20; problemin kendisi Al\u0131\u015ft\u0131rma 1.25, s. 40), Pascal sat\u0131r\u0131n\u0131n arkas\u0131ndaki binom katsay\u0131lar\u0131n\u0131 (s. 15) ve b\u00fcy\u00fck say\u0131lar kanununu (zay\u0131f, s. 232; g\u00fc\u00e7l\u00fc, s. 235) destekler. Buradaki benzetimler bu sonu\u00e7lar\u0131 g\u00f6sterir; onlar\u0131 temellendirmez.",
+        simpson:
+          "D\u00f6rd\u00fcnc\u00fc deneyin g\u00f6sterdi\u011fi tersine d\u00f6nmeyi destekler: her alt grupta ge\u00e7erli olan bir ili\u015fkinin, alt gruplar birle\u015ftirildi\u011finde y\u00f6n de\u011fi\u015ftirmesi.",
+      },
       title: "Olas\u0131l\u0131k Laboratuvar\u0131",
       description:
         "\u015eans hakk\u0131ndaki sezgine meydan okuyan alt\u0131 deney. \u00d6nce tahmin edin, sonra tahminin ne kadar yanl\u0131\u015f oldu\u011funu g\u00f6r\u00fcn.",
@@ -2319,6 +2370,11 @@ export const tr: Translation = {
 
     // ----------------------------------------------------- tokenizer ----
     tokenizer: {
+      sources: {
+        title: "Kaynaklar",
+        subwordBpe:
+          "Bayt \u00e7ifti kodlamas\u0131n\u0131 bir alt s\u00f6zc\u00fck par\u00e7alama y\u00f6ntemi olarak destekler. Buradaki s\u00f6zl\u00fck, laboratuvar\u0131n kendi k\u00fc\u00e7\u00fck derlemi \u00fczerinde e\u011fitilir; herhangi bir \u00fcretim modelinin s\u00f6zl\u00fc\u011f\u00fc de\u011fildir.",
+      },
       title: "Tokenizer Laboratuvarı",
       description:
         "Bir tokenizer'ı elinizle eğitin ve ne okuduğunun, neyi söylemenin ucuz olduğunu nasıl belirlediğini görün.",

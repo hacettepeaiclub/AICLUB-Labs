@@ -1,4 +1,4 @@
-import { LabRecap, LabSection } from "@/components/lab";
+import { LabRecap, LabSection, LabSources } from "@/components/lab";
 import { useT } from "@/i18n";
 import { Playground } from "./components/Playground";
 import { NeuronLab } from "./components/NeuronLab";
@@ -76,6 +76,10 @@ export default function NeuralPlayground() {
 
       {/* 7 — Recap */}
       <LabRecap lessons={t.recap.lessons} footer={t.recap.footer} />
+      <LabSources
+        title={t.sources.title}
+        entries={[{ id: "backpropagation", supports: t.sources.backpropagation }]}
+      />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { LabRecap, LabSection } from "@/components/lab";
+import { LabRecap, LabSection, LabSources } from "@/components/lab";
 import { useT } from "@/i18n";
 import { CompareStage } from "./components/CompareStage";
 import { GuessStrip } from "./components/GuessStrip";
@@ -53,6 +53,10 @@ export default function TokenizerLab() {
       </LabSection>
 
       <LabRecap lessons={t.recap.lessons} footer={t.recap.footer} />
+      <LabSources
+        title={t.sources.title}
+        entries={[{ id: "subwordBpe", supports: t.sources.subwordBpe }]}
+      />
     </div>
   );
 }

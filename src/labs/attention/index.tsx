@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { LabRecap, LabSection } from "@/components/lab";
+import { LabRecap, LabSection, LabSources } from "@/components/lab";
 import { Segmented } from "@/components/ui";
 import { useT } from "@/i18n";
 import { attend } from "./engine";
@@ -132,6 +132,10 @@ export default function AttentionPlayground() {
 
       {/* 6 — Three lines. */}
       <LabRecap lessons={a.recap.lessons} footer={a.recap.footer} />
+      <LabSources
+        title={a.sources.title}
+        entries={[{ id: "transformer", supports: a.sources.transformer }]}
+      />
     </div>
   );
 }

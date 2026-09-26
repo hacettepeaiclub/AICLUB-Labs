@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Figure, FigureRow, LabRecap } from "@/components/lab";
+import { Figure, FigureRow, LabRecap, LabSources } from "@/components/lab";
 import { useT } from "@/i18n";
 import { formatPercent } from "@/lib/format";
 import { nearestNeighbours } from "../embedding-universe/engine";
@@ -87,6 +87,10 @@ export default function EmbeddingUniverse3D() {
       {/* The shell furniture every lab page has, with its heading overridden:
           this closes a prototype, it does not recap a lesson. */}
       <LabRecap title={copy.recapTitle} lessons={copy.recap.lessons} />
+      <LabSources
+        title={copy.sources.title}
+        entries={[{ id: "gloveVectors", supports: copy.sources.gloveVectors }]}
+      />
     </div>
   );
 }

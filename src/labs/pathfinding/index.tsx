@@ -1,4 +1,4 @@
-import { LabRecap, LabSection } from "@/components/lab";
+import { LabRecap, LabSection, LabSources } from "@/components/lab";
 import { useT } from "@/i18n";
 import { PathfindingStage } from "./components/PathfindingStage";
 import { PathChallenge } from "./components/PathChallenge";
@@ -81,6 +81,10 @@ export default function Pathfinding() {
       </LabSection>
 
       <LabRecap lessons={t.recap.lessons} footer={t.recap.footer} />
+      <LabSources
+        title={t.sources.title}
+        entries={[{ id: "astar", supports: t.sources.astar },{ id: "dijkstra", supports: t.sources.dijkstra }]}
+      />
     </div>
   );
 }
