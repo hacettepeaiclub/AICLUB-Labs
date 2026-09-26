@@ -31,6 +31,33 @@ import {
   cellOf,
   published,
 } from "./engine/simpson";
+import {
+  DEFAULT_ROWS,
+  MAX_ROWS,
+  MIN_ROWS,
+  binomialDistribution,
+  dropBall,
+  expectedCounts,
+  pascalRow,
+  pathCount,
+  peakOf,
+  runBoard,
+  totalPaths,
+} from "./engine/pascal";
+import {
+  RIGHT_PROBABILITY,
+  SCALES,
+  checkpoints,
+  firstOutcomes,
+  run as lawRun,
+  widestDeviation,
+} from "./engine/largeNumbers";
+import {
+  GaltonWorld,
+  PHYSICS,
+  geometryOf,
+  runHeadless,
+} from "./engine/galtonPhysics";
 
 // ========================================================== Monty Hall =====
 
@@ -421,5 +448,314 @@ describe("Simpson's paradox", () => {
     // A leads B in both groups at the source rates, which is the premise.
     expect(RATES.small.a).toBeGreaterThan(RATES.small.b);
     expect(RATES.large.a).toBeGreaterThan(RATES.large.b);
+  });
+});
+
+// ===================================================== Pascal's balls ======
+
+describe("Pascal's balls", () => {
+  it("builds the triangle by addition, and knows its famous row", () => {
+    expect(pascalRow(0)).toEqual([1]);
+    expect(pascalRow(1)).toEqual([1, 1]);
+    expect(pascalRow(4)).toEqual([1, 4, 6, 4, 1]);
+    // The row the default board draws.
+    expect(pascalRow(8)).toEqual([1, 8, 28, 56, 70, 56, 28, 8, 1]);
+  });
+
+  it("offers a default board inside the range it allows", () => {
+    expect(DEFAULT_ROWS).toBeGreaterThanOrEqual(MIN_ROWS);
+    expect(DEFAULT_ROWS).toBeLessThanOrEqual(MAX_ROWS);
+  });
+
+  it("is symmetric, and each entry is the sum of the two above it", () => {
+    for (let n = 0; n <= MAX_ROWS; n++) {
+      const row = pascalRow(n);
+      expect(row).toHaveLength(n + 1);
+      expect([...row].reverse()).toEqual(row);
+      const above = pascalRow(n - 1 < 0 ? 0 : n - 1);
+      if (n > 0) {
+        for (let k = 1; k < n; k++) {
+          expect({ n, k, value: row[k] }).toEqual({
+            n,
+            k,
+            value: (above[k - 1] ?? 0) + (above[k] ?? 0),
+          });
+        }
+      }
+    }
+  });
+
+  it("counts every path the board admits, and splits them between the bins", () => {
+    for (let n = MIN_ROWS; n <= MAX_ROWS; n++) {
+      const row = pascalRow(n);
+      expect(row.reduce((a, b) => a + b, 0)).toBe(totalPaths(n));
+      expect(pathCount(n, 0)).toBe(1);
+      expect(pathCount(n, n)).toBe(1);
+    }
+  });
+
+  it("gives a distribution that sums to one and matches known values", () => {
+    for (let n = MIN_ROWS; n <= MAX_ROWS; n++) {
+      const dist = binomialDistribution(n);
+      expect(dist.reduce((a, b) => a + b, 0)).toBeCloseTo(1, 12);
+      expect(dist.every((p) => p >= 0 && p <= 1)).toBe(true);
+    }
+    // C(8,4)/2^8 = 70/256, and the two ends are 1/256 each.
+    const eight = binomialDistribution(8);
+    expect(eight[4]).toBeCloseTo(70 / 256, 12);
+    expect(eight[0]).toBeCloseTo(1 / 256, 12);
+    expect(eight[8]).toBeCloseTo(1 / 256, 12);
+  });
+
+  it("expects the balls back: the expected counts sum to the run size", () => {
+    const expected = expectedCounts(8, 500);
+    expect(expected.reduce((a, b) => a + b, 0)).toBeCloseTo(500, 9);
+  });
+
+  it("drops a ball into the bin its own steps add up to", () => {
+    const rng = createRng(20260926);
+    for (let i = 0; i < 200; i++) {
+      const path = dropBall(rng, 10);
+      expect(path.steps).toHaveLength(10);
+      expect(path.bin).toBe(path.steps.filter(Boolean).length);
+      expect(path.bin).toBeGreaterThanOrEqual(0);
+      expect(path.bin).toBeLessThanOrEqual(10);
+    }
+  });
+
+  it("keeps every ball: the bin counts add up to the run", () => {
+    for (const balls of [1, 50, 5000]) {
+      const board = runBoard(97531, 8, balls);
+      expect(board.counts).toHaveLength(9);
+      expect(board.counts.reduce((a, b) => a + b, 0)).toBe(balls);
+      expect(board.counts.every((c) => c >= 0)).toBe(true);
+    }
+  });
+
+  it("is reproducible from its seed, and two seeds are two runs", () => {
+    const a = runBoard(4242, 8, 400, 5);
+    const b = runBoard(4242, 8, 400, 5);
+    const c = runBoard(4243, 8, 400, 5);
+    expect(a.counts).toEqual(b.counts);
+    expect(a.sample).toEqual(b.sample);
+    expect(a.counts).not.toEqual(c.counts);
+  });
+
+  it("draws its sample from the run it counts, not from a second one", () => {
+    const board = runBoard(4242, 8, 400, 6);
+    expect(board.sample).toHaveLength(6);
+    // The first six balls of a six-ball run are the same six balls.
+    const six = runBoard(4242, 8, 6, 6);
+    expect(board.sample).toEqual(six.sample);
+  });
+
+  it("lands near the theoretical shape over a long deterministic run", () => {
+    const rows = 8;
+    const balls = 200_000;
+    const board = runBoard(13579, rows, balls);
+    const dist = binomialDistribution(rows);
+    for (let k = 0; k <= rows; k++) {
+      const observed = (board.counts[k] ?? 0) / balls;
+      expect(Math.abs(observed - (dist[k] ?? 0))).toBeLessThan(0.01);
+    }
+  });
+
+  it("scales both histograms against one peak", () => {
+    const board = runBoard(4242, 8, 400);
+    const peak = peakOf(board);
+    expect(peak).toBeGreaterThanOrEqual(Math.max(...board.counts));
+    expect(peak).toBeGreaterThanOrEqual(Math.max(...expectedCounts(8, 400)));
+  });
+});
+
+// ================================================ the law of large numbers ==
+
+describe("the law of large numbers", () => {
+  it("measures against an exact one half", () => {
+    expect(RIGHT_PROBABILITY).toBe(0.5);
+    expect(lawRun(1, 10).theoretical).toBe(0.5);
+  });
+
+  it("steps through the scales the experiment advertises", () => {
+    expect([...SCALES]).toEqual([10, 100, 1000, 10000, 100000]);
+    for (let i = 1; i < SCALES.length; i++) {
+      expect(SCALES[i]! > SCALES[i - 1]!).toBe(true);
+    }
+  });
+
+  it("records every early trial, then thins out, and always ends where it ends", () => {
+    const marks = checkpoints(100_000);
+    expect(marks[0]).toBe(1);
+    expect(marks.slice(0, 100)).toEqual(Array.from({ length: 100 }, (_, i) => i + 1));
+    expect(marks[marks.length - 1]).toBe(100_000);
+    // Strictly increasing, so no checkpoint is recorded twice.
+    for (let i = 1; i < marks.length; i++) {
+      expect(marks[i]! > marks[i - 1]!).toBe(true);
+    }
+    expect(checkpoints(10)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  });
+
+  it("computes the proportion and the deviation from its own counts", () => {
+    const result = lawRun(31337, 1000);
+    for (const point of result.points) {
+      expect(point.successes).toBeLessThanOrEqual(point.trials);
+      expect(point.proportion).toBeCloseTo(point.successes / point.trials, 12);
+      expect(point.deviation).toBeCloseTo(Math.abs(point.proportion - 0.5), 12);
+      expect(point.deviation).toBeGreaterThanOrEqual(0);
+    }
+    expect(result.final.trials).toBe(1000);
+    expect(result.final).toEqual(result.points[result.points.length - 1]);
+  });
+
+  it("is reproducible from its seed, and two seeds are two runs", () => {
+    expect(lawRun(2024, 5000).final).toEqual(lawRun(2024, 5000).final);
+    expect(lawRun(2024, 5000).final.successes).not.toBe(lawRun(2025, 5000).final.successes);
+  });
+
+  it("extends a shorter run rather than starting a different one", () => {
+    // The same seed run longer must agree with itself everywhere it overlaps:
+    // the curve grows to the right, it is not redrawn.
+    const short = lawRun(8675309, 1000);
+    const long = lawRun(8675309, 100_000);
+    const byTrial = new Map(long.points.map((p) => [p.trials, p]));
+    for (const point of short.points) {
+      const later = byTrial.get(point.trials);
+      if (later) expect({ n: point.trials, s: later.successes }).toEqual({
+        n: point.trials,
+        s: point.successes,
+      });
+    }
+    expect(long.points.some((p) => p.trials === 1000)).toBe(true);
+  });
+
+  it("does not fall at every step, and the chart must not pretend it does", () => {
+    // The honest claim is a tendency, not a monotone decrease. If this ever
+    // stops holding, the copy that says so has become false.
+    const result = lawRun(11235, 100_000);
+    const rose = result.points.some(
+      (point, i) => i > 0 && point.deviation > (result.points[i - 1]?.deviation ?? 0),
+    );
+    expect(rose).toBe(true);
+  });
+
+  it("still tends towards the theoretical probability over a long run", () => {
+    for (const seed of [1, 2, 3, 4, 5]) {
+      const result = lawRun(seed, 100_000);
+      expect(result.final.deviation).toBeLessThan(0.01);
+    }
+  });
+
+  it("shows the run's own first outcomes, not a second experiment", () => {
+    const outcomes = firstOutcomes(555, 40);
+    expect(outcomes).toHaveLength(40);
+    const successes = outcomes.filter(Boolean).length;
+    expect(lawRun(555, 40).final.successes).toBe(successes);
+  });
+
+  it("takes its vertical scale from the data", () => {
+    const result = lawRun(4242, 1000);
+    const widest = widestDeviation(result.points);
+    expect(widest).toBeGreaterThan(0);
+    expect(result.points.every((p) => p.deviation <= widest)).toBe(true);
+  });
+});
+
+// ================================================== the physical board =====
+
+describe("the physical Galton board", () => {
+  it("is reproducible from its seed, and two seeds are two runs", () => {
+    const a = runHeadless(8, 4242, 40);
+    const b = runHeadless(8, 4242, 40);
+    const c = runHeadless(8, 9999, 40);
+    expect(a).toEqual(b);
+    expect(a).not.toEqual(c);
+  });
+
+  it("lands every ball it releases, in a bin that exists", () => {
+    for (const rows of [4, 8, 12]) {
+      const bins = runHeadless(rows, 31337, 30);
+      expect(bins).toHaveLength(30);
+      for (const bin of bins) {
+        expect(Number.isInteger(bin)).toBe(true);
+        expect(bin).toBeGreaterThanOrEqual(0);
+        expect(bin).toBeLessThanOrEqual(rows);
+      }
+    }
+  });
+
+  it("records exactly one outcome per ball, and keeps none of them alive", () => {
+    const world = new GaltonWorld(8, 20260926);
+    world.queue(25);
+    const bins: number[] = [];
+    let steps = 0;
+    while (world.busy && steps < 20000) {
+      bins.push(...world.step());
+      steps += 1;
+    }
+    expect(bins).toHaveLength(25);
+    expect(world.active).toBe(0);
+    expect(world.pending).toBe(0);
+    expect(world.busy).toBe(false);
+    // Nothing was abandoned: the geometry settles every ball it releases.
+    expect(world.lost).toBe(0);
+  });
+
+  it("starts empty, and a rebuilt board is an empty board", () => {
+    const world = new GaltonWorld(8, 7);
+    expect(world.active).toBe(0);
+    expect(world.pending).toBe(0);
+    expect(world.busy).toBe(false);
+    world.queue(3);
+    expect(world.busy).toBe(true);
+    // The stage rebuilds rather than mutating, so a fresh world is the reset.
+    expect(new GaltonWorld(8, 7).busy).toBe(false);
+  });
+
+  it("changes its geometry with the row count", () => {
+    const small = geometryOf(4);
+    const large = geometryOf(12);
+    expect(large.rows).toBe(12);
+    expect(large.width).toBeGreaterThan(small.width);
+    expect(large.height).toBeGreaterThan(small.height);
+    expect(small.binTop).toBeLessThan(small.floorY);
+  });
+
+  it("uses a fixed step and a real substep count", () => {
+    expect(PHYSICS.stepMs).toBeCloseTo(1000 / 120, 9);
+    expect(PHYSICS.substeps).toBeGreaterThanOrEqual(1);
+    expect(PHYSICS.maxSteps).toBeGreaterThan(0);
+  });
+
+  it("is a different model from the ideal one, and is not tuned to match it", () => {
+    // The physical board is allowed to disagree with the binomial, and on this
+    // configuration it does: it concentrates more tightly in the middle. This
+    // test exists so that a later change to the physics cannot quietly turn
+    // the two models into one without somebody noticing.
+    const rows = 8;
+    const balls = 200;
+    const bins = runHeadless(rows, 13579, balls);
+    const counts = new Array(rows + 1).fill(0);
+    for (const bin of bins) counts[bin] += 1;
+
+    const ideal = binomialDistribution(rows);
+    let distance = 0;
+    for (let k = 0; k <= rows; k++) distance += Math.abs(counts[k] / bins.length - (ideal[k] ?? 0));
+    distance /= 2;
+
+    // Related: both put most balls near the middle.
+    const middle = (counts[rows / 2] ?? 0) / bins.length;
+    expect(middle).toBeGreaterThan(0.15);
+    // But measurably not the same distribution.
+    expect(distance).toBeGreaterThan(0.02);
+    expect(distance).toBeLessThan(0.45);
+  });
+
+  it("leaves the ideal model untouched", () => {
+    // The theoretical side must not depend on the physics in any way: the same
+    // numbers before and after a board has been run.
+    const before = binomialDistribution(8);
+    runHeadless(8, 555, 20);
+    expect(binomialDistribution(8)).toEqual(before);
+    expect(pascalRow(8)).toEqual([1, 8, 28, 56, 70, 56, 28, 8, 1]);
   });
 });

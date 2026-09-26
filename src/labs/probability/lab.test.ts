@@ -17,6 +17,9 @@ const COMPONENTS = [
   "components/BirthdayStage.tsx",
   "components/ConditionalStage.tsx",
   "components/SimpsonStage.tsx",
+  "components/PascalStage.tsx",
+  "components/GaltonCanvas.tsx",
+  "components/LargeNumbersStage.tsx",
   "components/Prediction.tsx",
   "components/Framing.tsx",
 ];
@@ -218,9 +221,62 @@ describe("the components show the engines' numbers", () => {
     }
   });
 
-  it("runs no animation loop", () => {
+  it("runs no animation loop in any component", () => {
+    // The rule is unchanged for components: React must not be driven frame by
+    // frame. Section 5 now runs a rigid-body simulation, which needs a loop,
+    // so the loop lives in a module that is not a component and the exception
+    // is written down here rather than left to a filename list.
     for (const file of COMPONENTS) {
-      expect(stripComments(read(file))).not.toMatch(/requestAnimationFrame|setInterval/);
+      expect(stripComments(read(file)), file).not.toMatch(/requestAnimationFrame|setInterval/);
+    }
+  });
+
+  it("draws with layout and canvas, never with SVG", () => {
+    // The lab's four original experiments draw with grids, tables and bars;
+    // section 5 draws with a canvas. Nothing here uses SVG, and a convergence
+    // line is not a reason to start: it is tiled from the engine's own points
+    // so the trace stays the data rather than a smoothed picture of it.
+    const files = [
+      ...COMPONENTS,
+      "view.ts",
+      "engine/pascal.ts",
+      "engine/largeNumbers.ts",
+      "engine/galtonPhysics.ts",
+    ];
+    for (const file of files) {
+      const code = read(file);
+      for (const banned of ["<svg", "</svg", "polyline", "createElementNS", "viewBox"]) {
+        expect({ file, banned, found: code.includes(banned) }).toEqual({
+          file,
+          banned,
+          found: false,
+        });
+      }
+    }
+    // And the one drawing surface that is not the DOM is a canvas.
+    expect(read("components/GaltonCanvas.tsx")).toMatch(/<canvas/);
+  });
+
+  it("allows a loop in the physics module, and only there", () => {
+    const physics = stripComments(read("engine/galtonPhysics.ts"));
+    // The exception exists, and it is real: this is where the board is stepped.
+    expect(physics).toMatch(/requestAnimationFrame/);
+    // It is fixed-step, not a free-running one, and it can be stopped.
+    expect(physics).toMatch(/cancelAnimationFrame/);
+    expect(physics).toMatch(/PHYSICS\.stepMs/);
+    // No other engine file may take the same liberty.
+    for (const file of [
+      "engine/pascal.ts",
+      "engine/largeNumbers.ts",
+      "engine/montyHall.ts",
+      "engine/birthday.ts",
+      "engine/conditional.ts",
+      "engine/simpson.ts",
+      "view.ts",
+    ]) {
+      expect(stripComments(read(file)), file).not.toMatch(
+        /requestAnimationFrame|setInterval/,
+      );
     }
   });
 });
@@ -637,5 +693,126 @@ describe("Simpson's table as the lab presents it", () => {
 
   it("stops being reversed when the sliders are levelled", () => {
     expect(build({ a: 175, b: 175 }).reversed).toBe(false);
+  });
+});
+
+// ============================ the two experiments that were added later ====
+
+describe("Pascal's balls and the law of large numbers", () => {
+  it("carries both experiments, and the bridge between them, in both languages", () => {
+    for (const dict of [en, tr]) {
+      const copy = dict.labs.probability;
+      for (const section of ["pascal", "largeNumbers"] as const) {
+        expect(copy[section].caption.length, section).toBeGreaterThan(40);
+        expect(copy[section].kicker.length, section).toBeGreaterThan(3);
+        expect(copy[section].setup.length, section).toBeGreaterThanOrEqual(3);
+      }
+      // The sentence that makes the two a pair rather than two more sections.
+      expect(copy.bridge.length).toBeGreaterThan(40);
+    }
+  });
+
+  it("renders them last, in order, each under its own setup", () => {
+    const index = read("index.tsx");
+    const pascal = index.indexOf("<PascalStage");
+    const bridge = index.indexOf("copy.bridge");
+    const large = index.indexOf("<LargeNumbersStage");
+    expect(index.indexOf("<SimpsonStage")).toBeLessThan(pascal);
+    expect(pascal).toBeLessThan(bridge);
+    expect(bridge).toBeLessThan(large);
+    expect(index).toMatch(/rules=\{copy\.pascal\.setup\}/);
+    expect(index).toMatch(/rules=\{copy\.largeNumbers\.setup\}/);
+  });
+
+  it("draws each of them from its own engine", () => {
+    expect(read("components/PascalStage.tsx")).toMatch(/engine\/pascal/);
+    expect(read("components/LargeNumbersStage.tsx")).toMatch(/engine\/largeNumbers/);
+    // The canvas owns no simulation: it hands a world to the physics module
+    // and draws what comes back.
+    const canvas = stripComments(read("components/GaltonCanvas.tsx"));
+    expect(canvas).not.toMatch(/createRng|Math\.random/);
+    expect(read("components/PascalStage.tsx")).toMatch(/engine\/galtonPhysics/);
+  });
+
+  it("holds each new answer behind its own prediction", () => {
+    for (const file of ["components/PascalStage.tsx", "components/LargeNumbersStage.tsx"]) {
+      const code = stripComments(read(file));
+      expect(code, file).toMatch(/<Prediction/);
+      // The explanation appears only once a guess has been committed.
+      expect(code, file).toMatch(/answered && /);
+    }
+  });
+
+  it("keeps the new predictions local, unscored and unremembered", () => {
+    for (const file of ["components/PascalStage.tsx", "components/LargeNumbersStage.tsx"]) {
+      const code = stripComments(read(file));
+      for (const banned of ["localStorage", "sessionStorage", "score", "streak", "attempts"]) {
+        expect({ file, banned, found: code.includes(banned) }).toEqual({
+          file,
+          banned,
+          found: false,
+        });
+      }
+    }
+  });
+
+  it("honours reduced motion by resolving the physics instead of animating it", () => {
+    const canvas = stripComments(read("components/GaltonCanvas.tsx"));
+    // With motion reduced the board is painted once and no loop is attached.
+    expect(canvas).toMatch(/if \(reduced\)/);
+    expect(canvas).toMatch(/createPainter/);
+    const stage = stripComments(read("components/PascalStage.tsx"));
+    expect(stage).toMatch(/useReducedMotion/);
+    // The same world is stepped to completion there and then, so the numbers
+    // are the physics engine's either way.
+    expect(stage).toMatch(/while \(world\.busy/);
+  });
+
+  it("states the law as a tendency rather than a guarantee", () => {
+    // The whole point of the section. If the copy ever promises that the gap
+    // shrinks at every step, it has started describing a different law.
+    for (const [name, copy] of [
+      ["en", en.labs.probability.largeNumbers],
+      ["tr", tr.labs.probability.largeNumbers],
+    ] as const) {
+      const text = JSON.stringify(copy).toLowerCase();
+      expect({ name, hedged: /tends|tend to|eğilim/.test(text) }).toEqual({ name, hedged: true });
+      for (const banned of ["always closer", "her adımda küçülür", "garanti eder"]) {
+        expect({ name, banned, found: text.includes(banned) }).toEqual({
+          name,
+          banned,
+          found: false,
+        });
+      }
+    }
+    // And the table says out loud that the deviation column may rise.
+    expect(en.labs.probability.largeNumbers.tableNote).toMatch(/not required to fall/i);
+  });
+
+  it("names the structures in the vocabulary each language uses", () => {
+    // The vocabulary lives in the interpolated strings, which JSON.stringify
+    // drops, so these are read the way the page reads them: by calling them.
+    const enMaths = en.labs.probability.pascal.explainMaths(8, "70", "256");
+    expect(enMaths).toMatch(/Pascal's row|Pascal's triangle/);
+    expect(enMaths).toMatch(/binomial coefficient/);
+    expect(enMaths).toMatch(/binomial distribution/);
+
+    const trMaths = tr.labs.probability.pascal.explainMaths(8, "70", "256");
+    expect(trMaths).toMatch(/Pascal üçgeni/);
+    expect(trMaths).toMatch(/binom katsay/);
+    expect(trMaths).toMatch(/binom dağıl/);
+
+    expect(tr.labs.probability.largeNumbers.kicker).toMatch(/Büyük Sayılar Kanunu/);
+    expect(tr.labs.probability.largeNumbers.observedFigure).toMatch(/Gözlenen oran/i);
+    expect(tr.labs.probability.largeNumbers.deviationFigure).toMatch(/Sapma/);
+    expect(tr.labs.probability.largeNumbers.theoreticalFigure).toMatch(/Teorik olasılık/);
+  });
+
+  it("counts the experiments the lab says it has", () => {
+    // The card promises a number. Six sections now stand under it.
+    for (const dict of [en, tr]) {
+      expect(dict.labs.probability.description).toMatch(/Six|altı/i);
+    }
+    expect(probabilityMeta.description).toMatch(/Six/);
   });
 });

@@ -1667,7 +1667,7 @@ export const tr: Translation = {
     probability: {
       title: "Olas\u0131l\u0131k Laboratuvar\u0131",
       description:
-        "\u015eans hakk\u0131ndaki sezgine meydan okuyan d\u00f6rt deney. \u00d6nce tahmin edin, sonra tahminin ne kadar yanl\u0131\u015f oldu\u011funu g\u00f6r\u00fcn.",
+        "\u015eans hakk\u0131ndaki sezgine meydan okuyan alt\u0131 deney. \u00d6nce tahmin edin, sonra tahminin ne kadar yanl\u0131\u015f oldu\u011funu g\u00f6r\u00fcn.",
 
       scope:
         "D\u00f6rt \u00e7\u00f6z\u00fcml\u00fc problem; olas\u0131l\u0131\u011f\u0131n geneline bir bak\u0131\u015f de\u011fil. Her biri belirtilmi\u015f bir model kullan\u0131r (iki kurala ba\u011fl\u0131 bir sunucu, e\u015fit olas\u0131l\u0131kl\u0131 365 do\u011fum g\u00fcn\u00fc, her biri ba\u011f\u0131ms\u0131z olarak erkek ya da k\u0131z olan iki \u00e7ocuk, yay\u0131mlanm\u0131\u015f tek bir klinik tablo) ve cevaplar bu modellere aittir. Bir say\u0131 sim\u00fclasyondan geliyorsa sim\u00fclasyon olarak etiketlenir: bir deneyi \u00e7ok kez \u00e7al\u0131\u015ft\u0131rmak bir sonucu g\u00f6sterir, kan\u0131tlamaz.",
@@ -2002,6 +2002,161 @@ export const tr: Translation = {
           "Say\u0131lar 1986 tarihli yay\u0131mlanm\u0131\u015f bir kar\u015f\u0131la\u015ft\u0131rmadan; burada veride bir etkiyi g\u00f6stermek i\u00e7in kullan\u0131l\u0131yor. T\u0131bbi tavsiye de\u011fildir.",
         announce: (a: string, b: string, reversed: string) =>
           `Toplam: A ${a}, B ${b}. Ters d\u00f6nd\u00fc: ${reversed}.`,
+      },
+
+      bridge:
+        "Tek bir d\u00fczene\u011fin iki modeli, ayn\u0131 g\u00f6zler konusunda anla\u015fam\u0131yor. S\u0131radaki deney \u00f6nce modeli sabitler; b\u00f6ylece de\u011fi\u015fen tek \u015fey, denemenin ka\u00e7 kez yinelendi\u011fi olur.",
+
+      pascal: {
+        kicker: "Pascal'\u0131n bilyeleri",
+        title: "Ayn\u0131 d\u00fczene\u011fin iki modeli.",
+        setup: [
+          "Bilye, \u00e7ivilerden olu\u015fan \u00fc\u00e7genin \u00fcst\u00fcnden b\u0131rak\u0131l\u0131r ve yer\u00e7ekimiyle d\u00fc\u015fer.",
+          "Y\u00f6n de\u011fi\u015fimlerinin her biri bir \u00e7arp\u0131\u015fmadan do\u011far, bir yaz\u0131 turadan de\u011fil.",
+          "Sonunda durdu\u011fu g\u00f6z hangisiyse orada say\u0131l\u0131r.",
+        ],
+        caption:
+          "\u0130deal matematiksel model her s\u0131ray\u0131 ba\u011f\u0131ms\u0131z bir sol ya da sa\u011f ad\u0131m\u0131 olarak ele al\u0131r; bu da binom da\u011f\u0131l\u0131m\u0131n\u0131 verir. Ekrandaki fiziksel d\u00fczenekte ise ad\u0131m diye bir \u015fey yoktur: bilyenin nereye gidece\u011fine yer\u00e7ekimi, temas geometrisi, esneklik ve s\u00fcrt\u00fcnme karar verir. \u0130kisi farkl\u0131 mekanizmalard\u0131r ve tablo onlar\u0131 ayr\u0131 s\u00fctunlarda tutar.",
+        predictQuestion: "Birka\u00e7 bilye b\u0131rak\u0131n. Nerede durur bunlar?",
+        predict: {
+          edges: "\u0130ki u\u00e7ta",
+          centre: "Ortada",
+          even: "G\u00f6zlere e\u015fit da\u011f\u0131larak",
+        },
+        predictAnswer: (bin: number, share: string) =>
+          `ideal modele g\u00f6re ${bin} numaral\u0131 g\u00f6z; model bu g\u00f6ze ${share} pay verir`,
+        dropLabel: "Bilye b\u0131rak",
+        dropBatch: (n: number) => (n === 1 ? "1 bilye" : `${n} bilye`),
+        dropHint:
+          "Buradaki her bilye fizik motorunda benzetilir. Hi\u00e7bir say\u0131 hesapla eklenmez.",
+        falling: (n: number) => `${n} bilye h\u00e2l\u00e2 d\u00fc\u015f\u00fcyor`,
+        boardLabel: (dropped: number, rows: number) =>
+          `${rows} s\u0131ra \u00e7ividen olu\u015fan bir d\u00fczenek. ${dropped} bilye fiziksel olarak a\u015fa\u011f\u0131 d\u00fc\u015ft\u00fc ve alttaki g\u00f6zlerde durdu.`,
+        boardEmptyLabel: (rows: number) =>
+          `${rows} s\u0131ra \u00e7ividen olu\u015fan bir d\u00fczenek; alt\u0131ndaki g\u00f6zler bo\u015f.`,
+        tableCaption: (rows: number, dropped: number) =>
+          `${rows} s\u0131ral\u0131 d\u00fczene\u011fin her g\u00f6z\u00fc: ideal modelin sayd\u0131\u011f\u0131 yol say\u0131s\u0131, \u00f6ng\u00f6rd\u00fc\u011f\u00fc pay ve fiziksel olarak benzetilen ${dropped} bilyenin ula\u015ft\u0131\u011f\u0131 ger\u00e7ek pay.`,
+        binColumn: "G\u00f6z",
+        pathsColumn: "Yol",
+        idealColumn: "\u0130deal model",
+        physicalColumn: "Fiziksel d\u00fczenek",
+        shapeColumn: "Bi\u00e7im",
+        legend:
+          "\u00dcstteki \u00e7ubuk ideal binom modelini, alttaki fiziksel sonu\u00e7lar\u0131 g\u00f6sterir. Ayr\u0131\u015ft\u0131klar\u0131 yerde d\u00fczenek, hesab\u0131n modellemedi\u011fi bir \u015feyi s\u00f6yl\u00fcyordur.",
+        reading: (dropped: number, rows: number) =>
+          `${dropped} bilye, her biri ${rows} s\u0131ra \u00e7ivinin aras\u0131ndan; hepsi tek tek benzetildi.`,
+        readingEmpty:
+          "G\u00f6zler bo\u015f. Bir bilye b\u0131rak\u0131n ve karar\u0131 yer\u00e7ekimiyle \u00e7ivilerin vermesini izleyin.",
+        explainWhat:
+          "\u0130ki model de bilyelerin \u00e7o\u011funu ortaya yak\u0131n yerle\u015ftirir; ka\u00e7 tanesini konusunda ise anla\u015famazlar.",
+        explainWhy:
+          "\u0130deal model bir sayma sorusu sorar: bu b\u00fcy\u00fckl\u00fckteki bir d\u00fczene\u011fin izin verdi\u011fi b\u00fct\u00fcn sol-sa\u011f dizileri i\u00e7inde ka\u00e7 tanesi hangi g\u00f6zde biter? Fiziksel d\u00fczenekte ise hi\u00e7bir \u015fey ad\u0131m atmaz. Bilye bir \u00e7iviye belirli bir h\u0131z ve a\u00e7\u0131yla gelir, temas\u0131n verdi\u011fiyle ayr\u0131l\u0131r ve bir sonrakine giderken yanal hareketinin bir k\u0131sm\u0131n\u0131 s\u00fcrt\u00fcnmeye kapt\u0131r\u0131r. Bu kay\u0131p onu ortaya do\u011fru \u00e7eker; dolay\u0131s\u0131yla bu d\u00fczenek, sayma arg\u00fcman\u0131n\u0131n \u00f6ng\u00f6rd\u00fc\u011f\u00fcnden daha dar toplan\u0131r. \u0130ki yan\u0131t da yanl\u0131\u015f de\u011fildir; farkl\u0131 sorular\u0131n yan\u0131tlar\u0131d\u0131r.",
+        explainMaths: (rows: number, paths: string, total: string) =>
+          `\u0130deal modelde ${rows} s\u0131ral\u0131 bir d\u00fczenek, her karar dizisine bir tane d\u00fc\u015fmek \u00fczere ${total} yola izin verir; belirli bir g\u00f6zde biten yollar\u0131n say\u0131s\u0131 da Pascal \u00fc\u00e7geninin o sat\u0131r\u0131ndaki de\u011ferdir. En kalabal\u0131k g\u00f6ze ${paths} yol ula\u015f\u0131r, yani pay\u0131 bu say\u0131n\u0131n ${total} de\u011ferine b\u00f6l\u00fcm\u00fcd\u00fcr. Bu de\u011ferler binom katsay\u0131lar\u0131d\u0131r, verdikleri paylar da binom da\u011f\u0131l\u0131m\u0131d\u0131r. Fiziksel s\u00fctun ise bunlar\u0131n hi\u00e7birinden hesaplanmaz: benzetilen bilyelerin nerede durdu\u011funun say\u0131m\u0131d\u0131r.`,
+        ballsFigure: "Benzetilen bilye",
+        ballsHint: "Her biri bir fiziksel deneme",
+        rowsFigure: "S\u0131ra",
+        pathsFigure: "\u0130deal modeldeki yol",
+        pathsHint: "2'nin s\u0131ra say\u0131s\u0131 kuvveti",
+        peakFigure: "En kalabal\u0131k g\u00f6z",
+        peakHint: (ideal: number) => `\u0130deal modelin en kalabal\u0131\u011f\u0131 ${ideal}`,
+        boardSettings: "D\u00fczenek",
+        rowsLabel: "\u00c7ivi s\u0131ras\u0131",
+        rowsValue: (rows: number, paths: string) =>
+          `${rows} s\u0131ra, ideal modelde ${paths} yol`,
+        rowsHint:
+          "D\u00fczene\u011fi yeniden kurmak g\u00f6zleri bo\u015falt\u0131r: farkl\u0131 bir d\u00fczenek, farkl\u0131 bir deneydir.",
+        emptyBoard: "G\u00f6zleri bo\u015falt",
+        announce: (dropped: number, bin: number) =>
+          `${dropped} bilye benzetildi. En \u00e7ok bilye ${bin} numaral\u0131 g\u00f6zde.`,
+        coachLabel: "S\u0131k sorulanlar",
+        coach: {
+          twoModels: {
+            q: "Neden iki da\u011f\u0131l\u0131m var?",
+            a: "\u00c7\u00fcnk\u00fc iki model var. Biri, her s\u0131ran\u0131n ba\u011f\u0131ms\u0131z ve adil bir ad\u0131m oldu\u011fu idealle\u015ftirilmi\u015f bir d\u00fczenekteki yollar\u0131 sayar. Di\u011feri ise i\u00e7inde yer\u00e7ekimi, temas ve s\u00fcrt\u00fcnme bulunan bir kat\u0131 cisim benzetimidir. Ayn\u0131 resmi anlat\u0131rlar ama ayn\u0131 \u015fey de\u011fildirler; bu y\u00fczden tek bir e\u011fride ortalanmak yerine ayr\u0131 s\u00fctunlarda g\u00f6sterilirler.",
+          },
+          whyDiffer: {
+            q: "Hangisi do\u011fru?",
+            a: "Her biri kendi konusunda do\u011frudur. Binom da\u011f\u0131l\u0131m\u0131, sayma modeli hakk\u0131nda tam olarak do\u011frudur. Fiziksel s\u00fctun da bu benzetilmi\u015f d\u00fczene\u011fin tam olarak yapt\u0131\u011f\u0131 \u015feydir. Model, bir mekanizman\u0131n idealle\u015ftirilmesidir; mekanizmada idealle\u015ftirmede bulunmayan \u015feyler varsa ikisi ayr\u0131\u015f\u0131r. \u0130\u015fe yarar k\u0131s\u0131m da tam olarak nerede ayr\u0131\u015ft\u0131klar\u0131n\u0131 fark etmektir.",
+          },
+          whyMiddle: {
+            q: "\u0130ki modelde de orta neden doluyor?",
+            a: (paths: string, total: string) =>
+              `\u0130deal modelde bu bir sayma meselesidir: d\u00fczene\u011fin izin verdi\u011fi ${total} yoldan ${paths} tanesi en kalabal\u0131k g\u00f6zde, u\u00e7taki g\u00f6zlerin her birinde ise tam olarak bir tanesi biter. Fiziksel d\u00fczenekte ise bir bilyenin uca ula\u015fmas\u0131 i\u00e7in her s\u0131rada ayn\u0131 y\u00f6ne sapmas\u0131 gerekir; \u00fcstelik her temas yanal h\u0131z\u0131n\u0131n bir k\u0131sm\u0131n\u0131 al\u0131p g\u00f6t\u00fcrd\u00fc\u011f\u00fc i\u00e7in b\u00f6yle bir \u015fans dizisi daha da seyrekle\u015fir.`,
+          },
+        },
+      },
+
+      largeNumbers: {
+        kicker: "B\u00fcy\u00fck Say\u0131lar Kanunu",
+        title: "Karar\u0131 tekrarlay\u0131n; oran yerine oturur.",
+        setup: [
+          "Tek bir \u00e7ivi, tek bir adil karar: sol ya da sa\u011f.",
+          "Karar, ba\u011f\u0131ms\u0131z bi\u00e7imde \u00e7ok kez tekrarlan\u0131r.",
+          "Sa\u011fa gidenlerin oran\u0131 teorik olas\u0131l\u0131kla kar\u015f\u0131la\u015ft\u0131r\u0131l\u0131r.",
+        ],
+        caption:
+          "Kanun, ba\u011f\u0131ms\u0131z denemeler biriktik\u00e7e g\u00f6zlenen oran\u0131n teorik olas\u0131l\u0131\u011fa yakla\u015fma e\u011filiminde oldu\u011funu s\u00f6yler. Aradaki fark\u0131n her ad\u0131mda k\u00fc\u00e7\u00fclece\u011fini s\u00f6ylemez; bu ko\u015fuda da k\u00fc\u00e7\u00fclmez: \u00e7izgi yerine oturmadan \u00f6nce uzakla\u015ft\u0131\u011f\u0131 yerleri izleyin.",
+        predictQuestion: "Deneme say\u0131s\u0131 artt\u0131k\u00e7a g\u00f6zlenen oran ne yapar?",
+        predict: {
+          settles: "Teorik de\u011ferin yak\u0131n\u0131nda durulur",
+          swings: "Ayn\u0131 genlikte sal\u0131nmay\u0131 s\u00fcrd\u00fcr\u00fcr",
+          exact: "Tam olarak teorik de\u011fere e\u015fitlenir",
+        },
+        predictAnswer: "\u00fczerine tam oturmadan teorik de\u011ferin yak\u0131n\u0131nda durur",
+        thousands: ".",
+        scaleLabel: "Deneme say\u0131s\u0131",
+        watchHint: "Her karar\u0131n geli\u015fini izleyecek kadar k\u00fc\u00e7\u00fck.",
+        acceleratedHint: "Tek tek \u00e7izilemeyecek kadar \u00e7ok. Yine de her deneme say\u0131l\u0131yor.",
+        chartLabel: (trials: string, observed: string, theoretical: string) =>
+          `${trials} deneme boyunca g\u00f6zlenen oran, logaritmik \u00f6l\u00e7ekte. ${observed} de\u011ferinde bitiyor; d\u00fcz referans \u00e7izgisi olarak \u00e7izilen teorik olas\u0131l\u0131k ise ${theoretical}.`,
+        axisStart: "1 deneme",
+        axisEnd: (trials: string) => `${trials} deneme`,
+        outcomesLabel: (n: number) => `\u0130lk ${n} karar, s\u0131ras\u0131yla`,
+        outcomeLabel: (index: number, side: string) => `${index}. deneme: ${side}`,
+        right: "sa\u011f",
+        left: "sol",
+        rightMark: "S",
+        leftMark: "L",
+        tableCaption:
+          "Ayn\u0131 ko\u015funun ge\u00e7ti\u011fi her \u00f6l\u00e7ekte okunu\u015fu: teorik olas\u0131l\u0131k, g\u00f6zlenen oran ve aralar\u0131ndaki uzakl\u0131k.",
+        trialsColumn: "Deneme",
+        theoreticalColumn: "Teorik",
+        observedColumn: "G\u00f6zlenen",
+        deviationColumn: "Sapma",
+        tableNote:
+          "Sapma s\u00fctununu yukar\u0131dan a\u015fa\u011f\u0131ya okuyun. K\u00fc\u00e7\u00fclme e\u011filimindedir; her sat\u0131rda k\u00fc\u00e7\u00fclmesi gerekmez.",
+        reading: (trials: string) =>
+          `Tek bir tohumdan \u00fcretilmi\u015f ${trials} ba\u011f\u0131ms\u0131z karar. Ayn\u0131 tohum her seferinde ayn\u0131 ko\u015fuyu verir.`,
+        explainWhat:
+          "Oran ba\u015flarda gezinir, sonra teorik olas\u0131l\u0131\u011f\u0131n yak\u0131n\u0131nda durulur.",
+        explainWhy:
+          "Her yeni deneme, y\u00fcr\u00fcyen oran\u0131 bir \u00f6ncekinden daha az oynat\u0131r; \u00e7\u00fcnk\u00fc giderek artan say\u0131da sonucun yaln\u0131zca biridir. Ba\u015flang\u0131\u00e7ta tek bir sonu\u00e7 pay\u0131 onda bir oynatabilir; on bin denemeden sonra on binde birden fazla oynatamaz. Gezinme durmaz, yaln\u0131zca bu \u00f6l\u00e7ekte g\u00f6r\u00fcnmez olur.",
+        explainMaths:
+          "G\u00f6zlenen oran, sa\u011fa giden karar say\u0131s\u0131n\u0131n deneme say\u0131s\u0131na b\u00f6l\u00fcm\u00fcd\u00fcr; sapma ise bu oran\u0131n teorik olas\u0131l\u0131\u011fa uzakl\u0131\u011f\u0131d\u0131r. \u0130kisi de bir form\u00fclden de\u011fil, ko\u015funun kendisinden okunur; sapma s\u00fctununun arada bir yeniden y\u00fckselmesinin nedeni de budur.",
+        theoreticalFigure: "Teorik olas\u0131l\u0131k",
+        theoreticalHint: "Adil bir karar; \u00f6l\u00e7\u00fclm\u00fc\u015f de\u011fil, tan\u0131mlanm\u0131\u015f",
+        observedFigure: "G\u00f6zlenen oran",
+        deviationFigure: "Sapma",
+        deviationHint: "Teorik de\u011fere uzakl\u0131k",
+        trialsFigure: "Deneme",
+        announce: (trials: string, observed: string) =>
+          `${trials} deneme. G\u00f6zlenen oran ${observed}.`,
+        coachLabel: "S\u0131k sorulanlar",
+        coach: {
+          notEvenly: {
+            q: "\u0130ki taraf\u0131n tam olarak e\u015fitlenmesi gerekmez mi?",
+            a: "Gerekmez. Sa\u011fa gidenlerin pay\u0131 yar\u0131ya yakla\u015f\u0131r, ama iki say\u0131 aras\u0131ndaki fark b\u00fcy\u00fcmekte serbesttir. Bir ko\u015fu bir tarafta on bin fazla bitirip yine de oran olarak yar\u0131ya \u00e7ok yak\u0131n durabilir; \u00e7\u00fcnk\u00fc oran \u00e7ok daha b\u00fcy\u00fck bir say\u0131ya b\u00f6l\u00fcn\u00fcr.",
+          },
+          dueForOne: {
+            q: "\u00dcst \u00fcste sola gittikten sonra sa\u011f gelmesi gerekmez mi?",
+            a: "Gerekmez. Her karar ba\u011f\u0131ms\u0131zd\u0131r; s\u0131radaki karar da ilki kadar her iki y\u00f6ne gidebilir. Dengesiz bir ba\u015flang\u0131c\u0131 d\u00fczelten \u015fey, ters y\u00f6nde telafi eden bir seri de\u011fil, sonraki denemelerin \u00e7oklu\u011funun onu seyreltmesidir.",
+          },
+          howMany: {
+            q: "Ka\u00e7 deneme yeterlidir?",
+            a: "Ne kadar yak\u0131n olman\u0131z gerekti\u011fine ve bundan ne kadar emin olmak istedi\u011finize ba\u011fl\u0131d\u0131r. Kanun bir takvim de\u011fil bir e\u011filim tarif eder ve g\u00f6zlenen oran\u0131n teorik olas\u0131l\u0131\u011f\u0131n yak\u0131n\u0131nda kalaca\u011f\u0131n\u0131 garanti eden bir say\u0131 vermez.",
+          },
+        },
       },
 
       recap: {
