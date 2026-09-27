@@ -73,6 +73,14 @@ export const tr: Translation = {
     experiments: "Deneyler",
     emptyTitle: "İlk deneyler hazırlanıyor.",
     emptyBody: "Platform hazır: laboratuvarlar kendilerini kaydeder ve burada otomatik olarak görünür.",
+    browse: "Laboratuvarlara göz at",
+    continueLab: (title: string) => `Kaldığın yerden devam et: ${title}`,
+    filterLabel: "Laboratuvarları alana göre süz",
+    allFields: "Tümü",
+    otherLabs: "Diğer laboratuvarlar",
+    showing: (shown: number, total: number, field: string) =>
+      `${total} laboratuvardan ${shown} tanesi · ${field}`,
+    visited: "Açıldı",
   },
 
   notFound: {

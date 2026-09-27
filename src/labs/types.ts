@@ -55,3 +55,28 @@ export const CATEGORY_STYLE: Record<LabCategory, { dot: string; text: string }> 
   systems: { dot: "bg-signal-amber", text: "text-signal-amber" },
   theory: { dot: "bg-signal-blue", text: "text-signal-blue" },
 };
+
+/**
+ * The same colours as CSS custom properties, for effects Tailwind classes
+ * cannot express — a glow whose colour and alpha both vary. Set as `--c`
+ * on an element and read as `rgb(var(--c) / …)`. Each theme defines these
+ * variables with its own values, so a glow reads on paper as well as ink.
+ */
+export const CATEGORY_VAR: Record<LabCategory, string> = {
+  algorithms: "var(--signal-cyan)",
+  "data-structures": "var(--signal-green)",
+  "machine-learning": "var(--accent)",
+  "neural-networks": "var(--signal-rose)",
+  systems: "var(--signal-amber)",
+  theory: "var(--signal-blue)",
+};
+
+/** Short tags for the corner of a lab card. Language-neutral on purpose. */
+export const CATEGORY_CODE: Record<LabCategory, string> = {
+  algorithms: "ALG",
+  "data-structures": "DS",
+  "machine-learning": "ML",
+  "neural-networks": "NN",
+  systems: "SYS",
+  theory: "TH",
+};

@@ -76,12 +76,16 @@ export function SiteHeader() {
               toggles — a header where the controls outranked the product's own
               name. The theme toggle yields instead; it is the least urgent
               control on the page. */}
-          <span className="whitespace-nowrap font-display text-caption font-semibold uppercase tracking-[0.18em] text-fg sm:text-body-sm sm:tracking-[0.22em]">
+          {/* Letter-spacing is what makes the wordmark read as a mark, and
+              also what makes it wide. Below `sm` it is tightened to the least
+              that still reads as spaced, so the wordmark and both toggles
+              stay on one line down to a 360px screen. */}
+          <span className="whitespace-nowrap font-display text-[11px] font-semibold uppercase tracking-[0.08em] text-fg sm:text-body-sm sm:tracking-[0.22em]">
             {t.shell.brand} <span className="text-fg-muted">{t.shell.brandSuffix}</span>
           </span>
         </Link>
 
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-1.5 sm:gap-3">
           <nav aria-label={t.shell.primaryNav} className="hidden sm:block">
             <NavLink
               to="/"
