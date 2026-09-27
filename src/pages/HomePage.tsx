@@ -1,4 +1,4 @@
-import { useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/cn";
 import { LabSignature } from "@/components/home/LabSignature";
@@ -64,6 +64,26 @@ export function HomePage() {
   const others = field ? labs.filter((lab) => lab.meta.category !== field) : [];
   const last = labs.find((lab) => lab.meta.slug === visits.last);
 
+  // A touch screen has no hover, so each drawing plays its gesture once, as
+  // its card comes into view. Re-armed whenever the grid is re-ordered,
+  // because re-ordering remounts the cards.
+  useEffect(() => {
+    const grid = gridRef.current;
+    if (!grid || !window.matchMedia("(hover: none)").matches) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add("sig-play");
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.6 },
+    );
+    grid.querySelectorAll(".lab-card").forEach((card) => observer.observe(card));
+    return () => observer.disconnect();
+  }, [field]);
+
   const pick = (next: LabCategory | null) => {
     setField((current) => (current === next ? null : next));
     // On a phone the chips and the results are a screen apart: bring the
@@ -82,7 +102,7 @@ export function HomePage() {
   );
 
   return (
-    <div className="pb-24">
+    <div>
       {/* ---------------------------------------------------------- hero -- */}
       <section aria-labelledby="home-title" className="relative border-b border-line/10">
         <MarkField targetRef={artRef} />
@@ -180,6 +200,37 @@ export function HomePage() {
           </>
         )}
       </section>
+
+      <Marquee items={[t.shell.parentOrg, ...fields.map((category) => t.category[category]), t.shell.hashtag]} />
+    </div>
+  );
+}
+
+/**
+ * A strip under the collection: the club, its fields and its hashtag,
+ * drifting sideways. Decoration, so hidden from assistive technology, and
+ * still under reduced motion. The run is written four times and the loop
+ * slides by exactly half, so it is seamless and never runs out of text on a
+ * wide screen.
+ */
+function Marquee({ items }: { items: string[] }) {
+  const run = items.map((item, i) => (
+    <span key={i}>
+      <span className={i % 2 === 0 ? "text-fg" : undefined}>{item}</span>
+      <span className="px-4 text-fg-faint">·</span>
+    </span>
+  ));
+  return (
+    <div
+      aria-hidden
+      className="mt-20 overflow-hidden whitespace-nowrap border-y border-line/10 py-4 font-mono text-body-sm uppercase tracking-[0.12em] text-fg-muted"
+    >
+      <div className="marquee-track">
+        {run}
+        {run}
+        {run}
+        {run}
+      </div>
     </div>
   );
 }
