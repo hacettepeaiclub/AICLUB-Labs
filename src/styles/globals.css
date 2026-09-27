@@ -476,6 +476,89 @@
     animation: lab-rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
     animation-delay: calc(var(--i, 0) * 40ms);
   }
+
+  /* ---------------------------------------------------------------- */
+  /* Signature motion (LabSignature.tsx).                              */
+  /*                                                                   */
+  /* At rest these classes change nothing. On a hovered card — or on a  */
+  /* card marked `sig-play` as it scrolls into view on a touch screen — */
+  /* each element replays its part after its own `--d` delay.          */
+  /* ---------------------------------------------------------------- */
+  .sig-draw {
+    stroke-dasharray: 1 1;
+  }
+  .sig-pop,
+  .sig-grow,
+  .sig-blink {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  .sig-grow {
+    transform-origin: bottom;
+  }
+  :is(.lab-card:hover, .sig-play) .sig-draw {
+    animation: sig-draw 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: var(--d, 0s);
+  }
+  :is(.lab-card:hover, .sig-play) .sig-pop {
+    animation: sig-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    animation-delay: var(--d, 0s);
+  }
+  :is(.lab-card:hover, .sig-play) .sig-grow {
+    animation: sig-grow 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: var(--d, 0s);
+  }
+  :is(.lab-card:hover, .sig-play) .sig-blink {
+    animation: sig-blink 0.7s steps(3) both;
+    animation-delay: var(--d, 0s);
+  }
+
+  /* The strip under the collection: the club and its fields, drifting. */
+  .marquee-track {
+    display: inline-block;
+    animation: marquee 60s linear infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track {
+      animation: none;
+    }
+  }
+}
+
+@keyframes sig-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes sig-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+}
+@keyframes sig-grow {
+  from {
+    transform: scaleY(0);
+  }
+}
+@keyframes sig-blink {
+  0% {
+    opacity: 0.15;
+  }
+  50% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 0.4;
+  }
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 @keyframes field-lock {
