@@ -1,11 +1,14 @@
+import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
 export interface ToggleOption<T extends string> {
   value: T;
-  /** What the button says. Always a word — never an icon on its own. */
+  /** The button's name. Shown as text, or kept for screen readers when an icon is given. */
   label: string;
   /** The fuller name, for screen readers where two letters are not enough. */
   title?: string;
+  /** Drawn in place of the visible label. The label still names the button. */
+  icon?: ReactNode;
 }
 
 export interface PreferenceToggleProps<T extends string> {
@@ -21,9 +24,9 @@ export interface PreferenceToggleProps<T extends string> {
  *
  * Native `<button>`s inside a labelled group, with `aria-pressed` carrying the
  * state — not `role="button"`, not a checkbox pretending to be a switch, and
- * no flag or sun-and-moon emoji. The label is text in both languages, because
- * an icon alone would be the only thing in the collection encoding meaning
- * without words.
+ * no flag emoji. The theme switch draws a sun and a moon, but never as the
+ * only name: the word stays in the button for screen readers and as its
+ * tooltip, so the icon adds a shape without taking the meaning away.
  *
  * The group is small enough to sit in the header at every width; the label is
  * visually hidden because the buttons already read as what they are.
@@ -51,7 +54,7 @@ export function PreferenceToggle<T extends string>({
             key={option.value}
             type="button"
             aria-pressed={selected}
-            title={option.title}
+            title={option.title ?? (option.icon ? option.label : undefined)}
             onClick={() => onChange(option.value)}
             className={cn(
               // `min-w-11` was here alone, and the height came out at 37.6px
@@ -66,7 +69,14 @@ export function PreferenceToggle<T extends string>({
                 : "text-fg-muted hover:bg-line/5 hover:text-fg",
             )}
           >
-            {option.label}
+            {option.icon ? (
+              <>
+                {option.icon}
+                <span className="sr-only">{option.label}</span>
+              </>
+            ) : (
+              option.label
+            )}
           </button>
         );
       })}
