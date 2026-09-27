@@ -386,6 +386,111 @@
     background: radial-gradient(180px 1px at var(--mx, -200px) 50%, rgb(var(--data) / 0.9), transparent);
     pointer-events: none;
   }
+
+  /* ---------------------------------------------------------------- */
+  /* Home page (HomePage.tsx).                                         */
+  /*                                                                   */
+  /* `--c` is the field's colour as an RGB triplet (CATEGORY_VAR), so  */
+  /* one rule can use it at any alpha.                                 */
+  /* ---------------------------------------------------------------- */
+  .field-chip {
+    @apply inline-flex min-h-11 shrink-0 items-center gap-2 whitespace-nowrap rounded border border-line/10
+      bg-ink-800/50 px-3.5 text-body-sm text-fg-muted;
+    transition:
+      border-color 0.3s,
+      box-shadow 0.35s,
+      background-color 0.3s,
+      color 0.3s;
+  }
+  .field-chip:hover {
+    @apply border-line/25 text-fg;
+  }
+  .field-chip[aria-pressed="true"] {
+    @apply bg-ink-800 text-fg;
+    border-color: rgb(var(--c));
+    box-shadow:
+      0 0 0 1px rgb(var(--c) / 0.45),
+      0 0 24px -6px rgb(var(--c) / 0.6),
+      inset 0 0 18px -10px rgb(var(--c) / 0.7);
+    animation: field-lock 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .field-chip[aria-pressed="true"] .field-chip-count {
+    color: rgb(var(--c));
+  }
+
+  /* A lab card: plain surface, hairline frame, corner brackets. */
+  .lab-card {
+    @apply relative flex w-full flex-col border border-line/10 bg-ink-800/70 p-3.5;
+    transition:
+      border-color 0.3s,
+      background-color 0.3s,
+      box-shadow 0.35s;
+  }
+  .lab-card::before,
+  .lab-card::after {
+    content: "";
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border: 1px solid rgb(var(--line) / 0.35);
+    transition:
+      border-color 0.25s,
+      width 0.25s,
+      height 0.25s;
+  }
+  .lab-card::before {
+    top: -1px;
+    left: -1px;
+    border-right: 0;
+    border-bottom: 0;
+  }
+  .lab-card::after {
+    right: -1px;
+    bottom: -1px;
+    border-left: 0;
+    border-top: 0;
+  }
+  .lab-card:hover {
+    @apply bg-ink-800;
+    border-color: rgb(var(--c) / 0.45);
+  }
+  .lab-card:hover::before,
+  .lab-card:hover::after {
+    width: 20px;
+    height: 20px;
+    border-color: rgb(var(--c));
+  }
+  .lab-card.is-lit {
+    border-color: rgb(var(--c) / 0.7);
+    box-shadow:
+      0 0 0 1px rgb(var(--c) / 0.3),
+      0 0 26px -8px rgb(var(--c) / 0.6);
+  }
+  .lab-card.is-lit::before,
+  .lab-card.is-lit::after {
+    border-color: rgb(var(--c));
+  }
+
+  /* Cards rise in, one after another, whenever the grid is re-ordered. */
+  .lab-rise {
+    animation: lab-rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(var(--i, 0) * 40ms);
+  }
+}
+
+@keyframes field-lock {
+  0% {
+    box-shadow:
+      0 0 0 1px rgb(var(--c) / 0.9),
+      0 0 44px 2px rgb(var(--c) / 0.55),
+      inset 0 0 30px -8px rgb(var(--c) / 0.8);
+  }
+}
+@keyframes lab-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
 }
 
 /* Two names for one animation, so hovering restarts it: a changed

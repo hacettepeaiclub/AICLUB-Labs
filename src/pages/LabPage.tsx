@@ -1,9 +1,10 @@
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { LabShell } from "@/components/lab";
 import { ErrorBoundary } from "@/components/layout/ErrorBoundary";
 import { useT } from "@/i18n";
 import { findLab } from "@/labs/registry";
+import { recordVisit } from "@/labs/visits";
 import { NotFoundPage } from "./NotFoundPage";
 
 function LabLoading() {
@@ -23,6 +24,11 @@ function LabLoading() {
 export function LabPage() {
   const { slug } = useParams<{ slug: string }>();
   const lab = slug ? findLab(slug) : undefined;
+
+  // Remembered for the home page's "visited" marks and "continue" link.
+  useEffect(() => {
+    if (lab) recordVisit(lab.meta.slug);
+  }, [lab]);
 
   if (!lab) return <NotFoundPage />;
 
