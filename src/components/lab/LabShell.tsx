@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui";
 import { useLabMeta, useT } from "@/i18n";
 import { CATEGORY_STYLE, type LabMeta } from "@/labs/types";
+import { Specimen } from "./Specimen";
 
 /**
  * Frame that every experiment renders inside. Gives all 100+ labs the same
@@ -25,14 +26,22 @@ export function LabShell({ meta, children }: { meta: LabMeta; children: ReactNod
         </Link>
       </nav>
 
-      <header className="mb-10 max-w-prose">
-        <div className="mb-4 flex items-center gap-2">
-          <Badge dotClassName={category.dot}>{t.category[meta.category]}</Badge>
-          <Badge>{t.difficulty[meta.difficulty]}</Badge>
-          <Badge>{t.shell.minutes(meta.minutes)}</Badge>
+      {/* The specimen sits beside the title from tablet width up. On a phone
+          it would push the experiment a full screen down, and the experiment
+          is what the visitor came for, so it is left out there. It stays
+          lazy for the same reason: a lazy image that is display:none is never
+          fetched, so phones do not download a picture they will not see. */}
+      <header className="mb-10 grid items-center gap-8 md:grid-cols-[minmax(0,1fr)_16rem] lg:grid-cols-[minmax(0,1fr)_20rem]">
+        <div className="max-w-prose">
+          <div className="mb-4 flex items-center gap-2">
+            <Badge dotClassName={category.dot}>{t.category[meta.category]}</Badge>
+            <Badge>{t.difficulty[meta.difficulty]}</Badge>
+            <Badge>{t.shell.minutes(meta.minutes)}</Badge>
+          </div>
+          <h1 className="text-display-lg text-fg">{copy?.title ?? meta.title}</h1>
+          <p className="mt-4 text-body-lg text-fg-muted">{copy?.description ?? meta.description}</p>
         </div>
-        <h1 className="text-display-lg text-fg">{copy?.title ?? meta.title}</h1>
-        <p className="mt-4 text-body-lg text-fg-muted">{copy?.description ?? meta.description}</p>
+        <Specimen name={meta.slug} className="hidden md:block" />
       </header>
 
       {children}

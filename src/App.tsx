@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { useEffect } from "react";
+import { AmbientBackground } from "@/components/layout/AmbientBackground";
 import { PageShell } from "@/components/layout/PageShell";
 import { HomePage } from "@/pages/HomePage";
 import { LabPage } from "@/pages/LabPage";
@@ -34,6 +35,9 @@ function AnimatedRoutes() {
 export default function App() {
   return (
     <BrowserRouter>
+      {/* Outside the routes on purpose: the shell remounts on every
+          navigation, and the room the pages stand in should not. */}
+      <AmbientBackground />
       <ScrollToTop />
       <AnimatedRoutes />
     </BrowserRouter>

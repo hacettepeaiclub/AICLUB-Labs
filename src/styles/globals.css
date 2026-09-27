@@ -314,4 +314,93 @@
   .lab-range:disabled {
     @apply cursor-not-allowed opacity-40;
   }
+
+  /* ---------------------------------------------------------------- */
+  /* Ambient background (AmbientBackground.tsx).                       */
+  /*                                                                   */
+  /* Two very large, very blurred pools of the club navy drifting on   */
+  /* a 40-second cycle. They are what "navy folded into black" means:  */
+  /* no surface is navy, the dark simply leans blue where they pass.   */
+  /* On paper they become a pale mist, so they fade to a third.        */
+  /* ---------------------------------------------------------------- */
+  .ambient-fog {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(90px);
+    opacity: 0.55;
+  }
+  :root[data-theme="light"] .ambient-fog {
+    opacity: 0.2;
+  }
+  .ambient-fog-a {
+    width: 60vw;
+    height: 60vw;
+    left: -18vw;
+    top: -22vw;
+    background: radial-gradient(circle, rgb(var(--accent-fill) / 0.55), transparent 65%);
+    animation: ambient-drift-a 38s ease-in-out infinite alternate;
+  }
+  .ambient-fog-b {
+    width: 50vw;
+    height: 50vw;
+    right: -20vw;
+    top: 30vh;
+    background: radial-gradient(circle, rgb(var(--accent-fill) / 0.35), transparent 65%);
+    animation: ambient-drift-b 46s ease-in-out infinite alternate;
+  }
+
+  /* ---------------------------------------------------------------- */
+  /* Header (SiteHeader.tsx).                                          */
+  /*                                                                   */
+  /* The mark is the logo PNG used as a mask, so its geometry is the  */
+  /* file's own alpha and nothing is redrawn. Behind the mask, a band  */
+  /* of the data blue travels up the strands on load and on hover —    */
+  /* a signal through the network the logo already draws.             */
+  /*                                                                   */
+  /* The hairline under the header catches a short light where the     */
+  /* pointer is. That is the header's only motion; it never moves.     */
+  /* ---------------------------------------------------------------- */
+  .brand-mark {
+    background: linear-gradient(
+      to top,
+      rgb(var(--fg)) 0%,
+      rgb(var(--fg)) 40%,
+      rgb(var(--data)) 50%,
+      rgb(var(--fg)) 60%,
+      rgb(var(--fg)) 100%
+    );
+    background-size: 100% 300%;
+    background-position: 0 0%;
+    -webkit-mask: var(--mark) center / contain no-repeat;
+    mask: var(--mark) center / contain no-repeat;
+    animation: brand-signal 1.4s cubic-bezier(0.65, 0, 0.35, 1) 0.2s;
+  }
+  .brand-link:hover .brand-mark {
+    animation-name: brand-signal-again;
+  }
+  .header-glow::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 -1px 0;
+    height: 1px;
+    background: radial-gradient(180px 1px at var(--mx, -200px) 50%, rgb(var(--data) / 0.9), transparent);
+    pointer-events: none;
+  }
+}
+
+/* Two names for one animation, so hovering restarts it: a changed
+   animation-name is a new animation to the browser. */
+@keyframes brand-signal {
+  from { background-position: 0 0%; }
+  to { background-position: 0 100%; }
+}
+@keyframes brand-signal-again {
+  from { background-position: 0 0%; }
+  to { background-position: 0 100%; }
+}
+@keyframes ambient-drift-a {
+  to { transform: translate(8vw, 6vh) scale(1.08); }
+}
+@keyframes ambient-drift-b {
+  to { transform: translate(-10vw, -8vh) scale(0.95); }
 }
