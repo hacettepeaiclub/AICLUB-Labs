@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { createRng } from "@/lib/random";
 
 /**
@@ -19,8 +20,19 @@ import { createRng } from "@/lib/random";
  * at all: it draws instead.
  *
  * They stay honest about that: every shape here is generated from a fixed seed
- * and drawn once, so nothing pretends to be computing. No animation, no state,
- * no `requestAnimationFrame`.
+ * and drawn once, so nothing pretends to be computing. No state and no
+ * `requestAnimationFrame`.
+ *
+ * ## How they move
+ *
+ * Only when asked: on hover (or once, on a touch screen, as the card comes
+ * into view), each drawing replays its lab's own gesture in about a second —
+ * the route is drawn, the search spreads by depth, the bars grow, the digest
+ * flickers, the ball lands in the bowl. It is CSS only, keyed off four
+ * classes in `globals.css`: `sig-draw` (a stroke drawn along its length; the
+ * element carries `pathLength={1}`), `sig-pop`, `sig-grow` and `sig-blink`,
+ * each delayed by `--d`. At rest every drawing is exactly the static one, so
+ * reduced motion and devices without hover lose nothing.
  *
  * ## Why they all look related
  *
@@ -38,6 +50,9 @@ const seeded = (slug: string) => {
   for (let i = 0; i < slug.length; i++) h = Math.imul(h ^ slug.charCodeAt(i), 16777619);
   return createRng(h >>> 0);
 };
+
+/** Animation delay for one element, in seconds. */
+const at = (seconds: number): CSSProperties => ({ "--d": `${seconds}s` }) as CSSProperties;
 
 const inert = "stroke-fg-faint/45";
 const structure = "stroke-accent";
@@ -105,7 +120,9 @@ function Shape({ slug }: { slug: string }) {
                   points={`22,${midY - 3} 24.6,${midY} 22,${midY + 3}`}
                   fill="none"
                   strokeWidth={1}
-                  className={structure}
+                  pathLength={1}
+                  className={`${structure} sig-draw`}
+                  style={at(row * 0.2)}
                 />
                 {Array.from({ length: CELLS }, (_, i) => {
                   const digest = HASH_FILLS[Math.floor(rng() * HASH_FILLS.length)] ?? "fill-accent";
@@ -116,7 +133,8 @@ function Shape({ slug }: { slug: string }) {
                       y={midY - 4.5}
                       width={CELL_W}
                       height={9}
-                      className={row === 1 && i === 4 ? "fill-data" : digest}
+                      className={`${row === 1 && i === 4 ? "fill-data" : digest} sig-blink`}
+                      style={at(0.15 + row * 0.2 + i * 0.04)}
                     />
                   );
                 })}
@@ -140,7 +158,9 @@ function Shape({ slug }: { slug: string }) {
                   y1={(H / (count + 1)) * (i + 1)}
                   x2={xs[l + 1]}
                   y2={(H / ((layers[l + 1] ?? 1) + 1)) * (j + 1)}
-                  className={inert}
+                  pathLength={1}
+                  className={`${inert} sig-draw`}
+                  style={at(l * 0.3)}
                 />
               )),
             ),
@@ -152,7 +172,8 @@ function Shape({ slug }: { slug: string }) {
                 cx={xs[l]}
                 cy={(H / (count + 1)) * (i + 1)}
                 r={2.2}
-                className={l === 1 && i === 1 ? "fill-data stroke-data" : "fill-ink-950 stroke-accent"}
+                className={`${l === 1 && i === 1 ? "fill-data stroke-data" : "fill-ink-950 stroke-accent"} sig-pop`}
+                style={at(l * 0.3 + 0.1)}
               />
             )),
           )}
@@ -210,7 +231,8 @@ function Shape({ slug }: { slug: string }) {
                   y={Y0 + r * PITCH}
                   width={SIZE}
                   height={SIZE}
-                  className={fill}
+                  className={depth <= FRONTIER ? `${fill} sig-pop` : fill}
+                  style={depth <= FRONTIER ? at(depth * 0.1) : undefined}
                 />
               );
             }),
@@ -219,7 +241,9 @@ function Shape({ slug }: { slug: string }) {
             points={`${cx(1)},${cy(3)} ${cx(3)},${cy(3)} ${cx(3)},${cy(2)} ${cx(5)},${cy(2)} ${cx(5)},${cy(1)} ${cx(8)},${cy(1)}`}
             fill="none"
             strokeWidth={1.4}
-            className={structure}
+            pathLength={1}
+            className={`${structure} sig-draw`}
+            style={at(0.45)}
           />
         </g>
       );
@@ -234,7 +258,8 @@ function Shape({ slug }: { slug: string }) {
               y={H - 3 - (i + 1) * 1.85}
               width={2.4}
               height={(i + 1) * 1.85}
-              className={i > 13 ? "fill-accent" : "fill-fg-faint/45"}
+              className={`${i > 13 ? "fill-accent" : "fill-fg-faint/45"} sig-grow`}
+              style={at(i * 0.03)}
             />
           ))}
         </g>
@@ -254,7 +279,8 @@ function Shape({ slug }: { slug: string }) {
                 width={w}
                 height={8}
                 rx={1}
-                className={i === 3 ? "fill-data" : "fill-fg-faint/40"}
+                className={`${i === 3 ? "fill-data" : "fill-fg-faint/40"} sig-pop`}
+                style={at(0.3 + i * 0.07)}
               />
             );
             x += w + 2.4;
@@ -268,7 +294,9 @@ function Shape({ slug }: { slug: string }) {
               x2={3 + widths.slice(0, i + 1).reduce((a, b) => a + b, 0) + (i + 1) * 2.4 - 1.2}
               y2={28}
               strokeWidth={0.6}
-              className={structure}
+              pathLength={1}
+              className={`${structure} sig-draw`}
+              style={at(i * 0.06)}
             />
           ))}
         </g>
@@ -280,8 +308,13 @@ function Shape({ slug }: { slug: string }) {
           {[14, 10.5, 7, 3.5].map((r, i) => (
             <ellipse key={i} cx={40} cy={20} rx={r * 1.5} ry={r} className={inert} />
           ))}
-          <polyline points="6,6 16,11 26,16 34,19 38,20" strokeWidth={1.4} className={structure} />
-          <circle cx={40} cy={20} r={2} className="fill-data stroke-none" />
+          <polyline
+            points="6,6 16,11 26,16 34,19 38,20"
+            strokeWidth={1.4}
+            pathLength={1}
+            className={`${structure} sig-draw`}
+          />
+          <circle cx={40} cy={20} r={2} className="fill-data stroke-none sig-pop" style={at(0.75)} />
         </g>
       );
     }
@@ -296,8 +329,10 @@ function Shape({ slug }: { slug: string }) {
             <path
               key={`a-${i}`}
               d={`M30 26 Q ${(30 + xs[i]!) / 2} ${8 + Math.abs(2 - i) * 3} ${xs[i]} 26`}
-              className={i === 4 ? live : structure}
+              className={`${i === 4 ? live : structure} sig-draw`}
               strokeWidth={i === 4 ? 1.2 : 0.6}
+              pathLength={1}
+              style={at(i * 0.12)}
             />
           ))}
         </g>
@@ -312,8 +347,13 @@ function Shape({ slug }: { slug: string }) {
             )),
           )}
           <rect x={17} y={29} width={5} height={5} className="fill-accent stroke-none" />
-          <rect x={41} y={5} width={5} height={5} className="fill-data stroke-none" />
-          <polyline points="19.5,31.5 19.5,19.5 31.5,19.5 31.5,7.5 43.5,7.5" strokeWidth={1.2} className={structure} />
+          <rect x={41} y={5} width={5} height={5} className="fill-data stroke-none sig-pop" style={at(0.8)} />
+          <polyline
+            points="19.5,31.5 19.5,19.5 31.5,19.5 31.5,7.5 43.5,7.5"
+            strokeWidth={1.2}
+            pathLength={1}
+            className={`${structure} sig-draw`}
+          />
         </g>
       );
     }
@@ -348,8 +388,16 @@ function Shape({ slug }: { slug: string }) {
             className="fill-fg-faint/30 stroke-none"
           />
           <polyline points={bell(26, 7)} className={structure} />
-          <polyline points={bell(42, 7)} className="stroke-data" strokeDasharray="2.5 2" />
-          <line x1={CUT} y1={6} x2={CUT} y2={34} className={inert} strokeDasharray="1.5 1.5" />
+          <polyline points={bell(42, 7)} className="stroke-data sig-pop" strokeDasharray="2.5 2" style={at(0.1)} />
+          <line
+            x1={CUT}
+            y1={6}
+            x2={CUT}
+            y2={34}
+            className={`${inert} sig-grow`}
+            strokeDasharray="1.5 1.5"
+            style={at(0.45)}
+          />
         </g>
       );
     }
@@ -382,7 +430,8 @@ function Shape({ slug }: { slug: string }) {
           <polyline
             points={`${left(1)},7 ${left(1) - 5},11 ${left(1) - 5},29 ${left(1)},33`}
             fill="none"
-            className={inert}
+            pathLength={1}
+            className={`${inert} sig-draw`}
           />
           {/* Handles, so a rectangle reads as a door. */}
           {[0, 2].map((i) => (
@@ -391,7 +440,8 @@ function Shape({ slug }: { slug: string }) {
               cx={left(i) + DOOR_W - 3}
               cy={20}
               r={1.1}
-              className={i === 2 ? "fill-data stroke-none" : "fill-fg-faint/60 stroke-none"}
+              className={`${i === 2 ? "fill-data stroke-none" : "fill-fg-faint/60 stroke-none"} sig-pop`}
+              style={at(i === 2 ? 0.55 : 0.35)}
             />
           ))}
         </g>
@@ -405,10 +455,26 @@ function Shape({ slug }: { slug: string }) {
       return (
         <g>
           {pts.map((p, i) => (
-            <circle key={i} cx={p.x} cy={p.y} r={i === 7 ? 2 : 0.9} className={i === 7 ? "fill-data" : "fill-fg-faint/50"} />
+            <circle
+              key={i}
+              cx={p.x}
+              cy={p.y}
+              r={i === 7 ? 2 : 0.9}
+              className={i === 7 ? "fill-data sig-pop" : "fill-fg-faint/50"}
+            />
           ))}
           {near.map((p, i) => (
-            <line key={`l-${i}`} x1={hub.x} y1={hub.y} x2={p.x} y2={p.y} strokeWidth={0.5} className={structure} />
+            <line
+              key={`l-${i}`}
+              x1={hub.x}
+              y1={hub.y}
+              x2={p.x}
+              y2={p.y}
+              strokeWidth={0.5}
+              pathLength={1}
+              className={`${structure} sig-draw`}
+              style={at(0.15 + i * 0.1)}
+            />
           ))}
         </g>
       );
