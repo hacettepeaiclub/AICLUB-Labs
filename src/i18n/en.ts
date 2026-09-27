@@ -74,6 +74,16 @@ export const en = {
     experiments: "Experiments",
     emptyTitle: "First experiments are brewing.",
     emptyBody: "The platform is ready: labs register themselves and appear here automatically.",
+    // The hero's link down to the collection, and the one-line way back into
+    // the lab a returning visitor last opened.
+    browse: "Browse labs",
+    continueLab: (title: string) => `Continue: ${title}`,
+    // Field filter above the grid.
+    filterLabel: "Filter labs by field",
+    allFields: "All",
+    otherLabs: "Other labs",
+    showing: (shown: number, total: number, field: string) => `${shown} of ${total} labs · ${field}`,
+    visited: "Visited",
   },
 
   notFound: {
