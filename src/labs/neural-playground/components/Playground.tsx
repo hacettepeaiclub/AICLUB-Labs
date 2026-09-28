@@ -184,7 +184,12 @@ export function Playground() {
            the whole square, and what it is made of. The diagram used to sit at
            the very bottom of the section, under the scoreboard and a heading —
            the thing the lab is named after, last. */
-        <div className="grid gap-3 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+        /* Stacked, not side by side. Placed in a row they were both short and
+           the stage's rail — this lab has eight controls, more than any other
+           — ran 547px past the bottom of them, so half the screen column was
+           empty. One under the other, the two pictures fill the height the
+           controls need, and the canvas gets the width it was splitting. */
+        <div className="grid gap-3">
           <div className="min-w-0 space-y-2">
             <DecisionCanvas
               netRef={netRef}
