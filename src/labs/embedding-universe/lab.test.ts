@@ -1,8 +1,15 @@
 import { readFileSync, existsSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { labs, publishedLabs } from "../registry";
-import { en } from "@/i18n/en";
-import { tr } from "@/i18n/tr";
+import { en as enShell } from "@/i18n/en";
+import { tr as trShell } from "@/i18n/tr";
+import { enLabs } from "@/i18n/labs/en";
+import { trLabs } from "@/i18n/labs/tr";
+
+// The shell dictionary and the lab prose ship as separate chunks; a lab sees
+// both, so the assertions below read them as one object.
+const en = { ...enShell, labs: enLabs };
+const tr = { ...trShell, labs: trLabs };
 import { embeddingUniverseMeta } from "./meta";
 import { VOCABULARY } from "./vocabulary";
 import { decodeInt16, type DatasetMeta } from "./dataset";
@@ -75,7 +82,14 @@ describe("registry", () => {
   });
 
   it("is lazily imported, so its dataset never loads with the home page", () => {
-    expect(read("../registry.ts")).toMatch(/lazy\(\(\) => import\("\.\/embedding-universe"\)\)/);
+    // The registry entry must hand over a *function* that imports the lab, not
+    // the module: this lab carries a vector file, and a static import here
+    // would put it in the entry chunk.
+    expect(read("../registry.ts")).toMatch(
+      /entry\(embeddingUniverseMeta, \(\) => import\("\.\/embedding-universe"\)\)/,
+    );
+    const lab = labs.find((entry) => entry.meta.slug === embeddingUniverseMeta.slug);
+    expect(typeof lab?.load).toBe("function");
   });
 
   it("has coherent metadata", () => {
@@ -232,7 +246,9 @@ describe("nothing displayed is written down", () => {
       const code = stripComments(read(file))
         .replace(/\b(?:type|role|autoComplete|inputMode|htmlFor|textAnchor|fill)="[^"]*"/g, "")
         .replace(/\baria-[a-zA-Z]+="[^"]*"/g, "");
-      const literals = [...code.matchAll(/"([^"\\]*)"|'([^'\\]*)'/g)].map((m) => m[1] ?? m[2] ?? "");
+      const literals = [...code.matchAll(/"([^"\\]*)"|'([^'\\]*)'/g)].map(
+        (m) => m[1] ?? m[2] ?? "",
+      );
       for (const literal of literals) {
         expect({ file, literal, isWord: words.has(literal.trim().toLowerCase()) }).toMatchObject({
           isWord: false,
@@ -340,7 +356,7 @@ describe("search folding", () => {
   });
 
   it("finds an English word by typing its Turkish gloss, with or without diacritics", () => {
-    const dog = VOCABULARY.find((w) => w.tr === foldSearch(w.tr) ? false : true);
+    const dog = VOCABULARY.find((w) => (w.tr === foldSearch(w.tr) ? false : true));
     expect(dog).toBeDefined();
     for (const item of VOCABULARY.slice(0, 40)) {
       const byGloss = searchWords(VOCABULARY, item.tr, 20);
@@ -562,7 +578,13 @@ describe("labels and roles", () => {
     // The identity question this map exists to answer: if a label is dropped
     // because two neighbours landed close together, one word is left unnamed
     // and its star is indistinguishable from the three hundred around it.
-    const neighboursHere = nearestNeighbours(set.vectors, set.count, set.dimensions, 0, NEIGHBOUR_COUNT);
+    const neighboursHere = nearestNeighbours(
+      set.vectors,
+      set.count,
+      set.dimensions,
+      0,
+      NEIGHBOUR_COUNT,
+    );
     const order = [0, ...neighboursHere.map((n) => n.index)];
     const placed = placeLabels(
       order.flatMap((index) => {
@@ -580,7 +602,13 @@ describe("labels and roles", () => {
   });
 
   it("declutters the real map without hiding the selection", () => {
-    const neighboursHere = nearestNeighbours(set.vectors, set.count, set.dimensions, 0, NEIGHBOUR_COUNT);
+    const neighboursHere = nearestNeighbours(
+      set.vectors,
+      set.count,
+      set.dimensions,
+      0,
+      NEIGHBOUR_COUNT,
+    );
     const order = [0, ...neighboursHere.map((n) => n.index)];
     const placed = placeLabels(
       order.flatMap((index) => {
@@ -697,9 +725,9 @@ describe("decorative stars are decoration and nothing else", () => {
     // Only the decorative drift moves anything. The other two keyframes are
     // opacity-only, so nothing that carries data can ever change position.
     const keyframes = source.slice(source.indexOf("@keyframes"), source.indexOf("</style>"));
-    const moving = [...keyframes.matchAll(/@keyframes\s+([\w-]+)\s*\{([^@]*?)\}\s*(?=@|$)/g)].filter(
-      (m) => /transform|translate|\bcx\b|\bcy\b/.test(m[2] ?? ""),
-    );
+    const moving = [
+      ...keyframes.matchAll(/@keyframes\s+([\w-]+)\s*\{([^@]*?)\}\s*(?=@|$)/g),
+    ].filter((m) => /transform|translate|\bcx\b|\bcy\b/.test(m[2] ?? ""));
     expect(moving.map((m) => m[1])).toEqual(["eu-drift"]);
     // …and the drift is applied inside the decorative group only.
     const decor = source.slice(
@@ -783,7 +811,9 @@ describe("colour utilities name tokens that actually exist", () => {
   it("every bg / fill / stroke / ring utility resolves", () => {
     for (const file of COMPONENTS) {
       const source = read(file);
-      const used = [...source.matchAll(/\b(?:bg|fill|stroke|ring-offset|ring)-([a-z][a-zA-Z0-9]*)/g)];
+      const used = [
+        ...source.matchAll(/\b(?:bg|fill|stroke|ring-offset|ring)-([a-z][a-zA-Z0-9]*)/g),
+      ];
       for (const match of used) {
         const base = match[1] as string;
         expect({ file, utility: match[0], base, known: known.has(base) }).toMatchObject({

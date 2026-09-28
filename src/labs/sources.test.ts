@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { en } from "@/i18n/en";
-import { tr } from "@/i18n/tr";
+import { enLabs } from "@/i18n/labs/en";
+import { trLabs } from "@/i18n/labs/tr";
 import { SOURCES, formatSource, type SourceId } from "./sources";
 
 /**
@@ -42,9 +42,9 @@ const LAB_SOURCES: Record<string, readonly SourceId[]> = {
   probability: ["statisticalInference", "simpson"],
 };
 
-type Dict = typeof en;
+type Dict = typeof enLabs;
 const labBlock = (dict: Dict, slug: string): Record<string, unknown> =>
-  (dict.labs as unknown as Record<string, Record<string, unknown>>)[slug] ?? {};
+  (dict as unknown as Record<string, Record<string, unknown>>)[slug] ?? {};
 
 describe("the verified bibliography", () => {
   it("carries the exact year and DOI each register returned", () => {
@@ -80,7 +80,15 @@ describe("the verified bibliography", () => {
 
   it("holds no placeholder anywhere", () => {
     const all = JSON.stringify(SOURCES).toLowerCase();
-    for (const banned of ["todo", "tbd", "xx", "lorem", "placeholder", "example.com", "forthcoming"]) {
+    for (const banned of [
+      "todo",
+      "tbd",
+      "xx",
+      "lorem",
+      "placeholder",
+      "example.com",
+      "forthcoming",
+    ]) {
       expect({ banned, found: all.includes(banned) }).toEqual({ banned, found: false });
     }
   });
@@ -101,7 +109,7 @@ describe("the verified bibliography", () => {
 describe("each lab's sources", () => {
   it("cites only records that exist, in both languages", () => {
     for (const [slug, ids] of Object.entries(LAB_SOURCES)) {
-      for (const dict of [en, tr]) {
+      for (const dict of [enLabs, trLabs]) {
         const block = labBlock(dict as Dict, slug);
         const sources = block.sources as Record<string, string> | undefined;
         expect(sources, slug).toBeDefined();
@@ -121,8 +129,8 @@ describe("each lab's sources", () => {
 
   it("keeps EN and TR source keys in exact parity", () => {
     for (const slug of Object.keys(LAB_SOURCES)) {
-      const enKeys = Object.keys(labBlock(en, slug).sources as object).sort();
-      const trKeys = Object.keys(labBlock(tr as unknown as Dict, slug).sources as object).sort();
+      const enKeys = Object.keys(labBlock(enLabs, slug).sources as object).sort();
+      const trKeys = Object.keys(labBlock(trLabs, slug).sources as object).sort();
       expect({ slug, keys: trKeys }).toEqual({ slug, keys: enKeys });
     }
   });
@@ -130,8 +138,8 @@ describe("each lab's sources", () => {
   it("explains what every source supports, in both languages, with no stub", () => {
     for (const [slug, ids] of Object.entries(LAB_SOURCES)) {
       for (const [name, dict] of [
-        ["en", en],
-        ["tr", tr],
+        ["en", enLabs],
+        ["tr", trLabs],
       ] as const) {
         const sources = labBlock(dict as Dict, slug).sources as Record<string, string>;
         for (const id of ids) {
@@ -159,10 +167,14 @@ describe("each lab's sources", () => {
     // A source supports a method; it does not describe this lab. If that ever
     // stops being true of the wording, the claim has been overstated.
     for (const [slug, ids] of Object.entries(LAB_SOURCES)) {
-      const sources = labBlock(en, slug).sources as Record<string, string>;
+      const sources = labBlock(enLabs, slug).sources as Record<string, string>;
       for (const id of ids) {
         const text = (sources[id] ?? "").toLowerCase();
-        for (const banned of ["describes this lab", "this paper describes our", "is our implementation"]) {
+        for (const banned of [
+          "describes this lab",
+          "this paper describes our",
+          "is our implementation",
+        ]) {
           expect({ slug, id, banned, found: text.includes(banned) }).toEqual({
             slug,
             id,
@@ -177,14 +189,14 @@ describe("each lab's sources", () => {
   it("leaves a lab with no verified source uncited rather than padded", () => {
     // Sorting Race has no source that met the standard. It must not grow an
     // empty Sources section for symmetry.
-    const sorting = labBlock(en, "sorting-race");
+    const sorting = labBlock(enLabs, "sorting-race");
     expect(sorting.sources).toBeUndefined();
   });
 
   it("preserves the Hypothesis Testing grounding untouched", () => {
     // That lab has its own, older sources shape, page-verified against the
     // book. This pass must not have flattened it into the shared one.
-    const ht = labBlock(en, "hypothesis-testing").sources as Record<string, string>;
+    const ht = labBlock(enLabs, "hypothesis-testing").sources as Record<string, string>;
     expect(ht.theory).toContain("Casella");
     expect(ht.theory).toContain("2nd edition");
     expect(ht.notation).toContain("Def. 8.3.1");

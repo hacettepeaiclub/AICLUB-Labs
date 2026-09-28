@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState } from "react";
-import { useReducedMotion } from "framer-motion";
+import { useReducedMotion } from "@/hooks";
 import { Figure, LabRecap, LabSection, LabSources, Stage } from "@/components/lab";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { formatPercent } from "@/lib/format";
 import { cosine, nearestNeighbours, totalVarianceExplained, varianceExplained } from "./engine";
 import { VOCABULARY } from "./vocabulary";
@@ -40,8 +40,7 @@ import { WordSearch } from "./components/WordSearch";
  * vocabulary word or a measured constant ever appears as a literal in one.
  */
 export default function EmbeddingUniverse() {
-  const t = useT();
-  const copy = t.labs["embedding-universe"];
+  const copy = useLabs()["embedding-universe"];
   const universe = useUniverse();
 
   const anchorIndex = useMemo(() => VOCABULARY.findIndex((w) => w.id === PREDICTION.anchor), []);

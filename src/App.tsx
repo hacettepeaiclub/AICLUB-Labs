@@ -1,5 +1,4 @@
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
-import { AnimatePresence } from "framer-motion";
 import { useEffect } from "react";
 import { AmbientBackground } from "@/components/layout/AmbientBackground";
 import { PageShell } from "@/components/layout/PageShell";
@@ -17,18 +16,25 @@ function ScrollToTop() {
   return null;
 }
 
+/**
+ * The routes, inside the chrome.
+ *
+ * The shell itself is not keyed. It used to be — the whole thing, header and
+ * footer included, was thrown away and rebuilt on every navigation so that
+ * `AnimatePresence` could cross-fade it. That also replayed the header's
+ * load-time signal on every click, which it is not meant to do. Only the main
+ * region is keyed now, which is the only part that actually changes.
+ */
 function AnimatedRoutes() {
   const location = useLocation();
   return (
-    <AnimatePresence mode="wait">
-      <PageShell key={location.pathname}>
-        <Routes location={location}>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/labs/:slug" element={<LabPage />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </PageShell>
-    </AnimatePresence>
+    <PageShell routeKey={location.pathname}>
+      <Routes location={location}>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/labs/:slug" element={<LabPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </PageShell>
   );
 }
 

@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from "react";
 import { LabRecap, LabSection, LabSlider, LabSources } from "@/components/lab";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { formatNumber } from "@/lib/format";
 import { ALPHA, EPSILON_MIN, EPSILON_START, GAMMA } from "./engine";
 import { DEFAULT_SLIDER, SLIDER_MAX, SLIDER_MIN, sliderToReward } from "./view";
@@ -39,8 +39,7 @@ import { WorldStage } from "./components/WorldStage";
  * demonstration of the algorithm, it is the algorithm.
  */
 export default function RewardPlayground() {
-  const t = useT();
-  const copy = t.labs["reward-playground"];
+  const copy = useLabs()["reward-playground"];
 
   const [slider, setSlider] = useState(DEFAULT_SLIDER);
   const tileReward = sliderToReward(slider);

@@ -14,7 +14,10 @@ export function SiteFooter() {
     <footer className="mt-auto border-t border-line/10">
       <div className="shell flex flex-wrap items-center justify-between gap-x-8 gap-y-4 py-8">
         <div className="flex items-center gap-3">
-          <span aria-hidden className="grid size-7 shrink-0 place-items-center rounded bg-accent-fill p-1.5">
+          <span
+            aria-hidden
+            className="grid size-7 shrink-0 place-items-center rounded bg-accent-fill p-1.5"
+          >
             <img src={logoMark} alt="" className="h-full w-full object-contain" />
           </span>
           <div className="text-caption leading-snug">
@@ -35,8 +38,25 @@ export function SiteFooter() {
           </div>
         </div>
 
+        {/* The only route from a lab back to the people who wrote it. The
+            primary action on this site is still "open a lab" and not "join" —
+            but a visitor who gets to the bottom of the page and wants to know
+            who made this, or to make one, had nowhere to go at all. One line,
+            at the end, in the quietest tier on the page. */}
         <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-caption text-fg-faint">
           <span className="font-mono text-accent">{t.shell.hashtag}</span>
+          <p>
+            {t.shell.builtBy}
+            {" · "}
+            <a
+              href="https://github.com/hacettepeaiclub/AICLUB-Labs"
+              target="_blank"
+              rel="noreferrer"
+              className="underline decoration-line/30 underline-offset-2 transition-colors duration-fast hover:text-fg"
+            >
+              {t.shell.sourceLink}
+            </a>
+          </p>
           <p className="tabular-nums">{t.shell.footerRights(new Date().getFullYear())}</p>
         </div>
       </div>

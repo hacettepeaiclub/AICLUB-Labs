@@ -1,15 +1,24 @@
-import type { Transition, Variants } from "framer-motion";
-
 /**
  * Shared motion system.
  *
- * Rules (see docs/GUIDELINES.md):
+ * ## Rules (see docs/GUIDELINES.md)
+ *
  * - Motion explains, it never decorates. Every animation should communicate
  *   causality, hierarchy, or state.
- * - UI chrome uses `spring.snappy` or `ease.out`; educational simulations may
- *   run their own clocks (useRafLoop) but UI around them stays on this system.
- * - Always pair entrance variants with `useReducedMotion` — the variants below
- *   already degrade to opacity-only when `reduced` is passed.
+ * - Chrome and UI motion is CSS: a class in `globals.css` with one of the
+ *   curves below, so the `prefers-reduced-motion` block there clamps it
+ *   without any component having to ask.
+ * - Educational simulations run their own clocks (`useRafLoop`) and check
+ *   `useReducedMotion` themselves, because a canvas is invisible to CSS.
+ *
+ * ## Why these are numbers and not variants
+ *
+ * This file used to export Framer Motion `Variants` — `fadeUp`, `pageTransition`,
+ * a set of springs. Between them they drove one page fade and two verdict
+ * banners, and cost 38 KB gzipped on the critical path of every visit. All
+ * three are CSS keyframes now. What is left here is the vocabulary those
+ * keyframes and the Tailwind tokens are written in, kept in one place so a
+ * duration used in JS and the same duration used in a class cannot drift.
  */
 
 /** Durations in seconds — keep UI under 0.45s. */
@@ -21,66 +30,7 @@ export const duration = {
 
 /** Easing curves matching the CSS tokens in tailwind.config.ts. */
 export const ease = {
-  out: [0.16, 1, 0.3, 1],
-  outBack: [0.34, 1.56, 0.64, 1],
-  inOut: [0.65, 0, 0.35, 1],
-} as const;
-
-/** Springs for interactive elements (hover, press, drag). */
-export const spring = {
-  /** Buttons, toggles, small UI. */
-  snappy: { type: "spring", stiffness: 500, damping: 32, mass: 0.8 } satisfies Transition,
-  /** Cards, panels, layout shifts. */
-  smooth: { type: "spring", stiffness: 260, damping: 30 } satisfies Transition,
-  /** Playful emphasis (badges, success states). */
-  bouncy: { type: "spring", stiffness: 400, damping: 18 } satisfies Transition,
-} as const;
-
-/** Standard entrance: fade + 12px rise. Pass `reduced` from useReducedMotion. */
-export const fadeUp = (reduced: boolean | null = false): Variants => ({
-  hidden: { opacity: 0, y: reduced ? 0 : 12 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: duration.slow, ease: ease.out },
-  },
-});
-
-/** Simple fade for reduced-motion fallbacks and overlays. */
-export const fade: Variants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: duration.base } },
-};
-
-/** Parent container that staggers its children's entrances. */
-export const staggerChildren = (staggerSec = 0.06): Variants => ({
-  hidden: {},
-  visible: { transition: { staggerChildren: staggerSec } },
-});
-
-/**
- * Page-level transition used by the router shell.
- *
- * Takes `reduced` for the same reason `fadeUp` does, and it is not optional
- * here: the `prefers-reduced-motion` block in `globals.css` clamps CSS
- * animations and transitions, and this is neither. Framer Motion drives the
- * transform itself, so a visitor who has asked the system for less movement
- * was still being given an 8px slide on every navigation. Under `reduced` the
- * rise is dropped and only the fade is left, which carries the same "this is a
- * different page" signal without moving anything.
- */
-export const pageTransition = (reduced: boolean | null = false): Variants => ({
-  initial: { opacity: 0, y: reduced ? 0 : 8 },
-  enter: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: duration.base, ease: ease.out },
-  },
-  exit: { opacity: 0, transition: { duration: duration.fast } },
-});
-
-/** Hover/press treatment for interactive cards. */
-export const cardInteraction = {
-  whileHover: { y: -4, transition: spring.smooth },
-  whileTap: { scale: 0.985, transition: spring.snappy },
+  out: "cubic-bezier(0.16, 1, 0.3, 1)",
+  outBack: "cubic-bezier(0.34, 1.56, 0.64, 1)",
+  inOut: "cubic-bezier(0.65, 0, 0.35, 1)",
 } as const;

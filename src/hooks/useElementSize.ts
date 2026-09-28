@@ -19,7 +19,9 @@ export function useElementSize<T extends HTMLElement>(): [(node: T | null) => vo
     observerRef.current = new ResizeObserver(([entry]) => {
       if (!entry) return;
       const { width, height } = entry.contentRect;
-      setSize((prev) => (prev.width === width && prev.height === height ? prev : { width, height }));
+      setSize((prev) =>
+        prev.width === width && prev.height === height ? prev : { width, height },
+      );
     });
     observerRef.current.observe(node);
   }, []);

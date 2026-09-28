@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Figure, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import {
   RIGHT_PROBABILITY,
@@ -42,7 +42,7 @@ const WATCHABLE = 100;
  * phenomenon lives. Each decade gets equal room instead.
  */
 export function LargeNumbersStage() {
-  const copy = useT().labs.probability;
+  const copy = useLabs().probability;
   const l = copy.largeNumbers;
 
   const [trials, setTrials] = useState<number>(SCALES[0]);
@@ -89,8 +89,7 @@ export function LargeNumbersStage() {
   // column is what makes the non-monotone part visible as numbers rather than
   // as a claim about the shape of a line.
   const reached = SCALES.filter((scale) => scale <= trials).map((scale) => {
-    const point =
-      result.points.find((candidate) => candidate.trials === scale) ?? result.final;
+    const point = result.points.find((candidate) => candidate.trials === scale) ?? result.final;
     return { scale, point };
   });
 
@@ -160,7 +159,9 @@ export function LargeNumbersStage() {
             {/* Small runs can still be watched one outcome at a time. */}
             {outcomes.length > 0 && (
               <div className="rounded border border-line/10 bg-ink-950 p-4">
-                <p className="mb-2 text-caption text-fg-faint">{l.outcomesLabel(outcomes.length)}</p>
+                <p className="mb-2 text-caption text-fg-faint">
+                  {l.outcomesLabel(outcomes.length)}
+                </p>
                 <ul className="flex flex-wrap gap-1">
                   {outcomes.map((right, i) => (
                     <li
@@ -172,7 +173,9 @@ export function LargeNumbersStage() {
                           : "border-line/20 bg-ink-900 text-fg-muted",
                       )}
                     >
-                      <span className="sr-only">{l.outcomeLabel(i + 1, right ? l.right : l.left)}</span>
+                      <span className="sr-only">
+                        {l.outcomeLabel(i + 1, right ? l.right : l.left)}
+                      </span>
                       <span aria-hidden>{right ? l.rightMark : l.leftMark}</span>
                     </li>
                   ))}

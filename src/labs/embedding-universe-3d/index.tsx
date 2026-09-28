@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Figure, FigureRow, LabRecap, LabSources } from "@/components/lab";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { formatPercent } from "@/lib/format";
 import { nearestNeighbours } from "../embedding-universe/engine";
 import { VOCABULARY } from "../embedding-universe/vocabulary";
@@ -23,8 +23,7 @@ import { Universe3D } from "./components/Universe3D";
  * direction visible — not a different fit that happens to look nicer.
  */
 export default function EmbeddingUniverse3D() {
-  const t = useT();
-  const copy = t.labs["embedding-universe-3d"];
+  const copy = useLabs()["embedding-universe-3d"];
   const { space, set, status, error, dimensions } = useSpace();
 
   const anchor = useMemo(() => VOCABULARY.findIndex((w) => w.id === PREDICTION.anchor), []);
@@ -75,11 +74,7 @@ export default function EmbeddingUniverse3D() {
             hint={copy.varianceHint(dimensions)}
             tone="accent"
           />
-          <Figure
-            label={copy.selectedLabel}
-            value={current?.en ?? "—"}
-            hint={current?.tr ?? ""}
-          />
+          <Figure label={copy.selectedLabel} value={current?.en ?? "—"} hint={current?.tr ?? ""} />
         </FigureRow>
         <p className="text-body-sm text-fg-muted">{copy.compare}</p>
       </div>

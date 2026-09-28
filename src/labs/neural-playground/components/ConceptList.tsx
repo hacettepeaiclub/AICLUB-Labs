@@ -1,4 +1,4 @@
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 
 /** The loop, in the order it runs. Not a ranking — a sequence. */
 const STEPS = ["forward", "loss", "backprop", "descent"] as const;
@@ -17,13 +17,16 @@ const STEPS = ["forward", "loss", "backprop", "descent"] as const;
  * The wording is carried over unchanged.
  */
 export function ConceptList() {
-  const lab = useT().labs["neural-playground"];
+  const lab = useLabs()["neural-playground"];
   const t = lab.loop;
 
   return (
     <ol className="mx-auto max-w-[44rem] divide-y divide-line/10 border-y border-line/10">
       {STEPS.map((key, i) => (
-        <li key={key} className="grid gap-1 py-4 sm:grid-cols-[minmax(0,9rem)_minmax(0,1fr)] sm:gap-6">
+        <li
+          key={key}
+          className="grid gap-1 py-4 sm:grid-cols-[minmax(0,9rem)_minmax(0,1fr)] sm:gap-6"
+        >
           <p className="flex items-baseline gap-2">
             <span className="font-mono text-caption tabular-nums text-fg-faint">
               {String(i + 1).padStart(2, "0")}

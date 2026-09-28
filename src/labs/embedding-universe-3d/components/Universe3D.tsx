@@ -101,7 +101,9 @@ export function Universe3D({
   }, [screen, selected, neighbours, vocabulary]);
 
   const neighbourIndices = new Set(neighbours.map((n) => n.index));
-  const scoreOf = new Map(neighbours.map((n, rank) => [n.index, { rank: rank + 1, value: n.similarity }]));
+  const scoreOf = new Map(
+    neighbours.map((n, rank) => [n.index, { rank: rank + 1, value: n.similarity }]),
+  );
   const optionId = (index: number) => `${baseId}-star-${index}`;
   const glowId = `${baseId}-glow3`;
 

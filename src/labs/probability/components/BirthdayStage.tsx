@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Figure, LabSlider, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import {
   DAYS,
@@ -40,7 +40,7 @@ const ROOMS = 2000;
  * beside the first is the whole explanation in two figures.
  */
 export function BirthdayStage() {
-  const copy = useT().labs.probability;
+  const copy = useLabs().probability;
   const b = copy.birthday;
 
   const [people, setPeople] = useState(5);

@@ -1,8 +1,15 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { labs, publishedLabs } from "../registry";
-import { en } from "@/i18n/en";
-import { tr } from "@/i18n/tr";
+import { en as enShell } from "@/i18n/en";
+import { tr as trShell } from "@/i18n/tr";
+import { enLabs } from "@/i18n/labs/en";
+import { trLabs } from "@/i18n/labs/tr";
+
+// The shell dictionary and the lab prose ship as separate chunks; a lab sees
+// both, so the assertions below read them as one object.
+const en = { ...enShell, labs: enLabs };
+const tr = { ...trShell, labs: trLabs };
 import { attentionMeta } from "./meta";
 import { attend, ranked, rowScores, rowWeights, weightAt } from "./engine";
 import { LAB_MODEL } from "./lexicon";
@@ -56,8 +63,8 @@ describe("registry", () => {
   });
 
   it("has copy in both languages", () => {
-    expect(en.labs.attention.title.length).toBeGreaterThan(3);
-    expect(tr.labs.attention.title.length).toBeGreaterThan(3);
+    expect(en.labMeta.attention.title.length).toBeGreaterThan(3);
+    expect(tr.labMeta.attention.title.length).toBeGreaterThan(3);
     expect(en.labs.attention.recap.lessons).toHaveLength(3);
     expect(tr.labs.attention.recap.lessons).toHaveLength(3);
   });

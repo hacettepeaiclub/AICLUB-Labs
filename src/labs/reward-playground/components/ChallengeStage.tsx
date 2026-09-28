@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Figure, LabSlider, Stage } from "@/components/lab";
 import { Badge, Segmented } from "@/components/ui";
 import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import { formatNumber } from "@/lib/format";
 import { greedyPolicy } from "../engine";
@@ -33,7 +34,7 @@ const TRACK: Record<string, number> = { tileReward: 10, epsilon: 100 };
  */
 export function ChallengeStage() {
   const t = useT();
-  const challenge = t.labs["reward-playground"].challenge;
+  const challenge = useLabs()["reward-playground"].challenge;
 
   const [id, setId] = useState<ChallengeId>("cross");
   const [beaten, setBeaten] = useState<Partial<Record<ChallengeId, boolean>>>({});

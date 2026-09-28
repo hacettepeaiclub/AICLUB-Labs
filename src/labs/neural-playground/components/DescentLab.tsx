@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState, type PointerEvent } from "react";
 import { Figure, LabSlider, Stage, Transport } from "@/components/lab";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { useRafLoop } from "@/hooks";
 import { formatNumber } from "@/lib/format";
 import { clamp } from "@/lib/math";
@@ -37,8 +37,7 @@ const CURVE = Array.from({ length: 161 }, (_, i) => {
 const GLOBAL_MIN_W = -1.11;
 
 export function DescentLab() {
-  const t = useT();
-  const lab = t.labs["neural-playground"];
+  const lab = useLabs()["neural-playground"];
   const d = lab.descent;
   const [rateIndex, setRateIndex] = useState(3);
   const [w, setW] = useState(START_W);
@@ -117,7 +116,11 @@ export function DescentLab() {
             viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
             className="w-full cursor-pointer touch-none"
             role="img"
-            aria-label={d.curveLabel(formatNumber(w, 2), formatNumber(loss(w), 2), formatNumber(gradient, 2))}
+            aria-label={d.curveLabel(
+              formatNumber(w, 2),
+              formatNumber(loss(w), 2),
+              formatNumber(gradient, 2),
+            )}
             onPointerDown={placeBall}
           >
             <line
@@ -150,7 +153,9 @@ export function DescentLab() {
               className="fill-accent"
             />
           </svg>
-          <p className="mt-3 text-center text-caption text-fg-faint">Click anywhere on the curve to drop the weight somewhere else.</p>
+          <p className="mt-3 text-center text-caption text-fg-faint">
+            Click anywhere on the curve to drop the weight somewhere else.
+          </p>
         </div>
       }
       readout={

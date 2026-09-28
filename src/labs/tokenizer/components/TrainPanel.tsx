@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useReducedMotion } from "framer-motion";
+import { useReducedMotion } from "@/hooks";
 import { Figure, Stage, Transport } from "@/components/lab";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import { DEMO_CORPUS } from "../corpora";
 import { corpusView, createTrainer, trainStep, type CorpusWord, type MergeEvent } from "../engine";
@@ -52,7 +52,7 @@ function Word({ word, fused }: { word: CorpusWord; fused: string | null }) {
  * thousand characters fuse. Ten distinct pieces fit on a screen.
  */
 export function TrainPanel() {
-  const tr = useT().labs.tokenizer.train;
+  const tr = useLabs().tokenizer.train;
   const reduced = useReducedMotion() ?? false;
   const trainerRef = useRef(createTrainer(DEMO_CORPUS, "demo"));
 

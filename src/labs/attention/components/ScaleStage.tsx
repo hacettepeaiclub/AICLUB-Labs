@@ -1,5 +1,5 @@
 import { Figure, Stage } from "@/components/lab";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { formatNumber } from "@/lib/format";
 import { ranked, type Attention } from "../engine";
 import { peak, percent, scaleComparison } from "../view";
@@ -26,7 +26,7 @@ export interface ScaleStageProps {
  * figure on the page, and the undivided column exists only in this stage.
  */
 export function ScaleStage({ attention, words, selected, onSelect }: ScaleStageProps) {
-  const a = useT().labs.attention;
+  const a = useLabs().attention;
   const scale = a.scale;
 
   const comparison = scaleComparison(attention, selected);

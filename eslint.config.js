@@ -66,9 +66,9 @@ export default tseslint.config(
     languageOptions: { globals: { ...globals.node } },
   },
 
-  // Config files are Node scripts, not browser code.
+  // Config files and build scripts are Node programs, not browser code.
   {
-    files: ["*.config.{js,ts}", "postcss.config.js"],
+    files: ["*.config.{js,ts}", "postcss.config.js", "tools/**/*.{js,mjs}"],
     languageOptions: { globals: { ...globals.node } },
   },
 

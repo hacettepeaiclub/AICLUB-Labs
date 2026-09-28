@@ -1,5 +1,5 @@
 import { LabSlider } from "@/components/lab";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { BOUNDS, type Params, type Result } from "../engine";
 import { coord } from "../view";
 
@@ -26,7 +26,7 @@ export interface SecondaryControlsProps {
  * same value rather than accumulating floating-point drift as it moves.
  */
 export function SecondaryControls({ result, onChange, show }: SecondaryControlsProps) {
-  const copy = useT().labs["hypothesis-testing"].controls;
+  const copy = useLabs()["hypothesis-testing"].controls;
   const { mu0, mu1, sigma, alpha, n } = result.params;
 
   return (

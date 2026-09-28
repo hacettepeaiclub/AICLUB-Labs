@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { useReducedMotion } from "framer-motion";
+import { useReducedMotion } from "@/hooks";
 import { Figure, LabSlider, Stage, Transport } from "@/components/lab";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { formatNumber } from "@/lib/format";
 import { clamp } from "@/lib/math";
 import { createRun, gradient, step, type OptimizerConfig } from "../engine";
@@ -61,8 +61,7 @@ const logWidth = (value: number, lo: number, hi: number): number => {
  * lab needs a shadow to say it is a surface.
  */
 export function AdamStage() {
-  const t = useT();
-  const g = t.labs["gradient-descent"];
+  const g = useLabs()["gradient-descent"];
   const reduced = useReducedMotion() ?? false;
 
   const scale = LANDSCAPES.scaleGap;
@@ -73,7 +72,12 @@ export function AdamStage() {
   const rows = [
     { key: "gradient", label: g.adam.rowGradient, x: Math.abs(grad.x), y: Math.abs(grad.y) },
     { key: "gd", label: g.adam.rowGd(formatNumber(GD_RATE, 4)), x: gdStep.dx, y: gdStep.dy },
-    { key: "adam", label: g.adam.rowAdam(formatNumber(ADAM_RATE, 2)), x: adamStep.dx, y: adamStep.dy },
+    {
+      key: "adam",
+      label: g.adam.rowAdam(formatNumber(ADAM_RATE, 2)),
+      x: adamStep.dx,
+      y: adamStep.dy,
+    },
   ] as const;
 
   const lo = -8;

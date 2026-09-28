@@ -1,5 +1,5 @@
 import { Figure, Stage } from "@/components/lab";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { formatNumber } from "@/lib/format";
 import { keyOf, queryOf, ranked, rowScores, type Attention } from "../engine";
 import { scaleComparison } from "../view";
@@ -31,7 +31,7 @@ export interface CompareStageProps {
  * on one screen — which is the entire claim this stage makes.
  */
 export function CompareStage({ attention, words, selected, onSelect }: CompareStageProps) {
-  const a = useT().labs.attention;
+  const a = useLabs().attention;
   const trace = a.trace;
 
   const best = ranked(attention, selected)[0];

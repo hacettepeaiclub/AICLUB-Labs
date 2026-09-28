@@ -1,6 +1,6 @@
 import { useId } from "react";
 import { Figure, Stage } from "@/components/lab";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { useDebouncedValue } from "@/hooks";
 import { HASH_BITS } from "../hashUtils";
 import { BitGrid } from "./BitGrid";
@@ -52,7 +52,7 @@ export function AvalancheStage({
   changedBits,
   changedCount,
 }: AvalancheStageProps) {
-  const t = useT().labs["hash-playground"];
+  const t = useLabs()["hash-playground"];
   const helpId = useId();
   const settled = useDebouncedValue(changedCount);
   const percent = Math.round((changedCount / HASH_BITS) * 100);
@@ -137,7 +137,11 @@ export function AvalancheStage({
             value={prev ? `${changedCount} / ${HASH_BITS}` : "—"}
             tone="accent"
           />
-          <Figure label={t.figures.percentChanged} value={prev ? `${percent}%` : "—"} hint={t.figures.expectedHalf} />
+          <Figure
+            label={t.figures.percentChanged}
+            value={prev ? `${percent}%` : "—"}
+            hint={t.figures.expectedHalf}
+          />
           <Figure
             label={t.figures.charsChanged}
             value={prev ? String(changedChars.filter(Boolean).length) : "—"}

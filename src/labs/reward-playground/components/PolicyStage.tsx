@@ -1,6 +1,6 @@
 import { useState, type KeyboardEvent } from "react";
 import { Figure, Stage } from "@/components/lab";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import { formatNumber } from "@/lib/format";
 import { createQ, greedyPolicy, rolloutGreedy, valueMap } from "../engine";
@@ -36,7 +36,7 @@ const UNTRAINED = createQ();
  * three that lost.
  */
 export function PolicyStage({ run }: PolicyStageProps) {
-  const copy = useT().labs["reward-playground"];
+  const copy = useLabs()["reward-playground"];
   const policy = copy.policy;
 
   const [cell, setCell] = useState(TILE);

@@ -10,17 +10,17 @@ No model is involved. The answers are prose in the dictionary, and every
 **number** inside one is passed in by the stage from the same engine call that
 drew the screen:
 
-| Experiment  | Value in the answer                    | Where it comes from                     |
-| ----------- | -------------------------------------- | --------------------------------------- |
-| Monty Hall  | 33.3% / 66.7%                          | `THEORETICAL.stay` / `.switch`          |
-| Birthday    | the pair count at the 50% threshold    | `pairCount(firstAbove(0.5))`            |
-| Conditional | the probability given "at least one"   | `analyse("atLeastOneBoy").probability`  |
-| Simpson     | none — the answer is structural        | —                                       |
+| Experiment  | Value in the answer                  | Where it comes from                    |
+| ----------- | ------------------------------------ | -------------------------------------- |
+| Monty Hall  | 33.3% / 66.7%                        | `THEORETICAL.stay` / `.switch`         |
+| Birthday    | the pair count at the 50% threshold  | `pairCount(firstAbove(0.5))`           |
+| Conditional | the probability given "at least one" | `analyse("atLeastOneBoy").probability` |
+| Simpson     | none — the answer is structural      | —                                      |
 
 `lab.test.ts` pins this: `Framing.tsx` may not contain `Math.`, `probability`,
 `simulate` or an engine import, and each stage's `coach` array must be built
 from the engine call named above. A coach answer therefore cannot drift from
-the number printed beside it, because it *is* that number.
+the number printed beside it, because it _is_ that number.
 
 ## Why no live model, for now
 

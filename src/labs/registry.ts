@@ -1,5 +1,5 @@
 import { lazy } from "react";
-import type { LabEntry } from "./types";
+import type { LabEntry, LabLoader, LabMeta } from "./types";
 import { attentionMeta } from "./attention/meta";
 import { embeddingUniverse3DMeta } from "./embedding-universe-3d/meta";
 import { embeddingUniverseMeta } from "./embedding-universe/meta";
@@ -27,25 +27,39 @@ import { tokenizerMeta } from "./tokenizer/meta";
  *   import { sortingRaceMeta } from "./sorting-race/meta";
 import { tokenizerMeta } from "./tokenizer/meta";
  *
- *   { meta: sortingRaceMeta, Component: lazy(() => import("./sorting-race")) },
+ *   entry(sortingRaceMeta, () => import("./sorting-race")),
  *
  * Components are wrapped in React.lazy, so each lab is its own chunk and the
  * registry stays cheap even at 100+ entries.
  */
+/**
+ * One entry, from its metadata and its loader.
+ *
+ * The loader is kept beside the component rather than disappearing inside
+ * `lazy()`, because two things want it: React, when the route renders, and the
+ * home page, when a card is pointed at. Without it there is no way to start a
+ * lab's download before the click that needs it.
+ */
+const entry = (meta: LabMeta, load: LabLoader): LabEntry => ({
+  meta,
+  load,
+  Component: lazy(load),
+});
+
 export const labs: LabEntry[] = [
-  { meta: attentionMeta, Component: lazy(() => import("./attention")) },
-  { meta: embeddingUniverseMeta, Component: lazy(() => import("./embedding-universe")) },
+  entry(attentionMeta, () => import("./attention")),
+  entry(embeddingUniverseMeta, () => import("./embedding-universe")),
   // Draft: routable, but kept off the home grid. A prototype, not a lesson.
-  { meta: embeddingUniverse3DMeta, Component: lazy(() => import("./embedding-universe-3d")) },
-  { meta: gradientDescentMeta, Component: lazy(() => import("./gradient-descent")) },
-  { meta: hashPlaygroundMeta, Component: lazy(() => import("./hash-playground")) },
-  { meta: hypothesisTestingMeta, Component: lazy(() => import("./hypothesis-testing")) },
-  { meta: neuralPlaygroundMeta, Component: lazy(() => import("./neural-playground")) },
-  { meta: pathfindingMeta, Component: lazy(() => import("./pathfinding")) },
-  { meta: probabilityMeta, Component: lazy(() => import("./probability")) },
-  { meta: rewardPlaygroundMeta, Component: lazy(() => import("./reward-playground")) },
-  { meta: sortingRaceMeta, Component: lazy(() => import("./sorting-race")) },
-  { meta: tokenizerMeta, Component: lazy(() => import("./tokenizer")) },
+  entry(embeddingUniverse3DMeta, () => import("./embedding-universe-3d")),
+  entry(gradientDescentMeta, () => import("./gradient-descent")),
+  entry(hashPlaygroundMeta, () => import("./hash-playground")),
+  entry(hypothesisTestingMeta, () => import("./hypothesis-testing")),
+  entry(neuralPlaygroundMeta, () => import("./neural-playground")),
+  entry(pathfindingMeta, () => import("./pathfinding")),
+  entry(probabilityMeta, () => import("./probability")),
+  entry(rewardPlaygroundMeta, () => import("./reward-playground")),
+  entry(sortingRaceMeta, () => import("./sorting-race")),
+  entry(tokenizerMeta, () => import("./tokenizer")),
 ];
 
 export const publishedLabs = (): LabEntry[] =>
@@ -90,9 +104,24 @@ const rankOf = (slug: string) => RANK.get(slug) ?? LAB_ORDER.length;
 
 export const orderedLabs = (): LabEntry[] =>
   publishedLabs().sort(
-    (a, b) =>
-      rankOf(a.meta.slug) - rankOf(b.meta.slug) || a.meta.slug.localeCompare(b.meta.slug),
+    (a, b) => rankOf(a.meta.slug) - rankOf(b.meta.slug) || a.meta.slug.localeCompare(b.meta.slug),
   );
 
 export const findLab = (slug: string): LabEntry | undefined =>
   labs.find((lab) => lab.meta.slug === slug);
+
+/**
+ * Start a lab's download without rendering it.
+ *
+ * Called when a card is pointed at or focused, which on a desktop buys the
+ * whole time between "I am going to click this" and the click — usually a few
+ * hundred milliseconds, and the lab chunks are 20–36 KB. Calling it twice is
+ * free: a module already requested resolves from the module cache, and a
+ * rejection is swallowed because a failed prefetch must never surface as an
+ * error on a page that is working.
+ */
+export const preloadLab = (slug: string): void => {
+  void findLab(slug)
+    ?.load()
+    .catch(() => {});
+};

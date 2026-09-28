@@ -1,5 +1,5 @@
 import { LabRecap, LabSection } from "@/components/lab";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { RaceStage } from "./components/RaceStage";
 import { SortStage } from "./components/SortStage";
 import { SortChallenge } from "./components/SortChallenge";
@@ -12,7 +12,7 @@ import { SortChallenge } from "./components/SortChallenge";
  * counters answer. Every section runs the same engine.
  */
 export default function SortingRace() {
-  const t = useT().labs["sorting-race"];
+  const t = useLabs()["sorting-race"];
 
   return (
     <div className="space-y-24 md:space-y-32">
@@ -29,11 +29,7 @@ export default function SortingRace() {
       </section>
 
       {/* 2 — Name what was just watched, one operation at a time. */}
-      <LabSection
-        kicker={t.watch.kicker}
-        title={t.watch.title}
-        lede={t.watch.lede}
-      >
+      <LabSection kicker={t.watch.kicker} title={t.watch.title} lede={t.watch.lede}>
         <SortStage
           preset="almost"
           algorithms={["selection", "insertion"]}
@@ -42,11 +38,7 @@ export default function SortingRace() {
       </LabSection>
 
       {/* 3 — The core: the data is the variable. */}
-      <LabSection
-        kicker={t.data.kicker}
-        title={t.data.title}
-        lede={t.data.lede}
-      >
+      <LabSection kicker={t.data.kicker} title={t.data.title} lede={t.data.lede}>
         <SortStage
           preset="random"
           algorithms={["selection", "insertion"]}
@@ -57,11 +49,7 @@ export default function SortingRace() {
       </LabSection>
 
       {/* 4 — Name the cause. */}
-      <LabSection
-        kicker={t.distance.kicker}
-        title={t.distance.title}
-        lede={t.distance.lede}
-      >
+      <LabSection kicker={t.distance.kicker} title={t.distance.title} lede={t.distance.lede}>
         <SortStage
           preset="sorted"
           algorithms={["insertion"]}
@@ -73,11 +61,7 @@ export default function SortingRace() {
       </LabSection>
 
       {/* 5 — Both axes, three different questions. */}
-      <LabSection
-        kicker={t.challenge.kicker}
-        title={t.challenge.title}
-        lede={t.challenge.lede}
-      >
+      <LabSection kicker={t.challenge.kicker} title={t.challenge.title} lede={t.challenge.lede}>
         <SortChallenge />
       </LabSection>
 

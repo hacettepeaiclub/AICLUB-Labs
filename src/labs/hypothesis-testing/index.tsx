@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from "react";
 import { LabRecap, LabSection } from "@/components/lab";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import {
   ALPHA_DEFAULT,
   MU0_DEFAULT,
@@ -48,8 +48,7 @@ const PROFILE_URL = "https://stat.hacettepe.edu.tr/tr/dolunay_ezgi_gumusbas-949"
  * running that implementation's own functions under SciPy.
  */
 export default function HypothesisTesting() {
-  const t = useT();
-  const copy = t.labs["hypothesis-testing"];
+  const copy = useLabs()["hypothesis-testing"];
 
   const [params, setParams] = useState<Params>({
     mu0: MU0_DEFAULT,
@@ -145,7 +144,10 @@ export default function HypothesisTesting() {
           numbers are the printed pages of the copy that was actually read,
           and the year is absent because that copy does not carry one. */}
       <section aria-labelledby="ht-sources-heading" className="max-w-prose">
-        <h2 id="ht-sources-heading" className="font-mono text-caption uppercase tracking-wide text-fg-muted">
+        <h2
+          id="ht-sources-heading"
+          className="font-mono text-caption uppercase tracking-wide text-fg-muted"
+        >
           {copy.sources.title}
         </h2>
         <dl className="mt-3 space-y-3 text-caption leading-relaxed text-fg-muted">

@@ -1,5 +1,5 @@
 import { Figure, LabSlider, Stage } from "@/components/lab";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { BOUNDS, type Params, type Result } from "../engine";
 import { coord, criticalList, prob } from "../view";
 import { DistributionPlot } from "./DistributionPlot";
@@ -24,7 +24,7 @@ export interface AlphaStageProps {
  * does on its own.
  */
 export function AlphaStage({ result, onChange }: AlphaStageProps) {
-  const copy = useT().labs["hypothesis-testing"];
+  const copy = useLabs()["hypothesis-testing"];
   const a = copy.alphaSection;
   const criticals = criticalList(result.criticals);
   const { alpha, testType } = result.params;

@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useReducedMotion } from "framer-motion";
+import { useReducedMotion, useLocalControls } from "@/hooks";
 import { LabSlider } from "@/components/lab";
 import { Figure, Stage } from "@/components/lab";
 import { Badge, Button, Segmented } from "@/components/ui";
-import { useLocalControls } from "@/hooks";
 import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import { MAX_MERGES, type CorpusId } from "../corpora";
 import { tokenize } from "../engine";
@@ -44,7 +44,7 @@ const VERDICT_STYLE = {
 export function TokenChallenge() {
   const reduced = useReducedMotion() ?? false;
   const t = useT();
-  const c = t.labs.tokenizer.challenge;
+  const c = useLabs().tokenizer.challenge;
   const [progress, setProgress] = useLocalControls<ChallengeProgress>(STORAGE_KEY, {});
   const [index, setIndex] = useState(0);
 
@@ -100,7 +100,7 @@ interface PuzzleProps {
  * updating state during another component's render.
  */
 function useVerdictEffects(verdict: VerdictResult, onSolved: () => void): string {
-  const v = useT().labs.tokenizer.challenge.verdict;
+  const v = useLabs().tokenizer.challenge.verdict;
   const message = useVerdictMessage(verdict);
   const [announcement, setAnnouncement] = useState("");
   const previous = useRef<VerdictResult["kind"] | null>(null);
@@ -123,7 +123,7 @@ function useVerdictEffects(verdict: VerdictResult, onSolved: () => void): string
 
 /** The verdict's facts, put into words in the active language. */
 function useVerdictMessage(verdict: VerdictResult): string {
-  const v = useT().labs.tokenizer.challenge.verdict;
+  const v = useLabs().tokenizer.challenge.verdict;
   switch (verdict.kind) {
     case "untouched":
       return v.untouched(verdict.tokens, verdict.budget);
@@ -154,7 +154,7 @@ function VerdictCard({ verdict, lesson }: { verdict: VerdictResult; lesson: stri
 }
 
 function Brief({ spec }: { spec: ChallengeSpec }) {
-  const c = useT().labs.tokenizer.challenge;
+  const c = useLabs().tokenizer.challenge;
   const copy = c.puzzles[spec.id];
   return (
     <div className="max-w-prose">
@@ -170,7 +170,7 @@ function Brief({ spec }: { spec: ChallengeSpec }) {
 /** C1 — the tokenizer is fixed; the sentence is yours. */
 function TextPuzzle({ spec, reduced, onSolved }: PuzzleProps) {
   const t = useT();
-  const lab = t.labs.tokenizer;
+  const lab = useLabs().tokenizer;
   const c = lab.challenge;
   const { vocabulary, ready } = useVocabulary(spec.corpus ?? "english", reduced);
   const [text, setText] = useState(spec.start);
@@ -255,7 +255,7 @@ function TextPuzzle({ spec, reduced, onSolved }: PuzzleProps) {
 
 /** C2 — the sentence is fixed; the tokenizer is yours. */
 function TokenizerPuzzle({ spec, reduced, onSolved }: PuzzleProps) {
-  const lab = useT().labs.tokenizer;
+  const lab = useLabs().tokenizer;
   const c = lab.challenge;
   const [corpus, setCorpus] = useState<CorpusId>("english");
   const [position, setPosition] = useState(() => positionOf(MAX_MERGES));

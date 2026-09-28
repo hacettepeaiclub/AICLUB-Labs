@@ -1,8 +1,8 @@
 import { useCallback, useMemo, useRef, useState } from "react";
-import { useReducedMotion } from "framer-motion";
+import { useReducedMotion } from "@/hooks";
 import { Figure, LabSlider, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import {
   DEFAULT_ROWS,
@@ -45,7 +45,7 @@ const SEED = 8675309;
  * hundred rather than pretending about five hundred.
  */
 export function PascalStage() {
-  const copy = useT().labs.probability;
+  const copy = useLabs().probability;
   const p = copy.pascal;
   const reduced = useReducedMotion() ?? false;
 
@@ -109,12 +109,18 @@ export function PascalStage() {
     (best, value, index) => (value > (theoretical[best] ?? 0) ? index : best),
     0,
   );
-  const busiest = counts.reduce((best, value, index) => (value > (counts[best] ?? 0) ? index : best), 0);
+  const busiest = counts.reduce(
+    (best, value, index) => (value > (counts[best] ?? 0) ? index : best),
+    0,
+  );
 
   const coach = [
     { q: p.coach.twoModels.q, a: p.coach.twoModels.a },
     { q: p.coach.whyDiffer.q, a: p.coach.whyDiffer.a },
-    { q: p.coach.whyMiddle.q, a: p.coach.whyMiddle.a(String(triangle[peakBin] ?? 0), String(paths)) },
+    {
+      q: p.coach.whyMiddle.q,
+      a: p.coach.whyMiddle.a(String(triangle[peakBin] ?? 0), String(paths)),
+    },
   ];
 
   return (

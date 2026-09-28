@@ -1,4 +1,4 @@
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import { COLS, GOAL, ROWS, START, TILE, colOf, rowOf } from "../world";
 import { ARROWS, cellKind, type CellKind } from "../view";
@@ -62,7 +62,7 @@ export function RoomGrid({
   label,
   className,
 }: RoomGridProps) {
-  const copy = useT().labs["reward-playground"];
+  const copy = useLabs()["reward-playground"];
   const interactive = typeof onSelect === "function";
 
   const visits = new Map<number, number>();

@@ -111,7 +111,8 @@ export const fromScreen = (v: View, px: number, py: number): Point => ({
 
 /** Keeps a wildly diverged point from reaching the canvas as a huge number. */
 const CLAMP = 1e5;
-const guard = (n: number): number => (Number.isFinite(n) ? Math.max(-CLAMP, Math.min(CLAMP, n)) : 0);
+const guard = (n: number): number =>
+  Number.isFinite(n) ? Math.max(-CLAMP, Math.min(CLAMP, n)) : 0;
 
 // -------------------------------------------------------------- contours ---
 

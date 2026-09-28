@@ -50,9 +50,9 @@ describe("required words", () => {
   it("refuses a run-together sentence that only contains the words as substrings", () => {
     // The cheap way out, if matching were substring-based: no spaces to pay
     // for, every required word technically "present".
-    expect(missingWords("thereadingroomiswarmerthanthewalking", C1.requires).length).toBeGreaterThan(
-      0,
-    );
+    expect(
+      missingWords("thereadingroomiswarmerthanthewalking", C1.requires).length,
+    ).toBeGreaterThan(0);
     expect(attempt(C1, "thereadingroomiswarmerthanthewalking").kind).toBe("missing-words");
   });
 

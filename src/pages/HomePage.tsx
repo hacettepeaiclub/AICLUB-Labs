@@ -3,9 +3,12 @@ import { Link } from "react-router-dom";
 import { cn } from "@/lib/cn";
 import { LabSignature } from "@/components/home/LabSignature";
 import { MarkField } from "@/components/home/MarkField";
-import { useLabMeta, useT } from "@/i18n";
+import { useDocumentHead } from "@/app/useDocumentHead";
+import { homeMeta } from "@/app/siteMeta";
+import { useLabMeta, useLanguage, useT } from "@/i18n";
+import { prefetchLabs } from "@/i18n/labs";
 import { CATEGORY_CODE, CATEGORY_VAR, type LabCategory, type LabMeta } from "@/labs/types";
-import { orderedLabs } from "@/labs/registry";
+import { orderedLabs, preloadLab } from "@/labs/registry";
 import { readVisits } from "@/labs/visits";
 
 /**
@@ -52,8 +55,8 @@ import { readVisits } from "@/labs/visits";
 export function HomePage() {
   const t = useT();
   const copy = t.home;
+  useDocumentHead(homeMeta(copy.lede));
   const labs = orderedLabs();
-  const artRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLUListElement>(null);
   const [field, setField] = useState<LabCategory | null>(null);
   // Read once: the page reflects the visits made before it opened.
@@ -96,7 +99,11 @@ export function HomePage() {
   let order = 0;
   const tile = (meta: LabMeta, lit: boolean) => (
     // Keyed by the field too, so re-ordering remounts the cards and they rise in again.
-    <li key={`${field ?? "all"}:${meta.slug}`} className="lab-rise flex" style={{ "--i": order++ } as CSSProperties}>
+    <li
+      key={`${field ?? "all"}:${meta.slug}`}
+      className="lab-rise flex"
+      style={{ "--i": order++ } as CSSProperties}
+    >
       <LabTile meta={meta} lit={lit} visited={visits.visited.has(meta.slug)} />
     </li>
   );
@@ -105,7 +112,6 @@ export function HomePage() {
     <div>
       {/* ---------------------------------------------------------- hero -- */}
       <section aria-labelledby="home-title" className="relative border-b border-line/10">
-        <MarkField targetRef={artRef} />
         <div className="shell relative grid items-center gap-2 pb-8 pt-6 md:min-h-[min(62vh,34rem)] md:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] md:gap-8 md:py-14">
           <div>
             <p className="font-mono text-caption uppercase tracking-[0.14em] text-fg-muted">
@@ -113,10 +119,7 @@ export function HomePage() {
               {" · "}
               {t.shell.parentOrg}
             </p>
-            <h1
-              id="home-title"
-              className="mt-4 max-w-[19ch] font-display text-display-lg text-fg"
-            >
+            <h1 id="home-title" className="mt-4 max-w-[19ch] font-display text-display-lg text-fg">
               {copy.title}
             </h1>
             <p className="mt-4 max-w-[48ch] text-body-lg text-fg-muted">{copy.lede}</p>
@@ -128,7 +131,15 @@ export function HomePage() {
                   duration-base hover:border-data/70 hover:shadow-[0_0_22px_-8px_rgb(var(--data)/0.7)]"
               >
                 {copy.browse}
-                <svg width="12" height="14" viewBox="0 0 12 14" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden>
+                <svg
+                  width="12"
+                  height="14"
+                  viewBox="0 0 12 14"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.4"
+                  aria-hidden
+                >
                   <path d="M6 1v12M1 8l5 5 5-5" />
                 </svg>
               </a>
@@ -137,23 +148,43 @@ export function HomePage() {
                   to={`/labs/${last.meta.slug}`}
                   className="rounded py-2 text-body-sm text-fg-muted transition-colors duration-fast hover:text-fg"
                 >
-                  <ContinueLabel slug={last.meta.slug} fallback={last.meta.title} format={copy.continueLab} />
+                  <ContinueLabel
+                    slug={last.meta.slug}
+                    fallback={last.meta.title}
+                    format={copy.continueLab}
+                  />
                 </Link>
               )}
             </div>
           </div>
-          {/* The box the mark assembles into. Above the copy on a phone. */}
-          <div ref={artRef} aria-hidden className="order-first h-32 md:order-none md:h-[min(46vh,23rem)]" />
+          {/* The box the mark assembles into, and the only place it can
+              appear: the canvas fills this element rather than the section, so
+              nothing is ever drawn over the headline. Above the copy on a
+              phone, where it is taller than it used to be — the mark is a
+              still drawing there and has to read as one. */}
+          <div
+            aria-hidden
+            className="relative order-first h-40 md:order-none md:h-[min(46vh,23rem)]"
+          >
+            <MarkField />
+          </div>
         </div>
       </section>
 
       {/* ---------------------------------------------------------- labs -- */}
-      <section aria-labelledby="labs-heading" id="labs" className="shell mt-8 scroll-mt-24 md:mt-10">
+      <section
+        aria-labelledby="labs-heading"
+        id="labs"
+        className="shell mt-8 scroll-mt-24 md:mt-10"
+      >
         <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-3">
           <h2 id="labs-heading" className="font-display text-display-md text-fg">
             {copy.labs}
           </h2>
-          <p className="font-mono text-caption uppercase tracking-[0.12em] text-fg-faint" aria-live="polite">
+          <p
+            className="font-mono text-caption uppercase tracking-[0.12em] text-fg-faint"
+            aria-live="polite"
+          >
             {field
               ? copy.showing(matching.length, labs.length, t.category[field])
               : copy.labCount(labs.length)}
@@ -172,7 +203,12 @@ export function HomePage() {
               aria-label={copy.filterLabel}
               className="-mx-4 mt-5 flex gap-2 overflow-x-auto px-4 pb-1.5 pt-1 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0"
             >
-              <FieldChip pressed={field === null} onClick={() => pick(null)} label={copy.allFields} count={labs.length} />
+              <FieldChip
+                pressed={field === null}
+                onClick={() => pick(null)}
+                label={copy.allFields}
+                count={labs.length}
+              />
               {fields.map((category) => (
                 <FieldChip
                   key={category}
@@ -185,7 +221,10 @@ export function HomePage() {
               ))}
             </div>
 
-            <ul ref={gridRef} className="mt-5 grid scroll-mt-40 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <ul
+              ref={gridRef}
+              className="mt-5 grid scroll-mt-40 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+            >
               {matching.map((lab) => tile(lab.meta, field !== null))}
               {others.length > 0 && (
                 <li
@@ -201,7 +240,13 @@ export function HomePage() {
         )}
       </section>
 
-      <Marquee items={[t.shell.parentOrg, ...fields.map((category) => t.category[category]), t.shell.hashtag]} />
+      <Marquee
+        items={[
+          t.shell.parentOrg,
+          ...fields.map((category) => t.category[category]),
+          t.shell.hashtag,
+        ]}
+      />
     </div>
   );
 }
@@ -236,7 +281,15 @@ function Marquee({ items }: { items: string[] }) {
 }
 
 /** The last-opened lab's title in the current language. */
-function ContinueLabel({ slug, fallback, format }: { slug: string; fallback: string; format: (title: string) => string }) {
+function ContinueLabel({
+  slug,
+  fallback,
+  format,
+}: {
+  slug: string;
+  fallback: string;
+  format: (title: string) => string;
+}) {
   const copy = useLabMeta(slug);
   return (
     <>
@@ -271,7 +324,9 @@ function FieldChip({
       className="field-chip"
       style={{ "--c": colour ?? "var(--fg)" } as CSSProperties}
     >
-      {colour && <span aria-hidden className="size-[7px] shrink-0 rounded-pill bg-[rgb(var(--c))]" />}
+      {colour && (
+        <span aria-hidden className="size-[7px] shrink-0 rounded-pill bg-[rgb(var(--c))]" />
+      )}
       {label}
       <span className="field-chip-count font-mono text-caption text-fg-faint">{count}</span>
     </button>
@@ -288,12 +343,26 @@ function FieldChip({
 function LabTile({ meta, lit, visited }: { meta: LabMeta; lit: boolean; visited: boolean }) {
   const t = useT();
   const copy = useLabMeta(meta.slug);
+  const { language } = useLanguage();
+
+  // Pointing at a card, or tabbing to it, is a good enough signal to start
+  // fetching what opening it needs: the lab's own chunk and the collection's
+  // prose. On a desktop that is the few hundred milliseconds between deciding
+  // and clicking; on a phone `touchstart` fires before the tap completes.
+  // Both calls are idempotent and swallow their own failures.
+  const warm = () => {
+    preloadLab(meta.slug);
+    prefetchLabs(language);
+  };
 
   return (
     <Link
       to={`/labs/${meta.slug}`}
       className={cn("lab-card group", lit && "is-lit")}
       style={{ "--c": CATEGORY_VAR[meta.category] } as CSSProperties}
+      onPointerEnter={warm}
+      onFocus={warm}
+      onTouchStart={warm}
     >
       <div className="relative grid h-36 place-items-center overflow-hidden border border-line/5 bg-ink-950">
         <span className="absolute left-2.5 top-2.5 border border-line/10 bg-ink-950/80 px-1.5 py-1 font-mono text-caption uppercase tracking-[0.12em] text-[rgb(var(--c))]">
@@ -301,7 +370,16 @@ function LabTile({ meta, lit, visited }: { meta: LabMeta; lit: boolean; visited:
         </span>
         {visited && (
           <span className="absolute right-2.5 top-2.5 flex items-center gap-1.5 font-mono text-caption uppercase tracking-[0.12em] text-fg-muted">
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.6" className="text-data" aria-hidden>
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 12 12"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              className="text-data"
+              aria-hidden
+            >
               <path d="M2 6.5l2.5 2.5L10 3.5" />
             </svg>
             {t.home.visited}
@@ -329,7 +407,9 @@ function LabTile({ meta, lit, visited }: { meta: LabMeta; lit: boolean; visited:
             <path d="M4 12L12 4M5.5 4H12v6.5" />
           </svg>
         </div>
-        <p className="mt-1.5 flex-1 text-body-sm text-fg-muted">{copy?.description ?? meta.description}</p>
+        <p className="mt-1.5 flex-1 text-body-sm text-fg-muted">
+          {copy?.description ?? meta.description}
+        </p>
         <p className="mt-3.5 flex items-center gap-2 text-caption text-fg-muted">
           <span aria-hidden className="size-1.5 shrink-0 rounded-pill bg-[rgb(var(--c))]" />
           {t.category[meta.category]}

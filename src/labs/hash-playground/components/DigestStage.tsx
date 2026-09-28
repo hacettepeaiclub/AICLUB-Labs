@@ -1,6 +1,6 @@
 import { useId } from "react";
 import { Figure, Stage } from "@/components/lab";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { useDebouncedValue } from "@/hooks";
 import { HASH_BITS, HEX_CHARS } from "../hashUtils";
 import { CopyButton, DigestPanel } from "./DigestPanel";
@@ -28,7 +28,7 @@ export interface DigestStageProps {
  * on whatever is in the field.
  */
 export function DigestStage({ input, onInputChange, hash }: DigestStageProps) {
-  const t = useT().labs["hash-playground"];
+  const t = useLabs()["hash-playground"];
   const helpId = useId();
   // One announcement per burst of typing. Announcing all 64 characters on
   // every keystroke would be unusable, so this says that it changed and
@@ -65,9 +65,21 @@ export function DigestStage({ input, onInputChange, hash }: DigestStageProps) {
       primary={<CopyButton hex={hash} className="w-full" />}
       figures={
         <>
-          <Figure label={t.figures.messageLength} value={String(input.length)} hint={t.figures.characters} />
-          <Figure label={t.figures.digestLength} value={String(HEX_CHARS)} hint={t.figures.hexChars} />
-          <Figure label={t.figures.digestBits} value={String(HASH_BITS)} hint={t.figures.alwaysBits} />
+          <Figure
+            label={t.figures.messageLength}
+            value={String(input.length)}
+            hint={t.figures.characters}
+          />
+          <Figure
+            label={t.figures.digestLength}
+            value={String(HEX_CHARS)}
+            hint={t.figures.hexChars}
+          />
+          <Figure
+            label={t.figures.digestBits}
+            value={String(HASH_BITS)}
+            hint={t.figures.alwaysBits}
+          />
         </>
       }
     />

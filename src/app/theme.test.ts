@@ -7,7 +7,9 @@ import { colors } from "@/design/tokens";
  * Contrast is checked against the stylesheet itself rather than a copy of the
  * numbers, so a theme edit that quietly drops a pair below AA fails here.
  */
-const css = readFileSync("src/styles/globals.css", "utf8");
+// Line endings normalised: the selectors looked up below span a line break,
+// and this repository is checked out with CRLF on Windows.
+const css = readFileSync("src/styles/globals.css", "utf8").replace(/\r\n/g, "\n");
 
 type Rgb = [number, number, number];
 
@@ -22,7 +24,7 @@ function block(selector: string): Record<string, Rgb> {
   return found;
 }
 
-const dark = block(":root,\n:root[data-theme=\"dark\"]");
+const dark = block(':root,\n:root[data-theme="dark"]');
 const light = block(':root[data-theme="light"]');
 
 const channel = (v: number) => {
@@ -106,12 +108,13 @@ describe("tokens", () => {
 });
 
 describe("contrast — WCAG AA", () => {
-  const surfaces = (theme: Record<string, Rgb>) => [
-    ["page", theme["ink-950"]!],
-    ["inset", theme["ink-900"]!],
-    ["card", theme["ink-800"]!],
-    ["raised", theme["ink-700"]!],
-  ] as const;
+  const surfaces = (theme: Record<string, Rgb>) =>
+    [
+      ["page", theme["ink-950"]!],
+      ["inset", theme["ink-900"]!],
+      ["card", theme["ink-800"]!],
+      ["raised", theme["ink-700"]!],
+    ] as const;
 
   for (const [name, theme] of [
     ["dark", dark],
@@ -183,7 +186,12 @@ describe("contrast — WCAG AA", () => {
     });
 
     it(`${name}: every state signal clears 3:1 on the card surface`, () => {
-      for (const signal of ["signal-green", "signal-amber", "signal-rose", "signal-cyan"] as const) {
+      for (const signal of [
+        "signal-green",
+        "signal-amber",
+        "signal-rose",
+        "signal-cyan",
+      ] as const) {
         expect(
           contrast(theme[signal]!, theme["ink-800"]!),
           `${name} ${signal} on card`,

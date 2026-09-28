@@ -1,8 +1,8 @@
 import { useCallback, useRef, useState } from "react";
-import { useReducedMotion } from "framer-motion";
+import { useReducedMotion } from "@/hooks";
 import { Figure, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import { createRng } from "@/lib/random";
 import {
@@ -42,7 +42,7 @@ type Phase = "picking" | "opened" | "done";
  */
 export function MontyStage() {
   const reduced = useReducedMotion() ?? false;
-  const copy = useT().labs.probability;
+  const copy = useLabs().probability;
   const m = copy.monty;
 
   const rngRef = useRef(createRng(20260910));
@@ -157,9 +157,7 @@ export function MontyStage() {
                           there was any artwork. */}
                       <MontyDoor
                         state={state}
-                        prize={
-                          state === "revealed" ? "car" : state === "opened" ? "goat" : null
-                        }
+                        prize={state === "revealed" ? "car" : state === "opened" ? "goat" : null}
                       />
                       {/* The number is the identity, and the only text on the
                         door. What is behind it is never written down: before

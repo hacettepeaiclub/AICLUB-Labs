@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
-import { useReducedMotion } from "framer-motion";
+import { useReducedMotion } from "@/hooks";
 import { Figure, Stage } from "@/components/lab";
 import { Segmented } from "@/components/ui";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import { SAMPLES } from "../corpora";
 import { tokenize, type Vocabulary } from "../engine";
@@ -21,7 +21,7 @@ interface SideProps {
 }
 
 function Side({ title, subtitle, vocabulary, text, winner, count }: SideProps) {
-  const c = useT().labs.tokenizer.compare;
+  const c = useLabs().tokenizer.compare;
   const tokens = useMemo(() => (vocabulary ? tokenize(text, vocabulary) : []), [vocabulary, text]);
 
   return (
@@ -62,7 +62,7 @@ function Side({ title, subtitle, vocabulary, text, winner, count }: SideProps) {
  * Neither side is the winner in general; each is cheap in its own language.
  */
 export function CompareStage() {
-  const lab = useT().labs.tokenizer;
+  const lab = useLabs().tokenizer;
   const c = lab.compare;
   const reduced = useReducedMotion() ?? false;
   const english = useVocabulary("english", reduced);

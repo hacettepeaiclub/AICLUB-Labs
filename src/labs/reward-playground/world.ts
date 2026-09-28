@@ -80,10 +80,9 @@ const WALL_SET = new Set(WALLS);
 export const isWall = (index: number): boolean => WALL_SET.has(index);
 
 /** Every cell a robot can stand in, ascending. */
-export const FREE_CELLS: readonly number[] = Array.from(
-  { length: CELL_COUNT },
-  (_, i) => i,
-).filter((i) => !isWall(i));
+export const FREE_CELLS: readonly number[] = Array.from({ length: CELL_COUNT }, (_, i) => i).filter(
+  (i) => !isWall(i),
+);
 
 // ---------------------------------------------------------------- actions ---
 
