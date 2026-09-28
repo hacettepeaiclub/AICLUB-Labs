@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useReducedMotion } from "framer-motion";
+import { useReducedMotion } from "@/hooks";
 import { LabSlider, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { MAX_MERGES, SEED_SENTENCE } from "../corpora";
 import { tokenize } from "../engine";
 import { SLIDER_STEPS, mergesAt, positionOf } from "../mergeScale";
@@ -30,7 +30,7 @@ const TICKS = [0, 40, 160, MAX_MERGES] as const;
  * here: the strip answers the thumb on the same frame.
  */
 export function MergeStage() {
-  const lab = useT().labs.tokenizer;
+  const lab = useLabs().tokenizer;
   const m = lab.merge;
   const reduced = useReducedMotion() ?? false;
   const { vocabulary, merges: trained, ready } = useVocabulary("turkish", reduced);

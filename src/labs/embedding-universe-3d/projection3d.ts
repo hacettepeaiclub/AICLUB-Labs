@@ -51,11 +51,7 @@ export const SPACE_RADIUS = 50;
  * the 2-D view follows, and for the same reason: scaling axes independently
  * would stretch the cloud into a shape the data does not have.
  */
-export function project3d(
-  vectors: ArrayLike<number>,
-  count: number,
-  dimensions: number,
-): Space3 {
+export function project3d(vectors: ArrayLike<number>, count: number, dimensions: number): Space3 {
   const projection = pca(vectors, count, dimensions, 3);
   const coords = projection.coordinates;
 
@@ -70,11 +66,7 @@ export function project3d(
   }
   const span = Math.max(max[0]! - min[0]!, max[1]! - min[1]!, max[2]! - min[2]!);
   const scale = span > 0 ? (SPACE_RADIUS * 2) / span : 0;
-  const centre = [
-    (max[0]! + min[0]!) / 2,
-    (max[1]! + min[1]!) / 2,
-    (max[2]! + min[2]!) / 2,
-  ];
+  const centre = [(max[0]! + min[0]!) / 2, (max[1]! + min[1]!) / 2, (max[2]! + min[2]!) / 2];
 
   const points: Point3[] = [];
   for (let i = 0; i < count; i++) {

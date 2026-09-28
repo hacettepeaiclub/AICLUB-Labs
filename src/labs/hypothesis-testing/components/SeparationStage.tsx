@@ -1,5 +1,5 @@
 import { Figure, LabSlider, Stage } from "@/components/lab";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { BOUNDS, type Params, type Result } from "../engine";
 import { coord, separation } from "../view";
 import { DistributionPlot } from "./DistributionPlot";
@@ -21,7 +21,7 @@ export interface SeparationStageProps {
  * has anything to say.
  */
 export function SeparationStage({ result, onChange }: SeparationStageProps) {
-  const copy = useT().labs["hypothesis-testing"];
+  const copy = useLabs()["hypothesis-testing"];
   const s = copy.separation;
   const { mu0, mu1 } = result.params;
 

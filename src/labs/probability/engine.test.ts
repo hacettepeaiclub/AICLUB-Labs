@@ -52,12 +52,7 @@ import {
   run as lawRun,
   widestDeviation,
 } from "./engine/largeNumbers";
-import {
-  GaltonWorld,
-  PHYSICS,
-  geometryOf,
-  runHeadless,
-} from "./engine/galtonPhysics";
+import { GaltonWorld, PHYSICS, geometryOf, runHeadless } from "./engine/galtonPhysics";
 
 // ========================================================== Monty Hall =====
 
@@ -620,10 +615,11 @@ describe("the law of large numbers", () => {
     const byTrial = new Map(long.points.map((p) => [p.trials, p]));
     for (const point of short.points) {
       const later = byTrial.get(point.trials);
-      if (later) expect({ n: point.trials, s: later.successes }).toEqual({
-        n: point.trials,
-        s: point.successes,
-      });
+      if (later)
+        expect({ n: point.trials, s: later.successes }).toEqual({
+          n: point.trials,
+          s: point.successes,
+        });
     }
     expect(long.points.some((p) => p.trials === 1000)).toBe(true);
   });

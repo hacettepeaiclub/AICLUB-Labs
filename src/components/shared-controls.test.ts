@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { en } from "@/i18n/en";
-import { tr } from "@/i18n/tr";
+import { enLabs } from "@/i18n/labs/en";
+import { trLabs } from "@/i18n/labs/tr";
 
 const read = (path: string) => readFileSync(path, "utf8");
 
@@ -149,7 +149,7 @@ describe("LabSection", () => {
     // The strings existed before anything displayed them; this is what keeps
     // the two dictionaries from drifting now that they are visible.
     const count = (dict: unknown) => JSON.stringify(dict).match(/"kicker":/g)?.length ?? 0;
-    expect(count(en)).toBeGreaterThan(20);
-    expect(count(tr)).toBe(count(en));
+    expect(count(enLabs)).toBeGreaterThan(20);
+    expect(count(trLabs)).toBe(count(enLabs));
   });
 });

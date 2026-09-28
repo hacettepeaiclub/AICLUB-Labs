@@ -184,7 +184,12 @@ export function toViewport(projection: Projection, count: number): Viewport {
  * three-pixel circle, because the nearest point wins whether or not the tap
  * landed on it.
  */
-export function nearestPoint(points: readonly Point[], x: number, y: number, within = 12): number | null {
+export function nearestPoint(
+  points: readonly Point[],
+  x: number,
+  y: number,
+  within = 12,
+): number | null {
   let best = -1;
   let bestDistance = Infinity;
   for (let i = 0; i < points.length; i++) {
@@ -442,7 +447,10 @@ export function constellationLinks(
  * they trace where the data actually thins out. Decoration all the same: they
  * carry no reading and are hidden from assistive technology.
  */
-export function contourRings(points: readonly Point[], count = 3): Array<{ cx: number; cy: number; r: number }> {
+export function contourRings(
+  points: readonly Point[],
+  count = 3,
+): Array<{ cx: number; cy: number; r: number }> {
   if (points.length === 0) return [];
   let cx = 0;
   let cy = 0;

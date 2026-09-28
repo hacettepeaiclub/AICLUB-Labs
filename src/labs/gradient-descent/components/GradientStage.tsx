@@ -1,7 +1,7 @@
 import { useId, useState } from "react";
 import { Figure, LabSlider, Stage } from "@/components/lab";
 import { Button, Kbd } from "@/components/ui";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { formatNumber } from "@/lib/format";
 import { conditionNumber, gradient, type Landscape, type Point } from "../engine";
 import { LandscapeCanvas } from "./LandscapeCanvas";
@@ -41,8 +41,7 @@ function angleBetween(u: Point, v: Point): number {
  * whose curvature is the same in both directions.
  */
 export function GradientStage() {
-  const t = useT();
-  const g = t.labs["gradient-descent"];
+  const g = useLabs()["gradient-descent"];
   const hintId = useId();
 
   const [point, setPoint] = useState<Point>(HOME);
@@ -106,7 +105,11 @@ export function GradientStage() {
             format={() => `κ ${formatNumber(kappa, kappa < 10 ? 2 : 0)}`}
             valueText={() => g.controls.curvatureValue(formatNumber(kappa, 2))}
           />
-          <Button variant="secondary" onClick={() => setPoint(HOME)} className="min-h-[44px] w-full">
+          <Button
+            variant="secondary"
+            onClick={() => setPoint(HOME)}
+            className="min-h-[44px] w-full"
+          >
             {g.controls.resetPoint}
           </Button>
         </div>

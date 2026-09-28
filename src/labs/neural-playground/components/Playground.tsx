@@ -1,9 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useReducedMotion } from "framer-motion";
+import { useReducedMotion, useKeyPress } from "@/hooks";
 import { Button, Kbd, Segmented } from "@/components/ui";
 import { LabSlider, Stage, Transport } from "@/components/lab";
-import { useT } from "@/i18n";
-import { useKeyPress } from "@/hooks";
+import { useLabs } from "@/i18n/labs";
 import { formatNumber } from "@/lib/format";
 import {
   DATASETS,
@@ -28,7 +27,7 @@ const DEFAULT_DATASET: DatasetKind = "circle";
 const activationOptions = ACTIVATIONS.map((a) => ({ value: a.kind, label: a.label }));
 
 function Legend() {
-  const lab = useT().labs["neural-playground"];
+  const lab = useLabs()["neural-playground"];
   return (
     <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-caption text-fg-muted">
       {/* Shape as well as hue: a disc, a square and a ring. */}
@@ -82,8 +81,7 @@ function useSideBySide() {
 }
 
 export function Playground() {
-  const t = useT();
-  const lab = t.labs["neural-playground"];
+  const lab = useLabs()["neural-playground"];
   const p = lab.playground;
   const sideBySide = useSideBySide();
   const datasetOptions = DATASETS.map((d) => ({

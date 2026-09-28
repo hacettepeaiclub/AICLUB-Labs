@@ -195,13 +195,21 @@ describe("contraction factors are two different numbers", () => {
     for (const l of ALL) {
       if (conditionNumber(l) === 1) continue;
       const eta = optimalLearningRate(l);
-      const run = createRun(l, P(1, -0.55), { kind: "gd", learningRate: eta }, { tolerance: 0, maxSteps: 40 });
+      const run = createRun(
+        l,
+        P(1, -0.55),
+        { kind: "gd", learningRate: eta },
+        { tolerance: 0, maxSteps: 40 },
+      );
       // Let the transient settle: the slower mode dominates after a few steps.
       for (let i = 0; i < 30; i++) step(run);
       const before = pathAt(run, 28);
       const after = pathAt(run, 29);
       expect(norm(after) / norm(before)).toBeCloseTo(parameterContractionFactor(l), 6);
-      expect(objective(l, after) / objective(l, before)).toBeCloseTo(objectiveContractionFactor(l), 6);
+      expect(objective(l, after) / objective(l, before)).toBeCloseTo(
+        objectiveContractionFactor(l),
+        6,
+      );
     }
   });
 });
@@ -214,11 +222,16 @@ describe("plain gradient descent matches the closed form", () => {
       for (const frac of [0.05, 0.3, 0.7, 0.95, 1.4]) {
         const eta = frac * stabilityLimit(l);
         const start = P(1, -0.55);
-        const run = createRun(l, start, { kind: "gd", learningRate: eta }, {
-          tolerance: 0,
-          maxSteps: 25,
-          escapeRadius: Infinity,
-        });
+        const run = createRun(
+          l,
+          start,
+          { kind: "gd", learningRate: eta },
+          {
+            tolerance: 0,
+            maxSteps: 25,
+            escapeRadius: Infinity,
+          },
+        );
         runToEnd(run);
         for (let t = 0; t < run.length; t++) {
           const p = pathAt(run, t);
@@ -238,7 +251,12 @@ describe("the stability boundary is exact and sharp", () => {
   const limit = stabilityLimit(l); // exactly 0.1
 
   const outcome = (eta: number) =>
-    measureRun(l, P(1, -0.55), { kind: "gd", learningRate: eta }, { tolerance: 1e-9, maxSteps: 40000 });
+    measureRun(
+      l,
+      P(1, -0.55),
+      { kind: "gd", learningRate: eta },
+      { tolerance: 1e-9, maxSteps: 40000 },
+    );
 
   it("converges just below the limit - slowly, but it does converge", () => {
     const r = outcome(limit * (1 - 1e-3));
@@ -252,7 +270,12 @@ describe("the stability boundary is exact and sharp", () => {
     // At eta = 2/a the x coordinate is multiplied by exactly -1 each step: it
     // orbits forever at constant magnitude. Only y makes progress.
     const run = runToEnd(
-      createRun(l, P(1, -0.55), { kind: "gd", learningRate: limit }, { tolerance: 1e-9, maxSteps: 500 }),
+      createRun(
+        l,
+        P(1, -0.55),
+        { kind: "gd", learningRate: limit },
+        { tolerance: 1e-9, maxSteps: 500 },
+      ),
     );
     expect(run.status).toBe("exhausted");
     for (let t = 0; t < run.length; t++) expect(Math.abs(pathAt(run, t).x)).toBeCloseTo(1, 12);
@@ -290,7 +313,12 @@ describe("the stability boundary is exact and sharp", () => {
     // says "a large learning rate is bad".
     const eta = 0.15;
     const on = (land: Landscape) =>
-      measureRun(land, P(1, -0.55), { kind: "gd", learningRate: eta }, { tolerance: 1e-3, maxSteps: 2000 });
+      measureRun(
+        land,
+        P(1, -0.55),
+        { kind: "gd", learningRate: eta },
+        { tolerance: 1e-3, maxSteps: 2000 },
+      );
     expect(on({ a: 20, b: 1 }).status).toBe("diverged");
     expect(on({ a: 6, b: 1 }).status).toBe("converged");
     expect(on({ a: 1, b: 1 }).status).toBe("converged");
@@ -353,9 +381,16 @@ describe("momentum", () => {
 
   it("with beta = 0 is bit-for-bit identical to plain descent", () => {
     const eta = 0.02;
-    const gd = runToEnd(createRun(l, start, { kind: "gd", learningRate: eta }, { tolerance: 1e-6, maxSteps: 500 }));
+    const gd = runToEnd(
+      createRun(l, start, { kind: "gd", learningRate: eta }, { tolerance: 1e-6, maxSteps: 500 }),
+    );
     const mo = runToEnd(
-      createRun(l, start, { kind: "momentum", learningRate: eta, beta: 0 }, { tolerance: 1e-6, maxSteps: 500 }),
+      createRun(
+        l,
+        start,
+        { kind: "momentum", learningRate: eta, beta: 0 },
+        { tolerance: 1e-6, maxSteps: 500 },
+      ),
     );
     expect(mo.t).toBe(gd.t);
     expect(Array.from(mo.path.slice(0, 2 * mo.length))).toEqual(
@@ -373,11 +408,16 @@ describe("momentum", () => {
     expect(v).toBeCloseTo(g / (1 - beta), 12);
 
     // And the engine builds the same velocity.
-    const run = createRun({ a: 1e-12, b: 1e-12 }, P(g / 1e-12, 0), {
-      kind: "momentum",
-      learningRate: 1e-18,
-      beta,
-    }, { tolerance: 0, maxSteps: 600, escapeRadius: Infinity });
+    const run = createRun(
+      { a: 1e-12, b: 1e-12 },
+      P(g / 1e-12, 0),
+      {
+        kind: "momentum",
+        learningRate: 1e-18,
+        beta,
+      },
+      { tolerance: 0, maxSteps: 600, escapeRadius: Infinity },
+    );
     runToEnd(run);
     expect(run.vx).toBeCloseTo(g / (1 - beta), 9);
   });
@@ -386,10 +426,15 @@ describe("momentum", () => {
     // The honest counterexample the lab shows in the momentum section.
     const ravine = LANDSCAPES.ravine;
     const at = (beta: number) =>
-      measureRun(ravine.landscape, ravine.start, { kind: "momentum", learningRate: 0.03, beta }, {
-        tolerance: 1e-3,
-        maxSteps: 5000,
-      }).steps;
+      measureRun(
+        ravine.landscape,
+        ravine.start,
+        { kind: "momentum", learningRate: 0.03, beta },
+        {
+          tolerance: 1e-3,
+          maxSteps: 5000,
+        },
+      ).steps;
 
     const none = at(0);
     const some = at(0.5);
@@ -414,10 +459,15 @@ describe("momentum", () => {
     for (const beta of [0, 0.5, 0.9]) {
       const boundary = (2 * (1 + beta)) / l.a;
       const at = (frac: number) =>
-        measureRun(l, start, { kind: "momentum", learningRate: frac * boundary, beta }, {
-          tolerance: 1e-4,
-          maxSteps: 20000,
-        }).status;
+        measureRun(
+          l,
+          start,
+          { kind: "momentum", learningRate: frac * boundary, beta },
+          {
+            tolerance: 1e-4,
+            maxSteps: 20000,
+          },
+        ).status;
       expect(at(0.9)).toBe("converged");
       expect(at(1.1)).toBe("diverged");
     }
@@ -431,10 +481,15 @@ describe("momentum", () => {
     const ravine = LANDSCAPES.ravine;
     const steps = [0, 0.3, 0.5, 0.7, 0.9, 0.95].map(
       (beta) =>
-        measureRun(ravine.landscape, ravine.start, { kind: "momentum", learningRate: 0.03, beta }, {
-          tolerance: 1e-3,
-          maxSteps: 5000,
-        }).steps,
+        measureRun(
+          ravine.landscape,
+          ravine.start,
+          { kind: "momentum", learningRate: 0.03, beta },
+          {
+            tolerance: 1e-3,
+            maxSteps: 5000,
+          },
+        ).steps,
     );
     for (const s of steps) expect(s).not.toBeNull();
     const values = steps as number[];
@@ -454,11 +509,16 @@ describe("adam", () => {
     for (const l of ALL) {
       const start = P(1, -0.55);
       const g = gradient(l, start);
-      const run = createRun(l, start, { kind: "adam", learningRate: eta }, {
-        tolerance: 0,
-        maxSteps: 1,
-        escapeRadius: Infinity,
-      });
+      const run = createRun(
+        l,
+        start,
+        { kind: "adam", learningRate: eta },
+        {
+          tolerance: 0,
+          maxSteps: 1,
+          escapeRadius: Infinity,
+        },
+      );
       step(run);
       const expectX = (-eta * Math.sign(g.x)) / (1 + ADAM_EPSILON / Math.abs(g.x));
       const expectY = (-eta * Math.sign(g.y)) / (1 + ADAM_EPSILON / Math.abs(g.y));
@@ -477,11 +537,16 @@ describe("adam", () => {
     expect(Math.abs(g.x) / Math.abs(g.y)).toBeCloseTo((l.a * 1) / (l.b * 0.55), 6);
     expect(Math.abs(g.x) / Math.abs(g.y)).toBeGreaterThan(1e6);
 
-    const run = createRun(l, start, { kind: "adam", learningRate: 0.1 }, {
-      tolerance: 0,
-      maxSteps: 1,
-      escapeRadius: Infinity,
-    });
+    const run = createRun(
+      l,
+      start,
+      { kind: "adam", learningRate: 0.1 },
+      {
+        tolerance: 0,
+        maxSteps: 1,
+        escapeRadius: Infinity,
+      },
+    );
     step(run);
     const dx = Math.abs(run.x - start.x);
     const dy = Math.abs(run.y - start.y);
@@ -495,7 +560,12 @@ describe("adam", () => {
     const start = P(1, -0.55);
     const g = gradient(l, start);
 
-    const run = createRun(l, start, { kind: "adam", learningRate: 0.1 }, { tolerance: 0, maxSteps: 1 });
+    const run = createRun(
+      l,
+      start,
+      { kind: "adam", learningRate: 0.1 },
+      { tolerance: 0, maxSteps: 1 },
+    );
     step(run);
     // Raw moments after one step.
     expect(run.mx).toBeCloseTo((1 - ADAM_BETA1) * g.x, 12);
@@ -511,7 +581,12 @@ describe("adam", () => {
     // loudly if that ever gets edited back in.
     const l: Landscape = { a: 6, b: 1 };
     const start = P(1, -0.55); // g.y is negative here
-    const run = createRun(l, start, { kind: "adam", learningRate: 0.1 }, { tolerance: 0, maxSteps: 5 });
+    const run = createRun(
+      l,
+      start,
+      { kind: "adam", learningRate: 0.1 },
+      { tolerance: 0, maxSteps: 5 },
+    );
     for (let i = 0; i < 5; i++) step(run);
     expect(run.sy).toBeGreaterThan(0);
     expect(Number.isFinite(run.y)).toBe(true);
@@ -537,7 +612,12 @@ describe("run mechanics", () => {
   const start = P(1, -0.55);
 
   it("records the start and advances by exactly one step per call", () => {
-    const run = createRun(l, start, { kind: "gd", learningRate: 0.1 }, { tolerance: 0, maxSteps: 10 });
+    const run = createRun(
+      l,
+      start,
+      { kind: "gd", learningRate: 0.1 },
+      { tolerance: 0, maxSteps: 10 },
+    );
     expect(run.t).toBe(0);
     expect(run.length).toBe(1);
     expect(pathAt(run, 0)).toEqual(start);
@@ -551,7 +631,12 @@ describe("run mechanics", () => {
   });
 
   it("reports the gradient the step actually used, taken at the point it left", () => {
-    const run = createRun(l, start, { kind: "gd", learningRate: 0.1 }, { tolerance: 0, maxSteps: 5 });
+    const run = createRun(
+      l,
+      start,
+      { kind: "gd", learningRate: 0.1 },
+      { tolerance: 0, maxSteps: 5 },
+    );
     for (let i = 0; i < 5; i++) {
       const before = P(run.x, run.y);
       const event = step(run);
@@ -563,7 +648,9 @@ describe("run mechanics", () => {
   });
 
   it("is exhausted, not converged, when it runs out of budget", () => {
-    const run = runToEnd(createRun(l, start, { kind: "gd", learningRate: 1e-6 }, { tolerance: 1e-3, maxSteps: 20 }));
+    const run = runToEnd(
+      createRun(l, start, { kind: "gd", learningRate: 1e-6 }, { tolerance: 1e-3, maxSteps: 20 }),
+    );
     expect(run.status).toBe("exhausted");
     expect(run.t).toBe(20);
     expect(currentObjective(run)).toBeGreaterThan(run.tolerance);
@@ -585,7 +672,9 @@ describe("run mechanics", () => {
   });
 
   it("stepping a finished run changes nothing", () => {
-    const run = runToEnd(createRun(l, start, { kind: "gd", learningRate: 0.2 }, { tolerance: 1e-3, maxSteps: 200 }));
+    const run = runToEnd(
+      createRun(l, start, { kind: "gd", learningRate: 0.2 }, { tolerance: 1e-3, maxSteps: 200 }),
+    );
     const { t, x, y, status, length } = run;
     const event = step(run);
     expect(run.t).toBe(t);
@@ -598,7 +687,12 @@ describe("run mechanics", () => {
 
   it("calls a run that has blown up to a non-finite value diverged", () => {
     const run = runToEnd(
-      createRun({ a: 1e8, b: 1 }, start, { kind: "gd", learningRate: 1e-2 }, { tolerance: 1e-3, maxSteps: 400 }),
+      createRun(
+        { a: 1e8, b: 1 },
+        start,
+        { kind: "gd", learningRate: 1e-2 },
+        { tolerance: 1e-3, maxSteps: 400 },
+      ),
     );
     expect(run.status).toBe("diverged");
   });
@@ -619,7 +713,9 @@ describe("run mechanics", () => {
 
   it("never writes to the point it was given", () => {
     const mutable = { x: 1, y: -0.55 };
-    runToEnd(createRun(l, mutable, { kind: "gd", learningRate: 0.2 }, { tolerance: 1e-3, maxSteps: 100 }));
+    runToEnd(
+      createRun(l, mutable, { kind: "gd", learningRate: 0.2 }, { tolerance: 1e-3, maxSteps: 100 }),
+    );
     expect(mutable).toEqual({ x: 1, y: -0.55 });
   });
 });
@@ -668,7 +764,9 @@ describe("landscape geometry", () => {
   });
 
   it("the steep axis is not always the horizontal one", () => {
-    const steepOnY = landscapeIds.filter((id) => LANDSCAPES[id].landscape.b > LANDSCAPES[id].landscape.a);
+    const steepOnY = landscapeIds.filter(
+      (id) => LANDSCAPES[id].landscape.b > LANDSCAPES[id].landscape.a,
+    );
     expect(steepOnY.length).toBeGreaterThan(0);
   });
 
@@ -705,10 +803,15 @@ describe("Gate A - challenge feasibility, measured against the real engine", () 
     let withinBudget = 0;
     for (let i = 1; i <= samples; i++) {
       const eta = (limit * i) / (samples + 1);
-      const r = measureRun(c.landscape, c.start, { kind: "gd", learningRate: eta }, {
-        tolerance: c.tolerance,
-        maxSteps: 5000,
-      });
+      const r = measureRun(
+        c.landscape,
+        c.start,
+        { kind: "gd", learningRate: eta },
+        {
+          tolerance: c.tolerance,
+          maxSteps: 5000,
+        },
+      );
       if (r.steps === null) continue;
       if (r.steps <= c.budget) withinBudget += 1;
       if (r.steps < best) {
@@ -742,10 +845,15 @@ describe("Gate A - challenge feasibility, measured against the real engine", () 
     expect(share).toBeLessThan(0.5);
     // Every step size at or above the limit fails, and fails by exploding.
     for (const frac of [1.0, 1.05, 1.5, 3]) {
-      const r = measureRun(c.landscape, c.start, { kind: "gd", learningRate: frac * stabilityLimit(c.landscape) }, {
-        tolerance: c.tolerance,
-        maxSteps: 2000,
-      });
+      const r = measureRun(
+        c.landscape,
+        c.start,
+        { kind: "gd", learningRate: frac * stabilityLimit(c.landscape) },
+        {
+          tolerance: c.tolerance,
+          maxSteps: 2000,
+        },
+      );
       expect(r.status).not.toBe("converged");
     }
   });
@@ -754,15 +862,24 @@ describe("Gate A - challenge feasibility, measured against the real engine", () 
     const c = CHALLENGES.c2;
     const eta = 1.5 * stabilityLimit(c.landscape);
     expect(
-      measureRun(c.landscape, c.start, { kind: "gd", learningRate: eta }, { tolerance: c.tolerance, maxSteps: 2000 })
-        .status,
+      measureRun(
+        c.landscape,
+        c.start,
+        { kind: "gd", learningRate: eta },
+        { tolerance: c.tolerance, maxSteps: 2000 },
+      ).status,
     ).toBe("diverged");
     const gentle = LANDSCAPES.gentle;
     expect(
-      measureRun(gentle.landscape, gentle.start, { kind: "gd", learningRate: eta }, {
-        tolerance: c.tolerance,
-        maxSteps: 2000,
-      }).status,
+      measureRun(
+        gentle.landscape,
+        gentle.start,
+        { kind: "gd", learningRate: eta },
+        {
+          tolerance: c.tolerance,
+          maxSteps: 2000,
+        },
+      ).status,
     ).toBe("converged");
   });
 
@@ -784,10 +901,15 @@ describe("Gate A - challenge feasibility, measured against the real engine", () 
       const n = 200;
       for (let i = 1; i <= n; i++) {
         const eta = (2 * limit * i) / n;
-        const r = measureRun(c.landscape, c.start, { kind: "momentum", learningRate: eta, beta }, {
-          tolerance: c.tolerance,
-          maxSteps: 3000,
-        });
+        const r = measureRun(
+          c.landscape,
+          c.start,
+          { kind: "momentum", learningRate: eta, beta },
+          {
+            tolerance: c.tolerance,
+            maxSteps: 3000,
+          },
+        );
         if (r.steps !== null && r.steps <= c.budget) win += 1;
       }
       return win / n;
@@ -810,11 +932,16 @@ describe("Gate A - challenge feasibility, measured against the real engine", () 
       let win = 0;
       const n = 200;
       for (let i = 1; i <= n; i++) {
-        const r = measureRun(c.landscape, c.start, {
-          kind: "momentum",
-          learningRate: (2 * limit * i) / n,
-          beta,
-        }, { tolerance: c.tolerance, maxSteps: 3000 });
+        const r = measureRun(
+          c.landscape,
+          c.start,
+          {
+            kind: "momentum",
+            learningRate: (2 * limit * i) / n,
+            beta,
+          },
+          { tolerance: c.tolerance, maxSteps: 3000 },
+        );
         if (r.steps !== null && r.steps <= c.budget) win += 1;
       }
       return win / n;
@@ -831,10 +958,15 @@ describe("Gate A - challenge feasibility, measured against the real engine", () 
     const n = 300;
     for (let i = 1; i <= n; i++) {
       const eta = i / n;
-      const r = measureRun(c.landscape, c.start, { kind: "adam", learningRate: eta }, {
-        tolerance: c.tolerance,
-        maxSteps: 3000,
-      });
+      const r = measureRun(
+        c.landscape,
+        c.start,
+        { kind: "adam", learningRate: eta },
+        {
+          tolerance: c.tolerance,
+          maxSteps: 3000,
+        },
+      );
       if (r.steps === null) continue;
       if (r.steps <= c.budget) win += 1;
       if (r.steps < best) {
@@ -847,10 +979,15 @@ describe("Gate A - challenge feasibility, measured against the real engine", () 
     // Adam is not a free win here: most step sizes still miss the budget.
     expect(win / n).toBeLessThan(0.25);
     // At a small, conventional step size it is far slower than tuned momentum.
-    const conventional = measureRun(c.landscape, c.start, { kind: "adam", learningRate: 0.1 }, {
-      tolerance: c.tolerance,
-      maxSteps: 3000,
-    });
+    const conventional = measureRun(
+      c.landscape,
+      c.start,
+      { kind: "adam", learningRate: 0.1 },
+      {
+        tolerance: c.tolerance,
+        maxSteps: 3000,
+      },
+    );
     expect(conventional.steps).toBeGreaterThan(c.budget);
   });
 

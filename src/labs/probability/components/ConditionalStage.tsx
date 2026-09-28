@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Figure, Stage } from "@/components/lab";
 import { Segmented } from "@/components/ui";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import { OUTCOMES, analyse, isBothBoys, satisfies, type ClueId } from "../engine/conditional";
 import { percent, ratio } from "../view";
@@ -29,7 +29,7 @@ import { Prediction } from "./Prediction";
  * leaving the impression that these two exhaust the question.
  */
 export function ConditionalStage() {
-  const copy = useT().labs.probability;
+  const copy = useLabs().probability;
   const c = copy.conditional;
 
   const [clue, setClue] = useState<ClueId>("atLeastOneBoy");

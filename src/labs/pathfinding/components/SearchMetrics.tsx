@@ -1,5 +1,5 @@
 import { Figure } from "@/components/lab";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { Badge } from "@/components/ui";
 import { cn } from "@/lib/cn";
 import type { Algorithm, SearchResult } from "../engine";
@@ -28,7 +28,7 @@ export interface SearchFiguresProps {
  * a stack of unrelated blocks rather than one instrument.
  */
 export function SearchFigures({ metrics, emphasis, showCost = true }: SearchFiguresProps) {
-  const t = useT().labs.pathfinding;
+  const t = useLabs().pathfinding;
   const solved = metrics.status === "solved";
   return (
     <>

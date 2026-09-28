@@ -1,6 +1,13 @@
 import { useEffect, useSyncExternalStore } from "react";
 import { MAX_MERGES, corpusById, type CorpusId } from "./corpora";
-import { createTrainer, runToEnd, trainStep, vocabularyOf, type Trainer, type Vocabulary } from "./engine";
+import {
+  createTrainer,
+  runToEnd,
+  trainStep,
+  vocabularyOf,
+  type Trainer,
+  type Vocabulary,
+} from "./engine";
 
 /**
  * Trains the lab's two tokenizers once, and shares them.

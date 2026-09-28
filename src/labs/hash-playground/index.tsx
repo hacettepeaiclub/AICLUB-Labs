@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { LabRecap, LabSection, LabSources } from "@/components/lab";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { changedBitFlags, changedHexChars, countChangedBits, hexToBits } from "./hashUtils";
 import { useHashHistory, useSha256 } from "./useSha256";
 import { AvalancheStage } from "./components/AvalancheStage";
@@ -30,7 +30,7 @@ import { UsageList } from "./components/UsageList";
  * names a property the visitor has not already watched happen.
  */
 export default function HashPlayground() {
-  const t = useT().labs["hash-playground"];
+  const t = useLabs()["hash-playground"];
   const [input, setInput] = useState("hello world");
   const { hash, unavailable } = useSha256(input);
   const { prev, current } = useHashHistory(hash);
@@ -112,10 +112,7 @@ export default function HashPlayground() {
       </LabSection>
 
       <LabRecap lessons={t.recap.lessons} footer={t.recap.footer} />
-      <LabSources
-        title={t.sources.title}
-        entries={[{ id: "sha2", supports: t.sources.sha2 }]}
-      />
+      <LabSources title={t.sources.title} entries={[{ id: "sha2", supports: t.sources.sha2 }]} />
     </div>
   );
 }

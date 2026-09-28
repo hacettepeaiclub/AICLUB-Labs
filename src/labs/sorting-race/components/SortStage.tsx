@@ -1,8 +1,9 @@
 import { useCallback, useMemo, useRef, useState } from "react";
-import { useReducedMotion } from "framer-motion";
+import { useReducedMotion } from "@/hooks";
 import { Stage, Transport } from "@/components/lab";
 import { Kbd, Segmented } from "@/components/ui";
 import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { buildPreset, PRESETS, SIZE, type PresetId } from "../arrays";
 import { inversions, isSorted, type Algorithm } from "../engine";
 import { useSortRun } from "../useSortRun";
@@ -52,7 +53,7 @@ export function SortStage({
   caption,
 }: SortStageProps) {
   const t = useT();
-  const lab = t.labs["sorting-race"];
+  const lab = useLabs()["sorting-race"];
   const names = useAlgorithmLabel();
   const reduced = useReducedMotion() ?? false;
 
@@ -197,7 +198,10 @@ export function SortStage({
             <Segmented
               label={lab.shape}
               value={current}
-              options={PRESETS.map((preset) => ({ value: preset.id, label: lab.shapes[preset.id] }))}
+              options={PRESETS.map((preset) => ({
+                value: preset.id,
+                label: lab.shapes[preset.id],
+              }))}
               onChange={loadPreset}
             />
           )}

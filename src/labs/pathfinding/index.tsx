@@ -1,5 +1,5 @@
 import { LabRecap, LabSection, LabSources } from "@/components/lab";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { PathfindingStage } from "./components/PathfindingStage";
 import { PathChallenge } from "./components/PathChallenge";
 
@@ -12,7 +12,7 @@ import { PathChallenge } from "./components/PathChallenge";
  * section is the same engine under a different question.
  */
 export default function Pathfinding() {
-  const t = useT().labs.pathfinding;
+  const t = useLabs().pathfinding;
 
   return (
     <div className="space-y-24 md:space-y-32">
@@ -20,32 +20,16 @@ export default function Pathfinding() {
           no vocabulary, and nothing to read before touching something. */}
       <section aria-label={t.findTheWay}>
         <p className="mb-6 max-w-prose text-body-lg text-fg">{t.intro.question}</p>
-        <PathfindingStage
-          preset="simple"
-          algorithms={["bfs"]}
-          caption={t.intro.caption}
-        />
+        <PathfindingStage preset="simple" algorithms={["bfs"]} caption={t.intro.caption} />
       </section>
 
       {/* 2 — Now name what was just watched, one move at a time. */}
-      <LabSection
-        kicker={t.bfs.kicker}
-        title={t.bfs.title}
-        lede={t.bfs.lede}
-      >
-        <PathfindingStage
-          preset="detour"
-          algorithms={["bfs"]}
-          caption={t.bfs.caption}
-        />
+      <LabSection kicker={t.bfs.kicker} title={t.bfs.title} lede={t.bfs.lede}>
+        <PathfindingStage preset="detour" algorithms={["bfs"]} caption={t.bfs.caption} />
       </LabSection>
 
       {/* 3 — Break the assumption BFS was resting on. */}
-      <LabSection
-        kicker={t.cost.kicker}
-        title={t.cost.title}
-        lede={t.cost.lede}
-      >
+      <LabSection kicker={t.cost.kicker} title={t.cost.title} lede={t.cost.lede}>
         <PathfindingStage
           preset="swamp"
           algorithms={["bfs", "dijkstra"]}
@@ -57,11 +41,7 @@ export default function Pathfinding() {
       </LabSection>
 
       {/* 4 — Dijkstra is right but indiscriminate. */}
-      <LabSection
-        kicker={t.astar.kicker}
-        title={t.astar.title}
-        lede={t.astar.lede}
-      >
+      <LabSection kicker={t.astar.kicker} title={t.astar.title} lede={t.astar.lede}>
         <PathfindingStage
           preset="open"
           algorithms={["dijkstra", "astar"]}
@@ -72,18 +52,17 @@ export default function Pathfinding() {
       </LabSection>
 
       {/* 5 — Both axes at once. */}
-      <LabSection
-        kicker={t.challenge.kicker}
-        title={t.challenge.title}
-        lede={t.challenge.lede}
-      >
+      <LabSection kicker={t.challenge.kicker} title={t.challenge.title} lede={t.challenge.lede}>
         <PathChallenge />
       </LabSection>
 
       <LabRecap lessons={t.recap.lessons} footer={t.recap.footer} />
       <LabSources
         title={t.sources.title}
-        entries={[{ id: "astar", supports: t.sources.astar },{ id: "dijkstra", supports: t.sources.dijkstra }]}
+        entries={[
+          { id: "astar", supports: t.sources.astar },
+          { id: "dijkstra", supports: t.sources.dijkstra },
+        ]}
       />
     </div>
   );

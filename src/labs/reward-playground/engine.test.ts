@@ -403,10 +403,7 @@ describe("nothing is hardcoded", () => {
         const mine = train({ tileReward, episodes: 200, seed }).q;
         const theirs = naiveTrain(tileReward, 200, seed);
         for (let i = 0; i < mine.length; i++) {
-          expect(mine[i], `tile=${tileReward} seed=${seed} index=${i}`).toBeCloseTo(
-            theirs[i]!,
-            12,
-          );
+          expect(mine[i], `tile=${tileReward} seed=${seed} index=${i}`).toBeCloseTo(theirs[i]!, 12);
         }
       }
     }
@@ -733,7 +730,10 @@ describe("reading the table", () => {
     for (let i = 1; i < r.path.length; i++) {
       const from = r.path[i - 1]!;
       const to = r.path[i]!;
-      expect(ACTIONS.some((a) => nextState(from, a) === to), `${from} -> ${to}`).toBe(true);
+      expect(
+        ACTIONS.some((a) => nextState(from, a) === to),
+        `${from} -> ${to}`,
+      ).toBe(true);
       expect(isWall(to)).toBe(false);
     }
   });

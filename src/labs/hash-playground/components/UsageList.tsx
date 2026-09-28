@@ -1,4 +1,4 @@
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 
 /** The order they are listed in. Not a ranking — just a stable sequence. */
 const IDS = ["git", "passwords", "https", "blockchain", "signatures"] as const;
@@ -42,12 +42,15 @@ const ICON_SRC: Record<(typeof IDS)[number], string> = {
  * source images visually disciplined into one shape.
  */
 export function UsageList() {
-  const t = useT().labs["hash-playground"].usage;
+  const t = useLabs()["hash-playground"].usage;
 
   return (
     <dl className="mx-auto max-w-[44rem] divide-y divide-line/10 border-y border-line/10">
       {IDS.map((id) => (
-        <div key={id} className="grid gap-3 py-4 sm:grid-cols-[minmax(0,7rem)_minmax(0,1fr)] sm:gap-6">
+        <div
+          key={id}
+          className="grid gap-3 py-4 sm:grid-cols-[minmax(0,7rem)_minmax(0,1fr)] sm:gap-6"
+        >
           <dt className="flex items-center gap-3 text-body-sm font-semibold text-fg">
             <span className="flex size-9 shrink-0 items-center justify-center rounded border border-line/10 bg-ink-700/60">
               <img src={ICON_SRC[id]} alt="" aria-hidden className="size-5 object-contain" />

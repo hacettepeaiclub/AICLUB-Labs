@@ -35,11 +35,14 @@ const loaded = new Map<Language, Translation>([["en", en]]);
 /**
  * Fetch a dictionary, loading it if this is the first time.
  *
- * The two dictionaries together are 36 KB gzipped — the whole product's prose,
- * twice. Shipping both to everyone means every English visitor downloads a
- * Turkish copy they will never read, so the non-default one is a separate
- * chunk. The switch is imperceptible on any real connection, and the language
- * simply stays as it was until the file lands.
+ * Shipping both to everyone means every English visitor downloads a Turkish
+ * copy they will never read, so the non-default one is a separate chunk. The
+ * switch is imperceptible on any real connection, and the language simply
+ * stays as it was until the file lands.
+ *
+ * This is the *shell* dictionary only — chrome, the home page, category names
+ * and the lab titles the grid prints. The teaching copy travels separately and
+ * per language too; see `i18n/labs`.
  */
 async function load(language: Language): Promise<Translation> {
   const cached = loaded.get(language);
@@ -53,7 +56,7 @@ async function load(language: Language): Promise<Translation> {
  * Owns the visitor's language.
  *
  * There is no key-string lookup here and no `t("some.dotted.key")`: components
- * read `t.labs.tokenizer.guess.heading` straight off a typed object. A missing
+ * read `useLabs().tokenizer.guess.heading` straight off a typed object. A missing
  * or misspelt key is a compile error rather than a string that renders as its
  * own name, and every interpolated value keeps its type — a count is a number
  * on both sides of the translation.
@@ -112,11 +115,11 @@ export function useT(): Translation {
   return useLanguageContext().t;
 }
 
-/** The slugs that have translated copy — the five registered labs. */
-export type LabSlug = keyof Translation["labs"];
+/** The slugs the grid can name — every registered lab. */
+export type LabSlug = keyof Translation["labMeta"];
 
 export const isLabSlug = (slug: string): slug is LabSlug =>
-  Object.prototype.hasOwnProperty.call(en.labs, slug);
+  Object.prototype.hasOwnProperty.call(en.labMeta, slug);
 
 /**
  * A lab's name and one-line description, in the active language.
@@ -124,10 +127,14 @@ export const isLabSlug = (slug: string): slug is LabSlug =>
  * The registry keeps `meta.ts` as the structural source of truth (slug,
  * category, minutes) and the wording lives here, so the home page can list a
  * lab without loading it and still say its name in Turkish.
+ *
+ * These two strings stayed in the shell dictionary when the rest of the
+ * teaching copy moved to its own chunk (`i18n/labs`), because the grid says
+ * them before a visitor has chosen anything.
  */
 export function useLabMeta(slug: string): { title: string; description: string } | null {
   const t = useT();
-  return isLabSlug(slug) ? t.labs[slug] : null;
+  return isLabSlug(slug) ? t.labMeta[slug] : null;
 }
 
 export type { Translation } from "./types";

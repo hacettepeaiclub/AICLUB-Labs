@@ -1,10 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import {
-  BASE_PATH,
-  decodeInt16,
-  type DatasetMeta,
-  type EmbeddingSet,
-} from "./dataset";
+import { BASE_PATH, decodeInt16, type DatasetMeta, type EmbeddingSet } from "./dataset";
 import { distortion, pca, type Distortion, type Projection } from "./engine";
 import { toViewport, type Viewport } from "./view";
 

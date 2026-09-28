@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 
 /**
@@ -19,7 +19,7 @@ export function CopyButton({
   onCopied?: () => void;
   className?: string;
 }) {
-  const t = useT().labs["hash-playground"];
+  const t = useLabs()["hash-playground"];
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {

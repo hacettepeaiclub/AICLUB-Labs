@@ -1,7 +1,7 @@
 import { useCallback, useState, type KeyboardEvent } from "react";
 import { Figure, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import { formatNumber } from "@/lib/format";
 import { ACTIONS, GOAL, START, nextState, reward, type Action } from "../world";
@@ -44,7 +44,7 @@ export interface WorldStageProps {
  * itemisation cannot drift from the number the algorithm actually sees.
  */
 export function WorldStage({ tileReward }: WorldStageProps) {
-  const copy = useT().labs["reward-playground"];
+  const copy = useLabs()["reward-playground"];
   const world = copy.world;
 
   const [at, setAt] = useState(START);

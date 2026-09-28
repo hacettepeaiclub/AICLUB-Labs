@@ -1,5 +1,5 @@
 import { useId, useMemo, useRef, useState } from "react";
-import { useReducedMotion } from "framer-motion";
+import { useReducedMotion } from "@/hooks";
 import { cn } from "@/lib/cn";
 import type { Neighbour } from "../engine";
 import type { VocabularyItem } from "../vocabulary";

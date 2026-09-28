@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import { useCanvas2D, useLocalControls, useRepaintFlag } from "@/hooks";
 import { LabSlider, Stage } from "@/components/lab";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { Segmented } from "@/components/ui";
 import { formatNumber } from "@/lib/format";
 import { ACTIVATIONS, type Activation } from "../engine";
@@ -31,7 +31,7 @@ const squash = (kind: Activation, z: number): number => {
  * three by dragging.
  */
 export function NeuronLab() {
-  const lab = useT().labs["neural-playground"];
+  const lab = useLabs()["neural-playground"];
   const n = lab.neuron;
   const [state, set] = useLocalControls("acl:neural-playground:neuron", {
     w1: 1.4,

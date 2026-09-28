@@ -1,8 +1,15 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { labs, publishedLabs } from "../registry";
-import { en } from "@/i18n/en";
-import { tr } from "@/i18n/tr";
+import { en as enShell } from "@/i18n/en";
+import { tr as trShell } from "@/i18n/tr";
+import { enLabs } from "@/i18n/labs/en";
+import { trLabs } from "@/i18n/labs/tr";
+
+// The shell dictionary and the lab prose ship as separate chunks; a lab sees
+// both, so the assertions below read them as one object.
+const en = { ...enShell, labs: enLabs };
+const tr = { ...trShell, labs: trLabs };
 import { rewardPlaygroundMeta } from "./meta";
 import {
   ACTIONS,
@@ -64,8 +71,9 @@ describe("copy", () => {
   it("exists in both languages with three recap lessons", () => {
     for (const dict of [en, tr]) {
       const copy = dict.labs["reward-playground"];
-      expect(copy.title.length).toBeGreaterThan(3);
-      expect(copy.description.length).toBeGreaterThan(20);
+      const name = dict.labMeta["reward-playground"];
+      expect(name.title.length).toBeGreaterThan(3);
+      expect(name.description.length).toBeGreaterThan(20);
       expect(copy.recap.lessons).toHaveLength(3);
       expect(copy.recap.footer.length).toBeGreaterThan(40);
     }
@@ -424,9 +432,7 @@ describe("the components", () => {
 
   it("keep their prose in the dictionary", () => {
     for (const path of SOURCES) {
-      expect(read(path), `${path} has bare JSX prose`).not.toMatch(
-        />\s*[A-Z][a-z]+ [a-z]+[^<{]*</,
-      );
+      expect(read(path), `${path} has bare JSX prose`).not.toMatch(/>\s*[A-Z][a-z]+ [a-z]+[^<{]*</);
     }
   });
 

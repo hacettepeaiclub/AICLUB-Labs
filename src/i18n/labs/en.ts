@@ -1,0 +1,2532 @@
+/**
+ * English lab prose — every section, recap and source note in the collection.
+ *
+ * ## Why this is not in `en.ts`
+ *
+ * This is the whole product's teaching copy, and none of it is readable from
+ * the home page: a visitor reads one lab at a time. Kept beside the shell
+ * dictionary it was 98% of the entry bundle, downloaded by everyone who ever
+ * landed on the collection and never opened anything. It is its own chunk now,
+ * fetched when the first lab is, and `en.ts` keeps only what the shell and the
+ * grid actually say.
+ *
+ * The lab names and one-line descriptions stayed behind, in `en.labMeta`: the
+ * grid needs those before any lab is chosen.
+ */
+
+export const enLabs = {
+  // ------------------------------- embedding universe (3D prototype) ----
+  "embedding-universe-3d": {
+    sources: {
+      title: "Sources",
+      gloveVectors:
+        "Supports the vectors this lab reads. The three-dimensional view changes the projection, not the embeddings underneath it.",
+    },
+    lede: "The same words, the same vectors, one more axis. Drag to turn the cloud.",
+    honesty:
+      "This is not what the embedding looks like. The space has 300 dimensions; what you are turning is a view of it reduced to three PCA axes, which is one more than the flat map and still almost none of them.",
+    compare:
+      "A prototype, kept apart from the lesson on purpose. Depth makes the cloud feel like a place, but it does not make the projection more truthful, and judging whether that trade is worth teaching is the point of building it.",
+    error: "The word vectors could not be loaded.",
+    varianceLabel: "Variance explained",
+    varianceHint: (dimensions: number) => `three axes of ${dimensions}`,
+    selectedLabel: "Selected",
+    recapTitle: "What this prototype shows",
+    recap: {
+      lessons: [
+        "Three axes carry a little more of the space than two, and still almost none of it.",
+        "Depth makes the cloud feel like a place, which is persuasive whether or not it is informative.",
+        "The words, the vectors and the nearest neighbours are identical to the flat map; only the view changed.",
+      ],
+    },
+    map: {
+      mapLabel:
+        "Word cloud in three dimensions. Drag to turn it. Arrow keys move through the nearest words, Shift with arrow keys turns the view, Enter selects.",
+      hint: "Drag to turn · Shift + arrows to orbit",
+      pointLabel: (word: string, gloss: string) => `${word}, ${gloss}`,
+      neighbourLabel: (word: string, gloss: string, rank: number, score: string) =>
+        `${word}, ${gloss}. Number ${rank} nearest, similarity ${score}`,
+      selectedLabel: (word: string, gloss: string) => `${word}, ${gloss}. Selected`,
+      pending: "Working out the three axes…",
+    },
+  },
+
+  // ------------------------------------------------ embedding universe ----
+  "embedding-universe": {
+    sources: {
+      title: "Sources",
+      gloveVectors:
+        "Supports the vectors this lab actually ships: it reads pretrained GloVe embeddings rather than implementing an embedding method of its own.",
+    },
+
+    predict: {
+      question: (word: string) => `Which word is closest to ${word}?`,
+      hint: "All three are related. Pick the one you would expect.",
+      loading: "Loading word vectors…",
+      chose: (word: string, rank: number, total: number, score: string) =>
+        `You picked ${word}: the ${rank}th closest of ${total}, at ${score}.`,
+      nearest: (word: string, score: string) => `The closest is ${word}, at ${score}.`,
+      because:
+        "These vectors were learned from how words are used, not from what they mean. In news and encyclopedia text, apple keeps company with software far more often than with fruit.",
+    },
+
+    explore: {
+      title: "Explore the universe",
+      neighboursTitle: "Nearest words",
+      announce: (word: string, gloss: string) => `Selected ${word}, ${gloss}.`,
+      selectedLabel: "Selected",
+      nearestLabel: "Nearest, cosine",
+    },
+
+    map: {
+      mapLabel: "Word map. Arrow keys move through the nearest words, Enter selects.",
+      pointLabel: (word: string, gloss: string) => `${word}, ${gloss}`,
+      neighbourLabel: (word: string, gloss: string, rank: number, score: string) =>
+        `${word}, ${gloss}. Number ${rank} nearest, similarity ${score}`,
+      selectedLabel: (word: string, gloss: string) => `${word}, ${gloss}. Selected`,
+      pending: "Working out where the words sit…",
+      linksNote:
+        "The lines join the selected word to the eight listed beside it. They are a reading aid, not part of the model: the embedding has no links, only distances.",
+      pinnedLabel: (word: string, gloss: string) => `${word} (${gloss}), held for comparison`,
+      compareLabel: (a: string, b: string, score: string) =>
+        `${a} and ${b} have a similarity of ${score}.`,
+    },
+
+    search: {
+      label: "Find a word",
+      placeholder: "english or türkçe…",
+      noMatch: (query: string) => `No word in this set matches “${query}”.`,
+      resultsLabel: "Search results",
+      optionLabel: (word: string, gloss: string) => `${word}, ${gloss}`,
+    },
+
+    neighbours: {
+      title: (word: string) => `Nearest to ${word}`,
+      rankHeader: "Rank",
+      wordHeader: "Word",
+      scoreHeader: "Similarity",
+      rowLabel: (word: string, gloss: string, rank: number, score: string) =>
+        `${word}, ${gloss}. Number ${rank} nearest, similarity ${score}. Select to centre the map here.`,
+    },
+
+    projection: {
+      kicker: "What the map is not showing",
+      title: "You are not looking at the space",
+      lede: "The words above are real. Their positions are a flattening of 300 numbers down to 2, and a flattening has to lose something. Here is exactly what it lost.",
+      modeLabel: "Show me",
+      modeNone: "My selection",
+      modeHidden: "Close, drawn far apart",
+      modeFalse: "Far apart, drawn close",
+      idle: "Pick one of the two above, and watch where those words are on the map.",
+      // English ordinals are irregular, so the language that needs suffixes
+      // owns them. Defensive about its argument: the i18n coverage probe
+      // calls every interpolated string with placeholder values.
+      ordinal: (n: number) => {
+        const value = Number(n);
+        if (!Number.isFinite(value)) return String(n);
+        const tens = value % 100;
+        if (tens >= 11 && tens <= 13) return `${value}th`;
+        const suffix = { 1: "st", 2: "nd", 3: "rd" }[value % 10] ?? "th";
+        return `${value}${suffix}`;
+      },
+      hiddenBody: (
+        a: string,
+        b: string,
+        rank: string,
+        total: number,
+        score: string,
+        percent: string,
+      ) =>
+        `${a} and ${b} are the ${rank} closest pair out of ${total}, at ${score}. The projection put them ${percent} of the map apart: looking at the picture, you would never guess they were related.`,
+      falseBody: (
+        a: string,
+        b: string,
+        screenRank: string,
+        trueRank: string,
+        total: number,
+        score: string,
+      ) =>
+        `${a} and ${b} sit ${screenRank} closest on screen, almost touching. In the real space they are ${trueRank} of ${total}, at ${score}. The picture invented that closeness.`,
+      varianceLabel: "Variance explained",
+      varianceHint: (first: string, second: string) => `PC1 ${first} + PC2 ${second}`,
+      varianceBody: (percent: string, remaining: number) =>
+        `These two axes explain ${percent} of the variance in this dataset. The rest of the variation has not gone anywhere: it lies along the other ${remaining} directions, which a flat screen has no room for.`,
+      correlationLabel: "Distance agreement",
+      correlationHint: "−1.00 would mean the map lost nothing",
+      pending: "Working out the projection…",
+    },
+
+    data: {
+      error: "The word vectors could not be loaded.",
+    },
+
+    recap: {
+      lessons: [
+        "An embedding turns an item into a vector, so relationships between items become distances.",
+        "Those relationships come from how words are used together, not from what they mean.",
+        "A 2-D map of a 300-D space is a shadow: some of what it shows is not there, and some of what is there is not shown.",
+      ],
+    },
+
+    honesty: {
+      source:
+        "The vectors are GloVe 6B 300d, pretrained by Stanford NLP on Wikipedia 2014 and Gigaword 5. This lab looks each word up in that published table and normalises it to unit length; nothing is trained, fine-tuned or generated here.",
+      turkish:
+        "The embedding space is English. Turkish words shown here are labels we added for reading: they were not embedded, and this is not a Turkish embedding space.",
+    },
+    compare: {
+      title: "Compare two words",
+      hold: "Hold this word",
+      holding: (word: string) => `Holding ${word}`,
+      release: "Let it go",
+      idle: "Hold a word, then pick another one on the map. The cosine between them is measured, not looked up.",
+      samePoint: "That is the word you are holding. Pick a different one.",
+      scoreLabel: "Similarity",
+      rankLabel: "Rank",
+      rankValue: (rank: number, total: number) => `${rank} of ${total}`,
+      sentence: (a: string, b: string, score: string, rank: number, total: number) =>
+        `The cosine between ${a} and ${b} is ${score}. Out of ${total} other words, ${b} is the ${rank}th closest to ${a}.`,
+    },
+  },
+  // ------------------------------------------------ hypothesis testing ----
+  "hypothesis-testing": {
+    scope:
+      "This is the theoretical model: the sampling distribution of the sample mean X\u0304 under each hypothesis, both normal with standard error \u03c3/\u221an, with \u03c3 treated as known [Casella & Berger, 2nd ed., Thm. 5.3.1, p. 218]. The sample mean X\u0304 serves as the test statistic in this setup, and the rejection region is written in the units of X\u0304 rather than in standardised form [p. 374]. That is what makes the critical value a z rather than a t. No data is sampled anywhere in this lab: every number is the closed-form value of the equations shown, so what you are reading is the model itself rather than one run of an experiment.",
+    credit: {
+      inspiration: "Inspired by the work of Ar\u015f. G\u00f6r. Dolunay Ezgi Seyhan.",
+      adaptation:
+        "This interactive laboratory was developed as an educational adaptation inspired by her original hypothesis testing project.",
+      profile: "View faculty profile →",
+    },
+
+    testType: {
+      right: "\u03bc\u2081 > \u03bc\u2080",
+      left: "\u03bc\u2081 < \u03bc\u2080",
+      two: "\u03bc\u2081 \u2260 \u03bc\u2080",
+    },
+
+    plot: {
+      h0: "H\u2080",
+      h1: "H\u2081",
+      alphaTag: (value: string) => `\u03b1 = ${value}`,
+      betaTag: (value: string) => `\u03b2 = ${value}`,
+      summary: (
+        mu0: string,
+        mu1: string,
+        se: string,
+        criticals: string,
+        alpha: string,
+        beta: string,
+        power: string,
+      ) =>
+        `Two sampling distributions of the sample mean. Under H\u2080 it is centred at ${mu0} and under H\u2081 at ${mu1}, both with standard error ${se}. The rejection region begins at ${criticals}. The area under H\u2080 inside the rejection region is \u03b1 = ${alpha}; the area under H\u2081 outside it is \u03b2 = ${beta}. Power is ${power}.`,
+    },
+
+    controls: {
+      moreLabel: "The other settings",
+      note: "Every control retunes the same model. Nothing here is sampled.",
+      mu0: "\u03bc\u2080: the null mean",
+      mu0Value: (value: string) => `\u03bc\u2080 is ${value}`,
+      mu1: "\u03bc\u2081: the alternative mean",
+      mu1Value: (value: string) => `\u03bc\u2081 is ${value}`,
+      sigma: "\u03c3: population standard deviation",
+      sigmaValue: (value: string) => `\u03c3 is ${value}`,
+      alpha: "\u03b1",
+      alphaValue: (value: string) => `\u03b1 is ${value}`,
+      n: "n: sample size",
+      nValue: (value: number) => `n is ${value}`,
+    },
+
+    separation: {
+      title: "Two hypotheses",
+      question: "What happens when the two hypotheses move apart?",
+      caption:
+        "Two claims about the same population mean. Neither curve is the data: each is the sampling distribution of X\u0304, how the average of n measurements behaves if that claim is the true one [Casella & Berger, 2nd ed., pp. 213-214, 218].",
+      mu1Label: "\u03bc\u2081: move the alternative",
+      mu1Value: (value: string) => `\u03bc\u2081 is ${value}`,
+      mu1Hint: "Drag it through \u03bc\u2080 and back out the other side.",
+      mu0Label: "\u03bc\u2080",
+      mu1Figure: "\u03bc\u2081",
+      gapLabel: "Gap",
+      gapHint: "in standard errors",
+      announce: (mu1: string, gap: string) =>
+        `\u03bc\u2081 is ${mu1}. The two means are ${gap} standard errors apart.`,
+    },
+
+    alphaSection: {
+      kicker: "Where you draw the line",
+      title: "One rejection region, and everything inside it counts as evidence.",
+      lede: "A test needs a rule: how far from \u03bc\u2080 must X\u0304 land before you reject H\u2080? The values that lead to rejection form the rejection region, which Casella and Berger also call the critical region, and the critical value is where that region begins. The significance level \u03b1 is the probability that X\u0304 falls in the region when \u03bc = \u03bc\u2080 [Casella & Berger, 2nd ed., Def. 8.1.3, p. 374; Defs. 8.3.5-8.3.6, p. 385].",
+      caption:
+        "\u03b1 is fixed before any data: it is the probability that X\u0304 falls in the rejection region when \u03bc = \u03bc\u2080, which is why moving the slider moves the critical value rather than the curve. Rejecting H\u2080 when it is true is a Type I error [Casella & Berger, 2nd ed., Sec. 8.3.1, pp. 382-383].",
+      alphaLabel: "\u03b1: Type I error rate you accept",
+      alphaValue: (value: string) => `\u03b1 is ${value}`,
+      alphaHint: "The hatched area in the rejection region is exactly this number.",
+      alphaFigure: "\u03b1",
+      criticalLabel: "Critical value",
+      criticalHint: "\u03bc\u2080 \u00b1 z\u00b7SE",
+      criticalLeft: "Lower bound",
+      criticalRight: "Upper bound",
+      seLabel: "SE",
+      seHint: "\u03c3/\u221an",
+      oneSided: (value: string) =>
+        `All of \u03b1 sits in one tail: ${value} of the H\u2080 distribution lies inside the rejection region.`,
+      twoSided: (half: string) =>
+        `\u03b1 is split between two tails: ${half} at each end, so each critical value sits further out than a one-sided test would put it.`,
+      announce: (alpha: string, criticals: string) =>
+        `\u03b1 is ${alpha}. The boundary is at ${criticals}.`,
+    },
+
+    betaSection: {
+      kicker: "The error nobody counts",
+      title: "\u03b2 is what H\u2081 leaves outside the rejection region.",
+      lede: "\u03b1 is computed under H\u2080 and \u03b2 under H\u2081, on opposite sides of the same rejection region. Moving the critical value to shrink one enlarges the other, which is why the direction the test is pointed matters as much as where the critical value sits [Casella & Berger, 2nd ed., p. 385].",
+      caption:
+        "\u03b2 is the probability of not rejecting H\u2080 when this particular \u03bc\u2081 is the true one, a Type II error, and power is 1 \u2212 \u03b2. Both are properties of the model, not of any sample. Evaluated across every possible \u03bc rather than at a single \u03bc\u2081, power becomes the power function [Casella & Berger, 2nd ed., Def. 8.3.1, p. 383].",
+      testTypeLabel: "What H\u2081 claims",
+      mu1Label: "\u03bc\u2081",
+      mu1Value: (value: string) => `\u03bc\u2081 is ${value}`,
+      betaLabel: "\u03b2",
+      betaHint: "H\u2081 area outside the region",
+      powerLabel: "Power",
+      powerHint: "1 \u2212 \u03b2",
+      alphaLabel: "\u03b1",
+      reading: (beta: string) =>
+        `\u03b2 = ${beta}: that share of the H\u2081 distribution falls outside the rejection region, where the test does not reject H\u2080.`,
+      warning: {
+        left: "The test is looking for \u03bc\u2081 < \u03bc\u2080, but \u03bc\u2081 is not below \u03bc\u2080. The alternative sits away from the rejection region, so almost none of it is caught: \u03b2 is near 1 and power is near 0.",
+        right:
+          "The test is looking for \u03bc\u2081 > \u03bc\u2080, but \u03bc\u2081 is not above \u03bc\u2080. The alternative sits away from the rejection region, so almost none of it is caught: \u03b2 is near 1 and power is near 0.",
+      },
+      announce: (beta: string, power: string) => `\u03b2 is ${beta}. Power is ${power}.`,
+    },
+
+    sampleSection: {
+      kicker: "The only lever that helps both",
+      title: "More data narrows everything at once.",
+      lede: "\u03b1 and \u03b2 trade against each other as long as the curves stay the same width. n is what changes their width: SE = \u03c3/\u221an, so both sampling distributions tighten around their own mean and the overlap shrinks without raising \u03b1 [Casella & Berger, 2nd ed., p. 217 and p. 385].",
+      caption:
+        "The x axis is drawn at \u00b14.5 SE, so the window narrows with the curves. \u221an is why the second half of the slider buys so much less than the first.",
+      nLabel: "n: sample size",
+      nValue: (value: number) => `n is ${value}`,
+      formula: (se: string) => `SE = \u03c3/\u221an = ${se}`,
+      nFigure: "n",
+      seLabel: "SE",
+      seHint: "\u03c3/\u221an",
+      powerLabel: "Power",
+      betaLabel: "\u03b2",
+      curveTitle: "Power against sample size",
+      eighty: "0.80",
+      curveLabel: (from: number, to: number, first: string, last: string) =>
+        `Power from n = ${from} to n = ${to}, holding everything else. It starts near ${first} and reaches about ${last}.`,
+      announce: (n: number, se: string, power: string) =>
+        `n is ${n}. SE is ${se}. Power is ${power}.`,
+    },
+
+    challenge: {
+      kicker: "Now hit a number",
+      title: "Reach the power the task asks for.",
+      lede: "Two tasks. Each states a result to reach rather than a control to move, so neither can be passed by putting a slider in a particular place: the model has to actually report the number.",
+      puzzleLabel: "Task",
+      reset: "Back to the start",
+      powerLabel: "Power",
+      alphaLabel: "\u03b1",
+      seLabel: "SE",
+      target: (value: string) => `target ${value}`,
+      notYet: (power: string, target: string) => `Power is ${power}. It needs to reach ${target}.`,
+      alphaTooHigh: (max: string) =>
+        `\u03b1 is above the limit for this task: it must stay at or below ${max}.`,
+      announceSolved: (power: string) => `Solved. Power is ${power}.`,
+      announceAttempt: (power: string, alpha: string) => `Power ${power} at \u03b1 ${alpha}.`,
+      puzzles: {
+        "reach-power": {
+          title: "Reach 0.80",
+          brief: (power: string, alpha: string) =>
+            `The effect is real but small: \u03bc\u2081 sits half a unit above \u03bc\u2080, and the test still misses it more often than it finds it. Get power to ${power} without letting \u03b1 go above ${alpha}.`,
+          lesson:
+            "Both levers raise power, but not in the same way. Raising \u03b1 widens the rejection region and accepts a higher Type I error rate; raising n narrows SE, which lowers \u03b2 without changing \u03b1 [Casella & Berger, 2nd ed., p. 385].",
+          solved: (power: string, alpha: string) =>
+            `Power is ${power} at \u03b1 = ${alpha}. Whatever mix of n and \u03b1 got you here, the critical value ended up close enough to \u03bc\u2080, relative to SE, for most of the H\u2081 distribution to land inside the rejection region.`,
+        },
+        noisy: {
+          title: "Too much noise",
+          brief: (power: string, alpha: string) =>
+            `\u03c3 is 3 and the test is two-sided, so \u03b1 is split across two tails and both critical values sit a long way out. Reach ${power} power with \u03b1 at or below ${alpha}.`,
+          lesson:
+            "A two-sided test splits \u03b1 between both tails, so each critical value sits further out than a one-sided test would place it. A one-sided test puts all of \u03b1 in a single tail, which raises power when \u03bc\u2081 lies in that direction and lowers it when it does not [Casella & Berger, 2nd ed., p. 386].",
+          solved: (power: string, alpha: string) =>
+            `Power is ${power} at \u03b1 = ${alpha}. Narrowing \u03c3 or raising n shrinks SE; a one-sided test places all of \u03b1 in the tail where \u03bc\u2081 actually lies.`,
+        },
+      },
+    },
+
+    recap: {
+      lessons: [
+        "\u03b1 is the probability that X\u0304 falls in the rejection region when \u03bc = \u03bc\u2080: the Type I error rate fixed before seeing anything.",
+        '\u03b2 is the probability that X\u0304 falls outside that region when \u03bc = \u03bc\u2081, and power is 1 \u2212 \u03b2. They are computed against one specific \u03bc\u2081, not against "some effect".',
+        "Moving the critical value trades \u03b1 against \u03b2. Only a smaller SE = \u03c3/\u221an improves both, which is why n is the lever that is not a compromise.",
+      ],
+      footer:
+        "Everything here is the closed-form normal model with \u03c3 known: two sampling distributions of the sample mean, one rejection region, and the areas either side of its boundary. Real testing has to estimate \u03c3 from the sample, which is what makes a t distribution necessary, and has to worry about whether the direction was chosen before the data or after it. This lab shows the geometry those complications sit on top of.",
+    },
+    sources: {
+      title: "Sources",
+      theoryLabel: "Theoretical source",
+      theory:
+        "George Casella and Roger L. Berger, Statistical Inference, 2nd edition, Duxbury Press. Chapter 8 for hypothesis tests, error probabilities and the power function (pp. 373-386); Chapter 5 for the sampling distribution of the sample mean (pp. 213-218).",
+      implementationLabel: "Implementation and inspiration",
+      implementation:
+        "The numerical model is a port of the original hypothesis testing project by Ar\u015f. G\u00f6r. Dolunay Ezgi Seyhan. This interactive adaptation, its wording and its visual design are the work of AI CLUB LABS.",
+      notation:
+        "Notation: this lab writes \u03b2 for the probability of a Type II error and power as 1 \u2212 \u03b2, which is the common applied convention. Casella and Berger write \u03b2(\u03b8) for the power function itself, so their \u03b2(\u03b8) corresponds to 1 \u2212 \u03b2 here (Def. 8.3.1, p. 383).",
+      pages:
+        "Page numbers refer to the printed pages of the second edition consulted for this revision. No publication year is given because it could not be verified from the copy consulted.",
+    },
+  },
+
+  // ------------------------------------------------ reward playground ----
+  "reward-playground": {
+    sources: {
+      title: "Sources",
+      qLearning:
+        "Supports the tabular Q-learning update rule and the conditions under which it converges. The grid, the rewards and the tile the visitor sets are the lab's own.",
+    },
+
+    room: {
+      title: "The room",
+      question:
+        "Nobody showed this robot the way out. It worked the route out by trying things, and you get to decide what it cares about.",
+      sliderLabel: "What is the marked square worth to the robot?",
+      sliderValue: (value: string) => `The marked square is worth ${value}`,
+      hint: "Drag it. The route is worked out again from scratch every time you move it.",
+      wow: "You never told it to stop. You told it the square was worth more than the door.",
+      behaviour: {
+        avoided: "It walked the long way round to keep off the square, and reached the door.",
+        passed: "It crossed the square on its way and reached the door.",
+        stayed: "It never went to the door at all. It just stays by the square.",
+      },
+      readout: (steps: number, visits: number) =>
+        `${steps} moves · stepped on the square ${visits} ${visits === 1 ? "time" : "times"}`,
+      mapLabel: (behaviour: string, steps: number, visits: number, at: number) =>
+        `A small room seen from above. ${behaviour} ${steps} moves in total, stepping on the marked square ${visits} times. The robot is at move ${at}.`,
+    },
+
+    learn: {
+      kicker: "How did it work this out?",
+      title: "It kept a number for every move it could make.",
+      lede: "Nothing here is a picture of what the robot might have learned: it is what it did learn, at the moment you scrub to. Move the slider above and every number on this page is recomputed from a fresh run.",
+
+      scrubber: "How much practice it has had",
+      episode: (n: number) => `attempt ${n}`,
+      scrubberValue: (episode: number, total: number) => `After attempt ${episode} of ${total}`,
+      episodeLabel: "Attempts so far",
+
+      mapLabel: (episode: number) =>
+        `The room after ${episode} attempts. Each square shows how good the robot thinks it is, and the direction it would move from there.`,
+      cellLabel: (row: number, col: number, value: string, action: string) =>
+        `Row ${row}, column ${col}. Worth ${value}. It would move ${action}.`,
+      wallCell: (row: number, col: number) => `Row ${row}, column ${col}. Wall.`,
+
+      actions: { 0: "up", 1: "down", 2: "left", 3: "right" },
+      noAction: "nowhere: this is the door",
+      bestAction: "best",
+      selectedTitle: (row: number, col: number) => `Row ${row}, column ${col}`,
+      chain: (row: number, col: number, action: string, value: string) =>
+        `Standing at row ${row}, column ${col}, the robot has four moves it could make and a number for each one. It keeps the largest (${value}, by moving ${action}) because that move led somewhere better the last time it tried. Repeat that a few hundred times and the numbers stop changing.`,
+
+      unexploredLabel: "Squares its route skips",
+      unexploredHint: "it stopped going there",
+
+      propagation:
+        "Scrub back to the very beginning. For the first dozen attempts nothing is worth anything: the robot is wandering, and every move it makes costs it a little. Then it stumbles into the door, one square near the door turns positive, and over the next handful of attempts that good news spreads outward across the room, one square at a time. That spread is the whole of the learning.",
+
+      formulaTitle: "The rule it applies after every single move",
+      formulaNote:
+        "Read it as: nudge the number for the move you just made towards what you actually got, plus the best you now think is available from where you landed. α is how big a nudge, γ is how much a later reward is worth compared with one right now.",
+
+      honesty:
+        "The robot did not learn the whole room. It learned a route that works and stopped exploring the rest, so some squares still carry whatever it happened to think early on. That is not a fault in the method: it is what learning only from your own experience looks like.",
+
+      scheduleWarning:
+        "The saved attempts are evenly spaced, which hides the part where the learning happens.",
+    },
+
+    recap: {
+      lessons: [
+        "A reward is not an instruction. It is a score, and the robot will find whatever behaviour scores highest, including one you never had in mind.",
+        "It learns by trying: each move updates a number, and the useful numbers spread outward from the first thing that ever went well.",
+        "It optimises the reward you actually wrote down, not the outcome you were picturing when you wrote it.",
+      ],
+      footer:
+        "This is real tabular Q-learning on a small deterministic grid: twenty-seven squares, four moves, one number per pair. Real robots and large reinforcement-learning systems are far more complicated, but the gap between what you rewarded and what you wanted does not get smaller as they grow.",
+    },
+    world: {
+      title: "The room",
+      question: "What should the agent do?",
+      sliderHint:
+        "This is the only thing about the world you get to decide. Everything else (the walls, the door, the cost of a move) is fixed.",
+      caption:
+        "Nothing is learning yet. You are driving. Every move costs 0.5, the marked square pays what you set it to each time it is entered, and the door pays 20 and ends the run.",
+      mapLabel: (moves: number, total: string) =>
+        `A small room seen from above, with walls, a marked square and a door. The agent has made ${moves} moves for a total of ${total}.`,
+      padLabel: "Move the agent",
+      padHint: "Or use the arrow keys.",
+      arrived: "You reached the door. That ends the run.",
+      restart: "Back to the start",
+      ledgerTitle: "What each move paid",
+      ledgerEmpty: "Make a move. What it costs, and why, will appear here.",
+      consequence: {
+        floor: "moved one square",
+        wall: "walked into a wall and stayed put",
+        square: "stepped onto the marked square",
+        door: "reached the door",
+      },
+      rewardKind: { step: "move", tile: "square", goal: "door" },
+      movesLabel: "Moves",
+      totalLabel: "Collected",
+      totalHint: "sum of every move",
+      squareLabel: "Marked square",
+      squareHint: "each time it is entered",
+      rulesLabel: "What each move would pay from here",
+      previewHint: "The agent cannot see this table. It only finds out by moving.",
+      moveAnnounce: (action: string, paid: string, total: string) =>
+        `Moved ${action}. That paid ${paid}. Total ${total}.`,
+    },
+
+    train: {
+      kicker: "Nobody showed it the way",
+      title: "It tries, and the trying is the training.",
+      lede: "Press Run. The agent starts from the corner knowing nothing, wanders, and eventually falls through the door by accident. From then on it has something to go on. Every arrow, every number and every point on the curve below is that run, not a recording of one.",
+      caption:
+        "One press of Step is one action: choose, move, collect the reward, update one number. Run does the same thing repeatedly, an episode at a time.",
+      runLabel: "Train",
+      oneEpisode: "One episode",
+      speedLabel: "Episodes per second",
+      mapLabel: (episode: number, total: number) =>
+        `The room during episode ${episode} of ${total}. The arrows are the action the policy would take in each square, and the trail is the route of the episode in progress.`,
+      curveTitle: "Reward per episode",
+      curveEmpty: "Run an episode or two and the curve starts here.",
+      curveLabel: (episodes: number, first: string, last: string) =>
+        `Reward collected in each of ${episodes} episodes, smoothed. It starts near ${first} and is near ${last} by the end.`,
+      episodeShort: (n: number) => `ep ${n}`,
+      lastEpisode: (episode: number, steps: number, reward: string, outcome: string) =>
+        `Episode ${episode}: ${steps} moves, ${reward} collected, ${outcome}.`,
+      notStarted: "Nothing has happened yet. Press Step or Train.",
+      outcome: { reached: "reached the door", ranOut: "ran out of moves" },
+      episodeLabel: "Episode",
+      ofTotal: (total: number) => `of ${total}`,
+      successLabel: "Reached the door",
+      successHint: (n: number) => `last ${n} episodes`,
+      stepsLabel: "Moves last episode",
+      rewardLabel: "Reward last episode",
+      announce: (episode: number, reward: string) =>
+        `Episode ${episode}. ${reward} collected so far.`,
+      announceDone: (total: number) => `Training finished after ${total} episodes.`,
+    },
+
+    policy: {
+      kicker: "What it built while doing that",
+      title: "A number for every move, and a route that falls out of them.",
+      lede: "The agent never stored a route. It stored one number per square per direction (how good that move turned out to be), and the route is simply what you get by always taking the largest. Left: before a single episode. Right: now.",
+      caption:
+        "An arrow is not a Q-value. It is the action with the largest Q-value in that square, which is what the word policy means. The four numbers it was chosen from are below.",
+      beforeTitle: "Before training",
+      beforeLabel:
+        "The room before any training. Every number is zero, so every square points the same way, which is what knowing nothing looks like.",
+      afterTitle: (episode: number) => `After ${episode} episodes`,
+      afterLabel: (episode: number) =>
+        `The room after ${episode} episodes. Each square shows the action the policy selects there and how good the best move from it is. Select a square to see all four of its numbers.`,
+      pickLabel: "Inspect a square",
+      pickHint: "Click a square, or move with the arrow keys.",
+      selects: (row: number, col: number, action: string, value: string) =>
+        `At row ${row}, column ${col} the four moves have four numbers. The policy selects ${action}, because ${value} is the largest of them.`,
+      episodeLabel: "Episodes run",
+      routeLabel: "Route length",
+      routeHint: "moves, no exploration",
+      routeNone: "it does not reach the door",
+      valueLabel: "Best value here",
+      valueHint: "largest of the four",
+    },
+
+    update: {
+      kicker: "Why did it learn that?",
+      title: "One number moved. Here is the whole reason.",
+      lede: "After every single move the agent changes exactly one number: the one for the move it just made. Everything below is the most recent update from the run above: the numbers it held, what the world paid, and what it holds now.",
+      caption:
+        "Nothing on this page is an example. If no move has been made, nothing is shown, because an update that did not happen is not worth looking at.",
+      nothingYet: "No move has been made yet. Press Step, above or here.",
+      stepLabel: "Take one action",
+      stepHint: "Each press moves the agent once and updates one number.",
+      whatHappened: "What just happened",
+      sentence: (
+        row: number,
+        col: number,
+        action: string,
+        choice: string,
+        landed: string,
+        reward: string,
+      ) =>
+        `From row ${row}, column ${col} it moved ${action}: ${choice}. It ${landed}, and the world paid ${reward}.`,
+      choice: {
+        explored: "a random move, not its current best",
+        exploited: "its current best move",
+      },
+      landed: {
+        wall: "hit a wall and stayed where it was",
+        moved: (row: number, col: number) => `landed on row ${row}, column ${col}`,
+      },
+      panels: {
+        belief: "What it believed",
+        beliefBody: "What it thought that move was worth, before this.",
+        evidence: "What it just found out",
+        evidenceBody:
+          "The reward it collected, plus the best it now thinks is available from where it landed.",
+        updated: "What it believes now",
+        updatedBody: "The old number moved part of the way towards the new evidence.",
+      },
+      formulaTitle: "The rule, once per move",
+      tableCaption: "Every term of the update, with the value it had for this move.",
+      terms: {
+        before: "Q(s,a) before",
+        reward: "r: collected",
+        bootstrap: "γ · max Q(s′,a′): best from where it landed",
+        target: "r + γ · max Q(s′,a′): what it aims at",
+        error: "the gap it is closing",
+        after: "Q(s,a) after",
+      },
+      errorLabel: "Surprise",
+      errorHint: "how wrong it was",
+      movedLabel: "The number moved",
+      movedHint: "by α times the surprise",
+      epsilonLabel: "Exploration rate",
+    },
+
+    rules: {
+      kicker: "Change the rules",
+      title: "Three dials, and what each one actually changes.",
+      lede: "Move any of these and the run restarts from episode one, because there is no such thing as changing the learning rate halfway through. Then press Train in the section above and watch the curve.",
+      caption:
+        "This room is small. Sweeping all three showed the agent solves it from almost any setting: what these change is how fast the curve settles, how noisy it is on the way, and whether it settles at all.",
+      curveTitle: "Reward per episode, this run",
+      curveEmpty: "Press Train above to fill this in.",
+      curveHint: "Smoothed over ten episodes. Every point is an episode that ran.",
+      curveLabel: (episodes: number, last: string, settled: string) =>
+        `Reward per episode over ${episodes} episodes, ending near ${last}. Settled at episode ${settled}.`,
+      alpha: {
+        label: "Learning rate α",
+        valueText: (value: string) => `Learning rate ${value}`,
+        what: "How much a single new experience moves the number. High learns fast and forgets fast.",
+      },
+      gamma: {
+        label: "Discount γ",
+        valueText: (value: string) => `Discount ${value}`,
+        what: "How much a reward further ahead counts compared with one right now.",
+      },
+      epsilon: {
+        label: "Exploration ε",
+        valueText: (value: string) => `Exploration ${value}`,
+        what: "How often it explores at random instead of exploiting its current best. That trade has a name: exploration against exploitation. Decays across the run.",
+      },
+      restore: "Back to the defaults",
+      settledLabel: "Settled at episode",
+      settledHint: "first of twenty in a row that all finished",
+      notSettled: "never",
+      successLabel: "Reached the door",
+      successHint: "last 50 episodes",
+      stepsLabel: "Moves per episode",
+      stepsHint: "mean of the last 50",
+      scopeLabel: "What this does not show",
+      scope:
+        "These three are the parameters of tabular Q-learning on a 27-square deterministic grid. They are not settings that a larger reinforcement-learning system would have in the same form, and the effect any of them has here says nothing about the size of its effect elsewhere.",
+    },
+
+    challenge: {
+      kicker: "Now you set the reward",
+      title: "Can you make it learn this?",
+      lede: "Three tasks. In each one the agent is doing something you did not ask for, and one number is yours to change. None of them can be passed by putting a slider anywhere in particular: the agent has to actually do the thing.",
+      puzzleLabel: "Task",
+      levers: {
+        tileReward: "What the marked square pays",
+        epsilon: "Exploration ε, held constant",
+      },
+      leverValue: (name: string, value: string) => `${name}: ${value}`,
+      leverHint: {
+        tileReward: "Retrains from scratch on every change.",
+        epsilon: "Held at this value for the whole run, with no decay.",
+      },
+      puzzles: {
+        cross: {
+          title: "Walk over it",
+          brief:
+            "The square is worth −3, so the agent takes the two extra moves to walk around it. Make it walk over the square on its way to the door instead, without making it stop there.",
+          lesson:
+            "There is a band, not a threshold. The square has to be worth more than the detour it saves and less than the door it would replace.",
+        },
+        camp: {
+          title: "Make it give up on the door",
+          brief:
+            "The square is worth nothing, so the agent crosses it and carries on. Make it stop going to the door at all. You are not allowed to move the door or the walls: only what the square pays.",
+          lesson:
+            "You never told it to stop. You told it the square was worth more than finishing, and it believed you. This is the whole lab in one slider.",
+        },
+        settle: {
+          title: "It never settles",
+          brief:
+            "Exploration is pinned at 0.9 for the entire run: nine moves in ten are random. The final table is fine, but the agent almost never finishes an episode. Make it reach the door reliably.",
+          lesson:
+            "Exploration is what finds the route, and then it is what stops you using it. This run never stops throwing the route away.",
+        },
+      },
+      behaviour: {
+        avoided: "it walks around the square and reaches the door",
+        passed: "it crosses the square on the way and reaches the door",
+        stayed: "it never reaches the door: it stays by the square",
+      },
+      behaviourShort: { avoided: "walks around", passed: "walks over", stayed: "stays put" },
+      behaviourLabel: "What it does",
+      stepsLabel: "Route length",
+      successLabel: "Episodes finished",
+      successHint: "last 50 of the run",
+      verdict: {
+        solved: "That is it. The agent does what the task asked.",
+        untouched: "Move the slider and the agent retrains from scratch.",
+        notYet: (behaviour: string) => `Not yet: ${behaviour}.`,
+      },
+      mapLabel: (behaviour: string, steps: number) =>
+        `The room after training with these settings: ${behaviour} in ${steps} moves.`,
+      announceSolved: (title: string) => `Solved: ${title}.`,
+      announceAttempt: (behaviour: string) => `After retraining, ${behaviour}.`,
+    },
+  },
+
+  // ------------------------------------------------------- attention ----
+  attention: {
+    sources: {
+      title: "Sources",
+      transformer:
+        "Supports the scaled dot-product attention this lab computes. The lab builds a single head by hand and does not implement the full architecture the paper introduces.",
+    },
+
+    hero: {
+      title: "Where is this word looking?",
+      question: "Every word is looking at the others. Pick one and see where it looks.",
+    },
+
+    sentenceLabel: "The sentence. Pick a word to see where it looks.",
+    sentenceHint:
+      "Use the left and right arrow keys to move between words, Home and End to jump to either end.",
+    tokenLabel: (word: string, share: number, position: number, total: number) =>
+      `${word}, ${share} percent, word ${position} of ${total}`,
+    percent: (share: number) => `${share}%`,
+    pair: (word: string, share: number) => `${word} ${share} percent`,
+    announce: (word: string, targets: string) => `${word} is looking mostly at ${targets}.`,
+    mostlyLookingAt: (word: string) => `“${word}” is mostly looking at`,
+    nearTie:
+      "These two are almost level. This little model has no grammar, so it cannot tell which one belongs with the word you picked.",
+
+    swapLabel: "Change one word",
+    swapHint:
+      "Swap the fifth word and watch what happens to the word you have selected, even though you did not touch it.",
+    dogNote:
+      "Two animals now, and the model split its attention almost evenly between them. It moved, but it still cannot tell which one was tired.",
+
+    reveal: {
+      kicker: "How did it decide?",
+      title: "One number, from beginning to end.",
+      lede: "This follows whatever word is selected above. Change the selection, or change the swapped word, and every step here changes with it, because it is the same calculation, not a second copy of it.",
+    },
+
+    trace: {
+      step1: "The word you picked",
+      step1Title: (word: string) => `Start with “${word}”`,
+      step1Note:
+        "Everything below is this one word comparing itself with each of the others, in order.",
+
+      step2: "What it is looking for",
+      step2Title: (word: string) => `“${word}” asks for this: its query`,
+      step2Note:
+        "A bar to the right is a property the word wants; a bar to the left is one it is actively not looking for. These are the model's own words for what it wants, made readable: a real model's are not readable at all.",
+
+      step3: "What the other word offers",
+      step3Title: (word: string) => `“${word}” offers this: its key`,
+      step3Note:
+        "Query and key come from two different projections on purpose: what a word offers is not the same as what it wants. That is why attention is more than measuring similarity.",
+
+      step4: "The match",
+      step4Title: (score: string) => `They line up to ${score}`,
+      step4Note: (from: string, to: string) =>
+        `Multiply what “${from}” wants by what “${to}” offers, add it up, and divide by the square root of the number of axes. That last step keeps the numbers in a workable range as the model gets wider.`,
+
+      step5: "Share of 100%",
+      step5Title: (share: number) => `Which becomes ${share}% of the attention`,
+      step5Note:
+        "The shares always add up to 100%, so they are not scores: they are portions. That is the whole reason a new competitor makes every other share smaller, even the ones you were watching.",
+      tableCaption: "Match and share of attention for the strongest few words.",
+      colToken: "Word",
+      colScore: "Match",
+      colShare: "Share",
+
+      step6: "What it becomes",
+      step6Title: (word: string) => `“${word}” now carries a blend`,
+      step6Note:
+        "Attention is not only about where to look. Each word it looked at contributes its value in proportion to its share, so the word ends up carrying a mixture of what it attended to. That mixture is what the next layer of a real model would receive.",
+
+      axes: {
+        nounness: "noun-like",
+        animacy: "alive",
+        verbness: "verb-like",
+      },
+    },
+
+    honesty:
+      "This is a tiny educational self-attention model. Its seven features and three projection matrices were written by hand for this experiment: they were not learned from text. A real model learns representations nobody named, in hundreds of dimensions. What is real here is the arithmetic: the same comparison, scaling, softmax and weighted sum a Transformer performs.",
+
+    recap: {
+      lessons: [
+        "Attention hands out a fixed 100% of focus across the context, so every word gets a share rather than a yes or a no.",
+        "Changing one word changes the shares of the others, including words you did not touch, because they are all dividing the same 100%.",
+        "Attention is one mechanism inside a much larger model. It decides where to look and what to mix in; it does not, on its own, understand the sentence.",
+      ],
+      footer:
+        "The words here were given seven hand-written features, so the model can tell a cat from a ball but not a ball from a mirror. Real Transformers stack many heads and many layers to build far richer representations, which is a different and much longer story than the one this page tells.",
+    },
+    pickLabel: "Word",
+    wholeRowLabel: "Every share, in sentence order",
+    mixLabel: "What each one hands over",
+
+    figures: {
+      selected: "Selected",
+      biggestShare: "Biggest share",
+      sharesTotal: "Shares add up to",
+      matchedWith: "Leans on",
+      rawMatch: "Match",
+      score: "After dividing",
+      axes: "Axes",
+      divisor: "Divided by",
+      peakWith: "Biggest share",
+      peakWithout: "Without dividing",
+      aboveTen: "Words above a tenth",
+    },
+
+    scale: {
+      kicker: "Why divide at all?",
+      title: "Take the divisor away and the shares collapse.",
+      lede: "Dividing by the square root of the number of axes is the one step whose effect you cannot see in the answer: the result looks reasonable either way until you compare it with the alternative. So here is the same row twice: once as this model computes it, and once with the division skipped.",
+      collapse:
+        "Skipping it leaves the scores larger, and a softmax over larger numbers is sharper: almost the whole budget goes to one word and the rest round away to nothing. The division is what leaves a distribution there to read at all.",
+      note: "Both columns are computed here by the same softmax, on the same scores. Only the divided one is used anywhere else on this page.",
+      tableCaption:
+        "For the strongest few words: the match, the match after dividing, and the share each one ends up with in both cases.",
+      colRaw: "Match",
+      colScaled: "Divided",
+      colWithout: "Share without",
+      colWith: "Share with",
+    },
+
+    softmax: {
+      kicker: "From matches to portions",
+      title: "Ten scores, one budget.",
+      lede: "Softmax turns the row of matches into a row of shares that adds up to 100%. Nothing is discarded and nothing is chosen: every word gets a portion, and the portions can only come out of each other.",
+    },
+
+    mix: {
+      kicker: "What the shares are spent on",
+      title: "The shares are coefficients, not a verdict.",
+      lede: "Each word that was attended to hands over its value vector in proportion to its share. Add those up and you have what the selected word becomes, which is what the next layer of a real model would receive.",
+      tableCaption: "Share and value vector for the three heaviest contributors.",
+      outputLabel: "The blended output, axis by axis",
+    },
+  },
+
+  // ------------------------------------------------ gradient descent ----
+  "gradient-descent": {
+    sources: {
+      title: "Sources",
+      momentum:
+        "Supports the momentum method the lab offers, and the heavy-ball update it comes from.",
+      adam: "Supports the Adam optimiser the lab offers, including the moment estimates and the bias correction the engine computes.",
+    },
+
+    controls: {
+      run: "Run",
+      pause: "Pause",
+      reset: "Reset",
+      stepOnce: "One step",
+      scrubber: "Step",
+      scrubberValue: (index: number, total: number) => `Step ${index} of ${total}`,
+      // Section 1 has no vocabulary yet, so the slider is named in words.
+      // η arrives in section 3, where the thresholds are named with it.
+      stepSize: "Step size",
+      learningRate: "Step size η",
+      learningRateValue: (value: string) => `Step size ${value}`,
+      beta: "Momentum β",
+      betaValue: (value: string) => `Momentum beta ${value}`,
+      curvature: "Curvature ratio",
+      curvatureValue: (value: string) => `Condition number ${value}`,
+      optimizer: "Optimizer",
+      resetPoint: "Recentre",
+      aboutThisSurface: "About this surface",
+      stepSizeAndScale: "Step size",
+    },
+
+    optimizers: {
+      gd: "Gradient Descent",
+      momentum: "Momentum",
+      adam: "Adam",
+    },
+
+    status: {
+      running: "Running",
+      converged: "Reached the goal",
+      diverged: "Diverged",
+      exhausted: "Ran out of steps",
+    },
+
+    figures: {
+      step: "Step",
+      objective: "Objective",
+      objectiveHint: "the value of f here",
+      gradientNorm: "Gradient size",
+      position: "Position",
+      status: "Outcome",
+      conditionNumber: "Condition number",
+      conditionNumberHint: "κ = steeper curvature ÷ flatter curvature",
+      stepsTaken: (n: number) => `${n} steps`,
+      stepsToTolerance: "Steps to goal",
+    },
+
+    map: {
+      label: (
+        x: string,
+        y: string,
+        step: number,
+        objective: string,
+        gradient: string,
+        status: string,
+      ) =>
+        `Contour map of the objective. Step ${step}. Position ${x}, ${y}. Objective ${objective}. Gradient size ${gradient}. ${status}.`,
+    },
+
+    chart: {
+      label: (objective: string, step: number) =>
+        `The objective plotted against step number on a logarithmic scale. At step ${step} the objective is ${objective}.`,
+    },
+
+    announce: {
+      ready: "Back at the starting point.",
+      finished: (steps: number, status: string) => `Finished after ${steps} steps. ${status}.`,
+    },
+
+    find: {
+      title: "Find the bottom",
+      question: "How big a step can you take?",
+      caption:
+        "Same starting point every time, and one thing to change. Watch the shape of the route rather than the numbers.",
+    },
+
+    direction: {
+      kicker: "Why that direction",
+      title: "A gradient is a vector, and it is not a pointer to the answer.",
+      lede: "Two arrows leave the current point: the solid one is where a step actually goes, −∇f = −(a·x, b·y); the dashed one is the straight line to the minimum, −(x, y). Each coordinate is scaled by its own curvature, so the two agree only when the curvatures do. Drag the point, then drag the curvature.",
+      descent: "Where a step goes: −∇f",
+      target: "Straight line to the minimum",
+      equalLength:
+        "Both arrows are drawn at the same length, so only their direction is being compared.",
+      angle: "Angle between them",
+      angleHint: "0° means the two agree",
+      aligned: "The curvatures are equal here, so the two directions coincide exactly.",
+      apart:
+        "The curvatures differ, so the step is pulled towards the steeper axis rather than towards the minimum.",
+      onAxis:
+        "One coordinate is already zero, so there is nothing for the unequal scaling to act on. Move the point off the axis to separate the arrows.",
+      dragHint: "Drag anywhere on the map to move the point, or focus the map and use",
+      keyboardHint: "to move it, and this to send it back:",
+      keyboardHelp:
+        "Drag anywhere on the map to move the point. With the map focused, the arrow keys move it and Home returns it to the centre-right starting position.",
+      legendAndKeys: "Arrows and keyboard",
+      label: (x: string, y: string, kappa: string, angle: string) =>
+        `Contour map with a movable point at ${x}, ${y}. Condition number ${kappa}. The descent direction is ${angle} degrees away from the straight line to the minimum.`,
+      caption:
+        "Slide the curvature ratio down to 1 and the two arrows fold into one. Away from the axes that is the only case where they agree, and it is a case a one-dimensional picture cannot show at all, because along a single axis a gradient is just a sign.",
+    },
+
+    rate: {
+      kicker: "The step size",
+      title: "The ceiling belongs to the surface.",
+      lede: "Same landscape, same starting point, one number to change. The two marks under the map are computed from this landscape's curvature; they were not chosen to make the demonstration work.",
+      marks: { monotone: "no overshoot", stability: "stability limit" },
+      regimes: {
+        monotone: "Approaching directly",
+        oscillating: "Overshooting, still closing in",
+        boundary: "On the boundary",
+        divergent: "Diverging",
+      },
+      regimeNote: {
+        monotone: "η is below 1/c for both curvatures: neither coordinate overshoots.",
+        oscillating:
+          "η is past 1/c on the steeper axis: it changes sign each step but still shrinks.",
+        boundary:
+          "η is exactly 2/c on the steeper axis: that coordinate neither shrinks nor grows.",
+        divergent: "η is past 2/c on the steeper axis: that coordinate grows every step.",
+      },
+      scope:
+        "These thresholds are exact for the quadratic used here, whose curvature is the same at every point. Where curvature changes as you move, the usable step size changes with it.",
+      caption:
+        "The stability limit is 2 ÷ the larger curvature, so it moves when the landscape does. No step size is large or small on its own: the same η that leaves this landscape entirely settles quietly on a gentler one.",
+    },
+
+    momentumSection: {
+      kicker: "Momentum",
+      title: "Carrying something over from the last step.",
+      lede: "Momentum keeps a running velocity: v ← β·v + ∇f, then θ ← θ − η·v. Pushes that keep pointing the same way accumulate; pushes that keep reversing cancel. Raise β and watch the second mark move.",
+      marks: { plain: "plain limit", momentum: "momentum limit" },
+      caption:
+        "The stability condition is η·max(a,b) < 2(1+β), wider than plain descent's η·max(a,b) < 2, so momentum can carry a larger step size than plain descent can. What it charges for that range is oscillation. Hold the step size still and raise β: the run gets shorter, and then past a point it gets longer again.",
+      announce: (
+        plainSteps: number,
+        plainStatus: string,
+        momentumSteps: number,
+        momentumStatus: string,
+      ) =>
+        `Gradient descent: ${plainSteps} steps, ${plainStatus}. Momentum: ${momentumSteps} steps, ${momentumStatus}.`,
+    },
+
+    adam: {
+      kicker: "Adam",
+      title: "One step size per parameter.",
+      lede: "Adam divides each coordinate's step by a running estimate of that coordinate's own gradient size. m is the average gradient, s the average squared gradient, both corrected for starting at zero, and the update is η·m̂ ÷ (√ŝ + ε).",
+      firstStepTitle: "The first step, where the two curvatures are a million apart",
+      firstStepLede: (a: string, b: string) =>
+        `Curvature ${a} along one axis and ${b} along the other. The two components of the gradient are about a million times apart. Every number below is measured by running one step of the engine.`,
+      tableCaption:
+        "Gradient size and first-step size on each axis, for gradient descent and for Adam.",
+      colQuantity: "Quantity",
+      colX: "Steep axis",
+      colY: "Flat axis",
+      rowGradient: "Gradient size",
+      rowGd: (rate: string) => `Gradient descent step, η = ${rate}`,
+      rowAdam: (rate: string) => `Adam step, η = ${rate}`,
+      firstStepNote:
+        "After the bias correction the first update is η·g ÷ (|g| + ε). The size of the gradient cancels, and both axes move by about η, which is why the correction has to be real rather than skipped.",
+      rate: "Adam step size η",
+      honesty:
+        "None of that says Adam converges faster. On the κ = 60 valley above, sweeping 300 step sizes, Adam's quickest result is 17 steps, while a well-chosen momentum setting reaches the same tolerance in about 10, and at a modest step size such as 0.10, Adam needs 66. There is still a step size to choose, and choosing it badly still costs.",
+    },
+
+    challenge: {
+      kicker: "Three questions",
+      title: "The budget is counted in steps.",
+      lede: "Each one fixes a landscape, a starting point and a number of steps. Arriving slowly is not a pass, and the three do not have the same answer.",
+      puzzle: "Question",
+      budget: (n: number) => `${n} steps`,
+      goal: (budget: number, tolerance: string) =>
+        `Goal: objective ≤ ${tolerance} within ${budget} steps.`,
+      progress: (done: number, total: number) => `${done} of ${total} solved`,
+      pressRun: "Press Run, or drag the step slider to the end, to see how this attempt did.",
+      pass: "Solved.",
+      notYet: "Not yet.",
+      optimizerAndSettings: "Optimizer and settings",
+      boundaryHint: (limit: string, kappa: string) =>
+        `Stability limit for these settings: ${limit}. Condition number κ = ${kappa}.`,
+      verdicts: {
+        solved: (steps: number, budget: number) =>
+          `Reached the goal in ${steps} steps, inside the budget of ${budget}.`,
+        overBudget: (steps: number, budget: number) =>
+          `It gets there, but in ${steps} steps, and the budget is ${budget}.`,
+        stalled: (budget: number) =>
+          `This never reaches the goal at all. The budget is ${budget} steps.`,
+        diverged:
+          "The run left the landscape: at these settings the step size is at or above the stability limit here.",
+      },
+      transfer: {
+        title: "The same number, on a gentler landscape",
+        divergesHereConvergesThere: (
+          rate: string,
+          limitHere: string,
+          limitThere: string,
+          steps: number,
+        ) =>
+          `η = ${rate} is above this landscape's stability limit of ${limitHere}, so the run explodes. The gentler landscape's limit is ${limitThere}, and the very same η settles there in ${steps} steps. The step size did not change. The surface did.`,
+        worksOnBoth: (steps: number) =>
+          `This η converges on both landscapes: here, and in ${steps} steps on the gentler one. Push it upwards and watch which of the two gives out first.`,
+        worksOnNeither:
+          "This η reaches the goal on neither landscape within the steps allowed. It is too small rather than too large.",
+        mapLabel: (rate: string, status: string, steps: number) =>
+          `Contour map of the gentler landscape run at step size ${rate}. ${status} after ${steps} steps.`,
+      },
+      items: {
+        c1: {
+          title: "Sweet spot",
+          brief:
+            "One landscape, plain gradient descent, and a tight budget. There is a step size that gets there quickly, and a great many that do not.",
+        },
+        c2: {
+          title: "Too big",
+          brief:
+            "This begins above the stability limit and explodes on the first Run. Find a step size that works, then look at what that same number does on a gentler surface.",
+        },
+        c3: {
+          title: "Narrow valley",
+          brief:
+            "A valley with κ = 60. No step size lets plain gradient descent finish inside this budget, which is the reason the other two optimizers exist.",
+        },
+      },
+    },
+
+    recap: {
+      lessons: [
+        "The negative gradient points downhill, not at the minimum. Away from the axes the two coincide only where the curvature is the same in every direction.",
+        "The largest step size a landscape tolerates is 2 ÷ its steepest curvature: a property of the surface, not of the algorithm. Below half of it the approach is direct, between the two the path overshoots and still closes in, and above it the run leaves.",
+        "The condition number κ is the steeper curvature divided by the flatter one, and it is what stops a single step size from serving both directions: the flat axis is still crawling while the steep one is already at its ceiling.",
+        "Momentum widens the stable range to η·max(a,b) < 2(1+β) and can cut a long zig-zag short; Adam scales each coordinate by its own gradient history, so a millionfold gap in gradient size is not a millionfold gap in step size. Both still leave you a step size to choose.",
+      ],
+      footer:
+        "Everything here is a convex quadratic: the curvature is the same at every point, the gradient is exact, and the answer is known before you start. Real training gives up all three. What survives is the relationship you have been moving back and forth: the shape of the surface decides what step size you are allowed to take.",
+    },
+  },
+
+  // ---------------------------------------------------------- hash ----
+  "hash-playground": {
+    sources: {
+      title: "Sources",
+      sha2: "Defines SHA-256, the digest this lab asks the browser's Web Crypto implementation for. The lab does not implement the hash itself.",
+    },
+    inputLabel: "Your message",
+    inputPlaceholder: "hello world",
+    copy: "Copy",
+    copied: "Copied",
+    copyHash: "Copy digest",
+    hashCopied: "Digest copied",
+
+    /**
+     * When the browser will not hash.
+     *
+     * Two causes, two sentences: the lab says the one it actually detected
+     * rather than blaming HTTPS for every failure. Nothing here is faked —
+     * without the real SHA-256 there is no experiment to show.
+     */
+    unavailable: {
+      title: "This lab cannot run here.",
+      insecureContext:
+        "This lab needs a secure connection (HTTPS) to compute hashes in your browser. Opening this page over https:// should fix it.",
+      unsupported:
+        "Your browser did not make its hashing built-in (Web Crypto) available, so there is no digest to show. It may be disabled by a setting or an extension.",
+      note: "Nothing is faked here: without the browser's real SHA-256 there is nothing honest to display.",
+    },
+
+    figures: {
+      messageLength: "Message",
+      characters: "characters in",
+      digestLength: "Digest",
+      hexChars: "hex characters out",
+      digestBits: "Bits",
+      alwaysBits: "however long the message",
+      bitsChanged: "Bits changed",
+      percentChanged: "Of the digest",
+      expectedHalf: "about half is expected",
+      charsChanged: "Hex characters changed",
+      ofSixtyFour: "of 64",
+    },
+
+    hero: {
+      title: "What comes out",
+      question: "Can two different messages produce the same length of output?",
+      digestLabel: "SHA-256 digest",
+      caption:
+        "Type anything at all. However long the message, exactly 64 hex characters come back, and none of the message is in them.",
+      help: "Type a message. Its SHA-256 digest appears below the field and updates as you type.",
+      announce: (start: string) => `Digest updated, now starting ${start}.`,
+    },
+
+    determinism: {
+      kicker: "Same message, same digest",
+      title: "It answers the same way every time.",
+      lede: "Hash the message again. Nothing is cached and nothing is copied from the run before: each press is a fresh call to SHA-256 on the same string.",
+      hashAgain: "Hash it again",
+      enough: "That is enough runs",
+      empty: "No runs yet. Press the button to hash this message.",
+      run: (n: number) => `Run ${n}`,
+      runsLabel: "Runs",
+      distinctLabel: "Distinct digests",
+      distinctHint: "however many runs",
+      caption:
+        "Editing the message clears the list, because a run of the old message says nothing about the new one.",
+      announce: (runs: number, distinct: number) =>
+        `${runs} runs, ${distinct} distinct digest${distinct === 1 ? "" : "s"}.`,
+    },
+
+    avalanche: {
+      kicker: "One tiny change",
+      title: "One keystroke rewrites everything.",
+      lede: "Change a single character and compare the two digests. Every character that differs is marked in both: struck through in the one that is gone, underlined in the one that replaced it.",
+      before: "Before",
+      after: "After",
+      fieldLabel: "Change one character",
+      help: "Edit the message. The digest before your edit and the digest after it are compared character by character above.",
+      editPrompt: "Change a character in the message to compare two digests.",
+      caption:
+        "The count is measured across the two real digests, bit by bit, not estimated, and not animated towards a number.",
+      announce: (changed: number, total: number, percent: number) =>
+        `${changed} of ${total} bits changed, ${percent} percent of the digest.`,
+    },
+
+    bits: {
+      gridLabel: (total: number, ones: number, zeros: number, flipped: number) =>
+        `The ${total} bits of the current digest as a 16 by 16 grid. ${ones} are 1, ${zeros} are 0. ${flipped} changed in the last edit.`,
+      legendOne: "bit is 1",
+      legendZero: "bit is 0",
+      legendChanged: "changed",
+    },
+
+    challenge: {
+      kicker: "The challenge",
+      title: "Can you make two different messages produce the same digest?",
+      lede: "Not the whole digest. Start with its first character. Each round asks for one more, and each round is sixteen times less likely than the one before. That curve is the heart of collision resistance, and this is the only honest way to feel it: no collision is found here, and none is faked.",
+      inputA: "Message A",
+      inputB: "Message B",
+      identical:
+        "Both messages are identical, so the digests match by definition. A collision needs two different messages.",
+      target: (round: number, odds: string) =>
+        `Round ${round}: share the first ${round} hex character${round === 1 ? "" : "s"}. Odds per guess: 1 in ${odds}.`,
+      nextRound: (round: number) => `Round ${round}, sixteen times harder`,
+      keepTrying: "Keep trying",
+      maxRound: "That is where people stop",
+      matchedLabel: "Shared prefix",
+      roundLabelFull: "Round",
+      oddsHint: (odds: string) => `1 in ${odds} per guess`,
+      bestLabel: "Best so far",
+      attemptsLabel: "Attempts",
+      ladderLabel: (matched: number, total: number, round: number) =>
+        `Shared prefix: ${matched} of ${total} hex characters match. This round needs ${round}.`,
+      caption:
+        "Matching all 64 characters by chance is 1 in 2^256. Even the birthday shortcut needs about 2^128 hashes: hashing a trillion per second, roughly 10^19 years.",
+      announce: (matched: number, total: number, best: number, round: number) =>
+        `${matched} of ${total} leading characters match. Best so far ${best}. Round ${round} needs ${round}.`,
+    },
+
+    usage: {
+      kicker: "In the wild",
+      title: "Where digests turn up.",
+      lede: "The same fixed-size fingerprint, used five different ways.",
+      items: {
+        git: {
+          label: "Git",
+          body: "Git identifies each commit by hashing its content and its parent's hash. Rewrite any line in history and every hash after it changes, tampering is visible.",
+        },
+        passwords: {
+          label: "Passwords",
+          body: "Servers store a salted password hash, so a leaked database holds hashes rather than passwords. The function is not SHA-256 though: password storage uses a deliberately slow hash such as Argon2id, scrypt, bcrypt or PBKDF2, so that guessing stays expensive.",
+        },
+        https: {
+          label: "HTTPS",
+          body: "TLS uses hashes to fingerprint certificates and to verify that data was not altered in transit. A single flipped byte breaks the hash.",
+        },
+        blockchain: {
+          label: "Blockchain",
+          body: "A block contains the previous block's hash, chaining them together. Change an old block and every later hash breaks, which is what makes the ledger tamper-evident.",
+        },
+        signatures: {
+          label: "Signatures",
+          body: "A digital signature is made over a document's hash rather than the document. Anyone can re-hash the document and check the signature.",
+        },
+      },
+    },
+
+    recap: {
+      lessons: [
+        "The same message always produces the same digest, and the digest is the same length whatever went in",
+        "Changing one character changes about half of the 256 bits: the avalanche effect, measured here rather than asserted",
+        "Each extra hex character two digests share is sixteen times less likely, which is why matching all 64 is out of reach",
+      ],
+      footer:
+        'Nothing on this page is stored or simulated: every digest is crypto.subtle.digest("SHA-256", …) on what you typed, computed in your browser.',
+    },
+  },
+
+  // -------------------------------------------------------- neural ----
+  "neural-playground": {
+    sources: {
+      title: "Sources",
+      backpropagation:
+        "Supports backpropagation, the method this lab trains with. The network here is a small teaching model rather than the one the paper describes.",
+    },
+    question: "What does one layer actually change?",
+    diagram: {
+      diagramLabel: (shape: string) =>
+        `Network diagram: ${shape} neurons. Each node shows what that neuron responds to across the input square.`,
+      neuron: (label: string) => `Neuron ${label}`,
+      inputNode: "input",
+      bias: "bias",
+      eachSquare: "Each square is one neuron's own picture of the input.",
+      pushesUp: "pushes up",
+      pushesDown: "pushes down",
+      thickness: "thickness is strength",
+    },
+    liveTraining: "Live training",
+
+    canvasLabel: (points: number, accuracy: number) =>
+      `${points} points in two classes. The network currently gets ${accuracy}% of the training points right; the shaded background is the class it predicts everywhere else.`,
+    datasets: {
+      gauss: { label: "Two blobs", hint: "One straight line is enough." },
+      circle: { label: "Circle", hint: "Needs a curve: no line can do it." },
+      xor: { label: "XOR", hint: "The classic: impossible without a hidden layer." },
+      spiral: { label: "Spiral", hint: "Brutal. Bring neurons and patience." },
+    },
+    classA: "Class A",
+    classB: "Class B",
+    keyboardHint: { trainPause: "train or pause ·", restart: "restart with fresh weights" },
+    layersCaption: {
+      solved:
+        "The flat network is stuck near a coin flip: no straight line can separate these four corners. The hidden layer bends the boundary, and the problem dissolves.",
+      idle: "Run them side by side and watch where the left one gives up.",
+    },
+    layersPanels: {
+      flat: {
+        title: "No hidden layer",
+        subtitle: "Two inputs wired straight to the output, a single neuron.",
+      },
+      deep: {
+        title: "One hidden layer",
+        subtitle: "The same thing, with four neurons in between.",
+      },
+    },
+    descentNote: {
+      overshoot:
+        "Overshot. Each step jumps past the bottom and lands further up the far wall, the loss explodes.",
+      deep: "Settled in the deepest valley. This is what a healthy training run looks like.",
+      shallow:
+        "Settled, but in the shallow basin on the right. Gradient descent only ever sees the slope under its feet, never the whole landscape.",
+      rolling: "Follow the tangent line: its steepness is the only information the step gets.",
+    },
+    neuronLabel: (w1: string, w2: string, bias: string) =>
+      `A single neuron's output across the input square, with weights ${w1} and ${w2} and bias ${bias}.`,
+    solvedBadge: "Solved",
+    notYet: "Not yet",
+    loopCards: {
+      forward: { headline: "A guess" },
+      loss: { headline: "How wrong was it?" },
+      backprop: { headline: "Who is to blame?" },
+      descent: { headline: "Nudge everything downhill" },
+    },
+    playground: {
+      currentlyWrong: "Currently wrong",
+      dataAndArchitecture: "Data and architecture",
+      drawHint: "Click or drag on the canvas to add points.",
+      caption:
+        "Left: what the network predicts everywhere. Right: the same network from the inside, one square per neuron.",
+      noneLabel: "none",
+      offLabel: "off",
+      draw: "Draw",
+      data: "Data",
+      noise: "Noise",
+      hiddenLayers: "Hidden layers",
+      neuronsPerLayer: "Neurons per layer",
+      activation: "Activation",
+      learningRate: "Learning rate",
+      regularization: "Regularization (L2)",
+      speed: "Speed",
+      train: "Train",
+      pause: "Pause",
+      clearPoints: "Clear",
+      newSample: "New sample",
+      insideTitle: "The network, from the inside",
+      insideBody:
+        "Same network, second view. Every square is one neuron’s own answer across the whole input square: the features the layer before it built, and what the next layer has to work with.",
+      canvasLabel: "Decision surface with the training data drawn on top.",
+      playPause: "Space",
+    },
+
+    stats: {
+      epoch: "Epoch",
+      loss: "Loss",
+      trainAcc: "Train acc",
+      testAcc: "Test acc",
+      curveLabel: "Training loss over the last few seconds, on a logarithmic scale.",
+      announce: (percent: number) => `Training accuracy ${percent} percent.`,
+    },
+
+    neuron: {
+      weightsAndBias: "Weights and bias",
+      caption:
+        "Notice what you cannot do: however you drag these three sliders, the boundary stays a straight line. That is the whole limitation of one neuron, and the reason the next section exists.",
+      notes: {
+        tanh: "Squashes to \u22121\u20261. Smooth, symmetric, a safe default.",
+        relu: "Passes positives through, flattens negatives. Fast and the modern default.",
+        sigmoid: "Squashes to 0\u20261. Historic, and prone to stalling.",
+      },
+      kicker: "Zoom all the way in",
+      title: "A neuron is smaller than you think.",
+      lede: "No memory, no logic, no cleverness. Three numbers and a squash: that is the entire unit the whole field is built from.",
+      weight1: "Weight on x₁",
+      weight2: "Weight on x₂",
+      bias: "Bias",
+      activation: "Activation",
+      note: "Notice what you cannot do: however you drag these three sliders, the boundary stays a straight line. That is the whole limitation of one neuron, and the reason the next section exists.",
+      canvasLabel: "The output of a single neuron across the input square.",
+      activations: {
+        tanh: "Squashes to −1…1. Smooth, symmetric, a safe default.",
+        relu: "Passes positives through, flattens negatives. Fast and the modern default.",
+        sigmoid: "Squashes to 0…1. Historic, and prone to stalling.",
+      },
+    },
+
+    layers: {
+      panelLabel: (title: string, accuracy: number, epoch: number) =>
+        `${title}: ${accuracy}% of the XOR points classified correctly after ${epoch} epochs.`,
+      kicker: "Why layers",
+      title: "Four dots that broke AI for a decade.",
+      lede: "XOR: two classes arranged in opposite corners. A single neuron cannot separate them, and in 1969 that observation nearly ended the field. One hidden layer is the whole fix.",
+      noHidden: "No hidden layer",
+      oneHidden: "One hidden layer",
+      accuracy: "Accuracy",
+      trainBoth: "Train both networks",
+      trainBothShort: "Train both",
+      pauseBoth: "Pause both",
+      startOver: "Start over",
+      caption: "Run them side by side and watch where the left one gives up.",
+    },
+
+    descent: {
+      slopeHint: "the only number backprop hands each weight",
+      kicker: "How it learns",
+      title: "Downhill, one small step at a time.",
+      lede: "Learning is not insight. It is a ball on a slope, moving against the gradient, and the size of its steps decides everything.",
+      learningRate: "Learning rate",
+      roll: "Roll",
+      oneStep: "One step",
+      weight: "weight",
+      loss: "loss",
+      slope: "slope",
+      nextStep: "next step",
+      steps: "steps",
+      curveLabel: (w: string, l: string, s: string) =>
+        `Loss curve with a ball at weight ${w}, where the loss is ${l} and the slope is ${s}.`,
+    },
+
+    loop: {
+      kicker: "The loop",
+      title: "Four steps, repeated until it works.",
+      lede: "Everything you have watched so far is these four stages, running thousands of times a second.",
+      cards: {
+        forward: {
+          title: "Forward pass",
+          body: "Every neuron multiplies its inputs by its weights, adds a bias, and squashes the result. Repeat layer by layer and a point in becomes a prediction out.",
+        },
+        loss: {
+          title: "Loss",
+          body: "Compare the guess to the true label and square the difference. One number for the whole network, and the only thing it is ever trying to make smaller.",
+        },
+        backprop: {
+          title: "Backpropagation",
+          body: "Walk the error backwards through the layers with the chain rule. Every single weight learns how much it contributed, its gradient.",
+        },
+        descent: {
+          slopeHint: "the only number backprop hands each weight",
+          title: "Gradient descent",
+          body: "Move each weight a small step against its gradient. The learning rate is the size of that step. Then do it again, thousands of times.",
+        },
+      },
+    },
+
+    challenge: {
+      architecture: "Architecture",
+      neuronsUsed: "Neurons used",
+      testAccuracy: "Test accuracy",
+      target: "Target",
+      objectiveLine: (accuracy: string) =>
+        `Reach ${accuracy} test accuracy on the spiral: using as few hidden neurons as you can.`,
+      solvedNote: "Solved. Now take a neuron away and try again.",
+      noBest: "Nothing yet. Start with plenty of neurons, then take them away until it breaks.",
+      bestLine: (neurons: number, accuracy: string, epoch: number) =>
+        `Best: ${neurons} hidden neurons, at ${accuracy} after ${epoch.toLocaleString("en-US")} epochs.`,
+      canvasLabel: (neurons: number, accuracy: string, epoch: number) =>
+        `Spiral challenge: ${neurons} hidden neurons, ${accuracy} test accuracy after ${epoch} epochs.`,
+      announceSolved: (neurons: number, accuracy: string) =>
+        `Solved with ${neurons} hidden neurons at ${accuracy} test accuracy.`,
+      kicker: "The challenge",
+      title: "Beat the spiral with as few neurons as you can.",
+      lede: "Anyone can solve it with sixteen. The interesting question is how far down you can go before the network stops being able to hold the shape.",
+      objective: "Objective",
+      objectiveBody: (accuracy: number) =>
+        `Reach ${accuracy}% test accuracy on the spiral. Then do it again with fewer neurons.`,
+      hiddenLayers: "Hidden layers",
+      neuronsPerLayer: "Neurons per layer",
+      learningRate: "Learning rate",
+      train: "Train",
+      pause: "Pause",
+      newAttempt: "New attempt",
+      yourBest: "Your best",
+      none: "Nothing yet.",
+      best: (neurons: number, epoch: number) =>
+        `${neurons} neurons, solved at epoch ${epoch.toLocaleString("en-US")}.`,
+      totalNeurons: (n: number) => `${n} neurons`,
+      solvedAnnounce: (neurons: number) => `Solved with ${neurons} neurons.`,
+    },
+
+    recap: {
+      lessons: [
+        "A neuron is a weighted sum and a squash: on its own, only ever a straight line",
+        "Hidden layers bend that line; XOR is impossible without one",
+        "Every neuron learns its own feature, and the next layer combines them",
+        "Loss says how wrong the network is; backprop says which weight to blame",
+        "Gradient descent nudges every weight downhill: the learning rate is the step size",
+        "Too small and it crawls, too large and it overshoots, and neither ever sees the whole landscape",
+      ],
+      footer:
+        "Everything you just watched was 300 lines of plain arithmetic. The models behind today’s AI are the same four steps: with a great many more weights.",
+    },
+  },
+
+  // --------------------------------------------------- pathfinding ----
+  pathfinding: {
+    sources: {
+      title: "Sources",
+      astar:
+        "Supports the A* formulation the lab runs: a best-first search ordered by cost-so-far plus a heuristic estimate, and the admissibility condition that heuristic has to meet.",
+      dijkstra:
+        "Supports the shortest-path method the lab runs when the heuristic is switched off, and the non-negative edge costs it assumes.",
+    },
+    findTheWay: "Find the way",
+    algorithm: "Algorithm",
+    draw: "Draw",
+    gridAndKeys: "Map tools and keyboard",
+    map: "Map",
+    tools: { wall: "Wall", mud: "Mud", erase: "Erase", start: "Start", goal: "Goal" },
+    legend: {
+      wall: "wall",
+      frontier: "frontier",
+      settled: "settled",
+      path: "path",
+      mud: "mud",
+    },
+    metrics: { explored: "Explored", path: "Path", cost: "Cost", noPath: "No path" },
+    steps: (n: number) => `${n} steps`,
+    gridLabel: (walls: number, mud: number, state: string) =>
+      `Editable grid. Walls: ${walls}. Mud cells: ${mud}. ${state}`,
+    gridHelp: "Drag on the grid to draw. With it focused, arrow keys move and Space paints.",
+    gridHelpFull: {
+      drag: "Drag on the grid to draw or erase. Drag",
+      or: "or",
+      toMove: "to move them. With the grid focused, the arrow keys move a cursor,",
+      toggles: "toggles a cell, and",
+      drops: "drops a marker.",
+    },
+    gridSummary: (
+      cols: number,
+      rows: number,
+      start: string,
+      goal: string,
+      walls: number,
+      mud: number,
+      algorithm: string,
+      result: string,
+    ) =>
+      `Pathfinding grid, ${cols} columns by ${rows} rows. Start at ${start}. Goal at ${goal}. Walls: ${walls}. Mud cells: ${mud}. Algorithm: ${algorithm}. ${result}`,
+    status: {
+      solved: (explored: number, steps: number, cost: number) =>
+        `Solved: ${explored} cells explored, path ${steps} steps, cost ${cost}.`,
+      unreachable: (explored: number) => `No path exists. ${explored} cells explored.`,
+      running: (explored: number) => `Searching. ${explored} cells explored so far.`,
+      notStarted: "Not started.",
+      gridReset: "Grid reset.",
+      gridCleared: "Grid cleared.",
+      selected: (algorithm: string) => `${algorithm} selected.`,
+      loaded: (map: string) => `${map} loaded.`,
+    },
+    row: (row: number, col: number) => `row ${row}, column ${col}`,
+    intro: {
+      // Behaviour first: one question, then the grid. The old section opened
+      // straight into an instruction, which told the visitor what to do
+      // without telling them what to watch for.
+      question: "Which square does it look at first?",
+      caption:
+        "Draw a few walls, then press Run. Watch where the search actually goes, including everywhere the goal isn't.",
+    },
+    bfs: {
+      kicker: "Watch it think",
+      title: "It spreads in layers, not lines.",
+      lede: "Step through it. Cells with a ring are known but unvisited: the frontier. Filled cells are settled: the search already knows the fewest moves to each one and will never look again.",
+      caption:
+        "Taking cells first-in, first-out is the whole trick: it settles them in order of distance, so the first route to reach the goal is the shortest one. That is breadth-first search.",
+    },
+    cost: {
+      kicker: "Distance isn't cost",
+      title: "Some ground is slower.",
+      lede: "Mud costs 5 to enter; open ground costs 1. Run BFS across it, then Dijkstra, and compare the two numbers under the grid.",
+      caption:
+        "BFS still takes the fewest moves: straight through the swamp. Dijkstra takes more steps and pays less, because it always settles the cheapest cell it knows about rather than the nearest one.",
+    },
+    astar: {
+      kicker: "Give the search a hint",
+      title: "Right answer, far less looking.",
+      lede: "Dijkstra has no idea where the goal is, so it spreads evenly in every direction. A* adds an estimate of the distance left and follows it: f = g + h, where g is the cost so far and h is the heuristic, an estimate of what is left.",
+      caption:
+        "Same path, same cost. Look at Explored. The heuristic here is Manhattan distance. It can never overstate what is left on a four-way grid, which makes it admissible, and that is exactly why A* gives up nothing by trusting it.",
+    },
+    challenge: {
+      kicker: "The challenge",
+      title: "Same answer, less work.",
+      lede: "Three fixed maps. Each one wants the cheapest path AND a search that settles no more cells than the budget. One of those is easy on its own; both together are the point.",
+      mazeLabel: (
+        title: string,
+        cols: number,
+        rows: number,
+        cost: number,
+        budget: number,
+        algorithm: string,
+      ) =>
+        `${title}: a fixed ${cols} by ${rows} maze. Reach the goal at the optimal cost of ${cost} while settling no more than ${budget} cells. Current algorithm: ${algorithm}.`,
+      bothAtOnce: "Both at once",
+      beaten: (done: number, total: number) => `${done} of ${total} beaten`,
+      costMustBe: "cost must be",
+      exploredAtMost: "explored at most",
+      maps: {
+        swamp: {
+          title: "The swamp",
+          hint: "The quickest way across is not the cheapest.",
+        },
+        "open-ground": {
+          title: "Open ground",
+          hint: "Nothing here is expensive. The only thing to save is effort.",
+        },
+        "wrong-door": {
+          title: "The wrong door",
+          hint: "The goal is close. The way in is not.",
+        },
+      },
+      budget: (cost: number, budget: number) =>
+        `Cheapest path costs ${cost}. Settle at most ${budget} cells.`,
+      verdict: {
+        unreachable: "That search never reached the goal.",
+        solved: (cost: number, explored: number) =>
+          `Solved. Cost ${cost}, and only ${explored} cells settled.`,
+        overBudget: (explored: number, budget: number) =>
+          `Optimal path, but you explored ${explored} cells. Budget: ${budget}.`,
+        suboptimal: (explored: number, cost: number, optimal: number) =>
+          `You explored only ${explored} cells, but your path costs ${cost}. Optimal cost: ${optimal}.`,
+        both: (cost: number, optimal: number, explored: number, budget: number) =>
+          `Your path costs ${cost} against an optimal ${optimal}, and it explored ${explored} cells against a budget of ${budget}.`,
+      },
+    },
+    recap: {
+      lessons: [
+        "A search does not head for the goal: it spreads until the goal is one of the things it has reached",
+        "BFS takes cells first-in, first-out, so it settles them in order of fewest moves",
+        "Fewest moves and cheapest route are different questions once the ground stops being uniform",
+        "Dijkstra always settles the cheapest cell it knows about, which is why its answer is the cheapest one",
+        "A* adds an estimate of what is left, and spends its effort in the direction of the goal",
+        "The estimate never overstates the distance, so A* gives up nothing to get there faster",
+      ],
+      footer:
+        "Every route your phone has ever suggested came out of a loop like this one: a frontier, a settled set, and a rule for which cell to look at next.",
+    },
+  },
+  // ------------------------------------------------------- probability ----
+  probability: {
+    sources: {
+      title: "Sources",
+      statisticalInference:
+        "Supports the conditional-probability rules behind the two-children experiment (conditional probability, p. 20; the problem itself appears as Exercise 1.25, p. 40), the binomial coefficients behind Pascal's row (p. 15), and the law of large numbers (weak, p. 232; strong, p. 235). The simulations here illustrate those results; they do not establish them.",
+      simpson:
+        "Supports the reversal the fourth experiment shows: an association that holds within every subgroup and turns around once the subgroups are pooled.",
+    },
+
+    scope:
+      "Four worked problems, not a survey of probability. Each uses a stated model (a host bound by two rules, 365 equally likely birthdays, two children each independently a boy or a girl, one published clinical table), and the answers belong to those models. Where a number is simulated it is labelled as simulated: running an experiment many times illustrates a result, it does not prove one.",
+
+    prediction: {
+      yours: "You said",
+      actual: "It is",
+      agreed: "Your intuition agreed with the model.",
+      disagreed: "Your intuition and the model disagree. That is the interesting part.",
+    },
+
+    // The two steps below every result: the reason, then the arithmetic.
+    explain: {
+      why: "Why does that happen?",
+      maths: "Show me the numbers",
+    },
+
+    monty: {
+      title: "Three doors",
+      question: "Can you beat the host?",
+      setup: [
+        "Three doors. A car behind one of them, a goat behind each of the other two.",
+        "You pick a door. It stays shut.",
+        "The host knows where the car is, and opens one of the other two: always one with a goat behind it.",
+        "Now you choose: keep your door, or take the one the host left alone.",
+      ],
+      coachLabel: "Questions people ask",
+      coach: {
+        notHalf: {
+          q: "Two doors are left. Why isn't it 50/50?",
+          a: "Because the two doors did not arrive here the same way. You chose yours while you knew nothing. The other one survived a choice made by somebody who knew exactly where the car was, and who was never going to open it.",
+        },
+        whySwitch: {
+          q: "Why is switching better?",
+          a: (stay: string, swap: string) =>
+            `Your first pick is the car ${stay} of the time, and that is the only time staying wins. The other ${swap} of the time the car is behind one of the two doors you did not pick, and the host has just shown you which of those two it is not.`,
+        },
+        hostKnows: {
+          q: "Does it matter that the host knows?",
+          a: "It is the whole thing. A host opening a door at random (sometimes revealing the car by accident) would leave staying and switching equally good. The host's knowledge is what makes the opened door tell you something.",
+        },
+      },
+      caption:
+        "The host is bound by two rules: never open your door, never open the car. Those rules are what make the reveal informative: a host opening at random would leave both choices equal.",
+      predictQuestion: "You have played a round. Over many rounds, which does better?",
+      predict: { stay: "Stay", switch: "Switch", same: "No difference" },
+      predictAnswer: (value: string) => `Switching wins ${value} of the time`,
+      strategy: { stay: "Stay", switch: "Switch" },
+      doorsIdle: "Three closed doors. One hides a car, two hide goats.",
+      doorsLabel: (picked: number, opened: number) =>
+        `Three doors. You picked door ${picked}. The host opened door ${opened} to show a goat.`,
+      doorLabel: (n: number, state: string) => `Door ${n}, ${state}`,
+      doorState: {
+        closed: "closed",
+        picked: "your pick",
+        opened: "opened by the host, a goat",
+        revealed: "the car",
+      },
+      won: "you won the car",
+      lost: "you did not win the car",
+      promptPick: "Pick a door.",
+      promptDecide: (opened: number, other: number) =>
+        `The host opened door ${opened} and it was a goat. Keep your door, or take door ${other}?`,
+      resultLine: (strategy: string, result: string) =>
+        `You chose to ${strategy.toLowerCase()}, ${result}.`,
+      again: "Play again",
+      announceOpened: (n: number) => `The host opened door ${n}. It was a goat.`,
+      announceResult: (result: string) => `Round over: ${result}.`,
+      runBatch: (n: number) => `Run ${n.toLocaleString("en-US")} rounds`,
+      batchTitle: "Simulated rounds",
+      batchIdle: (n: number) =>
+        `Playing a few rounds by hand will not settle this. Run ${n.toLocaleString("en-US")} of them.`,
+      batchCaption: (n: number) =>
+        `Win rates for staying and for switching over ${n} simulated rounds, beside the exact probabilities.`,
+      strategyHeader: "Strategy",
+      simulatedHeader: (n: number) => `Simulated (${n.toLocaleString("en-US")})`,
+      exactHeader: "Exact",
+      wins: (wins: number, rounds: number) => `${wins}/${rounds}`,
+      playedLabel: "Rounds you played",
+      yourStayLabel: "Staying would have won",
+      yourSwitchLabel: "Switching would have won",
+      handHint: "in your rounds",
+
+      // The host, speaking. The rule that makes the puzzle work is easier to
+      // believe from the person bound by it than from a caption.
+      hostPick: "Pick a door. Any of them.",
+      hostReveal: (opened: number) =>
+        `I know what is behind all three. Look: door ${opened} has a goat.`,
+      hostDecide: (other: number) =>
+        `So: keep the door you picked, or take door ${other}. Your call.`,
+      hostWon: "You won the car.",
+      hostLost: "A goat. Play again?",
+      // After the round, in three widening steps.
+      explainWhat: "Switching wins about twice as often as staying.",
+      explainWhy:
+        "Your first pick was one door out of three, so it was the car one time in three. That leaves two times in three for the other two doors together, and the host has just opened the one of those two that was never the car.",
+      explainMaths: (stay: string, swap: string) =>
+        `Staying wins exactly when your first pick was already the car: ${stay}. Switching wins in every other case: ${swap}.`,
+      batchInvite: "Two doors, and it is not a coin flip. Want to see it over 1,000 games?",
+    },
+
+    birthday: {
+      kicker: "A smaller room than you think",
+      title: "How many people before two share a birthday?",
+      setup: [
+        "People walk into a room, one at a time.",
+        "Everybody's birthday is one of 365 days, and every day is equally likely.",
+        "The question is not whether somebody shares your birthday. It is whether any two people in the room share one.",
+      ],
+      addPerson: "Add a person",
+      addPersonHint: "Watch what happens to the number of pairs.",
+      roomFull: "The room is full.",
+      coachLabel: "Questions people ask",
+      coach: {
+        soonWhy: {
+          q: (n: number) => `How do ${n} people get to a coin flip?`,
+          a: (n: number, pairs: string) =>
+            `Count pairs rather than people. ${n} people make ${pairs} different pairs, and every single pair is its own chance to match. Add one more person and they bring a new pair with everybody already in the room, so the chances pile up much faster than the crowd does.`,
+        },
+        notMine: {
+          q: "Isn't this about my birthday?",
+          a: "That is the swap your intuition makes, and it is a much harder question. For somebody to match your birthday specifically you need about 253 people. For any two people to match each other you need 23.",
+        },
+        realBirthdays: {
+          q: "Are birthdays really spread evenly?",
+          a: "No: real birthdays cluster by season, and clustering makes matches more likely, not less. So the even-spread model used here gives the cautious answer; reality passes 50% slightly sooner.",
+        },
+      },
+      caption:
+        "The model: 365 equally likely birthdays, no leap years, everyone independent. Real birthdays cluster by season, which nudges the true chance slightly higher, so this is the conservative version.",
+      predictQuestion: "Where do you think the chance first passes 50%?",
+      predict: { count: (n: number) => `${n} people` },
+      predictAnswer: (n: number, value: string) => `${n} people, at ${value}`,
+      peopleLabel: "People in the room",
+      peopleValue: (n: number, value: string) =>
+        `${n} people, ${value} chance of a shared birthday`,
+      peopleHint: "Drag it slowly through the twenties.",
+      roomLabel: (n: number) => `A room of ${n} people. No two share a birthday.`,
+      roomLabelMatch: (n: number, a: number, b: number, day: string) =>
+        `A room of ${n} people. Person ${a} and person ${b} both have a birthday on ${day}.`,
+      foundPair: (a: number, b: number, day: string) =>
+        `Person ${a} and person ${b} share a birthday: ${day}.`,
+      noPair: (n: number) => `In this particular room of ${n}, everyone has a different birthday.`,
+      tableCaption: (n: number) =>
+        `Exact and simulated chance of a shared birthday among ${n} people.`,
+      exactRow: "Exact probability",
+      simulatedRow: (rooms: number) => `Simulated (${rooms.toLocaleString("en-US")} rooms)`,
+      stale: (n: number) => `run again: last run was ${n} people`,
+      reading: (n: number, pairs: number) =>
+        `${n} people make ${pairs.toLocaleString("en-US")} different pairs, and every one of them is a chance to match.`,
+      peopleFigure: "People",
+      pairsFigure: "Pairs",
+      pairsHint: "chances to match",
+      chanceFigure: "Shared birthday",
+      exactHint: "exact",
+      thresholdFigure: "Passes 50% at",
+      thresholdHint: "people",
+
+      // Each person is a card with a date on it, so "two of these match" is
+      // something you can see rather than a claim about the room.
+      personName: (n: number) => `Person ${n}`,
+      personLabel: (n: number, day: string) => `Person ${n}, born ${day}`,
+      personMatchLabel: (n: number, day: string, other: number) =>
+        `Person ${n}, born ${day}: the same day as person ${other}`,
+      justArrived: "just arrived",
+      sameDay: "same day",
+      roomEmpty: "Nobody is in the room yet.",
+      explainWhat: "It takes far fewer people than most people guess.",
+      explainWhy:
+        "You are not asking whether somebody matches you. You are asking whether any two people match each other, and every new arrival makes a new pair with everybody already in the room. The pairs pile up much faster than the people do.",
+      explainMaths: (n: number, pairs: string, value: string) =>
+        `With ${n} people there are ${pairs} pairs. The chance that no pair matches is 365/365 × 364/365 × … , and one minus that is ${value}.`,
+      simulateLabel: "Run it instead",
+      runRooms: (n: number) => `Fill ${n.toLocaleString("en-US")} rooms`,
+      simulateNote: (days: number) =>
+        `Each room draws one birthday per person from ${days} equally likely days, then looks for a repeat.`,
+      announce: (n: number, value: string) => `${n} people. Chance of a shared birthday: ${value}.`,
+      months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    },
+
+    conditional: {
+      kicker: "The clue does the work",
+      title: "A family has two children. Are both boys?",
+      setup: [
+        "A family has two children, an older one and a younger one.",
+        "Each child is a boy or a girl, and each is equally likely, so there are four equally likely families.",
+        "Somebody tells you one true sentence about this family.",
+        "Your question: what are the chances both children are boys?",
+      ],
+      coachLabel: "Questions people ask",
+      coach: {
+        notHalf: {
+          q: "One child is a boy, so isn't the other one just 50/50?",
+          a: (value: string) =>
+            `That would be the answer to a different sentence: \u201cthe older one is a boy\u201d. What you were told is that at least one of the two is a boy, which does not say which one. Three of the four families fit that sentence and only one of them is two boys, so the chance is ${value}.`,
+        },
+        twoWays: {
+          q: "Why do boy-then-girl and girl-then-boy count separately?",
+          a: "Because they are different families, and they are each as likely as two boys. A family with one of each is twice as easy to end up with as a family with two boys: there are two ways to get it and only one way to get BB.",
+        },
+        wording: {
+          q: "How can the wording change the answer?",
+          a: "The wording is the evidence. \u201cAt least one is a boy\u201d rules out one family; \u201cthe older one is a boy\u201d rules out two. Fewer families left, and the two boys are a bigger share of what remains. Nothing about any family changed: only what you were told.",
+        },
+      },
+      caption:
+        "This assumes each child is independently a boy or a girl with probability 1/2, and that the clue is exactly as written. A third version (you meet one child at random and it is a boy) gives 1/2 again, and is not modelled here.",
+      predictQuestion: "Two children, at least one a boy. Chance both are boys?",
+      predict: { half: "1/2", third: "1/3", quarter: "1/4" },
+      predictAnswer: (value: string) => `1/3, or ${value}`,
+      clueLabel: "The clue",
+      clueShort: { atLeastOneBoy: "At least one is a boy", firstIsBoy: "The first is a boy" },
+      clue: {
+        atLeastOneBoy: "At least one is a boy",
+        firstIsBoy: "The first child is a boy",
+      },
+      clueHint: "Same family, different sentence. Watch which boxes survive.",
+      outcome: { GG: "GG", GB: "GB", BG: "BG", BB: "BB" },
+      possible: "still possible",
+      counts: "both boys",
+      ruledOut: "ruled out",
+      matrixLabel: (clue: string, kept: string, value: string) =>
+        `Four equally likely outcomes. Given that ${clue.toLowerCase()}, the ones still possible are ${kept}, so the chance both are boys is ${value}.`,
+      fraction: (counts: string, value: string) => `${counts} of the remaining outcomes = ${value}`,
+      compareCaption:
+        "The two clues, the outcomes each leaves standing, and the resulting probability.",
+      clueHeader: "Clue",
+      leftHeader: "Still possible",
+      answerHeader: "Both boys",
+      explain: {
+        atLeastOneBoy:
+          "Ruling out GG leaves three outcomes, and only one of them is BB. The clue says nothing about which child is the boy, so GB and BG both survive, and together they outnumber BB two to one.",
+        firstIsBoy:
+          "Naming the first child rules out GG and GB together, leaving two outcomes. Now BB is one of two rather than one of three. Nothing about the family changed; the sentence did.",
+      },
+      keptFigure: "Outcomes left",
+      keptHint: "out of four",
+      bothFigure: "Both boys",
+      bothHint: "of what is left",
+      answerFigure: "Probability",
+
+      // Words, not initials. "BG" is only shorter if you already know the
+      // convention, and the whole difficulty of this problem is that birth
+      // order is what "at least one" refuses to tell you.
+      older: "Older",
+      younger: "Younger",
+      boy: "Boy",
+      girl: "Girl",
+      familyLabel: (older: string, younger: string) =>
+        `A family whose older child is a ${older} and whose younger child is a ${younger}`,
+      familiesTitle: "The four families, all equally likely",
+      explainWhat: "Being told about one child changes what the other one probably is.",
+      explainWhy:
+        "“At least one is a boy” does not say which one. It only rules out the family with two girls, and two of the three families left have a girl in them. Say instead that the older child is a boy and you rule out two families, not one: same family, different sentence, different answer.",
+      explainMaths: (kept: number, value: string) =>
+        `${kept} of the four families fit the clue, and one of those ${kept} is two boys: ${value}.`,
+      announce: (clue: string, kept: number, value: string) =>
+        `Clue: ${clue}. ${kept} outcomes remain. Chance both are boys: ${value}.`,
+    },
+
+    simpson: {
+      kicker: "Two treatments, one decision",
+      title: "Which treatment would you choose?",
+      setup: [
+        "Two treatments for kidney stones, A and B, from a real 1986 study.",
+        "Patients arrive with either small stones or large stones: large ones are the harder cases.",
+        "The table shows how each treatment did in each group, and how it did across both groups together.",
+        "Read it, and pick the treatment you would want.",
+      ],
+      // The name arrives here, after the reversal has been seen and not
+      // before: it is a label for something the visitor has already noticed.
+      named:
+        "What you are looking at has a name: Simpson's paradox: a comparison that reverses when the groups are added together.",
+      coachLabel: "Questions people ask",
+      coach: {
+        howBoth: {
+          q: "How can A win both groups and still lose overall?",
+          a: "Because the two treatments were not given to the same kind of patient. A was used mostly on the hard cases and B mostly on the easy ones. Adding the groups together mixes \u201cwhich treatment\u201d with \u201cwhich patients\u201d, and the patient mix is the stronger effect.",
+        },
+        whichWrong: {
+          q: "Is one of the numbers wrong?",
+          a: "Neither. Both are arithmetic on the same counts, and you can check every percentage against the two numbers printed beside it. They are correct answers to two different questions.",
+        },
+        whichBelieve: {
+          q: "So which number should I believe?",
+          a: "The group rows, when you are choosing a treatment for one patient, because that patient has either small stones or large ones, never an average of both. The combined row answers a different question: what happened to this particular mix of patients.",
+        },
+      },
+      caption:
+        "The per-group success rates are from Charig et al. (1986), a comparison of two kidney-stone treatments. The sliders move patients between the groups; the rates stay put. Every percentage is the counts printed next to it.",
+      predictQuestion: "Can one treatment win in every group and still lose overall?",
+      predict: { impossible: "No, that is impossible", possible: "Yes, it can happen" },
+      predictAnswer: "Yes, and the table below is a real example",
+      tableCaption: "Success rates and counts per group and treatment, with the aggregate.",
+      groupHeader: "Group",
+      group: { small: "Small stones", large: "Large stones" },
+      treatment: { a: "Treatment A", b: "Treatment B" },
+      treatmentShort: { a: "A", b: "B" },
+      overall: "Both groups",
+      ahead: "ahead",
+      barsLabel: (
+        smallA: string,
+        smallB: string,
+        largeA: string,
+        largeB: string,
+        overallA: string,
+        overallB: string,
+      ) =>
+        `Small stones: A ${smallA}, B ${smallB}. Large stones: A ${largeA}, B ${largeB}. Both groups combined: A ${overallA}, B ${overallB}.`,
+      reversedBody:
+        "A is ahead in both groups and behind overall. A was given mostly to the hard cases and B mostly to the easy ones, so the aggregate is comparing two different mixes of patient rather than two treatments.",
+      notReversedBody:
+        "With the groups allocated like this, the aggregate agrees with the groups. The reversal needs the two treatments to be given to different mixes of patient.",
+      shareLabel: (treatment: string) => `${treatment}: patients with small stones`,
+      shareValue: (treatment: string, small: number, large: number) =>
+        `${treatment}: ${small} small-stone patients, ${large} large-stone`,
+      shareHint:
+        "Each treatment keeps 350 patients and its per-group success rates. Only the mix moves.",
+      restore: "Back to the published table",
+      overallA: "A overall",
+      overallB: "B overall",
+      reversedFigure: "Reversed?",
+      reversedYes: "Yes",
+      reversedNo: "No",
+
+      // The two treatments Charig et al. actually compared. Naming them is
+      // not decoration: "A" and "B" give a beginner nothing to think with,
+      // and the reason the allocation was lopsided is that surgeons sent the
+      // harder cases to the operation.
+      treatmentName: { a: "Open surgery", b: "Keyhole procedure" },
+      treatmentNote: {
+        a: "the bigger operation",
+        b: "a small incision, no open surgery",
+      },
+      // The staged reveal: one group, then the other, then the total.
+      stepSmallTitle: "Start with the easier cases",
+      stepLargeButton: "Now show the large stones",
+      stepOverallButton: "Add the two groups together",
+      seenBoth: "Same winner in both groups.",
+      chooseQuestion: "Both groups agree. Which treatment would you take?",
+      choose: { a: "Open surgery", b: "Keyhole procedure" },
+      chooseAnswer: (leader: string) =>
+        `Both groups point to ${leader}. Now add the two groups together.`,
+      explainWhat: "The winner in every group can lose once the groups are added up.",
+      explainWhy:
+        "The two treatments were not given to the same kind of patient. Open surgery took most of the large stones (the hard cases) and the keyhole procedure took most of the small ones. Adding the groups together mixes “which treatment” with “which patients”, and the patient mix is the stronger effect.",
+      explainMaths:
+        "Each overall rate is a weighted average of that treatment's two group rates, weighted by how many patients were in each group. Different weights, different average, even with the group rates fixed.",
+      illustrative:
+        "Counts from a 1986 published comparison, used here to show an effect in data. Not medical advice.",
+      announce: (a: string, b: string, reversed: string) =>
+        `Overall: A ${a}, B ${b}. Reversed: ${reversed}.`,
+    },
+
+    bridge:
+      "Two models of one board, disagreeing about the same bins. The next experiment fixes the model first, so that what changes is only how many times it is run.",
+
+    pascal: {
+      kicker: "Pascal's balls",
+      title: "Two models of the same board.",
+      setup: [
+        "A ball is released above a triangle of pegs and falls under gravity.",
+        "Every change of direction comes from a collision, not from a coin.",
+        "It is counted in whichever bin it finally comes to rest in.",
+      ],
+      caption:
+        "The ideal model treats each row as an independent left or right step, which gives the binomial distribution. The board on screen has no steps in it: gravity, contact geometry, restitution and friction decide where a ball goes. The two are different mechanisms, and the table keeps them in separate columns.",
+      predictQuestion: "Drop some balls. Where do they come to rest?",
+      predict: {
+        edges: "At the two edges",
+        centre: "In the middle",
+        even: "Evenly across the bins",
+      },
+      predictAnswer: (bin: number, share: string) =>
+        `bin ${bin} under the ideal model, which gives it ${share}`,
+      dropLabel: "Drop balls",
+      dropBatch: (n: number) => (n === 1 ? "1 ball" : `${n} balls`),
+      dropHint:
+        "Every ball here is simulated by the physics engine. Nothing is added by arithmetic.",
+      falling: (n: number) => `${n} still falling`,
+      boardLabel: (dropped: number, rows: number) =>
+        `A board of ${rows} rows of pegs. ${dropped} balls have physically fallen through it and come to rest in the bins below.`,
+      boardEmptyLabel: (rows: number) => `A board of ${rows} rows of pegs, with empty bins below.`,
+      tableCaption: (rows: number, dropped: number) =>
+        `Each bin of a ${rows} row board: the number of routes the ideal model counts, the share it predicts, and the share actually reached by ${dropped} physically simulated balls.`,
+      binColumn: "Bin",
+      pathsColumn: "Routes",
+      idealColumn: "Ideal model",
+      physicalColumn: "Physical board",
+      shapeColumn: "Shape",
+      legend:
+        "Upper bar: the ideal binomial model. Lower bar: the physical outcomes. Where they differ, the board is telling you something the arithmetic does not model.",
+      reading: (dropped: number, rows: number) =>
+        `${dropped} balls, each through ${rows} rows of pegs, every one of them simulated.`,
+      readingEmpty: "The bins are empty. Drop a ball and watch gravity and the pegs decide for it.",
+      explainWhat:
+        "Both models put most balls near the middle, and they do not agree about how many.",
+      explainWhy:
+        "The ideal model asks a counting question: of all the left and right sequences a board of this size allows, how many end in each bin? On the physical board nothing takes a sequence of steps. A ball arrives at a peg with a speed and an angle, leaves with whatever the contact gives it, and loses some sideways motion to friction on the way to the next one. That loss pulls it back towards the middle, so this board concentrates more tightly than the counting argument predicts. Neither answer is the wrong one. They are answers to different questions.",
+      explainMaths: (rows: number, paths: string, total: string) =>
+        `In the ideal model a board of ${rows} rows allows ${total} routes, one per sequence of decisions, and the number ending in a given bin is that bin's entry in Pascal's row. The busiest bin is reached by ${paths} of them, so its share is that count over ${total}. Those entries are the binomial coefficients and the shares are the binomial distribution. The physical column is not computed from any of this: it is a tally of where the simulated balls stopped.`,
+      ballsFigure: "Balls simulated",
+      ballsHint: "Each one a physical trial",
+      rowsFigure: "Rows",
+      pathsFigure: "Routes in the ideal model",
+      pathsHint: "2 raised to the number of rows",
+      peakFigure: "Busiest bin",
+      peakHint: (ideal: number) => `The ideal model's busiest is ${ideal}`,
+      boardSettings: "The board",
+      rowsLabel: "Rows of pegs",
+      rowsValue: (rows: number, paths: string) =>
+        `${rows} rows, ${paths} routes in the ideal model`,
+      rowsHint:
+        "Rebuilding the board empties the bins: a different board is a different experiment.",
+      emptyBoard: "Empty the bins",
+      announce: (dropped: number, bin: number) =>
+        `${dropped} balls simulated. Bin ${bin} holds the most.`,
+      coachLabel: "Questions people ask",
+      coach: {
+        twoModels: {
+          q: "Why are there two distributions?",
+          a: "Because there are two models. One counts routes through an idealised board where each row is an independent fair step. The other is a rigid-body simulation with gravity, contact and friction in it. They describe the same picture and they are not the same thing, so they are shown in separate columns rather than averaged into one.",
+        },
+        whyDiffer: {
+          q: "Which one is correct?",
+          a: "Both, for what each is about. The binomial distribution is exactly right about the counting model. The physical column is exactly what this simulated board did. A model is an idealisation of a mechanism, and when the mechanism has more in it than the idealisation, the two part company. Noticing where they part company is the useful part.",
+        },
+        whyMiddle: {
+          q: "Why does the middle fill up in either model?",
+          a: (paths: string, total: string) =>
+            `In the ideal model it is a matter of counting: of the ${total} routes the board allows, ${paths} end in the busiest bin and exactly one ends in each outer bin. On the physical board a ball would have to be deflected the same way at every row to reach an edge, and each contact takes a little of its sideways speed away, which makes that run of luck rarer still.`,
+        },
+      },
+    },
+
+    largeNumbers: {
+      kicker: "The law of large numbers",
+      title: "Repeat the decision, and the proportion settles.",
+      setup: [
+        "One peg, one fair decision: left or right.",
+        "The decision is repeated, independently, many times.",
+        "The share that went right is compared with the theoretical probability.",
+      ],
+      caption:
+        "The law says that as independent trials accumulate the observed proportion tends towards the theoretical probability. It does not say the gap shrinks at every step, and this run does not: watch the line move away before it settles.",
+      predictQuestion: "As the number of trials grows, what does the observed proportion do?",
+      predict: {
+        settles: "Settles near the theoretical value",
+        swings: "Keeps swinging just as widely",
+        exact: "Becomes exactly the theoretical value",
+      },
+      predictAnswer: "settling near it, without ever having to land on it exactly",
+      thousands: ",",
+      scaleLabel: "Number of trials",
+      watchHint: "Small enough to watch each decision arrive.",
+      acceleratedHint: "Too many to draw one at a time. Every trial is still counted.",
+      chartLabel: (trials: string, observed: string, theoretical: string) =>
+        `The observed proportion over ${trials} trials, on a logarithmic scale. It ends at ${observed} against a theoretical probability of ${theoretical}, drawn as a flat reference line.`,
+      axisStart: "1 trial",
+      axisEnd: (trials: string) => `${trials} trials`,
+      outcomesLabel: (n: number) => `The first ${n} decisions, in order`,
+      outcomeLabel: (index: number, side: string) => `Trial ${index}: ${side}`,
+      right: "right",
+      left: "left",
+      rightMark: "R",
+      leftMark: "L",
+      tableCaption:
+        "The same run read at each scale it has passed through: the theoretical probability, the observed proportion, and the distance between them.",
+      trialsColumn: "Trials",
+      theoreticalColumn: "Theoretical",
+      observedColumn: "Observed",
+      deviationColumn: "Deviation",
+      tableNote:
+        "Read the deviation column downwards. It tends to fall, and it is not required to fall at every line.",
+      reading: (trials: string) =>
+        `${trials} independent decisions, from one seed. The same seed gives the same run every time.`,
+      explainWhat:
+        "The proportion wanders early, then settles close to the theoretical probability.",
+      explainWhy:
+        "Each new trial moves the running proportion by less than the one before it, because it is one outcome among ever more of them. Early on a single result can shift the share by a tenth; after ten thousand trials it cannot shift it by more than a ten-thousandth. The wandering does not stop, it just stops being visible at this scale.",
+      explainMaths:
+        "The observed proportion is the number of rights divided by the number of trials, and the deviation is the distance from that proportion to the theoretical probability. Both are read from the run itself rather than from a formula, which is why the deviation column goes back up now and then.",
+      theoreticalFigure: "Theoretical probability",
+      theoreticalHint: "A fair decision, stated rather than measured",
+      observedFigure: "Observed proportion",
+      deviationFigure: "Deviation",
+      deviationHint: "Distance from the theoretical value",
+      trialsFigure: "Trials",
+      announce: (trials: string, observed: string) =>
+        `${trials} trials. The observed proportion is ${observed}.`,
+      coachLabel: "Questions people ask",
+      coach: {
+        notEvenly: {
+          q: "Shouldn't the two sides even out exactly?",
+          a: "No. The share of rights approaches one half, but the difference between the counts is free to grow. A run can finish ten thousand ahead on one side and still sit very close to half in proportion, because the proportion is divided by a much larger number.",
+        },
+        dueForOne: {
+          q: "After a run of lefts, is a right due?",
+          a: "No. Each decision is independent, so the next one is as likely to go either way as the first was. What corrects a lopsided start is not a compensating run the other way, but the sheer number of later trials diluting it.",
+        },
+        howMany: {
+          q: "How many trials are enough?",
+          a: "That depends on how close you need to be and how sure you want to be of it. The law describes a tendency rather than a schedule, and gives no number after which the observed proportion is guaranteed to stay near the theoretical one.",
+        },
+      },
+    },
+
+    recap: {
+      lessons: [
+        "Intuition is not a probability calculator. In all four experiments the common first answer is the wrong one.",
+        'A clue changes which outcomes are still possible, and the wording decides which ones. "At least one is a boy" and "the first is a boy" leave different sets standing.',
+        "Collisions are about pairs, not people. Twenty-three people make 253 pairs, which is why a shared birthday arrives so much sooner than it feels like it should.",
+        "Adding groups together can reverse the comparison inside them, whenever the groups were not filled the same way.",
+      ],
+      footer:
+        "Each of these is a worked problem with a stated model, not a general rule about chance. The exact probabilities are computed in closed form; the simulated ones come from running the experiment against a seeded generator and are always labelled as such. Where a question is genuinely ambiguous (the two-children problem is the clearest case), the assumption is written down rather than chosen quietly.",
+    },
+  },
+
+  // ------------------------------------------------------- sorting ----
+  "sorting-race": {
+    theRace: "The race",
+    algorithm: "Algorithm",
+    shape: "Shape",
+    shapeAndKeys: "Shape and keyboard",
+    puzzle: "Puzzle",
+    sorterA: "Sorter A",
+    sorterB: "Sorter B",
+    sort: "Sort",
+    algorithms: { selection: "Selection Sort", insertion: "Insertion Sort" },
+    shapes: {
+      almost: "Almost sorted",
+      sorted: "Sorted",
+      random: "Shuffled",
+      reversed: "Reversed",
+    },
+    legend: { settled: "settled", comparing: "comparing", lifted: "lifted out" },
+    metrics: {
+      comparisons: "Comparisons",
+      moves: "Moves",
+      disorder: "Disorder",
+      questionsAsked: "questions asked",
+      valuesRelocated: "values relocated",
+      inversions: (n: number) => `${n} inversions`,
+    },
+    drawHint: "Drag across the chart to reshape the data.",
+    keyboardHint: "pick a bar and",
+    keyboardHint2: "change its height.",
+    keyboardHelp:
+      "Drag across the chart to reshape it. With it focused, left and right arrows pick a bar and up and down change its height.",
+    chartLabel: (size: number, algorithm: string, disorder: number, state: string) =>
+      `Bar chart of ${size} values. ${algorithm}. Disorder: ${disorder} inversions. ${state}`,
+    state: {
+      done: (comparisons: number, moves: number) =>
+        `Sorted with ${comparisons} comparisons and ${moves} moves.`,
+      running: (comparisons: number, moves: number) =>
+        `Sorting: ${comparisons} comparisons, ${moves} moves so far.`,
+      alreadySorted: "Already in order. Not started.",
+      notStarted: "Not started.",
+      cursor: (index: number, value: number) => `Cursor on bar ${index}, value ${value}.`,
+      sorting: "Sorting.",
+      arrayReset: "Array reset.",
+      loaded: (shape: string) => `${shape} loaded.`,
+      selected: (algorithm: string) => `${algorithm} selected.`,
+    },
+    race: {
+      question: "Which one finishes first?",
+      oneButton: "One button. Both start from the same data.",
+      bothDone: "Same answer, and one of them asked a fraction of the questions.",
+      sorted: "sorted",
+      caption: "Same array, same answer. The counters are not.",
+      panelLabel: (title: string, size: number, state: string) =>
+        `${title}: bar chart of ${size} values. ${state}`,
+    },
+    watch: {
+      kicker: "Watch them work",
+      title: "One sweeps. The other tiptoes.",
+      lede: "Step through it. Sorter A rescans the whole remainder before it moves anything; Sorter B lifts one value and walks it back only as far as it must.",
+      caption:
+        "Those are Selection Sort and Insertion Sort. Long unbroken runs of comparisons belong to the first; the compare-shift-compare rhythm belongs to the second.",
+    },
+    data: {
+      kicker: "Draw the data",
+      title: "The work is in the data.",
+      lede: "Reshape the chart (drag across it, or pick a shape), then sort it again.",
+      caption:
+        "Selection Sort asks 496 questions here every time, sorted or shuffled or reversed, because it checks every remaining pair regardless. Insertion Sort's number moves with the shape you draw.",
+    },
+    distance: {
+      kicker: "How far from home",
+      title: "It isn't how many are wrong.",
+      lede: "Start from the ordered shape. Drag one bar far from where it belongs, then instead nudge three bars slightly. Compare what each costs.",
+      caption:
+        "An inversion is a pair in the wrong order. This insertion sort shifts once for every inversion in the array it was given, so one value far from home can cost more than several small mistakes. Moves counts those shifts plus the one write that lands each relocated value, which is why it sits a little above Disorder.",
+    },
+    challenge: {
+      architecture: "Architecture",
+      neuronsUsed: "Neurons used",
+      testAccuracy: "Test accuracy",
+      target: "Target",
+      objectiveLine: (accuracy: string) =>
+        `Reach ${accuracy} test accuracy on the spiral: using as few hidden neurons as you can.`,
+      solvedNote: "Solved. Now take a neuron away and try again.",
+      noBest: "Nothing yet. Start with plenty of neurons, then take them away until it breaks.",
+      bestLine: (neurons: number, accuracy: string, epoch: number) =>
+        `Best: ${neurons} hidden neurons, at ${accuracy} after ${epoch.toLocaleString("en-US")} epochs.`,
+      canvasLabel: (neurons: number, accuracy: string, epoch: number) =>
+        `Spiral challenge: ${neurons} hidden neurons, ${accuracy} test accuracy after ${epoch} epochs.`,
+      announceSolved: (neurons: number, accuracy: string) =>
+        `Solved with ${neurons} hidden neurons at ${accuracy} test accuracy.`,
+      kicker: "The challenge",
+      title: "Cheaper depends on what you count.",
+      lede: "Three fixed arrays, three budgets, and the budget is not always about the same number.",
+      budget: "Budget",
+      atMost: (unit: string) => `${unit} at most`,
+      barsChanged: "bars changed",
+      beaten: (done: number, total: number) => `${done} of ${total} beaten`,
+      fixedTo: (algorithm: string) => `Fixed to ${algorithm}. Reshape the data instead.`,
+      goal: (budget: number, unit: string) => `Goal: at most ${budget} ${unit}.`,
+      chartLabel: (title: string, size: number, disorder: number, goal: string, state: string) =>
+        `${title}: bar chart of ${size} values. Disorder: ${disorder} inversions. ${goal} ${state}`,
+      editsUsed: (used: number, max: number) => `${used} of ${max} edits used.`,
+      finished: (comparisons: number, moves: number) =>
+        `Finished with ${comparisons} comparisons and ${moves} moves.`,
+      budgetValue: (budget: number, unit: string) => `${budget} ${unit}`,
+      editsLeft: (used: number, max: number) => `${used} of ${max} edits used`,
+      units: { comparisons: "comparisons", moves: "moves" },
+      puzzles: {
+        "which-one-cares": {
+          title: "Which one cares?",
+          brief: "Sort it while asking fewer questions than the budget allows.",
+        },
+        "fewest-writes": {
+          title: "Fewest writes",
+          brief: "Ask as many questions as you like: just don't move much data.",
+        },
+        "three-edits": {
+          title: "Three edits",
+          brief: "Reshape at most three bars, then get under the budget.",
+        },
+      },
+      verdict: {
+        tooManyEdits: (edits: number, max: number) =>
+          `You changed ${edits} bars. You may change ${max}.`,
+        overBudget: (used: number, unit: string, budget: number) =>
+          `${used} ${unit}. Budget: ${budget}.`,
+        passed: (used: number, unit: string, budget: number) =>
+          `Solved with ${used} ${unit}, under a budget of ${budget}.`,
+      },
+    },
+    recap: {
+      lessons: [
+        "Two algorithms can reach the same answer having done wildly different amounts of work",
+        "Selection sort rescans the whole remainder every pass, so its cost is fixed; insertion sort walks back only as far as it must, so its cost is a property of the data",
+        "An inversion is a pair out of order and this insertion sort shifts once for each; Moves adds the write that lands each relocated value, but asking fewer questions is not the same goal as writing less data",
+      ],
+      footer:
+        "Real sorting libraries lean on exactly this: they hand nearly-ordered runs to an insertion sort, because on that shape the work has almost already been done.",
+    },
+  },
+
+  // ----------------------------------------------------- tokenizer ----
+  tokenizer: {
+    sources: {
+      title: "Sources",
+      subwordBpe:
+        "Supports byte-pair encoding as a subword segmentation method. The vocabulary here is trained on this lab's own small corpus and is not any production model's tokenizer.",
+    },
+    honesty:
+      "A small BPE tokenizer trained for this lab on a few kilobytes of text, not the tokenizer any GPT model uses.",
+    nothingToTokenize: "Nothing to tokenize yet.",
+    stripSummary: (label: string, count: number, list: string) =>
+      `${label}. ${count} tokens: ${list}`,
+
+    guess: {
+      sectionLabel: "Guess the cuts",
+      heading: "Where do you think this gets cut?",
+      lede: "A language model never sees this sentence as letters, and never quite sees it as words either. Before we say what it does see: mark the places you think it breaks the sentence apart. Then reveal.",
+      stripLabel: (sentence: string) =>
+        `The sentence “${sentence}”. Mark where you think it gets cut. Use left and right arrows to move, space to place or remove a cut.`,
+      cellLabel: (character: string, position: number) =>
+        `Cut before ${character}, position ${position}`,
+      theSpace: "the space",
+      hint: "Tap a letter to cut in front of it. With the strip focused,",
+      hintMove: "move and",
+      hintPlace: "places a cut.",
+      hintSpace: "is a space.",
+      reveal: "Reveal",
+      preparing: "Preparing…",
+      cutEveryWord: "Cut at every word",
+      legendReal: "where it really cuts",
+      legendImagined: "a cut you marked that is not there",
+      legendMatched: "you found this one",
+      resultOne: (matched: boolean) =>
+        `You marked 1 cut, and it ${matched ? "is" : "is not"} one of them.`,
+      resultMany: (guessed: number, matched: number) =>
+        `You marked ${guessed} cuts, and ${matched} ${matched === 1 ? "of them is" : "of them are"} real.`,
+      resultTail: (actual: number, tokens: number) =>
+        `It made ${actual} cuts in all, leaving ${tokens} pieces.`,
+      explain:
+        "Not words. “gardeners” came apart into “garden” and “ers”, the full stop stands alone, and every space belongs to the word after it rather than sitting between them.",
+      actualLabel: "What the sentence was actually cut into",
+      announceCleared: "Cleared. Mark the cuts again.",
+      announceEveryWord: "Marked a cut in front of every word.",
+      describe: (
+        guessed: number,
+        matched: number,
+        imagined: number,
+        missed: number,
+        actual: number,
+        tokens: number,
+      ) =>
+        guessed === 0
+          ? `You marked no cuts. The tokenizer made ${actual}, splitting the sentence into ${tokens} tokens.`
+          : `You marked ${guessed} ${guessed === 1 ? "cut" : "cuts"}. ` +
+            (guessed === 1
+              ? `It ${matched === 1 ? "is" : "is not"} one of the real ones`
+              : matched === 1
+                ? "1 of them is real"
+                : `${matched} of them are real`) +
+            `. ${
+              imagined === 0
+                ? "None are in the wrong place"
+                : imagined === 1
+                  ? "1 is not there"
+                  : `${imagined} are not there`
+            }. You missed ${missed}. The tokenizer made ${actual} cuts, splitting the sentence into ${tokens} tokens.`,
+      figures: {
+        yourCuts: "Your cuts",
+        matched: "Matched",
+        actualCuts: "Real cuts",
+        tokens: "Pieces",
+      },
+    },
+
+    train: {
+      kicker: "Where the pieces come from",
+      title: "Nobody chose those pieces.",
+      lede: "They were counted. Here is a corpus small enough to watch: press Merge and the commonest neighbouring pair in it fuses into one piece, everywhere it occurs. Then the counting starts again.",
+      corpusLabel: "The corpus it is reading",
+      mergeNext: "Merge next pair",
+      trainAll: "Train all",
+      training: "Training…",
+      untouched: (base: number, tokens: number) =>
+        `Right now every piece is a single character: ${base} of them, and the corpus costs ${tokens} tokens. Merge the commonest pair and watch what happens.`,
+      merged: (
+        index: number,
+        left: string,
+        right: string,
+        frequency: number,
+        token: string,
+        vocabulary: number,
+        tokens: number,
+      ) =>
+        `Merge ${index}: the commonest neighbouring pair was ${left} + ${right}, seen ${frequency} times. They are now one token: ${token}. Vocabulary: ${vocabulary} pieces. The corpus costs ${tokens} tokens.`,
+      exhausted: (merges: number, vocabulary: number) =>
+        `Nothing left to merge: no pair occurs more than once any more, so fusing one would be memorising rather than learning. It stopped at ${merges} merges, a vocabulary of ${vocabulary} pieces.`,
+      explain:
+        "That is byte-pair encoding. Count every neighbouring pair, fuse the commonest one, count again. The pieces it ends up with are its vocabulary, and each fusion is a merge. Nobody told it that “·read” is a word: it is simply what the first four rounds of counting produced, one pair at a time. Note that the space came along from the very first merge: the piece it learned is “·read”, not “read”. And “·every” stays in pieces to the end, because it only ever appears once.",
+      announceFinished:
+        "Training finished. No pair is left that occurs more than once, so there is nothing worth merging.",
+      announceFinishedAfter: (merges: number) => `Training finished after ${merges} merges.`,
+      announceReset: "Corpus reset. Nothing learned yet.",
+      mergesLabel: "Merges",
+      vocabularyLabel: "Vocabulary",
+      corpusTokensLabel: "Corpus pieces",
+    },
+
+    merge: {
+      kicker: "How much has it learned?",
+      title: "“One token” is a moving target.",
+      lede: "This tokenizer read a few kilobytes of Turkish. Drag the slider to rewind its training, and edit the sentence to anything you like. The pieces are recomputed for real at every position.",
+      sentenceLabel: "Your sentence",
+      sentenceHint:
+        "Edit it, or write your own. Turkish or English: the tokenizer will answer either way.",
+      mergesLearned: "Merges learned",
+      mergesValueText: (merges: number, max: number) => `${merges} of ${max} merges`,
+      untrained: "Untrained",
+      full: "Full",
+      stripLabel: (merges: number) => `Your sentence at ${merges} merges`,
+      trainingProgress: (done: number, total: number) =>
+        `Training the tokenizer… ${done} of ${total} merges.`,
+      ready: "The tokenizer has finished training. Drag the merges slider.",
+      explain:
+        "At zero merges every character is its own token, because the tokenizer knows nothing but letters. Drag right and watch “·ev · ler · imiz · den” become “·ev · lerimiz · den” and then “·evlerimiz · den”. Those pieces are Turkish suffixes, and nothing in the algorithm knows what a suffix is: they are simply the neighbours that kept turning up together.",
+      jumpTo: "Jump to",
+    },
+
+    compare: {
+      kicker: "Trained on what?",
+      title: "It cheapens whatever it has read.",
+      lede: "Two tokenizers, same algorithm, same amount of training, different reading. Give them both the same text and watch the bill diverge, then try to write something that closes the gap.",
+      textLabel: "The text both tokenizers get",
+      textHint:
+        "Change it to anything. You will not find a sentence that makes either tokenizer fluent in a language it never read.",
+      trainedOnEnglish: "Trained on English",
+      trainedOnTurkish: "Trained on Turkish",
+      englishCorpus: "a few kilobytes of English prose",
+      turkishCorpus: "a few kilobytes of Turkish prose",
+      tokens: "tokens",
+      cheaper: "Cheaper here: this is a language it has read.",
+      ratio: (ratio: string) =>
+        `Same characters, same algorithm, same number of merges, and one of them costs ${ratio}× what the other does. The difference is entirely in what each one was given to read.`,
+      sampleLoaded: (label: string, words: number, characters: number) =>
+        `${label} sample loaded: ${words} words, ${characters} characters.`,
+      samples: {
+        "tr-sea": "Türkçe",
+        "tr-visit": "Türkçe 2",
+        "en-room": "English",
+        "en-bread": "English 2",
+      },
+      sampleLabel: "Text",
+    },
+
+    metrics: {
+      tokens: "Tokens",
+      characters: "Characters",
+      words: "Words",
+      merges: "Merges",
+    },
+
+    challenge: {
+      architecture: "Architecture",
+      neuronsUsed: "Neurons used",
+      testAccuracy: "Test accuracy",
+      target: "Target",
+      objectiveLine: (accuracy: string) =>
+        `Reach ${accuracy} test accuracy on the spiral: using as few hidden neurons as you can.`,
+      solvedNote: "Solved. Now take a neuron away and try again.",
+      noBest: "Nothing yet. Start with plenty of neurons, then take them away until it breaks.",
+      bestLine: (neurons: number, accuracy: string, epoch: number) =>
+        `Best: ${neurons} hidden neurons, at ${accuracy} after ${epoch.toLocaleString("en-US")} epochs.`,
+      canvasLabel: (neurons: number, accuracy: string, epoch: number) =>
+        `Spiral challenge: ${neurons} hidden neurons, ${accuracy} test accuracy after ${epoch} epochs.`,
+      announceSolved: (neurons: number, accuracy: string) =>
+        `Solved with ${neurons} hidden neurons at ${accuracy} test accuracy.`,
+      kicker: "The challenge",
+      title: "One budget. Two ways to miss it.",
+      lede: "In the first puzzle the tokenizer is fixed and the sentence is yours. In the second the sentence is fixed and the tokenizer is yours. Only one of them can be solved by trying harder.",
+      budgetBadge: (budget: number) => `budget ${budget} tokens`,
+      rewriteLabel: "Rewrite it",
+      rewriteHint:
+        "Capitals, spacing, punctuation and padding are all yours to change. The listed words have to survive.",
+      rewriteStrip: "Your rewrite, tokenized",
+      fixedLabel: "The sentence (fixed)",
+      fixedStrip: "The sentence, tokenized",
+      trainedOn: "Trained on",
+      english: "English",
+      turkish: "Turkish",
+      mergesLearned: "Merges learned",
+      unknownNote: (unknown: number) =>
+        `${unknown} ${unknown === 1 ? "piece is" : "pieces are"} dashed and marked ?: characters this tokenizer has never seen. It read ordinary prose, and prose is almost all lower-case.`,
+      englishCeiling:
+        "That is the English tokenizer fully trained: as good as it will ever get on this sentence. More training is not the missing ingredient.",
+      puzzles: {
+        "say-it-cheaper": {
+          title: "Say it cheaper",
+          brief:
+            "Keep every one of the required words, and get the same sentence under the budget. You may change anything else about how it is written.",
+          lesson:
+            "Nothing about the meaning changed. Capitals are pieces the tokenizer never learned, and a doubled space is a token of its own.",
+        },
+        "feed-it-the-right-words": {
+          title: "Feed it the right words",
+          brief:
+            "This sentence cannot be edited. Choose what the tokenizer read, and how long it trained, until the sentence fits the budget.",
+          lesson:
+            "Training the English tokenizer harder never got there. It is not about effort: a tokenizer can only be cheap in a language it has actually read.",
+        },
+      },
+      verdict: {
+        untouched: (tokens: number, budget: number) =>
+          `As it stands this costs ${tokens} tokens. The budget is ${budget}.`,
+        missingWords: (words: readonly string[]) =>
+          `Still needs ${words.map((w) => `“${w}”`).join(", ")}. The whole sentence has to survive.`,
+        overBudget: (tokens: number, budget: number) =>
+          `${tokens} tokens: ${tokens - budget} over the budget of ${budget}.`,
+        passed: (tokens: number, budget: number) =>
+          `${tokens} tokens, inside the budget of ${budget}.`,
+        solvedAnnounce: (message: string) => `Solved. ${message}`,
+      },
+      puzzleLabel: "Puzzle",
+      tokensLabel: "Tokens",
+      budgetLabel: "Budget",
+    },
+
+    recap: {
+      lessons: [
+        "A tokenizer does not split text into words: it splits it into pieces that happened to be common",
+        "Those pieces are learned by counting: fuse the commonest neighbouring pair, then count again",
+        "How many merges it has learned decides what counts as one token, and the gains arrive early",
+        "A leading space belongs to the word after it, so spacing and capitals have a price",
+        "The same sentence costs wildly different amounts depending on what the tokenizer was trained on",
+        "Turkish suffixes become single tokens only for a tokenizer that has actually read Turkish",
+      ],
+      footer:
+        "Real models are trained this way too, on far more text and on raw bytes rather than characters, which is why a language that is scarce in the training data stays expensive to write in, long after the model has learned to speak it.",
+    },
+  },
+};

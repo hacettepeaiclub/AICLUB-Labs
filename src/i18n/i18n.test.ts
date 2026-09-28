@@ -1,6 +1,16 @@
 import { describe, expect, it } from "vitest";
 import { en } from "./en";
 import { tr } from "./tr";
+import { enLabs } from "./labs/en";
+import { trLabs } from "./labs/tr";
+
+/**
+ * The shell dictionary and the lab prose ship as separate chunks, but they are
+ * one contract: every structural check below reads the pair as one object, the
+ * way a component that has both loaded sees it.
+ */
+const enAll = { ...en, labs: enLabs };
+const trAll = { ...tr, labs: trLabs };
 
 type Node = Record<string, unknown>;
 
@@ -26,10 +36,10 @@ function leaves(value: unknown, prefix = ""): [string, unknown][] {
   return [[prefix, value]];
 }
 
-const enPaths = paths(en);
-const trPaths = paths(tr);
-const enLeaves = new Map(leaves(en));
-const trLeaves = new Map(leaves(tr));
+const enPaths = paths(enAll);
+const trPaths = paths(trAll);
+const enLeaves = new Map(leaves(enAll));
+const trLeaves = new Map(leaves(trAll));
 
 describe("coverage", () => {
   it("has the same keys in both languages", () => {
@@ -99,7 +109,7 @@ describe("Turkish quality", () => {
     "home.kicker",
     // "Gradient Descent" is the name of the method in Turkish technical
     // writing too; translating it would invent a term nobody uses.
-    "labs.gradient-descent.title",
+    "labMeta.gradient-descent.title",
     "labs.gradient-descent.optimizers.gd",
     "labs.hash-playground.usage.items.git.label",
     "labs.hash-playground.usage.items.https.label",
@@ -156,17 +166,16 @@ describe("Turkish quality", () => {
   });
 
   it("keeps technical terms that have no honest Turkish equivalent", () => {
-    const tokenizer = tr.labs.tokenizer;
-    expect(tokenizer.title).toContain("Tokenizer");
-    expect(tokenizer.honesty).toContain("BPE");
-    expect(tr.labs["hash-playground"].title).toContain("Hash");
-    expect(tr.labs["neural-playground"].stats.epoch).toBe("Epok");
+    expect(tr.labMeta.tokenizer.title).toContain("Tokenizer");
+    expect(trLabs.tokenizer.honesty).toContain("BPE");
+    expect(tr.labMeta["hash-playground"].title).toContain("Hash");
+    expect(trLabs["neural-playground"].stats.epoch).toBe("Epok");
   });
 
   it("translates every recap line", () => {
-    for (const slug of Object.keys(en.labs) as (keyof typeof en.labs)[]) {
-      const source = en.labs[slug].recap.lessons;
-      const target = tr.labs[slug].recap.lessons;
+    for (const slug of Object.keys(enLabs) as (keyof typeof enLabs)[]) {
+      const source = enLabs[slug].recap.lessons;
+      const target = trLabs[slug].recap.lessons;
       expect(target).toHaveLength(source.length);
       for (let i = 0; i < source.length; i++) {
         expect(target[i], `${slug} recap ${i}`).not.toBe(source[i]);
@@ -180,15 +189,15 @@ describe("lab identity", () => {
   it("covers every registered lab", async () => {
     const { labs } = await import("@/labs/registry");
     const slugs = labs.map((lab) => lab.meta.slug).sort();
-    expect(Object.keys(en.labs).sort()).toEqual(slugs);
+    expect(Object.keys(enLabs).sort()).toEqual(slugs);
   });
 
   it("gives every lab a title and a one-line description in both languages", () => {
-    for (const slug of Object.keys(en.labs) as (keyof typeof en.labs)[]) {
+    for (const slug of Object.keys(enLabs) as (keyof typeof enLabs)[]) {
       for (const dict of [en, tr]) {
-        expect(dict.labs[slug].title.length).toBeGreaterThan(3);
-        expect(dict.labs[slug].description.length).toBeGreaterThan(20);
-        expect(dict.labs[slug].description.length).toBeLessThan(140);
+        expect(dict.labMeta[slug].title.length).toBeGreaterThan(3);
+        expect(dict.labMeta[slug].description.length).toBeGreaterThan(20);
+        expect(dict.labMeta[slug].description.length).toBeLessThan(140);
       }
     }
   });

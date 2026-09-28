@@ -1,17 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useReducedMotion } from "framer-motion";
+import { useReducedMotion } from "@/hooks";
 import { Figure, LabSlider, Stage, Transport } from "@/components/lab";
 import { Badge, Segmented } from "@/components/ui";
-import { useT } from "@/i18n";
+import { useLabs, type LabsCopy } from "@/i18n/labs";
 import { formatNumber } from "@/lib/format";
 import { cn } from "@/lib/cn";
 import type { OptimizerConfig, OptimizerKind } from "../engine";
-import {
-  landscapeFacts,
-  learningRateAt,
-  LR_LIMIT_INDEX,
-  momentumLimitIndex,
-} from "../landscape";
+import { landscapeFacts, learningRateAt, LR_LIMIT_INDEX, momentumLimitIndex } from "../landscape";
 import {
   CHALLENGES,
   challengeOrder,
@@ -55,8 +50,7 @@ const ADAM_MAX_INDEX = 120;
  * which is what it should do, and the tally is not the card's business.
  */
 export function DescentChallenge() {
-  const t = useT();
-  const g = t.labs["gradient-descent"];
+  const g = useLabs()["gradient-descent"];
   const [solved, setSolved] = useState<ChallengeId[]>([]);
   const [selected, setSelected] = useState<ChallengeId>(challengeOrder[0] ?? "c1");
 
@@ -88,8 +82,7 @@ export function DescentChallenge() {
 }
 
 function ChallengeCard({ spec, onSolved }: { spec: ChallengeSpec; onSolved: () => void }) {
-  const t = useT();
-  const g = t.labs["gradient-descent"];
+  const g = useLabs()["gradient-descent"];
   const reduced = useReducedMotion() ?? false;
   const defaults = DEFAULTS[spec.id];
   const facts = landscapeFacts(spec.landscape);
@@ -183,9 +176,7 @@ function ChallengeCard({ spec, onSolved }: { spec: ChallengeSpec; onSolved: () =
           /* Earned in context: it appears only once a run has actually been
              watched to the end, and it is a sentence rather than a badge. */
           revealed ? (
-            <span
-              className={cn(verdict.kind === "solved" ? "text-signal-green" : "text-fg-muted")}
-            >
+            <span className={cn(verdict.kind === "solved" ? "text-signal-green" : "text-fg-muted")}>
               <span className="font-medium">
                 {verdict.kind === "solved" ? g.challenge.pass : g.challenge.notYet}
               </span>{" "}
@@ -308,8 +299,7 @@ function ChallengeCard({ spec, onSolved }: { spec: ChallengeSpec; onSolved: () =
 
 /** The same step size, on the gentler landscape. Nothing else changes. */
 function TransferPreview({ learningRate, tolerance }: { learningRate: number; tolerance: number }) {
-  const t = useT();
-  const g = t.labs["gradient-descent"];
+  const g = useLabs()["gradient-descent"];
   const reduced = useReducedMotion() ?? false;
   const run = useDescentRun({
     landscape: TRANSFER_LANDSCAPE,
@@ -347,7 +337,7 @@ function TransferPreview({ learningRate, tolerance }: { learningRate: number; to
   );
 }
 
-type Dict = ReturnType<typeof useT>["labs"]["gradient-descent"];
+type Dict = LabsCopy["gradient-descent"];
 
 function verdictText(g: Dict, verdict: Verdict): string {
   switch (verdict.kind) {

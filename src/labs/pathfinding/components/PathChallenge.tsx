@@ -1,10 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { useReducedMotion, useLocalControls } from "@/hooks";
 import { Stage, Transport } from "@/components/lab";
 import { Badge, Segmented } from "@/components/ui";
-import { useT } from "@/i18n";
-import { useLocalControls } from "@/hooks";
-import { spring } from "@/design/motion";
+import { useLabs } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import type { Algorithm, Grid } from "../engine";
 import { CHALLENGES, challengeGrid } from "../mazes";
@@ -28,8 +26,7 @@ const MAZE_IDS = CHALLENGES.map((m) => m.id);
  * solving the same puzzle.
  */
 export function PathChallenge() {
-  const t = useT();
-  const lab = t.labs.pathfinding;
+  const lab = useLabs().pathfinding;
   const c = lab.challenge;
   const reduced = useReducedMotion() ?? false;
   const [index, setIndex] = useState(0);
@@ -163,14 +160,11 @@ export function PathChallenge() {
       />
 
       {verdict && (
-        <motion.p
+        <p
           key={`${maze.id}-${algorithm}-${verdict.kind}`}
           role="status"
-          initial={reduced ? false : { opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={spring.smooth}
           className={cn(
-            "rounded-card border px-5 py-4 text-body-sm",
+            "verdict-enter rounded-card border px-5 py-4 text-body-sm",
             verdict.kind === "passed"
               ? "border-signal-green/30 bg-signal-green/10 text-signal-green"
               : "border-signal-amber/30 bg-signal-amber/10 text-signal-amber",
@@ -190,9 +184,8 @@ export function PathChallenge() {
                       verdict.explored,
                       verdict.budget,
                     )}
-        </motion.p>
+        </p>
       )}
-
     </div>
   );
 }

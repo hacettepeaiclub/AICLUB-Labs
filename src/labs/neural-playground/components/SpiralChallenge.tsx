@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Badge } from "@/components/ui";
 import { Figure, LabSlider, Stage, Transport } from "@/components/lab";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { useLocalStorage } from "@/hooks";
 import { formatPercent } from "@/lib/format";
 import { generateDataset, splitDataset } from "../datasets";
@@ -33,7 +33,7 @@ const beats = (candidate: Attempt, best: Attempt | null): boolean =>
  * decision.
  */
 export function SpiralChallenge() {
-  const lab = useT().labs["neural-playground"];
+  const lab = useLabs()["neural-playground"];
   const c = lab.challenge;
   const [layers, setLayers] = useState(2);
   const [neurons, setNeurons] = useState(6);
@@ -112,7 +112,9 @@ export function SpiralChallenge() {
             {solved ? lab.solvedBadge : lab.notYet}
           </Badge>
           <p className="text-caption text-fg-faint">
-            {best ? c.bestLine(best.neurons, formatPercent(best.accuracy, 1), best.epoch) : c.noBest}
+            {best
+              ? c.bestLine(best.neurons, formatPercent(best.accuracy, 1), best.epoch)
+              : c.noBest}
           </p>
         </div>
       }
@@ -128,7 +130,11 @@ export function SpiralChallenge() {
       }
       figures={
         <>
-          <Figure label={c.neuronsUsed} value={String(total)} tone={solved ? "accent" : "default"} />
+          <Figure
+            label={c.neuronsUsed}
+            value={String(total)}
+            tone={solved ? "accent" : "default"}
+          />
           <Figure label={c.testAccuracy} value={formatPercent(stats.testAccuracy, 1)} />
           <Figure label={c.target} value={formatPercent(TARGET, 0)} tone="muted" />
           <Figure label={c.yourBest} value={best ? String(best.neurons) : "—"} />
@@ -137,7 +143,13 @@ export function SpiralChallenge() {
       secondary={
         <>
           <LabSlider label={c.hiddenLayers} value={layers} min={1} max={3} onChange={setLayers} />
-          <LabSlider label={c.neuronsPerLayer} value={neurons} min={1} max={8} onChange={setNeurons} />
+          <LabSlider
+            label={c.neuronsPerLayer}
+            value={neurons}
+            min={1}
+            max={8}
+            onChange={setNeurons}
+          />
           <LabSlider
             label={c.learningRate}
             value={rateIndex}

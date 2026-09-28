@@ -1,5 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
-import { BASE_PATH, decodeInt16, type DatasetMeta, type EmbeddingSet } from "../embedding-universe/dataset";
+import {
+  BASE_PATH,
+  decodeInt16,
+  type DatasetMeta,
+  type EmbeddingSet,
+} from "../embedding-universe/dataset";
 import { project3d, type Space3 } from "./projection3d";
 
 /**
@@ -39,7 +44,11 @@ export function useSpace(): Space {
         const meta = (await metaResponse.json()) as DatasetMeta;
         const binResponse = await fetch(url(meta.int16.file), { signal: controller.signal });
         if (!binResponse.ok) throw new Error(`${meta.int16.file}: HTTP ${binResponse.status}`);
-        const decoded = decodeInt16(await binResponse.arrayBuffer(), meta.wordCount, meta.dimensions);
+        const decoded = decodeInt16(
+          await binResponse.arrayBuffer(),
+          meta.wordCount,
+          meta.dimensions,
+        );
         if (live) setSet(decoded);
       } catch (cause) {
         if (!live || controller.signal.aborted) return;

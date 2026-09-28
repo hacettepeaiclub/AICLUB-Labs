@@ -101,8 +101,7 @@ export const CORPORA: readonly Corpus[] = [
   { id: "turkish", label: "Turkish", language: "Türkçe", text: TURKISH },
 ];
 
-export const corpusById = (id: CorpusId): Corpus =>
-  CORPORA.find((c) => c.id === id) ?? CORPORA[0]!;
+export const corpusById = (id: CorpusId): Corpus => CORPORA.find((c) => c.id === id) ?? CORPORA[0]!;
 
 /**
  * How far the lab trains, and the top of the merge slider.
@@ -177,8 +176,7 @@ export interface Sample {
  */
 export const SAMPLES: readonly Sample[] = [
   { id: "tr-sea", text: "Denizin sesi evlerimizden bile duyulurdu." },
-  { id: "tr-visit", text: "Arkadaşlarımızın evlerinden birine gitmek istiyorum.",
-  },
+  { id: "tr-visit", text: "Arkadaşlarımızın evlerinden birine gitmek istiyorum." },
   { id: "en-room", text: "The reading room is warmer than the walking." },
   { id: "en-bread", text: "My grandmother is teaching me how to bake bread." },
 ];

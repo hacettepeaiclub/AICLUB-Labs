@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Figure, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { sha256Hex } from "../hashUtils";
 import { DigestPanel } from "./DigestPanel";
 
@@ -33,7 +33,7 @@ const MAX_RUNS = 5;
  * evidence about the new one.
  */
 export function DeterminismStage({ input }: DeterminismStageProps) {
-  const t = useT().labs["hash-playground"];
+  const t = useLabs()["hash-playground"];
   const [runs, setRuns] = useState<string[]>([]);
   const [busy, setBusy] = useState(false);
 
@@ -61,9 +61,7 @@ export function DeterminismStage({ input }: DeterminismStageProps) {
     <Stage
       width="wide"
       caption={t.determinism.caption}
-      announcement={
-        runs.length === 0 ? "" : t.determinism.announce(runs.length, distinct)
-      }
+      announcement={runs.length === 0 ? "" : t.determinism.announce(runs.length, distinct)}
       viewport={
         <div className="space-y-3">
           {runs.length === 0 ? (

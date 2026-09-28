@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import { HASH_BITS } from "../hashUtils";
 
@@ -29,7 +29,7 @@ export interface BitGridProps {
  * is which squares are filled.
  */
 export const BitGrid = memo(function BitGrid({ bits, changed }: BitGridProps) {
-  const t = useT().labs["hash-playground"];
+  const t = useLabs()["hash-playground"];
   const lit = bits.reduce((sum, b) => sum + b, 0);
   const flipped = changed.reduce((sum, c) => sum + (c ? 1 : 0), 0);
 

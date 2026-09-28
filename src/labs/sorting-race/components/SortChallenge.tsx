@@ -1,10 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { useReducedMotion, useLocalControls } from "@/hooks";
 import { Stage, Transport } from "@/components/lab";
 import { Badge, Segmented } from "@/components/ui";
-import { useT } from "@/i18n";
-import { useLocalControls } from "@/hooks";
-import { spring } from "@/design/motion";
+import { useLabs } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import { editCount } from "../arrayEdit";
 import { inversions, type Algorithm } from "../engine";
@@ -26,8 +24,7 @@ const EVENTS_PER_FRAME = 4;
  * the most. Failure always says which number missed and by how much.
  */
 export function SortChallenge() {
-  const t = useT();
-  const lab = t.labs["sorting-race"];
+  const lab = useLabs()["sorting-race"];
   const c = lab.challenge;
   const names = useAlgorithmLabel();
   const reduced = useReducedMotion() ?? false;
@@ -214,14 +211,11 @@ export function SortChallenge() {
       />
 
       {verdict && (
-        <motion.p
+        <p
           key={`${spec.id}-${verdict.kind}-${attempt}`}
           role="status"
-          initial={reduced ? false : { opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={spring.smooth}
           className={cn(
-            "rounded-card border px-5 py-4 text-body-sm",
+            "verdict-enter rounded-card border px-5 py-4 text-body-sm",
             verdict.kind === "passed"
               ? "border-signal-green/30 bg-signal-green/10 text-signal-green"
               : "border-signal-amber/30 bg-signal-amber/10 text-signal-amber",
@@ -232,9 +226,8 @@ export function SortChallenge() {
             : verdict.kind === "over-budget"
               ? c.verdict.overBudget(verdict.used, c.units[verdict.objective], verdict.budget)
               : c.verdict.passed(verdict.used, c.units[verdict.objective], verdict.budget)}
-        </motion.p>
+        </p>
       )}
-
     </div>
   );
 }

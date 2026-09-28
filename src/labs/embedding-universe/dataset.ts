@@ -45,7 +45,11 @@ export interface DatasetMeta {
     readonly normalization: string;
   };
   readonly float32: BinaryMeta & { readonly location: string };
-  readonly int16: BinaryMeta & { readonly location: string; readonly scheme: string; readonly note: string };
+  readonly int16: BinaryMeta & {
+    readonly location: string;
+    readonly scheme: string;
+    readonly note: string;
+  };
 }
 
 export interface BinaryMeta {
@@ -71,7 +75,12 @@ export const BASE_PATH = "/labs/embedding-universe/";
  * throws instead of quietly producing NaNs that would surface later as an
  * empty neighbour list.
  */
-function normalizeRow(target: Float32Array, offset: number, dimensions: number, label: string): void {
+function normalizeRow(
+  target: Float32Array,
+  offset: number,
+  dimensions: number,
+  label: string,
+): void {
   let sum = 0;
   for (let d = 0; d < dimensions; d++) {
     const v = target[offset + d]!;
@@ -128,7 +137,11 @@ export function decodeInt16(bytes: ArrayBuffer, count: number, dimensions: numbe
 }
 
 /** The per-vector scales the generator recorded. Not needed to decode. */
-export function readInt16Scales(bytes: ArrayBuffer, count: number, dimensions: number): Float32Array {
+export function readInt16Scales(
+  bytes: ArrayBuffer,
+  count: number,
+  dimensions: number,
+): Float32Array {
   const view = new DataView(bytes);
   const base = count * dimensions * 2;
   const scales = new Float32Array(count);

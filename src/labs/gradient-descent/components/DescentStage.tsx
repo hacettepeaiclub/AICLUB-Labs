@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { useReducedMotion } from "framer-motion";
+import { useReducedMotion } from "@/hooks";
 import { Figure, LabSlider, Stage, Transport } from "@/components/lab";
 import { Badge } from "@/components/ui";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { formatNumber } from "@/lib/format";
 import { cn } from "@/lib/cn";
 import {
@@ -121,8 +121,7 @@ export function DescentStage({
   defaultLearningRateIndex,
   caption,
 }: DescentStageProps) {
-  const t = useT();
-  const g = t.labs["gradient-descent"];
+  const g = useLabs()["gradient-descent"];
   const reduced = useReducedMotion() ?? false;
 
   const preset = LANDSCAPES[landscapeId];
@@ -163,7 +162,7 @@ export function DescentStage({
   const marks: Mark[] = [
     {
       key: "monotone",
-      position: ((LR_LIMIT_INDEX / 2) / LR_MAX_INDEX) * 100,
+      position: (LR_LIMIT_INDEX / 2 / LR_MAX_INDEX) * 100,
       label: g.rate.marks.monotone,
       value: formatNumber(facts.monotoneLimit, 5),
     },

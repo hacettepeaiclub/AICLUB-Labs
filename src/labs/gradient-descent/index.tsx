@@ -1,5 +1,5 @@
 import { LabRecap, LabSection, LabSources } from "@/components/lab";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { AdamStage } from "./components/AdamStage";
 import { CompareStage } from "./components/CompareStage";
 import { DescentChallenge } from "./components/DescentChallenge";
@@ -24,7 +24,7 @@ import { GradientStage } from "./components/GradientStage";
  * returned.
  */
 export default function GradientDescent() {
-  const g = useT().labs["gradient-descent"];
+  const g = useLabs()["gradient-descent"];
 
   return (
     <div className="space-y-24 md:space-y-32">
@@ -35,11 +35,7 @@ export default function GradientDescent() {
           {g.find.title}
         </h2>
         <p className="mb-6 max-w-prose text-body-lg text-fg">{g.find.question}</p>
-        <DescentStage
-          landscapeId="gentle"
-          defaultLearningRateIndex={70}
-          caption={g.find.caption}
-        />
+        <DescentStage landscapeId="gentle" defaultLearningRateIndex={70} caption={g.find.caption} />
       </section>
 
       {/* 2 — Name what just happened: a gradient is a vector, and it does not
@@ -81,18 +77,17 @@ export default function GradientDescent() {
       </LabSection>
 
       {/* 6 — Three questions the rest of the page has answers to. */}
-      <LabSection
-        kicker={g.challenge.kicker}
-        title={g.challenge.title}
-        lede={g.challenge.lede}
-      >
+      <LabSection kicker={g.challenge.kicker} title={g.challenge.title} lede={g.challenge.lede}>
         <DescentChallenge />
       </LabSection>
 
       <LabRecap lessons={g.recap.lessons} footer={g.recap.footer} />
       <LabSources
         title={g.sources.title}
-        entries={[{ id: "momentum", supports: g.sources.momentum },{ id: "adam", supports: g.sources.adam }]}
+        entries={[
+          { id: "momentum", supports: g.sources.momentum },
+          { id: "adam", supports: g.sources.adam },
+        ]}
       />
     </div>
   );

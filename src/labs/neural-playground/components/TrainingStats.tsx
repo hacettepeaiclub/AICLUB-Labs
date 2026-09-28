@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { Figure } from "@/components/lab";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { formatNumber, formatPercent } from "@/lib/format";
 import { useDebouncedValue } from "@/hooks";
 import type { TrainerStats } from "../useTrainer";
@@ -19,7 +19,7 @@ const HEIGHT = 44;
  * happens in the first fraction of the range, and a linear axis hides it.
  */
 const LossCurve = memo(function LossCurve({ history }: { history: readonly number[] }) {
-  const t = useT().labs["neural-playground"].stats;
+  const t = useLabs()["neural-playground"].stats;
   if (history.length < 2) {
     return <div className="h-11 w-full max-w-60 rounded bg-ink-900" aria-hidden />;
   }
@@ -63,7 +63,7 @@ const LossCurve = memo(function LossCurve({ history }: { history: readonly numbe
  * second bordered surface around four numbers is a card in a card.
  */
 export function TrainingFigures({ stats, history }: TrainingStatsProps) {
-  const t = useT().labs["neural-playground"].stats;
+  const t = useLabs()["neural-playground"].stats;
   // Stats publish 10x a second; announcing each one would be a running
   // commentary. This settles to whatever the figure is when training pauses
   // or plateaus.

@@ -20,7 +20,9 @@ export function readVisits(): Visits {
   try {
     const raw = window.localStorage.getItem(VISITED_KEY);
     const list: unknown = raw ? JSON.parse(raw) : [];
-    const visited = new Set(Array.isArray(list) ? list.filter((s): s is string => typeof s === "string") : []);
+    const visited = new Set(
+      Array.isArray(list) ? list.filter((s): s is string => typeof s === "string") : [],
+    );
     return { visited, last: window.localStorage.getItem(LAST_KEY) };
   } catch {
     return { visited: new Set(), last: null };

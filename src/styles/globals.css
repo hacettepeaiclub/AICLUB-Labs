@@ -27,9 +27,9 @@
   font-weight: 300 700;
   font-display: swap;
   src: url("/fonts/inter-latin.woff2") format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
-    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
-    U+2212, U+2215, U+FEFF, U+FFFD;
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 @font-face {
   font-family: "Inter";
@@ -37,9 +37,10 @@
   font-weight: 300 700;
   font-display: swap;
   src: url("/fonts/inter-latin-ext.woff2") format("woff2");
-  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
-    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
-    U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+    U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+    U+A720-A7FF;
 }
 @font-face {
   font-family: "Outfit";
@@ -47,9 +48,9 @@
   font-weight: 400 800;
   font-display: swap;
   src: url("/fonts/outfit-latin.woff2") format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
-    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
-    U+2212, U+2215, U+FEFF, U+FFFD;
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 @font-face {
   font-family: "Outfit";
@@ -57,9 +58,10 @@
   font-weight: 400 800;
   font-display: swap;
   src: url("/fonts/outfit-latin-ext.woff2") format("woff2");
-  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
-    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
-    U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+    U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+    U+A720-A7FF;
 }
 
 /* ------------------------------------------------------------------ */
@@ -383,7 +385,11 @@
     position: absolute;
     inset: auto 0 -1px 0;
     height: 1px;
-    background: radial-gradient(180px 1px at var(--mx, -200px) 50%, rgb(var(--data) / 0.9), transparent);
+    background: radial-gradient(
+      180px 1px at var(--mx, -200px) 50%,
+      rgb(var(--data) / 0.9),
+      transparent
+    );
     pointer-events: none;
   }
 
@@ -523,8 +529,41 @@
       animation: none;
     }
   }
+
+  /* ---------------------------------------------------------------- */
+  /* Page transition (PageShell.tsx).                                  */
+  /*                                                                   */
+  /* The main region is keyed on the route, so navigating remounts it  */
+  /* and this runs again. It replaces a Framer Motion variant, which   */
+  /* meant the whole animation library had to load before the first    */
+  /* paint in order to perform one quarter-second fade.                */
+  /*                                                                   */
+  /* No reduced-motion rule of its own: the global block above already */
+  /* clamps every animation, which is the point of doing it in CSS.    */
+  /* ---------------------------------------------------------------- */
+  .page-enter {
+    animation: page-enter 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  /* The banner a challenge answers with. Keyed on the attempt, so a
+     second verdict on the same puzzle replays it. Same reasoning. */
+  .verdict-enter {
+    animation: verdict-enter 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
 }
 
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+@keyframes verdict-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
 @keyframes sig-draw {
   from {
     stroke-dashoffset: 1;
@@ -579,16 +618,28 @@
 /* Two names for one animation, so hovering restarts it: a changed
    animation-name is a new animation to the browser. */
 @keyframes brand-signal {
-  from { background-position: 0 0%; }
-  to { background-position: 0 100%; }
+  from {
+    background-position: 0 0%;
+  }
+  to {
+    background-position: 0 100%;
+  }
 }
 @keyframes brand-signal-again {
-  from { background-position: 0 0%; }
-  to { background-position: 0 100%; }
+  from {
+    background-position: 0 0%;
+  }
+  to {
+    background-position: 0 100%;
+  }
 }
 @keyframes ambient-drift-a {
-  to { transform: translate(8vw, 6vh) scale(1.08); }
+  to {
+    transform: translate(8vw, 6vh) scale(1.08);
+  }
 }
 @keyframes ambient-drift-b {
-  to { transform: translate(-10vw, -8vh) scale(0.95); }
+  to {
+    transform: translate(-10vw, -8vh) scale(0.95);
+  }
 }

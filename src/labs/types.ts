@@ -2,12 +2,7 @@ import type { ComponentType, LazyExoticComponent } from "react";
 
 /** Topic areas — drives category color, filtering, and the home page grid. */
 export type LabCategory =
-  | "algorithms"
-  | "data-structures"
-  | "machine-learning"
-  | "neural-networks"
-  | "systems"
-  | "theory";
+  "algorithms" | "data-structures" | "machine-learning" | "neural-networks" | "systems" | "theory";
 
 export type LabDifficulty = "intro" | "intermediate" | "advanced";
 
@@ -31,9 +26,17 @@ export interface LabMeta {
   draft?: boolean;
 }
 
-/** A registered lab: metadata + lazily-loaded component. */
+/** What a lab's dynamic import resolves to. */
+export type LabLoader = () => Promise<{ default: ComponentType }>;
+
+/** A registered lab: metadata, its loader, and the lazy component around it. */
 export interface LabEntry {
   meta: LabMeta;
+  /**
+   * The same import `Component` is built from, kept reachable so the home page
+   * can start the download when a card is pointed at rather than clicked.
+   */
+  load: LabLoader;
   Component: LazyExoticComponent<ComponentType>;
 }
 

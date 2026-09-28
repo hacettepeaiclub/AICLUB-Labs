@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Figure, LabSlider, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import {
   DEFAULT_SMALL_SHARE,
@@ -36,7 +36,7 @@ import { Prediction } from "./Prediction";
  * them, so the picture cannot say something the numbers do not.
  */
 export function SimpsonStage() {
-  const copy = useT().labs.probability;
+  const copy = useLabs().probability;
   const s = copy.simpson;
 
   const [share, setShare] = useState<Record<TreatmentId, number>>({ ...DEFAULT_SMALL_SHARE });

@@ -1,8 +1,15 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { labs, orderedLabs, publishedLabs } from "../registry";
-import { en } from "@/i18n/en";
-import { tr } from "@/i18n/tr";
+import { en as enShell } from "@/i18n/en";
+import { tr as trShell } from "@/i18n/tr";
+import { enLabs } from "@/i18n/labs/en";
+import { trLabs } from "@/i18n/labs/tr";
+
+// The shell dictionary and the lab prose ship as separate chunks; a lab sees
+// both, so the assertions below read them as one object.
+const en = { ...enShell, labs: enLabs };
+const tr = { ...trShell, labs: trLabs };
 import { probabilityMeta } from "./meta";
 import { THEORETICAL, simulate as montySimulate } from "./engine/montyHall";
 import { fillRoom, firstAbove, sharedProbability } from "./engine/birthday";
@@ -62,9 +69,9 @@ describe("registry", () => {
   it("never calls itself a playground", () => {
     // The name was chosen against that word; the check keeps it chosen.
     for (const dict of [en, tr]) {
-      const copy = dict.labs.probability;
-      expect(copy.title.toLowerCase()).not.toContain("playground");
-      expect(copy.description.toLowerCase()).not.toContain("playground");
+      const name = dict.labMeta.probability;
+      expect(name.title.toLowerCase()).not.toContain("playground");
+      expect(name.description.toLowerCase()).not.toContain("playground");
     }
     expect(probabilityMeta.title).toBe("Probability Lab");
     expect(probabilityMeta.title.toLowerCase()).not.toContain("playground");
@@ -77,7 +84,7 @@ describe("copy", () => {
   it("exists in both languages with four recap points", () => {
     for (const dict of [en, tr]) {
       const copy = dict.labs.probability;
-      expect(copy.title.length).toBeGreaterThan(3);
+      expect(dict.labMeta.probability.title.length).toBeGreaterThan(3);
       expect(copy.recap.lessons).toHaveLength(4);
       expect(copy.recap.footer.length).toBeGreaterThan(60);
       expect(copy.scope.length).toBeGreaterThan(60);
@@ -274,9 +281,7 @@ describe("the components show the engines' numbers", () => {
       "engine/simpson.ts",
       "view.ts",
     ]) {
-      expect(stripComments(read(file)), file).not.toMatch(
-        /requestAnimationFrame|setInterval/,
-      );
+      expect(stripComments(read(file)), file).not.toMatch(/requestAnimationFrame|setInterval/);
     }
   });
 });
@@ -811,7 +816,7 @@ describe("Pascal's balls and the law of large numbers", () => {
   it("counts the experiments the lab says it has", () => {
     // The card promises a number. Six sections now stand under it.
     for (const dict of [en, tr]) {
-      expect(dict.labs.probability.description).toMatch(/Six|altı/i);
+      expect(dict.labMeta.probability.description).toMatch(/Six|altı/i);
     }
     expect(probabilityMeta.description).toMatch(/Six/);
   });

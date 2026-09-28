@@ -502,7 +502,11 @@ function encodePiece(symbols: string[], ranks: Compiled["ranks"], mergeCount: nu
     let write = 0;
     let read = 0;
     while (read < symbols.length) {
-      if (read + 1 < symbols.length && symbols[read] === bestLeft && symbols[read + 1] === bestRight) {
+      if (
+        read + 1 < symbols.length &&
+        symbols[read] === bestLeft &&
+        symbols[read + 1] === bestRight
+      ) {
         symbols[write++] = token;
         read += 2;
       } else {
@@ -524,7 +528,10 @@ function encodePiece(symbols: string[], ranks: Compiled["ranks"], mergeCount: nu
  */
 export function tokenize(text: string, vocabulary: Vocabulary, mergeCount?: number): Token[] {
   const { ranks, base } = compile(vocabulary);
-  const limit = Math.max(0, Math.min(mergeCount ?? vocabulary.merges.length, vocabulary.merges.length));
+  const limit = Math.max(
+    0,
+    Math.min(mergeCount ?? vocabulary.merges.length, vocabulary.merges.length),
+  );
 
   const tokens: Token[] = [];
   for (const piece of preTokenize(text)) {

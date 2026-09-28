@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Figure, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import { formatNumber } from "@/lib/format";
 import { useDebouncedValue, useLocalControls } from "@/hooks";
@@ -39,7 +39,7 @@ const odds = (n: number) => formatNumber(16 ** n, 0);
  * moved into the section's lede where an explanation belongs.
  */
 export function CollisionStage() {
-  const t = useT().labs["hash-playground"];
+  const t = useLabs()["hash-playground"];
   const c = t.challenge;
   const [inputA, setInputA] = useState("hello");
   const [inputB, setInputB] = useState("hello!");
@@ -94,11 +94,7 @@ export function CollisionStage() {
     <Stage
       width="full"
       caption={c.caption}
-      announcement={
-        sameInput
-          ? c.identical
-          : c.announce(settledMatched, HEX_CHARS, best, round)
-      }
+      announcement={sameInput ? c.identical : c.announce(settledMatched, HEX_CHARS, best, round)}
       viewport={
         <div className="space-y-3">
           <div className="grid gap-3 md:grid-cols-2">
@@ -161,11 +157,7 @@ export function CollisionStage() {
             disabled={!cleared || round >= MAX_ROUND}
             className="min-h-[44px] w-full"
           >
-            {round >= MAX_ROUND
-              ? c.maxRound
-              : cleared
-                ? c.nextRound(round + 1)
-                : c.keepTrying}
+            {round >= MAX_ROUND ? c.maxRound : cleared ? c.nextRound(round + 1) : c.keepTrying}
           </Button>
         </div>
       }
@@ -176,7 +168,11 @@ export function CollisionStage() {
             value={sameInput ? "—" : `${matched} / ${HEX_CHARS}`}
             tone={cleared ? "accent" : "default"}
           />
-          <Figure label={c.roundLabelFull} value={`${round} / ${MAX_ROUND}`} hint={c.oddsHint(odds(round))} />
+          <Figure
+            label={c.roundLabelFull}
+            value={`${round} / ${MAX_ROUND}`}
+            hint={c.oddsHint(odds(round))}
+          />
           <Figure label={c.bestLabel} value={String(best)} />
           <Figure label={c.attemptsLabel} value={formatNumber(attempts, 0)} />
         </>

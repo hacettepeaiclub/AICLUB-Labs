@@ -1,5 +1,5 @@
 import { useId } from "react";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import { normalPdf, type Result } from "../engine";
 import { PLOT, areaPath, coord, criticalList, curvePath, prob, regionsOf, scaleOf } from "../view";
@@ -47,7 +47,7 @@ export function DistributionPlot({
   showBeta = true,
   className,
 }: DistributionPlotProps) {
-  const copy = useT().labs["hypothesis-testing"];
+  const copy = useLabs()["hypothesis-testing"];
   const plot = copy.plot;
   const baseId = useId();
   const alphaHatch = `${baseId}-alpha`;

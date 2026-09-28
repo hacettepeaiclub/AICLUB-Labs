@@ -1,5 +1,5 @@
 import { LabRecap, LabSection, LabSources } from "@/components/lab";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { BirthdayStage } from "./components/BirthdayStage";
 import { Setup } from "./components/Framing";
 import { ConditionalStage } from "./components/ConditionalStage";
@@ -36,7 +36,7 @@ import { SimpsonStage } from "./components/SimpsonStage";
  * simulation illustrates a theorem here — it does not establish one.
  */
 export default function ProbabilityLab() {
-  const copy = useT().labs.probability;
+  const copy = useLabs().probability;
 
   return (
     <div className="space-y-20 md:space-y-28">
@@ -96,7 +96,10 @@ export default function ProbabilityLab() {
       <LabRecap lessons={copy.recap.lessons} footer={copy.recap.footer} />
       <LabSources
         title={copy.sources.title}
-        entries={[{ id: "statisticalInference", supports: copy.sources.statisticalInference },{ id: "simpson", supports: copy.sources.simpson }]}
+        entries={[
+          { id: "statisticalInference", supports: copy.sources.statisticalInference },
+          { id: "simpson", supports: copy.sources.simpson },
+        ]}
       />
     </div>
   );

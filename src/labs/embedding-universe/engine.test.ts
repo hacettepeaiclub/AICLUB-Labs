@@ -68,7 +68,9 @@ const naive = {
   dot(set: EmbeddingSet, i: number, j: number): number {
     let sum = 0;
     for (let d = set.dimensions - 1; d >= 0; d--) {
-      sum += (set.vectors[i * set.dimensions + d] as number) * (set.vectors[j * set.dimensions + d] as number);
+      sum +=
+        (set.vectors[i * set.dimensions + d] as number) *
+        (set.vectors[j * set.dimensions + d] as number);
     }
     return sum;
   },
@@ -122,7 +124,9 @@ describe("G1  the dataset is what it says it is", () => {
   });
 
   it("the shipped bytes are the bytes that were checksummed", () => {
-    expect(createHash("sha256").update(Buffer.from(rawF32)).digest("hex")).toBe(meta.float32.sha256);
+    expect(createHash("sha256").update(Buffer.from(rawF32)).digest("hex")).toBe(
+      meta.float32.sha256,
+    );
     expect(createHash("sha256").update(Buffer.from(rawI16)).digest("hex")).toBe(meta.int16.sha256);
     expect(rawF32.byteLength).toBe(meta.float32.bytes);
     expect(rawI16.byteLength).toBe(meta.int16.bytes);
@@ -370,7 +374,9 @@ describe("G4  PCA against an independent reference", () => {
         const axis = got.components[c] as Float64Array;
         let dot = 0;
         for (let d = 0; d < dimensions; d++) {
-          dot += ((fixture[i * dimensions + d] as number) - (got.mean[d] as number)) * (axis[d] as number);
+          dot +=
+            ((fixture[i * dimensions + d] as number) - (got.mean[d] as number)) *
+            (axis[d] as number);
         }
         expect(got.coordinates[i * k + c] as number).toBeCloseTo(dot, 9);
       }
@@ -445,7 +451,8 @@ describe("G4b  PCA of the shipped dataset matches scikit-learn", () => {
       const back = new Float64Array(D);
       for (let i = 0; i < N; i++) {
         for (let d = 0; d < D; d++) {
-          back[d] = (back[d] as number) + (centred[i * D + d] as number) * (projectedRows[i] as number);
+          back[d] =
+            (back[d] as number) + (centred[i * D + d] as number) * (projectedRows[i] as number);
         }
       }
       const lambda = (got.eigenvalues[c] as number) * (N - 1);
@@ -474,7 +481,8 @@ describe("G4b  PCA of the shipped dataset matches scikit-learn", () => {
         const axis = ref.componentVectors[c] as number[];
         let dot = 0;
         for (let d = 0; d < D; d++) {
-          dot += ((f32.vectors[i * D + d] as number) - (got.mean[d] as number)) * (axis[d] as number);
+          dot +=
+            ((f32.vectors[i * D + d] as number) - (got.mean[d] as number)) * (axis[d] as number);
         }
         worst = Math.max(worst, Math.abs(dot - (got.coordinates[i * 2 + c] as number)));
       }
@@ -638,7 +646,8 @@ describe("G8  the section-2 examples are measured, not chosen", () => {
     const d = (i: number, j: number): number =>
       Math.hypot(
         (projection.coordinates[i * 2] as number) - (projection.coordinates[j * 2] as number),
-        (projection.coordinates[i * 2 + 1] as number) - (projection.coordinates[j * 2 + 1] as number),
+        (projection.coordinates[i * 2 + 1] as number) -
+          (projection.coordinates[j * 2 + 1] as number),
       );
     const screen = new Int32Array(N * N);
     for (let i = 0; i < N; i++) {

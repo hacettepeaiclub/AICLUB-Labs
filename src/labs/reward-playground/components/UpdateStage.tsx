@@ -1,6 +1,6 @@
 import { Figure, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import { formatNumber } from "@/lib/format";
 import { colOf, rowOf } from "../world";
@@ -35,7 +35,7 @@ export interface UpdateStageProps {
  * `Q + α·(target − Q)` exactly.
  */
 export function UpdateStage({ run, tileReward }: UpdateStageProps) {
-  const copy = useT().labs["reward-playground"];
+  const copy = useLabs()["reward-playground"];
   const update = copy.update;
   const last = run.last;
 

@@ -1,8 +1,9 @@
 import { useCallback, useRef, useState } from "react";
-import { useReducedMotion } from "framer-motion";
+import { useReducedMotion } from "@/hooks";
 import { Stage, Transport } from "@/components/lab";
 import { Button, Kbd, Segmented } from "@/components/ui";
 import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { colOf, rowOf, type Algorithm, type Grid } from "../engine";
 import { clearTerrain, summarise, type Tool } from "../gridEdit";
 import { buildPreset, NARROW, pickSize, type PresetId } from "../mazes";
@@ -57,7 +58,7 @@ export function PathfindingStage({
   caption,
 }: PathfindingStageProps) {
   const t = useT();
-  const lab = t.labs.pathfinding;
+  const lab = useLabs().pathfinding;
   const reduced = useReducedMotion() ?? false;
 
   // Chosen once. A grid that reflowed on resize would throw away the drawing.

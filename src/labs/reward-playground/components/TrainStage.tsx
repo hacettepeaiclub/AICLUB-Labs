@@ -1,6 +1,6 @@
 import { Figure, Stage, Transport } from "@/components/lab";
 import { Button, Segmented } from "@/components/ui";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { formatNumber } from "@/lib/format";
 import { greedyPolicy } from "../engine";
 import { SMOOTHING_WINDOW, curve, smooth } from "../view";
@@ -33,7 +33,7 @@ export interface TrainStageProps {
  * explain. Episodes are the unit the learning actually happens in.
  */
 export function TrainStage({ run }: TrainStageProps) {
-  const copy = useT().labs["reward-playground"];
+  const copy = useLabs()["reward-playground"];
   const train = copy.train;
 
   const rewards = run.history.map((episode) => episode.totalReward);

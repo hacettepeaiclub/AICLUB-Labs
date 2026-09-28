@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Figure, Stage, Transport } from "@/components/lab";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { formatPercent } from "@/lib/format";
 import { generateDataset, splitDataset } from "../datasets";
 import { useTrainer, type TrainerConfig } from "../useTrainer";
@@ -20,8 +20,7 @@ const BASE: Omit<TrainerConfig, "hidden" | "seed"> = {
  * whole subject, so the lab lets you run it rather than asserting it.
  */
 export function LayersLab() {
-  const t = useT();
-  const lab = t.labs["neural-playground"];
+  const lab = useLabs()["neural-playground"];
   const [running, setRunning] = useState(false);
   const [round, setRound] = useState(0);
 

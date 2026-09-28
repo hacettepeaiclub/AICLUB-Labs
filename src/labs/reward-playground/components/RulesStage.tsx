@@ -1,6 +1,6 @@
 import { Figure, LabSlider, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { formatNumber } from "@/lib/format";
 import { SMOOTHING_WINDOW, curve, smooth } from "../view";
 import type { RunSettings, TrainingRun } from "../useTrainingRun";
@@ -32,7 +32,7 @@ export interface RulesStageProps {
  * policy here would be a claim the visitor could disprove in ten seconds.
  */
 export function RulesStage({ run, settings, onChange, onRestore, changed }: RulesStageProps) {
-  const copy = useT().labs["reward-playground"];
+  const copy = useLabs()["reward-playground"];
   const rules = copy.rules;
 
   const rewards = run.history.map((episode) => episode.totalReward);

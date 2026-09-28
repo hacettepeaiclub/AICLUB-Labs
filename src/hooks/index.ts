@@ -7,5 +7,5 @@ export { useKeyPress } from "./useKeyPress";
 export { useDebouncedValue } from "./useDebouncedValue";
 export { useRepaintFlag, type RepaintFlag } from "./useRepaintFlag";
 export { usePaletteVersion } from "./usePaletteVersion";
-// Re-export so labs import all motion-safety from one place.
-export { useReducedMotion } from "framer-motion";
+// Re-exported so labs import all motion-safety from one place.
+export { useReducedMotion } from "./useReducedMotion";

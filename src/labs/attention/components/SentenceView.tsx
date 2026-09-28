@@ -8,9 +8,9 @@ import {
   type KeyboardEvent,
   type ReactNode,
 } from "react";
-import { useReducedMotion } from "framer-motion";
+import { useReducedMotion } from "@/hooks";
 import { Figure, Stage } from "@/components/lab";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import type { Attention } from "../engine";
 import { arcTargets, percent, tokenViews, topTargets, isNearTie } from "../view";
@@ -65,8 +65,7 @@ export function SentenceView({
   swapIndex,
   control,
 }: SentenceViewProps) {
-  const t = useT();
-  const a = t.labs.attention;
+  const a = useLabs().attention;
   const reduced = useReducedMotion() ?? false;
   const listId = useId();
 

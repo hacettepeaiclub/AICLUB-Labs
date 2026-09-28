@@ -1,5 +1,5 @@
 import { Figure, LabSlider, Stage } from "@/components/lab";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { BOUNDS, evaluate, type Params, type Result } from "../engine";
 import { PLOT, coord, prob } from "../view";
 import { DistributionPlot } from "./DistributionPlot";
@@ -28,7 +28,7 @@ const CURVE_N = Array.from({ length: BOUNDS.n.max - BOUNDS.n.min + 1 }, (_, i) =
  * not drawn in; it is what the equation does.
  */
 export function SampleSizeStage({ result, onChange }: SampleSizeStageProps) {
-  const copy = useT().labs["hypothesis-testing"];
+  const copy = useLabs()["hypothesis-testing"];
   const s = copy.sampleSection;
   const { n } = result.params;
 

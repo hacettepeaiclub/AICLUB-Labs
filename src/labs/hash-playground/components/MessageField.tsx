@@ -1,5 +1,5 @@
 import { useId } from "react";
-import { useT } from "@/i18n";
+import { useLabs } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 
 export interface MessageFieldProps {
@@ -31,7 +31,7 @@ export function MessageField({
   describedBy,
   className,
 }: MessageFieldProps) {
-  const t = useT().labs["hash-playground"];
+  const t = useLabs()["hash-playground"];
   const id = useId();
 
   return (
