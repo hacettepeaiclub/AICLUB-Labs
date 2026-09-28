@@ -38,6 +38,8 @@ export const tr: Translation = {
     hashtag: "#AIForAll",
     footerRights: (year: number) => `© ${year} Hacettepe AI Club`,
     footerCredit: "Hacettepe Yapay Zekâ Topluluğu projesidir",
+    builtBy: "Topluluk üyeleri tarafından yapıldı",
+    sourceLink: "Kaynak kodu GitHub'da",
     minutes: (n: number) => `${n} dk`,
     loadingLab: "Laboratuvar yükleniyor",
     openLab: "Laboratuvarı aç →",

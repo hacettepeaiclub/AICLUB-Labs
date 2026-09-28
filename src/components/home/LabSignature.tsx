@@ -36,9 +36,22 @@ import { createRng } from "@/lib/random";
  *
  * ## Why they all look related
  *
- * One viewBox, one stroke weight, one palette — inert marks in `fg-faint`,
- * structure in `accent`, and at most one element in `data` to carry the eye.
- * Nine labs, one drawing language, rather than nine unrelated styles.
+ * One viewBox, one stroke weight, one palette: inert marks in `fg-faint`,
+ * structure in the lab's own field colour, and at most one element in `data`
+ * to carry the eye. Eleven labs, one drawing language, rather than eleven
+ * unrelated styles.
+ *
+ * The field colour arrives as `--c`, which the card already sets from
+ * `CATEGORY_VAR` for its frame and brackets — so a drawing is coloured by
+ * where it sits, not by anything it has to be told. It used to be `accent` for
+ * every lab, which made a grid of eleven different kinds of system read as one
+ * blue thing repeated, and left the six category colours doing no work beyond
+ * a 7px dot. `data` stays shared on purpose: it means "the value that is
+ * changing right now" everywhere in the product, and one constant among six
+ * variables is what keeps the grid from becoming a chart of its own palette.
+ *
+ * The fallback in `var(--c, var(--accent))` is what the drawing is worth on
+ * its own, outside a card.
  */
 
 const W = 64;
@@ -55,7 +68,7 @@ const seeded = (slug: string) => {
 const at = (seconds: number): CSSProperties => ({ "--d": `${seconds}s` }) as CSSProperties;
 
 const inert = "stroke-fg-faint/45";
-const structure = "stroke-accent";
+const structure = "stroke-[rgb(var(--c,var(--accent)))]";
 const live = "stroke-data";
 
 /**
@@ -63,7 +76,12 @@ const live = "stroke-data";
  * strings have to survive Tailwind's source scan, and a template literal does
  * not.
  */
-const HASH_FILLS = ["fill-accent/25", "fill-accent/45", "fill-accent/70", "fill-accent"];
+const HASH_FILLS = [
+  "fill-[rgb(var(--c,var(--accent))/0.25)]",
+  "fill-[rgb(var(--c,var(--accent))/0.45)]",
+  "fill-[rgb(var(--c,var(--accent))/0.7)]",
+  "fill-[rgb(var(--c,var(--accent)))]",
+];
 
 /** `[x, width]` per input segment. Row 1 ends at 13.5, row 2 at 21. */
 const HASH_INPUTS = [
@@ -125,7 +143,9 @@ function Shape({ slug }: { slug: string }) {
                   style={at(row * 0.2)}
                 />
                 {Array.from({ length: CELLS }, (_, i) => {
-                  const digest = HASH_FILLS[Math.floor(rng() * HASH_FILLS.length)] ?? "fill-accent";
+                  const digest =
+                    HASH_FILLS[Math.floor(rng() * HASH_FILLS.length)] ??
+                    "fill-[rgb(var(--c,var(--accent)))]";
                   return (
                     <rect
                       key={`out-${row}-${i}`}
@@ -149,22 +169,24 @@ function Shape({ slug }: { slug: string }) {
       const xs = [10, 32, 54];
       return (
         <g fill="none" strokeWidth={0.6}>
-          {layers.slice(0, -1).map((count, l) =>
-            Array.from({ length: count }, (_, i) =>
-              Array.from({ length: layers[l + 1] ?? 0 }, (_, j) => (
-                <line
-                  key={`${l}-${i}-${j}`}
-                  x1={xs[l]}
-                  y1={(H / (count + 1)) * (i + 1)}
-                  x2={xs[l + 1]}
-                  y2={(H / ((layers[l + 1] ?? 1) + 1)) * (j + 1)}
-                  pathLength={1}
-                  className={`${inert} sig-draw`}
-                  style={at(l * 0.3)}
-                />
-              )),
-            ),
-          )}
+          {layers
+            .slice(0, -1)
+            .map((count, l) =>
+              Array.from({ length: count }, (_, i) =>
+                Array.from({ length: layers[l + 1] ?? 0 }, (_, j) => (
+                  <line
+                    key={`${l}-${i}-${j}`}
+                    x1={xs[l]}
+                    y1={(H / (count + 1)) * (i + 1)}
+                    x2={xs[l + 1]}
+                    y2={(H / ((layers[l + 1] ?? 1) + 1)) * (j + 1)}
+                    pathLength={1}
+                    className={`${inert} sig-draw`}
+                    style={at(l * 0.3)}
+                  />
+                )),
+              ),
+            )}
           {layers.map((count, l) =>
             Array.from({ length: count }, (_, i) => (
               <circle
@@ -172,7 +194,7 @@ function Shape({ slug }: { slug: string }) {
                 cx={xs[l]}
                 cy={(H / (count + 1)) * (i + 1)}
                 r={2.2}
-                className={`${l === 1 && i === 1 ? "fill-data stroke-data" : "fill-ink-950 stroke-accent"} sig-pop`}
+                className={`${l === 1 && i === 1 ? "fill-data stroke-data" : "fill-ink-950 stroke-[rgb(var(--c,var(--accent)))]"} sig-pop`}
                 style={at(l * 0.3 + 0.1)}
               />
             )),
@@ -218,11 +240,11 @@ function Shape({ slug }: { slug: string }) {
                 c === goal.c && r === goal.r
                   ? "fill-data"
                   : depth === 0
-                    ? "fill-accent"
+                    ? "fill-[rgb(var(--c,var(--accent)))]"
                     : depth === FRONTIER
-                      ? "fill-accent/55"
+                      ? "fill-[rgb(var(--c,var(--accent))/0.55)]"
                       : depth < FRONTIER
-                        ? "fill-accent/25"
+                        ? "fill-[rgb(var(--c,var(--accent))/0.25)]"
                         : "fill-fg-faint/20";
               return (
                 <rect
@@ -258,7 +280,7 @@ function Shape({ slug }: { slug: string }) {
               y={H - 3 - (i + 1) * 1.85}
               width={2.4}
               height={(i + 1) * 1.85}
-              className={`${i > 13 ? "fill-accent" : "fill-fg-faint/45"} sig-grow`}
+              className={`${i > 13 ? "fill-[rgb(var(--c,var(--accent)))]" : "fill-fg-faint/45"} sig-grow`}
               style={at(i * 0.03)}
             />
           ))}
@@ -314,7 +336,13 @@ function Shape({ slug }: { slug: string }) {
             pathLength={1}
             className={`${structure} sig-draw`}
           />
-          <circle cx={40} cy={20} r={2} className="fill-data stroke-none sig-pop" style={at(0.75)} />
+          <circle
+            cx={40}
+            cy={20}
+            r={2}
+            className="fill-data stroke-none sig-pop"
+            style={at(0.75)}
+          />
         </g>
       );
     }
@@ -323,7 +351,15 @@ function Shape({ slug }: { slug: string }) {
       return (
         <g fill="none" strokeWidth={0.6}>
           {xs.map((x, i) => (
-            <rect key={i} x={x - 3.5} y={26} width={7} height={7} rx={1} className={i === 2 ? "fill-data stroke-none" : "fill-fg-faint/40 stroke-none"} />
+            <rect
+              key={i}
+              x={x - 3.5}
+              y={26}
+              width={7}
+              height={7}
+              rx={1}
+              className={i === 2 ? "fill-data stroke-none" : "fill-fg-faint/40 stroke-none"}
+            />
           ))}
           {[0, 1, 3, 4].map((i) => (
             <path
@@ -343,11 +379,31 @@ function Shape({ slug }: { slug: string }) {
         <g fill="none" strokeWidth={0.6}>
           {Array.from({ length: 5 }, (_, r) =>
             Array.from({ length: 5 }, (_, c) => (
-              <rect key={`${r}-${c}`} x={17 + c * 6} y={5 + r * 6} width={5} height={5} className={inert} />
+              <rect
+                key={`${r}-${c}`}
+                x={17 + c * 6}
+                y={5 + r * 6}
+                width={5}
+                height={5}
+                className={inert}
+              />
             )),
           )}
-          <rect x={17} y={29} width={5} height={5} className="fill-accent stroke-none" />
-          <rect x={41} y={5} width={5} height={5} className="fill-data stroke-none sig-pop" style={at(0.8)} />
+          <rect
+            x={17}
+            y={29}
+            width={5}
+            height={5}
+            className="fill-[rgb(var(--c,var(--accent)))] stroke-none"
+          />
+          <rect
+            x={41}
+            y={5}
+            width={5}
+            height={5}
+            className="fill-data stroke-none sig-pop"
+            style={at(0.8)}
+          />
           <polyline
             points="19.5,31.5 19.5,19.5 31.5,19.5 31.5,7.5 43.5,7.5"
             strokeWidth={1.2}
@@ -388,7 +444,12 @@ function Shape({ slug }: { slug: string }) {
             className="fill-fg-faint/30 stroke-none"
           />
           <polyline points={bell(26, 7)} className={structure} />
-          <polyline points={bell(42, 7)} className="stroke-data sig-pop" strokeDasharray="2.5 2" style={at(0.1)} />
+          <polyline
+            points={bell(42, 7)}
+            className="stroke-data sig-pop"
+            strokeDasharray="2.5 2"
+            style={at(0.1)}
+          />
           <line
             x1={CUT}
             y1={6}

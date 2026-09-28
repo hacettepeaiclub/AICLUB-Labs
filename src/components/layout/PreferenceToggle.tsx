@@ -64,8 +64,14 @@ export function PreferenceToggle<T extends string>({
               "inline-flex min-h-11 min-w-11 items-center justify-center",
               "rounded-pill px-2.5 py-1.5 text-caption font-medium",
               "transition-colors duration-fast",
+              // The selected state used to be the brand navy, filled. That
+              // made the two least important controls on the site the most
+              // saturated thing on any page — louder than the headline, louder
+              // than any lab's own colour. It is a raised surface now, with
+              // the accent left as a hairline: still unmistakably the chosen
+              // one, no longer the first thing the eye lands on.
               selected
-                ? "bg-accent-fill text-accent-fg"
+                ? "bg-ink-700 text-fg shadow-[inset_0_0_0_1px_rgb(var(--accent)/0.45)]"
                 : "text-fg-muted hover:bg-line/5 hover:text-fg",
             )}
           >

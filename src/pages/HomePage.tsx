@@ -5,9 +5,10 @@ import { LabSignature } from "@/components/home/LabSignature";
 import { MarkField } from "@/components/home/MarkField";
 import { useDocumentHead } from "@/app/useDocumentHead";
 import { homeMeta } from "@/app/siteMeta";
-import { useLabMeta, useT } from "@/i18n";
+import { useLabMeta, useLanguage, useT } from "@/i18n";
+import { prefetchLabs } from "@/i18n/labs";
 import { CATEGORY_CODE, CATEGORY_VAR, type LabCategory, type LabMeta } from "@/labs/types";
-import { orderedLabs } from "@/labs/registry";
+import { orderedLabs, preloadLab } from "@/labs/registry";
 import { readVisits } from "@/labs/visits";
 
 /**
@@ -56,7 +57,6 @@ export function HomePage() {
   const copy = t.home;
   useDocumentHead(homeMeta(copy.lede));
   const labs = orderedLabs();
-  const artRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLUListElement>(null);
   const [field, setField] = useState<LabCategory | null>(null);
   // Read once: the page reflects the visits made before it opened.
@@ -112,7 +112,6 @@ export function HomePage() {
     <div>
       {/* ---------------------------------------------------------- hero -- */}
       <section aria-labelledby="home-title" className="relative border-b border-line/10">
-        <MarkField targetRef={artRef} />
         <div className="shell relative grid items-center gap-2 pb-8 pt-6 md:min-h-[min(62vh,34rem)] md:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] md:gap-8 md:py-14">
           <div>
             <p className="font-mono text-caption uppercase tracking-[0.14em] text-fg-muted">
@@ -158,12 +157,17 @@ export function HomePage() {
               )}
             </div>
           </div>
-          {/* The box the mark assembles into. Above the copy on a phone. */}
+          {/* The box the mark assembles into, and the only place it can
+              appear: the canvas fills this element rather than the section, so
+              nothing is ever drawn over the headline. Above the copy on a
+              phone, where it is taller than it used to be — the mark is a
+              still drawing there and has to read as one. */}
           <div
-            ref={artRef}
             aria-hidden
-            className="order-first h-32 md:order-none md:h-[min(46vh,23rem)]"
-          />
+            className="relative order-first h-40 md:order-none md:h-[min(46vh,23rem)]"
+          >
+            <MarkField />
+          </div>
         </div>
       </section>
 
@@ -339,6 +343,18 @@ function FieldChip({
 function LabTile({ meta, lit, visited }: { meta: LabMeta; lit: boolean; visited: boolean }) {
   const t = useT();
   const copy = useLabMeta(meta.slug);
+  const { language } = useLanguage();
+
+  // Pointing at a card, or tabbing to it, is a good enough signal to start
+  // fetching what opening it needs: the lab's own chunk and the collection's
+  // prose. On a desktop that is the few hundred milliseconds between deciding
+  // and clicking; on a phone `touchstart` fires before the tap completes.
+  // Both calls are idempotent and swallow their own failures.
+  const warm = () => {
+    preloadLab(meta.slug);
+    prefetchLabs(language);
+  };
+
   return (
     <Link
       to={`/labs/${meta.slug}`}

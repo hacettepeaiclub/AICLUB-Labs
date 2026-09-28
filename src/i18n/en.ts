@@ -27,6 +27,11 @@ export const en = {
     hashtag: "#AIForAll",
     footerRights: (year: number) => `© ${year} Hacettepe AI Club`,
     footerCredit: "A project by Hacettepe AI Club",
+    // The one line that says a person made this. The labs are the club's
+    // portfolio as much as its teaching, and until now a visitor who wanted
+    // to know who built them, or to build one, had nowhere to go.
+    builtBy: "Built by club members",
+    sourceLink: "Source on GitHub",
     minutes: (n: number) => `${n} min`,
     loadingLab: "Loading lab",
     openLab: "Open lab →",
