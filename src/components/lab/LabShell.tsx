@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui";
+import { useDocumentHead } from "@/app/useDocumentHead";
+import { labMeta as labPageMeta } from "@/app/siteMeta";
 import { useLabMeta, useT } from "@/i18n";
 import { CATEGORY_STYLE, type LabMeta } from "@/labs/types";
 import { Specimen } from "./Specimen";
@@ -14,6 +16,9 @@ export function LabShell({ meta, children }: { meta: LabMeta; children: ReactNod
   const t = useT();
   const copy = useLabMeta(meta.slug);
   const category = CATEGORY_STYLE[meta.category];
+  const title = copy?.title ?? meta.title;
+  const description = copy?.description ?? meta.description;
+  useDocumentHead(labPageMeta(meta.slug, title, description));
 
   return (
     <div className="shell py-10 md:py-14">
@@ -38,8 +43,8 @@ export function LabShell({ meta, children }: { meta: LabMeta; children: ReactNod
             <Badge>{t.difficulty[meta.difficulty]}</Badge>
             <Badge>{t.shell.minutes(meta.minutes)}</Badge>
           </div>
-          <h1 className="text-display-lg text-fg">{copy?.title ?? meta.title}</h1>
-          <p className="mt-4 text-body-lg text-fg-muted">{copy?.description ?? meta.description}</p>
+          <h1 className="text-display-lg text-fg">{title}</h1>
+          <p className="mt-4 text-body-lg text-fg-muted">{description}</p>
         </div>
         <Specimen name={meta.slug} className="hidden md:block" />
       </header>

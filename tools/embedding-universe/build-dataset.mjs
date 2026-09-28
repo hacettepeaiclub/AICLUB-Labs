@@ -22,13 +22,6 @@
  * vectors are also public domain (PDDL v1.0), which the alternatives are not.
  */
 
-/*
- * Declared rather than switched off: this is a Node script and the lint config
- * assumes browser globals outside `src`. Naming the three it uses keeps
- * `no-undef` live for everything else, and leaves the shared config alone.
- */
-/* global fetch, Buffer, console */
-
 import { readFileSync, writeFileSync } from "node:fs";
 import { createHash } from "node:crypto";
 

@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import { Specimen } from "@/components/lab";
+import { useDocumentHead } from "@/app/useDocumentHead";
+import { notFoundMeta } from "@/app/siteMeta";
 import { useT } from "@/i18n";
 
 /**
@@ -12,6 +14,7 @@ import { useT } from "@/i18n";
  */
 export function NotFoundPage() {
   const t = useT();
+  useDocumentHead(notFoundMeta(t.notFound.title, t.notFound.body));
   return (
     <div className="shell grid min-h-[60vh] items-center gap-10 py-section md:grid-cols-[minmax(0,1fr)_20rem]">
       <div className="text-center md:text-left">

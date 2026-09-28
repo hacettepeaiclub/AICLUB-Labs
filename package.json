@@ -6,13 +6,14 @@
   "description": "Premium interactive experiences that teach Computer Science and AI.",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && node tools/prerender.mjs",
     "preview": "vite preview",
     "typecheck": "tsc -b --noEmit",
     "lint": "eslint . --max-warnings 0",
     "test": "vitest run",
     "test:watch": "vitest",
-    "format": "prettier --write \"src/**/*.{ts,tsx,css,md}\""
+    "format": "prettier --write \"src/**/*.{ts,tsx,css,md}\"",
+    "og": "node tools/og-images.mjs"
   },
   "dependencies": {
     "@types/matter-js": "^0.20.2",
