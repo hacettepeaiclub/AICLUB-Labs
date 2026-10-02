@@ -13,7 +13,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "format": "prettier --write \"src/**/*.{ts,tsx,css,md}\"",
-    "og": "node tools/og-images.mjs"
+    "og": "node tools/og-images.mjs",
+    "icons": "node tools/icons.mjs"
   },
   "dependencies": {
     "@types/matter-js": "^0.20.2",

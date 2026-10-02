@@ -83,3 +83,28 @@ Then check the result against a validator before announcing anything:
 <https://developers.facebook.com/tools/debug/> and
 <https://www.linkedin.com/post-inspector/>. Both cache aggressively; the
 inspector is also how you clear that cache.
+
+## Icons
+
+Everything in `public/` that a browser or a search engine shows as the site's
+icon — the favicons, the `.ico`, the Apple touch icon, the Android and
+maskable icons — is made by `tools/icons.mjs` from
+`src/assets/aiclub-mark-white.png`, the same file the header draws. There is
+one logo; change that file and regenerate:
+
+```bash
+npm i -D sharp && npm run icons && npm un sharp
+```
+
+Up to 48px the mark is drawn as a solid silhouette rather than as strands,
+because the strands are thinner than a pixel there; the tool explains why.
+
+A search engine caches a site's icon and refreshes it on its own schedule.
+To see what Google currently holds:
+
+```bash
+curl -s -o /dev/null -w "%{http_code}\n" "https://www.google.com/s2/favicons?domain=labs.hacettepeaiclub.com&sz=64"
+```
+
+`404` means it has none yet. Requesting indexing of the home page in Search
+Console is the way to hurry it.
