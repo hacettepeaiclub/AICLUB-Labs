@@ -96,8 +96,12 @@ one logo; change that file and regenerate:
 npm i -D sharp && npm run icons && npm un sharp
 ```
 
-Up to 48px the mark is drawn as a solid silhouette rather than as strands,
-because the strands are thinner than a pixel there; the tool explains why.
+The tab icon is `favicon.svg`: the deer alone, no ground, white when the
+browser is dark and navy when it is light (`prefers-color-scheme` inside the
+SVG). `favicon.ico` is the navy fallback for whatever does not draw SVG. At
+those sizes the mark is a solid silhouette, because its strands are thinner
+than a pixel. Home-screen icons cannot be transparent, so they are the white
+deer on the site's own near-black. The tool explains each choice.
 
 A search engine caches a site's icon and refreshes it on its own schedule.
 To see what Google currently holds:
