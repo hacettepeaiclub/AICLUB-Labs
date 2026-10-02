@@ -13,6 +13,7 @@
 
 import { color, paletteVersion } from "@/design/tokens";
 import { CLOSED, FRONTIER, MUD, PATH, WALL, type Grid, type Search } from "./engine";
+import { clearCanvas } from "@/lib/canvas";
 
 interface Ink {
   surface: string;
@@ -159,7 +160,7 @@ export function drawGrid(
 ): void {
   const C = inks();
   const { cell, offsetX, offsetY } = layoutFor(grid, width, height);
-  ctx.clearRect(0, 0, width, height);
+  clearCanvas(ctx);
   if (cell <= 0) return;
 
   ctx.globalAlpha = options.locked ? 0.92 : 1;

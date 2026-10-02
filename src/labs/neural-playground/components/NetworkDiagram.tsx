@@ -14,6 +14,7 @@ import { formatNumber } from "@/lib/format";
 import { clamp } from "@/lib/math";
 import { maxAbsWeight, type Mlp } from "../engine";
 import { createNeuronFieldPainter, type NeuronNode } from "../paint";
+import { clearCanvas } from "@/lib/canvas";
 
 export interface NetworkDiagramProps {
   netRef: MutableRefObject<Mlp>;
@@ -111,13 +112,13 @@ export function NetworkDiagram({ netRef, sizes, running, revision = 0 }: Network
 
   const canvasRef = useCanvas2D(
     useCallback(
-      ({ ctx, width: w, height: h }) => {
+      ({ ctx }) => {
         painterRef.current ??= createNeuronFieldPainter();
 
         const net = netRef.current;
         const { nodes } = layoutRef.current;
         const focus = hoveredRef.current;
-        ctx.clearRect(0, 0, w, h);
+        clearCanvas(ctx);
 
         const scale = Math.max(maxAbsWeight(net), 0.001);
         for (let l = 0; l < net.weights.length; l++) {

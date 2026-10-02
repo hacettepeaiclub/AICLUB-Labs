@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import logoMark from "@/assets/aiclub-mark-white.png";
 import { palette, subscribePalette } from "@/design/tokens";
+import { clearCanvas } from "@/lib/canvas";
 
 /**
  * The club's mark, assembled from a few thousand points beside the headline.
@@ -138,7 +139,7 @@ export function MarkField() {
     };
 
     const draw = () => {
-      ctx.clearRect(0, 0, width, height);
+      clearCanvas(ctx);
       ctx.globalCompositeOperation = blend;
       for (let role = 0; role < ROLES; role++) {
         ctx.fillStyle = fills[role] ?? "";
