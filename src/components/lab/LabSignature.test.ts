@@ -18,7 +18,7 @@ import { describe, expect, it } from "vitest";
  * class is on the element, it simply does nothing.
  */
 
-const source = readFileSync("src/components/home/LabSignature.tsx", "utf8");
+const source = readFileSync("src/components/lab/LabSignature.tsx", "utf8");
 
 /** Tailwind's default opacity scale: 0-100 in fives. */
 const OPACITY = new Set(Array.from({ length: 21 }, (_, i) => String(i * 5)));

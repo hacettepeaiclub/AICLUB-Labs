@@ -119,6 +119,11 @@ export const tr: Translation = {
     controlsLabel: "Deney kontrolleri",
     moreControls: "Ayarlar ve yardım",
     keyboardHint: "Grafik odaktayken",
+    nextLab: "Koleksiyonda sıradaki",
+    endOfCollection: "Koleksiyonun tamamı bu kadar.",
+    endOfCollectionBody:
+      "Bütün laboratuvarlar, anlatının ilerlediği sırayla. Birini yeniden seçmek için ızgaraya dönün.",
+    backToCollection: "Tüm laboratuvarlar",
   },
 
   /**
@@ -128,6 +133,18 @@ export const tr: Translation = {
    * before any lab is opened — and `meta.ts` keeps the structural facts (slug,
    * category, minutes) so a lab can be listed without being loaded at all.
    */
+
+  palette: {
+    open: "Laboratuvar bul",
+    label: "Laboratuvar bul",
+    placeholder: "Ada ya da alana göre ara",
+    results: (n: number) => `${n} laboratuvar`,
+    empty: (query: string) => `“${query}” ile eşleşen bir laboratuvar yok.`,
+    current: "Buradasınız",
+    navigate: "gezin",
+    select: "aç",
+    dismiss: "kapat",
+  },
   labMeta: {
     "embedding-universe-3d": {
       title: "Gömme Evreni, 3B prototip",

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { labs, orderedLabs, publishedLabs } from "./registry";
+import { labs, nextLab, orderedLabs, publishedLabs } from "./registry";
 
 /**
  * The home page shows the whole collection in one grid, so the order of that
@@ -48,5 +48,29 @@ describe("the collection has an order, and it is the one we chose", () => {
     expect(orderedLabs().map((lab) => lab.meta.slug)).toEqual(
       orderedLabs().map((lab) => lab.meta.slug),
     );
+  });
+});
+
+describe("each lab points at the next one", () => {
+  it("follows the collection's reading order", () => {
+    expect(nextLab("hash-playground")?.meta.slug).toBe("sorting-race");
+    expect(nextLab("tokenizer")?.meta.slug).toBe("gradient-descent");
+  });
+
+  it("stops at the end rather than wrapping round to the start", () => {
+    // The order is an argument with a conclusion. A loop would say something
+    // else, so the last lab has no next and its page says the collection is
+    // finished instead.
+    const last = orderedLabs().at(-1)!.meta.slug;
+    expect(nextLab(last)).toBeUndefined();
+  });
+
+  it("gives a draft, which is outside the order, no next either", () => {
+    const draft = labs.find((lab) => lab.meta.draft)!.meta.slug;
+    expect(nextLab(draft)).toBeUndefined();
+  });
+
+  it("gives an unknown slug nothing, rather than the first lab", () => {
+    expect(nextLab("not-a-lab")).toBeUndefined();
   });
 });

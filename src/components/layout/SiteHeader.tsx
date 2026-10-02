@@ -5,17 +5,37 @@ import type { Language, ThemeName } from "@/app/preferences";
 import logoMark from "@/assets/aiclub-mark-white.png";
 import { useLanguage, useT } from "@/i18n";
 import { cn } from "@/lib/cn";
+import { Kbd } from "@/components/ui";
+import { PALETTE_SHORTCUT } from "./LabPalette";
 import { PreferenceToggle, type ToggleOption } from "./PreferenceToggle";
 
 const SunIcon = (
-  <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" aria-hidden>
+  <svg
+    viewBox="0 0 16 16"
+    width="14"
+    height="14"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.4"
+    strokeLinecap="round"
+    aria-hidden
+  >
     <circle cx="8" cy="8" r="3" />
     <path d="M8 1.5v1.5M8 13v1.5M1.5 8H3M13 8h1.5M3.4 3.4l1 1M11.6 11.6l1 1M3.4 12.6l1-1M11.6 4.4l1-1" />
   </svg>
 );
 
 const MoonIcon = (
-  <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" aria-hidden>
+  <svg
+    viewBox="0 0 16 16"
+    width="14"
+    height="14"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.4"
+    strokeLinejoin="round"
+    aria-hidden
+  >
     <path d="M13.5 9.6A5.8 5.8 0 0 1 6.4 2.5a5.8 5.8 0 1 0 7.1 7.1z" />
   </svg>
 );
@@ -29,7 +49,7 @@ const MoonIcon = (
  * replays its signal on hover. The pointer position is written straight to a
  * CSS variable rather than into React state, so following it never re-renders.
  */
-export function SiteHeader() {
+export function SiteHeader({ onFindLab }: { onFindLab: () => void }) {
   const t = useT();
   const { language, setLanguage } = useLanguage();
   const { theme, setTheme } = useTheme();
@@ -99,6 +119,35 @@ export function SiteHeader() {
               {t.shell.allLabs}
             </NavLink>
           </nav>
+
+          {/* The finder's visible door. A shortcut nobody can see is a
+              shortcut nobody uses, and it says the keys on its face so the
+              second visit does not need the button. From `sm` up only: on a
+              phone there is no keyboard to teach, the grid is one tap away,
+              and the header has no width to spare — at 360px it already
+              holds the wordmark and both toggles with nothing left over. */}
+          <button
+            type="button"
+            onClick={onFindLab}
+            aria-keyshortcuts={PALETTE_SHORTCUT === "⌘K" ? "Meta+K" : "Control+K"}
+            className="hidden min-h-11 items-center gap-2.5 rounded border border-line/10 bg-ink-800/50 pl-3 pr-2
+              text-body-sm text-fg-muted transition-colors duration-fast hover:border-line/25 hover:text-fg sm:inline-flex"
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              aria-hidden
+            >
+              <circle cx="7" cy="7" r="4.5" />
+              <path d="M10.5 10.5L14 14" />
+            </svg>
+            {t.palette.open}
+            <Kbd>{PALETTE_SHORTCUT}</Kbd>
+          </button>
 
           <PreferenceToggle
             label={t.preferences.languageLabel}

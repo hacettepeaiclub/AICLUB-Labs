@@ -61,7 +61,7 @@ describe("registry", () => {
   });
 
   it("has a drawing of its own on the home page", () => {
-    expect(readFileSync("src/components/home/LabSignature.tsx", "utf8")).toMatch(
+    expect(readFileSync("src/components/lab/LabSignature.tsx", "utf8")).toMatch(
       /case "probability":/,
     );
   });

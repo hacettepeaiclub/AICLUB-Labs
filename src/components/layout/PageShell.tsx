@@ -1,6 +1,7 @@
-import type { ReactNode } from "react";
+import { useCallback, useState, type ReactNode } from "react";
 import { useLocation } from "react-router-dom";
 import { ErrorBoundary } from "./ErrorBoundary";
+import { LabPalette } from "./LabPalette";
 import { SiteHeader } from "./SiteHeader";
 import { SiteFooter } from "./SiteFooter";
 import { useT } from "@/i18n";
@@ -29,12 +30,16 @@ import { useT } from "@/i18n";
 export function PageShell({ routeKey, children }: { routeKey: string; children: ReactNode }) {
   const t = useT();
   const { pathname } = useLocation();
+  // Held here because two things open it — the header's button and the
+  // shortcut inside the palette — and the dialog has to agree with both.
+  const [finding, setFinding] = useState(false);
+  const openFinder = useCallback(() => setFinding(true), []);
   return (
     <div className="flex min-h-dvh flex-col">
       <a href="#main" className="skip-link">
         {t.shell.skipToContent}
       </a>
-      <SiteHeader />
+      <SiteHeader onFindLab={openFinder} />
       <main key={routeKey} id="main" className="page-enter flex-1">
         {/* Inside the chrome, not around it: a page that fails to render must
             still leave the visitor a header and a way somewhere else. */}
@@ -43,6 +48,7 @@ export function PageShell({ routeKey, children }: { routeKey: string; children: 
         </ErrorBoundary>
       </main>
       <SiteFooter />
+      <LabPalette open={finding} onOpenChange={setFinding} />
     </div>
   );
 }

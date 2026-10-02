@@ -129,8 +129,35 @@ export const en = {
     // gear icon: a visitor should know what is behind it before opening it.
     moreControls: "Settings and help",
     keyboardHint: "With the chart focused,",
+    // The way out of a lab, at the bottom of it. The collection is written as
+    // a sequence, and until this existed the sequence stopped at the grid: a
+    // lab ended with its sources and then the footer, 6,000px below the only
+    // link anywhere else.
+    nextLab: "Next in the collection",
+    endOfCollection: "That is the whole collection.",
+    endOfCollectionBody:
+      "Every lab, in the order the argument runs. Go back to the grid to pick any one again.",
+    backToCollection: "All labs",
   },
 
+  /**
+   * The lab finder, on ⌘K / Ctrl+K and behind the header's search button.
+   *
+   * It finds labs and nothing else. There is no site to search beyond eleven
+   * instruments, and a box that promised more would be a box that mostly
+   * returned nothing.
+   */
+  palette: {
+    open: "Find a lab",
+    label: "Find a lab",
+    placeholder: "Search by name or field",
+    results: (n: number) => (n === 1 ? "1 lab" : `${n} labs`),
+    empty: (query: string) => `No lab matches “${query}”.`,
+    current: "You are here",
+    navigate: "move",
+    select: "open",
+    dismiss: "close",
+  },
   /**
    * What each lab is called, and the one sentence under it.
    *

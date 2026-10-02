@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/cn";
-import { LabSignature } from "@/components/home/LabSignature";
+import { LabSignature } from "@/components/lab/LabSignature";
 import { MarkField } from "@/components/home/MarkField";
 import { useDocumentHead } from "@/app/useDocumentHead";
 import { homeMeta } from "@/app/siteMeta";

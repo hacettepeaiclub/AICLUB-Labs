@@ -12,6 +12,14 @@ import { createRng } from "@/lib/random";
  * Someone who has done the lab recognises it; someone who has not can still see
  * that the nine things on this page are nine different kinds of system.
  *
+ * ## Where they appear
+ *
+ * Anywhere the collection points at a lab: the home grid, the card at the
+ * bottom of a lab that names the next one, and the rows of the lab finder. It
+ * lived under `components/home` while the grid was its only use, and moved
+ * here when it stopped being one. It costs those other places nothing — the
+ * home page is in the entry chunk, and so is this.
+ *
  * ## Why they are not live
  *
  * A live miniature means importing that lab's engine, and nine engine imports

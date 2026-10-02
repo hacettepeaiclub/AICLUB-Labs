@@ -1,16 +1,23 @@
-import type { ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui";
 import { useDocumentHead } from "@/app/useDocumentHead";
 import { labMeta as labPageMeta } from "@/app/siteMeta";
 import { useLabMeta, useT } from "@/i18n";
-import { CATEGORY_STYLE, type LabMeta } from "@/labs/types";
+import { CATEGORY_STYLE, CATEGORY_VAR, type LabMeta } from "@/labs/types";
+import { LabNext } from "./LabNext";
+import { LabProgress } from "./LabProgress";
 import { Specimen } from "./Specimen";
 
 /**
  * Frame that every experiment renders inside. Gives all 100+ labs the same
  * header anatomy (breadcrumb, title, description, metadata) so the product
  * feels like one system. The lab itself renders as `children`.
+ *
+ * It also owns the two things that place a lab within the collection rather
+ * than inside itself: the hairline across the top that says how far through
+ * it you are, and the card at the bottom that says where it goes next. Both
+ * live here and not in the labs so that no lab can forget them.
  */
 export function LabShell({ meta, children }: { meta: LabMeta; children: ReactNode }) {
   const t = useT();
@@ -19,9 +26,12 @@ export function LabShell({ meta, children }: { meta: LabMeta; children: ReactNod
   const title = copy?.title ?? meta.title;
   const description = copy?.description ?? meta.description;
   useDocumentHead(labPageMeta(meta.slug, title, description));
+  const rootRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div className="shell py-10 md:py-14">
+    <div ref={rootRef} className="shell py-10 md:py-14">
+      <LabProgress targetRef={rootRef} colour={CATEGORY_VAR[meta.category]} />
+
       <nav aria-label={t.shell.breadcrumb} className="mb-6">
         <Link
           to="/"
@@ -50,6 +60,8 @@ export function LabShell({ meta, children }: { meta: LabMeta; children: ReactNod
       </header>
 
       {children}
+
+      <LabNext slug={meta.slug} />
     </div>
   );
 }
