@@ -71,7 +71,7 @@ describe("registry", () => {
   });
 
   it("has a drawing of its own on the home page", () => {
-    const source = readFileSync("src/components/home/LabSignature.tsx", "utf8");
+    const source = readFileSync("src/components/lab/LabSignature.tsx", "utf8");
     expect(source).toMatch(/case "hypothesis-testing":/);
   });
 });
