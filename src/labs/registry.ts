@@ -125,3 +125,19 @@ export const preloadLab = (slug: string): void => {
     ?.load()
     .catch(() => {});
 };
+
+/**
+ * The lab that comes after `slug` in the collection's reading order, or
+ * `undefined` when there is none.
+ *
+ * `LAB_ORDER` is an argument with a beginning and an end — what a function
+ * does to input, then what an algorithm costs, and only then the machine
+ * learning that stands on both — so the last lab has no "next" rather than
+ * wrapping to the first. A draft is not in the order at all, and has none
+ * either.
+ */
+export const nextLab = (slug: string): LabEntry | undefined => {
+  const ordered = orderedLabs();
+  const index = ordered.findIndex((lab) => lab.meta.slug === slug);
+  return index === -1 ? undefined : ordered[index + 1];
+};
