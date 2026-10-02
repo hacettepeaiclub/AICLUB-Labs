@@ -22,15 +22,15 @@ export const en = {
     breadcrumb: "Breadcrumb",
     backToLabs: "← All labs",
     footerTagline: "AI Club Labs: Learn computer science by playing with it.",
-    byLine: "by",
     parentOrg: "Hacettepe AI Club",
     hashtag: "#AIForAll",
     footerRights: (year: number) => `© ${year} Hacettepe AI Club`,
     footerCredit: "A project by Hacettepe AI Club",
-    // The one line that says a person made this. The labs are the club's
-    // portfolio as much as its teaching, and until now a visitor who wanted
-    // to know who built them, or to build one, had nowhere to go.
-    builtBy: "Built by club members",
+    // Who made this, and where to write. `{org}` is where the club's name
+    // goes, as a link — it is a placeholder rather than two strings because
+    // the two languages put it at opposite ends of the sentence.
+    developedBy: "Developed by Metehan Özcan for {org}",
+    feedback: "Spotted a problem or have feedback?",
     sourceLink: "Source on GitHub",
     minutes: (n: number) => `${n} min`,
     loadingLab: "Loading lab",
