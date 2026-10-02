@@ -55,23 +55,38 @@ function Legend() {
  * out of a ref every frame, so training at 60fps costs no re-renders.
  */
 /**
- * Whether the two pictures fit side by side.
+ * Whether there is room to leave the diagram open.
  *
- * The diagram sits beside the decision surface from `xl` up. Below that they
- * stack, and the diagram then sits between the canvas and the Train button —
- * which put that button 1,206px down the page on a phone, so a visitor
- * scrolled past the entire network to reach the control that starts it.
+ * Both pictures stack under each other at every width, so the question is
+ * only whether the diagram starts open.
+ *
+ * The threshold is `lg`, and it is `lg` because that is where `Stage` moves
+ * its controls into the rail beside the screen rather than under it. Above it,
+ * an open diagram costs nothing — the rail is the taller column and the
+ * diagram is filling space that would otherwise be empty. Below it the
+ * controls sit underneath, and an open diagram pushes between the canvas and
+ * the Train button: that put the button 1,206px down the page on a phone, so
+ * a visitor scrolled past the entire network to reach the control that starts
+ * it. There, it folds.
+ *
+ * It used to read `xl`. Between the two breakpoints the controls were already
+ * in the rail while the diagram was still folded, which left the screen column
+ * 230px short of them — the same hole this stage had at every width before the
+ * pictures were unstacked.
  *
  * Reading the breakpoint in JS rather than duplicating the diagram behind two
  * CSS visibility rules keeps it to a single mount, which matters here: it
  * repaints on every training frame.
  */
-function useSideBySide() {
+/** `lg` in tailwind.config.ts, which is where `Stage` forms its rail. */
+const LG = "(min-width: 1024px)";
+
+function useRoomForDiagram() {
   const [wide, setWide] = useState(
-    () => typeof window !== "undefined" && window.matchMedia("(min-width: 1280px)").matches,
+    () => typeof window !== "undefined" && window.matchMedia(LG).matches,
   );
   useEffect(() => {
-    const query = window.matchMedia("(min-width: 1280px)");
+    const query = window.matchMedia(LG);
     const sync = () => setWide(query.matches);
     sync();
     query.addEventListener("change", sync);
@@ -83,7 +98,7 @@ function useSideBySide() {
 export function Playground() {
   const lab = useLabs()["neural-playground"];
   const p = lab.playground;
-  const sideBySide = useSideBySide();
+  const diagramOpen = useRoomForDiagram();
   const datasetOptions = DATASETS.map((d) => ({
     value: d.kind,
     label: lab.datasets[d.kind].label,
@@ -201,10 +216,10 @@ export function Playground() {
             />
             <Legend />
           </div>
-          {/* Side by side when there is room; folded away when there is not,
-              so the Train button follows the canvas instead of the network. */}
+          {/* Open when there is room; folded away when there is not, so the
+              Train button follows the canvas instead of the network. */}
           <div className="min-w-0">
-            {sideBySide ? (
+            {diagramOpen ? (
               <NetworkDiagram
                 netRef={netRef}
                 sizes={sizes}
