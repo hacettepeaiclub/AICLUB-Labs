@@ -516,6 +516,75 @@ function Shape({ slug }: { slug: string }) {
         </g>
       );
     }
+    case "floating-point": {
+      /*
+       * The two things the lab is about, one above the other: a number as a
+       * row of bits in three groups — one sign, a short exponent, a longer
+       * fraction — and the ruler those bits can write on.
+       *
+       * The ruler is computed, not drawn by eye. Its ticks are every value of
+       * a tiny float with four values per doubling, so the gaps double at
+       * each power of two exactly as they do in float32. One tick is live: the
+       * nearest value to a mark that sits between two of them.
+       */
+      const BITS = [0, 0, 1, 1, 1, 0, 0, 1, 1, 0] as const;
+      const scale = 7; // CSS units per unit of value: 0 … 8 spans 4 … 60
+      const ticks: number[] = [0, 0.25, 0.5, 0.75];
+      for (let e = 0; e < 3; e++) for (let m = 0; m < 4; m++) ticks.push((1 + m / 4) * 2 ** e);
+      ticks.push(8);
+      const LIVE = 9; // the tick at 2.5
+      let x = 6;
+      const cells = BITS.map((bit, i) => {
+        const group = i === 0 ? 0 : i <= 3 ? 1 : 2; // sign, exponent, fraction
+        if (i === 1 || i === 4) x += 2.2; // a gap between the groups
+        const cell = { x, bit, group, i };
+        x += 4.6;
+        return cell;
+      });
+      return (
+        <g>
+          {cells.map((c) => (
+            <rect
+              key={c.i}
+              x={c.x}
+              y={5}
+              width={3.8}
+              height={7}
+              rx={0.6}
+              className={`${
+                c.bit === 1
+                  ? c.group === 1
+                    ? "fill-[rgb(var(--c,var(--accent)))]"
+                    : "fill-[rgb(var(--c,var(--accent))/0.55)]"
+                  : "fill-fg-faint/25"
+              } sig-blink`}
+              style={at(c.i * 0.05)}
+            />
+          ))}
+          <line x1={4} y1={30} x2={60} y2={30} strokeWidth={0.8} className={inert} />
+          {ticks.map((v, i) => (
+            <line
+              key={`t-${i}`}
+              x1={4 + v * scale}
+              y1={i === LIVE ? 24 : 26.5}
+              x2={4 + v * scale}
+              y2={30}
+              strokeWidth={i === LIVE ? 1.4 : 0.9}
+              className={`${i === LIVE ? live : structure} sig-grow`}
+              style={at(0.35 + i * 0.03)}
+            />
+          ))}
+          {/* the number asked for, a little off the tick it is stored as */}
+          <circle
+            cx={4 + 2.63 * scale}
+            cy={34.5}
+            r={1.1}
+            className="fill-fg-faint/60 sig-pop"
+            style={at(0.95)}
+          />
+        </g>
+      );
+    }
     case "embedding-universe":
     default: {
       const pts = Array.from({ length: 26 }, () => ({ x: 4 + rng() * 56, y: 4 + rng() * 32 }));

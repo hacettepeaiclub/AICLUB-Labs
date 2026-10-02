@@ -12,6 +12,7 @@ describe("the collection has an order, and it is the one we chose", () => {
   it("reads foundations first and machine learning last", () => {
     expect(orderedLabs().map((lab) => lab.meta.slug)).toEqual([
       "hash-playground",
+      "floating-point",
       "sorting-race",
       "pathfinding",
       "tokenizer",
@@ -33,7 +34,7 @@ describe("the collection has an order, and it is the one we chose", () => {
     // single card. That is a home-page layout decision rather than a registry
     // one, and it is left to the home page to answer.
     const shown = orderedLabs();
-    expect(shown).toHaveLength(11);
+    expect(shown).toHaveLength(12);
     expect(shown.map((lab) => lab.meta.slug).sort()).toEqual(
       publishedLabs()
         .map((lab) => lab.meta.slug)

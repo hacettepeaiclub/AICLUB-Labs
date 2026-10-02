@@ -67,7 +67,7 @@ export const tr: Translation = {
     // İlk sürümdeki başlık geri alındı: hem bilgisayar bilimini hem yapay
     // zekâyı adıyla söylüyor ve yine bir eylemle başlıyor.
     title: "Bilgisayar biliminin ve yapay zekânın arkasındaki fikirlerle oynayın.",
-    lede: "On bir etkileşimli deney: algoritmalar, yapay sinir ağları ve hesaplamanın işleyişi. Uzun anlatım yok, çevirip kaydıracağınız düğmeler var.",
+    lede: "On iki etkileşimli deney: algoritmalar, yapay sinir ağları ve hesaplamanın işleyişi. Uzun anlatım yok, çevirip kaydıracağınız düğmeler var.",
     cta: "Denemeye başla",
     labs: "Laboratuvarlar",
     labCount: (n: number) => `${n} düzenek`,
@@ -173,6 +173,11 @@ export const tr: Translation = {
       title: "Gradient Descent",
       description:
         "Bir yüzeyin biçiminin, atmanıza izin verilen adımın boyutunu nasıl belirlediğini görün.",
+    },
+    "floating-point": {
+      title: "Kayan Nokta",
+      description:
+        "0.1 yazın ve bilgisayarınızın gerçekte sakladığı sayıyı görün, sonra 0.1 + 0.2'nin neden 0.3 etmediğini öğrenin.",
     },
     "hash-playground": {
       title: "Hash Laboratuvarı",

@@ -4,6 +4,7 @@ import { attentionMeta } from "./attention/meta";
 import { embeddingUniverse3DMeta } from "./embedding-universe-3d/meta";
 import { embeddingUniverseMeta } from "./embedding-universe/meta";
 import { gradientDescentMeta } from "./gradient-descent/meta";
+import { floatingPointMeta } from "./floating-point/meta";
 import { hashPlaygroundMeta } from "./hash-playground/meta";
 import { hypothesisTestingMeta } from "./hypothesis-testing/meta";
 import { neuralPlaygroundMeta } from "./neural-playground/meta";
@@ -52,6 +53,7 @@ export const labs: LabEntry[] = [
   // Draft: routable, but kept off the home grid. A prototype, not a lesson.
   entry(embeddingUniverse3DMeta, () => import("./embedding-universe-3d")),
   entry(gradientDescentMeta, () => import("./gradient-descent")),
+  entry(floatingPointMeta, () => import("./floating-point")),
   entry(hashPlaygroundMeta, () => import("./hash-playground")),
   entry(hypothesisTestingMeta, () => import("./hypothesis-testing")),
   entry(neuralPlaygroundMeta, () => import("./neural-playground")),
@@ -78,8 +80,9 @@ export const publishedLabs = (): LabEntry[] =>
  * they still assume a reader who wants machine learning.
  *
  * So the list below is the argument the collection makes, in order: what a
- * function does to input, what an algorithm costs, how a search explores, how
- * text is cut up — and only then the machine learning that stands on all four.
+ * function does to input, how a number is actually stored, what an algorithm
+ * costs, how a search explores, how text is cut up — and only then the
+ * machine learning that stands on all five.
  *
  * A lab missing from this list is not lost: it sorts to the end, alphabetically,
  * so registering a lab always puts it on the home page and forgetting to name
@@ -87,6 +90,7 @@ export const publishedLabs = (): LabEntry[] =>
  */
 const LAB_ORDER = [
   "hash-playground",
+  "floating-point",
   "sorting-race",
   "pathfinding",
   "tokenizer",

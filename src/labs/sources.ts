@@ -10,7 +10,8 @@
  *
  * Every field here was read from an authoritative register rather than
  * recalled: the DOI registry for anything with a DOI, the arXiv API for the
- * two preprints, and the book itself for the textbook. A field that could not
+ * preprints, the published specification for ECMA-262, and the book itself
+ * for the textbook. A field that could not
  * be verified is absent rather than guessed, which is why some entries carry
  * no DOI and the textbook carries no year.
  *
@@ -127,6 +128,52 @@ export const SOURCES = {
     year: 2015,
     doi: "10.6028/NIST.FIPS.180-4",
     url: null,
+  },
+  ieee754: {
+    // The DOI registry lists no personal authors and leaves the issue date
+    // empty. The year is the standard's own designation, 754-2019, which the
+    // record's creation date (2019-07-18) and its DOI agree with.
+    authors: "IEEE",
+    title: "IEEE Standard for Floating-Point Arithmetic",
+    venue: "IEEE Std 754-2019, ISBN 978-1-5044-5924-2",
+    year: 2019,
+    doi: "10.1109/IEEESTD.2019.8766229",
+    url: null,
+  },
+  goldberg: {
+    authors: "Goldberg, D.",
+    title: "What every computer scientist should know about floating-point arithmetic",
+    venue: "ACM Computing Surveys, 23(1), 5–48",
+    year: 1991,
+    doi: "10.1145/103162.103163",
+    url: null,
+  },
+  ecma262: {
+    authors: "Ecma International",
+    title: "ECMAScript® 2024 Language Specification",
+    venue: "ECMA-262, 15th edition",
+    year: 2024,
+    doi: null,
+    url: "https://262.ecma-international.org/15.0/",
+  },
+  bfloat16: {
+    authors:
+      "Kalamkar, D., Mudigere, D., Mellempudi, N., Das, D., Banerjee, K., Avancha, S., Vooturi, D. T., Jammalamadaka, N., Huang, J., Yuen, H., Yang, J., Park, J., Heinecke, A., Georganas, E., Srinivasan, S., Kundu, A., Smelyanskiy, M., Kaul, B., & Dubey, P.",
+    title: "A Study of BFLOAT16 for Deep Learning Training",
+    venue: "arXiv:1905.12322",
+    year: 2019,
+    // The arXiv record carries no DOI, so none is printed.
+    doi: null,
+    url: "https://arxiv.org/abs/1905.12322",
+  },
+  mixedPrecision: {
+    authors:
+      "Micikevicius, P., Narang, S., Alben, J., Diamos, G., Elsen, E., Garcia, D., Ginsburg, B., Houston, M., Kuchaiev, O., Venkatesh, G., & Wu, H.",
+    title: "Mixed Precision Training",
+    venue: "International Conference on Learning Representations (ICLR 2018); arXiv:1710.03740",
+    year: 2018,
+    doi: null,
+    url: "https://arxiv.org/abs/1710.03740",
   },
   statisticalInference: {
     authors: "Casella, G., & Berger, R. L.",
