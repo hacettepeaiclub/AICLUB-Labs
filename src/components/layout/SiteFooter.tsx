@@ -1,62 +1,60 @@
-import logoMark from "@/assets/aiclub-mark-white.png";
 import { useT } from "@/i18n";
 
+/** Where a problem report or a suggestion goes. Not translated: it is an address. */
+const FEEDBACK_EMAIL = "metehan.data@gmail.com";
+
+const linkClass =
+  "underline decoration-line/30 underline-offset-2 transition-colors duration-fast hover:text-fg";
+
 /**
- * The footer, and the only place the parent organisation is named.
+ * The footer: what this is, who made it, and where to write.
  *
  * Labs is a product of Hacettepe AI Club, not a second copy of its website —
  * so the relationship is one line and one link, not an About section. Anyone
  * who wants the community follows it; anyone who wants a lab never has to.
+ *
+ * The mark is not repeated here. The header already carries it on every page,
+ * and a second, smaller copy in a badge at the bottom said nothing the top of
+ * the page had not.
  */
 export function SiteFooter() {
   const t = useT();
+  // The club's name goes wherever the sentence puts it: last in English,
+  // first in Turkish.
+  const [beforeOrg, afterOrg] = t.shell.developedBy.split("{org}");
+
   return (
     <footer className="mt-auto border-t border-line/10">
-      <div className="shell flex flex-wrap items-center justify-between gap-x-8 gap-y-4 py-8">
-        <div className="flex items-center gap-3">
-          <span
-            aria-hidden
-            className="grid size-7 shrink-0 place-items-center rounded bg-accent-fill p-1.5"
-          >
-            <img src={logoMark} alt="" className="h-full w-full object-contain" />
-          </span>
-          <div className="text-caption leading-snug">
-            <p className="font-display font-semibold text-fg">
-              {t.shell.brand} {t.shell.brandSuffix}
-            </p>
-            <p className="text-fg-faint">
-              {t.shell.byLine}{" "}
-              <a
-                href="https://www.hacettepeaiclub.com/"
-                target="_blank"
-                rel="noreferrer"
-                className="underline decoration-line/30 underline-offset-2 transition-colors duration-fast hover:text-fg"
-              >
-                {t.shell.parentOrg}
-              </a>
-            </p>
-          </div>
-        </div>
-
-        {/* The only route from a lab back to the people who wrote it. The
-            primary action on this site is still "open a lab" and not "join" —
-            but a visitor who gets to the bottom of the page and wants to know
-            who made this, or to make one, had nowhere to go at all. One line,
-            at the end, in the quietest tier on the page. */}
-        <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-caption text-fg-faint">
-          <span className="font-mono text-accent">{t.shell.hashtag}</span>
+      <div className="shell flex flex-wrap items-end justify-between gap-x-8 gap-y-4 py-8">
+        <div className="space-y-1 text-caption leading-snug text-fg-faint">
+          <p className="font-display text-body-sm font-semibold text-fg">
+            {t.shell.brand} {t.shell.brandSuffix}
+          </p>
           <p>
-            {t.shell.builtBy}
-            {" · "}
-            <a
-              href="https://github.com/hacettepeaiclub/AICLUB-Labs"
-              target="_blank"
-              rel="noreferrer"
-              className="underline decoration-line/30 underline-offset-2 transition-colors duration-fast hover:text-fg"
-            >
-              {t.shell.sourceLink}
+            {beforeOrg}
+            <a href="https://www.hacettepeaiclub.com/" target="_blank" rel="noreferrer" className={linkClass}>
+              {t.shell.parentOrg}
+            </a>
+            {afterOrg}
+          </p>
+          <p>
+            {t.shell.feedback}{" "}
+            <a href={`mailto:${FEEDBACK_EMAIL}`} className={linkClass}>
+              {FEEDBACK_EMAIL}
             </a>
           </p>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-caption text-fg-faint">
+          <span className="font-mono text-accent">{t.shell.hashtag}</span>
+          <a
+            href="https://github.com/hacettepeaiclub/AICLUB-Labs"
+            target="_blank"
+            rel="noreferrer"
+            className={linkClass}
+          >
+            {t.shell.sourceLink}
+          </a>
           <p className="tabular-nums">{t.shell.footerRights(new Date().getFullYear())}</p>
         </div>
       </div>

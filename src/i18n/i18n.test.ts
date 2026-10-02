@@ -202,3 +202,14 @@ describe("lab identity", () => {
     }
   });
 });
+
+describe("footer credit", () => {
+  it("puts the club's name in the sentence exactly once, in both languages", () => {
+    // The footer splits on the placeholder and links whatever sits between
+    // the halves. A translation that drops it would drop the link silently.
+    for (const dict of [en, tr]) {
+      expect(dict.shell.developedBy.split("{org}")).toHaveLength(2);
+      expect(dict.shell.developedBy).toContain("Metehan Özcan");
+    }
+  });
+});
