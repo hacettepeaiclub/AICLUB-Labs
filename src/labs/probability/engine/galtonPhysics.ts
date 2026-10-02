@@ -36,6 +36,7 @@
 
 import Matter from "matter-js";
 import { createRng } from "@/lib/random";
+import { clearCanvas } from "@/lib/canvas";
 
 const { Bodies, Composite, Engine } = Matter;
 
@@ -397,7 +398,7 @@ export function createPainter(canvas: HTMLCanvasElement, world: GaltonWorld): Pa
     const shot = world.snapshot();
     const scale = canvas.width / geometry.width;
     context.setTransform(scale, 0, 0, scale, 0, 0);
-    context.clearRect(0, 0, geometry.width, geometry.height);
+    clearCanvas(context);
 
     context.lineWidth = 1;
     context.strokeStyle = palette.frame;

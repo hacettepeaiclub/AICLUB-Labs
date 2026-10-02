@@ -17,6 +17,7 @@
 import { color, paletteVersion } from "@/design/tokens";
 import { contourSemiAxes } from "./landscape";
 import type { Landscape, Point } from "./engine";
+import { clearCanvas } from "@/lib/canvas";
 
 interface Ink {
   contour: string;
@@ -278,7 +279,7 @@ export function drawLandscape(
   height: number,
   scene: Scene,
 ): void {
-  ctx.clearRect(0, 0, width, height);
+  clearCanvas(ctx);
   if (width <= 0 || height <= 0) return;
 
   const v = computeView(width, height, scene.extent);
@@ -360,7 +361,7 @@ export function drawObjectiveChart(
   tolerance: number,
   cursor: number,
 ): void {
-  ctx.clearRect(0, 0, width, height);
+  clearCanvas(ctx);
   if (width <= 0 || height <= 0 || count < 1) return;
 
   const c = inks();

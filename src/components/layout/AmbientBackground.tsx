@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { palette, subscribePalette } from "@/design/tokens";
+import { clearCanvas } from "@/lib/canvas";
 
 /**
  * The room every page stands in: the club navy dissolved into the page as a
@@ -84,7 +85,7 @@ export function AmbientBackground() {
     };
 
     const draw = () => {
-      ctx.clearRect(0, 0, width, height);
+      clearCanvas(ctx);
       // On paper the points are ink and must be fainter to stay background.
       const [base, range] = light ? [0.08, 0.18] : [0.16, 0.34];
       for (const p of points) {

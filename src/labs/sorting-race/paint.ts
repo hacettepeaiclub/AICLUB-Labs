@@ -13,6 +13,7 @@
 import { color, paletteVersion } from "@/design/tokens";
 import { MAX_VALUE, MIN_VALUE } from "./arrays";
 import type { Sort } from "./engine";
+import { clearCanvas } from "@/lib/canvas";
 
 interface Ink {
   bar: string;
@@ -121,7 +122,7 @@ export function drawBars(
 ): void {
   const C = inks();
   const size = values.length;
-  ctx.clearRect(0, 0, width, height);
+  clearCanvas(ctx);
   if (size === 0 || width <= 0 || height <= 0) return;
 
   const { slot, bar, base, span } = layoutFor(size, width, height);
