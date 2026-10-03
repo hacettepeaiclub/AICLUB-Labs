@@ -4,6 +4,7 @@ export { useElementSize, type ElementSize } from "./useElementSize";
 export { useLocalStorage } from "./useLocalStorage";
 export { useLocalControls } from "./useLocalControls";
 export { useKeyPress } from "./useKeyPress";
+export { useDrag, type DragOptions, type DragPoint } from "./useDrag";
 export { useDebouncedValue } from "./useDebouncedValue";
 export { useRepaintFlag, type RepaintFlag } from "./useRepaintFlag";
 export { usePaletteVersion } from "./usePaletteVersion";

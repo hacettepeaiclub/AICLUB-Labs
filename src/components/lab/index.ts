@@ -13,3 +13,4 @@ export {
 } from "./Figure";
 export { Stage, type StageProps, type StageWidth } from "./Stage";
 export { Transport, type TransportProps } from "./Transport";
+export { Dial, type DialProps } from "./Dial";

@@ -912,11 +912,18 @@ export const trLabs: LabsCopy = {
       finished: (steps: number, status: string) => `${steps} adım sonra bitti. ${status}.`,
     },
 
+    drop: {
+      instruction: "Topu bırakmak için haritaya dokunun, yuvarlanmasını izlemek için bırakın. Her adımı uzatıp kısaltmak için camgöbeği ucu sürükleyin.",
+      mapHint: "Başlangıç noktasını koymak için haritaya dokunun ya da sürükleyin, çalıştırmak için bırakın; ok tuşları noktayı taşır, Enter çalıştırır.",
+      handleLabel: "İlk adımın ucu. Adım boyunu değiştirmek için sürükleyin ya da ok tuşlarını kullanın.",
+      moreLabel: "Tam adım boyu ve adım adım denetimler",
+      momentumHint: "Topun son adımından daha fazlasını korumasını sağlamak için kadranı çevirin. Başka bir yere bırakmak için haritalardan birine dokunun.",
+    },
     find: {
       title: "Dibi bulun",
       question: "Ne kadar büyük bir adım atabilirsiniz?",
       caption:
-        "Başlangıç noktası her seferinde aynı ve değiştirebileceğiniz tek bir şey var. Sayılardan çok yolun biçimine bakın.",
+        "Camgöbeği ok, ölçeğine uygun çizilmiş ilk adımdır. Onu uzatınca bütün adımlar onunla birlikte büyür. Sayılardan çok yolun biçimine bakın.",
     },
 
     direction: {
@@ -947,7 +954,7 @@ export const trLabs: LabsCopy = {
     rate: {
       kicker: "Adım boyu",
       title: "Tavanı belirleyen, algoritma değil yüzeydir.",
-      lede: "Aynı yüzey, aynı başlangıç noktası, değişen tek bir sayı. Haritanın altındaki iki işaret bu yüzeyin eğriliğinden hesaplanıyor; gösterim işe yarasın diye seçilmiş değiller.",
+      lede: "Aynı yüzey, değişen tek bir sayı: o ilk adımın uzunluğu. Haritanın altındaki iki işaret bu yüzeyin eğriliğinden hesaplanıyor; gösterim işe yarasın diye seçilmiş değiller.",
       marks: { monotone: "aşma yok", stability: "kararlılık sınırı" },
       regimes: {
         monotone: "Doğrudan yaklaşıyor",

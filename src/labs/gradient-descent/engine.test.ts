@@ -1000,3 +1000,22 @@ describe("Gate A - challenge feasibility, measured against the real engine", () 
     }
   });
 });
+
+describe("dragging the step arrow's tip", () => {
+  it("recovers the step size whose first step ends there, and ignores sideways drag", async () => {
+    const { stepSizeFromTip } = await import("./landscape");
+    const l = { a: 6, b: 1 };
+    const start = { x: 1, y: -0.55 };
+    const g = { x: l.a * start.x, y: l.b * start.y };
+    for (const eta of [0.01, 0.1, 0.3, 0.5]) {
+      const tip = { x: start.x - eta * g.x, y: start.y - eta * g.y };
+      expect(stepSizeFromTip(l, start, tip)).toBeCloseTo(eta, 12);
+      // Perpendicular to the gradient: no change.
+      const side = { x: tip.x + 0.3 * g.y, y: tip.y - 0.3 * g.x };
+      expect(stepSizeFromTip(l, start, side)).toBeCloseTo(eta, 12);
+    }
+    // Behind the start is no step at all, not a negative one.
+    expect(stepSizeFromTip(l, start, { x: start.x + g.x, y: start.y + g.y })).toBe(0);
+    expect(stepSizeFromTip(l, { x: 0, y: 0 }, { x: 1, y: 1 })).toBe(0);
+  });
+});

@@ -917,11 +917,18 @@ export const enLabs = {
       finished: (steps: number, status: string) => `Finished after ${steps} steps. ${status}.`,
     },
 
+    drop: {
+      instruction: "Tap the map to drop the ball, and let go to watch it roll. Drag the cyan tip to make every step longer or shorter.",
+      mapHint: "Tap or drag on the map to place the starting point and let go to run; arrow keys move it and Enter runs.",
+      handleLabel: "Tip of the first step. Drag it, or use the arrow keys, to change the step size.",
+      moreLabel: "Exact step size and step-by-step controls",
+      momentumHint: "Turn the dial up to let the ball keep more of its last step. Tap either map to drop it somewhere new.",
+    },
     find: {
       title: "Find the bottom",
       question: "How big a step can you take?",
       caption:
-        "Same starting point every time, and one thing to change. Watch the shape of the route rather than the numbers.",
+        "The cyan arrow is the first step, drawn to scale. Make it longer and every step grows with it. Watch the shape of the route rather than the numbers.",
     },
 
     direction: {
@@ -953,7 +960,7 @@ export const enLabs = {
     rate: {
       kicker: "The step size",
       title: "The ceiling belongs to the surface.",
-      lede: "Same landscape, same starting point, one number to change. The two marks under the map are computed from this landscape's curvature; they were not chosen to make the demonstration work.",
+      lede: "Same landscape, one number to change: the length of that first step. The two marks under the map are computed from this landscape's curvature; they were not chosen to make the demonstration work.",
       marks: { monotone: "no overshoot", stability: "stability limit" },
       regimes: {
         monotone: "Approaching directly",
