@@ -11,6 +11,7 @@
 
 import {
   conditionNumber,
+  gradient,
   objectiveContractionFactor,
   optimalLearningRate,
   parameterContractionFactor,
@@ -222,3 +223,19 @@ export const CHALLENGES: Record<ChallengeId, ChallengeSpec> = {
 };
 
 export const challengeIds = Object.keys(CHALLENGES) as ChallengeId[];
+
+/**
+ * The step size whose first step from `start` ends nearest `tip`.
+ *
+ * A step goes along −∇f and nowhere else, so only the part of the tip's
+ * offset along that direction counts: η = max(0, −(tip − start)·∇f) / |∇f|².
+ * Dragging the arrow's tip sideways therefore changes nothing, and dragging
+ * it backwards past the start gives 0 rather than a negative step.
+ */
+export function stepSizeFromTip(l: Landscape, start: Point, tip: Point): number {
+  const g = gradient(l, start);
+  const norm = g.x * g.x + g.y * g.y;
+  if (norm === 0) return 0;
+  const along = -((tip.x - start.x) * g.x + (tip.y - start.y) * g.y);
+  return Math.max(0, along) / norm;
+}

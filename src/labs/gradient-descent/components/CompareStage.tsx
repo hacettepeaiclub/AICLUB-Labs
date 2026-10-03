@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useReducedMotion } from "@/hooks";
-import { Figure, LabSlider, Stage, Transport } from "@/components/lab";
+import { Dial, Figure, LabSlider, Stage, Transport } from "@/components/lab";
 import { useLabs } from "@/i18n/labs";
 import { formatNumber } from "@/lib/format";
-import type { OptimizerConfig } from "../engine";
+import type { OptimizerConfig, Point } from "../engine";
 import {
   LANDSCAPES,
   LR_LIMIT_INDEX,
@@ -67,6 +67,8 @@ export function CompareStage({
 
   const learningRate = learningRateAt(preset.landscape, lrIndex);
   const beta = betaPercent / 100;
+  // One ball for both maps: dropped on either, it starts both runs from there.
+  const [start, setStart] = useState<Point>(preset.start);
 
   const configs: OptimizerConfig[] = [
     { kind: "gd", learningRate },
@@ -75,7 +77,7 @@ export function CompareStage({
 
   const runs = useDescentRuns({
     landscape: preset.landscape,
-    start: preset.start,
+    start,
     configs,
     tolerance: TOLERANCE,
     maxSteps: MAX_STEPS,
@@ -114,12 +116,18 @@ export function CompareStage({
               view={plain}
               landscapeId={landscapeId}
               index={runs.index}
+              start={start}
+              onPlace={setStart}
+              onRelease={runs.play}
             />
             <ComparePanel
               title={g.optimizers.momentum}
               view={withMomentum}
               landscapeId={landscapeId}
               index={runs.index}
+              start={start}
+              onPlace={setStart}
+              onRelease={runs.play}
               highlight
             />
           </div>
@@ -161,8 +169,11 @@ export function CompareStage({
           </div>
         }
         primary={
-          <div className="space-y-3">
-            <LabSlider
+          <div className="flex items-center gap-5">
+            {/* How much of the last step the ball keeps: a dial rather than a
+                track, because β is an amount of carrying-over, and turning it
+                up is the gesture. */}
+            <Dial
               label={g.controls.beta}
               value={betaPercent}
               min={0}
@@ -172,26 +183,32 @@ export function CompareStage({
               format={() => formatNumber(beta, 2)}
               valueText={() => g.controls.betaValue(formatNumber(beta, 2))}
             />
+            <p className="max-w-[15rem] text-caption text-fg-muted">{g.drop.momentumHint}</p>
+          </div>
+        }
+        secondary={
+          <>
+            <LabSlider
+              label={g.controls.learningRate}
+              value={lrIndex}
+              min={1}
+              max={LR_MAX_INDEX}
+              onChange={setLrIndex}
+              format={() => formatNumber(learningRate, 5)}
+              valueText={() => g.controls.learningRateValue(formatNumber(learningRate, 5))}
+            />
             <Transport
               running={runs.playing}
               onRun={runs.play}
               onStep={runs.stepOnce}
-              onReset={runs.reset}
+              onReset={() => {
+                runs.reset();
+                setStart(preset.start);
+              }}
               runLabel={g.controls.run}
               stepDisabled={runs.atEnd}
             />
-          </div>
-        }
-        secondary={
-          <LabSlider
-            label={g.controls.learningRate}
-            value={lrIndex}
-            min={1}
-            max={LR_MAX_INDEX}
-            onChange={setLrIndex}
-            format={() => formatNumber(learningRate, 5)}
-            valueText={() => g.controls.learningRateValue(formatNumber(learningRate, 5))}
-          />
+          </>
         }
       />
     </>
@@ -203,12 +220,18 @@ function ComparePanel({
   view,
   landscapeId,
   index,
+  start,
+  onPlace,
+  onRelease,
   highlight = false,
 }: {
   title: string;
   view: RunView | undefined;
   landscapeId: LandscapeId;
   index: number;
+  start: Point;
+  onPlace: (point: Point) => void;
+  onRelease: () => void;
   highlight?: boolean;
 }) {
   const g = useLabs()["gradient-descent"];
@@ -228,9 +251,12 @@ function ComparePanel({
         extent={VIEW_EXTENT}
         path={view.run.path}
         pathLength={view.shown + 1}
-        start={preset.start}
+        start={start}
         current={view.position}
         diverged={view.status === "diverged"}
+        onMovePoint={onPlace}
+        onRelease={onRelease}
+        homePoint={preset.start}
         sizeClass="h-40 w-full sm:aspect-square sm:h-auto"
         label={g.map.label(
           formatNumber(view.position.x, 3),

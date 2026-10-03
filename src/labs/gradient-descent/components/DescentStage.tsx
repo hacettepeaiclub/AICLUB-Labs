@@ -5,12 +5,15 @@ import { Badge } from "@/components/ui";
 import { useLabs } from "@/i18n/labs";
 import { formatNumber } from "@/lib/format";
 import { cn } from "@/lib/cn";
+import { gradient, type Point } from "../engine";
 import {
   LANDSCAPES,
   LR_LIMIT_INDEX,
   landscapeFacts,
   learningRateAt,
+  learningRateIndexOf,
   regimeAt,
+  stepSizeFromTip,
   type LandscapeId,
 } from "../landscape";
 import { useDescentRun } from "../useDescentRun";
@@ -130,10 +133,13 @@ export function DescentStage({
   const [lrIndex, setLrIndex] = useState(defaultLearningRateIndex);
   const learningRate = learningRateAt(preset.landscape, lrIndex);
   const regime = regimeAt(lrIndex);
+  // The visitor drops the ball wherever they like; the preset is only where
+  // it starts the first time.
+  const [start, setStart] = useState<Point>(preset.start);
 
   const run = useDescentRun({
     landscape: preset.landscape,
-    start: preset.start,
+    start,
     config: { kind: "gd", learningRate },
     tolerance: TOLERANCE,
     maxSteps: MAX_STEPS,
@@ -149,6 +155,22 @@ export function DescentStage({
     if (settled) setAnnouncement(g.announce.finished(view.run.t, g.status[view.run.status]));
     else if (run.index === 0) setAnnouncement(g.announce.ready);
   }, [settled, run.index, view.run.t, view.run.status, g]);
+
+  // The first step, to scale: where one step of size η from the start lands.
+  const g0 = gradient(preset.landscape, start);
+  const firstStep: Point = { x: start.x - learningRate * g0.x, y: start.y - learningRate * g0.y };
+
+  // Dragging the arrow's tip sets η: see `stepSizeFromTip`.
+  const stretch = (tip: Point) =>
+    setLrIndex(
+      Math.min(
+        LR_MAX_INDEX,
+        Math.max(
+          1,
+          learningRateIndexOf(preset.landscape, stepSizeFromTip(preset.landscape, start, tip)),
+        ),
+      ),
+    );
 
   const summary = g.map.label(
     formatNumber(view.position.x, 3),
@@ -178,7 +200,6 @@ export function DescentStage({
   return (
     <Stage
       width="full"
-      secondaryLabel={g.controls.aboutThisSurface}
       caption={caption}
       announcement={announcement}
       viewport={
@@ -192,10 +213,36 @@ export function DescentStage({
             extent={VIEW_EXTENT}
             path={view.run.path}
             pathLength={view.shown + 1}
-            start={preset.start}
+            start={start}
             current={view.position}
             diverged={view.status === "diverged"}
-            label={summary}
+            step={{ from: start, to: firstStep }}
+            label={`${summary} ${g.drop.mapHint}`}
+            onMovePoint={setStart}
+            homePoint={preset.start}
+            onRelease={run.play}
+            handles={[
+              {
+                id: "step",
+                at: firstStep,
+                label: g.drop.handleLabel,
+                valueText: g.controls.learningRateValue(formatNumber(learningRate, 5)),
+                onDrag: stretch,
+                // Letting go of a longer step shows what it does.
+                onDragEnd: run.play,
+                onKey: (key) => {
+                  const d =
+                    key === "ArrowRight" || key === "ArrowUp"
+                      ? 2
+                      : key === "ArrowLeft" || key === "ArrowDown"
+                        ? -2
+                        : 0;
+                  if (!d) return false;
+                  setLrIndex((i) => Math.min(LR_MAX_INDEX, Math.max(1, i + d)));
+                  return true;
+                },
+              },
+            ]}
           />
           {detailed && (
             /* Secondary read, so it is capped on a phone: the map keeps its
@@ -242,24 +289,12 @@ export function DescentStage({
         </div>
       }
       primary={
-        <div className="space-y-3">
-          <LabSlider
-            label={detailed ? g.controls.learningRate : g.controls.stepSize}
-            value={lrIndex}
-            min={1}
-            max={LR_MAX_INDEX}
-            onChange={setLrIndex}
-            format={() => formatNumber(learningRate, 5)}
-            valueText={() => g.controls.learningRateValue(formatNumber(learningRate, 5))}
-          />
-          <Transport
-            running={run.playing}
-            onRun={run.play}
-            onStep={run.stepOnce}
-            onReset={run.reset}
-            runLabel={g.controls.run}
-            stepDisabled={run.atEnd}
-          />
+        <div className="space-y-1.5">
+          <p className="text-body-sm text-fg">{g.drop.instruction}</p>
+          <p className="font-mono text-caption text-fg-muted">
+            {detailed ? g.controls.learningRate : g.controls.stepSize} ={" "}
+            {formatNumber(learningRate, 5)}
+          </p>
         </div>
       }
       figures={
@@ -275,8 +310,33 @@ export function DescentStage({
           <Figure label={g.figures.status} value={g.status[view.status]} />
         </>
       }
+      secondaryLabel={g.drop.moreLabel}
       secondary={
-        detailed ? <p className="text-caption text-fg-faint">{g.rate.scope}</p> : undefined
+        <>
+          {/* The same two controls the map gives the hand, for a keyboard and
+              for anyone who wants an exact value. */}
+          <LabSlider
+            label={detailed ? g.controls.learningRate : g.controls.stepSize}
+            value={lrIndex}
+            min={1}
+            max={LR_MAX_INDEX}
+            onChange={setLrIndex}
+            format={() => formatNumber(learningRate, 5)}
+            valueText={() => g.controls.learningRateValue(formatNumber(learningRate, 5))}
+          />
+          <Transport
+            running={run.playing}
+            onRun={run.play}
+            onStep={run.stepOnce}
+            onReset={() => {
+              run.reset();
+              setStart(preset.start);
+            }}
+            runLabel={g.controls.run}
+            stepDisabled={run.atEnd}
+          />
+          {detailed && <p className="text-caption text-fg-faint">{g.rate.scope}</p>}
+        </>
       }
     />
   );

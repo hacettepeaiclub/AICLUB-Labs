@@ -271,6 +271,12 @@ export interface Scene {
   targetArrow?: Point;
   /** Paints the current position in the warning colour. */
   diverged?: boolean;
+  /**
+   * The first step the run will take, to scale: from the start to where one
+   * step lands. Unlike the two arrows above it is not normalised — its
+   * length *is* η·|∇f| — because the visitor sets η by dragging its tip.
+   */
+  step?: { from: Point; to: Point };
 }
 
 export function drawLandscape(
@@ -326,6 +332,16 @@ export function drawLandscape(
   }
 
   if (scene.start) drawStart(ctx, v, scene.start);
+
+  if (scene.step) {
+    const fx = toScreenX(v, guard(scene.step.from.x));
+    const fy = toScreenY(v, guard(scene.step.from.y));
+    const tx = toScreenX(v, guard(scene.step.to.x));
+    const ty = toScreenY(v, guard(scene.step.to.y));
+    const dx = scene.step.to.x - scene.step.from.x;
+    const dy = scene.step.to.y - scene.step.from.y;
+    drawArrow(ctx, fx, fy, dx, dy, Math.hypot(tx - fx, ty - fy), c.gradient, false);
+  }
 
   if (scene.current) {
     const px = toScreenX(v, guard(scene.current.x));

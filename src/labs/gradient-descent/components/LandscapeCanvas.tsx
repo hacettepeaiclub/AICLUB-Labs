@@ -1,9 +1,42 @@
-import { useCallback, useEffect, useRef, type KeyboardEvent, type PointerEvent } from "react";
-import { usePaletteVersion } from "@/hooks";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type KeyboardEvent,
+  type RefObject,
+} from "react";
+import { useDrag, usePaletteVersion } from "@/hooks";
 import { cn } from "@/lib/cn";
 import { clamp } from "@/lib/math";
 import type { Landscape, Point } from "../engine";
-import { computeView, drawLandscape, drawObjectiveChart, fromScreen, type Scene } from "../paint";
+import {
+  computeView,
+  drawLandscape,
+  drawObjectiveChart,
+  fromScreen,
+  toScreenX,
+  toScreenY,
+  type Scene,
+} from "../paint";
+
+/**
+ * Something on the map the visitor can take hold of and drag — the tip of
+ * the step arrow, say. It sits over the canvas as a real element, so it can
+ * be focused, named and moved from the keyboard.
+ */
+export interface CanvasHandle {
+  id: string;
+  /** Where it is, in landscape coordinates. Drawn at the map's edge if beyond it. */
+  at: Point;
+  label: string;
+  valueText?: string;
+  /** The pointer, in landscape coordinates, while the handle is held. */
+  onDrag: (point: Point) => void;
+  onDragEnd?: () => void;
+  /** Arrow keys and the like. Return true if the key was used. */
+  onKey?: (key: string) => boolean;
+}
 
 export interface LandscapeCanvasProps extends Omit<Scene, "landscape" | "extent"> {
   landscape: Landscape;
@@ -19,6 +52,9 @@ export interface LandscapeCanvasProps extends Omit<Scene, "landscape" | "extent"
   onMovePoint?: (point: Point) => void;
   /** Where Home returns the point to. */
   homePoint?: Point;
+  /** The pointer was let go after moving the point (or Enter was pressed). */
+  onRelease?: () => void;
+  handles?: readonly CanvasHandle[];
   /**
    * Overrides the square aspect. Section 4 stacks two of these on a phone, and
    * at full square height the transport ended up below the fold — so that
@@ -49,10 +85,13 @@ export function LandscapeCanvas({
   descentArrow,
   targetArrow,
   diverged,
+  step,
   label,
   describedBy,
   onMovePoint,
   homePoint,
+  onRelease,
+  handles,
   // Square, but not as square as the column happens to be: at the full width
   // of a wide stage this drew a 734px landscape and pushed the descent path —
   // the thing the lab is about — below the fold.
@@ -62,6 +101,8 @@ export function LandscapeCanvas({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
   const sizeRef = useRef({ width: 0, height: 0 });
+  // The handles are laid out in CSS pixels, so a resize has to re-render.
+  const [box, setBox] = useState({ width: 0, height: 0 });
 
   const sceneRef = useRef<Scene>({ landscape, extent });
   sceneRef.current = {
@@ -74,6 +115,7 @@ export function LandscapeCanvas({
     descentArrow,
     targetArrow,
     diverged,
+    step,
   };
 
   const draw = useCallback(() => {
@@ -95,6 +137,11 @@ export function LandscapeCanvas({
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const rect = canvas.getBoundingClientRect();
       sizeRef.current = { width: rect.width, height: rect.height };
+      setBox((b) =>
+        b.width === rect.width && b.height === rect.height
+          ? b
+          : { width: rect.width, height: rect.height },
+      );
       canvas.width = Math.round(rect.width * dpr);
       canvas.height = Math.round(rect.height * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -114,38 +161,38 @@ export function LandscapeCanvas({
   // whole picture is eight ellipses and a polyline, so this is cheaper than
   // deciding whether it was needed.
   const palette = usePaletteVersion();
-  useEffect(draw, [draw, palette, landscape, extent, pathLength, current, descentArrow, path]);
+  useEffect(draw, [
+    draw,
+    palette,
+    landscape,
+    extent,
+    pathLength,
+    current,
+    descentArrow,
+    path,
+    step,
+  ]);
 
   // ------------------------------------------------------------ pointer ----
 
-  const dragging = useRef(false);
-
-  const moveTo = useCallback(
-    (clientX: number, clientY: number, target: HTMLCanvasElement) => {
-      if (!onMovePoint) return;
-      const rect = target.getBoundingClientRect();
-      const view = computeView(rect.width, rect.height, extent);
-      const p = fromScreen(view, clientX - rect.left, clientY - rect.top);
-      onMovePoint({ x: clamp(p.x, -extent, extent), y: clamp(p.y, -extent, extent) });
+  const toPoint = useCallback(
+    (x: number, y: number): Point => {
+      const view = computeView(sizeRef.current.width, sizeRef.current.height, extent);
+      const p = fromScreen(view, x, y);
+      return { x: clamp(p.x, -extent, extent), y: clamp(p.y, -extent, extent) };
     },
-    [onMovePoint, extent],
+    [extent],
   );
 
-  const handleDown = (event: PointerEvent<HTMLCanvasElement>) => {
-    if (!onMovePoint) return;
-    dragging.current = true;
-    event.currentTarget.setPointerCapture(event.pointerId);
-    moveTo(event.clientX, event.clientY, event.currentTarget);
-  };
-
-  const handleMove = (event: PointerEvent<HTMLCanvasElement>) => {
-    if (!dragging.current) return;
-    moveTo(event.clientX, event.clientY, event.currentTarget);
-  };
-
-  const handleUp = () => {
-    dragging.current = false;
-  };
+  // A tap puts the point there; a drag carries it; letting go is `onRelease`.
+  const drag = useDrag({
+    onStart: (p) => {
+      if (!onMovePoint) return false;
+      onMovePoint(toPoint(p.x, p.y));
+    },
+    onMove: (p) => onMovePoint?.(toPoint(p.x, p.y)),
+    onEnd: () => onRelease?.(),
+  });
 
   // ----------------------------------------------------------- keyboard ----
 
@@ -172,6 +219,10 @@ export function LandscapeCanvas({
         if (!homePoint) return;
         ({ x, y } = homePoint);
         break;
+      case "Enter":
+        event.preventDefault();
+        onRelease?.();
+        return;
       default:
         return;
     }
@@ -194,15 +245,58 @@ export function LandscapeCanvas({
         className,
       )}
     >
-      <canvas
-        ref={canvasRef}
-        aria-hidden
-        onPointerDown={interactive ? handleDown : undefined}
-        onPointerMove={interactive ? handleMove : undefined}
-        onPointerUp={interactive ? handleUp : undefined}
-        onPointerCancel={interactive ? handleUp : undefined}
-        className={cn("block touch-none", sizeClass)}
-      />
+      <div className={cn("relative", sizeClass)}>
+        <canvas
+          ref={canvasRef}
+          aria-hidden
+          {...(interactive ? drag : {})}
+          className="block h-full w-full touch-none"
+        />
+        {handles?.map((handle) => (
+          <Handle key={handle.id} handle={handle} box={box} extent={extent} canvasRef={canvasRef} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/** Room kept between a handle and the map's edge, in CSS pixels. */
+const HANDLE_INSET = 12;
+
+function Handle({
+  handle,
+  box,
+  extent,
+  canvasRef,
+}: {
+  handle: CanvasHandle;
+  box: { width: number; height: number };
+  extent: number;
+  canvasRef: RefObject<HTMLCanvasElement>;
+}) {
+  const view = computeView(box.width, box.height, extent);
+  const x = clamp(toScreenX(view, handle.at.x), HANDLE_INSET, box.width - HANDLE_INSET);
+  const y = clamp(toScreenY(view, handle.at.y), HANDLE_INSET, box.height - HANDLE_INSET);
+  const drag = useDrag({
+    relativeTo: canvasRef,
+    onMove: (p) => handle.onDrag(fromScreen(computeView(box.width, box.height, extent), p.x, p.y)),
+    onEnd: () => handle.onDragEnd?.(),
+  });
+  if (!box.width) return null;
+  return (
+    <div
+      role="slider"
+      tabIndex={0}
+      aria-label={handle.label}
+      aria-valuetext={handle.valueText}
+      onKeyDown={(event) => {
+        if (handle.onKey?.(event.key)) event.preventDefault();
+      }}
+      {...drag}
+      className="absolute flex size-11 -translate-x-1/2 -translate-y-1/2 cursor-grab touch-none items-center justify-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-accent active:cursor-grabbing"
+      style={{ left: x, top: y }}
+    >
+      <span className="block size-4 rounded-full border-2 border-ink-950 bg-signal-cyan shadow" />
     </div>
   );
 }
