@@ -54,7 +54,7 @@ After deploying, check one:
 curl -s https://labs.hacettepeaiclub.com/labs/tokenizer | grep -o '<title>[^<]*'
 ```
 
-It must print `Tokenizer Lab — AI Club Labs`, not `AI Club Labs`.
+It must print `Cheap Words · BPE tokenization — AI Club Labs`, not `AI Club Labs`.
 
 ## The site's address
 

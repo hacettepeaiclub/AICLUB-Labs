@@ -2,7 +2,7 @@ import type { LabMeta } from "../types";
 
 export const convolutionMeta: LabMeta = {
   slug: "convolution",
-  title: "Convolution",
+  title: "Nine Weights",
   description:
     "Slide nine weights across a picture and watch them find edges, then let gradient descent find the weights for you.",
   category: "neural-networks",

@@ -147,72 +147,87 @@ export const tr: Translation = {
   },
   labMeta: {
     "embedding-universe-3d": {
-      title: "Gömme Evreni, 3B prototip",
+      title: "Anlam Haritası, 3B",
+      term: "Word embedding, prototip",
       description: "Bir deney: aynı 318 kelime, iki yerine üç PCA eksenine indirgenmiş hâliyle.",
     },
     "embedding-universe": {
-      title: "Gömme Evreni",
+      title: "Anlam Haritası",
+      term: "Word embedding",
       description:
         "Bir modelin APPLE'a en yakın gördüğü kelimeyi tahmin et, sonra bu kelime haritasının neyi sakladığını gör.",
     },
     "hypothesis-testing": {
-      title: "Hipotez Testleri",
+      title: "Emin Olmanın Bedeli",
+      term: "Hipotez testi",
       description:
         "\u0130ki hipotezi birbirinden uzakla\u015ft\u0131r\u0131n ve emin olman\u0131n bedelini izleyin: reddetme b\u00f6lgesi, kabul etti\u011finiz hatalar ve kazand\u0131\u011f\u0131n\u0131z g\u00fc\u00e7.",
     },
     "reward-playground": {
-      title: "Ödül Laboratuvarı",
+      title: "Tam İstediğiniz Gibi",
+      term: "Pekiştirmeli öğrenme",
       description:
         "Bir robot için bir karenin ne kadar değerli olduğuna siz karar verin ve tam olarak dediğinizi yapmasını izleyin.",
     },
     attention: {
-      title: "Attention Laboratuvarı",
+      title: "Model Nereye Bakıyor",
+      term: "Attention",
       description: "Bir kelime seçin ve modelin cümlenin hangi kısmına yaslandığını izleyin.",
     },
     "gradient-descent": {
-      title: "Gradient Descent",
+      title: "Adımın Boyu",
+      term: "Gradient descent",
       description:
         "Bir yüzeyin biçiminin, atmanıza izin verilen adımın boyutunu nasıl belirlediğini görün.",
     },
     convolution: {
-      title: "Evrişim",
+      title: "Dokuz Ağırlık",
+      term: "Evrişim",
       description:
         "Dokuz ağırlığı bir resmin üzerinde kaydırın ve kenarları bulmalarını izleyin, sonra ağırlıkları sizin yerinize gradient descent bulsun.",
     },
     "floating-point": {
-      title: "Kayan Nokta",
+      title: "0,1 + 0,2",
+      term: "Kayan nokta",
       description:
         "0.1 yazın ve bilgisayarınızın gerçekte sakladığı sayıyı görün, sonra 0.1 + 0.2'nin neden 0.3 etmediğini öğrenin.",
     },
     "hash-table": {
-      title: "Hash Tablosu",
+      title: "Hesaplanan Adres",
+      term: "Hash tabloları",
       description:
         "Bir kelimeyi adrese çevirin, sonra tabloyu doldurun ve herhangi bir şeyi bulmanın maliyetinin patlamasını izleyin.",
     },
     "hash-playground": {
-      title: "Hash Laboratuvarı",
+      title: "Dijital Parmak İzi",
+      term: "Kriptografik hash",
       description: "Tek bir karakteri değiştirin. Her şeyin değiştiğini görün.",
     },
     "neural-playground": {
-      title: "Yapay Sinir Ağı Laboratuvarı",
+      title: "Çizgiyi Bükmek",
+      term: "Çok katmanlı algılayıcılar",
       description: "İki tür nokta çizin. Bir ağın onları ayırt etmeyi öğrenişini izleyin.",
     },
     pathfinding: {
-      title: "Yol Bulma",
+      title: "Yayılan Arama",
+      term: "Graf araması",
       description: "Engeller çizin; BFS, Dijkstra ve A* algoritmalarının yol arayışını izleyin.",
     },
     probability: {
-      title: "Olas\u0131l\u0131k Laboratuvar\u0131",
+      title: "Önce Tahmin, Sonra Hesap",
+      term: "Olasılık",
       description:
         "\u015eans hakk\u0131ndaki sezgine meydan okuyan alt\u0131 deney. \u00d6nce tahmin edin, sonra tahminin ne kadar yanl\u0131\u015f oldu\u011funu g\u00f6r\u00fcn.",
     },
     "sorting-race": {
-      title: "Sıralama Yarışı",
+      title: "Düzenin Bedeli",
+      term: "Sıralama algoritmaları",
       description:
         "Veriyi siz çizin; her algoritmanın onu sıralamak için ne kadar iş yaptığını görün.",
     },
     tokenizer: {
-      title: "Tokenizer Laboratuvarı",
+      title: "Ucuz Kelimeler",
+      term: "BPE tokenization",
       description:
         "Bir tokenizer'ı elinizle eğitin ve ne okuduğunun, neyi söylemenin ucuz olduğunu nasıl belirlediğini görün.",
     },

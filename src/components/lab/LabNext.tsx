@@ -124,6 +124,9 @@ export function LabNext({ slug }: { slug: string }) {
         </div>
 
         <div className="flex min-w-0 flex-1 flex-col justify-center px-1 pb-0.5 sm:py-2">
+          {copy?.term && (
+            <p className="mb-1 text-overline uppercase text-fg-faint">{copy.term}</p>
+          )}
           <div className="flex items-start justify-between gap-3">
             <p className="min-w-0 font-display text-display-md text-fg">
               {copy?.title ?? meta.title}

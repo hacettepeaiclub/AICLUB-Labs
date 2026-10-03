@@ -167,71 +167,86 @@ export const en = {
    */
   labMeta: {
     "embedding-universe-3d": {
-      title: "Embedding Universe: 3D prototype",
+      title: "The Map of Meaning, in 3D",
+      term: "Word embeddings, prototype",
       description:
         "An experiment: the same 318 words projected onto three PCA axes instead of two.",
     },
     "embedding-universe": {
-      title: "Embedding Universe",
+      title: "The Map of Meaning",
+      term: "Word embeddings",
       description:
         "Guess which word a model thinks is closest to APPLE, then find out what the map of those words is hiding.",
     },
     "hypothesis-testing": {
-      title: "Hypothesis Testing",
+      title: "The Price of Certainty",
+      term: "Hypothesis testing",
       description:
         "Move two hypotheses apart and watch what it costs to be sure: the rejection region, the errors you accept, and the power you get back.",
     },
     "reward-playground": {
-      title: "Reward Playground",
+      title: "Exactly What You Asked",
+      term: "Reinforcement learning",
       description: "Decide what one square is worth to a robot, and watch it obey you exactly.",
     },
     attention: {
-      title: "Attention Playground",
+      title: "Where the Model Looks",
+      term: "Attention",
       description: "Pick a word and watch which part of the sentence the model leans on.",
     },
     "gradient-descent": {
-      title: "Gradient Descent",
+      title: "The Size of a Step",
+      term: "Gradient descent",
       description:
         "Watch how the shape of a landscape decides how big a step you are allowed to take.",
     },
     convolution: {
-      title: "Convolution",
+      title: "Nine Weights",
+      term: "Convolution",
       description:
         "Slide nine weights across a picture and watch them find edges, then let gradient descent find the weights for you.",
     },
     "floating-point": {
-      title: "Floating Point",
+      title: "0.1 + 0.2",
+      term: "Floating point",
       description:
         "Type 0.1 and see the number your computer actually keeps, then find out why 0.1 + 0.2 is not 0.3.",
     },
     "hash-table": {
-      title: "Hash Table",
+      title: "Computed Address",
+      term: "Hash tables",
       description:
         "Turn a word into an address, then fill the table and watch the cost of finding anything explode.",
     },
     "hash-playground": {
-      title: "Hash Playground",
+      title: "Digital Fingerprint",
+      term: "Cryptographic hashing",
       description: "Change one character. Watch everything change.",
     },
     "neural-playground": {
-      title: "Neural Playground",
+      title: "Bending the Line",
+      term: "Multilayer perceptrons",
       description: "Draw two kinds of dots. Watch a network learn to tell them apart.",
     },
     pathfinding: {
-      title: "Pathfinding",
+      title: "The Spreading Search",
+      term: "Graph search",
       description: "Draw obstacles and watch BFS, Dijkstra, and A* search for a path.",
     },
     probability: {
-      title: "Probability Lab",
+      title: "Guess, Then Count",
+      term: "Probability",
       description:
         "Six experiments that challenge your intuition about chance. Guess first, then find out how wrong the guess was.",
     },
     "sorting-race": {
-      title: "Sorting Race",
+      title: "The Cost of Order",
+      term: "Sorting algorithms",
       description: "Draw the data and watch how much work each algorithm needs to sort it.",
     },
     tokenizer: {
-      title: "Tokenizer Lab",
+      title: "Cheap Words",
+      term: "BPE tokenization",
       description:
         "Train a tokenizer by hand and find out why what it read decides what is cheap to say.",
     },
