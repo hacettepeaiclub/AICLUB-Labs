@@ -377,7 +377,9 @@
     mask: var(--mark) center / contain no-repeat;
     animation: brand-signal 1.4s cubic-bezier(0.65, 0, 0.35, 1) 0.2s;
   }
-  .brand-link:hover .brand-mark {
+  /* A touch screen has no hover; a press on the mark replays it instead. */
+  .brand-link:hover .brand-mark,
+  .brand-link:active .brand-mark {
     animation-name: brand-signal-again;
   }
   .header-glow::after {
