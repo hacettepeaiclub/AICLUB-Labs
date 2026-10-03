@@ -73,7 +73,7 @@ describe("the drawings say what their labs say", () => {
      * waveform and implied the digest grows with the message. Whatever varies
      * on the output side may vary in fill; it may not vary in geometry.
      */
-    const hash = shape("hash-playground");
+    const hash = shape("cryptographic-hashing");
     expect(hash).toMatch(/const CELL_W = [\d.]+;/);
     expect(hash).toMatch(/width=\{CELL_W\}/);
     expect(hash).toMatch(/height=\{9\}/);
@@ -86,8 +86,8 @@ describe("the drawings say what their labs say", () => {
     expect(source).toMatch(second);
   });
 
-  it("pathfinding: shows a frontier, and does not repeat gradient descent", () => {
-    const pathfinding = shape("pathfinding");
+  it("graph-search: shows a frontier, and does not repeat gradient descent", () => {
+    const pathfinding = shape("graph-search");
     // The search is shaded by depth from the start, with a distinct ring at
     // the edge — that ring is the whole point.
     expect(pathfinding).toMatch(/const FRONTIER = \d+;/);

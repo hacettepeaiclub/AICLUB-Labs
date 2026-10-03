@@ -2,8 +2,8 @@ import { describe, expect, it } from "vitest";
 import { fold, search } from "./labSearch";
 
 const entries = [
-  { title: "Hash Playground", rest: "Change one character. Systems hash-playground" },
-  { title: "Sorting Race", rest: "Draw the data. Algorithms sorting-race" },
+  { title: "Hash Playground", rest: "Change one character. Systems cryptographic-hashing" },
+  { title: "Sorting Race", rest: "Draw the data. Algorithms sorting" },
   {
     title: "Gradyan İnişi",
     rest: "Bir arazinin şekli. Makine Öğrenmesi Gradient Descent gradient-descent",

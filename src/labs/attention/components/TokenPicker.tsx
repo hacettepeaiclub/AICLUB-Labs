@@ -15,7 +15,7 @@ export interface TokenPickerProps {
  * before this the only way to ask it about a different token was to scroll back
  * up to the sentence and lose sight of the thing you wanted to compare. So the
  * same selection is mounted once per stage — one piece of state, several views
- * of it, following `hash-playground/MessageField`.
+ * of it, following `cryptographic-hashing/MessageField`.
  *
  * Native radios in a fieldset: the browser supplies the group semantics, the
  * arrow-key roving and the checked state, none of which is then ours to get

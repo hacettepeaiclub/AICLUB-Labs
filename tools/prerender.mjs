@@ -27,7 +27,7 @@
  *
  * ## What the server needs to do
  *
- * Serve `/labs/tokenizer` from `labs/tokenizer/index.html` when it exists, and
+ * Serve `/labs/tokenization` from `labs/tokenization/index.html` when it exists, and
  * fall back to `/index.html` otherwise — which is what a static host does by
  * default, and what an SPA rewrite rule must be narrowed to allow. See
  * `docs/DEPLOY.md`.
@@ -96,6 +96,32 @@ function noscript(route) {
     </noscript>`;
 }
 
+/**
+ * A page that only forwards. `replace` keeps the old address out of the
+ * history, so Back does not bounce the visitor into it again; the query and
+ * the hash travel with them. The meta refresh covers a browser with
+ * JavaScript off, and the canonical link and `noindex` tell a search engine
+ * which address is the real one.
+ */
+function redirectPage(to, canonical) {
+  const target = escape(to);
+  return `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Moved</title>
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href="${escape(canonical)}" />
+    <meta http-equiv="refresh" content="0; url=${target}" />
+    <script>location.replace(${JSON.stringify(to)} + location.search + location.hash);</script>
+  </head>
+  <body>
+    <p>This lab has moved to <a href="${target}">${target}</a>.</p>
+  </body>
+</html>
+`;
+}
+
 function sitemap(routes, siteUrl) {
   const entries = routes
     .filter((route) => route.indexed)
@@ -132,10 +158,12 @@ async function main() {
 
   let routes;
   let siteUrl;
+  let renamed = {};
   try {
     const manifest = await vite.ssrLoadModule("/src/app/routesManifest.ts");
     routes = manifest.routes;
     siteUrl = manifest.siteUrl;
+    renamed = (await vite.ssrLoadModule("/src/labs/renamed.ts")).RENAMED;
   } finally {
     await vite.close();
   }
@@ -166,12 +194,21 @@ async function main() {
     await writeFile(file, withHead, "utf8");
   }
 
+  // Every address a lab used to have still answers, by sending the browser to
+  // the new one. The server can do this better with a 301 (see DEPLOY.md);
+  // this page is what makes the old links work even where it does not.
+  for (const [from, to] of Object.entries(renamed)) {
+    const file = path.join(DIST, "labs", from, "index.html");
+    await mkdir(path.dirname(file), { recursive: true });
+    await writeFile(file, redirectPage(`/labs/${to}`, `${siteUrl}/labs/${to}`), "utf8");
+  }
+
   await writeFile(path.join(DIST, "sitemap.xml"), sitemap(routes, siteUrl), "utf8");
   await writeFile(path.join(DIST, "robots.txt"), robots(siteUrl), "utf8");
 
   const indexed = routes.filter((r) => r.indexed).length;
   console.log(
-    `prerendered ${routes.length} routes (${indexed} indexed), sitemap.xml and robots.txt → ${siteUrl}`,
+    `prerendered ${routes.length} routes (${indexed} indexed), ${Object.keys(renamed).length} redirects from old addresses, sitemap.xml and robots.txt → ${siteUrl}`,
   );
   if (fallbacks > 0) {
     console.log(`${fallbacks} route(s) have no card of their own yet and use /og/home.jpg — see docs/DEPLOY.md`);

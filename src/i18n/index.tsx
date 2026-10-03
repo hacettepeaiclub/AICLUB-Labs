@@ -56,7 +56,7 @@ async function load(language: Language): Promise<Translation> {
  * Owns the visitor's language.
  *
  * There is no key-string lookup here and no `t("some.dotted.key")`: components
- * read `useLabs().tokenizer.guess.heading` straight off a typed object. A missing
+ * read `useLabs().tokenization.guess.heading` straight off a typed object. A missing
  * or misspelt key is a compile error rather than a string that renders as its
  * own name, and every interpolated value keeps its type — a count is a number
  * on both sides of the translation.

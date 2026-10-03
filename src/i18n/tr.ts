@@ -146,12 +146,12 @@ export const tr: Translation = {
     dismiss: "kapat",
   },
   labMeta: {
-    "embedding-universe-3d": {
+    "word-embeddings-3d": {
       title: "Anlam Haritası, 3B",
       term: "Word embedding, prototip",
       description: "Bir deney: aynı 318 kelime, iki yerine üç PCA eksenine indirgenmiş hâliyle.",
     },
-    "embedding-universe": {
+    "word-embeddings": {
       title: "Anlam Haritası",
       term: "Word embedding",
       description:
@@ -163,7 +163,7 @@ export const tr: Translation = {
       description:
         "\u0130ki hipotezi birbirinden uzakla\u015ft\u0131r\u0131n ve emin olman\u0131n bedelini izleyin: reddetme b\u00f6lgesi, kabul etti\u011finiz hatalar ve kazand\u0131\u011f\u0131n\u0131z g\u00fc\u00e7.",
     },
-    "reward-playground": {
+    "reinforcement-learning": {
       title: "Tam İstediğiniz Gibi",
       term: "Pekiştirmeli öğrenme",
       description:
@@ -192,23 +192,23 @@ export const tr: Translation = {
       description:
         "0.1 yazın ve bilgisayarınızın gerçekte sakladığı sayıyı görün, sonra 0.1 + 0.2'nin neden 0.3 etmediğini öğrenin.",
     },
-    "hash-table": {
+    "hash-tables": {
       title: "Hesaplanan Adres",
       term: "Hash tabloları",
       description:
         "Bir kelimeyi adrese çevirin, sonra tabloyu doldurun ve herhangi bir şeyi bulmanın maliyetinin patlamasını izleyin.",
     },
-    "hash-playground": {
+    "cryptographic-hashing": {
       title: "Dijital Parmak İzi",
       term: "Kriptografik hash",
       description: "Tek bir karakteri değiştirin. Her şeyin değiştiğini görün.",
     },
-    "neural-playground": {
+    "multilayer-perceptrons": {
       title: "Çizgiyi Bükmek",
       term: "Çok katmanlı algılayıcılar",
       description: "İki tür nokta çizin. Bir ağın onları ayırt etmeyi öğrenişini izleyin.",
     },
-    pathfinding: {
+    "graph-search": {
       title: "Yayılan Arama",
       term: "Graf araması",
       description: "Engeller çizin; BFS, Dijkstra ve A* algoritmalarının yol arayışını izleyin.",
@@ -219,13 +219,13 @@ export const tr: Translation = {
       description:
         "\u015eans hakk\u0131ndaki sezgine meydan okuyan alt\u0131 deney. \u00d6nce tahmin edin, sonra tahminin ne kadar yanl\u0131\u015f oldu\u011funu g\u00f6r\u00fcn.",
     },
-    "sorting-race": {
+    sorting: {
       title: "Düzenin Bedeli",
       term: "Sıralama algoritmaları",
       description:
         "Veriyi siz çizin; her algoritmanın onu sıralamak için ne kadar iş yaptığını görün.",
     },
-    tokenizer: {
+    tokenization: {
       title: "Ucuz Kelimeler",
       term: "BPE tokenization",
       description:

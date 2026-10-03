@@ -2,19 +2,19 @@ import { lazy } from "react";
 import type { LabEntry, LabLoader, LabMeta } from "./types";
 import { attentionMeta } from "./attention/meta";
 import { convolutionMeta } from "./convolution/meta";
-import { embeddingUniverse3DMeta } from "./embedding-universe-3d/meta";
-import { embeddingUniverseMeta } from "./embedding-universe/meta";
+import { wordEmbeddings3DMeta } from "./word-embeddings-3d/meta";
+import { wordEmbeddingsMeta } from "./word-embeddings/meta";
 import { gradientDescentMeta } from "./gradient-descent/meta";
 import { floatingPointMeta } from "./floating-point/meta";
-import { hashPlaygroundMeta } from "./hash-playground/meta";
-import { hashTableMeta } from "./hash-table/meta";
+import { cryptographicHashingMeta } from "./cryptographic-hashing/meta";
+import { hashTablesMeta } from "./hash-tables/meta";
 import { hypothesisTestingMeta } from "./hypothesis-testing/meta";
-import { neuralPlaygroundMeta } from "./neural-playground/meta";
-import { pathfindingMeta } from "./pathfinding/meta";
+import { multilayerPerceptronsMeta } from "./multilayer-perceptrons/meta";
+import { graphSearchMeta } from "./graph-search/meta";
 import { probabilityMeta } from "./probability/meta";
-import { rewardPlaygroundMeta } from "./reward-playground/meta";
-import { sortingRaceMeta } from "./sorting-race/meta";
-import { tokenizerMeta } from "./tokenizer/meta";
+import { reinforcementLearningMeta } from "./reinforcement-learning/meta";
+import { sortingMeta } from "./sorting/meta";
+import { tokenizationMeta } from "./tokenization/meta";
 
 /**
  * Central lab registry.
@@ -27,10 +27,10 @@ import { tokenizerMeta } from "./tokenizer/meta";
  *
  * Example:
  *   import { lazy } from "react";
- *   import { sortingRaceMeta } from "./sorting-race/meta";
-import { tokenizerMeta } from "./tokenizer/meta";
+ *   import { sortingMeta } from "./sorting/meta";
+import { tokenizationMeta } from "./tokenization/meta";
  *
- *   entry(sortingRaceMeta, () => import("./sorting-race")),
+ *   entry(sortingMeta, () => import("./sorting")),
  *
  * Components are wrapped in React.lazy, so each lab is its own chunk and the
  * registry stays cheap even at 100+ entries.
@@ -52,20 +52,20 @@ const entry = (meta: LabMeta, load: LabLoader): LabEntry => ({
 export const labs: LabEntry[] = [
   entry(attentionMeta, () => import("./attention")),
   entry(convolutionMeta, () => import("./convolution")),
-  entry(embeddingUniverseMeta, () => import("./embedding-universe")),
+  entry(wordEmbeddingsMeta, () => import("./word-embeddings")),
   // Draft: routable, but kept off the home grid. A prototype, not a lesson.
-  entry(embeddingUniverse3DMeta, () => import("./embedding-universe-3d")),
+  entry(wordEmbeddings3DMeta, () => import("./word-embeddings-3d")),
   entry(gradientDescentMeta, () => import("./gradient-descent")),
   entry(floatingPointMeta, () => import("./floating-point")),
-  entry(hashPlaygroundMeta, () => import("./hash-playground")),
-  entry(hashTableMeta, () => import("./hash-table")),
+  entry(cryptographicHashingMeta, () => import("./cryptographic-hashing")),
+  entry(hashTablesMeta, () => import("./hash-tables")),
   entry(hypothesisTestingMeta, () => import("./hypothesis-testing")),
-  entry(neuralPlaygroundMeta, () => import("./neural-playground")),
-  entry(pathfindingMeta, () => import("./pathfinding")),
+  entry(multilayerPerceptronsMeta, () => import("./multilayer-perceptrons")),
+  entry(graphSearchMeta, () => import("./graph-search")),
   entry(probabilityMeta, () => import("./probability")),
-  entry(rewardPlaygroundMeta, () => import("./reward-playground")),
-  entry(sortingRaceMeta, () => import("./sorting-race")),
-  entry(tokenizerMeta, () => import("./tokenizer")),
+  entry(reinforcementLearningMeta, () => import("./reinforcement-learning")),
+  entry(sortingMeta, () => import("./sorting")),
+  entry(tokenizationMeta, () => import("./tokenization")),
 ];
 
 export const publishedLabs = (): LabEntry[] =>
@@ -93,18 +93,18 @@ export const publishedLabs = (): LabEntry[] =>
  * it here is a placement bug rather than a disappearance.
  */
 const LAB_ORDER = [
-  "hash-playground",
+  "cryptographic-hashing",
   "floating-point",
-  "hash-table",
-  "sorting-race",
-  "pathfinding",
-  "tokenizer",
+  "hash-tables",
+  "sorting",
+  "graph-search",
+  "tokenization",
   "gradient-descent",
-  "neural-playground",
+  "multilayer-perceptrons",
   "convolution",
   "attention",
-  "reward-playground",
-  "embedding-universe",
+  "reinforcement-learning",
+  "word-embeddings",
   "hypothesis-testing",
   "probability",
 ] as const;

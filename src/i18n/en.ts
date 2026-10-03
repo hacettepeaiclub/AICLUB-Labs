@@ -166,13 +166,13 @@ export const en = {
    * category, minutes) so a lab can be listed without being loaded at all.
    */
   labMeta: {
-    "embedding-universe-3d": {
+    "word-embeddings-3d": {
       title: "The Map of Meaning, in 3D",
       term: "Word embeddings, prototype",
       description:
         "An experiment: the same 318 words projected onto three PCA axes instead of two.",
     },
-    "embedding-universe": {
+    "word-embeddings": {
       title: "The Map of Meaning",
       term: "Word embeddings",
       description:
@@ -184,7 +184,7 @@ export const en = {
       description:
         "Move two hypotheses apart and watch what it costs to be sure: the rejection region, the errors you accept, and the power you get back.",
     },
-    "reward-playground": {
+    "reinforcement-learning": {
       title: "Exactly What You Asked",
       term: "Reinforcement learning",
       description: "Decide what one square is worth to a robot, and watch it obey you exactly.",
@@ -212,23 +212,23 @@ export const en = {
       description:
         "Type 0.1 and see the number your computer actually keeps, then find out why 0.1 + 0.2 is not 0.3.",
     },
-    "hash-table": {
+    "hash-tables": {
       title: "Computed Address",
       term: "Hash tables",
       description:
         "Turn a word into an address, then fill the table and watch the cost of finding anything explode.",
     },
-    "hash-playground": {
+    "cryptographic-hashing": {
       title: "Digital Fingerprint",
       term: "Cryptographic hashing",
       description: "Change one character. Watch everything change.",
     },
-    "neural-playground": {
+    "multilayer-perceptrons": {
       title: "Bending the Line",
       term: "Multilayer perceptrons",
       description: "Draw two kinds of dots. Watch a network learn to tell them apart.",
     },
-    pathfinding: {
+    "graph-search": {
       title: "The Spreading Search",
       term: "Graph search",
       description: "Draw obstacles and watch BFS, Dijkstra, and A* search for a path.",
@@ -239,12 +239,12 @@ export const en = {
       description:
         "Six experiments that challenge your intuition about chance. Guess first, then find out how wrong the guess was.",
     },
-    "sorting-race": {
+    sorting: {
       title: "The Cost of Order",
       term: "Sorting algorithms",
       description: "Draw the data and watch how much work each algorithm needs to sort it.",
     },
-    tokenizer: {
+    tokenization: {
       title: "Cheap Words",
       term: "BPE tokenization",
       description:

@@ -7,7 +7,7 @@
  *
  * ## What the lab is trying to show
  *
- * The neural-playground already answers "what is one gradient step?" on a 1D
+ * The multilayer-perceptrons already answers "what is one gradient step?" on a 1D
  * curve. This engine exists to answer the question a 1D curve structurally
  * cannot:
  *
@@ -50,7 +50,7 @@
  * Trajectory indices below are bounded by `run.length`, which `step()` keeps
  * inside the allocated capacity, so they are provably in range. The assertions
  * keep the hot loop free of redundant undefined checks — the same convention
- * `labs/sorting-race/engine.ts` and `labs/pathfinding/engine.ts` use.
+ * `labs/sorting/engine.ts` and `labs/graph-search/engine.ts` use.
  */
 
 // -------------------------------------------------------------- geometry ---

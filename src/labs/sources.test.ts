@@ -45,19 +45,19 @@ const VERIFIED: Record<SourceId, { year: number | null; doi: string | null; must
 
 /** Every lab that carries the shared Sources section, and what it cites. */
 const LAB_SOURCES: Record<string, readonly SourceId[]> = {
-  pathfinding: ["astar", "dijkstra"],
-  "neural-playground": ["backpropagation"],
-  "reward-playground": ["qLearning"],
-  "embedding-universe": ["gloveVectors"],
-  "embedding-universe-3d": ["gloveVectors"],
-  tokenizer: ["subwordBpe"],
+  "graph-search": ["astar", "dijkstra"],
+  "multilayer-perceptrons": ["backpropagation"],
+  "reinforcement-learning": ["qLearning"],
+  "word-embeddings": ["gloveVectors"],
+  "word-embeddings-3d": ["gloveVectors"],
+  tokenization: ["subwordBpe"],
   attention: ["transformer"],
   "gradient-descent": ["momentum", "adam"],
-  "hash-playground": ["sha2"],
+  "cryptographic-hashing": ["sha2"],
   probability: ["statisticalInference", "simpson"],
   "floating-point": ["ieee754", "goldberg", "ecma262", "bfloat16", "mixedPrecision"],
   convolution: ["lecunZip", "convArithmetic", "vgg", "alexnet", "hubelWiesel"],
-  "hash-table": ["peterson", "linearProbing", "birthday", "amortized", "javaApi"],
+  "hash-tables": ["peterson", "linearProbing", "birthday", "amortized", "javaApi"],
 };
 
 type Dict = typeof enLabs;
@@ -207,7 +207,7 @@ describe("each lab's sources", () => {
   it("leaves a lab with no verified source uncited rather than padded", () => {
     // Sorting Race has no source that met the standard. It must not grow an
     // empty Sources section for symmetry.
-    const sorting = labBlock(enLabs, "sorting-race");
+    const sorting = labBlock(enLabs, "sorting");
     expect(sorting.sources).toBeUndefined();
   });
 

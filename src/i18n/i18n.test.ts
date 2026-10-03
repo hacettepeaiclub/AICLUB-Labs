@@ -111,16 +111,16 @@ describe("Turkish quality", () => {
     // in Turkish technical writing too; translating them would invent terms
     // nobody uses.
     "labMeta.gradient-descent.term",
-    "labMeta.tokenizer.term",
+    "labMeta.tokenization.term",
     "labs.gradient-descent.optimizers.gd",
-    "labs.hash-playground.usage.items.git.label",
-    "labs.hash-playground.usage.items.https.label",
-    "labs.neural-playground.neuron.bias",
-    "labs.neural-playground.playground.activation",
-    "labs.neural-playground.neuron.activation",
-    "labs.neural-playground.datasets.xor.label",
-    "labs.tokenizer.compare.samples.tr-sea",
-    "labs.tokenizer.compare.samples.tr-visit",
+    "labs.cryptographic-hashing.usage.items.git.label",
+    "labs.cryptographic-hashing.usage.items.https.label",
+    "labs.multilayer-perceptrons.neuron.bias",
+    "labs.multilayer-perceptrons.playground.activation",
+    "labs.multilayer-perceptrons.neuron.activation",
+    "labs.multilayer-perceptrons.datasets.xor.label",
+    "labs.tokenization.compare.samples.tr-sea",
+    "labs.tokenization.compare.samples.tr-visit",
   ]);
 
   it("actually translates the prose", () => {
@@ -168,10 +168,10 @@ describe("Turkish quality", () => {
   });
 
   it("keeps technical terms that have no honest Turkish equivalent", () => {
-    expect(tr.labMeta.tokenizer.term).toContain("tokenization");
-    expect(trLabs.tokenizer.honesty).toContain("BPE");
-    expect(tr.labMeta["hash-playground"].term).toContain("hash");
-    expect(trLabs["neural-playground"].stats.epoch).toBe("Epok");
+    expect(tr.labMeta.tokenization.term).toContain("tokenization");
+    expect(trLabs.tokenization.honesty).toContain("BPE");
+    expect(tr.labMeta["cryptographic-hashing"].term).toContain("hash");
+    expect(trLabs["multilayer-perceptrons"].stats.epoch).toBe("Epok");
   });
 
   it("translates every recap line", () => {

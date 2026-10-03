@@ -36,7 +36,8 @@ export function LabShell({ meta, children }: { meta: LabMeta; children: ReactNod
       <nav aria-label={t.shell.breadcrumb} className="mb-6">
         <Link
           to="/"
-          className="rounded text-body-sm text-fg-muted transition-colors duration-fast hover:text-fg"
+          className="-my-3 inline-flex min-h-11 items-center rounded text-body-sm text-fg-muted
+            transition-colors duration-fast hover:text-fg"
         >
           {t.shell.backToLabs}
         </Link>

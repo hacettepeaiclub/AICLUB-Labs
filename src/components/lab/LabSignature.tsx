@@ -108,7 +108,7 @@ function Shape({ slug }: { slug: string }) {
   const rng = seeded(slug);
 
   switch (slug) {
-    case "hash-playground": {
+    case "cryptographic-hashing": {
       /*
        * Two inputs of visibly different length, one function, two outputs of
        * identical width and identical cell count.
@@ -172,7 +172,7 @@ function Shape({ slug }: { slug: string }) {
         </g>
       );
     }
-    case "neural-playground": {
+    case "multilayer-perceptrons": {
       const layers = [3, 4, 2];
       const xs = [10, 32, 54];
       return (
@@ -210,7 +210,7 @@ function Shape({ slug }: { slug: string }) {
         </g>
       );
     }
-    case "pathfinding": {
+    case "graph-search": {
       /*
        * A wavefront, not a chart.
        *
@@ -278,7 +278,7 @@ function Shape({ slug }: { slug: string }) {
         </g>
       );
     }
-    case "sorting-race": {
+    case "sorting": {
       return (
         <g>
           {Array.from({ length: 18 }, (_, i) => (
@@ -295,7 +295,7 @@ function Shape({ slug }: { slug: string }) {
         </g>
       );
     }
-    case "tokenizer": {
+    case "tokenization": {
       const widths = [7, 12, 5, 9, 14, 6];
       let x = 3;
       return (
@@ -382,7 +382,7 @@ function Shape({ slug }: { slug: string }) {
         </g>
       );
     }
-    case "reward-playground": {
+    case "reinforcement-learning": {
       return (
         <g fill="none" strokeWidth={0.6}>
           {Array.from({ length: 5 }, (_, r) =>
@@ -585,7 +585,7 @@ function Shape({ slug }: { slug: string }) {
         </g>
       );
     }
-    case "hash-table": {
+    case "hash-tables": {
       /*
        * A row of slots with one run of full ones. A key drops onto its home
        * inside the run, finds it taken, and hops right slot by slot to the
@@ -726,7 +726,7 @@ function Shape({ slug }: { slug: string }) {
         </g>
       );
     }
-    case "embedding-universe":
+    case "word-embeddings":
     default: {
       const pts = Array.from({ length: 26 }, () => ({ x: 4 + rng() * 56, y: 4 + rng() * 32 }));
       const hub = pts[7] ?? { x: 32, y: 20 };
