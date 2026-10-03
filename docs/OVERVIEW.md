@@ -101,70 +101,53 @@ going to reach a hundred labs without collapsing.
 
 ## 4. What's shipped
 
-Two labs, covering two of the six categories.
+Twelve labs across five of the six categories, listed in the order the home
+page reads them (`LAB_ORDER` in [`registry.ts`](../src/labs/registry.ts)): what a
+function does to its input, how a number is stored, what an algorithm costs,
+how a search explores, how text is cut up — and then the machine learning that
+stands on all of it.
 
-| Lab                                                 | Category        | Difficulty   | Time  | Shipped    |
-| --------------------------------------------------- | --------------- | ------------ | ----- | ---------- |
-| [Hash Playground](../src/labs/hash-playground/)     | Systems         | intro        | 3 min | 2026-07-22 |
-| [Neural Playground](../src/labs/neural-playground/) | Neural networks | intermediate | 6 min | 2026-09-04 |
+| Lab                                                       | Category         | Difficulty   | Time   | Shipped    |
+| --------------------------------------------------------- | ---------------- | ------------ | ------ | ---------- |
+| [Hash Playground](../src/labs/hash-playground/)           | Systems          | intro        | 3 min  | 2026-07-22 |
+| [Floating Point](../src/labs/floating-point/)             | Systems          | intermediate | 8 min  | 2026-10-02 |
+| [Sorting Race](../src/labs/sorting-race/)                 | Algorithms       | intermediate | 6 min  | 2026-09-06 |
+| [Pathfinding](../src/labs/pathfinding/)                   | Algorithms       | intermediate | 6 min  | 2026-09-05 |
+| [Tokenizer Lab](../src/labs/tokenizer/)                   | Machine learning | intermediate | 8 min  | 2026-09-07 |
+| [Gradient Descent](../src/labs/gradient-descent/)         | Machine learning | intermediate | 7 min  | 2026-09-06 |
+| [Neural Playground](../src/labs/neural-playground/)       | Neural networks  | intermediate | 6 min  | 2026-09-04 |
+| [Attention Playground](../src/labs/attention/)            | Machine learning | intro        | 5 min  | 2026-09-07 |
+| [Reward Playground](../src/labs/reward-playground/)       | Machine learning | intro        | 6 min  | 2026-09-08 |
+| [Embedding Universe](../src/labs/embedding-universe/)     | Machine learning | intermediate | 6 min  | 2026-09-10 |
+| [Hypothesis Testing](../src/labs/hypothesis-testing/)     | Theory           | intermediate | 7 min  | 2026-09-11 |
+| [Probability Lab](../src/labs/probability/)               | Theory           | intro        | 12 min | 2026-09-12 |
 
-### Hash Playground — "Change one character. Watch everything change."
+A thirteenth, `embedding-universe-3d`, is a draft: routable by link, kept off
+the grid, and marked `noindex`.
 
-Teaches the **avalanche effect** and the four defining properties of a
-cryptographic hash.
+Every lab cites what its theory rests on in a Sources section at the bottom of
+its page. The bibliography is one file,
+[`labs/sources.ts`](../src/labs/sources.ts), and every DOI, year and venue in it
+was read from the DOI registry, the arXiv API or the publication itself, then
+pinned by a test so a later edit cannot quietly break a citation.
 
-The whole experience derives from a single piece of state: the string in the
-input box. Every section below it is a different view of the current digest, the
-previous digest, and the difference between them.
+### Two worth reading as examples
 
-- Real SHA-256 via the Web Crypto API — not a simulation of one.
-- The digest as a **16×16 grid of 256 bits**. Flipped bits pulse in a ripple that
-  spreads from the centroid of the change, so every edit reads as an impact.
-- A **collision challenge** that invites you to find two inputs with the same hash,
-  scoring your longest matching prefix. Each additional matching character is 16×
-  less likely — the challenge is a probability lesson disguised as a game, and
-  losing it is the point.
+**Neural Playground** — the engine is a multi-layer perceptron written from
+scratch ([`engine.ts`](../src/labs/neural-playground/engine.ts)), with every
+buffer allocated once so a training frame allocates nothing. Its spiral
+challenge is calibrated, not guessed: six neurons fail, eight barely pass, and
+two layers of four beat one layer of eight at the same neuron budget, so depth
+beating width is something the visitor finds rather than reads.
 
-### Neural Playground — "Draw two kinds of dots. Watch a network learn to tell them apart."
-
-Teaches how a neural network actually learns: forward pass, loss,
-backpropagation, gradient descent.
-
-The engine is a multi-layer perceptron written from scratch in plain TypeScript
-([`engine.ts`](../src/labs/neural-playground/engine.ts)) — flat `Float64Array`
-weights, hand-written backprop, mini-batch SGD, every buffer allocated once so a
-training frame allocates nothing. Every visual on the page reads from that one
-engine, so nothing on screen can drift from the mathematics it claims to explain.
-
-Seven sections, ordered deliberately — watch a whole network learn first, then
-take it apart:
-
-1. **The playground.** A network trains in real time against points you can draw on
-   the canvas yourself. Live decision boundary, four datasets, adjustable depth,
-   width, activation, learning rate and regularization.
-2. **The network diagram.** Each node is a live thumbnail of _that neuron's own_
-   response across the input square, so you can watch simple stripes in the first
-   hidden layer get folded into the final shape at the output. All thumbnails share
-   one grid sweep and land on one canvas.
-3. **One neuron.** Three sliders and a squash — and the discovery that no
-   combination of them ever bends the line.
-4. **Why layers.** XOR, run side by side: no hidden layer plateaus near a coin flip
-   (~61%), one hidden layer reaches 100%. Same data, same learning rate, same
-   epochs. The single cleanest demonstration in the subject, so the lab lets you
-   run it rather than asserting it.
-5. **Gradient descent.** A ball on a bumpy loss curve, with a tangent line showing
-   the only information each step actually gets. Too small a learning rate crawls;
-   too large overshoots; neither ever sees the whole landscape.
-6. **The challenge.** Beat the spiral using as few hidden neurons as you can.
-7. **Recap.**
-
-The spiral's difficulty is **calibrated, not guessed**. Its angular sweep (7.2 rad)
-was tuned by measurement so the frontier lands where the lesson is: six neurons
-fail, eight barely pass, and — the payoff — **two layers of four beat one layer of
-eight at the same neuron budget**. Depth beats width, and the challenge is
-structured so you discover that rather than read it.
-
----
+**Floating Point** — every value on the page is exact. The engine
+([`engine.ts`](../src/labs/floating-point/engine.ts)) never uses a float: it
+computes with BigInt rationals and rounds once, to nearest with ties to even,
+for float64, float32, float16, bfloat16 and toy formats alike. Its tests hold
+it to the browser value for value — `parseFloat`, `String(n)`, `Math.fround`,
+and V8's `Math.f16round` — and pin each fact the page states, down to the
+detail that the exact sum of the stored 0.1 and 0.2 lands precisely halfway
+between two doubles, a tie that ties-to-even sends one step past 0.3.
 
 ## 5. How the platform delivers it
 
@@ -173,7 +156,8 @@ most to the mission:
 
 **Registry pattern.** Metadata is eager and tiny; components are `React.lazy`. The
 home grid renders instantly at any catalogue size, and opening lab #57 downloads
-only lab #57.
+lab #57 — plus, the first time any lab is opened, the collection's prose in the
+visitor's language.
 
 **Simulation separated from presentation.** Complex labs keep their logic in a pure
 `engine.ts` with no React import. This keeps engines unit-testable, keeps 60fps
@@ -208,20 +192,23 @@ simulation is the loudest thing on the page, and the chrome never competes.**
 
 ## 7. Engineering commitments
 
-These are measured, not aspirational. Current numbers from `npm run build`:
+These are measured, not aspirational. Numbers from `npm run build`:
 
-| Chunk                  | Raw      | Gzipped     |
-| ---------------------- | -------- | ----------- |
-| Hash Playground        | 29.6 KB  | **9.9 KB**  |
-| Neural Playground      | 41.5 KB  | **14.5 KB** |
-| App shell              | 31.7 KB  | 11.0 KB     |
-| Vendor: react + router | 163.5 KB | 53.4 KB     |
-| Vendor: framer-motion  | 120.0 KB | 40.2 KB     |
+| Chunk                                   | Raw      | Gzipped     |
+| --------------------------------------- | -------- | ----------- |
+| App shell (entry)                       | 86.1 KB  | **31.3 KB** |
+| Vendor: react + router                  | 159.8 KB | 52.2 KB     |
+| Lab prose, English (loaded with a lab)  | 117.8 KB | 40.9 KB     |
+| Lab prose, Turkish (loaded with a lab)  | 126.9 KB | 44.1 KB     |
+| Largest lab: Probability (with physics) | 129.3 KB | **40.3 KB** |
+| Floating Point                          | 39.3 KB  | 12.6 KB     |
+| Smallest lab: Hash Playground           | 13.2 KB  | 4.4 KB      |
 
-Both labs sit at roughly **10% of the 150 KB per-lab budget**, which is the
-headroom we want before the catalogue grows. Vendor chunks are pinned separately
-in `vite.config.ts`, so shipping lab #57 does not invalidate the framework bundle
-for the other 56.
+First-load JavaScript is about 83 KB gzipped: the shell and React, nothing else.
+No animation library ships at all — page and banner motion is CSS — and the
+teaching prose for every lab is its own chunk, fetched with the first lab
+rather than with the home page. The largest lab sits at about a quarter of the
+150 KB per-lab budget; most are under a tenth.
 
 Also standing:
 
@@ -232,29 +219,30 @@ Also standing:
   simulation.
 - **Views that hold a still image don't burn frames.** Paused canvases skip their
   work until something actually changes.
+- **Every canvas is cleared in device pixels** (`lib/canvas.ts`), because on a
+  fractional screen density a clear in CSS pixels leaves the last column
+  standing.
 - **Accessibility is not a later pass.** Focus rings are never disabled, every
   canvas has a text alternative, and async results are announced in a live region.
-
----
+- **Every page has its own head.** `tools/prerender.mjs` writes one HTML file per
+  route with its title, description, canonical URL and link-preview card, so a
+  lab shared in a group chat shows what it is. See `docs/DEPLOY.md`.
 
 ## 8. What's next
 
-Two of six categories are covered. **Nothing below is committed** — it is a
-candidate list, recorded so the next session starts with options rather than a
-blank page.
+**Nothing below is committed** — it is a candidate list, so the next session
+starts with options rather than a blank page. Selection criteria, in order:
+does it pass the "interaction IS the lesson" test; does it fill a thin or empty
+category; can it reach its aha in under ten seconds.
 
-| Candidate                   | Category         | The idea it would have to earn                                                    |
-| --------------------------- | ---------------- | --------------------------------------------------------------------------------- |
-| Sorting Race                | Algorithms       | Four algorithms on one array, comparison and swap counters running live.          |
-| Pathfinding                 | Algorithms       | Draw walls, then watch BFS / Dijkstra / A\* spread. Heuristic weight on a slider. |
-| Big-O Sandbox               | Theory           | Drag the input size; measure real running time and watch it fit the curve.        |
-| Data structure visualizer   | Data structures  | Insert and delete on a tree or a hash table; watch the structure rebalance.       |
-| Tokenizer / embedding space | Machine learning | Type a sentence, see it split and placed.                                         |
-
-Selection criteria, in order: does it pass the "interaction IS the lesson" test;
-does it fill an uncovered category; can it reach its aha in under ten seconds.
-
----
+| Candidate            | Category         | The idea it would have to earn                                                                     |
+| -------------------- | ---------------- | -------------------------------------------------------------------------------------------------- |
+| Race Condition       | Systems          | You are the scheduler: step two threads through `counter++` and lose an update with your own hand. |
+| Cache Locality       | Systems          | Same sum, same work, rows against columns — 17× apart when measured, and then on your own CPU.     |
+| Convolution Lab      | Neural networks  | Draw a stroke, edit a 3×3 kernel, and watch one set of weights detect it anywhere it moves.        |
+| Sum of Hinges        | Neural networks  | Fit a curve with ReLUs and see each neuron add exactly one bend.                                   |
+| Backprop by Hand     | Neural networks  | Nudge a weight by ε and watch the loss move by exactly gradient × ε.                               |
+| Hash Table           | Data structures  | Push the load factor towards 1 and watch probe lengths explode. The category has no lab yet.       |
 
 ## 9. Contributing a lab
 

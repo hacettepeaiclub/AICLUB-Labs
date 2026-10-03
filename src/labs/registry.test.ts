@@ -54,7 +54,8 @@ describe("the collection has an order, and it is the one we chose", () => {
 
 describe("each lab points at the next one", () => {
   it("follows the collection's reading order", () => {
-    expect(nextLab("hash-playground")?.meta.slug).toBe("sorting-race");
+    expect(nextLab("hash-playground")?.meta.slug).toBe("floating-point");
+    expect(nextLab("floating-point")?.meta.slug).toBe("sorting-race");
     expect(nextLab("tokenizer")?.meta.slug).toBe("gradient-descent");
   });
 

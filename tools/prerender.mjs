@@ -34,6 +34,7 @@
  */
 
 import { createServer } from "vite";
+import { existsSync } from "node:fs";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
@@ -141,7 +142,17 @@ async function main() {
 
   const template = await readFile(path.join(DIST, "index.html"), "utf8");
 
+  let fallbacks = 0;
   for (const route of routes) {
+    // A lab whose card has not been made yet would advertise an image that
+    // 404s, and a scraper shows a broken picture rather than none. Until the
+    // card exists, the lab borrows the collection's.
+    const card = new URL(route.meta.image).pathname;
+    if (!existsSync(path.join(DIST, card))) {
+      route.meta = { ...route.meta, image: `${siteUrl}/og/home.jpg` };
+      fallbacks++;
+    }
+
     const withHead = template
       .replace("</head>", `${head(route)}\n  </head>`)
       .replace("<title>AI Club Labs</title>", `<title>${escape(route.meta.title)}</title>`)
@@ -162,6 +173,9 @@ async function main() {
   console.log(
     `prerendered ${routes.length} routes (${indexed} indexed), sitemap.xml and robots.txt → ${siteUrl}`,
   );
+  if (fallbacks > 0) {
+    console.log(`${fallbacks} route(s) have no card of their own yet and use /og/home.jpg — see docs/DEPLOY.md`);
+  }
 }
 
 main().catch((error) => {

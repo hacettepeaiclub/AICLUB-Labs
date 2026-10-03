@@ -222,6 +222,27 @@ export function decode(x: Float): Rational | null {
   return x.sign === 1 ? neg(magnitude) : magnitude;
 }
 
+/**
+ * The exact value of a float the caller knows to be finite.
+ *
+ * `decode` returns null for infinity and NaN, which is right for code that
+ * has to handle them. Code that has already ruled them out — a neighbour of a
+ * finite sum, a tick on a toy format's line — says so with this instead of a
+ * non-null assertion, and a wrong belief fails loudly here rather than
+ * somewhere downstream as `undefined`.
+ */
+export function decodeFinite(x: Float): Rational {
+  const value = decode(x);
+  if (value === null) throw new RangeError(`Expected a finite ${x.format.id}, got ${classify(x)}.`);
+  return value;
+}
+
+/** `xs[i]`, for an index the caller has already bounded. Throws if it is not. */
+export function item<T>(xs: readonly T[], i: number): T {
+  if (i < 0 || i >= xs.length) throw new RangeError(`Index ${i} outside 0…${xs.length - 1}.`);
+  return xs[i] as T;
+}
+
 const special = (format: FloatFormat, kind: "infinity" | "nan", sign: 0 | 1): Float => ({
   format,
   sign,

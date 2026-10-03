@@ -1167,6 +1167,7 @@ export const trLabs: LabsCopy = {
         target: "saklanan sonuç",
       },
       same: "Aynı saklanan değer: burada toplam, sonucu doğrudan yazmışsınız gibi çıkıyor.",
+      tie: "Kesin toplam iki float64 değerinin tam ortasına düşüyor. Eşitlikte kural, son biti 0 olana gitmektir; burada o da üstteki.",
       apart: (steps: string) =>
         `${steps} uzakta: toplam, sonucu doğrudan yazınca elde edilen sayı değil.`,
       steps: (n: string) => (n === "1" ? "Bir adım" : `${n} adım`),
@@ -1322,7 +1323,6 @@ export const trLabs: LabsCopy = {
         "bfloat16, IEEE 754'te yer almaz. float32 ile aynı yerleşime sahiptir, yalnızca kesir 23 bitten 7 bite kısaltılmıştır; laboratuvar ona da diğerleri gibi yuvarlar: en yakın değere, eşitlikte çift olana.",
       caption:
         "2 × 10⁻⁸ büyüklüğündeki bir gradyan bfloat16'da 2.0023 × 10⁻⁸ olarak yaşar, float16'da ise 0 olur, çünkü float16 yaklaşık 6 × 10⁻⁸'in altına inemez. bfloat16 ile eğitim bu tür değerleri ek bir düzenek olmadan korur; float16 ile eğitimde kaybolmasınlar diye kaybın büyütülmesi gerekir.",
-      announce: (summary: string) => summary,
     },
 
     // 7 ----------------------------------------------------------------------
@@ -1342,6 +1342,7 @@ export const trLabs: LabsCopy = {
         result: "float32'de x + 1",
         solved: "Çözüldü: 1 eklemek hiçbir şeyi değiştirmedi.",
         notYet: "Henüz değil: x + 1 farklı bir sayı.",
+        infinite: "Infinity + 1 yine Infinity, ama bu boşluklar hakkında bir şey söylemez. Sonlu bir x bulun.",
         best: (value: string) => `Bulduğunuz en küçük: ${value}`,
       },
       associative: {
@@ -1352,6 +1353,7 @@ export const trLabs: LabsCopy = {
         right: "a + (b + c)",
         solved: "Çözüldü: toplamaların sırası sonucu değiştirdi.",
         notYet: "Henüz değil: iki sıra da aynı sonucu veriyor.",
+        notFinite: "Sonuçlardan biri sonlu bir sayı değil. NaN hiçbir şeye, kendisine bile eşit olmaz, bu yüzden sayılmaz: sonlu a, b ve c bulun.",
       },
       exact: {
         tab: "Kesin bir ondalık",
@@ -1365,6 +1367,7 @@ export const trLabs: LabsCopy = {
           exact: "float32'de kesin olarak saklanıyor",
         },
         solved: "Çözüldü.",
+        notYet: "Henüz değil: yukarıdaki kurallardan biri sağlanmıyor.",
         reveal:
           "Tam yedi tane var, 0.5 de içlerinde: 0.125, 0.25, 0.375, 0.5, 0.625, 0.75 ve 0.875. Hepsi sekizde birlerin tam katı, çünkü bir ondalık sayı ikili sistemde ancak en sade kesir halinde paydası ikinin bir kuvveti olduğunda kesindir.",
       },

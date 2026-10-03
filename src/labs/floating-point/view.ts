@@ -57,7 +57,8 @@ export function readable(x: Rational, digits = 3): string {
 export function spoken(x: Rational, digits = 3): string {
   if (x.num === 0n) return "0";
   const { mantissa, exponent } = scientific(x, digits);
-  if (exponent >= -3 && exponent < 6) return trimZeros(decimalTo(x, Math.max(0, digits - 1 - exponent)));
+  if (exponent >= -3 && exponent < 6)
+    return trimZeros(decimalTo(x, Math.max(0, digits - 1 - exponent)));
   return `${mantissa} times 10 to the ${exponent}`;
 }
 
@@ -75,7 +76,10 @@ const trimZeros = (s: string): string => (s.includes(".") ? s.replace(/\.?0+$/, 
  * as the stored value has, which is enough to find the first disagreement.
  * Returns the index into `stored`, or null when the two agree throughout.
  */
-export function divergence(typed: Rational, stored: Rational): { text: string; from: number | null } {
+export function divergence(
+  typed: Rational,
+  stored: Rational,
+): { text: string; from: number | null } {
   const text = exactDecimal(stored) ?? "";
   const places = text.includes(".") ? text.length - text.indexOf(".") - 1 : 0;
   const typedText = exactDecimal(typed) ?? decimalTo(typed, places);

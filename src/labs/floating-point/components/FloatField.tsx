@@ -55,7 +55,9 @@ export function FloatField({
           "mt-1.5 min-h-[44px] w-full rounded border bg-ink-950 px-4 font-mono text-fg",
           "placeholder:text-fg-faint transition-colors duration-fast hover:border-line/25",
           compact ? "py-2 text-body-sm" : "py-3 text-body",
-          error ? "border-signal-amber/60 focus:border-signal-amber" : "border-line/15 focus:border-accent/50",
+          error
+            ? "border-signal-amber/60 focus:border-signal-amber"
+            : "border-line/15 focus:border-accent/50",
         )}
       />
       {error && (

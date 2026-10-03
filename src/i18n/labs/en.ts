@@ -1175,6 +1175,7 @@ export const enLabs = {
         target: "answer stored",
       },
       same: "Same stored value: here the sum comes out exactly as if you had typed the answer.",
+      tie: "The exact sum lands exactly halfway between two float64 values. On a tie the rule is to go to the one whose last bit is 0, and here that is the upper one.",
       apart: (steps: string) => `${steps} apart: the sum is not the number you get by typing the answer.`,
       steps: (n: string) => (n === "1" ? "One step" : `${n} steps`),
       reset: "Back to 0.1 + 0.2",
@@ -1329,7 +1330,6 @@ export const enLabs = {
         "bfloat16 is not in IEEE 754. It has float32's layout with the fraction cut from 23 bits to 7, and the lab rounds to it as to the others: to the nearest value, ties to even.",
       caption:
         "A gradient of 2 × 10⁻⁸ survives in bfloat16, stored as 2.0023 × 10⁻⁸, and becomes 0 in float16, which reaches no lower than about 6 × 10⁻⁸. Training in bfloat16 keeps such values without extra machinery; training in float16 needs the loss scaled up so they do not vanish.",
-      announce: (summary: string) => summary,
     },
 
     // 7 ----------------------------------------------------------------------
@@ -1349,6 +1349,7 @@ export const enLabs = {
         result: "x + 1 in float32",
         solved: "Solved: adding 1 changed nothing at all.",
         notYet: "Not yet: x + 1 is a different number.",
+        infinite: "Infinity + 1 is Infinity, but that says nothing about gaps. Find a finite x.",
         best: (value: string) => `Smallest you have found: ${value}`,
       },
       associative: {
@@ -1359,6 +1360,7 @@ export const enLabs = {
         right: "a + (b + c)",
         solved: "Solved: the order of the additions changed the answer.",
         notYet: "Not yet: both orders give the same answer.",
+        notFinite: "One result is not a finite number. NaN equals nothing, not even itself, so that does not count: find finite a, b and c.",
       },
       exact: {
         tab: "An exact decimal",
@@ -1372,6 +1374,7 @@ export const enLabs = {
           exact: "stored exactly in float32",
         },
         solved: "Solved.",
+        notYet: "Not yet: one of the rules above is not met.",
         reveal:
           "There are exactly seven, 0.5 among them: 0.125, 0.25, 0.375, 0.5, 0.625, 0.75 and 0.875. Every one is a whole number of eighths, because a decimal is exact in binary only when, written as a fraction in lowest terms, its denominator is a power of two.",
       },

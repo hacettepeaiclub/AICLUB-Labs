@@ -2,16 +2,19 @@ import { describe, expect, it } from "vitest";
 import { createRng } from "@/lib/random";
 import {
   FORMATS,
+  add,
   addFloats,
   allNonNegative,
   classify,
   decode,
+  decodeFinite,
   equal,
   exactDecimal,
   floatsEqual,
   fromBits,
   fromDouble,
   gapAbove,
+  item,
   largestFinite,
   nextDown,
   nextUp,
@@ -25,6 +28,7 @@ import {
   smallestNormal,
   smallestSubnormal,
   stepsBetween,
+  sub,
   toBits,
   toDouble,
   toyFormat,
@@ -81,8 +85,7 @@ const f32Bits = (x: number): number => {
   return view.getUint32(0);
 };
 
-const bitsAsCode = (x: Float): number =>
-  toBits(x).reduce<number>((acc, bit) => acc * 2 + bit, 0);
+const bitsAsCode = (x: Float): number => toBits(x).reduce<number>((acc, bit) => acc * 2 + bit, 0);
 
 // ---------------------------------------------------------------------------
 
@@ -109,7 +112,8 @@ describe("parsing what people type", () => {
   });
 
   it("rejects what is not a number", () => {
-    for (const s of ["", "abc", ".", "1..2", "1/0", "1e", "0x10"]) expect(parseNumber(s), s).toBeNull();
+    for (const s of ["", "abc", ".", "1..2", "1/0", "1e", "0x10"])
+      expect(parseNumber(s), s).toBeNull();
   });
 
   it("judges size by the value, not by the exponent alone", () => {
@@ -125,7 +129,8 @@ describe("float64 agrees with the browser, value for value", () => {
   it("rounds decimal strings exactly as parseFloat does", () => {
     // At most 17 significant digits: ECMA-262 requires correct rounding there.
     for (let i = 0; i < 3000; i++) {
-      const digits = String(1 + Math.floor(rng() * 9)) + String(Math.floor(rng() * 1e15)).padStart(15, "0");
+      const digits =
+        String(1 + Math.floor(rng() * 9)) + String(Math.floor(rng() * 1e15)).padStart(15, "0");
       const exp = Math.floor(rng() * 640) - 340;
       const s = `${rng() < 0.5 ? "-" : ""}${digits.slice(0, 1 + Math.floor(rng() * 16))}e${exp}`;
       const ours = round(parse(s), FORMATS.float64);
@@ -153,7 +158,9 @@ describe("float64 agrees with the browser, value for value", () => {
       if (!Number.isFinite(d) || Object.is(d, -0)) continue;
       expect({ d, s: shortest(fromDouble(d)) }).toEqual({ d, s: String(d) });
     }
-    for (const d of [0.1, 0.30000000000000004, 1e21, 1e-7, 123456789.123, 5e-324, 1.7976931348623157e308]) {
+    for (const d of [
+      0.1, 0.30000000000000004, 1e21, 1e-7, 123456789.123, 5e-324, 1.7976931348623157e308,
+    ]) {
       expect(shortest(fromDouble(d))).toBe(String(d));
     }
   });
@@ -185,7 +192,9 @@ describe("bfloat16 agrees with the bit-level definition", () => {
       if (((u >>> 23) & 0xff) === 0xff) continue; // infinities and NaNs
       const view = new DataView(new ArrayBuffer(4));
       view.setUint32(0, u);
-      const exact = decode(fromDouble(view.getFloat32(0))) as NonNullable<ReturnType<typeof decode>>;
+      const exact = decode(fromDouble(view.getFloat32(0))) as NonNullable<
+        ReturnType<typeof decode>
+      >;
       const ours = round(exact.num === 0n ? parse(u >>> 31 ? "-0" : "0") : exact, FORMATS.bfloat16);
       expect({ u, code: bitsAsCode(ours) }).toEqual({ u, code: reference(u) });
     }
@@ -229,7 +238,10 @@ describe("float16 agrees with an independent conversion", () => {
     for (let i = 0; i < 5000; i++) {
       const d = Math.fround(randomNear(-28, 18));
       const u = f32Bits(d);
-      const ours = round(decode(fromDouble(d)) as NonNullable<ReturnType<typeof decode>>, FORMATS.float16);
+      const ours = round(
+        decode(fromDouble(d)) as NonNullable<ReturnType<typeof decode>>,
+        FORMATS.float16,
+      );
       expect({ d, code: bitsAsCode(ours) }).toEqual({ d, code: reference(u) });
     }
   });
@@ -239,7 +251,10 @@ describe("float16 agrees with an independent conversion", () => {
     if (typeof f16round !== "function") return;
     for (let i = 0; i < 5000; i++) {
       const d = randomNear(-28, 18);
-      const ours = round(decode(fromDouble(d)) as NonNullable<ReturnType<typeof decode>>, FORMATS.float16);
+      const ours = round(
+        decode(fromDouble(d)) as NonNullable<ReturnType<typeof decode>>,
+        FORMATS.float16,
+      );
       const theirs = f16round(d);
       const value = decode(ours);
       if (value === null) expect(Number.isFinite(theirs)).toBe(false);
@@ -261,17 +276,34 @@ describe("the facts the lab states", () => {
   });
 
   it("makes 0.1 + 0.2 the float64 one step above where 0.3 lands", () => {
-    const sum = addFloats(round(parse("0.1"), FORMATS.float64), round(parse("0.2"), FORMATS.float64));
+    const sum = addFloats(
+      round(parse("0.1"), FORMATS.float64),
+      round(parse("0.2"), FORMATS.float64),
+    );
     const three = round(parse("0.3"), FORMATS.float64);
     expect(sameFloat(sum, fromDouble(0.1 + 0.2))).toBe(true);
     expect(shortest(sum)).toBe("0.30000000000000004");
     expect(floatsEqual(sum, three)).toBe(false);
     expect(sameFloat(sum, nextUp(three))).toBe(true);
-    expect(exactDecimal(decode(sum)!)).toBe("0.3000000000000000444089209850062616169452667236328125");
-    expect(exactDecimal(decode(three)!)).toBe("0.299999999999999988897769753748434595763683319091796875");
+    expect(exactDecimal(decode(sum)!)).toBe(
+      "0.3000000000000000444089209850062616169452667236328125",
+    );
+    expect(exactDecimal(decode(three)!)).toBe(
+      "0.299999999999999988897769753748434595763683319091796875",
+    );
     // The step between them is 2^-54, and they are exactly one step apart.
     expect(equal(gapAbove(three)!, pow2(-54))).toBe(true);
     expect(stepsBetween(sum, three)).toBe(1n);
+    // And the exact sum of the two stored inputs lies exactly halfway between
+    // them: 2^-55 above where 0.3 lands. A tie, broken towards the even
+    // significand — which is the upper one.
+    const exactSum = add(
+      decode(round(parse("0.1"), FORMATS.float64))!,
+      decode(round(parse("0.2"), FORMATS.float64))!,
+    );
+    expect(equal(sub(exactSum, decode(three)!), pow2(-55))).toBe(true);
+    expect(sum.fraction % 2n).toBe(0n);
+    expect(three.fraction % 2n).toBe(1n);
     expect(stepsBetween(three, three)).toBe(0n);
   });
 
@@ -294,8 +326,12 @@ describe("the facts the lab states", () => {
     // Half a step above the largest float16 is a tie, and the even way is up.
     expect(exactDecimal(decode(round(parse("65519"), FORMATS.float16))!)).toBe("65504");
     expect(classify(round(parse("65520"), FORMATS.float16))).toBe("infinity");
-    expect(String(toDouble(round(largestFinite(FORMATS.float32), FORMATS.float64)))).toBe("3.4028234663852886e+38");
-    expect(String(toDouble(round(largestFinite(FORMATS.bfloat16), FORMATS.float64)))).toBe("3.3895313892515355e+38");
+    expect(String(toDouble(round(largestFinite(FORMATS.float32), FORMATS.float64)))).toBe(
+      "3.4028234663852886e+38",
+    );
+    expect(String(toDouble(round(largestFinite(FORMATS.bfloat16), FORMATS.float64)))).toBe(
+      "3.3895313892515355e+38",
+    );
   });
 
   it("stores a decimal exactly only when it is a whole number over a power of two", () => {
@@ -372,7 +408,10 @@ describe("the encoding", () => {
 
 describe("printing", () => {
   it("writes a value in scientific notation without rounding it twice", () => {
-    expect(scientific(rational(1n, 18014398509481984n), 3)).toEqual({ mantissa: "5.55", exponent: -17 });
+    expect(scientific(rational(1n, 18014398509481984n), 3)).toEqual({
+      mantissa: "5.55",
+      exponent: -17,
+    });
     expect(scientific(rational(9996n, 1000n), 3)).toEqual({ mantissa: "1.00", exponent: 1 });
   });
 
@@ -384,5 +423,19 @@ describe("printing", () => {
 
   it("has no finite expansion for a value that has none", () => {
     expect(exactDecimal(rational(1n, 3n))).toBeNull();
+  });
+});
+
+describe("the checks that replace non-null assertions", () => {
+  it("decodes a finite float and refuses infinity and NaN out loud", () => {
+    expect(equal(decodeFinite(round(parse("0.5"), FORMATS.float32)), rational(1n, 2n))).toBe(true);
+    expect(() => decodeFinite(round(parse("Infinity"), FORMATS.float32))).toThrow(/finite float32, got infinity/);
+    expect(() => decodeFinite(round(parse("NaN"), FORMATS.float16))).toThrow(/got nan/);
+  });
+
+  it("indexes inside the bounds and throws outside them", () => {
+    expect(item([1, 2, 3], 2)).toBe(3);
+    expect(() => item([1, 2, 3], 3)).toThrow(RangeError);
+    expect(() => item([], 0)).toThrow(RangeError);
   });
 });
