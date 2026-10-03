@@ -101,7 +101,7 @@ going to reach a hundred labs without collapsing.
 
 ## 4. What's shipped
 
-Fourteen labs across all six categories, listed in the order the home
+Fifteen labs across all six categories, listed in the order the home
 page reads them (`LAB_ORDER` in [`registry.ts`](../src/labs/registry.ts)): what a
 function does to its input, how a number is stored, what an algorithm costs,
 how a search explores, how text is cut up — and then the machine learning that
@@ -117,6 +117,7 @@ stands on all of it.
 | [Cheap Words](../src/labs/tokenization/) · BPE tokenization | Machine learning | intermediate | 8 min  | 2026-09-07 |
 | [The Size of a Step](../src/labs/gradient-descent/) · gradient descent | Machine learning | intermediate | 7 min  | 2026-09-06 |
 | [Bending the Line](../src/labs/multilayer-perceptrons/) · multilayer perceptrons | Neural networks  | intermediate | 6 min  | 2026-09-04 |
+| [Who Is to Blame?](../src/labs/backpropagation/) · backpropagation | Neural networks  | intermediate | 9 min  | 2026-10-04 |
 | [Nine Weights](../src/labs/convolution/) · convolution | Neural networks  | intermediate | 9 min  | 2026-10-03 |
 | [Where the Model Looks](../src/labs/attention/) · attention | Machine learning | intro        | 5 min  | 2026-09-07 |
 | [Exactly What You Asked](../src/labs/reinforcement-learning/) · reinforcement learning | Machine learning | intro        | 6 min  | 2026-09-08 |
@@ -132,7 +133,7 @@ browser tab carries both, and the lab finder matches either. The URL keeps
 the original slug, so no link and no saved progress broke when the titles
 changed.
 
-A fifteenth, `word-embeddings-3d`, is a draft: routable by link, kept off
+A sixteenth, `word-embeddings-3d`, is a draft: routable by link, kept off
 the grid, and marked `noindex`.
 
 Every lab cites what its theory rests on in a Sources section at the bottom of
@@ -175,6 +176,16 @@ measured on a real table, not read off a formula; the tests then hold the
 formulas to those measurements — chaining's 1 + (n − 1)/2m, Knuth's two
 linear-probing estimates on tables of 4,096 slots, and the birthday curve's
 23 for 365 buckets.
+
+**Who Is to Blame?** (backpropagation) — no section has a "step" button; each
+is a gesture. The visitor pulls the network's output and watches every weight
+light up with its share of the pull, zooms in on a loss curve until it is the
+tangent backprop predicted, turns the first of five dials and watches the chain
+rule turn the last, and fills in a computation graph's gradients by hand in the
+only order the graph allows. One small reverse-mode engine computes all of it,
+held to central differences for every graph on the page; the race against
+numeric gradients is timed for real, and the challenge plants three real
+backprop bugs for a gradient check to find.
 
 ## 5. How the platform delivers it
 
@@ -223,17 +234,18 @@ These are measured, not aspirational. Numbers from `npm run build`:
 
 | Chunk                                   | Raw      | Gzipped     |
 | --------------------------------------- | -------- | ----------- |
-| App shell (entry)                       | 88.7 KB  | **32.1 KB** |
-| Vendor: react + router                  | 159.8 KB | 52.2 KB     |
-| Lab prose, English (loaded with a lab)  | 140.4 KB | 48.7 KB     |
-| Lab prose, Turkish (loaded with a lab)  | 141.1 KB | 52.6 KB     |
+| App shell (entry)                       | 93.3 KB  | **33.8 KB** |
+| Vendor: react + router                  | 160.2 KB | 52.3 KB     |
+| Lab prose, English (loaded with a lab)  | 151.5 KB | 52.6 KB     |
+| Lab prose, Turkish (loaded with a lab)  | 152.3 KB | 56.8 KB     |
 | Largest lab: Probability (with physics) | 129.3 KB | **40.3 KB** |
 | 0.1 + 0.2 (floating point)              | 39.5 KB  | 12.7 KB     |
 | Nine Weights (convolution)              | 33.6 KB  | 11.4 KB     |
 | Computed Address (hash tables)          | 26.0 KB  | 8.1 KB      |
+| Who Is to Blame? (backpropagation)      | 33.1 KB  | 11.3 KB     |
 | Smallest lab: Digital Fingerprint       | 13.2 KB  | 4.4 KB      |
 
-First-load JavaScript is about 84 KB gzipped: the shell and React, nothing else.
+First-load JavaScript is about 86 KB gzipped: the shell and React, nothing else.
 No animation library ships at all — page and banner motion is CSS — and the
 teaching prose for every lab is its own chunk, fetched with the first lab
 rather than with the home page. The largest lab sits at about a quarter of the
@@ -269,7 +281,6 @@ category; can it reach its aha in under ten seconds.
 | Race Condition       | Systems          | You are the scheduler: step two threads through `counter++` and lose an update with your own hand. |
 | Cache Locality       | Systems          | Same sum, same work, rows against columns — 17× apart when measured, and then on your own CPU.     |
 | Sum of Hinges        | Neural networks  | Fit a curve with ReLUs and see each neuron add exactly one bend.                                   |
-| Backprop by Hand     | Neural networks  | Nudge a weight by ε and watch the loss move by exactly gradient × ε.                               |
 
 ## 9. Contributing a lab
 

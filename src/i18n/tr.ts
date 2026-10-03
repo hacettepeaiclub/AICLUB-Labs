@@ -67,7 +67,7 @@ export const tr: Translation = {
     // İlk sürümdeki başlık geri alındı: hem bilgisayar bilimini hem yapay
     // zekâyı adıyla söylüyor ve yine bir eylemle başlıyor.
     title: "Bilgisayar biliminin ve yapay zekânın arkasındaki fikirlerle oynayın.",
-    lede: "On dört etkileşimli deney: algoritmalar, yapay sinir ağları ve hesaplamanın işleyişi. Uzun anlatım yok, çevirip kaydıracağınız düğmeler var.",
+    lede: "On beş etkileşimli deney: algoritmalar, yapay sinir ağları ve hesaplamanın işleyişi. Uzun anlatım yok, çevirip kaydıracağınız düğmeler var.",
     cta: "Denemeye başla",
     labs: "Laboratuvarlar",
     labCount: (n: number) => `${n} düzenek`,
@@ -179,6 +179,12 @@ export const tr: Translation = {
       term: "Gradient descent",
       description:
         "Bir yüzeyin biçiminin, atmanıza izin verilen adımın boyutunu nasıl belirlediğini görün.",
+    },
+    backpropagation: {
+      title: "Suç Kimde?",
+      term: "Geri yayılım",
+      description:
+        "Bir ağın çıktısını çekin ve her ağırlığın suçtaki payını görün, sonra geri geçişi kendiniz yapın.",
     },
     convolution: {
       title: "Dokuz Ağırlık",

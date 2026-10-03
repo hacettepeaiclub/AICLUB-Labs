@@ -72,7 +72,7 @@ export const en = {
     // Also the original copy, tightened: it now states the size of the
     // collection, because the labs start one screen below and the count is
     // the fastest way to say what this place is.
-    lede: "Fourteen interactive experiments: algorithms, neural networks and the machinery of computation. No lectures, just levers to pull.",
+    lede: "Fifteen interactive experiments: algorithms, neural networks and the machinery of computation. No lectures, just levers to pull.",
     cta: "Start experimenting",
     labs: "Labs",
     labCount: (n: number) => `${n} instruments`,
@@ -199,6 +199,12 @@ export const en = {
       term: "Gradient descent",
       description:
         "Watch how the shape of a landscape decides how big a step you are allowed to take.",
+    },
+    backpropagation: {
+      title: "Who Is to Blame?",
+      term: "Backpropagation",
+      description:
+        "Pull a network's output and watch every weight learn its share of the blame, then run the backward pass yourself.",
     },
     convolution: {
       title: "Nine Weights",

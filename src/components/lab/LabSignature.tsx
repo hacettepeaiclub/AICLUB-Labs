@@ -649,6 +649,71 @@ function Shape({ slug }: { slug: string }) {
         </g>
       );
     }
+    case "backpropagation": {
+      /*
+       * A small network, and the error travelling back through it: the
+       * output lit in `data`, and the connections drawn again from the output
+       * towards the inputs in the field colour, thicker where more of the
+       * blame flows. The forward wiring stays inert underneath.
+       */
+      const L0 = [
+        { x: 10, y: 12 },
+        { x: 10, y: 28 },
+      ];
+      const L1 = [
+        { x: 32, y: 9 },
+        { x: 32, y: 20 },
+        { x: 32, y: 31 },
+      ];
+      const OUT = { x: 54, y: 20 };
+      // How much flows back along each hidden→input wire: fixed, so the
+      // drawing is the same on every visit.
+      const BLAME = [1.4, 0.6, 1, 0.5, 0.8, 1.2];
+      return (
+        <g>
+          {L1.map((h, j) => (
+            <g key={`f-${j}`}>
+              {L0.map((x, i) => (
+                <line key={i} x1={x.x} y1={x.y} x2={h.x} y2={h.y} strokeWidth={0.5} className={inert} />
+              ))}
+              <line x1={h.x} y1={h.y} x2={OUT.x} y2={OUT.y} strokeWidth={0.5} className={inert} />
+            </g>
+          ))}
+          {L1.map((h, j) => (
+            <line
+              key={`b-${j}`}
+              x1={OUT.x}
+              y1={OUT.y}
+              x2={h.x}
+              y2={h.y}
+              strokeWidth={1.1}
+              pathLength={1}
+              className={`${structure} sig-draw`}
+              style={at(0.1 + j * 0.08)}
+            />
+          ))}
+          {L1.map((h, j) =>
+            L0.map((x, i) => (
+              <line
+                key={`bb-${j}-${i}`}
+                x1={h.x}
+                y1={h.y}
+                x2={x.x}
+                y2={x.y}
+                strokeWidth={BLAME[j * 2 + i] ?? 1}
+                pathLength={1}
+                className={`${structure} sig-draw`}
+                style={at(0.45 + (j * 2 + i) * 0.06)}
+              />
+            )),
+          )}
+          {[...L0, ...L1].map((n, i) => (
+            <circle key={`n-${i}`} cx={n.x} cy={n.y} r={2.4} className="fill-fg-faint/60" />
+          ))}
+          <circle cx={OUT.x} cy={OUT.y} r={3.2} className="fill-data sig-pop" style={at(0)} />
+        </g>
+      );
+    }
     case "convolution": {
       /*
        * A picture, a 3×3 window on it, and the output it is filling in: the
