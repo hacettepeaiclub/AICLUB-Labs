@@ -392,6 +392,9 @@ function LabTile({ meta, lit, visited }: { meta: LabMeta; lit: boolean; visited:
       </div>
 
       <div className="flex flex-1 flex-col px-1 pb-0.5 pt-4">
+        {copy?.term && (
+          <p className="mb-1 text-overline uppercase text-fg-faint">{copy.term}</p>
+        )}
         <div className="flex items-start justify-between gap-3">
           <h3 className="min-w-0 font-display text-title text-fg">{copy?.title ?? meta.title}</h3>
           <svg

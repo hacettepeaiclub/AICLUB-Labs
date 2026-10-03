@@ -2,7 +2,7 @@ import type { LabMeta } from "../types";
 
 export const neuralPlaygroundMeta: LabMeta = {
   slug: "neural-playground",
-  title: "Neural Playground",
+  title: "Bending the Line",
   description: "Draw two kinds of dots. Watch a network learn to tell them apart.",
   category: "neural-networks",
   difficulty: "intermediate",

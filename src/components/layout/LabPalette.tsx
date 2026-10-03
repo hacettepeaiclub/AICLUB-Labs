@@ -54,6 +54,7 @@ import { search } from "./labSearch";
 interface Entry {
   meta: LabMeta;
   title: string;
+  term: string;
   rest: string;
   field: string;
 }
@@ -122,10 +123,18 @@ export function LabPalette({
         return {
           meta,
           title,
+          term: copy?.term ?? "",
           field,
-          // The English name and the slug are in here on purpose: "gradient"
-          // should find Gradyan İnişi for someone reading in Turkish.
-          rest: [copy?.description ?? meta.description, field, meta.title, meta.slug].join(" "),
+          // The technical term, the English name and the slug are in here on
+          // purpose: "floating" should find 0,1 + 0,2, and "gradient" should
+          // find Adımın Boyu for someone reading in Turkish.
+          rest: [
+            copy?.term ?? "",
+            copy?.description ?? meta.description,
+            field,
+            meta.title,
+            meta.slug,
+          ].join(" "),
         };
       }),
     [t],
@@ -268,6 +277,7 @@ export function LabPalette({
                         className="size-1.5 shrink-0 rounded-pill bg-[rgb(var(--c))]"
                       />
                       {entry.field}
+                      {entry.term && <span className="truncate text-fg-faint">· {entry.term}</span>}
                     </span>
                   </span>
                   {here ? (

@@ -107,22 +107,30 @@ function does to its input, how a number is stored, what an algorithm costs,
 how a search explores, how text is cut up — and then the machine learning that
 stands on all of it.
 
-| Lab                                                       | Category         | Difficulty   | Time   | Shipped    |
+| Lab · subject | Category         | Difficulty   | Time   | Shipped    |
 | --------------------------------------------------------- | ---------------- | ------------ | ------ | ---------- |
-| [Hash Playground](../src/labs/hash-playground/)           | Systems          | intro        | 3 min  | 2026-07-22 |
-| [Floating Point](../src/labs/floating-point/)             | Systems          | intermediate | 8 min  | 2026-10-02 |
-| [Hash Table](../src/labs/hash-table/)                     | Data structures  | intermediate | 8 min  | 2026-10-03 |
-| [Sorting Race](../src/labs/sorting-race/)                 | Algorithms       | intermediate | 6 min  | 2026-09-06 |
-| [Pathfinding](../src/labs/pathfinding/)                   | Algorithms       | intermediate | 6 min  | 2026-09-05 |
-| [Tokenizer Lab](../src/labs/tokenizer/)                   | Machine learning | intermediate | 8 min  | 2026-09-07 |
-| [Gradient Descent](../src/labs/gradient-descent/)         | Machine learning | intermediate | 7 min  | 2026-09-06 |
-| [Neural Playground](../src/labs/neural-playground/)       | Neural networks  | intermediate | 6 min  | 2026-09-04 |
-| [Convolution](../src/labs/convolution/)                   | Neural networks  | intermediate | 9 min  | 2026-10-03 |
-| [Attention Playground](../src/labs/attention/)            | Machine learning | intro        | 5 min  | 2026-09-07 |
-| [Reward Playground](../src/labs/reward-playground/)       | Machine learning | intro        | 6 min  | 2026-09-08 |
-| [Embedding Universe](../src/labs/embedding-universe/)     | Machine learning | intermediate | 6 min  | 2026-09-10 |
-| [Hypothesis Testing](../src/labs/hypothesis-testing/)     | Theory           | intermediate | 7 min  | 2026-09-11 |
-| [Probability Lab](../src/labs/probability/)               | Theory           | intro        | 12 min | 2026-09-12 |
+| [Digital Fingerprint](../src/labs/hash-playground/) · cryptographic hashing | Systems          | intro        | 3 min  | 2026-07-22 |
+| [0.1 + 0.2](../src/labs/floating-point/) · floating point | Systems          | intermediate | 8 min  | 2026-10-02 |
+| [Computed Address](../src/labs/hash-table/) · hash tables | Data structures  | intermediate | 8 min  | 2026-10-03 |
+| [The Cost of Order](../src/labs/sorting-race/) · sorting | Algorithms       | intermediate | 6 min  | 2026-09-06 |
+| [The Spreading Search](../src/labs/pathfinding/) · graph search | Algorithms       | intermediate | 6 min  | 2026-09-05 |
+| [Cheap Words](../src/labs/tokenizer/) · BPE tokenization | Machine learning | intermediate | 8 min  | 2026-09-07 |
+| [The Size of a Step](../src/labs/gradient-descent/) · gradient descent | Machine learning | intermediate | 7 min  | 2026-09-06 |
+| [Bending the Line](../src/labs/neural-playground/) · multilayer perceptrons | Neural networks  | intermediate | 6 min  | 2026-09-04 |
+| [Nine Weights](../src/labs/convolution/) · convolution | Neural networks  | intermediate | 9 min  | 2026-10-03 |
+| [Where the Model Looks](../src/labs/attention/) · attention | Machine learning | intro        | 5 min  | 2026-09-07 |
+| [Exactly What You Asked](../src/labs/reward-playground/) · reinforcement learning | Machine learning | intro        | 6 min  | 2026-09-08 |
+| [The Map of Meaning](../src/labs/embedding-universe/) · word embeddings | Machine learning | intermediate | 6 min  | 2026-09-10 |
+| [The Price of Certainty](../src/labs/hypothesis-testing/) · hypothesis testing | Theory           | intermediate | 7 min  | 2026-09-11 |
+| [Guess, Then Count](../src/labs/probability/) · probability | Theory           | intro        | 12 min | 2026-09-12 |
+
+Each lab has two names. The title says what it is about, in a phrase a
+visitor might remember ("0.1 + 0.2", "Nine Weights"); the term beside it is
+the subject's own name ("Floating point", "Convolution"), the one a student
+would search for. Both are shown on every card and in the lab's header, the
+browser tab carries both, and the lab finder matches either. The URL keeps
+the original slug, so no link and no saved progress broke when the titles
+changed.
 
 A fifteenth, `embedding-universe-3d`, is a draft: routable by link, kept off
 the grid, and marked `noindex`.
@@ -135,14 +143,14 @@ pinned by a test so a later edit cannot quietly break a citation.
 
 ### Two worth reading as examples
 
-**Neural Playground** — the engine is a multi-layer perceptron written from
+**Bending the Line** (multilayer perceptrons) — the engine is a multi-layer perceptron written from
 scratch ([`engine.ts`](../src/labs/neural-playground/engine.ts)), with every
 buffer allocated once so a training frame allocates nothing. Its spiral
 challenge is calibrated, not guessed: six neurons fail, eight barely pass, and
 two layers of four beat one layer of eight at the same neuron budget, so depth
 beating width is something the visitor finds rather than reads.
 
-**Floating Point** — every value on the page is exact. The engine
+**0.1 + 0.2** (floating point) — every value on the page is exact. The engine
 ([`engine.ts`](../src/labs/floating-point/engine.ts)) never uses a float: it
 computes with BigInt rationals and rounds once, to nearest with ties to even,
 for float64, float32, float16, bfloat16 and toy formats alike. Its tests hold
@@ -151,7 +159,7 @@ and V8's `Math.f16round` — and pin each fact the page states, down to the
 detail that the exact sum of the stored 0.1 and 0.2 lands precisely halfway
 between two doubles, a tie that ties-to-even sends one step past 0.3.
 
-**Convolution** — the engine ([`engine.ts`](../src/labs/convolution/engine.ts))
+**Nine Weights** (convolution) — the engine ([`engine.ts`](../src/labs/convolution/engine.ts))
 implements the cross-correlation a convolution layer actually computes, and is
 tested cell for cell against a brute-force reading of its definition at every
 padding and stride. Two claims are checked by experiment rather than by
@@ -160,7 +168,7 @@ seeing which outputs move, and the learning section, where descent with the
 step 1/λ_max of the Hessian must recover the hidden kernel from a random start
 and never raise the loss on the way.
 
-**Hash Table** — the hash is Java's `String.hashCode` exactly, tested against
+**Computed Address** (hash tables) — the hash is Java's `String.hashCode` exactly, tested against
 the specification computed with BigInt, and the page shows the 32-bit wrap
 rather than an equals sign that would be false. Every cost on the page is
 measured on a real table, not read off a formula; the tests then hold the
@@ -205,7 +213,7 @@ simulation is the loudest thing on the page, and the chrome never competes.**
   Motion communicates causality: when you change a parameter, the thing that
   changed is what animates.
 - Information is never encoded in color alone — always paired with shape, label,
-  or position. (In Neural Playground: class A is a circle, class B is a square.)
+  or position. (In Bending the Line: class A is a circle, class B is a square.)
 
 ---
 
@@ -220,10 +228,10 @@ These are measured, not aspirational. Numbers from `npm run build`:
 | Lab prose, English (loaded with a lab)  | 140.4 KB | 48.7 KB     |
 | Lab prose, Turkish (loaded with a lab)  | 141.1 KB | 52.6 KB     |
 | Largest lab: Probability (with physics) | 129.3 KB | **40.3 KB** |
-| Floating Point                          | 39.5 KB  | 12.7 KB     |
-| Convolution                             | 33.6 KB  | 11.4 KB     |
-| Hash Table                              | 26.0 KB  | 8.1 KB      |
-| Smallest lab: Hash Playground           | 13.2 KB  | 4.4 KB      |
+| 0.1 + 0.2 (floating point)              | 39.5 KB  | 12.7 KB     |
+| Nine Weights (convolution)              | 33.6 KB  | 11.4 KB     |
+| Computed Address (hash tables)          | 26.0 KB  | 8.1 KB      |
+| Smallest lab: Digital Fingerprint       | 13.2 KB  | 4.4 KB      |
 
 First-load JavaScript is about 84 KB gzipped: the shell and React, nothing else.
 No animation library ships at all — page and banner motion is CSS — and the

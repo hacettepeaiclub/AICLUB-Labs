@@ -2,7 +2,7 @@ import { useRef, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui";
 import { useDocumentHead } from "@/app/useDocumentHead";
-import { labMeta as labPageMeta } from "@/app/siteMeta";
+import { headTitle, labMeta as labPageMeta } from "@/app/siteMeta";
 import { useLabMeta, useT } from "@/i18n";
 import { CATEGORY_STYLE, CATEGORY_VAR, type LabMeta } from "@/labs/types";
 import { LabNext } from "./LabNext";
@@ -25,7 +25,8 @@ export function LabShell({ meta, children }: { meta: LabMeta; children: ReactNod
   const category = CATEGORY_STYLE[meta.category];
   const title = copy?.title ?? meta.title;
   const description = copy?.description ?? meta.description;
-  useDocumentHead(labPageMeta(meta.slug, title, description));
+  const term = copy?.term;
+  useDocumentHead(labPageMeta(meta.slug, headTitle(title, term), description));
   const rootRef = useRef<HTMLDivElement>(null);
 
   return (
@@ -53,6 +54,7 @@ export function LabShell({ meta, children }: { meta: LabMeta; children: ReactNod
             <Badge>{t.difficulty[meta.difficulty]}</Badge>
             <Badge>{t.shell.minutes(meta.minutes)}</Badge>
           </div>
+          {term && <p className="mb-2 text-overline uppercase text-fg-faint">{term}</p>}
           <h1 className="text-display-lg text-fg">{title}</h1>
           <p className="mt-4 text-body-lg text-fg-muted">{description}</p>
         </div>

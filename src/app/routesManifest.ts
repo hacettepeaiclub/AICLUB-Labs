@@ -1,6 +1,6 @@
 import { en } from "@/i18n/en";
 import { labs } from "@/labs/registry";
-import { homeMeta, labMeta, SITE_URL } from "./siteMeta";
+import { headTitle, homeMeta, labMeta, SITE_URL } from "./siteMeta";
 import type { PageMeta } from "./siteMeta";
 
 /**
@@ -48,7 +48,7 @@ export const routes: Route[] = [
       path: `/labs/${lab.meta.slug}`,
       meta: labMeta(
         lab.meta.slug,
-        copy?.title ?? lab.meta.title,
+        headTitle(copy?.title ?? lab.meta.title, copy?.term),
         copy?.description ?? lab.meta.description,
       ),
       indexed: !lab.meta.draft,

@@ -107,9 +107,11 @@ describe("Turkish quality", () => {
     "preferences.turkish",
     "preferences.turkishFull",
     "home.kicker",
-    // "Gradient Descent" is the name of the method in Turkish technical
-    // writing too; translating it would invent a term nobody uses.
-    "labMeta.gradient-descent.title",
+    // "Gradient descent" and "BPE tokenization" are the names of the methods
+    // in Turkish technical writing too; translating them would invent terms
+    // nobody uses.
+    "labMeta.gradient-descent.term",
+    "labMeta.tokenizer.term",
     "labs.gradient-descent.optimizers.gd",
     "labs.hash-playground.usage.items.git.label",
     "labs.hash-playground.usage.items.https.label",
@@ -166,9 +168,9 @@ describe("Turkish quality", () => {
   });
 
   it("keeps technical terms that have no honest Turkish equivalent", () => {
-    expect(tr.labMeta.tokenizer.title).toContain("Tokenizer");
+    expect(tr.labMeta.tokenizer.term).toContain("tokenization");
     expect(trLabs.tokenizer.honesty).toContain("BPE");
-    expect(tr.labMeta["hash-playground"].title).toContain("Hash");
+    expect(tr.labMeta["hash-playground"].term).toContain("hash");
     expect(trLabs["neural-playground"].stats.epoch).toBe("Epok");
   });
 
@@ -192,10 +194,13 @@ describe("lab identity", () => {
     expect(Object.keys(enLabs).sort()).toEqual(slugs);
   });
 
-  it("gives every lab a title and a one-line description in both languages", () => {
+  it("gives every lab a title, its subject's term and a one-line description in both languages", () => {
     for (const slug of Object.keys(enLabs) as (keyof typeof enLabs)[]) {
       for (const dict of [en, tr]) {
         expect(dict.labMeta[slug].title.length).toBeGreaterThan(3);
+        expect(dict.labMeta[slug].term.length).toBeGreaterThan(3);
+        // The term names the subject; it must not just repeat the title.
+        expect(dict.labMeta[slug].term).not.toBe(dict.labMeta[slug].title);
         expect(dict.labMeta[slug].description.length).toBeGreaterThan(20);
         expect(dict.labMeta[slug].description.length).toBeLessThan(140);
       }

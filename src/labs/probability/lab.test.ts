@@ -73,7 +73,7 @@ describe("registry", () => {
       expect(name.title.toLowerCase()).not.toContain("playground");
       expect(name.description.toLowerCase()).not.toContain("playground");
     }
-    expect(probabilityMeta.title).toBe("Probability Lab");
+    expect(probabilityMeta.title).toBe("Guess, Then Count");
     expect(probabilityMeta.title.toLowerCase()).not.toContain("playground");
   });
 });

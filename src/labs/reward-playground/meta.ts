@@ -2,7 +2,7 @@ import type { LabMeta } from "../types";
 
 export const rewardPlaygroundMeta: LabMeta = {
   slug: "reward-playground",
-  title: "Reward Playground",
+  title: "Exactly What You Asked",
   description: "Decide what one square is worth to a robot, and watch it obey you exactly.",
   category: "machine-learning",
   difficulty: "intro",

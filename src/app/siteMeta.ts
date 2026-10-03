@@ -65,6 +65,14 @@ export function homeMeta(lede: string): PageMeta {
   };
 }
 
+/**
+ * A lab's name as a tab or a search result shows it: the title, then the
+ * subject's technical name. "0.1 + 0.2" alone says nothing to a search
+ * engine or to a row of browser tabs; "0.1 + 0.2 · Floating point" does.
+ */
+export const headTitle = (title: string, term?: string): string =>
+  term ? `${title} · ${term}` : title;
+
 /** One lab's card. `slug` decides the URL and the picture. */
 export function labMeta(slug: string, title: string, description: string): PageMeta {
   return {

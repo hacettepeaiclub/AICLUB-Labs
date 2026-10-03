@@ -128,11 +128,17 @@ export const isLabSlug = (slug: string): slug is LabSlug =>
  * category, minutes) and the wording lives here, so the home page can list a
  * lab without loading it and still say its name in Turkish.
  *
- * These two strings stayed in the shell dictionary when the rest of the
- * teaching copy moved to its own chunk (`i18n/labs`), because the grid says
- * them before a visitor has chosen anything.
+ * `term` is the subject's own technical name — "Floating point" under the
+ * title "0.1 + 0.2". The title says what the lab is about; the term says what
+ * a student would search for, and both are shown and both are searchable.
+ *
+ * These strings stayed in the shell dictionary when the rest of the teaching
+ * copy moved to its own chunk (`i18n/labs`), because the grid says them
+ * before a visitor has chosen anything.
  */
-export function useLabMeta(slug: string): { title: string; description: string } | null {
+export function useLabMeta(
+  slug: string,
+): { title: string; term: string; description: string } | null {
   const t = useT();
   return isLabSlug(slug) ? t.labMeta[slug] : null;
 }

@@ -2,7 +2,7 @@ import type { LabMeta } from "../types";
 
 export const gradientDescentMeta: LabMeta = {
   slug: "gradient-descent",
-  title: "Gradient Descent",
+  title: "The Size of a Step",
   description: "Watch how the shape of a landscape decides how big a step you are allowed to take.",
   category: "machine-learning",
   difficulty: "intermediate",
