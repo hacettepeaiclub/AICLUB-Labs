@@ -585,6 +585,70 @@ function Shape({ slug }: { slug: string }) {
         </g>
       );
     }
+    case "hash-table": {
+      /*
+       * A row of slots with one run of full ones. A key drops onto its home
+       * inside the run, finds it taken, and hops right slot by slot to the
+       * first free one, which is where it lands: linear probing, and the
+       * reason a run grows. Every position is fixed, so the drawing is the
+       * same on every visit.
+       */
+      const SLOTS = 10;
+      const P = 5.6; // pitch
+      const C = 4.6; // slot width
+      const X0 = 4;
+      const Y = 22;
+      const FULL = new Set([1, 3, 4, 5, 6, 8]);
+      const HOME = 3;
+      const LAND = 7;
+      const cx = (i: number) => X0 + i * P + C / 2;
+      const hops = Array.from({ length: LAND - HOME }, (_, k) => HOME + k);
+      return (
+        <g>
+          {Array.from({ length: SLOTS }, (_, i) => (
+            <rect
+              key={i}
+              x={X0 + i * P}
+              y={Y}
+              width={C}
+              height={C}
+              rx={0.7}
+              className={
+                i === LAND
+                  ? "fill-data sig-pop"
+                  : FULL.has(i)
+                    ? "fill-[rgb(var(--c,var(--accent))/0.45)]"
+                    : "fill-fg-faint/25"
+              }
+              style={i === LAND ? at(0.85) : undefined}
+            />
+          ))}
+          {/* the key, arriving at its home */}
+          <line
+            x1={cx(HOME)}
+            y1={7}
+            x2={cx(HOME)}
+            y2={Y - 2}
+            strokeWidth={0.8}
+            pathLength={1}
+            className={`${structure} sig-draw`}
+            style={at(0.05)}
+          />
+          <circle cx={cx(HOME)} cy={6} r={1.4} className="fill-fg-faint/60" />
+          {hops.map((i, k) => (
+            <path
+              key={i}
+              d={`M ${cx(i)} ${Y - 1} Q ${(cx(i) + cx(i + 1)) / 2} ${Y - 5.5} ${cx(i + 1)} ${Y - 1}`}
+              fill="none"
+              strokeWidth={0.7}
+              pathLength={1}
+              className={`${live} sig-draw`}
+              style={at(0.3 + k * 0.13)}
+            />
+          ))}
+        </g>
+      );
+    }
     case "convolution": {
       /*
        * A picture, a 3×3 window on it, and the output it is filling in: the

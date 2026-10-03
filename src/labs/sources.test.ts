@@ -36,6 +36,11 @@ const VERIFIED: Record<SourceId, { year: number | null; doi: string | null; must
   vgg: { year: 2015, doi: null, mustSay: "Simonyan" },
   alexnet: { year: 2017, doi: "10.1145/3065386", mustSay: "Krizhevsky" },
   hubelWiesel: { year: 1962, doi: "10.1113/jphysiol.1962.sp006837", mustSay: "Hubel" },
+  peterson: { year: 1957, doi: "10.1147/rd.12.0130", mustSay: "Peterson" },
+  linearProbing: { year: 1998, doi: "10.1007/PL00009236", mustSay: "Flajolet" },
+  birthday: { year: 1966, doi: "10.2307/2315408", mustSay: "McKinney" },
+  amortized: { year: 1985, doi: "10.1137/0606031", mustSay: "Tarjan" },
+  javaApi: { year: 2023, doi: null, mustSay: "Oracle" },
 };
 
 /** Every lab that carries the shared Sources section, and what it cites. */
@@ -52,6 +57,7 @@ const LAB_SOURCES: Record<string, readonly SourceId[]> = {
   probability: ["statisticalInference", "simpson"],
   "floating-point": ["ieee754", "goldberg", "ecma262", "bfloat16", "mixedPrecision"],
   convolution: ["lecunZip", "convArithmetic", "vgg", "alexnet", "hubelWiesel"],
+  "hash-table": ["peterson", "linearProbing", "birthday", "amortized", "javaApi"],
 };
 
 type Dict = typeof enLabs;
