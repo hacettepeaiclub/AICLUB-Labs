@@ -72,7 +72,7 @@ export const en = {
     // Also the original copy, tightened: it now states the size of the
     // collection, because the labs start one screen below and the count is
     // the fastest way to say what this place is.
-    lede: "Eleven interactive experiments: algorithms, neural networks and the machinery of computation. No lectures, just levers to pull.",
+    lede: "Twelve interactive experiments: algorithms, neural networks and the machinery of computation. No lectures, just levers to pull.",
     cta: "Start experimenting",
     labs: "Labs",
     labCount: (n: number) => `${n} instruments`,
@@ -193,6 +193,11 @@ export const en = {
       title: "Gradient Descent",
       description:
         "Watch how the shape of a landscape decides how big a step you are allowed to take.",
+    },
+    "floating-point": {
+      title: "Floating Point",
+      description:
+        "Type 0.1 and see the number your computer actually keeps, then find out why 0.1 + 0.2 is not 0.3.",
     },
     "hash-playground": {
       title: "Hash Playground",

@@ -73,6 +73,11 @@ VITE_SITE_URL=https://staging.example.com npm run build
 a deploy never has to build images. They are 1200×630 JPEGs because WhatsApp
 and LinkedIn do not reliably render WebP.
 
+A lab with no specimen photograph yet has no card of its own. The prerender
+step notices the missing file and points that lab's `og:image` at the
+collection's card, `og/home.jpg`, instead of at a picture that would 404; the
+build log says how many routes are borrowing it.
+
 Regenerate after adding a lab or reshooting a specimen:
 
 ```bash

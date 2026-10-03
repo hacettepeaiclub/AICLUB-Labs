@@ -26,6 +26,11 @@ const VERIFIED: Record<SourceId, { year: number | null; doi: string | null; must
   simpson: { year: 1951, doi: "10.1111/j.2517-6161.1951.tb00088.x", mustSay: "Simpson" },
   sha2: { year: 2015, doi: "10.6028/NIST.FIPS.180-4", mustSay: "National Institute" },
   statisticalInference: { year: null, doi: null, mustSay: "Casella" },
+  ieee754: { year: 2019, doi: "10.1109/IEEESTD.2019.8766229", mustSay: "IEEE" },
+  goldberg: { year: 1991, doi: "10.1145/103162.103163", mustSay: "Goldberg" },
+  ecma262: { year: 2024, doi: null, mustSay: "Ecma International" },
+  bfloat16: { year: 2019, doi: null, mustSay: "Kalamkar" },
+  mixedPrecision: { year: 2018, doi: null, mustSay: "Micikevicius" },
 };
 
 /** Every lab that carries the shared Sources section, and what it cites. */
@@ -40,6 +45,7 @@ const LAB_SOURCES: Record<string, readonly SourceId[]> = {
   "gradient-descent": ["momentum", "adam"],
   "hash-playground": ["sha2"],
   probability: ["statisticalInference", "simpson"],
+  "floating-point": ["ieee754", "goldberg", "ecma262", "bfloat16", "mixedPrecision"],
 };
 
 type Dict = typeof enLabs;
