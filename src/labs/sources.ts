@@ -217,6 +217,48 @@ export const SOURCES = {
     doi: "10.1113/jphysiol.1962.sp006837",
     url: null,
   },
+  peterson: {
+    authors: "Peterson, W. W.",
+    title: "Addressing for Random-Access Storage",
+    venue: "IBM Journal of Research and Development, 1(2), 130–146",
+    year: 1957,
+    doi: "10.1147/rd.12.0130",
+    url: null,
+  },
+  linearProbing: {
+    authors: "Flajolet, P., Poblete, P., & Viola, A.",
+    title: "On the Analysis of Linear Probing Hashing",
+    venue: "Algorithmica, 22(4), 490–515",
+    year: 1998,
+    doi: "10.1007/PL00009236",
+    url: null,
+  },
+  birthday: {
+    authors: "McKinney, E. H.",
+    title: "Generalized Birthday Problem",
+    venue: "The American Mathematical Monthly, 73(4), 385",
+    year: 1966,
+    doi: "10.2307/2315408",
+    url: null,
+  },
+  amortized: {
+    authors: "Tarjan, R. E.",
+    title: "Amortized Computational Complexity",
+    venue: "SIAM Journal on Algebraic Discrete Methods, 6(2), 306–318",
+    year: 1985,
+    doi: "10.1137/0606031",
+    url: null,
+  },
+  javaApi: {
+    // The specification names its release, Java SE 21, which was made
+    // generally available in September 2023; the year is that release's.
+    authors: "Oracle",
+    title: "Java Platform, Standard Edition 21 API Specification: String.hashCode and HashMap",
+    venue: "Java SE 21 & JDK 21",
+    year: 2023,
+    doi: null,
+    url: "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html#hashCode()",
+  },
   statisticalInference: {
     authors: "Casella, G., & Berger, R. L.",
     title: "Statistical Inference, 2nd edition",

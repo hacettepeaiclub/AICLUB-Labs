@@ -67,7 +67,7 @@ export const tr: Translation = {
     // İlk sürümdeki başlık geri alındı: hem bilgisayar bilimini hem yapay
     // zekâyı adıyla söylüyor ve yine bir eylemle başlıyor.
     title: "Bilgisayar biliminin ve yapay zekânın arkasındaki fikirlerle oynayın.",
-    lede: "On üç etkileşimli deney: algoritmalar, yapay sinir ağları ve hesaplamanın işleyişi. Uzun anlatım yok, çevirip kaydıracağınız düğmeler var.",
+    lede: "On dört etkileşimli deney: algoritmalar, yapay sinir ağları ve hesaplamanın işleyişi. Uzun anlatım yok, çevirip kaydıracağınız düğmeler var.",
     cta: "Denemeye başla",
     labs: "Laboratuvarlar",
     labCount: (n: number) => `${n} düzenek`,
@@ -183,6 +183,11 @@ export const tr: Translation = {
       title: "Kayan Nokta",
       description:
         "0.1 yazın ve bilgisayarınızın gerçekte sakladığı sayıyı görün, sonra 0.1 + 0.2'nin neden 0.3 etmediğini öğrenin.",
+    },
+    "hash-table": {
+      title: "Hash Tablosu",
+      description:
+        "Bir kelimeyi adrese çevirin, sonra tabloyu doldurun ve herhangi bir şeyi bulmanın maliyetinin patlamasını izleyin.",
     },
     "hash-playground": {
       title: "Hash Laboratuvarı",
