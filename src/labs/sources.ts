@@ -175,6 +175,48 @@ export const SOURCES = {
     doi: null,
     url: "https://arxiv.org/abs/1710.03740",
   },
+  lecunZip: {
+    authors:
+      "LeCun, Y., Boser, B., Denker, J. S., Henderson, D., Howard, R. E., Hubbard, W., & Jackel, L. D.",
+    title: "Backpropagation Applied to Handwritten Zip Code Recognition",
+    venue: "Neural Computation, 1(4), 541–551",
+    year: 1989,
+    doi: "10.1162/neco.1989.1.4.541",
+    url: null,
+  },
+  convArithmetic: {
+    authors: "Dumoulin, V., & Visin, F.",
+    title: "A guide to convolution arithmetic for deep learning",
+    venue: "arXiv:1603.07285",
+    year: 2016,
+    // The arXiv record carries no DOI, so none is printed.
+    doi: null,
+    url: "https://arxiv.org/abs/1603.07285",
+  },
+  vgg: {
+    authors: "Simonyan, K., & Zisserman, A.",
+    title: "Very Deep Convolutional Networks for Large-Scale Image Recognition",
+    venue: "3rd International Conference on Learning Representations (ICLR), San Diego; arXiv:1409.1556",
+    year: 2015,
+    doi: null,
+    url: "https://arxiv.org/abs/1409.1556",
+  },
+  alexnet: {
+    authors: "Krizhevsky, A., Sutskever, I., & Hinton, G. E.",
+    title: "ImageNet classification with deep convolutional neural networks",
+    venue: "Communications of the ACM, 60(6), 84–90",
+    year: 2017,
+    doi: "10.1145/3065386",
+    url: null,
+  },
+  hubelWiesel: {
+    authors: "Hubel, D. H., & Wiesel, T. N.",
+    title: "Receptive fields, binocular interaction and functional architecture in the cat's visual cortex",
+    venue: "The Journal of Physiology, 160(1), 106–154",
+    year: 1962,
+    doi: "10.1113/jphysiol.1962.sp006837",
+    url: null,
+  },
   statisticalInference: {
     authors: "Casella, G., & Berger, R. L.",
     title: "Statistical Inference, 2nd edition",

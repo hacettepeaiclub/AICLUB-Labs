@@ -72,7 +72,7 @@ export const en = {
     // Also the original copy, tightened: it now states the size of the
     // collection, because the labs start one screen below and the count is
     // the fastest way to say what this place is.
-    lede: "Twelve interactive experiments: algorithms, neural networks and the machinery of computation. No lectures, just levers to pull.",
+    lede: "Thirteen interactive experiments: algorithms, neural networks and the machinery of computation. No lectures, just levers to pull.",
     cta: "Start experimenting",
     labs: "Labs",
     labCount: (n: number) => `${n} instruments`,
@@ -193,6 +193,11 @@ export const en = {
       title: "Gradient Descent",
       description:
         "Watch how the shape of a landscape decides how big a step you are allowed to take.",
+    },
+    convolution: {
+      title: "Convolution",
+      description:
+        "Slide nine weights across a picture and watch them find edges, then let gradient descent find the weights for you.",
     },
     "floating-point": {
       title: "Floating Point",
