@@ -11,18 +11,18 @@ import { labs, nextLab, orderedLabs, publishedLabs } from "./registry";
 describe("the collection has an order, and it is the one we chose", () => {
   it("reads foundations first and machine learning last", () => {
     expect(orderedLabs().map((lab) => lab.meta.slug)).toEqual([
-      "hash-playground",
+      "cryptographic-hashing",
       "floating-point",
-      "hash-table",
-      "sorting-race",
-      "pathfinding",
-      "tokenizer",
+      "hash-tables",
+      "sorting",
+      "graph-search",
+      "tokenization",
       "gradient-descent",
-      "neural-playground",
+      "multilayer-perceptrons",
       "convolution",
       "attention",
-      "reward-playground",
-      "embedding-universe",
+      "reinforcement-learning",
+      "word-embeddings",
       "hypothesis-testing",
       "probability",
     ]);
@@ -56,12 +56,12 @@ describe("the collection has an order, and it is the one we chose", () => {
 
 describe("each lab points at the next one", () => {
   it("follows the collection's reading order", () => {
-    expect(nextLab("hash-playground")?.meta.slug).toBe("floating-point");
-    expect(nextLab("floating-point")?.meta.slug).toBe("hash-table");
-    expect(nextLab("hash-table")?.meta.slug).toBe("sorting-race");
-    expect(nextLab("neural-playground")?.meta.slug).toBe("convolution");
+    expect(nextLab("cryptographic-hashing")?.meta.slug).toBe("floating-point");
+    expect(nextLab("floating-point")?.meta.slug).toBe("hash-tables");
+    expect(nextLab("hash-tables")?.meta.slug).toBe("sorting");
+    expect(nextLab("multilayer-perceptrons")?.meta.slug).toBe("convolution");
     expect(nextLab("convolution")?.meta.slug).toBe("attention");
-    expect(nextLab("tokenizer")?.meta.slug).toBe("gradient-descent");
+    expect(nextLab("tokenization")?.meta.slug).toBe("gradient-descent");
   });
 
   it("stops at the end rather than wrapping round to the start", () => {

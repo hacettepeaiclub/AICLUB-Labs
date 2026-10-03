@@ -36,7 +36,7 @@ interface Point {
 /**
  * The sentence, re-weighting itself around whatever is selected.
  *
- * Real DOM text rather than a canvas, following `tokenizer/TokenStrip`: the
+ * Real DOM text rather than a canvas, following `tokenization/TokenStrip`: the
  * words stay selectable, they wrap the way text wraps, and a screen reader
  * gets a sentence instead of a description of a picture. It also means the
  * whole visualization is in the accessibility tree by construction — there is
@@ -110,7 +110,7 @@ export function SentenceView({
     return () => observer.disconnect();
   }, [measure]);
 
-  // --- keyboard. Roving tabindex over the options, as in tokenizer/GuessStrip.
+  // --- keyboard. Roving tabindex over the options, as in tokenization/GuessStrip.
   const focusToken = (index: number) => {
     onSelect(index);
     tokenRefs.current[index]?.focus();

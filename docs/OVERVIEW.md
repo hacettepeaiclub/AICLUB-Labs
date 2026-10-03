@@ -109,18 +109,18 @@ stands on all of it.
 
 | Lab · subject | Category         | Difficulty   | Time   | Shipped    |
 | --------------------------------------------------------- | ---------------- | ------------ | ------ | ---------- |
-| [Digital Fingerprint](../src/labs/hash-playground/) · cryptographic hashing | Systems          | intro        | 3 min  | 2026-07-22 |
+| [Digital Fingerprint](../src/labs/cryptographic-hashing/) · cryptographic hashing | Systems          | intro        | 3 min  | 2026-07-22 |
 | [0.1 + 0.2](../src/labs/floating-point/) · floating point | Systems          | intermediate | 8 min  | 2026-10-02 |
-| [Computed Address](../src/labs/hash-table/) · hash tables | Data structures  | intermediate | 8 min  | 2026-10-03 |
-| [The Cost of Order](../src/labs/sorting-race/) · sorting | Algorithms       | intermediate | 6 min  | 2026-09-06 |
-| [The Spreading Search](../src/labs/pathfinding/) · graph search | Algorithms       | intermediate | 6 min  | 2026-09-05 |
-| [Cheap Words](../src/labs/tokenizer/) · BPE tokenization | Machine learning | intermediate | 8 min  | 2026-09-07 |
+| [Computed Address](../src/labs/hash-tables/) · hash tables | Data structures  | intermediate | 8 min  | 2026-10-03 |
+| [The Cost of Order](../src/labs/sorting/) · sorting | Algorithms       | intermediate | 6 min  | 2026-09-06 |
+| [The Spreading Search](../src/labs/graph-search/) · graph search | Algorithms       | intermediate | 6 min  | 2026-09-05 |
+| [Cheap Words](../src/labs/tokenization/) · BPE tokenization | Machine learning | intermediate | 8 min  | 2026-09-07 |
 | [The Size of a Step](../src/labs/gradient-descent/) · gradient descent | Machine learning | intermediate | 7 min  | 2026-09-06 |
-| [Bending the Line](../src/labs/neural-playground/) · multilayer perceptrons | Neural networks  | intermediate | 6 min  | 2026-09-04 |
+| [Bending the Line](../src/labs/multilayer-perceptrons/) · multilayer perceptrons | Neural networks  | intermediate | 6 min  | 2026-09-04 |
 | [Nine Weights](../src/labs/convolution/) · convolution | Neural networks  | intermediate | 9 min  | 2026-10-03 |
 | [Where the Model Looks](../src/labs/attention/) · attention | Machine learning | intro        | 5 min  | 2026-09-07 |
-| [Exactly What You Asked](../src/labs/reward-playground/) · reinforcement learning | Machine learning | intro        | 6 min  | 2026-09-08 |
-| [The Map of Meaning](../src/labs/embedding-universe/) · word embeddings | Machine learning | intermediate | 6 min  | 2026-09-10 |
+| [Exactly What You Asked](../src/labs/reinforcement-learning/) · reinforcement learning | Machine learning | intro        | 6 min  | 2026-09-08 |
+| [The Map of Meaning](../src/labs/word-embeddings/) · word embeddings | Machine learning | intermediate | 6 min  | 2026-09-10 |
 | [The Price of Certainty](../src/labs/hypothesis-testing/) · hypothesis testing | Theory           | intermediate | 7 min  | 2026-09-11 |
 | [Guess, Then Count](../src/labs/probability/) · probability | Theory           | intro        | 12 min | 2026-09-12 |
 
@@ -132,7 +132,7 @@ browser tab carries both, and the lab finder matches either. The URL keeps
 the original slug, so no link and no saved progress broke when the titles
 changed.
 
-A fifteenth, `embedding-universe-3d`, is a draft: routable by link, kept off
+A fifteenth, `word-embeddings-3d`, is a draft: routable by link, kept off
 the grid, and marked `noindex`.
 
 Every lab cites what its theory rests on in a Sources section at the bottom of
@@ -144,7 +144,7 @@ pinned by a test so a later edit cannot quietly break a citation.
 ### Two worth reading as examples
 
 **Bending the Line** (multilayer perceptrons) — the engine is a multi-layer perceptron written from
-scratch ([`engine.ts`](../src/labs/neural-playground/engine.ts)), with every
+scratch ([`engine.ts`](../src/labs/multilayer-perceptrons/engine.ts)), with every
 buffer allocated once so a training frame allocates nothing. Its spiral
 challenge is calibrated, not guessed: six neurons fail, eight barely pass, and
 two layers of four beat one layer of eight at the same neuron budget, so depth

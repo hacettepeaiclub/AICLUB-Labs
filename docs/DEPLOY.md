@@ -46,12 +46,29 @@ location ~* \.html$ {
 }
 ```
 
+**Old lab addresses should answer with a 301.** The slugs were renamed on
+2026-10-03 (`src/labs/renamed.ts` lists them). The build already writes a page
+at each old address that forwards the browser, so nothing breaks without this;
+a real 301 is better, because it tells search engines to move the ranking too:
+
+```nginx
+location = /labs/hash-playground        { return 301 /labs/cryptographic-hashing; }
+location = /labs/hash-table             { return 301 /labs/hash-tables; }
+location = /labs/sorting-race           { return 301 /labs/sorting; }
+location = /labs/pathfinding            { return 301 /labs/graph-search; }
+location = /labs/tokenizer              { return 301 /labs/tokenization; }
+location = /labs/neural-playground      { return 301 /labs/multilayer-perceptrons; }
+location = /labs/reward-playground      { return 301 /labs/reinforcement-learning; }
+location = /labs/embedding-universe     { return 301 /labs/word-embeddings; }
+location = /labs/embedding-universe-3d  { return 301 /labs/word-embeddings-3d; }
+```
+
 A `try_files $uri /index.html` that omits `$uri/` will serve the home page's
 head for every lab, which is the bug this whole arrangement exists to fix.
 After deploying, check one:
 
 ```bash
-curl -s https://labs.hacettepeaiclub.com/labs/tokenizer | grep -o '<title>[^<]*'
+curl -s https://labs.hacettepeaiclub.com/labs/tokenization | grep -o '<title>[^<]*'
 ```
 
 It must print `Cheap Words · BPE tokenization — AI Club Labs`, not `AI Club Labs`.

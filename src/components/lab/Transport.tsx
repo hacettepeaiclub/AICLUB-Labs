@@ -8,7 +8,7 @@ import { cn } from "@/lib/cn";
  * ## Why this is shared and the rest of the controls are not
  *
  * Four labs had already written this exact trio by hand — pathfinding,
- * sorting-race, gradient-descent and the neural playground's descent
+ * sorting, gradient-descent and the neural playground's descent
  * section — against the same three handlers (`run`, `stepOnce`, `reset`) with
  * the same pause-on-second-press behaviour. They had started to disagree about
  * the details: the order of the buttons, which variant each one took, and
@@ -32,7 +32,7 @@ export interface TransportProps {
   onStep: () => void;
   onReset: () => void;
   /**
-   * Overrides "Run" where a lab's own verb is clearer — sorting-race says
+   * Overrides "Run" where a lab's own verb is clearer — sorting says
    * "Sort". The pause label never changes: pausing is pausing.
    */
   runLabel?: string;

@@ -11,8 +11,8 @@ import type { LabsCopy } from "./types";
  */
 
 export const trLabs: LabsCopy = {
-  // ------------------------------- embedding universe (3D prototype) ----
-  "embedding-universe-3d": {
+  // ------------------------------------------------ word embeddings 3d ----
+  "word-embeddings-3d": {
     sources: {
       title: "Kaynaklar",
       gloveVectors:
@@ -47,8 +47,8 @@ export const trLabs: LabsCopy = {
     },
   },
 
-  // ------------------------------------------------ embedding universe ----
-  "embedding-universe": {
+  // --------------------------------------------------- word embeddings ----
+  "word-embeddings": {
     sources: {
       title: "Kaynaklar",
       gloveVectors:
@@ -377,8 +377,8 @@ export const trLabs: LabsCopy = {
     },
   },
 
-  // ------------------------------------------------ reward playground ----
-  "reward-playground": {
+  // -------------------------------------------- reinforcement learning ----
+  "reinforcement-learning": {
     sources: {
       title: "Kaynaklar",
       qLearning:
@@ -696,7 +696,7 @@ export const trLabs: LabsCopy = {
     },
   },
 
-  // ------------------------------------------------------- attention ----
+  // --------------------------------------------------------- attention ----
   attention: {
     sources: {
       title: "Kaynaklar",
@@ -835,7 +835,7 @@ export const trLabs: LabsCopy = {
     },
   },
 
-  // ------------------------------------------------ gradient descent ----
+  // -------------------------------------------------- gradient descent ----
   "gradient-descent": {
     sources: {
       title: "Kaynaklar",
@@ -1366,7 +1366,7 @@ export const trLabs: LabsCopy = {
     },
   },
 
-  // ---------------------------------------------------------- hash ----
+  // ---------------------------------------------------- floating point ----
   "floating-point": {
     sources: {
       title: "Kaynaklar",
@@ -1675,8 +1675,8 @@ export const trLabs: LabsCopy = {
     },
   },
 
-  // -------------------------------------------------------- hash table ----
-  "hash-table": {
+  // ------------------------------------------------------- hash tables ----
+  "hash-tables": {
     sources: {
       title: "Kaynaklar",
       peterson:
@@ -1953,7 +1953,8 @@ export const trLabs: LabsCopy = {
     },
   },
 
-  "hash-playground": {
+  // --------------------------------------------- cryptographic hashing ----
+  "cryptographic-hashing": {
     sources: {
       title: "Kaynaklar",
       sha2: "Bu laboratuvar\u0131n taray\u0131c\u0131n\u0131n Web Crypto uygulamas\u0131ndan istedi\u011fi SHA-256 \u00f6zetini tan\u0131mlar. Laboratuvar \u00f6zet i\u015flevini kendisi uygulamaz.",
@@ -2102,8 +2103,8 @@ export const trLabs: LabsCopy = {
     },
   },
 
-  // -------------------------------------------------------- neural ----
-  "neural-playground": {
+  // -------------------------------------------- multilayer perceptrons ----
+  "multilayer-perceptrons": {
     sources: {
       title: "Kaynaklar",
       backpropagation:
@@ -2114,6 +2115,12 @@ export const trLabs: LabsCopy = {
       diagramLabel: (shape: string) =>
         `A\u011f \u015femas\u0131: ${shape} n\u00f6ron. Her d\u00fc\u011f\u00fcm, o n\u00f6ronun girdi karesi boyunca neye tepki verdi\u011fini g\u00f6sterir.`,
       neuron: (label: string) => `${label} n\u00f6ronu`,
+      layers: {
+        input: "Girdi",
+        output: "Çıktı",
+        hidden: (layer: number) => `Gizli ${layer}`,
+        hiddenShort: (layer: number) => `G${layer}`,
+      },
       inputNode: "girdi",
       bias: "bias",
       eachSquare: "Her kare, bir n\u00f6ronun girdiye kendi bak\u0131\u015f\u0131.",
@@ -2339,8 +2346,8 @@ export const trLabs: LabsCopy = {
     },
   },
 
-  // --------------------------------------------------- pathfinding ----
-  pathfinding: {
+  // ------------------------------------------------------ graph search ----
+  "graph-search": {
     sources: {
       title: "Kaynaklar",
       astar:
@@ -3033,8 +3040,8 @@ export const trLabs: LabsCopy = {
     },
   },
 
-  // ------------------------------------------------------- sorting ----
-  "sorting-race": {
+  // ----------------------------------------------------------- sorting ----
+  sorting: {
     theRace: "Yarış",
     algorithm: "Algoritma",
     shape: "Biçim",
@@ -3178,8 +3185,8 @@ export const trLabs: LabsCopy = {
     },
   },
 
-  // ----------------------------------------------------- tokenizer ----
-  tokenizer: {
+  // ------------------------------------------------------ tokenization ----
+  tokenization: {
     sources: {
       title: "Kaynaklar",
       subwordBpe:

@@ -32,7 +32,7 @@
  * ## Storage
  *
  * Flat `Float64Array`, row-major, `row * cols + col` — the convention
- * `labs/neural-playground/engine.ts` uses. `attend()` computes the whole n×n,
+ * `labs/multilayer-perceptrons/engine.ts` uses. `attend()` computes the whole n×n,
  * not just one row, so the selection UI and the technical reveal provably read
  * the same object and switching the selected token recomputes nothing.
  *

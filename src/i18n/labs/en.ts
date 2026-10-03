@@ -15,8 +15,8 @@
  */
 
 export const enLabs = {
-  // ------------------------------- embedding universe (3D prototype) ----
-  "embedding-universe-3d": {
+  // ------------------------------------------------ word embeddings 3d ----
+  "word-embeddings-3d": {
     sources: {
       title: "Sources",
       gloveVectors:
@@ -51,8 +51,8 @@ export const enLabs = {
     },
   },
 
-  // ------------------------------------------------ embedding universe ----
-  "embedding-universe": {
+  // --------------------------------------------------- word embeddings ----
+  "word-embeddings": {
     sources: {
       title: "Sources",
       gloveVectors:
@@ -384,8 +384,8 @@ export const enLabs = {
     },
   },
 
-  // ------------------------------------------------ reward playground ----
-  "reward-playground": {
+  // -------------------------------------------- reinforcement learning ----
+  "reinforcement-learning": {
     sources: {
       title: "Sources",
       qLearning:
@@ -699,7 +699,7 @@ export const enLabs = {
     },
   },
 
-  // ------------------------------------------------------- attention ----
+  // --------------------------------------------------------- attention ----
   attention: {
     sources: {
       title: "Sources",
@@ -838,7 +838,7 @@ export const enLabs = {
     },
   },
 
-  // ------------------------------------------------ gradient descent ----
+  // -------------------------------------------------- gradient descent ----
   "gradient-descent": {
     sources: {
       title: "Sources",
@@ -1085,7 +1085,6 @@ export const enLabs = {
     },
   },
 
-  // ---------------------------------------------------------- hash ----
   // ------------------------------------------------------- convolution ----
   convolution: {
     sources: {
@@ -1374,7 +1373,7 @@ export const enLabs = {
     },
   },
 
-  // --------------------------------------------------------- floating point ----
+  // ---------------------------------------------------- floating point ----
   "floating-point": {
     sources: {
       title: "Sources",
@@ -1682,8 +1681,8 @@ export const enLabs = {
     },
   },
 
-  // -------------------------------------------------------- hash table ----
-  "hash-table": {
+  // ------------------------------------------------------- hash tables ----
+  "hash-tables": {
     sources: {
       title: "Sources",
       peterson:
@@ -1956,7 +1955,8 @@ export const enLabs = {
     },
   },
 
-  "hash-playground": {
+  // --------------------------------------------- cryptographic hashing ----
+  "cryptographic-hashing": {
     sources: {
       title: "Sources",
       sha2: "Defines SHA-256, the digest this lab asks the browser's Web Crypto implementation for. The lab does not implement the hash itself.",
@@ -2113,8 +2113,8 @@ export const enLabs = {
     },
   },
 
-  // -------------------------------------------------------- neural ----
-  "neural-playground": {
+  // -------------------------------------------- multilayer perceptrons ----
+  "multilayer-perceptrons": {
     sources: {
       title: "Sources",
       backpropagation:
@@ -2125,6 +2125,12 @@ export const enLabs = {
       diagramLabel: (shape: string) =>
         `Network diagram: ${shape} neurons. Each node shows what that neuron responds to across the input square.`,
       neuron: (label: string) => `Neuron ${label}`,
+      layers: {
+        input: "Input",
+        output: "Output",
+        hidden: (layer: number) => `Hidden ${layer}`,
+        hiddenShort: (layer: number) => `H${layer}`,
+      },
       inputNode: "input",
       bias: "bias",
       eachSquare: "Each square is one neuron's own picture of the input.",
@@ -2347,8 +2353,8 @@ export const enLabs = {
     },
   },
 
-  // --------------------------------------------------- pathfinding ----
-  pathfinding: {
+  // ------------------------------------------------------ graph search ----
+  "graph-search": {
     sources: {
       title: "Sources",
       astar:
@@ -3019,8 +3025,8 @@ export const enLabs = {
     },
   },
 
-  // ------------------------------------------------------- sorting ----
-  "sorting-race": {
+  // ----------------------------------------------------------- sorting ----
+  sorting: {
     theRace: "The race",
     algorithm: "Algorithm",
     shape: "Shape",
@@ -3161,8 +3167,8 @@ export const enLabs = {
     },
   },
 
-  // ----------------------------------------------------- tokenizer ----
-  tokenizer: {
+  // ------------------------------------------------------ tokenization ----
+  tokenization: {
     sources: {
       title: "Sources",
       subwordBpe:

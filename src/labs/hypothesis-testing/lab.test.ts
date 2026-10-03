@@ -59,7 +59,7 @@ describe("registry", () => {
     const order = orderedLabs().map((lab) => lab.meta.slug);
     expect(order).toContain("hypothesis-testing");
     expect(order.indexOf("hypothesis-testing")).toBeGreaterThan(
-      order.indexOf("embedding-universe"),
+      order.indexOf("word-embeddings"),
     );
     expect(publishedLabs().map((lab) => lab.meta.slug)).toContain("hypothesis-testing");
   });

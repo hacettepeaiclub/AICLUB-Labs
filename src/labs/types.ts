@@ -11,7 +11,7 @@ export type LabDifficulty = "intro" | "intermediate" | "advanced";
  * the home page can list every lab without loading any lab code.
  */
 export interface LabMeta {
-  /** URL segment and unique id — kebab-case, e.g. "sorting-race". */
+  /** URL segment and unique id — kebab-case, e.g. "sorting". */
   slug: string;
   title: string;
   /** One sentence, benefit-first: what will the visitor understand? */

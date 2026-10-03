@@ -1,9 +1,10 @@
 import { Suspense, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import { LabShell } from "@/components/lab";
 import { ErrorBoundary } from "@/components/layout/ErrorBoundary";
 import { useT } from "@/i18n";
 import { findLab } from "@/labs/registry";
+import { RENAMED } from "@/labs/renamed";
 import { recordVisit } from "@/labs/visits";
 import { NotFoundPage } from "./NotFoundPage";
 
@@ -30,6 +31,9 @@ export function LabPage() {
     if (lab) recordVisit(lab.meta.slug);
   }, [lab]);
 
+  // An address from before the labs were renamed: go to where it lives now.
+  const moved = slug ? RENAMED[slug] : undefined;
+  if (!lab && moved) return <Navigate to={`/labs/${moved}`} replace />;
   if (!lab) return <NotFoundPage />;
 
   const { meta, Component } = lab;

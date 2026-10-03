@@ -67,7 +67,9 @@ export function LabSources({ title, entries }: LabSourcesProps) {
                     href={source.url}
                     target="_blank"
                     rel="noreferrer"
-                    className="underline decoration-line/30 underline-offset-2
+                    // A URL has no spaces to wrap at; without this one long
+                    // address pushes the whole page sideways on a phone.
+                    className="break-all underline decoration-line/30 underline-offset-2
                       transition-colors duration-fast hover:text-fg"
                   >
                     {source.url}
