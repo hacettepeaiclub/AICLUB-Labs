@@ -27,17 +27,24 @@ import { clearCanvas } from "@/lib/canvas";
  * ## How it answers
  *
  * A mouse nudges a small patch aside — a fingertip, not a hand — and springs
- * bring it back. Touch is ignored on purpose, so the field never competes with
- * scrolling a phone.
+ * bring it back.
  *
- * ## Why a touch screen gets a still mark
+ * A touch screen has no pointer to follow, so it gets a gesture instead: a
+ * tap breaks the mark apart from where the finger landed, and the springs
+ * pull it back together. Only a tap counts. A finger that moves is scrolling,
+ * the browser cancels the pointer, and nothing happens — the listeners are
+ * passive and never call `preventDefault`, so the field cannot get in the way
+ * of the page.
  *
- * Because it could never get anything else. The pointer interaction is the
- * whole reason there is a simulation, and it is mouse-only; on a phone the
- * loop was running a spring system and repainting a canvas to produce a
- * picture that never changed, at a size where the mark is 128px tall. It is
- * drawn once, settled, and left — which is also what `prefers-reduced-motion`
- * has always got.
+ * ## Why a phone does not keep the loop running
+ *
+ * It used to get a still mark, drawn once, because a loop repainting a
+ * picture that never changed was battery spent on nothing. That is still the
+ * rule; what changed is that the picture now changes twice — as it assembles,
+ * and after a tap — and the loop runs exactly then. Once the points settle on
+ * a touch screen it stops outright rather than dropping to the slow shimmer a
+ * desktop gets, and a tap starts it again. `prefers-reduced-motion` gets the
+ * still mark, as it always has.
  *
  * ## Why it is cheap when it does run
  *
@@ -67,6 +74,14 @@ const SETTLE_FRAMES = 90;
 /** How long a motionless cursor still counts as touching the field. */
 const HOVER_TIMEOUT_MS = 400;
 
+/** A tap scatters the points within this share of the box's larger side. */
+const BURST_REACH = 0.42;
+/** Peak outward kick, in px per frame, at the centre of a tap. */
+const BURST_KICK = 7;
+/** A press that moves further than this, or lasts longer, is not a tap. */
+const TAP_SLOP = 10;
+const TAP_MS = 450;
+
 /** Three tiers of point, in the order they are painted. */
 const ROLES = 3;
 
@@ -79,11 +94,10 @@ export function MarkField() {
     const ctx = canvas?.getContext("2d");
     if (!canvas || !host || !ctx) return;
 
-    // A still mark for anyone who asked for less movement, and for anyone who
-    // has no pointer to move it with.
-    const still =
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
-      window.matchMedia("(hover: none)").matches;
+    // A still mark for anyone who asked for less movement.
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // No hover means no pointer to follow: taps instead, and no idle loop.
+    const touch = window.matchMedia("(hover: none)").matches;
 
     let width = 0;
     let height = 0;
@@ -173,6 +187,7 @@ export function MarkField() {
       }
       idleFrames = 0;
       draw();
+      if (running === false && !still && raf !== 0) wake();
     };
 
     /** One tick of the spring system. Returns the fastest point's speed. */
@@ -205,7 +220,13 @@ export function MarkField() {
     let inView = true;
     let frame = 0;
     let raf = 0;
+    let running = false;
     const tick = () => {
+      if (touch && idleFrames > SETTLE_FRAMES) {
+        // Settled on a phone: stop until the next tap.
+        running = false;
+        return;
+      }
       raf = requestAnimationFrame(tick);
       if (!inView || document.hidden) return;
       // A cursor that came to rest inside the box used to hold the field at
@@ -217,6 +238,52 @@ export function MarkField() {
       const fastest = step();
       idleFrames = fastest < 0.35 && !mouse.active ? idleFrames + 1 : 0;
       draw();
+    };
+
+    const wake = () => {
+      idleFrames = 0;
+      if (running || still) return;
+      running = true;
+      raf = requestAnimationFrame(tick);
+    };
+
+    /** Throw the points near (x, y) outward, harder the nearer they are. */
+    const burst = (x: number, y: number) => {
+      const reach = Math.max(width, height) * BURST_REACH;
+      for (const tier of tiers) {
+        for (const p of tier) {
+          const dx = p.x - x;
+          const dy = p.y - y;
+          const d = Math.hypot(dx, dy);
+          if (d >= reach) continue;
+          const kick = (1 - d / reach) * BURST_KICK * (0.6 + Math.random() * 0.8);
+          const angle = d > 0.5 ? Math.atan2(dy, dx) : Math.random() * Math.PI * 2;
+          p.vx += Math.cos(angle) * kick;
+          p.vy += Math.sin(angle) * kick;
+        }
+      }
+      wake();
+    };
+
+    const press = { x: 0, y: 0, at: 0, live: false };
+    const onDown = (event: PointerEvent) => {
+      if (event.pointerType === "mouse") return;
+      press.x = event.clientX;
+      press.y = event.clientY;
+      press.at = performance.now();
+      press.live = true;
+    };
+    const onUp = (event: PointerEvent) => {
+      if (!press.live || event.pointerType === "mouse") return;
+      press.live = false;
+      const moved = Math.hypot(event.clientX - press.x, event.clientY - press.y);
+      if (moved > TAP_SLOP || performance.now() - press.at > TAP_MS) return;
+      const r = host.getBoundingClientRect();
+      burst(event.clientX - r.left, event.clientY - r.top);
+    };
+    // A scroll that began on the mark arrives here, never as an `up`.
+    const onCancel = () => {
+      press.live = false;
     };
 
     const onMove = (event: PointerEvent) => {
@@ -233,6 +300,9 @@ export function MarkField() {
     if (!still) {
       host.addEventListener("pointermove", onMove);
       host.addEventListener("pointerleave", onLeave);
+      host.addEventListener("pointerdown", onDown, { passive: true });
+      host.addEventListener("pointerup", onUp, { passive: true });
+      host.addEventListener("pointercancel", onCancel, { passive: true });
     }
 
     const visibility = new IntersectionObserver(([entry]) => {
@@ -262,7 +332,7 @@ export function MarkField() {
       if (cancelled) return;
       build();
       resize.observe(host);
-      if (!still) raf = requestAnimationFrame(tick);
+      if (!still) wake();
     };
     if (image.complete && image.width) start();
     else image.addEventListener("load", start, { once: true });
@@ -276,6 +346,9 @@ export function MarkField() {
       unsubscribe();
       host.removeEventListener("pointermove", onMove);
       host.removeEventListener("pointerleave", onLeave);
+      host.removeEventListener("pointerdown", onDown);
+      host.removeEventListener("pointerup", onUp);
+      host.removeEventListener("pointercancel", onCancel);
       image.removeEventListener("load", start);
     };
   }, []);
