@@ -1,6 +1,7 @@
 import { lazy } from "react";
 import type { LabEntry, LabLoader, LabMeta } from "./types";
 import { attentionMeta } from "./attention/meta";
+import { convolutionMeta } from "./convolution/meta";
 import { embeddingUniverse3DMeta } from "./embedding-universe-3d/meta";
 import { embeddingUniverseMeta } from "./embedding-universe/meta";
 import { gradientDescentMeta } from "./gradient-descent/meta";
@@ -49,6 +50,7 @@ const entry = (meta: LabMeta, load: LabLoader): LabEntry => ({
 
 export const labs: LabEntry[] = [
   entry(attentionMeta, () => import("./attention")),
+  entry(convolutionMeta, () => import("./convolution")),
   entry(embeddingUniverseMeta, () => import("./embedding-universe")),
   // Draft: routable, but kept off the home grid. A prototype, not a lesson.
   entry(embeddingUniverse3DMeta, () => import("./embedding-universe-3d")),
@@ -96,6 +98,7 @@ const LAB_ORDER = [
   "tokenizer",
   "gradient-descent",
   "neural-playground",
+  "convolution",
   "attention",
   "reward-playground",
   "embedding-universe",

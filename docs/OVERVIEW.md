@@ -101,7 +101,7 @@ going to reach a hundred labs without collapsing.
 
 ## 4. What's shipped
 
-Twelve labs across five of the six categories, listed in the order the home
+Thirteen labs across five of the six categories, listed in the order the home
 page reads them (`LAB_ORDER` in [`registry.ts`](../src/labs/registry.ts)): what a
 function does to its input, how a number is stored, what an algorithm costs,
 how a search explores, how text is cut up — and then the machine learning that
@@ -116,13 +116,14 @@ stands on all of it.
 | [Tokenizer Lab](../src/labs/tokenizer/)                   | Machine learning | intermediate | 8 min  | 2026-09-07 |
 | [Gradient Descent](../src/labs/gradient-descent/)         | Machine learning | intermediate | 7 min  | 2026-09-06 |
 | [Neural Playground](../src/labs/neural-playground/)       | Neural networks  | intermediate | 6 min  | 2026-09-04 |
+| [Convolution](../src/labs/convolution/)                   | Neural networks  | intermediate | 9 min  | 2026-10-03 |
 | [Attention Playground](../src/labs/attention/)            | Machine learning | intro        | 5 min  | 2026-09-07 |
 | [Reward Playground](../src/labs/reward-playground/)       | Machine learning | intro        | 6 min  | 2026-09-08 |
 | [Embedding Universe](../src/labs/embedding-universe/)     | Machine learning | intermediate | 6 min  | 2026-09-10 |
 | [Hypothesis Testing](../src/labs/hypothesis-testing/)     | Theory           | intermediate | 7 min  | 2026-09-11 |
 | [Probability Lab](../src/labs/probability/)               | Theory           | intro        | 12 min | 2026-09-12 |
 
-A thirteenth, `embedding-universe-3d`, is a draft: routable by link, kept off
+A fourteenth, `embedding-universe-3d`, is a draft: routable by link, kept off
 the grid, and marked `noindex`.
 
 Every lab cites what its theory rests on in a Sources section at the bottom of
@@ -148,6 +149,15 @@ it to the browser value for value — `parseFloat`, `String(n)`, `Math.fround`,
 and V8's `Math.f16round` — and pin each fact the page states, down to the
 detail that the exact sum of the stored 0.1 and 0.2 lands precisely halfway
 between two doubles, a tie that ties-to-even sends one step past 0.3.
+
+**Convolution** — the engine ([`engine.ts`](../src/labs/convolution/engine.ts))
+implements the cross-correlation a convolution layer actually computes, and is
+tested cell for cell against a brute-force reading of its definition at every
+padding and stride. Two claims are checked by experiment rather than by
+formula: the receptive field, by nudging each input of a real stack and
+seeing which outputs move, and the learning section, where descent with the
+step 1/λ_max of the Hessian must recover the hidden kernel from a random start
+and never raise the loss on the way.
 
 ## 5. How the platform delivers it
 
@@ -196,15 +206,16 @@ These are measured, not aspirational. Numbers from `npm run build`:
 
 | Chunk                                   | Raw      | Gzipped     |
 | --------------------------------------- | -------- | ----------- |
-| App shell (entry)                       | 86.1 KB  | **31.3 KB** |
+| App shell (entry)                       | 87.5 KB  | **31.8 KB** |
 | Vendor: react + router                  | 159.8 KB | 52.2 KB     |
-| Lab prose, English (loaded with a lab)  | 117.8 KB | 40.9 KB     |
-| Lab prose, Turkish (loaded with a lab)  | 126.9 KB | 44.1 KB     |
+| Lab prose, English (loaded with a lab)  | 129.5 KB | 44.9 KB     |
+| Lab prose, Turkish (loaded with a lab)  | 129.5 KB | 48.5 KB     |
 | Largest lab: Probability (with physics) | 129.3 KB | **40.3 KB** |
-| Floating Point                          | 39.3 KB  | 12.6 KB     |
+| Floating Point                          | 39.5 KB  | 12.7 KB     |
+| Convolution                             | 33.6 KB  | 11.4 KB     |
 | Smallest lab: Hash Playground           | 13.2 KB  | 4.4 KB      |
 
-First-load JavaScript is about 83 KB gzipped: the shell and React, nothing else.
+First-load JavaScript is about 84 KB gzipped: the shell and React, nothing else.
 No animation library ships at all — page and banner motion is CSS — and the
 teaching prose for every lab is its own chunk, fetched with the first lab
 rather than with the home page. The largest lab sits at about a quarter of the
@@ -239,7 +250,6 @@ category; can it reach its aha in under ten seconds.
 | -------------------- | ---------------- | -------------------------------------------------------------------------------------------------- |
 | Race Condition       | Systems          | You are the scheduler: step two threads through `counter++` and lose an update with your own hand. |
 | Cache Locality       | Systems          | Same sum, same work, rows against columns — 17× apart when measured, and then on your own CPU.     |
-| Convolution Lab      | Neural networks  | Draw a stroke, edit a 3×3 kernel, and watch one set of weights detect it anywhere it moves.        |
 | Sum of Hinges        | Neural networks  | Fit a curve with ReLUs and see each neuron add exactly one bend.                                   |
 | Backprop by Hand     | Neural networks  | Nudge a weight by ε and watch the loss move by exactly gradient × ε.                               |
 | Hash Table           | Data structures  | Push the load factor towards 1 and watch probe lengths explode. The category has no lab yet.       |

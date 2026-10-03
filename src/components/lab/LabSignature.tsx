@@ -585,6 +585,83 @@ function Shape({ slug }: { slug: string }) {
         </g>
       );
     }
+    case "convolution": {
+      /*
+       * A picture, a 3×3 window on it, and the output it is filling in: the
+       * cells already computed in the field colour, the one being computed
+       * now in `data`, joined to the window that made it. The picture holds a
+       * vertical stroke, the kind of thing the lab's first kernel finds.
+       */
+      const P = 4.6; // pitch of one cell
+      const C = 4; // side of one cell
+      const IN = { x: 4, y: 6, n: 6 };
+      const OUT = { x: 41, y: 10.6, n: 4 };
+      const WIN = { col: 2, row: 1 };
+      const done = WIN.row * OUT.n + WIN.col; // cells computed before this one
+      return (
+        <g>
+          {Array.from({ length: IN.n * IN.n }, (_, k) => {
+            const col = k % IN.n;
+            const row = Math.floor(k / IN.n);
+            return (
+              <rect
+                key={`i-${k}`}
+                x={IN.x + col * P}
+                y={IN.y + row * P}
+                width={C}
+                height={C}
+                rx={0.6}
+                className={
+                  col === 3 ? "fill-[rgb(var(--c,var(--accent))/0.55)]" : "fill-fg-faint/25"
+                }
+              />
+            );
+          })}
+          <rect
+            x={IN.x + WIN.col * P - 0.7}
+            y={IN.y + WIN.row * P - 0.7}
+            width={2 * P + C + 1.4}
+            height={2 * P + C + 1.4}
+            rx={1}
+            strokeWidth={0.9}
+            className={`fill-none ${structure} sig-pop`}
+            style={at(0.1)}
+          />
+          {Array.from({ length: OUT.n * OUT.n }, (_, k) => {
+            const col = k % OUT.n;
+            const row = Math.floor(k / OUT.n);
+            return (
+              <rect
+                key={`o-${k}`}
+                x={OUT.x + col * P}
+                y={OUT.y + row * P}
+                width={C}
+                height={C}
+                rx={0.6}
+                className={`${
+                  k === done
+                    ? "fill-data"
+                    : k < done
+                      ? "fill-[rgb(var(--c,var(--accent))/0.45)]"
+                      : "fill-fg-faint/25"
+                } sig-pop`}
+                style={at(0.2 + k * 0.04)}
+              />
+            );
+          })}
+          <line
+            x1={IN.x + WIN.col * P + 2 * P + C + 0.7}
+            y1={IN.y + WIN.row * P + P + C / 2}
+            x2={OUT.x + WIN.col * P}
+            y2={OUT.y + WIN.row * P + C / 2}
+            strokeWidth={0.6}
+            pathLength={1}
+            className={`${live} sig-draw`}
+            style={at(0.3)}
+          />
+        </g>
+      );
+    }
     case "embedding-universe":
     default: {
       const pts = Array.from({ length: 26 }, () => ({ x: 4 + rng() * 56, y: 4 + rng() * 32 }));

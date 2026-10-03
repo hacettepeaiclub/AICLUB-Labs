@@ -31,6 +31,11 @@ const VERIFIED: Record<SourceId, { year: number | null; doi: string | null; must
   ecma262: { year: 2024, doi: null, mustSay: "Ecma International" },
   bfloat16: { year: 2019, doi: null, mustSay: "Kalamkar" },
   mixedPrecision: { year: 2018, doi: null, mustSay: "Micikevicius" },
+  lecunZip: { year: 1989, doi: "10.1162/neco.1989.1.4.541", mustSay: "LeCun" },
+  convArithmetic: { year: 2016, doi: null, mustSay: "Dumoulin" },
+  vgg: { year: 2015, doi: null, mustSay: "Simonyan" },
+  alexnet: { year: 2017, doi: "10.1145/3065386", mustSay: "Krizhevsky" },
+  hubelWiesel: { year: 1962, doi: "10.1113/jphysiol.1962.sp006837", mustSay: "Hubel" },
 };
 
 /** Every lab that carries the shared Sources section, and what it cites. */
@@ -46,6 +51,7 @@ const LAB_SOURCES: Record<string, readonly SourceId[]> = {
   "hash-playground": ["sha2"],
   probability: ["statisticalInference", "simpson"],
   "floating-point": ["ieee754", "goldberg", "ecma262", "bfloat16", "mixedPrecision"],
+  convolution: ["lecunZip", "convArithmetic", "vgg", "alexnet", "hubelWiesel"],
 };
 
 type Dict = typeof enLabs;
