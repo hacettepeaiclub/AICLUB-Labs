@@ -1,6 +1,7 @@
 import { lazy } from "react";
 import type { LabEntry, LabLoader, LabMeta } from "./types";
 import { attentionMeta } from "./attention/meta";
+import { backpropagationMeta } from "./backpropagation/meta";
 import { convolutionMeta } from "./convolution/meta";
 import { wordEmbeddings3DMeta } from "./word-embeddings-3d/meta";
 import { wordEmbeddingsMeta } from "./word-embeddings/meta";
@@ -51,6 +52,7 @@ const entry = (meta: LabMeta, load: LabLoader): LabEntry => ({
 
 export const labs: LabEntry[] = [
   entry(attentionMeta, () => import("./attention")),
+  entry(backpropagationMeta, () => import("./backpropagation")),
   entry(convolutionMeta, () => import("./convolution")),
   entry(wordEmbeddingsMeta, () => import("./word-embeddings")),
   // Draft: routable, but kept off the home grid. A prototype, not a lesson.
@@ -101,6 +103,7 @@ const LAB_ORDER = [
   "tokenization",
   "gradient-descent",
   "multilayer-perceptrons",
+  "backpropagation",
   "convolution",
   "attention",
   "reinforcement-learning",

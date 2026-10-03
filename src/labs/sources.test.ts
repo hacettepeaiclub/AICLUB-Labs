@@ -41,6 +41,10 @@ const VERIFIED: Record<SourceId, { year: number | null; doi: string | null; must
   birthday: { year: 1966, doi: "10.2307/2315408", mustSay: "McKinney" },
   amortized: { year: 1985, doi: "10.1137/0606031", mustSay: "Tarjan" },
   javaApi: { year: 2023, doi: null, mustSay: "Oracle" },
+  linnainmaa: { year: 1976, doi: "10.1007/BF01931367", mustSay: "Linnainmaa" },
+  griewank: { year: 2008, doi: "10.1137/1.9780898717761", mustSay: "Griewank" },
+  autodiffSurvey: { year: 2018, doi: null, mustSay: "Baydin" },
+  vanishing: { year: 1994, doi: "10.1109/72.279181", mustSay: "Bengio" },
 };
 
 /** Every lab that carries the shared Sources section, and what it cites. */
@@ -58,6 +62,7 @@ const LAB_SOURCES: Record<string, readonly SourceId[]> = {
   "floating-point": ["ieee754", "goldberg", "ecma262", "bfloat16", "mixedPrecision"],
   convolution: ["lecunZip", "convArithmetic", "vgg", "alexnet", "hubelWiesel"],
   "hash-tables": ["peterson", "linearProbing", "birthday", "amortized", "javaApi"],
+  backpropagation: ["backpropagation", "linnainmaa", "griewank", "autodiffSurvey", "vanishing"],
 };
 
 type Dict = typeof enLabs;

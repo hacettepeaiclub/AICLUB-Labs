@@ -698,6 +698,22 @@
 
 /* Two names for one animation, so hovering restarts it: a changed
    animation-name is a new animation to the browser. */
+/* Backpropagation: dashes running from the output back toward the inputs,
+   the direction the gradient travels. */
+@keyframes backflow {
+  to {
+    stroke-dashoffset: 36;
+  }
+}
+.backflow {
+  animation: backflow 0.6s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .backflow {
+    animation: none;
+  }
+}
+
 @keyframes brand-signal {
   from {
     background-position: 0 0%;
