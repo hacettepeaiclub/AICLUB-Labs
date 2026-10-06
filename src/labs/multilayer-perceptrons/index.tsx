@@ -2,6 +2,7 @@ import { LabRecap, LabSection, LabSources } from "@/components/lab";
 import { useLabs } from "@/i18n/labs";
 import { Playground } from "./components/Playground";
 import { NeuronLab } from "./components/NeuronLab";
+import { HandXorStage } from "./components/HandXorStage";
 import { LayersLab } from "./components/LayersLab";
 import { DescentLab } from "./components/DescentLab";
 import { ConceptList } from "./components/ConceptList";
@@ -36,7 +37,12 @@ export default function NeuralPlayground() {
 
       {/* 3 — Why depth */}
       <LabSection kicker={t.layers.kicker} title={t.layers.title} lede={t.layers.lede}>
-        <LayersLab />
+        {/* By hand first, then by gradient descent: the visitor meets the
+            ceiling of one line before watching a network climb past it. */}
+        <div className="space-y-10">
+          <HandXorStage />
+          <LayersLab />
+        </div>
       </LabSection>
 
       {/* 4 — How learning actually happens */}

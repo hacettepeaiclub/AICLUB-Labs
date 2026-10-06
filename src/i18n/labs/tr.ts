@@ -2456,9 +2456,12 @@ export const trLabs: LabsCopy = {
     },
 
     neuron: {
+      dragHint: "Çizgiyi taşımak için karenin üzerinde sürükleyin; döndürmek ve kenarını keskinleştirmek için mavi ucu sürükleyin.",
+      slideHandle: "Çizginin konumu. Ok tuşları onu okunun yönünde kaydırır.",
+      turnHandle: "Okun ucu: iki ağırlık. Sol ve sağ döndürür, yukarı ve aşağı keskinleştirir ya da yumuşatır.",
       weightsAndBias: "A\u011f\u0131rl\u0131klar ve bias",
       caption:
-        "Yapamad\u0131\u011f\u0131n\u0131z \u015feye dikkat edin: bu \u00fc\u00e7 kayd\u0131r\u0131c\u0131y\u0131 nas\u0131l \u00e7ekerseniz \u00e7ekin s\u0131n\u0131r d\u00fcz bir \u00e7izgi olarak kal\u0131yor. Tek bir n\u00f6ronun b\u00fct\u00fcn s\u0131n\u0131r\u0131 bu, ve bir sonraki b\u00f6l\u00fcm\u00fcn var olma nedeni de bu.",
+        "Yapamad\u0131\u011f\u0131n\u0131z \u015feye dikkat edin: çizgiyi nasıl hareket ettirirseniz ettirin s\u0131n\u0131r d\u00fcz bir \u00e7izgi olarak kal\u0131yor. Tek bir n\u00f6ronun b\u00fct\u00fcn s\u0131n\u0131r\u0131 bu, ve bir sonraki b\u00f6l\u00fcm\u00fcn var olma nedeni de bu.",
       notes: {
         tanh: "\u22121\u20261 aral\u0131\u011f\u0131na s\u0131k\u0131\u015ft\u0131r\u0131r. Yumu\u015fak, simetrik, g\u00fcvenli bir varsay\u0131lan.",
         relu: "Pozitifleri ge\u00e7irir, negatifleri d\u00fczler. H\u0131zl\u0131 ve modern varsay\u0131lan.",
@@ -2472,7 +2475,7 @@ export const trLabs: LabsCopy = {
       weight2: "x₂ ağırlığı",
       bias: "Bias",
       activation: "Aktivasyon",
-      note: "Şuna dikkat edin: bu üç kaydırıcıyı nasıl çekerseniz çekin, sınır yine düz bir çizgi olarak kalır. Tek bir nöronun sınırı budur ve bir sonraki bölümün var olma nedeni de tam olarak bu.",
+      note: "Şuna dikkat edin: çizgiyi nasıl hareket ettirirseniz ettirin, sınır yine düz bir çizgi olarak kalır. Tek bir nöronun sınırı budur ve bir sonraki bölümün var olma nedeni de tam olarak bu.",
       canvasLabel: "Tek bir nöronun girdi düzlemi üzerindeki çıktısı.",
       activations: {
         tanh: "−1…1 aralığına ezer. Düzgün, simetrik, güvenli bir başlangıç.",
@@ -2481,6 +2484,30 @@ export const trLabs: LabsCopy = {
       },
     },
 
+    handXor: {
+      caption:
+        "Her nokta, düştüğü taraf yüzünden doğru ya da yanlış; halkalı olanlar yanlış. Hangi tarafın hangi sınıf olduğu, hangisi daha çok tutturuyorsa o yönde sizin için seçiliyor.",
+      announce: (accuracy: string) => `Noktaların ${accuracy} kadarı doğru tarafta.`,
+      canvasLabel: (lines: number, accuracy: string) =>
+        `Sürükleyebileceğiniz ${lines === 1 ? "tek bir çizgiyle" : "iki çizgiyle"} XOR noktaları. ${accuracy} kadarı doğru tarafta.`,
+      slideHandle: (i: number) => `Çizgi ${i}: konumu. Ok tuşları onu kaydırır.`,
+      turnHandle: (i: number) => `Çizgi ${i}: okun ucu, iki ağırlığı. Ok tuşları döndürür ve keskinleştirir.`,
+      modeLabel: "Yerleştirdiğiniz nöronlar",
+      modes: { one: "Tek çizgi", two: "İki çizgi" },
+      oneHint: "Çizgiyi sürükleyin, ucundan tutup döndürün. Her noktayı kendi tarafına almaya çalışın.",
+      ceilingReached: (ceiling: string) =>
+        `Tek bir çizginin ulaşabileceği en iyisi bu: ${ceiling}. Bu karede hiçbir çizgi daha iyisini yapamaz. Tek bir nöronun çarptığı duvar budur.`,
+      twoHint: "Şimdi iki nöron ve yalnızca iki okun da gösterdiği yerde evet diyen bir çıktı. Karşılıklı iki köşeyi içine alan bir bant oluşturun.",
+      twoBeaten: (ceiling: string) =>
+        `Tek bir çizginin en fazla ulaşabildiği ${ceiling} değerini geçtiniz. İki gizli nöron ve bir çıktı: elle bir gizli katman kurdunuz.`,
+      figures: {
+        accuracy: "Doğru tarafta",
+        best: "En iyiniz, tek çizgi",
+        bestHint: "bu ziyarette",
+        ceiling: "Bir çizginin en iyisi",
+        ceilingHint: "her açı taranarak bulundu",
+      },
+    },
     layers: {
       panelLabel: (title: string, accuracy: number, epoch: number) =>
         `${title}: ${epoch} epok sonra XOR noktalar\u0131n\u0131n %${accuracy} kadar\u0131 do\u011fru s\u0131n\u0131fland\u0131r\u0131ld\u0131.`,
