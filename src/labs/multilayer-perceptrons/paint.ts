@@ -234,6 +234,25 @@ export function drawPoints(
   height: number,
   radius = 4.5,
 ): void {
+  drawJudgedPoints(
+    ctx,
+    points,
+    net ? (p) => Math.sign(forward(net, p.x, p.y)) !== p.label : () => false,
+    width,
+    height,
+    radius,
+  );
+}
+
+/** The points, with a ring round every one `wrong` says is misclassified. */
+export function drawJudgedPoints(
+  ctx: CanvasRenderingContext2D,
+  points: readonly Point[],
+  wrong: (p: Point) => boolean,
+  width: number,
+  height: number,
+  radius = 4.5,
+): void {
   const C = inks();
   ctx.save();
   ctx.lineWidth = 1.5;
@@ -253,7 +272,7 @@ export function drawPoints(
     ctx.strokeStyle = css(C.outline, 0.75);
     ctx.stroke();
 
-    if (net && Math.sign(forward(net, p.x, p.y)) !== p.label) {
+    if (wrong(p)) {
       ctx.beginPath();
       ctx.arc(cx, cy, radius + 3.5, 0, Math.PI * 2);
       ctx.strokeStyle = css(C.wrong, 0.9);

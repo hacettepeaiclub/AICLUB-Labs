@@ -2465,9 +2465,12 @@ export const enLabs = {
     },
 
     neuron: {
+      dragHint: "Drag across the square to move the line; drag the blue tip to turn it and sharpen its edge.",
+      slideHandle: "The line's position. Arrow keys slide it along its arrow.",
+      turnHandle: "The arrow's tip: the two weights. Left and right turn it, up and down sharpen or soften it.",
       weightsAndBias: "Weights and bias",
       caption:
-        "Notice what you cannot do: however you drag these three sliders, the boundary stays a straight line. That is the whole limitation of one neuron, and the reason the next section exists.",
+        "Notice what you cannot do: however you move it, the boundary stays a straight line. That is the whole limitation of one neuron, and the reason the next section exists.",
       notes: {
         tanh: "Squashes to \u22121\u20261. Smooth, symmetric, a safe default.",
         relu: "Passes positives through, flattens negatives. Fast and the modern default.",
@@ -2480,7 +2483,7 @@ export const enLabs = {
       weight2: "Weight on x₂",
       bias: "Bias",
       activation: "Activation",
-      note: "Notice what you cannot do: however you drag these three sliders, the boundary stays a straight line. That is the whole limitation of one neuron, and the reason the next section exists.",
+      note: "Notice what you cannot do: however you move it, the boundary stays a straight line. That is the whole limitation of one neuron, and the reason the next section exists.",
       canvasLabel: "The output of a single neuron across the input square.",
       activations: {
         tanh: "Squashes to −1…1. Smooth, symmetric, a safe default.",
@@ -2489,6 +2492,30 @@ export const enLabs = {
       },
     },
 
+    handXor: {
+      caption:
+        "Each point is right or wrong by the side of the line it falls on; the ringed ones are wrong. Which side means which class is chosen for you, whichever scores better.",
+      announce: (accuracy: string) => `${accuracy} of the points on the right side.`,
+      canvasLabel: (lines: number, accuracy: string) =>
+        `The XOR points with ${lines === 1 ? "one line" : "two lines"} you can drag. ${accuracy} are on the right side.`,
+      slideHandle: (i: number) => `Line ${i}: its position. Arrow keys slide it.`,
+      turnHandle: (i: number) => `Line ${i}: the arrow's tip, its two weights. Arrow keys turn and sharpen it.`,
+      modeLabel: "Neurons you place",
+      modes: { one: "One line", two: "Two lines" },
+      oneHint: "Drag the line, and turn it by its tip. Try to get every point on its own side.",
+      ceilingReached: (ceiling: string) =>
+        `That is as good as one line gets: ${ceiling}. No line on this square does better. This is the wall a single neuron hits.`,
+      twoHint: "Now two neurons, and an output that says yes only where both arrows point. Make a band that holds two opposite corners.",
+      twoBeaten: (ceiling: string) =>
+        `Past ${ceiling}, the most one line can do. Two hidden neurons and one output: you have built a hidden layer by hand.`,
+      figures: {
+        accuracy: "Right side",
+        best: "Your best, one line",
+        bestHint: "this visit",
+        ceiling: "Best any line can do",
+        ceilingHint: "found by searching every angle",
+      },
+    },
     layers: {
       panelLabel: (title: string, accuracy: number, epoch: number) =>
         `${title}: ${accuracy}% of the XOR points classified correctly after ${epoch} epochs.`,
