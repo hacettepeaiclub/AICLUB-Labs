@@ -352,6 +352,38 @@
   }
 
   /* ---------------------------------------------------------------- */
+  /* Lab plate (LabPlate.tsx): a lab's diagram on ruled paper inside a  */
+  /* hairline frame, with registration marks in two corners like a     */
+  /* printed plate.                                                    */
+  /* ---------------------------------------------------------------- */
+  .plate-ground {
+    background-image:
+      linear-gradient(rgb(var(--line) / 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(var(--line) / 0.06) 1px, transparent 1px);
+    background-size: 16px 16px;
+    background-position: -1px -1px;
+  }
+  .plate-frame::before,
+  .plate-frame::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-color: rgb(var(--line) / 0.45);
+    border-style: solid;
+  }
+  .plate-frame::before {
+    top: 6px;
+    left: 6px;
+    border-width: 1px 0 0 1px;
+  }
+  .plate-frame::after {
+    right: 6px;
+    bottom: 6px;
+    border-width: 0 1px 1px 0;
+  }
+
+  /* ---------------------------------------------------------------- */
   /* Header (SiteHeader.tsx).                                          */
   /*                                                                   */
   /* The mark is the logo PNG used as a mask, so its geometry is the  */

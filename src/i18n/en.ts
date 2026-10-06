@@ -14,6 +14,8 @@
 export const en = {
   // ------------------------------------------------------------- chrome ----
   shell: {
+    // The figure beside a lab's title (LabPlate.tsx).
+    labPlate: (n: string, term: string) => `Fig. ${n}. ${term}: the structure this lab is built on.`,
     skipToContent: "Skip to content",
     brand: "AI Club",
     brandSuffix: "Labs",

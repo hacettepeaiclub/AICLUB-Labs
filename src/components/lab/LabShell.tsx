@@ -7,7 +7,8 @@ import { useLabMeta, useT } from "@/i18n";
 import { CATEGORY_STYLE, CATEGORY_VAR, type LabMeta } from "@/labs/types";
 import { LabNext } from "./LabNext";
 import { LabProgress } from "./LabProgress";
-import { Specimen } from "./Specimen";
+import { orderedLabs } from "@/labs/registry";
+import { LabPlate } from "./LabPlate";
 
 /**
  * Frame that every experiment renders inside. Gives all 100+ labs the same
@@ -43,11 +44,9 @@ export function LabShell({ meta, children }: { meta: LabMeta; children: ReactNod
         </Link>
       </nav>
 
-      {/* The specimen sits beside the title from tablet width up. On a phone
-          it would push the experiment a full screen down, and the experiment
-          is what the visitor came for, so it is left out there. It stays
-          lazy for the same reason: a lazy image that is display:none is never
-          fetched, so phones do not download a picture they will not see. */}
+      {/* The lab's plate sits beside the title from tablet width up. On a
+          phone it would push the experiment a full screen down, and the
+          experiment is what the visitor came for, so it is left out there. */}
       <header className="mb-10 grid items-center gap-8 md:grid-cols-[minmax(0,1fr)_16rem] lg:grid-cols-[minmax(0,1fr)_20rem]">
         <div className="max-w-prose">
           <div className="mb-4 flex items-center gap-2">
@@ -59,7 +58,12 @@ export function LabShell({ meta, children }: { meta: LabMeta; children: ReactNod
           <h1 className="text-display-lg text-fg">{title}</h1>
           <p className="mt-4 text-body-lg text-fg-muted">{description}</p>
         </div>
-        <Specimen name={meta.slug} className="hidden md:block" />
+        <LabPlate
+          slug={meta.slug}
+          colour={CATEGORY_VAR[meta.category]}
+          caption={t.shell.labPlate(plateNumber(meta.slug), term ?? title)}
+          className="hidden md:block"
+        />
       </header>
 
       {children}
@@ -67,4 +71,10 @@ export function LabShell({ meta, children }: { meta: LabMeta; children: ReactNod
       <LabNext slug={meta.slug} />
     </div>
   );
+}
+
+/** The lab's place in the collection's reading order, as a plate number. */
+function plateNumber(slug: string): string {
+  const i = orderedLabs().findIndex((lab) => lab.meta.slug === slug);
+  return String(i < 0 ? 0 : i + 1).padStart(2, "0");
 }
