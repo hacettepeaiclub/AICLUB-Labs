@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useReducedMotion, useKeyPress } from "@/hooks";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useInView, useKeyPress, useReducedMotion } from "@/hooks";
 import { Button, Kbd, Segmented } from "@/components/ui";
 import { LabSlider, Stage, Transport } from "@/components/lab";
 import { useLabCopy } from "@/i18n/labs";
@@ -138,7 +138,15 @@ export function Playground() {
     epochsPerFrame: SPEED,
   };
 
-  const trainer = useTrainer(train, test, config, running);
+  // Training is what the visitor asked for; whether it costs anything is
+  // whether they can see it. Scrolled away, the network and its pictures
+  // wait — the Pause button still says "running", and it picks up where it
+  // left off when the playground comes back into view.
+  const rootRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(rootRef);
+  const active = running && inView;
+
+  const trainer = useTrainer(train, test, config, active);
   const { netRef, stats, history, generation, revision, reset, step } = trainer;
 
   const regenerate = useCallback((kind: DatasetKind, level: number, seed: number) => {
@@ -196,6 +204,7 @@ export function Playground() {
   const canvasLabel = lab.canvasLabel(points.length, Math.round(stats.accuracy * 100));
 
   return (
+    <div ref={rootRef}>
     <Stage
       width="full"
       secondaryLabel={p.dataAndArchitecture}
@@ -216,7 +225,7 @@ export function Playground() {
             <DecisionCanvas
               netRef={netRef}
               points={points}
-              running={running}
+              running={active}
               revision={generation + revision}
               onPaint={handlePaint}
               ariaLabel={canvasLabel}
@@ -230,7 +239,7 @@ export function Playground() {
               <NetworkDiagram
                 netRef={netRef}
                 sizes={sizes}
-                running={running}
+                running={active}
                 revision={generation + revision}
                 editing={editing}
               />
@@ -253,7 +262,7 @@ export function Playground() {
                   <NetworkDiagram
                     netRef={netRef}
                     sizes={sizes}
-                    running={running}
+                    running={active}
                     revision={generation + revision}
                     editing={editing}
                   />
@@ -335,5 +344,6 @@ export function Playground() {
         </>
       }
     />
+    </div>
   );
 }
