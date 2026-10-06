@@ -36,21 +36,17 @@ import { clearCanvas } from "@/lib/canvas";
  * passive and never call `preventDefault`, so the field cannot get in the way
  * of the page.
  *
- * ## Why a phone does not keep the loop running
+ * ## Why the loop is not always running
  *
- * It used to get a still mark, drawn once, because a loop repainting a
- * picture that never changed was battery spent on nothing. That is still the
- * rule; what changed is that the picture now changes twice — as it assembles,
- * and after a tap — and the loop runs exactly then. Once the points settle on
- * a touch screen it stops outright rather than dropping to the slow shimmer a
- * desktop gets, and a tap starts it again. `prefers-reduced-motion` gets the
+ * The picture changes only while the points are moving: as the mark
+ * assembles, while a cursor pushes through it, and after a tap. The loop runs
+ * exactly then. Once the points settle and nothing is touching them it stops
+ * outright, on every device — a desktop used to keep it going at a quarter
+ * of the frames for a faint shimmer, which was a few thousand points
+ * repainted forever for a movement nobody could make out — and a cursor or a
+ * tap starts it again. It also stops while the hero is off screen, and picks
+ * up where it was when the hero comes back. `prefers-reduced-motion` gets the
  * still mark, as it always has.
- *
- * ## Why it is cheap when it does run
- *
- * Once everything has settled and nothing is touching it, the loop drops to a
- * quarter of the frames (the points still shimmer, slowly). It stops entirely
- * while the hero is off screen or the tab is hidden.
  */
 
 interface Particle {
@@ -69,7 +65,7 @@ const RADIUS = 34;
 const PUSH = 2.6;
 const SPRING = 0.05;
 const DAMPING = 0.84;
-/** Frames of stillness before the loop throttles down. */
+/** Frames of stillness before the loop stops. */
 const SETTLE_FRAMES = 90;
 /** How long a motionless cursor still counts as touching the field. */
 const HOVER_TIMEOUT_MS = 400;
@@ -96,8 +92,6 @@ export function MarkField() {
 
     // A still mark for anyone who asked for less movement.
     const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    // No hover means no pointer to follow: taps instead, and no idle loop.
-    const touch = window.matchMedia("(hover: none)").matches;
 
     let width = 0;
     let height = 0;
@@ -218,30 +212,34 @@ export function MarkField() {
     };
 
     let inView = true;
-    let frame = 0;
     let raf = 0;
     let running = false;
+    /** Stopped by scrolling away rather than by settling: resume on return. */
+    let interrupted = false;
     const tick = () => {
-      if (touch && idleFrames > SETTLE_FRAMES) {
-        // Settled on a phone: stop until the next tap.
-        running = false;
-        return;
-      }
-      raf = requestAnimationFrame(tick);
-      if (!inView || document.hidden) return;
       // A cursor that came to rest inside the box used to hold the field at
       // full frame rate indefinitely, because only leaving cleared the flag.
       if (mouse.active && performance.now() - mouse.at > HOVER_TIMEOUT_MS) mouse.active = false;
-      frame++;
-      const idle = idleFrames > SETTLE_FRAMES && !mouse.active;
-      if (idle && frame % 4 !== 0) return;
+      if (idleFrames > SETTLE_FRAMES && !mouse.active) {
+        // Settled: stop until a cursor or a tap.
+        running = false;
+        return;
+      }
+      if (!inView) {
+        running = false;
+        interrupted = true;
+        return;
+      }
+      raf = requestAnimationFrame(tick);
+      if (document.hidden) return;
       const fastest = step();
       idleFrames = fastest < 0.35 && !mouse.active ? idleFrames + 1 : 0;
       draw();
     };
 
-    const wake = () => {
-      idleFrames = 0;
+    /** Run the loop if it is not running; `fresh` restarts the settling count. */
+    const wake = (fresh = true) => {
+      if (fresh) idleFrames = 0;
       if (running || still) return;
       running = true;
       raf = requestAnimationFrame(tick);
@@ -293,6 +291,7 @@ export function MarkField() {
       mouse.y = event.clientY - r.top;
       mouse.active = true;
       mouse.at = performance.now();
+      wake();
     };
     const onLeave = () => {
       mouse.active = false;
@@ -307,6 +306,10 @@ export function MarkField() {
 
     const visibility = new IntersectionObserver(([entry]) => {
       inView = entry?.isIntersecting ?? true;
+      if (inView && interrupted) {
+        interrupted = false;
+        wake(false);
+      }
     });
     visibility.observe(host);
 

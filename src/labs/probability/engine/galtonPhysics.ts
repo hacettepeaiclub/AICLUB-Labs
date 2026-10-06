@@ -147,6 +147,7 @@ export class GaltonWorld {
   private live: Live[] = [];
 
   private queued = 0;
+  private onQueue: (() => void) | null = null;
   private released = 0;
   private sinceRelease = 0;
   private abandoned = 0;
@@ -206,6 +207,12 @@ export class GaltonWorld {
   /** Ask for `count` more balls. They are released a few steps apart. */
   queue(count: number): void {
     this.queued += count;
+    this.onQueue?.();
+  }
+
+  /** Called on every `queue`: how a board that has gone still is woken. */
+  whenQueued(listener: (() => void) | null): void {
+    this.onQueue = listener;
   }
 
   get pending(): number {
@@ -469,8 +476,20 @@ export function attachBoard(
   let carry = 0;
   let wasBusy = false;
 
+  // The loop runs only while there is something to show. A quiet board is a
+  // still picture: stepping the physics and repainting it every frame drew
+  // the same pegs and the same piles sixty times a second, on every visit,
+  // whether a ball was falling or not. Now the loop paints the picture once
+  // after the last ball lands and stops; dropping a ball starts it again.
+  // Off screen it stops too, and the balls in flight wait in mid-air until
+  // the board scrolls back. A resize clears the canvas, but the painter's own
+  // observer puts the picture back.
+  let onScreen = true;
   const tick = (now: number) => {
-    frame = requestAnimationFrame(tick);
+    if (!onScreen) {
+      frame = 0;
+      return;
+    }
     if (last === 0) last = now;
     carry = Math.min(carry + (now - last) * PHYSICS.timeScale, PHYSICS.stepMs * 20);
     last = now;
@@ -487,12 +506,35 @@ export function attachBoard(
     wasBusy = busy;
 
     painter.draw();
+    if (busy) {
+      frame = requestAnimationFrame(tick);
+    } else {
+      frame = 0;
+      carry = 0;
+    }
   };
 
-  frame = requestAnimationFrame(tick);
+  const start = () => {
+    if (frame !== 0 || !onScreen) return;
+    last = 0;
+    frame = requestAnimationFrame(tick);
+  };
+  const visibility =
+    typeof IntersectionObserver === "undefined"
+      ? null
+      : new IntersectionObserver(([entry]) => {
+          onScreen = entry?.isIntersecting ?? true;
+          if (onScreen) start();
+        });
+  visibility?.observe(canvas);
+  world.whenQueued(start);
+
+  start();
 
   return () => {
     cancelAnimationFrame(frame);
+    world.whenQueued(null);
+    visibility?.disconnect();
     painter.dispose();
   };
 }

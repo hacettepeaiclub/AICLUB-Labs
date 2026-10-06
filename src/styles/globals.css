@@ -325,11 +325,15 @@
   /* no surface is navy, the dark simply leans blue where they pass.   */
   /* On paper they become a pale mist, so they fade to a third.        */
   /* ---------------------------------------------------------------- */
+  /* No `filter: blur()`: a 90px blur over two pools this size had to be */
+  /* recomputed on the GPU on every frame they moved, on every page.     */
+  /* The gradients below fall off in steps instead, which looks the      */
+  /* same and costs nothing to move.                                     */
   .ambient-fog {
     position: absolute;
     border-radius: 9999px;
-    filter: blur(90px);
     opacity: 0.55;
+    will-change: transform;
   }
   :root[data-theme="light"] .ambient-fog {
     opacity: 0.2;
@@ -339,7 +343,14 @@
     height: 60vw;
     left: -18vw;
     top: -22vw;
-    background: radial-gradient(circle, rgb(var(--accent-fill) / 0.55), transparent 65%);
+    background: radial-gradient(
+      circle,
+      rgb(var(--accent-fill) / 0.44),
+      rgb(var(--accent-fill) / 0.30) 30%,
+      rgb(var(--accent-fill) / 0.14) 50%,
+      rgb(var(--accent-fill) / 0.04) 62%,
+      transparent 72%
+    );
     animation: ambient-drift-a 38s ease-in-out infinite alternate;
   }
   .ambient-fog-b {
@@ -347,7 +358,14 @@
     height: 50vw;
     right: -20vw;
     top: 30vh;
-    background: radial-gradient(circle, rgb(var(--accent-fill) / 0.35), transparent 65%);
+    background: radial-gradient(
+      circle,
+      rgb(var(--accent-fill) / 0.28),
+      rgb(var(--accent-fill) / 0.19) 30%,
+      rgb(var(--accent-fill) / 0.09) 50%,
+      rgb(var(--accent-fill) / 0.02) 62%,
+      transparent 72%
+    );
     animation: ambient-drift-b 46s ease-in-out infinite alternate;
   }
 

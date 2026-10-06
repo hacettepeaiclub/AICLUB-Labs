@@ -77,7 +77,7 @@ export function SiteHeader({ onFindLab }: { onFindLab: () => void }) {
       ref={headerRef}
       onPointerMove={followPointer}
       onPointerLeave={releasePointer}
-      className="header-glow sticky top-0 z-40 border-b border-line/10 bg-ink-950/80 backdrop-blur-md"
+      className="header-glow sticky top-0 z-40 border-b border-line/10 bg-ink-950/95"
     >
       {/* The header takes a tighter gutter than `.shell` at the smallest
           widths. At 360px the two preference pills plus the wordmark overran

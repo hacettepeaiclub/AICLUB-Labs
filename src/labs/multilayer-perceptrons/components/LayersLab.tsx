@@ -1,5 +1,6 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef } from "react";
 import { Figure, Stage, Transport } from "@/components/lab";
+import { useInView } from "@/hooks";
 import { useLabs } from "@/i18n/labs";
 import { formatPercent } from "@/lib/format";
 import { generateDataset, splitDataset } from "../datasets";
@@ -27,8 +28,12 @@ export function LayersLab() {
   const points = useMemo(() => generateDataset("xor", 160, 0.06, 3), []);
   const { train, test } = useMemo(() => splitDataset(points, 0.75, 9), [points]);
 
-  const flat = useTrainer(train, test, { ...BASE, hidden: [], seed: 4 + round }, running);
-  const deep = useTrainer(train, test, { ...BASE, hidden: [4], seed: 4 + round }, running);
+  // Started by the visitor, paused while scrolled out of view.
+  const rootRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(rootRef);
+  const active = running && inView;
+  const flat = useTrainer(train, test, { ...BASE, hidden: [], seed: 4 + round }, active);
+  const deep = useTrainer(train, test, { ...BASE, hidden: [4], seed: 4 + round }, active);
 
   const restart = () => {
     setRunning(false);
@@ -56,6 +61,7 @@ export function LayersLab() {
   const decided = flat.stats.epoch > 600;
 
   return (
+    <div ref={rootRef}>
     <Stage
       width="full"
       // One button, two networks, and the whole point is watching them race.
@@ -77,7 +83,7 @@ export function LayersLab() {
               <DecisionCanvas
                 netRef={column.trainer.netRef}
                 points={points}
-                running={running}
+                running={active}
                 revision={column.trainer.generation + column.trainer.revision}
                 ariaLabel={lab.layers.panelLabel(
                   column.title,
@@ -112,5 +118,6 @@ export function LayersLab() {
         />
       }
     />
+    </div>
   );
 }

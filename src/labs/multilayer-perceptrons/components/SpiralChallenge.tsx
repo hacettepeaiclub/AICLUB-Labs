@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Badge } from "@/components/ui";
 import { Figure, LabSlider, Stage, Transport } from "@/components/lab";
 import { useLabs } from "@/i18n/labs";
-import { useLocalStorage } from "@/hooks";
+import { useLocalStorage, useInView } from "@/hooks";
 import { formatPercent } from "@/lib/format";
 import { generateDataset, splitDataset } from "../datasets";
 import { useTrainer } from "../useTrainer";
@@ -51,6 +51,10 @@ export function SpiralChallenge() {
   const hidden = useMemo(() => Array.from({ length: layers }, () => neurons), [layers, neurons]);
   const total = layers * neurons;
 
+  // Started by the visitor, paused while scrolled out of view.
+  const rootRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(rootRef);
+  const active = running && inView;
   const trainer = useTrainer(
     train,
     test,
@@ -63,7 +67,7 @@ export function SpiralChallenge() {
       seed: 31 + attempt,
       epochsPerFrame: 6,
     },
-    running,
+    active,
   );
   const { stats } = trainer;
 
@@ -88,6 +92,7 @@ export function SpiralChallenge() {
   };
 
   return (
+    <div ref={rootRef}>
     <Stage
       width="wide"
       secondaryLabel={c.architecture}
@@ -97,7 +102,7 @@ export function SpiralChallenge() {
         <DecisionCanvas
           netRef={trainer.netRef}
           points={points}
-          running={running}
+          running={active}
           revision={trainer.generation + trainer.revision}
           ariaLabel={c.canvasLabel(total, formatPercent(stats.testAccuracy, 1), stats.epoch)}
           /* Nothing is drawn on this one by hand, so it does not need the
@@ -161,5 +166,6 @@ export function SpiralChallenge() {
         </>
       }
     />
+    </div>
   );
 }

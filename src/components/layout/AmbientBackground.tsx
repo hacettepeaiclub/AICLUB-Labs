@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import { palette, subscribePalette } from "@/design/tokens";
 import { clearCanvas } from "@/lib/canvas";
 
@@ -17,9 +18,13 @@ import { clearCanvas } from "@/lib/canvas";
  * ## Why it is cheap
  *
  * Labs run their own canvases, some of them training networks every frame.
- * This one must not take time from them: a few hundred points, redrawn at
- * roughly 20 frames a second, stopped entirely while the tab is hidden, and
- * drawn once and left alone when the visitor asks for reduced motion.
+ * This one must not take time from them, so it only drifts on the home page,
+ * where nothing else is running: a few hundred points, redrawn at roughly 20
+ * frames a second, stopped while the tab is hidden. Inside a lab, and for a
+ * visitor who asks for reduced motion, the same points are drawn once and
+ * left where they are. They are drawn at one canvas pixel per CSS pixel even
+ * on a sharp screen: they are specks a pixel or two across, and four times
+ * the pixels to clear and fill bought nothing anyone could see.
  */
 
 /** One point per this many square pixels, capped so a 4K screen stays cheap. */
@@ -44,6 +49,9 @@ interface Point {
 
 export function AmbientBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const drift = useLocation().pathname === "/";
+  /** Starts or stops the drift; set by the effect that owns the loop. */
+  const setDrifting = useRef<(on: boolean) => void>(() => {});
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -64,12 +72,10 @@ export function AmbientBackground() {
     };
 
     const seed = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
       width = window.innerWidth;
       height = window.innerHeight;
-      canvas.width = Math.round(width * dpr);
-      canvas.height = Math.round(height * dpr);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      canvas.width = Math.round(width);
+      canvas.height = Math.round(height);
       const count = Math.min(MAX_POINTS, Math.round((width * height) / AREA_PER_POINT));
       points = Array.from({ length: count }, () => {
         const roll = Math.random();
@@ -134,15 +140,24 @@ export function AmbientBackground() {
       step();
       draw();
     };
-    if (!reduced) raf = requestAnimationFrame(tick);
+    setDrifting.current = (on) => {
+      cancelAnimationFrame(raf);
+      raf = on && !reduced ? requestAnimationFrame(tick) : 0;
+    };
 
     return () => {
+      setDrifting.current = () => {};
       cancelAnimationFrame(raf);
       window.clearTimeout(resizeTimer);
       window.removeEventListener("resize", onResize);
       unsubscribe();
     };
   }, []);
+
+  // After the effect above, which it depends on: React runs effects in order.
+  useEffect(() => {
+    setDrifting.current(drift);
+  }, [drift]);
 
   return (
     <div aria-hidden className="ambient pointer-events-none fixed inset-0 -z-10 overflow-hidden">
