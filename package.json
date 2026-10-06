@@ -17,6 +17,8 @@
     "icons": "node tools/icons.mjs"
   },
   "dependencies": {
+    "@phosphor-icons/react": "^2.1.10",
+    "@scienceicons/react": "^0.0.14",
     "@types/matter-js": "^0.20.2",
     "clsx": "^2.1.1",
     "matter-js": "^0.20.0",

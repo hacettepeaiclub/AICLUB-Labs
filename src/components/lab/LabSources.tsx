@@ -1,3 +1,5 @@
+import { BookOpenText, LinkSimple } from "@phosphor-icons/react";
+import ArxivIcon from "@scienceicons/react/24/solid/ArxivIcon";
 import { SOURCES, formatSource, type SourceId } from "@/labs/sources";
 
 /**
@@ -14,6 +16,14 @@ import { SOURCES, formatSource, type SourceId } from "@/labs/sources";
  * between labs. The sentence under it is the lab's own, and it names what the
  * source supports — a method, a theorem, a standard. None of these papers
  * describes our implementation, and no entry is allowed to imply otherwise.
+ *
+ * ## The marks beside the links
+ *
+ * Each identifier wears the mark of what it is: arXiv's own glyph for a
+ * preprint (ScienceIcons, the open-science icon set), a book for a DOI, a
+ * plain link for anything else. They say at a glance which kind of source
+ * a line is, the way a reference manager does, and they are hidden from
+ * assistive technology because the link text already says it.
  *
  * A lab with no source it can verify renders nothing at all. An empty Sources
  * heading would be worse than none: it promises provenance and delivers an
@@ -49,7 +59,8 @@ export function LabSources({ title, entries }: LabSourcesProps) {
             <li key={entry.id}>
               <p>{formatSource(entry.id)}</p>
               {source.doi !== null && (
-                <p className="mt-0.5">
+                <p className="mt-0.5 flex items-center gap-1.5">
+                  <BookOpenText size={13} aria-hidden className="shrink-0 text-fg-faint" />
                   <a
                     href={`https://doi.org/${source.doi}`}
                     target="_blank"
@@ -62,7 +73,12 @@ export function LabSources({ title, entries }: LabSourcesProps) {
                 </p>
               )}
               {source.doi === null && source.url !== null && (
-                <p className="mt-0.5">
+                <p className="mt-0.5 flex items-start gap-1.5">
+                  {source.url.includes("arxiv.org") ? (
+                    <ArxivIcon aria-hidden width={13} height={13} className="mt-0.5 shrink-0 text-fg-faint" />
+                  ) : (
+                    <LinkSimple size={13} aria-hidden className="mt-0.5 shrink-0 text-fg-faint" />
+                  )}
                   <a
                     href={source.url}
                     target="_blank"

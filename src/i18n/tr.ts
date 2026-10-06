@@ -25,6 +25,7 @@ import type { Translation } from "./types";
  */
 export const tr: Translation = {
   shell: {
+    labPlate: (n: string, term: string) => `Şekil ${n}. ${term}: bu laboratuvarın üzerine kurulduğu yapı.`,
     skipToContent: "İçeriğe geç",
     brand: "AI Club",
     brandSuffix: "Labs",
