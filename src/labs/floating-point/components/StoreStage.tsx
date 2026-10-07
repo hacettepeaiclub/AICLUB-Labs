@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { Figure, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
 import { useDebouncedValue } from "@/hooks";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { absR, classify, decode, FORMATS, parseNumber, round, shortest, sub } from "../engine";
 import { divergence, readable, relative } from "../view";
 import { ExactDigits } from "./ExactDigits";
@@ -27,7 +27,7 @@ const EXAMPLES = ["0.1", "1/3", "0.5", "9007199254740993", "0.3", "1e-320", "1e3
  * the stored number is 0.1, only that no shorter decimal maps to it.
  */
 export function StoreStage() {
-  const lab = useLabs()["floating-point"];
+  const lab = useLabCopy("floating-point");
   const t = lab.store;
   const [text, setText] = useState("0.1");
   const [next, setNext] = useState(1);

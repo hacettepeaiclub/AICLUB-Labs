@@ -1,6 +1,7 @@
 import { useEffect, useRef, type CSSProperties } from "react";
 import { Link } from "react-router-dom";
-import { useLabMeta, useT } from "@/i18n";
+import { useLabMeta, useLanguage, useT } from "@/i18n";
+import { prefetchLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import { nextLab, preloadLab } from "@/labs/registry";
 import { CATEGORY_CODE, CATEGORY_VAR } from "@/labs/types";
@@ -29,8 +30,8 @@ import { LabSignature } from "./LabSignature";
  *
  * Reaching the end of a lab is the strongest signal on the site that the next
  * one is about to be opened, and it arrives several seconds before the click.
- * The lab chunks are 20–36 KB; by the time the visitor has read the card, the
- * next lab is usually already in the cache.
+ * The lab chunks are 20–36 KB and their prose a few more; by the time the
+ * visitor has read the card, the next lab is usually already in the cache.
  *
  * ## The last lab
  *
@@ -42,6 +43,7 @@ export function LabNext({ slug }: { slug: string }) {
   const t = useT();
   const next = nextLab(slug);
   const copy = useLabMeta(next?.meta.slug ?? "");
+  const { language } = useLanguage();
   const cardRef = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
@@ -52,6 +54,7 @@ export function LabNext({ slug }: { slug: string }) {
       ([entry]) => {
         if (!entry?.isIntersecting) return;
         preloadLab(next.meta.slug);
+        prefetchLabCopy(next.meta.slug, language);
         // No hover on a touch screen, so the drawing plays its gesture once
         // as the card arrives — the same rule the home grid follows.
         if (touch) card.classList.add("sig-play");
@@ -61,7 +64,7 @@ export function LabNext({ slug }: { slug: string }) {
     );
     observer.observe(card);
     return () => observer.disconnect();
-  }, [next]);
+  }, [next, language]);
 
   if (!next) {
     return (
@@ -89,6 +92,10 @@ export function LabNext({ slug }: { slug: string }) {
   }
 
   const { meta } = next;
+  const warm = () => {
+    preloadLab(meta.slug);
+    prefetchLabCopy(meta.slug, language);
+  };
   return (
     <nav aria-labelledby="lab-next-heading" className="mt-16 md:mt-24">
       <p
@@ -103,8 +110,8 @@ export function LabNext({ slug }: { slug: string }) {
         to={`/labs/${meta.slug}`}
         className="lab-card group gap-4 sm:flex-row sm:items-stretch"
         style={{ "--c": CATEGORY_VAR[meta.category] } as CSSProperties}
-        onPointerEnter={() => preloadLab(meta.slug)}
-        onFocus={() => preloadLab(meta.slug)}
+        onPointerEnter={warm}
+        onFocus={warm}
       >
         <div
           className="relative grid h-36 shrink-0 place-items-center overflow-hidden border border-line/5 bg-ink-950

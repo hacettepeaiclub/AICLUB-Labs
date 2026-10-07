@@ -2,7 +2,7 @@ import { useState, type KeyboardEvent } from "react";
 import { Figure, LabSlider, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
 import { useLocalControls } from "@/hooks";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import { dependencies, layerSizes, receptiveField, type Layer } from "../engine";
 
@@ -24,7 +24,7 @@ const CELL = 0.78;
  * and tested against a brute-force perturbation of a real stack.
  */
 export function DepthStage() {
-  const t = useLabs().convolution.depth;
+  const t = useLabCopy("convolution").depth;
   const [stored, save] = useLocalControls("acl:convolution:depth", {
     count: 2,
     strides: "1111",

@@ -1,5 +1,5 @@
 import { LabRecap, LabSection } from "@/components/lab";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { RaceStage } from "./components/RaceStage";
 import { SortStage } from "./components/SortStage";
 import { SortChallenge } from "./components/SortChallenge";
@@ -12,7 +12,7 @@ import { SortChallenge } from "./components/SortChallenge";
  * counters answer. Every section runs the same engine.
  */
 export default function SortingRace() {
-  const t = useLabs().sorting;
+  const t = useLabCopy("sorting");
 
   return (
     <div className="space-y-24 md:space-y-32">

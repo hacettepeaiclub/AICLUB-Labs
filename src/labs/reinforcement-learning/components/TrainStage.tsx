@@ -1,6 +1,6 @@
 import { Figure, Stage, Transport } from "@/components/lab";
 import { Button, Segmented } from "@/components/ui";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { formatNumber } from "@/lib/format";
 import { greedyPolicy } from "../engine";
 import { SMOOTHING_WINDOW, curve, smooth } from "../view";
@@ -33,7 +33,7 @@ export interface TrainStageProps {
  * explain. Episodes are the unit the learning actually happens in.
  */
 export function TrainStage({ run }: TrainStageProps) {
-  const copy = useLabs()["reinforcement-learning"];
+  const copy = useLabCopy("reinforcement-learning");
   const train = copy.train;
 
   const rewards = run.history.map((episode) => episode.totalReward);

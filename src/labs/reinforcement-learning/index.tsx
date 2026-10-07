@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from "react";
 import { LabRecap, LabSection, LabSlider, LabSources } from "@/components/lab";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { formatNumber } from "@/lib/format";
 import { ALPHA, EPSILON_MIN, EPSILON_START, GAMMA } from "./engine";
 import { DEFAULT_SLIDER, SLIDER_MAX, SLIDER_MIN, sliderToReward } from "./view";
@@ -39,7 +39,7 @@ import { WorldStage } from "./components/WorldStage";
  * demonstration of the algorithm, it is the algorithm.
  */
 export default function RewardPlayground() {
-  const copy = useLabs()["reinforcement-learning"];
+  const copy = useLabCopy("reinforcement-learning");
 
   const [slider, setSlider] = useState(DEFAULT_SLIDER);
   const tileReward = sliderToReward(slider);

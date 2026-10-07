@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from "react";
 import { LabRecap, LabSection } from "@/components/lab";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import {
   ALPHA_DEFAULT,
   MU0_DEFAULT,
@@ -48,7 +48,7 @@ const PROFILE_URL = "https://stat.hacettepe.edu.tr/tr/dolunay_ezgi_gumusbas-949"
  * running that implementation's own functions under SciPy.
  */
 export default function HypothesisTesting() {
-  const copy = useLabs()["hypothesis-testing"];
+  const copy = useLabCopy("hypothesis-testing");
 
   const [params, setParams] = useState<Params>({
     mu0: MU0_DEFAULT,

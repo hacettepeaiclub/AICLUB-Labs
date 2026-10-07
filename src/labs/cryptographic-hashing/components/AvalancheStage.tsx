@@ -1,6 +1,6 @@
 import { useId } from "react";
 import { Figure, Stage } from "@/components/lab";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { useDebouncedValue } from "@/hooks";
 import { HASH_BITS } from "../hashUtils";
 import { BitGrid } from "./BitGrid";
@@ -52,7 +52,7 @@ export function AvalancheStage({
   changedBits,
   changedCount,
 }: AvalancheStageProps) {
-  const t = useLabs()["cryptographic-hashing"];
+  const t = useLabCopy("cryptographic-hashing");
   const helpId = useId();
   const settled = useDebouncedValue(changedCount);
   const percent = Math.round((changedCount / HASH_BITS) * 100);

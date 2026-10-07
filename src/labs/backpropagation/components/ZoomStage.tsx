@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState, type PointerEvent } from "react";
 import { Figure, LabSlider, Stage } from "@/components/lab";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { evaluate, gradient, networkLoss, type NetworkParam } from "../engine";
 import { formatSmall, formatValue } from "../view";
 
@@ -40,7 +40,7 @@ const SAMPLES = 240;
  * than eyeballed. Dragging the chart slides the point along the curve.
  */
 export function ZoomStage() {
-  const t = useLabs().backpropagation.zoom;
+  const t = useLabCopy("backpropagation").zoom;
   const [w, setW] = useState(0.9);
   const [zoom, setZoom] = useState(0);
   const half = 3 * 10 ** -zoom;

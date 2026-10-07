@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { Figure, LabSlider, Stage } from "@/components/lab";
 import { Badge, Button, Segmented } from "@/components/ui";
 import { useT } from "@/i18n";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import { BOUNDS, TEST_TYPES, evaluate, type Params, type TestType } from "../engine";
 import { CHALLENGES, challengeById, coord, judge, prob, type ChallengeId } from "../view";
@@ -23,7 +23,7 @@ import { DistributionPlot } from "./DistributionPlot";
  */
 export function HypothesisChallenge() {
   const t = useT();
-  const copy = useLabs()["hypothesis-testing"];
+  const copy = useLabCopy("hypothesis-testing");
   const c = copy.challenge;
 
   const [id, setId] = useState<ChallengeId>("reach-power");

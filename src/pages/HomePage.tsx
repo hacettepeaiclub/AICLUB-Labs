@@ -6,7 +6,7 @@ import { MarkField } from "@/components/home/MarkField";
 import { useDocumentHead } from "@/app/useDocumentHead";
 import { homeMeta } from "@/app/siteMeta";
 import { useLabMeta, useLanguage, useT } from "@/i18n";
-import { prefetchLabs } from "@/i18n/labs";
+import { prefetchLabCopy } from "@/i18n/labs";
 import { CATEGORY_CODE, CATEGORY_VAR, type LabCategory, type LabMeta } from "@/labs/types";
 import { orderedLabs, preloadLab } from "@/labs/registry";
 import { readVisits } from "@/labs/visits";
@@ -346,13 +346,13 @@ function LabTile({ meta, lit, visited }: { meta: LabMeta; lit: boolean; visited:
   const { language } = useLanguage();
 
   // Pointing at a card, or tabbing to it, is a good enough signal to start
-  // fetching what opening it needs: the lab's own chunk and the collection's
-  // prose. On a desktop that is the few hundred milliseconds between deciding
-  // and clicking; on a phone `touchstart` fires before the tap completes.
+  // fetching what opening it needs: the lab's own chunk and its prose. On a
+  // desktop that is the few hundred milliseconds between deciding and
+  // clicking; on a phone `touchstart` fires before the tap completes.
   // Both calls are idempotent and swallow their own failures.
   const warm = () => {
     preloadLab(meta.slug);
-    prefetchLabs(language);
+    prefetchLabCopy(meta.slug, language);
   };
 
   return (

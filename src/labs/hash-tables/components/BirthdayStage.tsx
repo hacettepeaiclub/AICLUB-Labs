@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Figure, LabSlider, Stage } from "@/components/lab";
 import { Button, Segmented } from "@/components/ui";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { createRng } from "@/lib/random";
 import { collisionChance, evenOdds } from "../engine";
 import { Guess } from "./Guess";
@@ -37,7 +37,7 @@ function throwKeys(m: number, seed: number): Trial {
  * arrive with most of the table still empty.
  */
 export function BirthdayStage() {
-  const lab = useLabs()["hash-tables"];
+  const lab = useLabCopy("hash-tables");
   const t = lab.birthday;
   const [guess, setGuess] = useState<"23" | "92" | "183" | null>(null);
   const [size, setSize] = useState<Size>("365");

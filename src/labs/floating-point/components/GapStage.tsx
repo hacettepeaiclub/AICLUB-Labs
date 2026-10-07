@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Figure, LabSlider, Stage } from "@/components/lab";
 import { useDebouncedValue } from "@/hooks";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import {
   absR,
@@ -66,7 +66,7 @@ const py = (log2gap: number) => H - B - ((log2gap - GAP_MIN) / (GAP_MAX - GAP_MI
  * neighbour, which is the number you started with.
  */
 export function GapStage() {
-  const lab = useLabs()["floating-point"];
+  const lab = useLabCopy("floating-point");
   const t = lab.gap;
   const [power, setPower] = useState(3);
   const [text, setText] = useState("");

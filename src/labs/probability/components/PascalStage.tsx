@@ -2,7 +2,7 @@ import { useCallback, useMemo, useRef, useState } from "react";
 import { useReducedMotion } from "@/hooks";
 import { Figure, LabSlider, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import {
   DEFAULT_ROWS,
@@ -45,7 +45,7 @@ const SEED = 8675309;
  * hundred rather than pretending about five hundred.
  */
 export function PascalStage() {
-  const copy = useLabs().probability;
+  const copy = useLabCopy("probability");
   const p = copy.pascal;
   const reduced = useReducedMotion() ?? false;
 

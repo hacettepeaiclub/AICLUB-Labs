@@ -1,6 +1,6 @@
 import { useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import { Figure, Stage } from "@/components/lab";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { chain } from "../engine";
 import { formatValue } from "../view";
 
@@ -30,7 +30,7 @@ const angleOf = (v: number, range: number) =>
  * beside the product, so the claim is checked by the hand that made it.
  */
 export function ChainStage() {
-  const t = useLabs().backpropagation.chain;
+  const t = useLabCopy("backpropagation").chain;
   const [x, setX] = useState(0.35);
   const [last, setLast] = useState<{ dx: number; dd: number } | null>(null);
   const svgRef = useRef<SVGSVGElement>(null);

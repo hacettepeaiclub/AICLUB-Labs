@@ -2,7 +2,7 @@ import { useRef, type KeyboardEvent, type PointerEvent } from "react";
 import { Figure, LabSlider, Stage } from "@/components/lab";
 import { Segmented } from "@/components/ui";
 import { useLocalControls } from "@/hooks";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { depthGradients, type Activation } from "../engine";
 import { formatSmall, formatValue } from "../view";
 
@@ -38,7 +38,7 @@ const ACTIVATIONS: readonly Activation[] = ["sigmoid", "tanh", "relu"];
  * `depthGradients`, which the tests hold to central differences.
  */
 export function DepthStage() {
-  const t = useLabs().backpropagation.depth;
+  const t = useLabCopy("backpropagation").depth;
   const [stored, save] = useLocalControls("acl:backpropagation:depth", {
     depth: 8,
     activation: "sigmoid" as string,

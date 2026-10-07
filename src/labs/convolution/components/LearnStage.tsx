@@ -2,7 +2,7 @@ import { useMemo, useRef, useState } from "react";
 import { Figure, Stage } from "@/components/lab";
 import { Button, Segmented } from "@/components/ui";
 import { useRafLoop, useReducedMotion } from "@/hooks";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { createRng } from "@/lib/random";
 import {
   asKernel,
@@ -51,7 +51,7 @@ const start = (seed: number): Float64Array => {
  * is what lets a few hundred steps suffice (see `centred`).
  */
 export function LearnStage() {
-  const t = useLabs().convolution.learn;
+  const t = useLabCopy("convolution").learn;
   const reduced = useReducedMotion() ?? false;
   const [target, setTarget] = useState<Target>("vertical");
   const [seed, setSeed] = useState(1);

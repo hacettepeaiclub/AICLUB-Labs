@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Figure, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import {
   add,
   addFloats,
@@ -61,7 +61,7 @@ function position(v: Rational, lo: Rational, hi: Rational): number {
  * its nearest tick.
  */
 export function SumStage() {
-  const lab = useLabs()["floating-point"];
+  const lab = useLabCopy("floating-point");
   const t = lab.sum;
   const [guess, setGuess] = useState<Choice | null>(null);
   const [a, setA] = useState("0.1");
@@ -254,7 +254,7 @@ function NumberLine({
   ticks: Float[];
   steps: string;
 }) {
-  const t = useLabs()["floating-point"].sum;
+  const t = useLabCopy("floating-point").sum;
   const lo = decodeFinite(item(ticks, 0));
   const hi = decodeFinite(item(ticks, ticks.length - 1));
   const W = 640;

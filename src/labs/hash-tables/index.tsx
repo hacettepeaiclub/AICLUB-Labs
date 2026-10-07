@@ -1,5 +1,5 @@
 import { LabRecap, LabSection, LabSources } from "@/components/lab";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { AddressStage } from "./components/AddressStage";
 import { BirthdayStage } from "./components/BirthdayStage";
 import { ChallengeStage } from "./components/ChallengeStage";
@@ -31,7 +31,7 @@ import { ResizeStage } from "./components/ResizeStage";
  * exact product, not an approximation.
  */
 export default function HashTable() {
-  const t = useLabs()["hash-tables"];
+  const t = useLabCopy("hash-tables");
 
   return (
     <div className="space-y-20 md:space-y-28">

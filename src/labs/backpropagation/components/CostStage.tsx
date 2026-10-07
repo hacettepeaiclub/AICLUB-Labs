@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Figure, LabSlider, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
 import { useLanguage } from "@/i18n";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { backward, forward, numericGradient, parameterNodes, wideNetwork } from "../engine";
 import { formatSmall, formatValue } from "../view";
 
@@ -31,7 +31,7 @@ const SLICE = 40;
  * machine's, and they will differ on the next one; the ratio is what holds.
  */
 export function CostStage() {
-  const t = useLabs().backpropagation.cost;
+  const t = useLabCopy("backpropagation").cost;
   const { language } = useLanguage();
   const [width, setWidth] = useState(12);
   const [running, setRunning] = useState(false);

@@ -1,5 +1,5 @@
 import { useId } from "react";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 
 export interface MessageFieldProps {
@@ -31,7 +31,7 @@ export function MessageField({
   describedBy,
   className,
 }: MessageFieldProps) {
-  const t = useLabs()["cryptographic-hashing"];
+  const t = useLabCopy("cryptographic-hashing");
   const id = useId();
 
   return (

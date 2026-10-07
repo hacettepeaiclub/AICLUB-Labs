@@ -1,5 +1,5 @@
 import { LabRecap, LabSection, LabSources } from "@/components/lab";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { ChallengeStage } from "./components/ChallengeStage";
 import { DepthStage } from "./components/DepthStage";
 import { KernelStage } from "./components/KernelStage";
@@ -32,7 +32,7 @@ import { SlideStage } from "./components/SlideStage";
  * hidden kernel it has to recover.
  */
 export default function Convolution() {
-  const t = useLabs().convolution;
+  const t = useLabCopy("convolution");
 
   return (
     <div className="space-y-20 md:space-y-28">

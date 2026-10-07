@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useReducedMotion, useLocalControls } from "@/hooks";
 import { Stage, Transport } from "@/components/lab";
 import { Badge, Segmented } from "@/components/ui";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import { editCount } from "../arrayEdit";
 import { inversions, type Algorithm } from "../engine";
@@ -24,7 +24,7 @@ const EVENTS_PER_FRAME = 4;
  * the most. Failure always says which number missed and by how much.
  */
 export function SortChallenge() {
-  const lab = useLabs().sorting;
+  const lab = useLabCopy("sorting");
   const c = lab.challenge;
   const names = useAlgorithmLabel();
   const reduced = useReducedMotion() ?? false;

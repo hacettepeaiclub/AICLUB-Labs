@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Figure, LabSlider, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { createRng } from "@/lib/random";
 import {
   chain,
@@ -58,7 +58,7 @@ const path = (f: (a: number) => number) => {
  * insertion curve leaves it before α = 0.8, and that departure is the point.
  */
 export function CompareStage() {
-  const lab = useLabs()["hash-tables"];
+  const lab = useLabCopy("hash-tables");
   const t = lab.compare;
   const [alpha, setAlpha] = useState(0.75);
   const [seed, setSeed] = useState(1);

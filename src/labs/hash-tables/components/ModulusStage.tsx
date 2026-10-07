@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { Figure, LabSlider, Stage } from "@/components/lab";
 import { useLocalControls } from "@/hooks";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import { floorMod, gcd } from "../engine";
 import { formatValue } from "../view";
@@ -21,7 +21,7 @@ const KEYS = 32;
  * hash's high bits into its low ones before taking the bucket.
  */
 export function ModulusStage() {
-  const t = useLabs()["hash-tables"].modulus;
+  const t = useLabCopy("hash-tables").modulus;
   const [stored, save] = useLocalControls("acl:hash-tables:modulus", { m: 16, step: 8 });
   const m = Math.min(Math.max(Math.round(stored.m), 8), 32);
   const step = Math.min(Math.max(Math.round(stored.step), 1), 12);

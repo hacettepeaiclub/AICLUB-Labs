@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { Stage } from "@/components/lab";
 import { Segmented } from "@/components/ui";
 import { useDebouncedValue } from "@/hooks";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import {
   absR,
@@ -49,7 +49,7 @@ const ORDER = [FORMATS.float64, FORMATS.float32, FORMATS.float16, FORMATS.bfloat
  * while being off by 144, which is the very thing the section exists to show.
  */
 export function FormatsStage() {
-  const lab = useLabs()["floating-point"];
+  const lab = useLabCopy("floating-point");
   const t = lab.formats;
   const [preset, setPreset] = useState<Preset>("gradient");
   const [text, setText] = useState(PRESETS.gradient);

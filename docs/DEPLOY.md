@@ -111,7 +111,7 @@ inspector is also how you clear that cache.
 Everything in `public/` that a browser or a search engine shows as the site's
 icon — the favicons, the `.ico`, the Apple touch icon, the Android and
 maskable icons — is made by `tools/icons.mjs` from
-`src/assets/aiclub-mark-white.png`, the same file the header draws. There is
+`src/assets/aiclub-mark-white.webp`, the same file the header draws. There is
 one logo; change that file and regenerate:
 
 ```bash

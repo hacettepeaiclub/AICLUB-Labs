@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useRef, useState } from "react";
 import { useReducedMotion } from "@/hooks";
 import { Stage, Transport } from "@/components/lab";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { buildPreset, SIZE } from "../arrays";
 import type { Algorithm } from "../engine";
 import { useSortRun } from "../useSortRun";
@@ -36,7 +36,7 @@ const EVENTS_PER_FRAME = 3;
  * race you cannot start while looking at it is not a race.
  */
 export function RaceStage() {
-  const lab = useLabs().sorting;
+  const lab = useLabCopy("sorting");
   const reduced = useReducedMotion() ?? false;
   const valuesRef = useRef<Int32Array>(buildPreset("almost"));
   const [cursor, setCursor] = useState(-1);

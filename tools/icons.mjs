@@ -5,7 +5,7 @@
  *
  * ## Why this exists
  *
- * The header draws `src/assets/aiclub-mark-white.png`. The tab, the bookmark,
+ * The header draws `src/assets/aiclub-mark-white.webp`. The tab, the bookmark,
  * the home-screen icon and the result in a search engine used to draw a
  * second logo: a thinner deer on a slate blue from an earlier palette. Two
  * logos is one too many; this makes the rest out of the first.
@@ -58,7 +58,7 @@
 import { readFile, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 
-const SOURCE = path.resolve("src/assets/aiclub-mark-white.png");
+const SOURCE = path.resolve("src/assets/aiclub-mark-white.webp");
 const OUT = path.resolve("public");
 
 /** `--accent-fill`, the club's own navy: the deer on a light ground. */
@@ -75,9 +75,13 @@ async function main() {
     process.exit(1);
   }
 
-  // The source PNG has a margin of transparency around the deer. Trimming it
+  // The source has a margin of transparency around the deer. Trimming it
   // makes the ratios below mean "how much of the square is deer".
-  const mark = await sharp(await readFile(SOURCE)).trim().toBuffer();
+  //
+  // `.png()` matters: a bare `toBuffer()` re-encodes in the input's format,
+  // and for a WebP source that is *lossy* WebP — every step below would then
+  // work from a degraded copy. PNG keeps each intermediate exact.
+  const mark = await sharp(await readFile(SOURCE)).trim().png().toBuffer();
 
   /**
    * The mark with its parallel strands merged into one solid shape.

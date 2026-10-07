@@ -3,7 +3,7 @@ import { useReducedMotion } from "@/hooks";
 import { Figure, Stage } from "@/components/lab";
 import { Button, Kbd } from "@/components/ui";
 import { useT } from "@/i18n";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import { GUESS_SENTENCE } from "../corpora";
 import { tokenize } from "../engine";
@@ -25,7 +25,7 @@ import { TokenStrip } from "./TokenStrip";
  */
 export function GuessStrip() {
   const t = useT();
-  const lab = useLabs().tokenization;
+  const lab = useLabCopy("tokenization");
   const g = lab.guess;
   const reduced = useReducedMotion() ?? false;
   const { vocabulary, ready } = useVocabulary("english", reduced);

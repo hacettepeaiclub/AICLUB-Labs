@@ -3,7 +3,7 @@ import { useReducedMotion } from "@/hooks";
 import { Stage, Transport } from "@/components/lab";
 import { Kbd, Segmented } from "@/components/ui";
 import { useT } from "@/i18n";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { buildPreset, PRESETS, SIZE, type PresetId } from "../arrays";
 import { inversions, isSorted, type Algorithm } from "../engine";
 import { useSortRun } from "../useSortRun";
@@ -53,7 +53,7 @@ export function SortStage({
   caption,
 }: SortStageProps) {
   const t = useT();
-  const lab = useLabs().sorting;
+  const lab = useLabCopy("sorting");
   const names = useAlgorithmLabel();
   const reduced = useReducedMotion() ?? false;
 

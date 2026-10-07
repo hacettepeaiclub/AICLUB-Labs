@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { LabRecap, LabSection, LabSources } from "@/components/lab";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { changedBitFlags, changedHexChars, countChangedBits, hexToBits } from "./hashUtils";
 import { useHashHistory, useSha256 } from "./useSha256";
 import { AvalancheStage } from "./components/AvalancheStage";
@@ -30,7 +30,7 @@ import { UsageList } from "./components/UsageList";
  * names a property the visitor has not already watched happen.
  */
 export default function HashPlayground() {
-  const t = useLabs()["cryptographic-hashing"];
+  const t = useLabCopy("cryptographic-hashing");
   const [input, setInput] = useState("hello world");
   const { hash, unavailable } = useSha256(input);
   const { prev, current } = useHashHistory(hash);

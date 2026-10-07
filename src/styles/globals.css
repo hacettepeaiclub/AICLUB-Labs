@@ -386,7 +386,7 @@
   /* ---------------------------------------------------------------- */
   /* Header (SiteHeader.tsx).                                          */
   /*                                                                   */
-  /* The mark is the logo PNG used as a mask, so its geometry is the  */
+  /* The mark is the logo file used as a mask, so its geometry is the  */
   /* file's own alpha and nothing is redrawn. Behind the mask, a band  */
   /* of the data blue travels up the strands on load and on hover —    */
   /* a signal through the network the logo already draws.             */

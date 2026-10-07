@@ -1,5 +1,5 @@
 import { Figure, Stage } from "@/components/lab";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { formatNumber } from "@/lib/format";
 import { ranked, rowScores, rowWeights, type Attention } from "../engine";
 import { percent } from "../view";
@@ -28,7 +28,7 @@ export interface SoftmaxStageProps {
  * channel, and the row is a real `<table>` rather than a picture of one.
  */
 export function SoftmaxStage({ attention, words, selected, onSelect }: SoftmaxStageProps) {
-  const a = useLabs().attention;
+  const a = useLabCopy("attention");
   const trace = a.trace;
 
   const list = ranked(attention, selected);

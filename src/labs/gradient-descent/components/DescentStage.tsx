@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useReducedMotion } from "@/hooks";
 import { Figure, LabSlider, Stage, Transport } from "@/components/lab";
 import { Badge } from "@/components/ui";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { formatNumber } from "@/lib/format";
 import { cn } from "@/lib/cn";
 import { gradient, type Point } from "../engine";
@@ -124,7 +124,7 @@ export function DescentStage({
   defaultLearningRateIndex,
   caption,
 }: DescentStageProps) {
-  const g = useLabs()["gradient-descent"];
+  const g = useLabCopy("gradient-descent");
   const reduced = useReducedMotion() ?? false;
 
   const preset = LANDSCAPES[landscapeId];

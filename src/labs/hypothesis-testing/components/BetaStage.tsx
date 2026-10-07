@@ -1,6 +1,6 @@
 import { Figure, LabSlider, Stage } from "@/components/lab";
 import { Segmented } from "@/components/ui";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { BOUNDS, TEST_TYPES, type Params, type Result, type TestType } from "../engine";
 import { coord, prob } from "../view";
 import { DistributionPlot } from "./DistributionPlot";
@@ -26,7 +26,7 @@ export interface BetaStageProps {
  * condition, not a stricter one.
  */
 export function BetaStage({ result, onChange }: BetaStageProps) {
-  const copy = useLabs()["hypothesis-testing"];
+  const copy = useLabCopy("hypothesis-testing");
   const b = copy.betaSection;
   const { testType, mu1 } = result.params;
 

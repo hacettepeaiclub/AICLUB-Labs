@@ -1,5 +1,5 @@
 import { LabRecap, LabSection, LabSources } from "@/components/lab";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { PathfindingStage } from "./components/PathfindingStage";
 import { PathChallenge } from "./components/PathChallenge";
 
@@ -12,7 +12,7 @@ import { PathChallenge } from "./components/PathChallenge";
  * section is the same engine under a different question.
  */
 export default function Pathfinding() {
-  const t = useLabs()["graph-search"];
+  const t = useLabCopy("graph-search");
 
   return (
     <div className="space-y-24 md:space-y-32">

@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Figure, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import {
   backward,
@@ -59,7 +59,7 @@ const FILLABLE = GRAPH.nodes.map((n) => n.op !== "const");
  * against the numeric gradient.
  */
 export function LedgerStage() {
-  const lab = useLabs().backpropagation;
+  const lab = useLabCopy("backpropagation");
   const t = lab.ledger;
   const [done, setDone] = useState<ReadonlySet<number>>(() => new Set([ROOT]));
   const [picked, setPicked] = useState<number>(ROOT);

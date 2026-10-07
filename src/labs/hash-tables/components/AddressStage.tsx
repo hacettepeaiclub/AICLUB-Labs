@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Figure, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import { bucketOf, hashSteps, javaHash } from "../engine";
 import { formatHash } from "../view";
@@ -23,7 +23,7 @@ const START = ["apple", "banana", "cherry", "grape", "lemon", "mango", "olive", 
  * so the chain is visible from the first frame, without being named yet.
  */
 export function AddressStage() {
-  const t = useLabs()["hash-tables"].address;
+  const t = useLabCopy("hash-tables").address;
   const [keys, setKeys] = useState<string[]>(START);
   const [word, setWord] = useState("kiwi");
 

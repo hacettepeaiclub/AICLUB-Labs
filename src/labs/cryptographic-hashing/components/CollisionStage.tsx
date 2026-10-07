@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Figure, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import { formatNumber } from "@/lib/format";
 import { useDebouncedValue, useLocalControls } from "@/hooks";
@@ -39,7 +39,7 @@ const odds = (n: number) => formatNumber(16 ** n, 0);
  * moved into the section's lede where an explanation belongs.
  */
 export function CollisionStage() {
-  const t = useLabs()["cryptographic-hashing"];
+  const t = useLabCopy("cryptographic-hashing");
   const c = t.challenge;
   const [inputA, setInputA] = useState("hello");
   const [inputB, setInputB] = useState("hello!");

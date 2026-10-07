@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Figure, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import {
   RIGHT_PROBABILITY,
@@ -42,7 +42,7 @@ const WATCHABLE = 100;
  * phenomenon lives. Each decade gets equal room instead.
  */
 export function LargeNumbersStage() {
-  const copy = useLabs().probability;
+  const copy = useLabCopy("probability");
   const l = copy.largeNumbers;
 
   const [trials, setTrials] = useState<number>(SCALES[0]);

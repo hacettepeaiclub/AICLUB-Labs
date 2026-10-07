@@ -2,11 +2,11 @@ import { useRef, type CSSProperties, type PointerEvent } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useTheme } from "@/app/ThemeProvider";
 import type { Language, ThemeName } from "@/app/preferences";
-import logoMark from "@/assets/aiclub-mark-white.png";
+import logoMark from "@/assets/aiclub-mark-white.webp";
 import { useLanguage, useT } from "@/i18n";
 import { cn } from "@/lib/cn";
 import { Kbd } from "@/components/ui";
-import { PALETTE_SHORTCUT } from "./LabPalette";
+import { PALETTE_SHORTCUT } from "./paletteShortcut";
 import { PreferenceToggle, type ToggleOption } from "./PreferenceToggle";
 
 const SunIcon = (
@@ -49,7 +49,14 @@ const MoonIcon = (
  * replays its signal on hover. The pointer position is written straight to a
  * CSS variable rather than into React state, so following it never re-renders.
  */
-export function SiteHeader({ onFindLab }: { onFindLab: () => void }) {
+export function SiteHeader({
+  onFindLab,
+  onFindLabIntent,
+}: {
+  onFindLab: () => void;
+  /** Pointed at or focused: a good moment to start fetching the finder. */
+  onFindLabIntent: () => void;
+}) {
   const t = useT();
   const { language, setLanguage } = useLanguage();
   const { theme, setTheme } = useTheme();
@@ -129,6 +136,8 @@ export function SiteHeader({ onFindLab }: { onFindLab: () => void }) {
           <button
             type="button"
             onClick={onFindLab}
+            onPointerEnter={onFindLabIntent}
+            onFocus={onFindLabIntent}
             aria-keyshortcuts={PALETTE_SHORTCUT === "⌘K" ? "Meta+K" : "Control+K"}
             className="hidden min-h-11 items-center gap-2.5 rounded border border-line/10 bg-ink-800/50 pl-3 pr-2
               text-body-sm text-fg-muted transition-colors duration-fast hover:border-line/25 hover:text-fg sm:inline-flex"

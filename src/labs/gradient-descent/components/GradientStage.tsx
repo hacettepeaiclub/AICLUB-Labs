@@ -1,7 +1,7 @@
 import { useId, useState } from "react";
 import { Figure, LabSlider, Stage } from "@/components/lab";
 import { Button, Kbd } from "@/components/ui";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { formatNumber } from "@/lib/format";
 import { conditionNumber, gradient, type Landscape, type Point } from "../engine";
 import { LandscapeCanvas } from "./LandscapeCanvas";
@@ -41,7 +41,7 @@ function angleBetween(u: Point, v: Point): number {
  * whose curvature is the same in both directions.
  */
 export function GradientStage() {
-  const g = useLabs()["gradient-descent"];
+  const g = useLabCopy("gradient-descent");
   const hintId = useId();
 
   const [point, setPoint] = useState<Point>(HOME);

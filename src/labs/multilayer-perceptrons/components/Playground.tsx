@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useReducedMotion, useKeyPress } from "@/hooks";
 import { Button, Kbd, Segmented } from "@/components/ui";
 import { LabSlider, Stage, Transport } from "@/components/lab";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { formatNumber } from "@/lib/format";
 import {
   DATASETS,
@@ -27,7 +27,7 @@ const DEFAULT_DATASET: DatasetKind = "circle";
 const activationOptions = ACTIVATIONS.map((a) => ({ value: a.kind, label: a.label }));
 
 function Legend() {
-  const lab = useLabs()["multilayer-perceptrons"];
+  const lab = useLabCopy("multilayer-perceptrons");
   return (
     <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-caption text-fg-muted">
       {/* Shape as well as hue: a disc, a square and a ring. */}
@@ -96,7 +96,7 @@ function useRoomForDiagram() {
 }
 
 export function Playground() {
-  const lab = useLabs()["multilayer-perceptrons"];
+  const lab = useLabCopy("multilayer-perceptrons");
   const p = lab.playground;
   const diagramOpen = useRoomForDiagram();
   const datasetOptions = DATASETS.map((d) => ({

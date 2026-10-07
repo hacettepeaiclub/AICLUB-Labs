@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Figure, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { at, correlate, terms, withCell } from "../engine";
 import { LETTER_T, PREWITT } from "../pictures";
 import { factor, formatValue } from "../view";
@@ -25,7 +25,7 @@ const CELLS = SIDE * SIDE;
  * again.
  */
 export function SlideStage() {
-  const t = useLabs().convolution.slide;
+  const t = useLabCopy("convolution").slide;
   const [image, setImage] = useState(LETTER_T);
   const [position, setPosition] = useState(0);
   const [visited, setVisited] = useState<ReadonlySet<number>>(() => new Set([0]));

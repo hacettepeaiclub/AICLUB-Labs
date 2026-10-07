@@ -11,7 +11,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Kbd } from "@/components/ui";
 import { LabSignature } from "@/components/lab/LabSignature";
 import { useLanguage, useT } from "@/i18n";
-import { prefetchLabs } from "@/i18n/labs";
+import { prefetchLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import { orderedLabs, preloadLab } from "@/labs/registry";
 import { CATEGORY_VAR, type LabMeta } from "@/labs/types";
@@ -59,10 +59,6 @@ interface Entry {
   field: string;
 }
 
-/** Mac shows ⌘, everyone else Ctrl. Read once; it does not change. */
-const isMac = typeof navigator !== "undefined" && /Mac|iPhone|iPad/.test(navigator.platform);
-export const PALETTE_SHORTCUT = isMac ? "⌘K" : "Ctrl K";
-
 export function LabPalette({
   open,
   onOpenChange,
@@ -81,19 +77,6 @@ export function LabPalette({
   const [active, setActive] = useState(0);
   const [visited, setVisited] = useState<ReadonlySet<string>>(new Set());
   const listId = useId();
-
-  // ⌘K / Ctrl+K anywhere, including inside a lab's own text fields: the
-  // combination types nothing, so claiming it costs no one a keystroke.
-  useEffect(() => {
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key.toLowerCase() !== "k" || !(event.metaKey || event.ctrlKey)) return;
-      if (event.altKey || event.shiftKey) return;
-      event.preventDefault();
-      onOpenChange(!open);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [open, onOpenChange]);
 
   // The dialog follows `open` rather than owning it, so the header's button
   // and the shortcut go through the same state.
@@ -149,7 +132,7 @@ export function LabPalette({
   useEffect(() => {
     if (!open || !activeEntry) return;
     preloadLab(activeEntry.meta.slug);
-    prefetchLabs(language);
+    prefetchLabCopy(activeEntry.meta.slug, language);
     listRef.current
       ?.querySelector<HTMLElement>(`[data-slug="${activeEntry.meta.slug}"]`)
       ?.scrollIntoView({ block: "nearest" });
