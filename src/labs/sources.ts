@@ -330,6 +330,44 @@ export const SOURCES = {
     doi: "10.1145/1070838.1070856",
     url: null,
   },
+  // Race condition. Checked the same way as the cache-locality four: the
+  // publisher's listing and independent references, not the DOI registry,
+  // which could not be reached from where they were added. The textbook's
+  // year is that of its version 1.00, as library catalogues record it.
+  ostep: {
+    authors: "Arpaci-Dusseau, R. H., & Arpaci-Dusseau, A. C.",
+    title: "Concurrency: An Introduction",
+    venue: "Operating Systems: Three Easy Pieces, version 1.00, chapter 26. Arpaci-Dusseau Books",
+    year: 2018,
+    doi: null,
+    url: "https://pages.cs.wisc.edu/~remzi/OSTEP/threads-intro.pdf",
+  },
+  mutex: {
+    authors: "Dijkstra, E. W.",
+    title: "Solution of a problem in concurrent programming control",
+    venue: "Communications of the ACM, 8(9), 569",
+    year: 1965,
+    doi: "10.1145/365559.365617",
+    url: null,
+  },
+  concurrencyBugs: {
+    authors: "Lu, S., Park, S., Seo, E., & Zhou, Y.",
+    title:
+      "Learning from mistakes: a comprehensive study on real world concurrency bug characteristics",
+    venue:
+      "Proceedings of the 13th International Conference on Architectural Support for Programming Languages and Operating Systems (ASPLOS XIII), 329–339",
+    year: 2008,
+    doi: "10.1145/1346281.1346323",
+    url: null,
+  },
+  therac: {
+    authors: "Leveson, N. G., & Turner, C. S.",
+    title: "An investigation of the Therac-25 accidents",
+    venue: "Computer, 26(7), 18–41",
+    year: 1993,
+    doi: "10.1109/MC.1993.274940",
+    url: null,
+  },
   statisticalInference: {
     authors: "Casella, G., & Berger, R. L.",
     title: "Statistical Inference, 2nd edition",

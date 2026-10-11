@@ -49,6 +49,10 @@ const VERIFIED: Record<SourceId, { year: number | null; doi: string | null; must
   memoryWall: { year: 1995, doi: "10.1145/216585.216588", mustSay: "Wulf" },
   blocked: { year: 1991, doi: "10.1145/106972.106981", mustSay: "Lam" },
   locality: { year: 2005, doi: "10.1145/1070838.1070856", mustSay: "Denning" },
+  ostep: { year: 2018, doi: null, mustSay: "Arpaci-Dusseau" },
+  mutex: { year: 1965, doi: "10.1145/365559.365617", mustSay: "Dijkstra" },
+  concurrencyBugs: { year: 2008, doi: "10.1145/1346281.1346323", mustSay: "Lu" },
+  therac: { year: 1993, doi: "10.1109/MC.1993.274940", mustSay: "Leveson" },
 };
 
 /** Every lab that carries the shared Sources section, and what it cites. */
@@ -68,6 +72,7 @@ const LAB_SOURCES: Record<string, readonly SourceId[]> = {
   "hash-tables": ["peterson", "linearProbing", "birthday", "amortized", "javaApi"],
   backpropagation: ["backpropagation", "linnainmaa", "griewank", "autodiffSurvey", "vanishing"],
   "cache-locality": ["drepper", "memoryWall", "blocked", "locality"],
+  "race-condition": ["ostep", "mutex", "concurrencyBugs", "therac"],
 };
 
 type Dict = typeof enLabs;

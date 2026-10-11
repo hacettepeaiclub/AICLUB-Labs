@@ -78,7 +78,7 @@ export const en = {
     // Also the original copy, tightened: it now states the size of the
     // collection, because the labs start one screen below and the count is
     // the fastest way to say what this place is.
-    lede: "Sixteen interactive experiments: algorithms, neural networks and the machinery of computation. No lectures, just levers to pull.",
+    lede: "Seventeen interactive experiments: algorithms, neural networks and the machinery of computation. No lectures, just levers to pull.",
     cta: "Start experimenting",
     labs: "Labs",
     labCount: (n: number) => `${n} instruments`,
@@ -273,6 +273,14 @@ export const en = {
       figure: "rows of eight numbers; reading one fetches its whole line, its neighbours with it.",
       description:
         "Add up the same numbers in two orders, time both on your own computer, and find out why one is several times slower.",
+    },
+    "race-condition": {
+      title: "Lost Update",
+      term: "Race condition",
+      figure:
+        "two threads' steps interleaved; both read before either writes, and one update is lost.",
+      description:
+        "Be the scheduler for two threads that each add 1 to a counter, and make it end at 1 with your own hand.",
     },
     "hash-tables": {
       title: "Computed Address",
