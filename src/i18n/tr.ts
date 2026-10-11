@@ -146,6 +146,9 @@ export const tr: Translation = {
     select: "aç",
     dismiss: "kapat",
   },
+  // Tamamı İngilizce kalan terimler. Taslak lab'ın "Word embedding, prototip"
+  // terimi burada değil: içinde Türkçe bir kelime de var.
+  englishTerms: ["attention", "gradient-descent", "tokenization", "word-embeddings"],
   labMeta: {
     "word-embeddings-3d": {
       title: "Anlam Haritası, 3B",

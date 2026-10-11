@@ -86,19 +86,29 @@ VITE_SITE_URL=https://staging.example.com npm run build
 
 ## Link preview cards
 
-`public/og/*.jpg` are generated from the specimen photographs and committed, so
-a deploy never has to build images. They are 1200×630 JPEGs because WhatsApp
-and LinkedIn do not reliably render WebP.
+`public/og/*.jpg` are generated and committed, so a deploy never has to build
+images. They are 1200×630 JPEGs because WhatsApp and LinkedIn do not reliably
+render WebP. They come from two places:
 
-A lab with no specimen photograph yet has no card of its own. The prerender
-step notices the missing file and points that lab's `og:image` at the
-collection's card, `og/home.jpg`, instead of at a picture that would 404; the
-build log says how many routes are borrowing it.
+- **A specimen photograph**, for the labs that have one
+  (`src/assets/specimens/`): `tools/og-images.mjs`.
+- **The lab's own plate** — the diagram beside its title — for every lab
+  without one: `tools/og-plates.mjs` opens the built site and captures it at
+  the card's resolution.
+
+A lab with neither has no card of its own. The prerender step notices the
+missing file and points that lab's `og:image` at the collection's card,
+`og/home.jpg`, instead of at a picture that would 404; the build log says how
+many routes are borrowing it. Drafts are left to borrow it on purpose.
 
 Regenerate after adding a lab or reshooting a specimen:
 
 ```bash
 npm i -D sharp && npm run og && npm un sharp
+
+npm run build
+npm i -D sharp playwright && npx playwright install chromium
+node tools/og-plates.mjs && npm un sharp playwright
 ```
 
 Then check the result against a validator before announcing anything:

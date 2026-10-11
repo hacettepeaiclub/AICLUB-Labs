@@ -194,8 +194,8 @@ most to the mission:
 
 **Registry pattern.** Metadata is eager and tiny; components are `React.lazy`. The
 home grid renders instantly at any catalogue size, and opening lab #57 downloads
-lab #57 — plus, the first time any lab is opened, the collection's prose in the
-visitor's language.
+lab #57 — plus that lab's prose in the visitor's language, fetched alongside
+it.
 
 **Simulation separated from presentation.** Complex labs keep their logic in a pure
 `engine.ts` with no React import. This keeps engines unit-testable, keeps 60fps

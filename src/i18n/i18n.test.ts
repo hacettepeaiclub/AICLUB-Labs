@@ -77,6 +77,9 @@ describe("coverage", () => {
   it("keeps arrays the same length, so no recap line is dropped", () => {
     for (const [path, value] of enLeaves) {
       if (!Array.isArray(value)) continue;
+      // Not prose but a fact about each language: which terms it leaves in
+      // English. Empty in English by definition. Checked on its own below.
+      if (path === "englishTerms[]") continue;
       const other = trLeaves.get(path);
       expect(Array.isArray(other), `tr.${path}`).toBe(true);
       expect((other as unknown[]).length, `tr.${path} length`).toBe(value.length);
@@ -192,6 +195,17 @@ describe("lab identity", () => {
     const { labs } = await import("@/labs/registry");
     const slugs = labs.map((lab) => lab.meta.slug).sort();
     expect(Object.keys(enLabs).sort()).toEqual(slugs);
+  });
+
+  it("marks as English only lab terms that are written in English", () => {
+    expect(en.englishTerms).toEqual([]);
+    for (const slug of tr.englishTerms) {
+      expect(Object.keys(enLabs), slug).toContain(slug);
+      // Left in English means the same words as the English term, give or take
+      // a plural: "Word embedding" for "Word embeddings".
+      const term = tr.labMeta[slug as keyof typeof tr.labMeta].term;
+      expect(en.labMeta[slug as keyof typeof en.labMeta].term, slug).toContain(term);
+    }
   });
 
   it("gives every lab a title, its subject's term and a one-line description in both languages", () => {

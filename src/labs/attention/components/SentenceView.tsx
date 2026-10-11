@@ -10,6 +10,7 @@ import {
 } from "react";
 import { useReducedMotion } from "@/hooks";
 import { Figure, Stage } from "@/components/lab";
+import { markEnglish } from "@/i18n";
 import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import type { Attention } from "../engine";
@@ -290,7 +291,9 @@ export function SentenceView({
       readout={
         /* The same row, as words and numbers. Bare: the chassis is the panel. */
         <div className="flex flex-col gap-2 rounded border border-line/10 bg-ink-950 p-4">
-          <p className="text-overline uppercase text-fg-faint">{a.mostlyLookingAt(selectedWord)}</p>
+          <p className="text-overline uppercase text-fg-faint">
+            {markEnglish(a.mostlyLookingAt(selectedWord), selectedWord)}
+          </p>
           <ul className="space-y-1.5">
             {top.map((entry) => (
               <li key={entry.index} className="flex items-center gap-3">

@@ -9,7 +9,7 @@ src/
 ├── styles/
 │   └── globals.css       Design tokens (CSS variables) + base styles
 ├── design/
-│   ├── motion.ts         Shared animation system (durations, easings, springs, variants)
+│   ├── motion.ts         Shared motion vocabulary (durations, easings)
 │   └── tokens.ts         TS mirror of tokens for canvas/SVG-in-JS only
 ├── lib/                  Pure utilities — no React, no side effects
 │   ├── cn.ts             Class-name merge
@@ -18,7 +18,7 @@ src/
 │   └── format.ts         Number / duration formatting
 ├── hooks/                Reusable React hooks (rAF loop, canvas, sizes, storage, keys)
 ├── components/
-│   ├── ui/               Generic primitives (Button, Badge, Kbd, LabCard)
+│   ├── ui/               Generic primitives (Button, Badge, Kbd)
 │   ├── layout/           Site chrome (SiteHeader, SiteFooter, PageShell)
 │   └── lab/              Experiment scaffolding (LabShell, ControlPanel, LabSlider)
 ├── pages/                Route-level components (HomePage, LabPage, NotFoundPage)
@@ -39,13 +39,14 @@ src/
 - **One-line registration.** Adding a lab touches exactly one shared file. No route edits, no grid edits, no chunk config.
 - **Isolation.** A lab may import from `lib/`, `hooks/`, `components/`, `design/` — never from another lab. Shared logic gets promoted into `lib/` or `hooks/` deliberately, not copy-pasted sideways.
 - **Separation of simulation and presentation.** Complex labs keep their logic in a pure `engine.ts` (plain TypeScript, seedable via `lib/random.ts`). The React component owns only rendering and input. This keeps engines unit-testable and 60fps loops free of React re-renders.
-- **Vendor chunk stability.** `vite.config.ts` pins react/framer-motion into stable chunks so shipping lab #57 doesn't bust the cache for the other 56.
+- **Vendor chunk stability.** `vite.config.ts` pins React, ReactDOM and the router into one stable chunk so shipping lab #57 doesn't bust the cache for the other 56.
+- **Prose per lab.** Each lab's teaching copy is its own file per language (`i18n/labs/{en,tr}/<slug>.ts`), read with `useLabCopy(slug)` and fetched alongside the lab's chunk, so opening one lab never downloads another's text.
 
 ## Rendering strategy per lab
 
 | Content                       | Use                                    |
 | ----------------------------- | -------------------------------------- |
-| UI, controls, text            | DOM + Tailwind + Framer Motion         |
+| UI, controls, text            | DOM + Tailwind + CSS transitions       |
 | Diagrams, < ~500 shapes       | SVG (accessible, crisp, animatable)    |
 | Particles, > ~500 shapes, pixels | Canvas via `useCanvas2D`            |
 

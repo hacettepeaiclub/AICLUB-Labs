@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { Figure, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
 import { useDebouncedValue } from "@/hooks";
+import { markEnglish } from "@/i18n";
 import { useLabCopy } from "@/i18n/labs";
 import { absR, classify, decode, FORMATS, parseNumber, round, shortest, sub } from "../engine";
 import { divergence, readable, relative } from "../view";
@@ -79,7 +80,9 @@ export function StoreStage() {
 
           <div aria-hidden className="flex items-center gap-3">
             <span className="font-mono text-caption text-fg-faint">↓</span>
-            <span className="text-overline uppercase text-accent">{t.format}</span>
+            <span className="text-overline uppercase text-accent">
+              {markEnglish(t.format, "JavaScript")}
+            </span>
             <span className="h-px flex-1 bg-line/10" />
           </div>
 

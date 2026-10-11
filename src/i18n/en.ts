@@ -161,6 +161,16 @@ export const en = {
     dismiss: "close",
   },
   /**
+   * Lab terms this language leaves in English, by slug.
+   *
+   * Each is marked `lang="en"` where it is shown, for two reasons. A screen
+   * reader then says "Attention" in an English voice. And the term is set in
+   * capitals on the cards and in a lab's header, where Turkish rules turn `i`
+   * into `İ`: "Attention" came out as "ATTENTİON". Empty here, where every term
+   * is English and the page already says so.
+   */
+  englishTerms: [] as readonly string[],
+  /**
    * What each lab is called, and the one sentence under it.
    *
    * Here rather than with the lab's own prose because the grid says all of it
