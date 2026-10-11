@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Figure, LabSlider, Stage } from "@/components/lab";
 import { useLocalControls } from "@/hooks";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { grid, leftover, outputSize, windowStart } from "../engine";
 import { GridView } from "./GridView";
 import { Panel } from "./Panel";
@@ -21,7 +21,7 @@ const DEFAULTS = { n: 7, k: 3, p: 1, s: 2 };
  * marked: frameworks compute exactly this and drop them without comment.
  */
 export function SizeStage() {
-  const t = useLabs().convolution.size;
+  const t = useLabCopy("convolution").size;
   const [stored, save] = useLocalControls("acl:convolution:size", DEFAULTS);
   const n = clampInt(stored.n, 3, 10);
   const k = clampInt(stored.k, 1, 5);

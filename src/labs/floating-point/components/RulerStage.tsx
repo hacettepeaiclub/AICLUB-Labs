@@ -1,7 +1,7 @@
 import { useMemo, useState, type MouseEvent } from "react";
 import { Figure, LabSlider, Stage } from "@/components/lab";
 import { useDebouncedValue } from "@/hooks";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import {
   absR,
   allNonNegative,
@@ -44,7 +44,7 @@ const ratio = (v: Rational, max: Rational): number =>
  * evenly spaced and the lesson would disappear into the scale.
  */
 export function RulerStage() {
-  const lab = useLabs()["floating-point"];
+  const lab = useLabCopy("floating-point");
   const t = lab.ruler;
   const [exponentBits, setExponentBits] = useState(3);
   const [fractionBits, setFractionBits] = useState(3);

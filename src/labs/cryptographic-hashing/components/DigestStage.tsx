@@ -1,6 +1,6 @@
 import { useId } from "react";
 import { Figure, Stage } from "@/components/lab";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { useDebouncedValue } from "@/hooks";
 import { HASH_BITS, HEX_CHARS } from "../hashUtils";
 import { CopyButton, DigestPanel } from "./DigestPanel";
@@ -28,7 +28,7 @@ export interface DigestStageProps {
  * on whatever is in the field.
  */
 export function DigestStage({ input, onInputChange, hash }: DigestStageProps) {
-  const t = useLabs()["cryptographic-hashing"];
+  const t = useLabCopy("cryptographic-hashing");
   const helpId = useId();
   // One announcement per burst of typing. Announcing all 64 characters on
   // every keystroke would be unusable, so this says that it changed and

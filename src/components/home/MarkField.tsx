@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import logoMark from "@/assets/aiclub-mark-white.png";
+import logoMark from "@/assets/aiclub-mark-white.webp";
 import { palette, subscribePalette } from "@/design/tokens";
 import { clearCanvas } from "@/lib/canvas";
 
@@ -8,7 +8,7 @@ import { clearCanvas } from "@/lib/canvas";
  *
  * ## Why the shape is exact
  *
- * The points' resting places are sampled from the logo PNG's own alpha, drawn
+ * The points' resting places are sampled from the logo file's own alpha, drawn
  * into the box this component fills. So once they settle, the mark is the real
  * geometry — nothing is traced or redrawn by hand. They arrive from a scatter
  * on first paint, which is the only time the field moves on its own.
@@ -122,6 +122,12 @@ export function MarkField() {
     };
 
     const image = new Image();
+    // The header masks with this same file, and a CSS mask is fetched in CORS
+    // mode. An image fetched without it is a different request as far as the
+    // cache is concerned, so the logo came down twice; asking for it the same
+    // way lets the second use reuse the first. Same origin, so nothing else
+    // changes — and reading its pixels back stays allowed.
+    image.crossOrigin = "anonymous";
     image.src = logoMark;
 
     /** The logo's opaque pixels, in this box's coordinates. */

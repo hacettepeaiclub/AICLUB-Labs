@@ -1,5 +1,5 @@
 import { LabRecap, LabSection, LabSources } from "@/components/lab";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { BitsStage } from "./components/BitsStage";
 import { ChallengeStage } from "./components/ChallengeStage";
 import { FormatsStage } from "./components/FormatsStage";
@@ -31,7 +31,7 @@ import { SumStage } from "./components/SumStage";
  * `Math.fround`, and against V8's `Math.f16round`.
  */
 export default function FloatingPoint() {
-  const t = useLabs()["floating-point"];
+  const t = useLabCopy("floating-point");
 
   return (
     <div className="space-y-20 md:space-y-28">

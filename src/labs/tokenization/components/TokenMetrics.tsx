@@ -1,5 +1,5 @@
 import { Figure } from "@/components/lab";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 
 export interface TokenMetricsProps {
@@ -36,7 +36,7 @@ export function TokenMetrics({
   honest = true,
   className,
 }: TokenMetricsProps) {
-  const t = useLabs().tokenization;
+  const t = useLabCopy("tokenization");
   return (
     <div className={cn("min-w-0", className)}>
       {/* A fixed two-column grid, not a wrap. These sit in the stage rail,

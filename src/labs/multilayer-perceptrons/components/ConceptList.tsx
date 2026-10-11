@@ -1,4 +1,4 @@
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 
 /** The loop, in the order it runs. Not a ranking — a sequence. */
 const STEPS = ["forward", "loss", "backprop", "descent"] as const;
@@ -17,7 +17,7 @@ const STEPS = ["forward", "loss", "backprop", "descent"] as const;
  * The wording is carried over unchanged.
  */
 export function ConceptList() {
-  const lab = useLabs()["multilayer-perceptrons"];
+  const lab = useLabCopy("multilayer-perceptrons");
   const t = lab.loop;
 
   return (

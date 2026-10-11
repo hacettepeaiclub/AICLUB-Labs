@@ -1,5 +1,5 @@
 import { Figure } from "@/components/lab";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { Badge } from "@/components/ui";
 import { cn } from "@/lib/cn";
 import type { Algorithm, SearchResult } from "../engine";
@@ -28,7 +28,7 @@ export interface SearchFiguresProps {
  * a stack of unrelated blocks rather than one instrument.
  */
 export function SearchFigures({ metrics, emphasis, showCost = true }: SearchFiguresProps) {
-  const t = useLabs()["graph-search"];
+  const t = useLabCopy("graph-search");
   const solved = metrics.status === "solved";
   return (
     <>

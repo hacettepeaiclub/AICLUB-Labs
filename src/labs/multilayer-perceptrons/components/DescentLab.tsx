@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState, type PointerEvent } from "react";
 import { Figure, LabSlider, Stage, Transport } from "@/components/lab";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { useRafLoop } from "@/hooks";
 import { formatNumber } from "@/lib/format";
 import { clamp } from "@/lib/math";
@@ -37,7 +37,7 @@ const CURVE = Array.from({ length: 161 }, (_, i) => {
 const GLOBAL_MIN_W = -1.11;
 
 export function DescentLab() {
-  const lab = useLabs()["multilayer-perceptrons"];
+  const lab = useLabCopy("multilayer-perceptrons");
   const d = lab.descent;
   const [rateIndex, setRateIndex] = useState(3);
   const [w, setW] = useState(START_W);

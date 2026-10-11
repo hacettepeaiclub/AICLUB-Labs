@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { Figure, Stage } from "@/components/lab";
 import { Button, Segmented } from "@/components/ui";
 import { useLocalControls } from "@/hooks";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { at, correlate, extent, sum, withCell } from "../engine";
 import { PRESET_ORDER, PRESETS, scene, type PresetId } from "../pictures";
 import { formatValue } from "../view";
@@ -32,7 +32,7 @@ const presetOf = (cells: readonly string[]): PresetId | "custom" =>
  * add up to zero.
  */
 export function KernelStage() {
-  const lab = useLabs().convolution;
+  const lab = useLabCopy("convolution");
   const t = lab.kernels;
   const [saved, save] = useLocalControls("acl:convolution:kernel", {
     cells: textOf(PRESETS.vertical),

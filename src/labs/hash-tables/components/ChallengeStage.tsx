@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Figure, Stage } from "@/components/lab";
 import { Button, Segmented } from "@/components/ui";
 import { useLocalControls } from "@/hooks";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import {
   judgeCollide,
@@ -26,7 +26,7 @@ const START_WORDS = ["red", "green", "blue", "cyan", "pink", "gold", "gray", "li
  * with the property passes; solved puzzles persist, as everywhere else.
  */
 export function ChallengeStage() {
-  const lab = useLabs()["hash-tables"];
+  const lab = useLabCopy("hash-tables");
   const t = lab.challenge;
   const [progress, save] = useLocalControls("acl:hash-tables:challenge", {
     solved: [] as string[],

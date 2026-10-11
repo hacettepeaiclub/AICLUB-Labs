@@ -1,11 +1,11 @@
 import { Figure } from "@/components/lab";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import type { Algorithm } from "../engine";
 import type { RunMetrics } from "../useSortRun";
 
 /** Algorithm names in the active language. */
 export function useAlgorithmLabel(): Record<Algorithm, string> {
-  return useLabs().sorting.algorithms;
+  return useLabCopy("sorting").algorithms;
 }
 
 export interface SortFiguresProps {
@@ -26,7 +26,7 @@ export interface SortFiguresProps {
  * already the panel, and a second bordered surface would be a card in a card.
  */
 export function SortFigures({ metrics, emphasis, inversions, compact }: SortFiguresProps) {
-  const t = useLabs().sorting.metrics;
+  const t = useLabCopy("sorting").metrics;
   return (
     <>
       <Figure

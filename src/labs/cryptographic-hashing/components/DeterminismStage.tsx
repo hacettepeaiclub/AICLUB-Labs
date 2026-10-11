@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Figure, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { sha256Hex } from "../hashUtils";
 import { DigestPanel } from "./DigestPanel";
 
@@ -33,7 +33,7 @@ const MAX_RUNS = 5;
  * evidence about the new one.
  */
 export function DeterminismStage({ input }: DeterminismStageProps) {
-  const t = useLabs()["cryptographic-hashing"];
+  const t = useLabCopy("cryptographic-hashing");
   const [runs, setRuns] = useState<string[]>([]);
   const [busy, setBusy] = useState(false);
 

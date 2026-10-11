@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Figure, Stage } from "@/components/lab";
 import { Button, Segmented } from "@/components/ui";
 import { useLocalControls } from "@/hooks";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import { CASES, caseOf, culprit, type CaseId } from "../cases";
 import { gradient, numericGradient, parameterNodes } from "../engine";
@@ -20,7 +20,7 @@ import { formatValue } from "../view";
  * it is not there.
  */
 export function ChallengeStage() {
-  const lab = useLabs().backpropagation;
+  const lab = useLabCopy("backpropagation");
   const t = lab.challenge;
   const [progress, save] = useLocalControls("acl:backpropagation:challenge", {
     solved: [] as string[],

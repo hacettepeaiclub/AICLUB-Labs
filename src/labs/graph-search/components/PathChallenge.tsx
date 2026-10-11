@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useReducedMotion, useLocalControls } from "@/hooks";
 import { Stage, Transport } from "@/components/lab";
 import { Badge, Segmented } from "@/components/ui";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import type { Algorithm, Grid } from "../engine";
 import { CHALLENGES, challengeGrid } from "../mazes";
@@ -26,7 +26,7 @@ const MAZE_IDS = CHALLENGES.map((m) => m.id);
  * solving the same puzzle.
  */
 export function PathChallenge() {
-  const lab = useLabs()["graph-search"];
+  const lab = useLabCopy("graph-search");
   const c = lab.challenge;
   const reduced = useReducedMotion() ?? false;
   const [index, setIndex] = useState(0);

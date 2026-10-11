@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Badge } from "@/components/ui";
 import { Figure, LabSlider, Stage, Transport } from "@/components/lab";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { useLocalStorage } from "@/hooks";
 import { formatPercent } from "@/lib/format";
 import { generateDataset, splitDataset } from "../datasets";
@@ -33,7 +33,7 @@ const beats = (candidate: Attempt, best: Attempt | null): boolean =>
  * decision.
  */
 export function SpiralChallenge() {
-  const lab = useLabs()["multilayer-perceptrons"];
+  const lab = useLabCopy("multilayer-perceptrons");
   const c = lab.challenge;
   const [layers, setLayers] = useState(2);
   const [neurons, setNeurons] = useState(6);

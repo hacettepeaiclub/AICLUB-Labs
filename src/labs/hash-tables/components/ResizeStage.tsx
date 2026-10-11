@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Figure, LabSlider, Stage } from "@/components/lab";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { grow } from "../engine";
 import { formatValue } from "../view";
 
@@ -18,7 +18,7 @@ const H = 50;
  * keeps the next one far away. HashMap's defaults set the thresholds.
  */
 export function ResizeStage() {
-  const t = useLabs()["hash-tables"].resize;
+  const t = useLabCopy("hash-tables").resize;
   const [n, setN] = useState(100);
   const steps = useMemo(() => grow(LIMIT), []);
   const shown = steps.slice(0, n);

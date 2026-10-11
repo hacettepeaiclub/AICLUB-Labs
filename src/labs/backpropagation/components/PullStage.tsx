@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type PointerE
 import { Figure, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
 import { useReducedMotion } from "@/hooks";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import { aimStep, evaluate, gradient, network, NETWORK_PARAMS, type NetworkParam } from "../engine";
 import { formatValue } from "../view";
@@ -83,7 +83,7 @@ const labelAt = (e: { x1: number; y1: number; x2: number; y2: number }, param: N
  * amount.
  */
 export function PullStage() {
-  const lab = useLabs().backpropagation;
+  const lab = useLabCopy("backpropagation");
   const t = lab.pull;
   const reduced = useReducedMotion() ?? false;
   const [params, setParams] = useState<Record<NetworkParam, number>>(START);

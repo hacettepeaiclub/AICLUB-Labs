@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { Figure } from "@/components/lab";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { formatNumber, formatPercent } from "@/lib/format";
 import { useDebouncedValue } from "@/hooks";
 import type { TrainerStats } from "../useTrainer";
@@ -19,7 +19,7 @@ const HEIGHT = 44;
  * happens in the first fraction of the range, and a linear axis hides it.
  */
 const LossCurve = memo(function LossCurve({ history }: { history: readonly number[] }) {
-  const t = useLabs()["multilayer-perceptrons"].stats;
+  const t = useLabCopy("multilayer-perceptrons").stats;
   if (history.length < 2) {
     return <div className="h-11 w-full max-w-60 rounded bg-ink-900" aria-hidden />;
   }
@@ -63,7 +63,7 @@ const LossCurve = memo(function LossCurve({ history }: { history: readonly numbe
  * second bordered surface around four numbers is a card in a card.
  */
 export function TrainingFigures({ stats, history }: TrainingStatsProps) {
-  const t = useLabs()["multilayer-perceptrons"].stats;
+  const t = useLabCopy("multilayer-perceptrons").stats;
   // Stats publish 10x a second; announcing each one would be a running
   // commentary. This settles to whatever the figure is when training pauses
   // or plateaus.

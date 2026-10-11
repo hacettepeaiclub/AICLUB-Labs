@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useReducedMotion } from "@/hooks";
 import { Dial, Figure, LabSlider, Stage, Transport } from "@/components/lab";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { formatNumber } from "@/lib/format";
 import type { OptimizerConfig, Point } from "../engine";
 import {
@@ -56,7 +56,7 @@ export function CompareStage({
   defaultBeta,
   caption,
 }: CompareStageProps) {
-  const g = useLabs()["gradient-descent"];
+  const g = useLabCopy("gradient-descent");
   const reduced = useReducedMotion() ?? false;
 
   const preset = LANDSCAPES[landscapeId];
@@ -234,7 +234,7 @@ function ComparePanel({
   onRelease: () => void;
   highlight?: boolean;
 }) {
-  const g = useLabs()["gradient-descent"];
+  const g = useLabCopy("gradient-descent");
   const preset = LANDSCAPES[landscapeId];
   if (!view) return null;
 

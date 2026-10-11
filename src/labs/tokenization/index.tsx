@@ -1,5 +1,5 @@
 import { LabRecap, LabSection, LabSources } from "@/components/lab";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { CompareStage } from "./components/CompareStage";
 import { GuessStrip } from "./components/GuessStrip";
 import { MergeStage } from "./components/MergeStage";
@@ -18,7 +18,7 @@ import { TrainPanel } from "./components/TrainPanel";
  * has to work both levers deliberately (5).
  */
 export default function TokenizerLab() {
-  const t = useLabs().tokenization;
+  const t = useLabCopy("tokenization");
 
   return (
     <div className="space-y-24 md:space-y-32">

@@ -1,5 +1,5 @@
 import { Fragment, type ReactNode } from "react";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import type { Token } from "../engine";
 
@@ -54,7 +54,7 @@ export interface TokenStripProps {
  * `?`, so the flag survives both colour blindness and a greyscale print.
  */
 export function TokenStrip({ tokens, label, muted, size = "md", className }: TokenStripProps) {
-  const copy = useLabs().tokenization;
+  const copy = useLabCopy("tokenization");
   const summary = tokens.map((token) => spoken(token.text)).join(" / ");
 
   return (

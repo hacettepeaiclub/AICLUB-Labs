@@ -1,4 +1,4 @@
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 
 /** The order they are listed in. Not a ranking — just a stable sequence. */
 const IDS = ["git", "passwords", "https", "blockchain", "signatures"] as const;
@@ -42,7 +42,7 @@ const ICON_SRC: Record<(typeof IDS)[number], string> = {
  * source images visually disciplined into one shape.
  */
 export function UsageList() {
-  const t = useLabs()["cryptographic-hashing"].usage;
+  const t = useLabCopy("cryptographic-hashing").usage;
 
   return (
     <dl className="mx-auto max-w-[44rem] divide-y divide-line/10 border-y border-line/10">

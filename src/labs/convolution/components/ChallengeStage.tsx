@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { Figure, Stage } from "@/components/lab";
 import { Button, Segmented } from "@/components/ui";
 import { useLocalControls } from "@/hooks";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import {
   FLAT_PICTURE,
@@ -35,7 +35,7 @@ const IDENTITY = ["0", "0", "0", "0", "1", "0", "0", "0", "0"];
  * puzzle keeps its own nine cells for the sitting.
  */
 export function ChallengeStage() {
-  const lab = useLabs().convolution;
+  const lab = useLabCopy("convolution");
   const t = lab.challenge;
   const [progress, save] = useLocalControls("acl:convolution:challenge", {
     solved: [] as string[],

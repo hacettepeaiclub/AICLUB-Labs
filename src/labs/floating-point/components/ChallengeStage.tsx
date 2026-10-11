@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { Figure, Stage } from "@/components/lab";
 import { Button, Segmented } from "@/components/ui";
 import { useLocalControls } from "@/hooks";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import {
   absR,
@@ -40,7 +40,7 @@ const HALF = rational(1n, 2n);
  * collection; the inputs are this sitting's.
  */
 export function ChallengeStage() {
-  const lab = useLabs()["floating-point"];
+  const lab = useLabCopy("floating-point");
   const t = lab.challenge;
   const [progress, save] = useLocalControls("acl:floating-point:challenge", {
     solved: [] as string[],

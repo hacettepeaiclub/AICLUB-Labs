@@ -2,7 +2,7 @@ import { useCallback, useRef, useState } from "react";
 import { useReducedMotion } from "@/hooks";
 import { Figure, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import { createRng } from "@/lib/random";
 import {
@@ -42,7 +42,7 @@ type Phase = "picking" | "opened" | "done";
  */
 export function MontyStage() {
   const reduced = useReducedMotion() ?? false;
-  const copy = useLabs().probability;
+  const copy = useLabCopy("probability");
   const m = copy.monty;
 
   const rngRef = useRef(createRng(20260910));

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useReducedMotion } from "@/hooks";
 import { Figure, LabSlider, Stage, Transport } from "@/components/lab";
 import { Badge, Segmented } from "@/components/ui";
-import { useLabs, type LabsCopy } from "@/i18n/labs";
+import { useLabCopy, type LabsCopy } from "@/i18n/labs";
 import { formatNumber } from "@/lib/format";
 import { cn } from "@/lib/cn";
 import type { OptimizerConfig, OptimizerKind } from "../engine";
@@ -50,7 +50,7 @@ const ADAM_MAX_INDEX = 120;
  * which is what it should do, and the tally is not the card's business.
  */
 export function DescentChallenge() {
-  const g = useLabs()["gradient-descent"];
+  const g = useLabCopy("gradient-descent");
   const [solved, setSolved] = useState<ChallengeId[]>([]);
   const [selected, setSelected] = useState<ChallengeId>(challengeOrder[0] ?? "c1");
 
@@ -82,7 +82,7 @@ export function DescentChallenge() {
 }
 
 function ChallengeCard({ spec, onSolved }: { spec: ChallengeSpec; onSolved: () => void }) {
-  const g = useLabs()["gradient-descent"];
+  const g = useLabCopy("gradient-descent");
   const reduced = useReducedMotion() ?? false;
   const defaults = DEFAULTS[spec.id];
   const facts = landscapeFacts(spec.landscape);
@@ -299,7 +299,7 @@ function ChallengeCard({ spec, onSolved }: { spec: ChallengeSpec; onSolved: () =
 
 /** The same step size, on the gentler landscape. Nothing else changes. */
 function TransferPreview({ learningRate, tolerance }: { learningRate: number; tolerance: number }) {
-  const g = useLabs()["gradient-descent"];
+  const g = useLabCopy("gradient-descent");
   const reduced = useReducedMotion() ?? false;
   const run = useDescentRun({
     landscape: TRANSFER_LANDSCAPE,

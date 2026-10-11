@@ -1,5 +1,5 @@
 import { LabRecap, LabSection, LabSources } from "@/components/lab";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { AdamStage } from "./components/AdamStage";
 import { CompareStage } from "./components/CompareStage";
 import { DescentChallenge } from "./components/DescentChallenge";
@@ -24,7 +24,7 @@ import { GradientStage } from "./components/GradientStage";
  * returned.
  */
 export default function GradientDescent() {
-  const g = useLabs()["gradient-descent"];
+  const g = useLabCopy("gradient-descent");
 
   return (
     <div className="space-y-24 md:space-y-32">

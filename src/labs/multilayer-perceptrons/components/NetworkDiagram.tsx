@@ -8,7 +8,7 @@ import {
   type MutableRefObject,
 } from "react";
 import { useCanvas2D, useElementSize, useRepaintFlag } from "@/hooks";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { palette } from "@/design/tokens";
 import { formatNumber } from "@/lib/format";
 import { clamp } from "@/lib/math";
@@ -110,7 +110,7 @@ const rgbString = (triplet: string, alpha: number) => `rgb(${triplet} / ${alpha}
  * operable without one DOM node per connection.
  */
 export function NetworkDiagram({ netRef, sizes, running, revision = 0 }: NetworkDiagramProps) {
-  const d = useLabs()["multilayer-perceptrons"].diagram;
+  const d = useLabCopy("multilayer-perceptrons").diagram;
   const tooltipId = useId();
   const [containerRef, { width }] = useElementSize<HTMLDivElement>();
   const layout = useMemo(() => computeLayout(sizes, width || 640, d.layers), [sizes, width, d.layers]);

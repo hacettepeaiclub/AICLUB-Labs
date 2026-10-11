@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState, type KeyboardEvent } from "react";
 import { Figure, Stage } from "@/components/lab";
 import { useDebouncedValue } from "@/hooks";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import {
   bias,
@@ -59,7 +59,7 @@ const EMPTY: Record<Field, string> = {
  * value below does not take 32 presses of Tab.
  */
 export function BitsStage() {
-  const lab = useLabs()["floating-point"];
+  const lab = useLabCopy("floating-point");
   const t = lab.bits;
   const [bits, setBits] = useState(() => toBits(round(rational(1n, 10n), F32)));
   const [named, setNamed] = useState(false);

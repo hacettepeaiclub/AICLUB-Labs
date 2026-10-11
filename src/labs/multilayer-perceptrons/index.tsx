@@ -1,5 +1,5 @@
 import { LabRecap, LabSection, LabSources } from "@/components/lab";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { Playground } from "./components/Playground";
 import { NeuronLab } from "./components/NeuronLab";
 import { HandXorStage } from "./components/HandXorStage";
@@ -16,7 +16,7 @@ import { SpiralChallenge } from "./components/SpiralChallenge";
  * of the maths, it is the maths.
  */
 export default function NeuralPlayground() {
-  const t = useLabs()["multilayer-perceptrons"];
+  const t = useLabCopy("multilayer-perceptrons");
 
   return (
     <div className="space-y-20 md:space-y-28">

@@ -1,5 +1,5 @@
 import { LabRecap, LabSection, LabSources } from "@/components/lab";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { ChainStage } from "./components/ChainStage";
 import { ChallengeStage } from "./components/ChallengeStage";
 import { CostStage } from "./components/CostStage";
@@ -32,7 +32,7 @@ import { ZoomStage } from "./components/ZoomStage";
  * measured, not modelled, and both sides must reach the same gradient.
  */
 export default function Backpropagation() {
-  const t = useLabs().backpropagation;
+  const t = useLabCopy("backpropagation");
 
   return (
     <div className="space-y-20 md:space-y-28">

@@ -1,5 +1,5 @@
 import { LabRecap, LabSection, LabSources } from "@/components/lab";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { BirthdayStage } from "./components/BirthdayStage";
 import { Setup } from "./components/Framing";
 import { ConditionalStage } from "./components/ConditionalStage";
@@ -36,7 +36,7 @@ import { SimpsonStage } from "./components/SimpsonStage";
  * simulation illustrates a theorem here — it does not establish one.
  */
 export default function ProbabilityLab() {
-  const copy = useLabs().probability;
+  const copy = useLabCopy("probability");
 
   return (
     <div className="space-y-20 md:space-y-28">

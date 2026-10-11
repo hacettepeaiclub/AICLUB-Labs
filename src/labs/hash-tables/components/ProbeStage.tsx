@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Figure, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import { createRng } from "@/lib/random";
 import { clusters, EMPTY, linear, mean, probe } from "../engine";
@@ -25,7 +25,7 @@ const homesFor = (seed: number) => {
  * cost bend upward as the last few slots fill.
  */
 export function ProbeStage() {
-  const lab = useLabs()["hash-tables"];
+  const lab = useLabCopy("hash-tables");
   const t = lab.probe;
   const [seed, setSeed] = useState(3);
   const [count, setCount] = useState(8);

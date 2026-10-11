@@ -10,7 +10,7 @@ import {
 } from "react";
 import { useReducedMotion } from "@/hooks";
 import { Figure, Stage } from "@/components/lab";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import type { Attention } from "../engine";
 import { arcTargets, percent, tokenViews, topTargets, isNearTie } from "../view";
@@ -65,7 +65,7 @@ export function SentenceView({
   swapIndex,
   control,
 }: SentenceViewProps) {
-  const a = useLabs().attention;
+  const a = useLabCopy("attention");
   const reduced = useReducedMotion() ?? false;
   const listId = useId();
 

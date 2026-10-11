@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { Figure, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
 import { useLanguage } from "@/i18n";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { argmax, correlate, grid, stamp, weightCounts } from "../engine";
 import { DISTRACTORS, PLUS, PLUS_DETECTOR } from "../pictures";
 import { formatValue, grouped } from "../view";
@@ -42,7 +42,7 @@ const COUNTS = weightCounts(FIELD, PLUS_DETECTOR.width, 2);
  * and output cell.
  */
 export function ShiftStage() {
-  const t = useLabs().convolution.shift;
+  const t = useLabCopy("convolution").shift;
   const { language } = useLanguage();
   const [pos, setPos] = useState({ x: 6, y: 6 });
   const input = useMemo(() => field(pos.x, pos.y), [pos]);

@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Figure, FigureRow, LabRecap, LabSources } from "@/components/lab";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { formatPercent } from "@/lib/format";
 import { nearestNeighbours } from "../word-embeddings/engine";
 import { VOCABULARY } from "../word-embeddings/vocabulary";
@@ -23,7 +23,7 @@ import { Universe3D } from "./components/Universe3D";
  * direction visible — not a different fit that happens to look nicer.
  */
 export default function EmbeddingUniverse3D() {
-  const copy = useLabs()["word-embeddings-3d"];
+  const copy = useLabCopy("word-embeddings-3d");
   const { space, set, status, error, dimensions } = useSpace();
 
   const anchor = useMemo(() => VOCABULARY.findIndex((w) => w.id === PREDICTION.anchor), []);

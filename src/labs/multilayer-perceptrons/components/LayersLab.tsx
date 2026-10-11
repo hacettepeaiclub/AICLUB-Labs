@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Figure, Stage, Transport } from "@/components/lab";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { formatPercent } from "@/lib/format";
 import { generateDataset, splitDataset } from "../datasets";
 import { useTrainer, type TrainerConfig } from "../useTrainer";
@@ -20,7 +20,7 @@ const BASE: Omit<TrainerConfig, "hidden" | "seed"> = {
  * whole subject, so the lab lets you run it rather than asserting it.
  */
 export function LayersLab() {
-  const lab = useLabs()["multilayer-perceptrons"];
+  const lab = useLabCopy("multilayer-perceptrons");
   const [running, setRunning] = useState(false);
   const [round, setRound] = useState(0);
 

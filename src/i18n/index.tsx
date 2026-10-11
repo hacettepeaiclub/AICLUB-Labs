@@ -42,7 +42,7 @@ const loaded = new Map<Language, Translation>([["en", en]]);
  *
  * This is the *shell* dictionary only — chrome, the home page, category names
  * and the lab titles the grid prints. The teaching copy travels separately and
- * per language too; see `i18n/labs`.
+ * per lab; see `i18n/labs`.
  */
 async function load(language: Language): Promise<Translation> {
   const cached = loaded.get(language);
@@ -56,7 +56,7 @@ async function load(language: Language): Promise<Translation> {
  * Owns the visitor's language.
  *
  * There is no key-string lookup here and no `t("some.dotted.key")`: components
- * read `useLabs().tokenization.guess.heading` straight off a typed object. A missing
+ * read `useLabCopy("tokenization").guess.heading` straight off a typed object. A missing
  * or misspelt key is a compile error rather than a string that renders as its
  * own name, and every interpolated value keeps its type — a count is a number
  * on both sides of the translation.

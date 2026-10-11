@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { LabRecap, LabSection, LabSources } from "@/components/lab";
 import { Segmented } from "@/components/ui";
-import { useLabs } from "@/i18n/labs";
+import { useLabCopy } from "@/i18n/labs";
 import { attend } from "./engine";
 import { LAB_MODEL } from "./lexicon";
 import {
@@ -51,7 +51,7 @@ import { SoftmaxStage } from "./components/SoftmaxStage";
  * are on one screen at every width.
  */
 export default function AttentionPlayground() {
-  const a = useLabs().attention;
+  const a = useLabCopy("attention");
 
   const [variant, setVariant] = useState<Variant>(DEFAULT_VARIANT);
   const [selected, setSelected] = useState(QUERY_INDEX);

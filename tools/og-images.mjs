@@ -79,8 +79,15 @@ async function main() {
 
   // The collection speaks for itself with the club's mark rather than with any
   // one lab's object: the home page is not an exhibit, it is the room.
-  const mark = await sharp(path.resolve("src/assets/aiclub-mark-white.png"))
+  //
+  // Decoded to PNG before it is resized. Handed a WebP, sharp shrinks it inside
+  // libwebp's decoder, whose scaler is softer than the resize it does
+  // everywhere else; and a bare `toBuffer()` would then re-encode the result as
+  // lossy WebP. Both would blur the deer on the card.
+  const markSource = await sharp(path.resolve("src/assets/aiclub-mark-white.webp")).png().toBuffer();
+  const mark = await sharp(markSource)
     .resize({ height: Math.round(HEIGHT * 0.52), fit: "inside" })
+    .png()
     .toBuffer();
   await write(
     "home",
