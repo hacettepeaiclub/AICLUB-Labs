@@ -308,6 +308,28 @@ export function computeBeta(
   );
 }
 
+/**
+ * The inverse of `getCriticalValues`: the α that puts a boundary at `critical`.
+ *
+ * This is what dragging the dashed line means. The line is where the
+ * rejection region begins, and α is the H0 mass beyond it, so moving the line
+ * by hand sets α rather than the other way round. For a two-sided test either
+ * line can be dragged; both stay symmetric about μ0, so only the distance
+ * matters. Unclamped: a line dragged past μ0 really does put more than half of
+ * H0 in the region, and the caller decides how far to let that go.
+ */
+export function alphaForCritical(
+  critical: number,
+  mu0: number,
+  se: number,
+  testType: TestType,
+): number {
+  if (testType === "right") return 1 - normalCdf(critical, mu0, se);
+  if (testType === "left") return normalCdf(critical, mu0, se);
+  const z = Math.abs(critical - mu0) / se;
+  return 2 * (1 - stdNormalCdf(z));
+}
+
 /** `power = 1 - beta`. */
 export const computePower = (beta: number): number => 1 - beta;
 

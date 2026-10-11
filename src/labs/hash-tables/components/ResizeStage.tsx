@@ -1,8 +1,9 @@
 import { useMemo, useState } from "react";
-import { Figure, LabSlider, Stage } from "@/components/lab";
+import { Figure, Stage } from "@/components/lab";
 import { useLabCopy } from "@/i18n/labs";
 import { grow } from "../engine";
 import { formatValue } from "../view";
+import { Scrub } from "./Scrub";
 
 const LIMIT = 200;
 const W = 100;
@@ -53,59 +54,70 @@ export function ResizeStage() {
       caption={t.caption}
       announcement={t.announce(n, capacity, formatValue(average))}
       viewport={
-        <div className="rounded border border-line/10 bg-ink-950 p-4">
-          <svg
-            viewBox={`0 0 ${W} ${H}`}
-            preserveAspectRatio="none"
-            role="img"
-            aria-label={t.chartLabel(n, resizes, formatValue(average))}
-            className="block h-48 w-full"
+        <div className="rounded border border-line/10 bg-ink-950 p-4 pt-6">
+          <Scrub
+            value={n}
+            min={0}
+            max={LIMIT}
+            step={1}
+            floor={1}
+            onChange={setN}
+            label={t.keysLabel}
+            valueText={(v) => t.keysValue(v)}
           >
-            {shown.map((s, i) => (
-              <rect
-                key={i}
-                x={i * bar + bar * 0.15}
-                width={bar * 0.7}
-                y={H - barHeight(s.cost)}
-                height={barHeight(s.cost)}
-                className={s.cost > 1 ? "fill-signal-amber" : "fill-accent/60"}
+            <svg
+              viewBox={`0 0 ${W} ${H}`}
+              preserveAspectRatio="none"
+              role="img"
+              aria-label={t.chartLabel(n, resizes, formatValue(average))}
+              className="block h-48 w-full"
+            >
+              {shown.map((s, i) => (
+                <rect
+                  key={i}
+                  x={i * bar + bar * 0.15}
+                  width={bar * 0.7}
+                  y={H - barHeight(s.cost)}
+                  height={barHeight(s.cost)}
+                  className={s.cost > 1 ? "fill-signal-amber" : "fill-accent/60"}
+                />
+              ))}
+            </svg>
+            <p className="mt-4 text-overline uppercase text-fg-faint">{t.averageTitle}</p>
+            <svg
+              viewBox={`0 0 ${W} ${LINE_H}`}
+              preserveAspectRatio="none"
+              role="img"
+              aria-label={t.averageLabel(formatValue(average))}
+              className="mt-2 block h-20 w-full"
+            >
+              <line
+                x1={0}
+                x2={W}
+                y1={ay(3)}
+                y2={ay(3)}
+                className="stroke-line/30"
+                strokeWidth={0.8}
+                strokeDasharray="3 3"
+                vectorEffect="non-scaling-stroke"
               />
-            ))}
-          </svg>
-          <p className="mt-4 text-overline uppercase text-fg-faint">{t.averageTitle}</p>
-          <svg
-            viewBox={`0 0 ${W} ${LINE_H}`}
-            preserveAspectRatio="none"
-            role="img"
-            aria-label={t.averageLabel(formatValue(average))}
-            className="mt-2 block h-20 w-full"
-          >
-            <line
-              x1={0}
-              x2={W}
-              y1={ay(3)}
-              y2={ay(3)}
-              className="stroke-line/30"
-              strokeWidth={0.8}
-              strokeDasharray="3 3"
-              vectorEffect="non-scaling-stroke"
-            />
-            <line
-              x1={0}
-              x2={W}
-              y1={ay(1)}
-              y2={ay(1)}
-              className="stroke-line/10"
-              strokeWidth={0.5}
-              vectorEffect="non-scaling-stroke"
-            />
-            <polyline
-              points={line}
-              className="fill-none stroke-data"
-              strokeWidth={1.5}
-              vectorEffect="non-scaling-stroke"
-            />
-          </svg>
+              <line
+                x1={0}
+                x2={W}
+                y1={ay(1)}
+                y2={ay(1)}
+                className="stroke-line/10"
+                strokeWidth={0.5}
+                vectorEffect="non-scaling-stroke"
+              />
+              <polyline
+                points={line}
+                className="fill-none stroke-data"
+                strokeWidth={1.5}
+                vectorEffect="non-scaling-stroke"
+              />
+            </svg>
+          </Scrub>
           <div className="mt-1 flex justify-between font-mono text-caption text-fg-faint">
             <span>1</span>
             <span>{t.axis}</span>
@@ -127,7 +139,7 @@ export function ResizeStage() {
           </ul>
         </div>
       }
-      primary={<LabSlider label={t.keysLabel} value={n} min={1} max={LIMIT} onChange={setN} />}
+      primary={<p className="text-center text-body-sm text-fg-muted">{t.dragHint}</p>}
       figures={
         <>
           <Figure

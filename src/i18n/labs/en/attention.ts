@@ -101,32 +101,55 @@ const copy = {
     matchedWith: "Leans on",
     rawMatch: "Match",
     score: "After dividing",
-    axes: "Axes",
     divisor: "Divided by",
     peakWith: "Biggest share",
-    peakWithout: "Without dividing",
-    aboveTen: "Words above a tenth",
   },
 
   scale: {
     kicker: "Why divide at all?",
     title: "Take the divisor away and the shares collapse.",
-    lede: "Dividing by the square root of the number of axes is the one step whose effect you cannot see in the answer: the result looks reasonable either way until you compare it with the alternative. So here is the same row twice: once as this model computes it, and once with the division skipped.",
+    lede: "Dividing by the square root of the number of axes is the one step whose effect you cannot see in the answer: the result looks reasonable either way until you change it. So the divisor is yours: turn it down to no division at all, or past what the model uses, and watch the same matches share out the budget differently.",
     collapse:
       "Skipping it leaves the scores larger, and a softmax over larger numbers is sharper: almost the whole budget goes to one word and the rest round away to nothing. The division is what leaves a distribution there to read at all.",
-    note: "Both columns are computed here by the same softmax, on the same scores. Only the divided one is used anywhere else on this page.",
+    note: "Every bar is recomputed here by the same softmax, on the same matches; the tick on each bar is the share the model actually uses. Only that one is used anywhere else on this page.",
+    legend: "Bars: the share at your divisor. Tick: the model's own share, at ÷√d.",
+    divisorLabel: "Divide the matches by",
+    divisorValue: (value: string) => `÷${value}`,
+    noneMark: "÷1, no division",
+    modelMark: (root: string) => `÷${root}, the model`,
+    atModel: "This is the model's own divisor, √d: the row every other section draws.",
+    sharper:
+      "Less division leaves the matches further apart, and the softmax sharpens: the leader takes more of the budget and everyone else less.",
+    flatter:
+      "More division squeezes the matches together, and the shares flatten towards an even split: the leader stops standing out.",
+    peakNowHint: "at your divisor",
+    peakModelLabel: "The model's",
+    peakModelHint: "biggest share at ÷√d",
+    announce: (divisor: string, peak: string) =>
+      `Divided by ${divisor}, the biggest share is ${peak}.`,
     tableCaption:
-      "For the strongest few words: the match, the match after dividing, and the share each one ends up with in both cases.",
+      "For the strongest few words: the match, the share the model gives it, and its share at the divisor you chose.",
     colRaw: "Match",
-    colScaled: "Divided",
-    colWithout: "Share without",
-    colWith: "Share with",
+    colWith: "Model's share",
+    colNow: "Share at your divisor",
   },
 
   softmax: {
     kicker: "From matches to portions",
     title: "Ten scores, one budget.",
-    lede: "Softmax turns the row of matches into a row of shares that adds up to 100%. Nothing is discarded and nothing is chosen: every word gets a portion, and the portions can only come out of each other.",
+    lede: "Softmax turns the row of matches into a row of shares that adds up to 100%. Nothing is discarded and nothing is chosen: every word gets a portion, and the portions can only come out of each other. The matches are yours now: drag any of them.",
+    caption:
+      "Every share is recomputed from the whole row on every move, by the same softmax the model uses. The scores you drag are what-ifs; the model's own stay marked.",
+    dragHint:
+      "Drag any word's match. Push one up and watch every other share fall, including the ones you never touched.",
+    reset: "Back to the model's matches",
+    legend: "Ticks mark the model's own match and share.",
+    pickAnother: "Ask about another word",
+    scoreHandle: (word: string) => `Match for “${word}”`,
+    scoreValue: (value: string) => `match ${value}`,
+    touchedLabel: "Matches changed",
+    touchedHint: "by your hand",
+    announce: (word: string, share: string) => `The biggest share is now “${word}”, at ${share}.`,
   },
 
   mix: {

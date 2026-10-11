@@ -21,6 +21,11 @@ const copy = {
     h1: "H\u2081",
     alphaTag: (value: string) => `\u03b1 = ${value}`,
     betaTag: (value: string) => `\u03b2 = ${value}`,
+    handleMu1: "H\u2081: drag along the axis",
+    handleMu1Value: (value: string) => `\u03bc\u2081 is ${value}`,
+    handleCritical: "Critical value: drag along the axis",
+    handleCriticalValue: (critical: string, alpha: string) =>
+      `boundary at ${critical}, \u03b1 is ${alpha}`,
     summary: (
       mu0: string,
       mu1: string,
@@ -53,9 +58,8 @@ const copy = {
     question: "What happens when the two hypotheses move apart?",
     caption:
       "Two claims about the same population mean. Neither curve is the data: each is the sampling distribution of X\u0304, how the average of n measurements behaves if that claim is the true one [Casella & Berger, 2nd ed., pp. 213-214, 218].",
-    mu1Label: "\u03bc\u2081: move the alternative",
-    mu1Value: (value: string) => `\u03bc\u2081 is ${value}`,
-    mu1Hint: "Drag it through \u03bc\u2080 and back out the other side.",
+    mu1Hint:
+      "Grab H\u2081 on the plot and drag it: through \u03bc\u2080, and back out the other side.",
     mu0Label: "\u03bc\u2080",
     mu1Figure: "\u03bc\u2081",
     gapLabel: "Gap",
@@ -69,10 +73,9 @@ const copy = {
     title: "One rejection region, and everything inside it counts as evidence.",
     lede: "A test needs a rule: how far from \u03bc\u2080 must X\u0304 land before you reject H\u2080? The values that lead to rejection form the rejection region, which Casella and Berger also call the critical region, and the critical value is where that region begins. The significance level \u03b1 is the probability that X\u0304 falls in the region when \u03bc = \u03bc\u2080 [Casella & Berger, 2nd ed., Def. 8.1.3, p. 374; Defs. 8.3.5-8.3.6, p. 385].",
     caption:
-      "\u03b1 is fixed before any data: it is the probability that X\u0304 falls in the rejection region when \u03bc = \u03bc\u2080, which is why moving the slider moves the critical value rather than the curve. Rejecting H\u2080 when it is true is a Type I error [Casella & Berger, 2nd ed., Sec. 8.3.1, pp. 382-383].",
-    alphaLabel: "\u03b1: Type I error rate you accept",
-    alphaValue: (value: string) => `\u03b1 is ${value}`,
-    alphaHint: "The hatched area in the rejection region is exactly this number.",
+      "\u03b1 is fixed before any data: it is the probability that X\u0304 falls in the rejection region when \u03bc = \u03bc\u2080, which is why setting it moves the critical value rather than the curve. Rejecting H\u2080 when it is true is a Type I error [Casella & Berger, 2nd ed., Sec. 8.3.1, pp. 382-383].",
+    alphaHint:
+      "Drag the dashed line. The hatched area of H\u2080 beyond it is \u03b1, exactly, and the number follows your hand.",
     alphaFigure: "\u03b1",
     criticalLabel: "Critical value",
     criticalHint: "\u03bc\u2080 \u00b1 z\u00b7SE",
@@ -95,8 +98,8 @@ const copy = {
     caption:
       "\u03b2 is the probability of not rejecting H\u2080 when this particular \u03bc\u2081 is the true one, a Type II error, and power is 1 \u2212 \u03b2. Both are properties of the model, not of any sample. Evaluated across every possible \u03bc rather than at a single \u03bc\u2081, power becomes the power function [Casella & Berger, 2nd ed., Def. 8.3.1, p. 383].",
     testTypeLabel: "What H\u2081 claims",
-    mu1Label: "\u03bc\u2081",
-    mu1Value: (value: string) => `\u03bc\u2081 is ${value}`,
+    dragHint:
+      "Both H\u2081 and the dashed line can be dragged. Push the line one way and \u03b2 shrinks while \u03b1 grows; then point the test the wrong way.",
     betaLabel: "\u03b2",
     betaHint: "H\u2081 area outside the region",
     powerLabel: "Power",
@@ -127,6 +130,7 @@ const copy = {
     powerLabel: "Power",
     betaLabel: "\u03b2",
     curveTitle: "Power against sample size",
+    curveHint: "Press or drag along the curve to choose n.",
     eighty: "0.80",
     curveLabel: (from: number, to: number, first: string, last: string) =>
       `Power from n = ${from} to n = ${to}, holding everything else. It starts near ${first} and reaches about ${last}.`,

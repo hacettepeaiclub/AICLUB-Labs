@@ -178,3 +178,24 @@ export const peak = (row: Float64Array): number => {
   for (let i = 0; i < row.length; i++) if (row[i]! > hi) hi = row[i]!;
   return hi;
 };
+
+/**
+ * A row of scores pushed through the engine's own softmax.
+ *
+ * For the stages that let the visitor change the inputs by hand — drag a
+ * score, or turn the divisor — so a counterfactual row is computed by exactly
+ * the arithmetic the model uses, never by a second copy of it.
+ */
+export function softmaxOf(scores: ArrayLike<number>): Float64Array {
+  const out = Float64Array.from(scores);
+  softmaxInPlace(out, 0, out.length);
+  return out;
+}
+
+/** The undivided matches divided by `divisor` instead of √dK, then shared out. */
+export function sharesAt(raw: Float64Array, divisor: number): Float64Array {
+  const out = new Float64Array(raw.length);
+  for (let j = 0; j < raw.length; j++) out[j] = raw[j]! / divisor;
+  softmaxInPlace(out, 0, out.length);
+  return out;
+}

@@ -146,6 +146,9 @@ const copy = {
       dots: "measured",
     },
     loadLabel: "Load factor α",
+    loadValue: (value: string) => `α is ${value}`,
+    dragHint:
+      "Press or drag anywhere on the chart to set the load factor. The rings mark where it crosses each curve.",
     again: "Measure on new tables",
     secondaryLabel: "Measure again",
     figures: {
@@ -177,6 +180,8 @@ const copy = {
       average: "average so far",
     },
     keysLabel: "Keys inserted",
+    keysValue: (n: number) => `${n} keys inserted`,
+    dragHint: "Press or drag along the chart to insert more keys, or take some back.",
     figures: {
       capacity: "Buckets",
       capacityHint: (threshold: number) => `moves again past ${threshold} keys`,
