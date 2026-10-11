@@ -97,7 +97,9 @@ export function NeuronLab() {
             <LineOverlay
               lines={[line]}
               active={0}
-              onChange={(_i, next) => set({ w1: round(next.w1), w2: round(next.w2), bias: round(next.b) })}
+              onChange={(_i, next) =>
+                set({ w1: round(next.w1), w2: round(next.w2), bias: round(next.b) })
+              }
               labels={{ slide: () => n.slideHandle, turn: () => n.turnHandle }}
             />
           </div>
@@ -145,15 +147,15 @@ export function NeuronLab() {
               format={(v) => formatNumber(v, 1)}
             />
           </div>
-        <div className="space-y-2">
-          <Segmented
-            label={n.activation}
-            value={state.activation}
-            options={activationOptions}
-            onChange={(activation) => set({ activation })}
-          />
-          <p className="text-caption text-fg-faint">{note}</p>
-        </div>
+          <div className="space-y-2">
+            <Segmented
+              label={n.activation}
+              value={state.activation}
+              options={activationOptions}
+              onChange={(activation) => set({ activation })}
+            />
+            <p className="text-caption text-fg-faint">{note}</p>
+          </div>
         </div>
       }
     />

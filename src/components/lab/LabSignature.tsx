@@ -674,7 +674,15 @@ function Shape({ slug }: { slug: string }) {
           {L1.map((h, j) => (
             <g key={`f-${j}`}>
               {L0.map((x, i) => (
-                <line key={i} x1={x.x} y1={x.y} x2={h.x} y2={h.y} strokeWidth={0.5} className={inert} />
+                <line
+                  key={i}
+                  x1={x.x}
+                  y1={x.y}
+                  x2={h.x}
+                  y2={h.y}
+                  strokeWidth={0.5}
+                  className={inert}
+                />
               ))}
               <line x1={h.x} y1={h.y} x2={OUT.x} y2={OUT.y} strokeWidth={0.5} className={inert} />
             </g>

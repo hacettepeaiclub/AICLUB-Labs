@@ -32,7 +32,12 @@ export function SiteFooter() {
           </p>
           <p>
             {beforeOrg}
-            <a href="https://www.hacettepeaiclub.com/" target="_blank" rel="noreferrer" className={linkClass}>
+            <a
+              href="https://www.hacettepeaiclub.com/"
+              target="_blank"
+              rel="noreferrer"
+              className={linkClass}
+            >
               {t.shell.parentOrg}
             </a>
             {afterOrg}

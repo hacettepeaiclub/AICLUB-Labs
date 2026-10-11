@@ -234,8 +234,7 @@ export function train(options: TrainingOptions): Training {
   const marks = snapshots ? new Set(checkpointEpisodes(episodes)) : null;
   const kept: Snapshot[] = [];
 
-  const decay =
-    episodes > 1 ? Math.pow(epsilonMin / epsilonStart, 1 / (episodes - 1)) : 1;
+  const decay = episodes > 1 ? Math.pow(epsilonMin / epsilonStart, 1 / (episodes - 1)) : 1;
   let epsilon = epsilonStart;
 
   for (let episode = 1; episode <= episodes; episode++) {

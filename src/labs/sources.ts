@@ -196,7 +196,8 @@ export const SOURCES = {
   vgg: {
     authors: "Simonyan, K., & Zisserman, A.",
     title: "Very Deep Convolutional Networks for Large-Scale Image Recognition",
-    venue: "3rd International Conference on Learning Representations (ICLR), San Diego; arXiv:1409.1556",
+    venue:
+      "3rd International Conference on Learning Representations (ICLR), San Diego; arXiv:1409.1556",
     year: 2015,
     doi: null,
     url: "https://arxiv.org/abs/1409.1556",
@@ -211,7 +212,8 @@ export const SOURCES = {
   },
   hubelWiesel: {
     authors: "Hubel, D. H., & Wiesel, T. N.",
-    title: "Receptive fields, binocular interaction and functional architecture in the cat's visual cortex",
+    title:
+      "Receptive fields, binocular interaction and functional architecture in the cat's visual cortex",
     venue: "The Journal of Physiology, 160(1), 106–154",
     year: 1962,
     doi: "10.1113/jphysiol.1962.sp006837",

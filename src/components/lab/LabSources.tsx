@@ -75,7 +75,12 @@ export function LabSources({ title, entries }: LabSourcesProps) {
               {source.doi === null && source.url !== null && (
                 <p className="mt-0.5 flex items-start gap-1.5">
                   {source.url.includes("arxiv.org") ? (
-                    <ArxivIcon aria-hidden width={13} height={13} className="mt-0.5 shrink-0 text-fg-faint" />
+                    <ArxivIcon
+                      aria-hidden
+                      width={13}
+                      height={13}
+                      className="mt-0.5 shrink-0 text-fg-faint"
+                    />
                   ) : (
                     <LinkSimple size={13} aria-hidden className="mt-0.5 shrink-0 text-fg-faint" />
                   )}

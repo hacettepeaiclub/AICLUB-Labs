@@ -563,7 +563,9 @@ describe("why the query/key space needs six axes", () => {
     let identicalPairs = 0;
     for (let i = 0; i < n; i++) {
       for (let j = i + 1; j < n; j++) {
-        if (Array.from(rowWeights(restricted, i)).every((v, k) => v === rowWeights(restricted, j)[k]))
+        if (
+          Array.from(rowWeights(restricted, i)).every((v, k) => v === rowWeights(restricted, j)[k])
+        )
           identicalPairs += 1;
       }
     }

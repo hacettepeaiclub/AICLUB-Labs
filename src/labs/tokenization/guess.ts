@@ -89,4 +89,3 @@ export function wordCuts(text: string): number[] {
   }
   return cuts;
 }
-

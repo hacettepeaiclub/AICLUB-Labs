@@ -1,12 +1,6 @@
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from "react";
 import { refreshPalette } from "@/design/tokens";
-import {
-  applyTheme,
-  readTheme,
-  writePreference,
-  THEME_KEY,
-  type ThemeName,
-} from "./preferences";
+import { applyTheme, readTheme, writePreference, THEME_KEY, type ThemeName } from "./preferences";
 
 interface ThemeContextValue {
   theme: ThemeName;

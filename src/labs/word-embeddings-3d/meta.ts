@@ -11,8 +11,7 @@ import type { LabMeta } from "../types";
 export const wordEmbeddings3DMeta: LabMeta = {
   slug: "word-embeddings-3d",
   title: "The Map of Meaning, in 3D",
-  description:
-    "An experiment: the same 318 words projected onto three PCA axes instead of two.",
+  description: "An experiment: the same 318 words projected onto three PCA axes instead of two.",
   category: "machine-learning",
   difficulty: "advanced",
   minutes: 3,

@@ -51,7 +51,9 @@ describe("renamed labs", () => {
 
     const before = JSON.stringify([...Array(storage.length).keys()].map((i) => storage.key(i)));
     migrateRenamedSlugs(storage);
-    expect(JSON.stringify([...Array(storage.length).keys()].map((i) => storage.key(i)))).toBe(before);
+    expect(JSON.stringify([...Array(storage.length).keys()].map((i) => storage.key(i)))).toBe(
+      before,
+    );
   });
 
   it("survives storage it cannot read", () => {
