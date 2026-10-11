@@ -293,6 +293,43 @@ export const SOURCES = {
     doi: "10.1109/72.279181",
     url: null,
   },
+  // Cache locality. These four were checked against the publisher's own
+  // listing and at least two independent references, but not against the DOI
+  // registry itself, which could not be reached from where they were added.
+  // Re-read them there when you can.
+  drepper: {
+    authors: "Drepper, U.",
+    title: "What Every Programmer Should Know About Memory",
+    venue: "LWN.net, serialized in nine parts from September 2007",
+    year: 2007,
+    doi: null,
+    url: "https://lwn.net/Articles/250967/",
+  },
+  memoryWall: {
+    authors: "Wulf, W. A., & McKee, S. A.",
+    title: "Hitting the memory wall: implications of the obvious",
+    venue: "ACM SIGARCH Computer Architecture News, 23(1), 20–24",
+    year: 1995,
+    doi: "10.1145/216585.216588",
+    url: null,
+  },
+  blocked: {
+    authors: "Lam, M. S., Rothberg, E. E., & Wolf, M. E.",
+    title: "The cache performance and optimizations of blocked algorithms",
+    venue:
+      "Proceedings of the Fourth International Conference on Architectural Support for Programming Languages and Operating Systems (ASPLOS IV), 63–74",
+    year: 1991,
+    doi: "10.1145/106972.106981",
+    url: null,
+  },
+  locality: {
+    authors: "Denning, P. J.",
+    title: "The locality principle",
+    venue: "Communications of the ACM, 48(7), 19–24",
+    year: 2005,
+    doi: "10.1145/1070838.1070856",
+    url: null,
+  },
   statisticalInference: {
     authors: "Casella, G., & Berger, R. L.",
     title: "Statistical Inference, 2nd edition",

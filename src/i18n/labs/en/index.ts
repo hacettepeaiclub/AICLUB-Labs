@@ -1,5 +1,6 @@
 import attention from "./attention";
 import backpropagation from "./backpropagation";
+import cacheLocality from "./cache-locality";
 import convolution from "./convolution";
 import cryptographicHashing from "./cryptographic-hashing";
 import floatingPoint from "./floating-point";
@@ -40,6 +41,7 @@ export const enLabs = {
   backpropagation: backpropagation,
   convolution: convolution,
   "floating-point": floatingPoint,
+  "cache-locality": cacheLocality,
   "hash-tables": hashTables,
   "cryptographic-hashing": cryptographicHashing,
   "multilayer-perceptrons": multilayerPerceptrons,
