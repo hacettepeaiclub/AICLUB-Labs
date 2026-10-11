@@ -10,6 +10,7 @@ import hashTables from "./hash-tables";
 import hypothesisTesting from "./hypothesis-testing";
 import multilayerPerceptrons from "./multilayer-perceptrons";
 import probability from "./probability";
+import raceCondition from "./race-condition";
 import reinforcementLearning from "./reinforcement-learning";
 import sorting from "./sorting";
 import tokenization from "./tokenization";
@@ -42,6 +43,7 @@ export const enLabs = {
   convolution: convolution,
   "floating-point": floatingPoint,
   "cache-locality": cacheLocality,
+  "race-condition": raceCondition,
   "hash-tables": hashTables,
   "cryptographic-hashing": cryptographicHashing,
   "multilayer-perceptrons": multilayerPerceptrons,

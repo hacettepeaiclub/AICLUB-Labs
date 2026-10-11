@@ -702,6 +702,72 @@ function Shape({ slug }: { slug: string }) {
         </g>
       );
     }
+    case "race-condition": {
+      /*
+       * Two threads as two rails, their three steps each interleaved by the
+       * scheduler: the zigzag is the order it chose. Both final writes run
+       * into one shared cell, the data mark, which is where the two updates
+       * collide and one of them is lost.
+       */
+      const RAILS = [12, 28] as const;
+      const X0 = 8;
+      const DX = 6;
+      const S = 4.2; // step square
+      const steps = Array.from({ length: 6 }, (_, k) => ({
+        x: X0 + k * DX,
+        y: RAILS[k % 2]!,
+      }));
+      const CELL = { x: 52, y: 20, size: 7 };
+      return (
+        <g>
+          {RAILS.map((y) => (
+            <line key={y} x1={4} y1={y} x2={46} y2={y} strokeWidth={0.5} className={inert} />
+          ))}
+          {/* the order the scheduler picked: A, B, A, B, A, B */}
+          <path
+            d={steps.map((p, k) => `${k === 0 ? "M" : "L"} ${p.x} ${p.y}`).join(" ")}
+            fill="none"
+            strokeWidth={0.6}
+            pathLength={1}
+            className={`${structure} sig-draw`}
+            style={at(0)}
+          />
+          {steps.map((p, k) => (
+            <rect
+              key={k}
+              x={p.x - S / 2}
+              y={p.y - S / 2}
+              width={S}
+              height={S}
+              rx={0.7}
+              className="fill-[rgb(var(--c,var(--accent))/0.55)] sig-pop"
+              style={at(0.1 + k * 0.08)}
+            />
+          ))}
+          {/* both writes, into the one counter */}
+          {steps.slice(4).map((p, k) => (
+            <path
+              key={k}
+              d={`M ${p.x + S / 2} ${p.y} L ${CELL.x - 1} ${CELL.y}`}
+              fill="none"
+              strokeWidth={0.6}
+              pathLength={1}
+              className={`${structure} sig-draw`}
+              style={at(0.6 + k * 0.1)}
+            />
+          ))}
+          <rect
+            x={CELL.x - 1}
+            y={CELL.y - CELL.size / 2}
+            width={CELL.size}
+            height={CELL.size}
+            rx={1}
+            className="fill-data sig-pop"
+            style={at(0.85)}
+          />
+        </g>
+      );
+    }
     case "backpropagation": {
       /*
        * A small network, and the error travelling back through it: the

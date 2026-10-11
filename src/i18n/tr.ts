@@ -70,7 +70,7 @@ export const tr: Translation = {
     // İlk sürümdeki başlık geri alındı: hem bilgisayar bilimini hem yapay
     // zekâyı adıyla söylüyor ve yine bir eylemle başlıyor.
     title: "Bilgisayar biliminin ve yapay zekânın arkasındaki fikirlerle oynayın.",
-    lede: "On altı etkileşimli deney: algoritmalar, yapay sinir ağları ve hesaplamanın işleyişi. Uzun anlatım yok, çevirip kaydıracağınız düğmeler var.",
+    lede: "On yedi etkileşimli deney: algoritmalar, yapay sinir ağları ve hesaplamanın işleyişi. Uzun anlatım yok, çevirip kaydıracağınız düğmeler var.",
     cta: "Denemeye başla",
     labs: "Laboratuvarlar",
     labCount: (n: number) => `${n} düzenek`,
@@ -237,6 +237,14 @@ export const tr: Translation = {
         "sekizli satırlar halinde sayılar; birini okumak bütün bloğunu, komşularıyla birlikte getirir.",
       description:
         "Aynı sayıları iki farklı sırayla toplayın, ikisini kendi bilgisayarınızda ölçün ve birinin neden kat kat yavaş olduğunu görün.",
+    },
+    "race-condition": {
+      title: "Kayıp Güncelleme",
+      term: "Yarış durumu",
+      figure:
+        "iki iş parçacığının adımları iç içe; ikisi de yazmadan önce okur ve bir güncelleme kaybolur.",
+      description:
+        "Sayaca birer ekleyen iki iş parçacığının zamanlayıcısı siz olun ve sayacı kendi elinizle 1'de bitirin.",
     },
     "hash-tables": {
       title: "Hesaplanan Adres",

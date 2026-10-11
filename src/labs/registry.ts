@@ -14,6 +14,7 @@ import { hypothesisTestingMeta } from "./hypothesis-testing/meta";
 import { multilayerPerceptronsMeta } from "./multilayer-perceptrons/meta";
 import { graphSearchMeta } from "./graph-search/meta";
 import { probabilityMeta } from "./probability/meta";
+import { raceConditionMeta } from "./race-condition/meta";
 import { reinforcementLearningMeta } from "./reinforcement-learning/meta";
 import { sortingMeta } from "./sorting/meta";
 import { tokenizationMeta } from "./tokenization/meta";
@@ -61,6 +62,7 @@ export const labs: LabEntry[] = [
   entry(gradientDescentMeta, () => import("./gradient-descent")),
   entry(floatingPointMeta, () => import("./floating-point")),
   entry(cacheLocalityMeta, () => import("./cache-locality")),
+  entry(raceConditionMeta, () => import("./race-condition")),
   entry(cryptographicHashingMeta, () => import("./cryptographic-hashing")),
   entry(hashTablesMeta, () => import("./hash-tables")),
   entry(hypothesisTestingMeta, () => import("./hypothesis-testing")),
@@ -89,9 +91,10 @@ export const publishedLabs = (): LabEntry[] =>
  *
  * So the list below is the argument the collection makes, in order: what a
  * function does to input, how a number is actually stored, how memory hands
- * numbers to the processor, how that function becomes an address, what an
+ * numbers to the processor, what goes wrong when two threads share that
+ * memory, how that function becomes an address, what an
  * algorithm costs, how a search explores, how text is cut up — and only then
- * the machine learning that stands on all seven.
+ * the machine learning that stands on all eight.
  *
  * A lab missing from this list is not lost: it sorts to the end, alphabetically,
  * so registering a lab always puts it on the home page and forgetting to name
@@ -101,6 +104,7 @@ const LAB_ORDER = [
   "cryptographic-hashing",
   "floating-point",
   "cache-locality",
+  "race-condition",
   "hash-tables",
   "sorting",
   "graph-search",
