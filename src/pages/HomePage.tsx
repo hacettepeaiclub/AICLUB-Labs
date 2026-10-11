@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/cn";
+import { fromState, track } from "@/app/analytics";
 import { LabSignature } from "@/components/lab/LabSignature";
 import { MarkField } from "@/components/home/MarkField";
 import { useDocumentHead } from "@/app/useDocumentHead";
@@ -102,6 +103,7 @@ export function HomePage() {
   }, [field]);
 
   const pick = (next: LabCategory | null) => {
+    if (next && next !== field) track("filter", { field: next });
     setField((current) => (current === next ? null : next));
     // On a phone the chips and the results are a screen apart: bring the
     // results up so the change is seen.
@@ -160,6 +162,7 @@ export function HomePage() {
               {last && (
                 <Link
                   to={`/labs/${last.meta.slug}`}
+                  state={fromState("continue")}
                   className="rounded py-2 text-body-sm text-fg-muted transition-colors duration-fast hover:text-fg"
                 >
                   <ContinueLabel
@@ -383,6 +386,7 @@ function LabTile({ meta, lit, visited }: { meta: LabMeta; lit: boolean; visited:
   return (
     <Link
       to={`/labs/${meta.slug}`}
+      state={fromState("grid")}
       className={cn("lab-card group flex-row gap-3.5 sm:flex-col sm:gap-0", lit && "is-lit")}
       style={{ "--c": CATEGORY_VAR[meta.category] } as CSSProperties}
       onPointerEnter={warm}

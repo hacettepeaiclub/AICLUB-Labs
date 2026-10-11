@@ -1,5 +1,6 @@
 import { Suspense, useEffect } from "react";
-import { Navigate, useParams } from "react-router-dom";
+import { Navigate, useLocation, useParams } from "react-router-dom";
+import { labSource, track } from "@/app/analytics";
 import { LabShell } from "@/components/lab";
 import { ErrorBoundary } from "@/components/layout/ErrorBoundary";
 import { useLanguage, useT } from "@/i18n";
@@ -27,11 +28,16 @@ export function LabPage() {
   const { slug } = useParams<{ slug: string }>();
   const lab = slug ? findLab(slug) : undefined;
   const { language } = useLanguage();
+  const location = useLocation();
+  const from = labSource(location.state, location.key);
 
-  // Remembered for the home page's "visited" marks and "continue" link.
+  // Remembered for the home page's "visited" marks and "continue" link, and
+  // counted, with how the visitor got here (see app/analytics.ts).
   useEffect(() => {
-    if (lab) recordVisit(lab.meta.slug);
-  }, [lab]);
+    if (!lab) return;
+    recordVisit(lab.meta.slug);
+    track("lab_open", { lab: lab.meta.slug, from });
+  }, [lab, from]);
 
   // An address from before the labs were renamed: go to where it lives now.
   const moved = slug ? RENAMED[slug] : undefined;

@@ -13,6 +13,7 @@ import { LabSignature } from "@/components/lab/LabSignature";
 import { useLanguage, useT } from "@/i18n";
 import { prefetchLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
+import { fromState, track } from "@/app/analytics";
 import { orderedLabs, preloadLab } from "@/labs/registry";
 import { CATEGORY_VAR, type LabMeta } from "@/labs/types";
 import { readVisits } from "@/labs/visits";
@@ -138,10 +139,30 @@ export function LabPalette({
       ?.scrollIntoView({ block: "nearest" });
   }, [open, activeEntry, language]);
 
+  // A search that finds nothing is a lab someone wanted and could not find.
+  // Counted once the typing has settled, and once per query per opening, so a
+  // word typed letter by letter is one event and not six.
+  const reported = useRef(new Set<string>());
+  useEffect(() => {
+    if (!open) {
+      reported.current.clear();
+      return;
+    }
+    const wanted = query.trim().toLowerCase();
+    if (wanted.length < 3 || results.length > 0 || reported.current.has(wanted)) return;
+    const id = window.setTimeout(() => {
+      reported.current.add(wanted);
+      track("finder_empty", { query: wanted.slice(0, 40) });
+    }, 1200);
+    return () => window.clearTimeout(id);
+  }, [open, query, results.length]);
+
   const go = (entry: Entry | undefined) => {
     if (!entry) return;
     onOpenChange(false);
-    if (entry.meta.slug !== current) navigate(`/labs/${entry.meta.slug}`);
+    if (entry.meta.slug !== current) {
+      navigate(`/labs/${entry.meta.slug}`, { state: fromState("finder") });
+    }
   };
 
   const onKeyDown = (event: ReactKeyboardEvent<HTMLInputElement>) => {

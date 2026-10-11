@@ -5,6 +5,7 @@ import type { Language, ThemeName } from "@/app/preferences";
 import logoMark from "@/assets/aiclub-mark-white.webp";
 import { useLanguage, useT } from "@/i18n";
 import { cn } from "@/lib/cn";
+import { track } from "@/app/analytics";
 import { Kbd } from "@/components/ui";
 import { PALETTE_SHORTCUT } from "./paletteShortcut";
 import { PreferenceToggle, type ToggleOption } from "./PreferenceToggle";
@@ -162,13 +163,19 @@ export function SiteHeader({
             label={t.preferences.languageLabel}
             value={language}
             options={languages}
-            onChange={setLanguage}
+            onChange={(to) => {
+              track("language", { to });
+              setLanguage(to);
+            }}
           />
           <PreferenceToggle
             label={t.preferences.themeLabel}
             value={theme}
             options={themes}
-            onChange={setTheme}
+            onChange={(to) => {
+              track("theme", { to });
+              setTheme(to);
+            }}
           />
         </div>
       </div>

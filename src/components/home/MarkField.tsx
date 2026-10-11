@@ -4,6 +4,7 @@ import logoMark from "@/assets/aiclub-mark-white.webp";
 import { palette, subscribePalette } from "@/design/tokens";
 import { useLabMeta, useT } from "@/i18n";
 import { clearCanvas } from "@/lib/canvas";
+import { fromState, track } from "@/app/analytics";
 
 /**
  * The club's mark, assembled from a few thousand points beside the headline.
@@ -187,6 +188,7 @@ export function MarkField() {
     const previous = readBest();
     const isBest = previous === null || seconds < previous;
     if (isBest) writeBest(seconds);
+    track("game_finish", { seconds, best: isBest });
     setResult({ seconds, best: isBest ? seconds : previous, isBest });
     setMode("done");
   });
@@ -565,6 +567,7 @@ export function MarkField() {
         brush.active = true;
       } else if (event.key === "Escape") {
         release();
+        track("game_stop");
         setMode("idle");
       }
     };
@@ -707,11 +710,13 @@ export function MarkField() {
   }, [mode]);
 
   const play = () => {
+    track("game_start");
     setResult(null);
     setMode("playing");
     controls.current?.start();
   };
   const stop = () => {
+    track("game_stop");
     controls.current?.stop();
     setMode("idle");
   };
@@ -760,6 +765,7 @@ export function MarkField() {
                     {lesson && (
                       <Link
                         to="/labs/gradient-descent"
+                        state={fromState("game")}
                         title={lesson.title}
                         className="text-fg-faint underline decoration-line/30 underline-offset-2 transition-colors duration-fast hover:text-fg"
                       >
