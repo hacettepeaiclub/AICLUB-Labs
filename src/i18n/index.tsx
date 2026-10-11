@@ -128,6 +128,9 @@ export const isLabSlug = (slug: string): slug is LabSlug =>
  * category, minutes) and the wording lives here, so the home page can list a
  * lab without loading it and still say its name in Turkish.
  *
+ * `termLang` is "en" when the active language leaves the term in English;
+ * put it on whatever shows the term, as `lang`. See `englishTerms`.
+ *
  * `term` is the subject's own technical name — "Floating point" under the
  * title "0.1 + 0.2". The title says what the lab is about; the term says what
  * a student would search for, and both are shown and both are searchable.
@@ -138,10 +141,12 @@ export const isLabSlug = (slug: string): slug is LabSlug =>
  */
 export function useLabMeta(
   slug: string,
-): { title: string; term: string; description: string } | null {
+): { title: string; term: string; termLang?: "en"; description: string } | null {
   const t = useT();
-  return isLabSlug(slug) ? t.labMeta[slug] : null;
+  if (!isLabSlug(slug)) return null;
+  return { ...t.labMeta[slug], termLang: t.englishTerms.includes(slug) ? "en" : undefined };
 }
 
 export type { Translation } from "./types";
+export { markEnglish } from "./markEnglish";
 export { en } from "./en";

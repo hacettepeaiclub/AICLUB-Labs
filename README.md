@@ -6,7 +6,7 @@ Premium interactive experiences that teach Computer Science and AI — inspired 
 
 ## Stack
 
-React 18 · TypeScript (strict) · Vite · Tailwind CSS · Framer Motion · SVG / Canvas
+React 18 · TypeScript (strict) · Vite · Tailwind CSS · SVG / Canvas
 
 ## Quick start
 

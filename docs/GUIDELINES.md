@@ -31,9 +31,9 @@ Every lab must feel like it belongs to the same product. These rules are how.
 ## Motion
 
 - Import everything from `design/motion.ts` — never inline duration/easing literals.
-- UI chrome: ≤ 450ms, `ease.out` or `spring.snappy`. Entrances: `fadeUp` + `staggerChildren`. Hover states must respond within 150ms.
+- UI chrome: ≤ 450ms, `ease.out`. Chrome motion is CSS — a class in `globals.css` built on those tokens — so the reduced-motion block there clamps it without the component asking. Hover states must respond within 150ms.
 - Simulations run on `useRafLoop` / `useCanvas2D` with framerate-independent math (`damp`, `dt`-scaled steps) — never `setInterval` for animation.
-- **Reduced motion is non-negotiable:** every entrance uses `fadeUp(reduced)`; autoplaying simulations start paused when `useReducedMotion()` is true and offer a manual play button. CSS animations are globally clamped in `globals.css`.
+- **Reduced motion is non-negotiable:** entrances are CSS and clamped globally; autoplaying simulations start paused when `useReducedMotion()` is true and offer a manual play button. CSS animations are globally clamped in `globals.css`.
 - Motion communicates causality: when the user changes a parameter, the thing that changed is what animates.
 
 ## Interaction

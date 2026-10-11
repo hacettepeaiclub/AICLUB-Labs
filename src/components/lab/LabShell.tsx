@@ -54,7 +54,11 @@ export function LabShell({ meta, children }: { meta: LabMeta; children: ReactNod
             <Badge>{t.difficulty[meta.difficulty]}</Badge>
             <Badge>{t.shell.minutes(meta.minutes)}</Badge>
           </div>
-          {term && <p className="mb-2 text-overline uppercase text-fg-faint">{term}</p>}
+          {term && (
+            <p lang={copy?.termLang} className="mb-2 text-overline uppercase text-fg-faint">
+              {term}
+            </p>
+          )}
           <h1 className="text-display-lg text-fg">{title}</h1>
           <p className="mt-4 text-body-lg text-fg-muted">{description}</p>
         </div>

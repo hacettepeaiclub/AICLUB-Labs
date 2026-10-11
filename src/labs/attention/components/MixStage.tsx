@@ -1,4 +1,5 @@
 import { Figure, Stage } from "@/components/lab";
+import { markEnglish } from "@/i18n";
 import { useLabCopy } from "@/i18n/labs";
 import { formatNumber } from "@/lib/format";
 import { outputOf, ranked, valueOf, type Attention } from "../engine";
@@ -90,7 +91,7 @@ export function MixStage({ attention, words, selected, onSelect }: MixStageProps
 
           <div className="rounded border border-line/10 bg-ink-950 p-4">
             <p className="mb-3 text-overline uppercase text-fg-faint">
-              {trace.step6Title(selectedWord)}
+              {markEnglish(trace.step6Title(selectedWord), selectedWord)}
             </p>
             <Bars names={axisNames} values={outValues} scale={outScale} label={a.mix.outputLabel} />
           </div>
