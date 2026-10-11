@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useLabMeta, useLanguage, useT } from "@/i18n";
 import { prefetchLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
+import { fromState, track } from "@/app/analytics";
 import { nextLab, preloadLab } from "@/labs/registry";
 import { CATEGORY_CODE, CATEGORY_VAR } from "@/labs/types";
 import { LabSignature } from "./LabSignature";
@@ -45,6 +46,26 @@ export function LabNext({ slug }: { slug: string }) {
   const copy = useLabMeta(next?.meta.slug ?? "");
   const { language } = useLanguage();
   const cardRef = useRef<HTMLAnchorElement>(null);
+  const navRef = useRef<HTMLElement>(null);
+
+  // This is the bottom of every lab, so seeing it means the lab was read to
+  // the end: counted once per lab visit (see app/analytics.ts). Only after a
+  // screen of scrolling — while the lab is still loading, its spinner is short
+  // enough for this to be in view on arrival, and that is not an ending.
+  useEffect(() => {
+    const nav = navRef.current;
+    if (!nav) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry?.isIntersecting || window.scrollY < window.innerHeight) return;
+        track("lab_end", { lab: slug });
+        observer.disconnect();
+      },
+      { threshold: 0.5 },
+    );
+    observer.observe(nav);
+    return () => observer.disconnect();
+  }, [slug]);
 
   useEffect(() => {
     const card = cardRef.current;
@@ -69,6 +90,7 @@ export function LabNext({ slug }: { slug: string }) {
   if (!next) {
     return (
       <nav
+        ref={navRef}
         aria-labelledby="lab-next-heading"
         className="mt-16 border-t border-line/10 pt-10 md:mt-24"
       >
@@ -97,7 +119,7 @@ export function LabNext({ slug }: { slug: string }) {
     prefetchLabCopy(meta.slug, language);
   };
   return (
-    <nav aria-labelledby="lab-next-heading" className="mt-16 md:mt-24">
+    <nav ref={navRef} aria-labelledby="lab-next-heading" className="mt-16 md:mt-24">
       <p
         id="lab-next-heading"
         className="mb-3 flex items-center gap-3.5 font-mono text-caption uppercase tracking-[0.14em] text-fg-faint
@@ -108,6 +130,7 @@ export function LabNext({ slug }: { slug: string }) {
       <Link
         ref={cardRef}
         to={`/labs/${meta.slug}`}
+        state={fromState("next")}
         className="lab-card group gap-4 sm:flex-row sm:items-stretch"
         style={{ "--c": CATEGORY_VAR[meta.category] } as CSSProperties}
         onPointerEnter={warm}

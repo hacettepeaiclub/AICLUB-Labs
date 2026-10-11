@@ -22,6 +22,17 @@
     <link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/outfit-latin.woff2" as="font" type="font/woff2" crossorigin />
     <title>AI Club Labs</title>
+    <!-- Anonymous, cookieless visit counts (Umami); see src/app/analytics.ts.
+         `data-domains` keeps dev servers, previews and forks from counting,
+         and a browser sending Do Not Track is not counted at all. Deferred,
+         so it never delays the page. -->
+    <script
+      defer
+      src="https://cloud.umami.is/script.js"
+      data-website-id="826cf45b-8285-46af-a46e-e7ae855a90a1"
+      data-domains="labs.hacettepeaiclub.com"
+      data-do-not-track="true"
+    ></script>
     <script>
       // Runs before the stylesheet paints and before React exists, so a visitor
       // who chose light never sees a dark frame first. The markup already says

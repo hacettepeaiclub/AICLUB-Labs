@@ -3,6 +3,7 @@ import {
   lazy,
   useCallback,
   useEffect,
+  useRef,
   useState,
   type ComponentType,
   type ReactNode,
@@ -10,6 +11,7 @@ import {
 import { useLocation } from "react-router-dom";
 import { ErrorBoundary } from "./ErrorBoundary";
 import { isPaletteShortcut } from "./paletteShortcut";
+import { track } from "@/app/analytics";
 import { SiteHeader } from "./SiteHeader";
 import { SiteFooter } from "./SiteFooter";
 import { useT } from "@/i18n";
@@ -74,14 +76,20 @@ export function PageShell({ routeKey, children }: { routeKey: string; children: 
   // work away and the second open is instant.
   const [paletteMounted, setPaletteMounted] = useState(false);
   const openFinder = useCallback(() => {
+    track("finder_open", { via: "button" });
     setPaletteMounted(true);
     setFinding(true);
   }, []);
 
+  // The shortcut toggles, and only an opening is counted; the listener is
+  // bound once, so it reads whether the finder is open from here.
+  const findingRef = useRef(finding);
+  findingRef.current = finding;
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       if (!isPaletteShortcut(event)) return;
       event.preventDefault();
+      if (!findingRef.current) track("finder_open", { via: "key" });
       setPaletteMounted(true);
       setFinding((open) => !open);
     };
