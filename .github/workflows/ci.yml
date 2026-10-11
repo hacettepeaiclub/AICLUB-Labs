@@ -1,0 +1,43 @@
+# The checks every change has to pass: on each pull request, and before every
+# deploy (deploy.yml calls this workflow and waits for it).
+#
+# The same commands a contributor runs locally, in the order that fails
+# fastest. `npm run size` is the bundle budget in tools/bundle-size.mjs; its
+# table also appears on the run's summary page.
+name: CI
+
+on:
+  pull_request:
+  workflow_call:
+
+# A newer push to the same pull request makes the older run pointless.
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Lint
+        run: npm run lint
+      - name: Format
+        run: npm run format:check
+      - name: Test
+        run: npm test
+      - name: Build (with prerender)
+        run: npm run build
+      - name: Bundle size budget
+        run: npm run size

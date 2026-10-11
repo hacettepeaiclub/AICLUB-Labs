@@ -34,9 +34,20 @@ That's it — routing (`/labs/<slug>`), the home grid, and code-splitting all de
 
 ## Scripts
 
-| Command             | Purpose                       |
-| ------------------- | ----------------------------- |
-| `npm run dev`       | Dev server with HMR           |
-| `npm run build`     | Type-check + production build |
-| `npm run typecheck` | Type-check only               |
-| `npm run format`    | Prettier over `src/`          |
+| Command                | Purpose                                                     |
+| ---------------------- | ----------------------------------------------------------- |
+| `npm run dev`          | Dev server with HMR                                         |
+| `npm run build`        | Type-check, production build, and a page per route          |
+| `npm run typecheck`    | Type-check only                                             |
+| `npm run lint`         | ESLint, no warnings allowed                                 |
+| `npm test`             | Vitest, once                                                |
+| `npm run format`       | Prettier over `src/`                                        |
+| `npm run format:check` | Prettier, checking only                                     |
+| `npm run size`         | Gzipped sizes against the budget in `tools/bundle-size.mjs` |
+
+## Checks
+
+Every pull request runs typecheck, lint, format check, tests, the build and
+the size budget ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)). A
+push to `main` runs the same checks and deploys only if they pass. Run them
+locally before pushing; `npm run size` prints the table CI uses.

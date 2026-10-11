@@ -4,8 +4,19 @@ on:
     branches: [main]
 
 jobs:
+  # The server builds the site itself, so a commit that does not build, or
+  # fails its tests, used to be found out there, in production. Nothing reaches
+  # it now until the checks a pull request runs have passed on this commit.
+  checks:
+    uses: ./.github/workflows/ci.yml
+
   deploy:
+    needs: checks
     runs-on: ubuntu-latest
+    # Two quick merges deploy one after the other, never at the same time.
+    concurrency:
+      group: deploy
+      cancel-in-progress: false
     steps:
       - uses: appleboy/ssh-action@v1.0.3
         with:

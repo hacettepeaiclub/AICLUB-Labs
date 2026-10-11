@@ -230,26 +230,28 @@ simulation is the loudest thing on the page, and the chrome never competes.**
 
 ## 7. Engineering commitments
 
-These are measured, not aspirational. Numbers from `npm run build`:
+These are measured, not aspirational, and checked: `npm run size` prints these
+numbers, and CI fails a pull request that pushes any of them past its budget
+(`tools/bundle-size.mjs`). All gzipped. A lab's figure is what opening it
+costs: its own chunks, the shared ones the home page has not already loaded,
+and its prose.
 
-| Chunk                                   | Raw      | Gzipped     |
-| --------------------------------------- | -------- | ----------- |
-| App shell (entry)                       | 93.3 KB  | **33.8 KB** |
-| Vendor: react + router                  | 160.2 KB | 52.3 KB     |
-| Lab prose, English (loaded with a lab)  | 151.5 KB | 52.6 KB     |
-| Lab prose, Turkish (loaded with a lab)  | 152.3 KB | 56.8 KB     |
-| Largest lab: Probability (with physics) | 129.3 KB | **40.3 KB** |
-| 0.1 + 0.2 (floating point)              | 39.5 KB  | 12.7 KB     |
-| Nine Weights (convolution)              | 33.6 KB  | 11.4 KB     |
-| Computed Address (hash tables)          | 26.0 KB  | 8.1 KB      |
-| Who Is to Blame? (backpropagation)      | 33.1 KB  | 11.3 KB     |
-| Smallest lab: Digital Fingerprint       | 13.2 KB  | 4.4 KB      |
+| What                                     | Size        | Budget |
+| ---------------------------------------- | ----------- | ------ |
+| Entry chunk (shell, home page, registry) | **32.9 KB** | 36 KB  |
+| First-load JavaScript (entry + React)    | **85.1 KB** | 90 KB  |
+| Stylesheet                               | 12.3 KB     | 14 KB  |
+| Largest lab: Probability (with physics)  | **59.2 KB** | 150 KB |
+| 0.1 + 0.2 (floating point)               | 27.7 KB     | 150 KB |
+| Nine Weights (convolution)               | 26.4 KB     | 150 KB |
+| Who Is to Blame? (backpropagation)       | 25.8 KB     | 150 KB |
+| Computed Address (hash tables)           | 22.6 KB     | 150 KB |
+| Smallest lab: The Cost of Order          | 13.4 KB     | 150 KB |
 
-First-load JavaScript is about 86 KB gzipped: the shell and React, nothing else.
-No animation library ships at all — page and banner motion is CSS — and the
-teaching prose for every lab is its own chunk, fetched with the first lab
-rather than with the home page. The largest lab sits at about a quarter of the
-150 KB per-lab budget; most are under a tenth.
+No animation library ships at all — page and banner motion is CSS — and each
+lab's teaching prose is its own chunk, fetched alongside that lab rather than
+with the home page. The largest lab costs well under half the 150 KB per-lab
+budget; most cost under a fifth.
 
 Also standing:
 
@@ -293,6 +295,7 @@ category; can it reach its aha in under ten seconds.
 4. Verify the claim, not just the render. If your lab asserts that X beats Y, run
    the engine headlessly and confirm it does. A teaching product that teaches
    something false is worse than no product.
-5. Run `npm run typecheck`, `npm run format`, and `npm run build`, and check your
-   chunk against the budget.
+5. Run `npm run typecheck`, `npm run lint`, `npm run format`, `npm test`,
+   `npm run build` and `npm run size`. CI runs the same on your pull request,
+   and the size check fails it if your lab goes over budget.
 6. Walk the bar in §3 as an actual checklist before calling it done.
