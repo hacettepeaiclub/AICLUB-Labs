@@ -30,6 +30,17 @@ import { readVisits } from "@/labs/visits";
  * in a hero kept short enough that the first row of labs is still in view on a
  * laptop. The headline stays the largest thing on the page.
  *
+ * ## The game in the mark
+ *
+ * One button under the mark scatters it, and the visitor sweeps it back
+ * together against the clock (see `MarkField`). It is the hero's single
+ * lever: it is about the club's own mark rather than any one lab, so it does
+ * not argue for one subject from the position that speaks for all of them,
+ * and it lives inside the mark's box, so on a laptop the hero is no taller
+ * and the first row of labs is still in view. (On a phone the box grew by the
+ * strip its controls need, so the mark above them is the size it was.) Its result names the idea the visitor just
+ * used — a gradient step with momentum — and links to the lab about it.
+ *
  * ## The field filter, and why it reorders instead of dimming
  *
  * Picking a field lights its chip and the frames of its labs in the field's
@@ -66,6 +77,9 @@ export function HomePage() {
   const matching = field ? labs.filter((lab) => lab.meta.category === field) : labs;
   const others = field ? labs.filter((lab) => lab.meta.category !== field) : [];
   const last = labs.find((lab) => lab.meta.slug === visits.last);
+  // Only labs still in the collection: a visit to a renamed or withdrawn one
+  // would otherwise count towards a total it is not part of.
+  const opened = labs.filter((lab) => visits.visited.has(lab.meta.slug)).length;
 
   // A touch screen has no hover, so each drawing plays its gesture once, as
   // its card comes into view. Re-armed whenever the grid is re-ordered,
@@ -161,11 +175,10 @@ export function HomePage() {
               appear: the canvas fills this element rather than the section, so
               nothing is ever drawn over the headline. Above the copy on a
               phone, where it is taller than it used to be — the mark is a
-              still drawing there and has to read as one. */}
-          <div
-            aria-hidden
-            className="relative order-first h-40 md:order-none md:h-[min(46vh,23rem)]"
-          >
+              still drawing there and has to read as one. Not hidden from
+              assistive technology any more: the game's controls live in it,
+              and the canvas hides itself. */}
+          <div className="relative order-first h-56 md:order-none md:h-[min(46vh,23rem)]">
             <MarkField />
           </div>
         </div>
@@ -188,6 +201,12 @@ export function HomePage() {
             {field
               ? copy.showing(matching.length, labs.length, t.category[field])
               : copy.labCount(labs.length)}
+            {!field && opened > 0 && (
+              <>
+                {" · "}
+                <span className="text-data">{copy.opened(opened)}</span>
+              </>
+            )}
           </p>
         </div>
 
@@ -336,9 +355,15 @@ function FieldChip({
 /**
  * One lab, as an instrument on a shelf rather than a marketing card.
  *
- * Title first, then what you will do, then the field. The frame has corner
+ * Title first, then what you will do, then the field, how demanding it is
+ * and how long it takes — the two things someone choosing between fifteen
+ * labs needs and could only find out by opening one. The frame has corner
  * brackets that lengthen and take the field's colour on hover; when the lab's
  * field is picked in the filter, they stay lit.
+ *
+ * On a phone the drawing moves to a narrow column on the left. Stacked above
+ * the text it made every card a screen-third tall and the collection six
+ * thousand pixels long; beside it, the card is as tall as its words.
  */
 function LabTile({ meta, lit, visited }: { meta: LabMeta; lit: boolean; visited: boolean }) {
   const t = useT();
@@ -358,13 +383,13 @@ function LabTile({ meta, lit, visited }: { meta: LabMeta; lit: boolean; visited:
   return (
     <Link
       to={`/labs/${meta.slug}`}
-      className={cn("lab-card group", lit && "is-lit")}
+      className={cn("lab-card group flex-row gap-3.5 sm:flex-col sm:gap-0", lit && "is-lit")}
       style={{ "--c": CATEGORY_VAR[meta.category] } as CSSProperties}
       onPointerEnter={warm}
       onFocus={warm}
       onTouchStart={warm}
     >
-      <div className="relative grid h-36 place-items-center overflow-hidden border border-line/5 bg-ink-950">
+      <div className="relative grid min-h-24 w-24 shrink-0 place-items-center overflow-hidden border border-line/5 bg-ink-950 sm:h-36 sm:w-auto">
         <span className="absolute left-2.5 top-2.5 border border-line/10 bg-ink-950/80 px-1.5 py-1 font-mono text-caption uppercase tracking-[0.12em] text-[rgb(var(--c))]">
           {CATEGORY_CODE[meta.category]}
         </span>
@@ -382,16 +407,16 @@ function LabTile({ meta, lit, visited }: { meta: LabMeta; lit: boolean; visited:
             >
               <path d="M2 6.5l2.5 2.5L10 3.5" />
             </svg>
-            {t.home.visited}
+            <span className="sr-only sm:not-sr-only">{t.home.visited}</span>
           </span>
         )}
         <LabSignature
           slug={meta.slug}
-          className="h-[70%] w-[62%] opacity-80 transition duration-slow ease-out-expo group-hover:scale-105 group-hover:opacity-100"
+          className="h-[56%] w-[80%] opacity-80 transition duration-slow ease-out-expo group-hover:scale-105 group-hover:opacity-100 sm:h-[70%] sm:w-[62%]"
         />
       </div>
 
-      <div className="flex flex-1 flex-col px-1 pb-0.5 pt-4">
+      <div className="flex min-w-0 flex-1 flex-col pb-0.5 sm:px-1 sm:pt-4">
         {copy?.term && (
           <p lang={copy.termLang} className="mb-1 text-overline uppercase text-fg-faint">
             {copy.term}
@@ -415,9 +440,24 @@ function LabTile({ meta, lit, visited }: { meta: LabMeta; lit: boolean; visited:
         <p className="mt-1.5 flex-1 text-body-sm text-fg-muted">
           {copy?.description ?? meta.description}
         </p>
-        <p className="mt-3.5 flex items-center gap-2 text-caption text-fg-muted">
-          <span aria-hidden className="size-1.5 shrink-0 rounded-pill bg-[rgb(var(--c))]" />
-          {t.category[meta.category]}
+        {/* One line on a card; on a phone's narrower text column, the field
+            and then "difficulty · time", rather than a line that breaks
+            wherever it runs out and strands a separator. */}
+        <p className="mt-3 flex flex-col gap-1 text-caption text-fg-muted sm:mt-3.5 sm:flex-row sm:items-center sm:gap-2">
+          <span className="flex items-center gap-2">
+            <span aria-hidden className="size-1.5 shrink-0 rounded-pill bg-[rgb(var(--c))]" />
+            {t.category[meta.category]}
+          </span>
+          <span aria-hidden className="hidden text-fg-faint sm:inline">
+            ·
+          </span>
+          <span>
+            {t.difficulty[meta.difficulty]}
+            <span aria-hidden className="px-2 text-fg-faint">
+              ·
+            </span>
+            {t.shell.minutes(meta.minutes)}
+          </span>
         </p>
       </div>
     </Link>

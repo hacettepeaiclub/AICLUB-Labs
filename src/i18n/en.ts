@@ -14,8 +14,9 @@
 export const en = {
   // ------------------------------------------------------------- chrome ----
   shell: {
-    // The figure beside a lab's title (LabPlate.tsx).
-    labPlate: (n: string, term: string) => `Fig. ${n}. ${term}: the structure this lab is built on.`,
+    // The figure beside a lab's title (LabPlate.tsx): its number, its subject,
+    // and what the drawing shows (`labMeta[slug].figure`).
+    labPlate: (n: string, term: string, figure: string) => `Fig. ${n}. ${term}: ${figure}`,
     skipToContent: "Skip to content",
     brand: "AI Club",
     brandSuffix: "Labs",
@@ -92,12 +93,31 @@ export const en = {
     showing: (shown: number, total: number, field: string) =>
       `${shown} of ${total} labs · ${field}`,
     visited: "Visited",
+    // How many of the collection this browser has opened, beside the count.
+    opened: (n: number) => `${n} opened`,
+    // The game in the hero's mark. Times are seconds, to one decimal.
+    game: {
+      play: "Rebuild the mark",
+      again: "Play again",
+      stop: "Stop",
+      hint: "Sweep the cursor over the points, or use the arrow keys",
+      hintTouch: "Drag a finger over the points",
+      progress: (pct: number) => `${pct}% home`,
+      time: (seconds: number) => `${seconds.toFixed(1)} s`,
+      done: (seconds: number) => `Rebuilt in ${seconds.toFixed(1)} s`,
+      best: (seconds: number) => `best ${seconds.toFixed(1)} s`,
+      newBest: "a new best",
+      // Links to the gradient descent lab.
+      lesson: "That was gradient descent, with momentum",
+    },
   },
 
   notFound: {
     title: "This lab doesn't exist. Yet.",
     body: "Maybe it's still an idea on a whiteboard somewhere.",
     back: "Back to all labs",
+    // Under the empty plate beside it.
+    figure: "Fig. 404. Nothing has been drawn here yet.",
   },
 
   category: {
@@ -181,90 +201,106 @@ export const en = {
     "word-embeddings-3d": {
       title: "The Map of Meaning, in 3D",
       term: "Word embeddings, prototype",
+      figure: "words as points, and the four nearest to one of them.",
       description:
         "An experiment: the same 318 words projected onto three PCA axes instead of two.",
     },
     "word-embeddings": {
       title: "The Map of Meaning",
       term: "Word embeddings",
+      figure: "words as points in a space, and the four nearest to one of them.",
       description:
         "Guess which word a model thinks is closest to APPLE, then find out what the map of those words is hiding.",
     },
     "hypothesis-testing": {
       title: "The Price of Certainty",
       term: "Hypothesis testing",
+      figure: "two sampling distributions, the line that decides between them, and the tail past it.",
       description:
         "Move two hypotheses apart and watch what it costs to be sure: the rejection region, the errors you accept, and the power you get back.",
     },
     "reinforcement-learning": {
       title: "Exactly What You Asked",
       term: "Reinforcement learning",
+      figure: "a room of squares, where the robot starts, and the square it is rewarded for reaching.",
       description: "Decide what one square is worth to a robot, and watch it obey you exactly.",
     },
     attention: {
       title: "Where the Model Looks",
       term: "Attention",
+      figure: "one word looking at the rest of its sentence; the heaviest arc is where it looks most.",
       description: "Pick a word and watch which part of the sentence the model leans on.",
     },
     "gradient-descent": {
       title: "The Size of a Step",
       term: "Gradient descent",
+      figure: "a bowl seen from above, and the path that steps take down to its floor.",
       description:
         "Watch how the shape of a landscape decides how big a step you are allowed to take.",
     },
     backpropagation: {
       title: "Who Is to Blame?",
       term: "Backpropagation",
+      figure: "a small network with the error flowing back from its output, thicker where more of the blame goes.",
       description:
         "Pull a network's output and watch every weight learn its share of the blame, then run the backward pass yourself.",
     },
     convolution: {
       title: "Nine Weights",
       term: "Convolution",
+      figure: "a 3×3 window on a picture, and the cell of the output it is writing.",
       description:
         "Slide nine weights across a picture and watch them find edges, then let gradient descent find the weights for you.",
     },
     "floating-point": {
       title: "0.1 + 0.2",
       term: "Floating point",
+      figure: "a number as sign, exponent and fraction bits, above the ruler of values those bits can hold.",
       description:
         "Type 0.1 and see the number your computer actually keeps, then find out why 0.1 + 0.2 is not 0.3.",
     },
     "hash-tables": {
       title: "Computed Address",
       term: "Hash tables",
+      figure: "a key that lands on a taken slot and steps right to the first free one.",
       description:
         "Turn a word into an address, then fill the table and watch the cost of finding anything explode.",
     },
     "cryptographic-hashing": {
       title: "Digital Fingerprint",
       term: "Cryptographic hashing",
+      figure: "two inputs of different lengths through one function, and two outputs of the same size.",
       description: "Change one character. Watch everything change.",
     },
     "multilayer-perceptrons": {
       title: "Bending the Line",
       term: "Multilayer perceptrons",
+      figure: "three inputs, a hidden layer of four and two outputs, every connection drawn.",
       description: "Draw two kinds of dots. Watch a network learn to tell them apart.",
     },
     "graph-search": {
       title: "The Spreading Search",
       term: "Graph search",
+      figure: "a search spreading through a grid from its start; the bright ring is the frontier.",
       description: "Draw obstacles and watch BFS, Dijkstra, and A* search for a path.",
     },
     probability: {
       title: "Guess, Then Count",
       term: "Probability",
+      figure: "three doors, and the one the host has opened.",
       description:
         "Six experiments that challenge your intuition about chance. Guess first, then find out how wrong the guess was.",
     },
     sorting: {
       title: "The Cost of Order",
       term: "Sorting algorithms",
+      figure: "bars in order from shortest to tallest, the last ones placed lit.",
       description: "Draw the data and watch how much work each algorithm needs to sort it.",
     },
     tokenization: {
       title: "Cheap Words",
       term: "BPE tokenization",
+      figure: "a sentence cut into tokens of different lengths, one of them lit.",
       description:
         "Train a tokenizer by hand and find out why what it read decides what is cheap to say.",
     },

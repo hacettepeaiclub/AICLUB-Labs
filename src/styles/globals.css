@@ -384,6 +384,37 @@
   }
 
   /* ---------------------------------------------------------------- */
+  /* The game in the hero's mark (MarkField.tsx).                      */
+  /*                                                                   */
+  /* Its controls sit in a strip along the bottom of the mark's own    */
+  /* box, which the mark is drawn above. The progress bar is a hairline */
+  /* along that edge, scaled from a variable the game writes each      */
+  /* frame, so a round never re-renders anything.                      */
+  /* ---------------------------------------------------------------- */
+  .mark-hud {
+    @apply z-10 p-1;
+  }
+  .mark-play {
+    @apply inline-flex min-h-11 shrink-0 items-center gap-2 rounded border border-line/15 bg-ink-900/80 px-3.5
+      font-mono text-caption uppercase tracking-[0.14em] text-fg;
+    transition:
+      border-color 0.2s,
+      box-shadow 0.2s;
+  }
+  .mark-play:hover {
+    border-color: rgb(var(--data) / 0.7);
+    box-shadow: 0 0 22px -8px rgb(var(--data) / 0.7);
+  }
+  .mark-bar {
+    position: absolute;
+    inset: auto 0 0;
+    height: 2px;
+    background: rgb(var(--data));
+    transform: scaleX(var(--p, 0));
+    transform-origin: left;
+  }
+
+  /* ---------------------------------------------------------------- */
   /* Header (SiteHeader.tsx).                                          */
   /*                                                                   */
   /* The mark is the logo file used as a mask, so its geometry is the  */

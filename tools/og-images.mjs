@@ -15,11 +15,12 @@
  *
  * ## Why JPEG, and why 1200×630
  *
- * The specimen photographs ship to the browser as WebP, which is correct for
- * the site and wrong here: WhatsApp and LinkedIn — between them most of how
- * this club's links actually travel — still do not reliably render a WebP
- * `og:image`, and a card that falls back to no picture is worse than a heavier
- * file nobody downloads twice. 1200×630 is the size every scraper documents.
+ * The specimen photographs are WebP, from when they were shown on the site;
+ * they now exist only for these cards. WhatsApp and LinkedIn — between them
+ * most of how this club's links actually travel — still do not reliably
+ * render a WebP `og:image`, and a card that falls back to no picture is worse
+ * than a heavier file nobody downloads twice. 1200×630 is the size every
+ * scraper documents.
  *
  * ## Why the object is letterboxed rather than cropped
  *
@@ -67,11 +68,8 @@ async function main() {
     console.log(`${path.relative(process.cwd(), target)}  ${(buffer.length / 1024).toFixed(0)} kB`);
   };
 
-  // The large variants only; the `-sm` companions are for the lab page. The
-  // empty plinth is skipped: a 404 is not a page anyone shares.
-  const files = (await readdir(SPECIMENS)).filter(
-    (name) => name.endsWith(".webp") && !name.endsWith("-sm.webp") && name !== "not-found.webp",
-  );
+  // The site no longer shows these photographs; they are kept for this.
+  const files = (await readdir(SPECIMENS)).filter((name) => name.endsWith(".webp"));
 
   for (const file of files) {
     await write(path.basename(file, ".webp"), await card(path.join(SPECIMENS, file)));
@@ -84,7 +82,9 @@ async function main() {
   // libwebp's decoder, whose scaler is softer than the resize it does
   // everywhere else; and a bare `toBuffer()` would then re-encode the result as
   // lossy WebP. Both would blur the deer on the card.
-  const markSource = await sharp(path.resolve("src/assets/aiclub-mark-white.webp")).png().toBuffer();
+  const markSource = await sharp(path.resolve("src/assets/aiclub-mark-white.webp"))
+    .png()
+    .toBuffer();
   const mark = await sharp(markSource)
     .resize({ height: Math.round(HEIGHT * 0.52), fit: "inside" })
     .png()
