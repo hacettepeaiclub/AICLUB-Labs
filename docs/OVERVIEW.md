@@ -101,16 +101,17 @@ going to reach a hundred labs without collapsing.
 
 ## 4. What's shipped
 
-Fifteen labs across all six categories, listed in the order the home
+Sixteen labs across all six categories, listed in the order the home
 page reads them (`LAB_ORDER` in [`registry.ts`](../src/labs/registry.ts)): what a
-function does to its input, how a number is stored, what an algorithm costs,
-how a search explores, how text is cut up — and then the machine learning that
-stands on all of it.
+function does to its input, how a number is stored, how memory delivers it,
+what an algorithm costs, how a search explores, how text is cut up — and then
+the machine learning that stands on all of it.
 
 | Lab · subject | Category         | Difficulty   | Time   | Shipped    |
 | --------------------------------------------------------- | ---------------- | ------------ | ------ | ---------- |
 | [Digital Fingerprint](../src/labs/cryptographic-hashing/) · cryptographic hashing | Systems          | intro        | 3 min  | 2026-07-22 |
 | [0.1 + 0.2](../src/labs/floating-point/) · floating point | Systems          | intermediate | 8 min  | 2026-10-02 |
+| [The Neighbours Come Free](../src/labs/cache-locality/) · cache locality | Systems          | intermediate | 8 min  | 2026-10-11 |
 | [Computed Address](../src/labs/hash-tables/) · hash tables | Data structures  | intermediate | 8 min  | 2026-10-03 |
 | [The Cost of Order](../src/labs/sorting/) · sorting | Algorithms       | intermediate | 6 min  | 2026-09-06 |
 | [The Spreading Search](../src/labs/graph-search/) · graph search | Algorithms       | intermediate | 6 min  | 2026-09-05 |
@@ -133,7 +134,7 @@ browser tab carries both, and the lab finder matches either. The URL keeps
 the original slug, so no link and no saved progress broke when the titles
 changed.
 
-A sixteenth, `word-embeddings-3d`, is a draft: routable by link, kept off
+A seventeenth, `word-embeddings-3d`, is a draft: routable by link, kept off
 the grid, and marked `noindex`.
 
 Every lab cites what its theory rests on in a Sources section at the bottom of
@@ -281,7 +282,6 @@ category; can it reach its aha in under ten seconds.
 | Candidate            | Category         | The idea it would have to earn                                                                     |
 | -------------------- | ---------------- | -------------------------------------------------------------------------------------------------- |
 | Race Condition       | Systems          | You are the scheduler: step two threads through `counter++` and lose an update with your own hand. |
-| Cache Locality       | Systems          | Same sum, same work, rows against columns — 17× apart when measured, and then on your own CPU.     |
 | Sum of Hinges        | Neural networks  | Fit a curve with ReLUs and see each neuron add exactly one bend.                                   |
 
 ## 9. Contributing a lab

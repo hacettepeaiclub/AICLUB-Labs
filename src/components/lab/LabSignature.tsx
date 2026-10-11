@@ -649,6 +649,59 @@ function Shape({ slug }: { slug: string }) {
         </g>
       );
     }
+    case "cache-locality": {
+      /*
+       * Memory as rows of eight numbers, and one read. The number asked for
+       * is the data mark; the rest of its row lights up after it in the
+       * field colour, because a cache never fetches one number, it fetches
+       * the line around it. The other rows stay inert: nobody asked for them.
+       */
+      const COLS = 8;
+      const ROWS = 4;
+      const P = 6.4; // pitch
+      const C = 5.2; // cell
+      const X0 = (64 - (COLS - 1) * P - C) / 2;
+      const Y0 = (40 - (ROWS - 1) * P - C) / 2;
+      const LINE = 1;
+      const READ = 2;
+      return (
+        <g>
+          {Array.from({ length: ROWS * COLS }, (_, n) => {
+            const r = Math.floor(n / COLS);
+            const c = n % COLS;
+            const inLine = r === LINE;
+            return (
+              <rect
+                key={n}
+                x={X0 + c * P}
+                y={Y0 + r * P}
+                width={C}
+                height={C}
+                rx={0.8}
+                className={
+                  inLine && c === READ
+                    ? "fill-data sig-pop"
+                    : inLine
+                      ? "fill-[rgb(var(--c,var(--accent))/0.55)] sig-pop"
+                      : "fill-fg-faint/25"
+                }
+                style={inLine ? at(c === READ ? 0 : 0.25 + Math.abs(c - READ) * 0.06) : undefined}
+              />
+            );
+          })}
+          {/* the line, bracketed: what one read brings in. The rule runs in
+              the gap under the row, its ends turned up beside it. */}
+          <path
+            d={`M ${X0} ${Y0 + LINE * P + C - 0.4} v 1 H ${X0 + (COLS - 1) * P + C} v -1`}
+            fill="none"
+            strokeWidth={0.6}
+            pathLength={1}
+            className={`${structure} sig-draw`}
+            style={at(0.3)}
+          />
+        </g>
+      );
+    }
     case "backpropagation": {
       /*
        * A small network, and the error travelling back through it: the

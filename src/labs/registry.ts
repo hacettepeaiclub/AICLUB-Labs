@@ -2,6 +2,7 @@ import { lazy } from "react";
 import type { LabEntry, LabLoader, LabMeta } from "./types";
 import { attentionMeta } from "./attention/meta";
 import { backpropagationMeta } from "./backpropagation/meta";
+import { cacheLocalityMeta } from "./cache-locality/meta";
 import { convolutionMeta } from "./convolution/meta";
 import { wordEmbeddings3DMeta } from "./word-embeddings-3d/meta";
 import { wordEmbeddingsMeta } from "./word-embeddings/meta";
@@ -59,6 +60,7 @@ export const labs: LabEntry[] = [
   entry(wordEmbeddings3DMeta, () => import("./word-embeddings-3d")),
   entry(gradientDescentMeta, () => import("./gradient-descent")),
   entry(floatingPointMeta, () => import("./floating-point")),
+  entry(cacheLocalityMeta, () => import("./cache-locality")),
   entry(cryptographicHashingMeta, () => import("./cryptographic-hashing")),
   entry(hashTablesMeta, () => import("./hash-tables")),
   entry(hypothesisTestingMeta, () => import("./hypothesis-testing")),
@@ -86,9 +88,10 @@ export const publishedLabs = (): LabEntry[] =>
  * they still assume a reader who wants machine learning.
  *
  * So the list below is the argument the collection makes, in order: what a
- * function does to input, how a number is actually stored, how that function
- * becomes an address, what an algorithm costs, how a search explores, how
- * text is cut up — and only then the machine learning that stands on all six.
+ * function does to input, how a number is actually stored, how memory hands
+ * numbers to the processor, how that function becomes an address, what an
+ * algorithm costs, how a search explores, how text is cut up — and only then
+ * the machine learning that stands on all seven.
  *
  * A lab missing from this list is not lost: it sorts to the end, alphabetically,
  * so registering a lab always puts it on the home page and forgetting to name
@@ -97,6 +100,7 @@ export const publishedLabs = (): LabEntry[] =>
 const LAB_ORDER = [
   "cryptographic-hashing",
   "floating-point",
+  "cache-locality",
   "hash-tables",
   "sorting",
   "graph-search",

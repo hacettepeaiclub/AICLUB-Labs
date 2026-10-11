@@ -78,7 +78,7 @@ export const en = {
     // Also the original copy, tightened: it now states the size of the
     // collection, because the labs start one screen below and the count is
     // the fastest way to say what this place is.
-    lede: "Fifteen interactive experiments: algorithms, neural networks and the machinery of computation. No lectures, just levers to pull.",
+    lede: "Sixteen interactive experiments: algorithms, neural networks and the machinery of computation. No lectures, just levers to pull.",
     cta: "Start experimenting",
     labs: "Labs",
     labCount: (n: number) => `${n} instruments`,
@@ -266,6 +266,13 @@ export const en = {
         "a number as sign, exponent and fraction bits, above the ruler of values those bits can hold.",
       description:
         "Type 0.1 and see the number your computer actually keeps, then find out why 0.1 + 0.2 is not 0.3.",
+    },
+    "cache-locality": {
+      title: "The Neighbours Come Free",
+      term: "Cache locality",
+      figure: "rows of eight numbers; reading one fetches its whole line, its neighbours with it.",
+      description:
+        "Add up the same numbers in two orders, time both on your own computer, and find out why one is several times slower.",
     },
     "hash-tables": {
       title: "Computed Address",

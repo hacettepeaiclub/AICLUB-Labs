@@ -70,7 +70,7 @@ export const tr: Translation = {
     // İlk sürümdeki başlık geri alındı: hem bilgisayar bilimini hem yapay
     // zekâyı adıyla söylüyor ve yine bir eylemle başlıyor.
     title: "Bilgisayar biliminin ve yapay zekânın arkasındaki fikirlerle oynayın.",
-    lede: "On beş etkileşimli deney: algoritmalar, yapay sinir ağları ve hesaplamanın işleyişi. Uzun anlatım yok, çevirip kaydıracağınız düğmeler var.",
+    lede: "On altı etkileşimli deney: algoritmalar, yapay sinir ağları ve hesaplamanın işleyişi. Uzun anlatım yok, çevirip kaydıracağınız düğmeler var.",
     cta: "Denemeye başla",
     labs: "Laboratuvarlar",
     labCount: (n: number) => `${n} düzenek`,
@@ -229,6 +229,14 @@ export const tr: Translation = {
         "işaret, üs ve kesir bitleri olarak bir sayı; altında bu bitlerin tutabildiği değerlerin cetveli.",
       description:
         "0.1 yazın ve bilgisayarınızın gerçekte sakladığı sayıyı görün, sonra 0.1 + 0.2'nin neden 0.3 etmediğini öğrenin.",
+    },
+    "cache-locality": {
+      title: "Komşular Bedava",
+      term: "Önbellek yerelliği",
+      figure:
+        "sekizli satırlar halinde sayılar; birini okumak bütün bloğunu, komşularıyla birlikte getirir.",
+      description:
+        "Aynı sayıları iki farklı sırayla toplayın, ikisini kendi bilgisayarınızda ölçün ve birinin neden kat kat yavaş olduğunu görün.",
     },
     "hash-tables": {
       title: "Hesaplanan Adres",
