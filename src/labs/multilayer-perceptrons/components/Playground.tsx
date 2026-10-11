@@ -20,7 +20,10 @@ import { TrainingFigures } from "./TrainingStats";
 
 /** Log-spaced, because the interesting range of a learning rate is multiplicative. */
 const LEARNING_RATES = [0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1] as const;
-const L2_RATES = [0, 0.001, 0.003, 0.01, 0.03] as const;
+/** Epochs per frame. Fixed: a speed dial was one more control that taught nothing. */
+const SPEED = 3;
+const MAX_LAYERS = 3;
+const MAX_NEURONS = 8;
 const POINT_COUNT = 200;
 const DEFAULT_DATASET: DatasetKind = "circle";
 
@@ -112,12 +115,10 @@ export function Playground() {
     generateDataset(DEFAULT_DATASET, POINT_COUNT, 0.12, 7),
   );
 
-  const [layers, setLayers] = useState(1);
-  const [neurons, setNeurons] = useState(4);
+  // Neurons per hidden layer, edited on the diagram itself.
+  const [hidden, setHidden] = useState<number[]>([4]);
   const [activation, setActivation] = useState<Activation>("tanh");
   const [rateIndex, setRateIndex] = useState(4);
-  const [l2Index, setL2Index] = useState(0);
-  const [speed, setSpeed] = useState(3);
   const [netSeed, setNetSeed] = useState(11);
 
   // Autoplaying simulations start paused for reduced-motion visitors.
@@ -125,17 +126,16 @@ export function Playground() {
   const [paintClass, setPaintClass] = useState<Label>(1);
 
   const { train, test } = useMemo(() => splitDataset(points, 0.75, 5), [points]);
-  const hidden = useMemo(() => Array.from({ length: layers }, () => neurons), [layers, neurons]);
   const sizes = useMemo(() => [2, ...hidden, 1], [hidden]);
 
   const config = {
     hidden,
     activation,
     learningRate: LEARNING_RATES[rateIndex] ?? 0.03,
-    l2: L2_RATES[l2Index] ?? 0,
+    l2: 0,
     batchSize: 10,
     seed: netSeed,
-    epochsPerFrame: speed,
+    epochsPerFrame: SPEED,
   };
 
   const trainer = useTrainer(train, test, config, running);
@@ -185,6 +185,13 @@ export function Playground() {
   });
   useKeyPress("r", handleRestart);
 
+  const editing = {
+    hidden,
+    onChange: setHidden,
+    maxLayers: MAX_LAYERS,
+    maxNeurons: MAX_NEURONS,
+  };
+
   const hint = lab.datasets[dataset].hint;
   const canvasLabel = lab.canvasLabel(points.length, Math.round(stats.accuracy * 100));
 
@@ -225,6 +232,7 @@ export function Playground() {
                 sizes={sizes}
                 running={running}
                 revision={generation + revision}
+                editing={editing}
               />
             ) : (
               <details className="group rounded border border-line/10">
@@ -247,6 +255,7 @@ export function Playground() {
                     sizes={sizes}
                     running={running}
                     revision={generation + revision}
+                    editing={editing}
                   />
                 </div>
               </details>
@@ -306,21 +315,6 @@ export function Playground() {
             {p.newSample}
           </Button>
 
-          <LabSlider
-            label={p.hiddenLayers}
-            value={layers}
-            min={0}
-            max={3}
-            onChange={setLayers}
-            format={(v) => (v === 0 ? p.noneLabel : String(v))}
-          />
-          <LabSlider
-            label={p.neuronsPerLayer}
-            value={neurons}
-            min={1}
-            max={8}
-            onChange={setNeurons}
-          />
           <Segmented
             label={p.activation}
             value={activation}
@@ -335,16 +329,6 @@ export function Playground() {
             onChange={setRateIndex}
             format={(i) => String(LEARNING_RATES[i] ?? 0.03)}
           />
-          <LabSlider
-            label={p.regularization}
-            value={l2Index}
-            min={0}
-            max={L2_RATES.length - 1}
-            onChange={setL2Index}
-            format={(i) => (i === 0 ? p.offLabel : String(L2_RATES[i]))}
-          />
-          <LabSlider label={p.speed} value={speed} min={1} max={10} onChange={setSpeed} />
-
           <p className="text-caption text-fg-faint">
             <Kbd>Space</Kbd> {lab.keyboardHint.trainPause} <Kbd>R</Kbd> {lab.keyboardHint.restart}
           </p>
