@@ -1,9 +1,8 @@
-import { Figure, LabSlider, Stage } from "@/components/lab";
+import { Figure, Stage } from "@/components/lab";
 import { useLabCopy } from "@/i18n/labs";
-import { BOUNDS, type Params, type Result } from "../engine";
+import type { Params, Result } from "../engine";
 import { coord, criticalList, prob } from "../view";
 import { DistributionPlot } from "./DistributionPlot";
-import { SecondaryControls } from "./SecondaryControls";
 
 export interface AlphaStageProps {
   result: Result;
@@ -16,7 +15,7 @@ export interface AlphaStageProps {
  * H1 is still drawn, because it is still there, but nothing about it is shaded
  * yet: this section is about one curve and one line. The alpha region is the
  * H0 mass beyond the critical value, which is what alpha *is* in this model —
- * so moving the slider moves the line, and the hatched area is the number.
+ * so the visitor drags the line itself, and the hatched area is the number.
  *
  * The critical value is shown as a figure as well as on the plot. It is the
  * quantity the equation actually produces (`mu0 +/- zcrit * SE`), and watching
@@ -34,21 +33,14 @@ export function AlphaStage({ result, onChange }: AlphaStageProps) {
       width="full"
       caption={a.caption}
       announcement={a.announce(prob(alpha), criticals.map(coord).join(", "))}
-      viewport={<DistributionPlot result={result} showBeta={false} />}
-      primary={
-        <div className="space-y-2">
-          <LabSlider
-            label={a.alphaLabel}
-            value={Math.round(alpha * 100)}
-            min={Math.round(BOUNDS.alpha.min * 100)}
-            max={Math.round(BOUNDS.alpha.max * 100)}
-            onChange={(value) => onChange({ alpha: value / 100 })}
-            format={() => alpha.toFixed(2)}
-            valueText={() => a.alphaValue(alpha.toFixed(2))}
-          />
-          <p className="text-caption text-fg-muted">{a.alphaHint}</p>
-        </div>
+      viewport={
+        <DistributionPlot
+          result={result}
+          showBeta={false}
+          handles={{ critical: (value) => onChange({ alpha: value }) }}
+        />
       }
+      primary={<p className="text-body-sm text-fg-muted">{a.alphaHint}</p>}
       readout={
         <div className="rounded border border-line/10 bg-ink-950 p-4">
           <p className="text-body-sm text-fg-muted">
@@ -70,8 +62,6 @@ export function AlphaStage({ result, onChange }: AlphaStageProps) {
           <Figure label={a.seLabel} value={coord(result.se)} hint={a.seHint} />
         </>
       }
-      secondaryLabel={copy.controls.moreLabel}
-      secondary={<SecondaryControls result={result} onChange={onChange} show={["mu0", "sigma"]} />}
     />
   );
 }
