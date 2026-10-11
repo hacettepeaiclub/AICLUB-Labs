@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Figure, LabSlider, Stage } from "@/components/lab";
+import { Figure, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
 import { useLabCopy } from "@/i18n/labs";
 import { createRng } from "@/lib/random";
@@ -13,6 +13,7 @@ import {
   mean,
 } from "../engine";
 import { formatValue } from "../view";
+import { Scrub } from "./Scrub";
 
 const M = 1024;
 const LOADS = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9];
@@ -56,6 +57,10 @@ const path = (f: (a: number) => number) => {
  * tables of 1,024 slots with random homes, so the visitor sees the formulas
  * hold and can re-run them. The scale stops at 10 probes on purpose: the
  * insertion curve leaves it before α = 0.8, and that departure is the point.
+ *
+ * The load factor is set on the chart itself: press or drag anywhere on it
+ * and the marker line follows, with the three costs read off where it
+ * crosses each curve.
  */
 export function CompareStage() {
   const lab = useLabCopy("hash-tables");
@@ -74,70 +79,95 @@ export function CompareStage() {
         formatValue(linearSuccessTheory(alpha)),
       )}
       viewport={
-        <div className="rounded border border-line/10 bg-ink-950 p-4">
-          <svg
-            viewBox={`0 0 ${W} ${H}`}
-            preserveAspectRatio="none"
-            role="img"
-            aria-label={t.chartLabel}
-            className="block h-56 w-full sm:h-64"
+        <div className="rounded border border-line/10 bg-ink-950 p-4 pt-6">
+          <Scrub
+            value={alpha}
+            min={0}
+            max={0.95}
+            step={0.05}
+            floor={0.05}
+            onChange={setAlpha}
+            label={t.loadLabel}
+            valueText={(v) => t.loadValue(formatValue(v))}
           >
-            {[1, 2, 4, 6, 8, 10].map((v) => (
-              <line
-                key={v}
-                x1={0}
-                x2={W}
-                y1={y(v)}
-                y2={y(v)}
-                className="stroke-line/10"
-                strokeWidth={0.5}
+            <svg
+              viewBox={`0 0 ${W} ${H}`}
+              preserveAspectRatio="none"
+              role="img"
+              aria-label={t.chartLabel}
+              className="block h-56 w-full sm:h-64"
+            >
+              {[1, 2, 4, 6, 8, 10].map((v) => (
+                <line
+                  key={v}
+                  x1={0}
+                  x2={W}
+                  y1={y(v)}
+                  y2={y(v)}
+                  className="stroke-line/10"
+                  strokeWidth={0.5}
+                  vectorEffect="non-scaling-stroke"
+                />
+              ))}
+              <polyline
+                points={path(linearInsertTheory)}
+                className="fill-none stroke-signal-amber"
+                strokeWidth={1.2}
+                strokeDasharray="4 3"
                 vectorEffect="non-scaling-stroke"
               />
-            ))}
-            <polyline
-              points={path(linearInsertTheory)}
-              className="fill-none stroke-signal-amber"
-              strokeWidth={1.2}
-              strokeDasharray="4 3"
-              vectorEffect="non-scaling-stroke"
-            />
-            <polyline
-              points={path(linearSuccessTheory)}
-              className="fill-none stroke-signal-amber"
-              strokeWidth={1.6}
-              vectorEffect="non-scaling-stroke"
-            />
-            <polyline
-              points={path(chainSuccessTheory)}
-              className="fill-none stroke-accent"
-              strokeWidth={1.6}
-              vectorEffect="non-scaling-stroke"
-            />
-            <line
-              x1={x(alpha)}
-              x2={x(alpha)}
-              y1={1}
-              y2={H - 1}
-              className="stroke-data"
-              strokeWidth={1}
-              vectorEffect="non-scaling-stroke"
-            />
-          </svg>
-          {/* Dots as HTML over the chart, so they stay round however the chart stretches. */}
-          <div className="relative -mt-56 h-56 sm:-mt-64 sm:h-64" aria-hidden>
-            {dots.map((d) => (
-              <span key={`c${d.alpha}`}>
-                <span
-                  className="absolute h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent ring-2 ring-ink-950"
-                  style={{ left: `${x(d.alpha)}%`, top: `${(y(d.chained) / H) * 100}%` }}
-                />
-                <span
-                  className="absolute h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-signal-amber ring-2 ring-ink-950"
-                  style={{ left: `${x(d.alpha)}%`, top: `${(y(d.linear) / H) * 100}%` }}
-                />
-              </span>
-            ))}
-          </div>
+              <polyline
+                points={path(linearSuccessTheory)}
+                className="fill-none stroke-signal-amber"
+                strokeWidth={1.6}
+                vectorEffect="non-scaling-stroke"
+              />
+              <polyline
+                points={path(chainSuccessTheory)}
+                className="fill-none stroke-accent"
+                strokeWidth={1.6}
+                vectorEffect="non-scaling-stroke"
+              />
+              <line
+                x1={x(alpha)}
+                x2={x(alpha)}
+                y1={1}
+                y2={H - 1}
+                className="stroke-data"
+                strokeWidth={1}
+                vectorEffect="non-scaling-stroke"
+              />
+            </svg>
+            {/* Dots as HTML over the chart, so they stay round however the chart stretches. */}
+            <div className="relative -mt-56 h-56 sm:-mt-64 sm:h-64" aria-hidden>
+              {dots.map((d) => (
+                <span key={`c${d.alpha}`}>
+                  <span
+                    className="absolute h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent ring-2 ring-ink-950"
+                    style={{ left: `${x(d.alpha)}%`, top: `${(y(d.chained) / H) * 100}%` }}
+                  />
+                  <span
+                    className="absolute h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-signal-amber ring-2 ring-ink-950"
+                    style={{ left: `${x(d.alpha)}%`, top: `${(y(d.linear) / H) * 100}%` }}
+                  />
+                </span>
+              ))}
+              {/* Where the marker crosses each curve: the three figures, on the picture. */}
+              {[
+                { v: chainSuccessTheory(alpha), c: "border-accent" },
+                { v: linearSuccessTheory(alpha), c: "border-signal-amber" },
+                { v: linearInsertTheory(alpha), c: "border-signal-amber border-dashed" },
+              ]
+                .filter((m) => m.v <= TOP)
+                .map((m, i) => (
+                  <span
+                    key={i}
+                    className={`absolute h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 bg-ink-950 ${m.c}`}
+                    style={{ left: `${x(alpha)}%`, top: `${(y(m.v) / H) * 100}%` }}
+                  />
+                ))}
+            </div>
+          </Scrub>
           <div className="mt-2 flex justify-between font-mono text-caption text-fg-faint">
             <span>α = 0</span>
             <span>{t.axis}</span>
@@ -163,17 +193,7 @@ export function CompareStage() {
           </ul>
         </div>
       }
-      primary={
-        <LabSlider
-          label={t.loadLabel}
-          value={alpha}
-          min={0.05}
-          max={0.95}
-          step={0.05}
-          onChange={setAlpha}
-          format={(v) => formatValue(v)}
-        />
-      }
+      primary={<p className="text-body-sm text-fg-muted">{t.dragHint}</p>}
       secondary={
         <Button
           variant="secondary"

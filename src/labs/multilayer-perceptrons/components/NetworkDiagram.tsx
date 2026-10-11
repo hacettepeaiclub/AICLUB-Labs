@@ -12,6 +12,7 @@ import { useLabCopy } from "@/i18n/labs";
 import { palette } from "@/design/tokens";
 import { formatNumber } from "@/lib/format";
 import { clamp } from "@/lib/math";
+import { cn } from "@/lib/cn";
 import { maxAbsWeight, type Mlp } from "../engine";
 import { createNeuronFieldPainter, type NeuronNode } from "../paint";
 import { clearCanvas } from "@/lib/canvas";
@@ -36,8 +37,11 @@ export interface NetworkDiagramProps {
   };
 }
 
-/** Room under the neurons for the − and + of each layer. */
+/** Room under the neurons for the − and + of each layer: side by side, or stacked when the columns are narrow. */
 const EDIT_SPACE = 44;
+const EDIT_SPACE_STACKED = 80;
+/** Below this column width, − and + stack rather than sit side by side. */
+const STEPPER_COLUMN = 76;
 
 const NODE_SIZE = 44;
 const ROW_GAP = 16;
@@ -137,6 +141,7 @@ export function NetworkDiagram({
     () => computeLayout(sizes, width || 640, d.layers),
     [sizes, width, d.layers],
   );
+  const stacked = (width || 640) / sizes.length < STEPPER_COLUMN;
   const [hovered, setHovered] = useState<LayoutNode | null>(null);
   const [readout, setReadout] = useState<number | null>(null);
 
@@ -246,7 +251,9 @@ export function NetworkDiagram({
       <div
         ref={containerRef}
         className="relative w-full"
-        style={{ height: layout.height + (editing ? EDIT_SPACE : 0) }}
+        style={{
+          height: layout.height + (editing ? (stacked ? EDIT_SPACE_STACKED : EDIT_SPACE) : 0),
+        }}
       >
         <canvas ref={canvasRef} className="absolute inset-0 size-full" aria-hidden />
         <svg
@@ -318,7 +325,10 @@ export function NetworkDiagram({
                 key={column.label}
                 role="group"
                 aria-label={column.label}
-                className="absolute flex -translate-x-1/2 items-center gap-1"
+                className={cn(
+                  "absolute flex -translate-x-1/2 items-center gap-1",
+                  stacked && "flex-col-reverse",
+                )}
                 style={{ left: column.x, top: layout.height + 6 }}
               >
                 <button

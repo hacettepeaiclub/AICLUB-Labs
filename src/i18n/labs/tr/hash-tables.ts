@@ -148,6 +148,9 @@ const copy: typeof en = {
       dots: "ölçülen",
     },
     loadLabel: "Doluluk oranı α",
+    loadValue: (value: string) => `α = ${value}`,
+    dragHint:
+      "Doluluk oranını ayarlamak için grafiğin herhangi bir yerine basın ya da sürükleyin. Halkalar her eğriyle kesiştiği yeri gösterir.",
     again: "Yeni tablolarda ölç",
     secondaryLabel: "Yeniden ölç",
     figures: {
@@ -179,6 +182,9 @@ const copy: typeof en = {
       average: "şimdiye kadarki ortalama",
     },
     keysLabel: "Eklenen anahtar",
+    keysValue: (n: number) => `${n} anahtar eklendi`,
+    dragHint:
+      "Daha çok anahtar eklemek ya da geri almak için grafik boyunca basın veya sürükleyin.",
     figures: {
       capacity: "Kova",
       capacityHint: (threshold: number) => `${threshold} anahtarı geçince yine taşınır`,
