@@ -103,32 +103,54 @@ const copy: typeof en = {
     matchedWith: "Yaslandığı",
     rawMatch: "Eşleşme",
     score: "Bölme sonrası",
-    axes: "Eksen",
     divisor: "Bölen",
     peakWith: "En büyük pay",
-    peakWithout: "Bölme olmasaydı",
-    aboveTen: "Onda birin üstündeki kelime",
   },
 
   scale: {
     kicker: "Bölme neden var?",
     title: "Böleni kaldırın, paylar çöküyor.",
-    lede: "Eksen sayısının kareköküne bölmek, etkisini sonuca bakarak göremeyeceğiniz tek adımdır: alternatifiyle karşılaştırana kadar sonuç her iki hâlde de makul görünür. Bu yüzden aynı satır burada iki kez var: bir kez bu modelin hesapladığı gibi, bir kez de bölme atlanarak.",
+    lede: "Eksen sayısının kareköküne bölmek, etkisini sonuca bakarak göremeyeceğiniz tek adımdır: onu değiştirene kadar sonuç her iki hâlde de makul görünür. Bu yüzden bölen sizde: onu hiç bölmemeye kadar indirin ya da modelin kullandığının ötesine götürün ve aynı eşleşmelerin bütçeyi nasıl farklı paylaştırdığını izleyin.",
     collapse:
       "Bölme atlanınca puanlar daha büyük kalıyor ve daha büyük sayılar üzerindeki softmax daha keskin oluyor: bütçenin neredeyse tamamı tek bir kelimeye gidiyor, geri kalanı yuvarlanıp yok oluyor. Okunacak bir dağılımı ortada bırakan şey, bu bölme.",
-    note: "Her iki sütun da burada, aynı puanlar üzerinde aynı softmax ile hesaplanıyor. Sayfanın başka hiçbir yerinde bölünmemiş olan kullanılmıyor.",
+    note: "Her çubuk burada, aynı eşleşmeler üzerinde aynı softmax ile yeniden hesaplanıyor; her çubuktaki çentik modelin gerçekte kullandığı pay. Sayfanın başka her yerinde yalnızca o kullanılıyor.",
+    legend: "Çubuk: sizin böleninizdeki pay. Çentik: modelin ÷√d ile verdiği pay.",
+    divisorLabel: "Eşleşmeleri şuna böl",
+    divisorValue: (value: string) => `÷${value}`,
+    noneMark: "÷1, bölme yok",
+    modelMark: (root: string) => `÷${root}, model`,
+    atModel: "Bu, modelin kendi böleni √d: diğer bütün bölümlerin çizdiği satır.",
+    sharper:
+      "Daha az bölme eşleşmeleri birbirinden uzak bırakır ve softmax keskinleşir: önde olan bütçeden daha çok, diğerleri daha az alır.",
+    flatter:
+      "Daha çok bölme eşleşmeleri birbirine yaklaştırır ve paylar eşit dağılıma doğru düzleşir: önde olan öne çıkmaz olur.",
+    peakNowHint: "sizin böleninizde",
+    peakModelLabel: "Modelinki",
+    peakModelHint: "÷√d iken en büyük pay",
+    announce: (divisor: string, peak: string) => `${divisor} ile bölününce en büyük pay ${peak}.`,
     tableCaption:
-      "En güçlü birkaç kelime için: eşleşme, bölme sonrası eşleşme ve her iki durumda payına düşen oran.",
+      "En güçlü birkaç kelime için: eşleşme, modelin verdiği pay ve seçtiğiniz bölendeki payı.",
     colRaw: "Eşleşme",
-    colScaled: "Bölünmüş",
-    colWithout: "Bölmesiz pay",
-    colWith: "Bölmeli pay",
+    colWith: "Modelin payı",
+    colNow: "Sizin bölendeki pay",
   },
 
   softmax: {
     kicker: "Eşleşmelerden paylara",
     title: "On puan, tek bir bütçe.",
-    lede: "Softmax, eşleşme satırını toplamı %100 olan bir pay satırına çevirir. Hiçbir şey atılmaz ve hiçbir şey seçilmez: her kelime bir pay alır ve paylar ancak birbirinden çıkabilir.",
+    lede: "Softmax, eşleşme satırını toplamı %100 olan bir pay satırına çevirir. Hiçbir şey atılmaz ve hiçbir şey seçilmez: her kelime bir pay alır ve paylar ancak birbirinden çıkabilir. Eşleşmeler artık sizde: herhangi birini sürükleyin.",
+    caption:
+      "Her pay, her harekette bütün satırdan, modelin kullandığı softmax ile yeniden hesaplanıyor. Sürüklediğiniz puanlar 'ya şöyle olsaydı'; modelinkiler işaretli duruyor.",
+    dragHint:
+      "Herhangi bir kelimenin eşleşmesini sürükleyin. Birini yükseltin ve dokunmadıklarınız da dahil diğer bütün payların düştüğünü izleyin.",
+    reset: "Modelin eşleşmelerine dön",
+    legend: "Çentikler modelin kendi eşleşmesini ve payını gösterir.",
+    pickAnother: "Başka bir kelimeyi sorun",
+    scoreHandle: (word: string) => `“${word}” için eşleşme`,
+    scoreValue: (value: string) => `eşleşme ${value}`,
+    touchedLabel: "Değişen eşleşme",
+    touchedHint: "sizin elinizle",
+    announce: (word: string, share: string) => `En büyük pay artık “${word}”, ${share}.`,
   },
 
   mix: {
