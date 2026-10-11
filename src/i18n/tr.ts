@@ -41,6 +41,8 @@ export const tr: Translation = {
     developedBy: "{org} adına Metehan Özcan tarafından geliştirildi",
     feedback: "Bir sorun ya da öneriniz mi var?",
     sourceLink: "Kaynak kodu GitHub'da",
+    privacy: "Ziyaretler anonim olarak sayılır: çerez yok, kişisel veri yok.",
+    privacyLink: "Neler sayılıyor",
     minutes: (n: number) => `${n} dk`,
     loadingLab: "Laboratuvar yükleniyor",
     openLab: "Laboratuvarı aç →",
