@@ -65,7 +65,7 @@ export function LabShell({ meta, children }: { meta: LabMeta; children: ReactNod
         <LabPlate
           slug={meta.slug}
           colour={CATEGORY_VAR[meta.category]}
-          caption={t.shell.labPlate(plateNumber(meta.slug), term ?? title)}
+          caption={t.shell.labPlate(plateNumber(meta.slug), term ?? title, copy?.figure ?? "")}
           className="hidden md:block"
         />
       </header>

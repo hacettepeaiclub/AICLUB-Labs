@@ -141,7 +141,7 @@ export const isLabSlug = (slug: string): slug is LabSlug =>
  */
 export function useLabMeta(
   slug: string,
-): { title: string; term: string; termLang?: "en"; description: string } | null {
+): { title: string; term: string; termLang?: "en"; figure: string; description: string } | null {
   const t = useT();
   if (!isLabSlug(slug)) return null;
   return { ...t.labMeta[slug], termLang: t.englishTerms.includes(slug) ? "en" : undefined };
