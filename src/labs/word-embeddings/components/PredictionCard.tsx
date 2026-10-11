@@ -111,7 +111,9 @@ export function PredictionCard({
           <p className="text-fg-muted">
             {copy.chose(picked.item.en, picked.rank, picked.total, formatScore(picked.similarity))}
           </p>
-          <p className="text-fg">{copy.nearest(nearest.item.en, formatScore(nearest.similarity))}</p>
+          <p className="text-fg">
+            {copy.nearest(nearest.item.en, formatScore(nearest.similarity))}
+          </p>
           <p className="pt-2 text-fg-faint">{copy.because}</p>
         </div>
       )}

@@ -32,7 +32,14 @@ const VISIBLE = 0.97;
  *
  * Coordinates are the model's: the square [−1, 1]² with y up.
  */
-export function LineOverlay({ lines, onChange, active, onActivate, labels, className }: LineOverlayProps) {
+export function LineOverlay({
+  lines,
+  onChange,
+  active,
+  onActivate,
+  labels,
+  className,
+}: LineOverlayProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const toModel = (fx: number, fy: number): Xy => ({ x: fx * 2 - 1, y: 1 - fy * 2 });
 
@@ -117,7 +124,12 @@ function LineGlyph({
 
   const nudgeSlide = (event: KeyboardEvent<SVGGElement>) => {
     const n = Math.hypot(line.w1, line.w2) || 1;
-    const d = event.key === "ArrowUp" || event.key === "ArrowRight" ? 0.05 : event.key === "ArrowDown" || event.key === "ArrowLeft" ? -0.05 : 0;
+    const d =
+      event.key === "ArrowUp" || event.key === "ArrowRight"
+        ? 0.05
+        : event.key === "ArrowDown" || event.key === "ArrowLeft"
+          ? -0.05
+          : 0;
     if (!d) return;
     event.preventDefault();
     // Along the normal, by d in the square's units.
@@ -150,7 +162,15 @@ function LineGlyph({
       )}
       {visible && (
         <>
-          <line x1={f.x} y1={f.y} x2={t.x} y2={t.y} className="stroke-data" strokeWidth={2} vectorEffect="non-scaling-stroke" />
+          <line
+            x1={f.x}
+            y1={f.y}
+            x2={t.x}
+            y2={t.y}
+            className="stroke-data"
+            strokeWidth={2}
+            vectorEffect="non-scaling-stroke"
+          />
           {/* the turn handle: the arrow's tip */}
           <g
             role="slider"
@@ -162,7 +182,14 @@ function LineGlyph({
             className="cursor-grab outline-none [&:focus-visible>circle:last-child]:stroke-accent"
           >
             <circle cx={t.x} cy={t.y} r={0.11} className="fill-transparent" />
-            <circle cx={t.x} cy={t.y} r={0.045} className="fill-data stroke-ink-950" strokeWidth={2} vectorEffect="non-scaling-stroke" />
+            <circle
+              cx={t.x}
+              cy={t.y}
+              r={0.045}
+              className="fill-data stroke-ink-950"
+              strokeWidth={2}
+              vectorEffect="non-scaling-stroke"
+            />
           </g>
           {/* the slide handle: the line's foot */}
           <g
@@ -175,7 +202,14 @@ function LineGlyph({
             className="cursor-move outline-none [&:focus-visible>circle:last-child]:stroke-accent"
           >
             <circle cx={f.x} cy={f.y} r={0.11} className="fill-transparent" />
-            <circle cx={f.x} cy={f.y} r={0.04} className="fill-ink-950 stroke-fg" strokeWidth={2} vectorEffect="non-scaling-stroke" />
+            <circle
+              cx={f.x}
+              cy={f.y}
+              r={0.04}
+              className="fill-ink-950 stroke-fg"
+              strokeWidth={2}
+              vectorEffect="non-scaling-stroke"
+            />
           </g>
         </>
       )}

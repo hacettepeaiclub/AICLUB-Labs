@@ -276,9 +276,7 @@ export class GaltonWorld {
       ball.steps += 1;
       const { position, velocity } = ball.body;
       const settled =
-        position.y > binTop &&
-        Math.abs(velocity.y) < 0.12 &&
-        Math.abs(velocity.x) < 0.12;
+        position.y > binTop && Math.abs(velocity.y) < 0.12 && Math.abs(velocity.x) < 0.12;
       const escaped = position.y > floorY;
       const timedOut = ball.steps > PHYSICS.maxSteps;
 

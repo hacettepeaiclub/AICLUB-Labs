@@ -37,10 +37,7 @@ export function SortChallenge() {
   const [edits, setEdits] = useState(0);
   const [attempt, setAttempt] = useState(0);
 
-  const [progress, saveProgress] = useLocalControls<ChallengeProgress>(
-    "acl:sorting:challenge",
-    {},
-  );
+  const [progress, saveProgress] = useLocalControls<ChallengeProgress>("acl:sorting:challenge", {});
 
   const list = spec.algorithm ? [spec.algorithm] : [algorithm];
   const run = useSortRun({

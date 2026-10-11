@@ -16,7 +16,11 @@
  * one pass; ı has no decomposition and is mapped by hand.
  */
 export function fold(text: string): string {
-  return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/ı/g, "i").toLowerCase();
+  return text
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/ı/g, "i")
+    .toLowerCase();
 }
 
 export interface Searchable {

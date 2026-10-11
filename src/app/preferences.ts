@@ -20,8 +20,7 @@ export const DEFAULT_LANGUAGE: Language = "en";
 export const isTheme = (value: unknown): value is ThemeName =>
   value === "dark" || value === "light";
 
-export const isLanguage = (value: unknown): value is Language =>
-  value === "en" || value === "tr";
+export const isLanguage = (value: unknown): value is Language => value === "en" || value === "tr";
 
 /**
  * Read a stored preference.

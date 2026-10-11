@@ -58,9 +58,7 @@ describe("registry", () => {
     // matters is that this sits past the labs it assumes.
     const order = orderedLabs().map((lab) => lab.meta.slug);
     expect(order).toContain("hypothesis-testing");
-    expect(order.indexOf("hypothesis-testing")).toBeGreaterThan(
-      order.indexOf("word-embeddings"),
-    );
+    expect(order.indexOf("hypothesis-testing")).toBeGreaterThan(order.indexOf("word-embeddings"));
     expect(publishedLabs().map((lab) => lab.meta.slug)).toContain("hypothesis-testing");
   });
 

@@ -64,7 +64,6 @@ describe("scoring a guess", () => {
     expect(score.matched.length + score.imagined.length).toBe(score.guessed);
     expect(score.matched.length + score.missed.length).toBe(score.actual.length);
   });
-
 });
 
 describe("the sentence section 1 uses", () => {

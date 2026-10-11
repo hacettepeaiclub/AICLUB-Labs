@@ -141,9 +141,21 @@ export function HandXorStage() {
       }
       figures={
         <>
-          <Figure label={t.figures.accuracy} value={formatPercent(verdict.accuracy, 0)} tone="accent" />
-          <Figure label={t.figures.best} value={best ? formatPercent(best, 0) : "—"} hint={t.figures.bestHint} />
-          <Figure label={t.figures.ceiling} value={formatPercent(ceiling, 0)} hint={t.figures.ceilingHint} />
+          <Figure
+            label={t.figures.accuracy}
+            value={formatPercent(verdict.accuracy, 0)}
+            tone="accent"
+          />
+          <Figure
+            label={t.figures.best}
+            value={best ? formatPercent(best, 0) : "—"}
+            hint={t.figures.bestHint}
+          />
+          <Figure
+            label={t.figures.ceiling}
+            value={formatPercent(ceiling, 0)}
+            hint={t.figures.ceilingHint}
+          />
         </>
       }
     />

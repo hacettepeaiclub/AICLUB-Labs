@@ -36,9 +36,7 @@ const known = new Set([
 ]);
 
 describe("every colour utility in the signatures resolves", () => {
-  const used = [
-    ...source.matchAll(/\b(?:fill|stroke)-([a-z][a-zA-Z0-9]*)(?:-\d+)?(?:\/(\d+))?/g),
-  ];
+  const used = [...source.matchAll(/\b(?:fill|stroke)-([a-z][a-zA-Z0-9]*)(?:-\d+)?(?:\/(\d+))?/g)];
 
   it("names a colour token that exists", () => {
     expect(used.length).toBeGreaterThan(10);
@@ -100,9 +98,11 @@ describe("the drawings say what their labs say", () => {
     for (let i = 1; i < steps.length; i++) {
       const [px, py] = steps[i - 1]!;
       const [qx, qy] = steps[i]!;
-      expect({ from: steps[i - 1], to: steps[i], orthogonal: px === qx || py === qy }).toMatchObject(
-        { orthogonal: true },
-      );
+      expect({
+        from: steps[i - 1],
+        to: steps[i],
+        orthogonal: px === qx || py === qy,
+      }).toMatchObject({ orthogonal: true });
     }
     // Gradient descent owns the contour-and-descent picture. Nothing here.
     expect(pathfinding).not.toMatch(/ellipse|Q /);

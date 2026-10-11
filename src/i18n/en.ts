@@ -215,20 +215,23 @@ export const en = {
     "hypothesis-testing": {
       title: "The Price of Certainty",
       term: "Hypothesis testing",
-      figure: "two sampling distributions, the line that decides between them, and the tail past it.",
+      figure:
+        "two sampling distributions, the line that decides between them, and the tail past it.",
       description:
         "Move two hypotheses apart and watch what it costs to be sure: the rejection region, the errors you accept, and the power you get back.",
     },
     "reinforcement-learning": {
       title: "Exactly What You Asked",
       term: "Reinforcement learning",
-      figure: "a room of squares, where the robot starts, and the square it is rewarded for reaching.",
+      figure:
+        "a room of squares, where the robot starts, and the square it is rewarded for reaching.",
       description: "Decide what one square is worth to a robot, and watch it obey you exactly.",
     },
     attention: {
       title: "Where the Model Looks",
       term: "Attention",
-      figure: "one word looking at the rest of its sentence; the heaviest arc is where it looks most.",
+      figure:
+        "one word looking at the rest of its sentence; the heaviest arc is where it looks most.",
       description: "Pick a word and watch which part of the sentence the model leans on.",
     },
     "gradient-descent": {
@@ -241,7 +244,8 @@ export const en = {
     backpropagation: {
       title: "Who Is to Blame?",
       term: "Backpropagation",
-      figure: "a small network with the error flowing back from its output, thicker where more of the blame goes.",
+      figure:
+        "a small network with the error flowing back from its output, thicker where more of the blame goes.",
       description:
         "Pull a network's output and watch every weight learn its share of the blame, then run the backward pass yourself.",
     },
@@ -255,7 +259,8 @@ export const en = {
     "floating-point": {
       title: "0.1 + 0.2",
       term: "Floating point",
-      figure: "a number as sign, exponent and fraction bits, above the ruler of values those bits can hold.",
+      figure:
+        "a number as sign, exponent and fraction bits, above the ruler of values those bits can hold.",
       description:
         "Type 0.1 and see the number your computer actually keeps, then find out why 0.1 + 0.2 is not 0.3.",
     },
@@ -269,7 +274,8 @@ export const en = {
     "cryptographic-hashing": {
       title: "Digital Fingerprint",
       term: "Cryptographic hashing",
-      figure: "two inputs of different lengths through one function, and two outputs of the same size.",
+      figure:
+        "two inputs of different lengths through one function, and two outputs of the same size.",
       description: "Change one character. Watch everything change.",
     },
     "multilayer-perceptrons": {

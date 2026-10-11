@@ -112,7 +112,9 @@ describe("copy", () => {
   it("carries the honesty note about what the robot did not learn", () => {
     expect(en.labs["reinforcement-learning"].learn.honesty.length).toBeGreaterThan(60);
     expect(tr.labs["reinforcement-learning"].learn.honesty.length).toBeGreaterThan(60);
-    expect(en.labs["reinforcement-learning"].learn.honesty).toMatch(/did not learn the whole room/i);
+    expect(en.labs["reinforcement-learning"].learn.honesty).toMatch(
+      /did not learn the whole room/i,
+    );
   });
 });
 

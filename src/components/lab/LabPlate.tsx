@@ -45,7 +45,9 @@ export function LabPlate({
           {slug ? <LabSignature slug={slug} className="h-full w-full" /> : children}
         </div>
       </div>
-      <figcaption className="mt-2.5 text-caption leading-relaxed text-fg-muted">{caption}</figcaption>
+      <figcaption className="mt-2.5 text-caption leading-relaxed text-fg-muted">
+        {caption}
+      </figcaption>
     </figure>
   );
 }

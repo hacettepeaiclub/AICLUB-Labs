@@ -208,7 +208,8 @@ export const tr: Translation = {
     backpropagation: {
       title: "Suç Kimde?",
       term: "Geri yayılım",
-      figure: "çıkışından geriye doğru hatanın aktığı küçük bir ağ; suçun çoğu nereye gidiyorsa orası daha kalın.",
+      figure:
+        "çıkışından geriye doğru hatanın aktığı küçük bir ağ; suçun çoğu nereye gidiyorsa orası daha kalın.",
       description:
         "Bir ağın çıktısını çekin ve her ağırlığın suçtaki payını görün, sonra geri geçişi kendiniz yapın.",
     },
@@ -222,7 +223,8 @@ export const tr: Translation = {
     "floating-point": {
       title: "0,1 + 0,2",
       term: "Kayan nokta",
-      figure: "işaret, üs ve kesir bitleri olarak bir sayı; altında bu bitlerin tutabildiği değerlerin cetveli.",
+      figure:
+        "işaret, üs ve kesir bitleri olarak bir sayı; altında bu bitlerin tutabildiği değerlerin cetveli.",
       description:
         "0.1 yazın ve bilgisayarınızın gerçekte sakladığı sayıyı görün, sonra 0.1 + 0.2'nin neden 0.3 etmediğini öğrenin.",
     },

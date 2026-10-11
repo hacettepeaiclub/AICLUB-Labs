@@ -181,7 +181,8 @@ export function attend(model: Model, x: Float64Array, n: number): Attention {
       const weight = weights[wRow + j]!;
       if (weight === 0) continue;
       const vRow = j * dV;
-      for (let a = 0; a < dV; a++) outputs[oRow + a] = outputs[oRow + a]! + weight * values[vRow + a]!;
+      for (let a = 0; a < dV; a++)
+        outputs[oRow + a] = outputs[oRow + a]! + weight * values[vRow + a]!;
     }
   }
 

@@ -135,8 +135,7 @@ describe("it is the same dataset", () => {
     // Three axes of three hundred. The number is small, and the copy says so.
     expect(space.combined).toBeLessThan(0.5);
     const flat = pca(set.vectors, set.count, set.dimensions, 2);
-    const flatShare =
-      flat.eigenvalues.reduce((s, v) => s + v, 0) / flat.totalVariance;
+    const flatShare = flat.eigenvalues.reduce((s, v) => s + v, 0) / flat.totalVariance;
     expect(space.combined).toBeGreaterThan(flatShare);
   });
 });

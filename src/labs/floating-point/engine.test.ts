@@ -429,7 +429,9 @@ describe("printing", () => {
 describe("the checks that replace non-null assertions", () => {
   it("decodes a finite float and refuses infinity and NaN out loud", () => {
     expect(equal(decodeFinite(round(parse("0.5"), FORMATS.float32)), rational(1n, 2n))).toBe(true);
-    expect(() => decodeFinite(round(parse("Infinity"), FORMATS.float32))).toThrow(/finite float32, got infinity/);
+    expect(() => decodeFinite(round(parse("Infinity"), FORMATS.float32))).toThrow(
+      /finite float32, got infinity/,
+    );
     expect(() => decodeFinite(round(parse("NaN"), FORMATS.float16))).toThrow(/got nan/);
   });
 

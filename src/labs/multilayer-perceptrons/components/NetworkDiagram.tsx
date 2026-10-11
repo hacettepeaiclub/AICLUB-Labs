@@ -113,7 +113,10 @@ export function NetworkDiagram({ netRef, sizes, running, revision = 0 }: Network
   const d = useLabCopy("multilayer-perceptrons").diagram;
   const tooltipId = useId();
   const [containerRef, { width }] = useElementSize<HTMLDivElement>();
-  const layout = useMemo(() => computeLayout(sizes, width || 640, d.layers), [sizes, width, d.layers]);
+  const layout = useMemo(
+    () => computeLayout(sizes, width || 640, d.layers),
+    [sizes, width, d.layers],
+  );
   const [hovered, setHovered] = useState<LayoutNode | null>(null);
   const [readout, setReadout] = useState<number | null>(null);
 

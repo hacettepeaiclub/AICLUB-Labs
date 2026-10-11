@@ -64,7 +64,6 @@ function inks(): Ink {
   return ink;
 }
 
-
 /** Room under the bars for the settled rule and the comparison carets. */
 const GUTTER = 14;
 
