@@ -3,6 +3,9 @@ import { useT } from "@/i18n";
 /** Where a problem report or a suggestion goes. Not translated: it is an address. */
 const FEEDBACK_EMAIL = "metehan.data@gmail.com";
 
+/** The README's list of every event the site sends, and why (see app/analytics.ts). */
+const PRIVACY_URL = "https://github.com/hacettepeaiclub/AICLUB-Labs#analytics";
+
 const linkClass =
   "underline decoration-line/30 underline-offset-2 transition-colors duration-fast hover:text-fg";
 
@@ -12,6 +15,11 @@ const linkClass =
  * Labs is a product of Hacettepe AI Club, not a second copy of its website —
  * so the relationship is one line and one link, not an About section. Anyone
  * who wants the community follows it; anyone who wants a lab never has to.
+ *
+ * It also says, in one line, that visits are counted and how: anonymously,
+ * without cookies. Short enough to sit beside the credit, and linked to the
+ * full list of what is counted, so a visitor who wants the detail can check
+ * it rather than take the sentence on trust.
  *
  * The mark is not repeated here. The header already carries it on every page,
  * and a second, smaller copy in a badge at the bottom said nothing the top of
@@ -46,6 +54,12 @@ export function SiteFooter() {
             {t.shell.feedback}{" "}
             <a href={`mailto:${FEEDBACK_EMAIL}`} className={linkClass}>
               {FEEDBACK_EMAIL}
+            </a>
+          </p>
+          <p>
+            {t.shell.privacy}{" "}
+            <a href={PRIVACY_URL} target="_blank" rel="noreferrer" className={linkClass}>
+              {t.shell.privacyLink}
             </a>
           </p>
         </div>

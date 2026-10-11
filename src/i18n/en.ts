@@ -35,6 +35,9 @@ export const en = {
     developedBy: "Developed by Metehan Özcan for {org}",
     feedback: "Spotted a problem or have feedback?",
     sourceLink: "Source on GitHub",
+    // The one sentence on what the site counts, linked to the full list.
+    privacy: "Visits are counted anonymously: no cookies, no personal data.",
+    privacyLink: "What is counted",
     minutes: (n: number) => `${n} min`,
     loadingLab: "Loading lab",
     openLab: "Open lab →",
