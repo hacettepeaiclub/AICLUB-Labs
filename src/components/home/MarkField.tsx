@@ -5,6 +5,7 @@ import { palette, subscribePalette } from "@/design/tokens";
 import { useLabMeta, useT } from "@/i18n";
 import { clearCanvas } from "@/lib/canvas";
 import { fromState, track } from "@/app/analytics";
+import { labPath } from "@/lib/paths";
 
 /**
  * The club's mark, assembled from a few thousand points beside the headline.
@@ -769,7 +770,7 @@ export function MarkField() {
                     </p>
                     {lesson && (
                       <Link
-                        to="/labs/gradient-descent"
+                        to={labPath("gradient-descent")}
                         state={fromState("game")}
                         title={lesson.title}
                         className="text-fg-faint underline decoration-line/30 underline-offset-2 transition-colors duration-fast hover:text-fg"

@@ -11,6 +11,7 @@ import { prefetchLabCopy } from "@/i18n/labs";
 import { CATEGORY_CODE, CATEGORY_VAR, type LabCategory, type LabMeta } from "@/labs/types";
 import { orderedLabs, preloadLab } from "@/labs/registry";
 import { readVisits } from "@/labs/visits";
+import { labPath } from "@/lib/paths";
 
 /**
  * The home page.
@@ -161,7 +162,7 @@ export function HomePage() {
               </a>
               {last && (
                 <Link
-                  to={`/labs/${last.meta.slug}`}
+                  to={labPath(last.meta.slug)}
                   state={fromState("continue")}
                   className="rounded py-2 text-body-sm text-fg-muted transition-colors duration-fast hover:text-fg"
                 >
@@ -385,7 +386,7 @@ function LabTile({ meta, lit, visited }: { meta: LabMeta; lit: boolean; visited:
 
   return (
     <Link
-      to={`/labs/${meta.slug}`}
+      to={labPath(meta.slug)}
       state={fromState("grid")}
       className={cn("lab-card group flex-row gap-3.5 sm:flex-col sm:gap-0", lit && "is-lit")}
       style={{ "--c": CATEGORY_VAR[meta.category] } as CSSProperties}

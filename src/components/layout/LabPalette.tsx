@@ -18,6 +18,7 @@ import { orderedLabs, preloadLab } from "@/labs/registry";
 import { CATEGORY_VAR, type LabMeta } from "@/labs/types";
 import { readVisits } from "@/labs/visits";
 import { search } from "./labSearch";
+import { labPath } from "@/lib/paths";
 
 /**
  * A finder for the collection, on ⌘K / Ctrl+K.
@@ -125,7 +126,9 @@ export function LabPalette({
   );
 
   const results = useMemo(() => search(query, entries), [query, entries]);
-  const current = pathname.startsWith("/labs/") ? pathname.slice("/labs/".length) : null;
+  const current = pathname.startsWith("/labs/")
+    ? pathname.slice("/labs/".length).replace(/\/$/, "")
+    : null;
   const activeEntry = results[Math.min(active, results.length - 1)];
 
   // Warm whatever is highlighted, and keep it on screen when the keyboard
@@ -161,7 +164,7 @@ export function LabPalette({
     if (!entry) return;
     onOpenChange(false);
     if (entry.meta.slug !== current) {
-      navigate(`/labs/${entry.meta.slug}`, { state: fromState("finder") });
+      navigate(labPath(entry.meta.slug), { state: fromState("finder") });
     }
   };
 

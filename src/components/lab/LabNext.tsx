@@ -7,6 +7,7 @@ import { fromState, track } from "@/app/analytics";
 import { nextLab, preloadLab } from "@/labs/registry";
 import { CATEGORY_CODE, CATEGORY_VAR } from "@/labs/types";
 import { LabSignature } from "./LabSignature";
+import { labPath } from "@/lib/paths";
 
 /**
  * The way on, at the bottom of a lab.
@@ -129,7 +130,7 @@ export function LabNext({ slug }: { slug: string }) {
       </p>
       <Link
         ref={cardRef}
-        to={`/labs/${meta.slug}`}
+        to={labPath(meta.slug)}
         state={fromState("next")}
         className="lab-card group gap-4 sm:flex-row sm:items-stretch"
         style={{ "--c": CATEGORY_VAR[meta.category] } as CSSProperties}

@@ -1,7 +1,9 @@
 # Deploying
 
 `npm run build` produces `dist/`, and `.github/workflows/deploy.yml` runs it on
-the server on every push to `main`.
+the server on every push to `main`. The server builds the next version into
+`dist-next/` (`OUT_DIR`) and swaps it in with two renames, so a visitor never
+meets a half-built site.
 
 ## What the build produces
 
@@ -21,30 +23,99 @@ a `<noscript>` block naming the page. See `tools/prerender.mjs` for why.
 
 ## What the server has to do
 
-**The SPA fallback must not shadow the prerendered files.** The rule is: serve
-the file if it exists, then the directory's `index.html`, and only then fall
-back to `/index.html`.
+The live server (openresty, behind the hosting panel) was checked on
+2026-10-12 against what follows. Four things were wrong, and the first is why
+some visitors saw Chrome's "this site doesn't support a secure connection":
 
-nginx:
+1. **An https request could be redirected to http.** Asking for
+   `https://…/labs/sorting` (no trailing slash) answered `301 Location:
+http://…/labs/sorting/`. nginx adds the slash for a directory and, when it
+   builds the absolute address, used the plain scheme. A browser set to always
+   use secure connections treats a downgrade like that as "https does not
+   work here" and shows the warning; a visitor who clicks through gets the
+   page over http, where the hashing lab cannot run. `absolute_redirect off`
+   makes nginx send a relative `Location`, which keeps whatever scheme the
+   request came in on. The site now also links every lab with its slash
+   (`src/lib/paths.ts`), so it never asks for that redirect itself.
+2. **http was served as is**, never sent to https, and there was no HSTS.
+3. **Nothing but the HTML was compressed**, and nothing was cached: the
+   bundles went out at full size on every visit, about 400 KB more than
+   needed on the first one.
+4. **HTTP/1.1 only**, so the two dozen files of a lab page queued six at a
+   time.
+
+The page carries its own Content-Security-Policy and referrer policy as
+`<meta>` tags (`tools/prerender.mjs`). The headers below repeat the parts a
+`<meta>` cannot set: `frame-ancestors`, `X-Content-Type-Options`, HSTS.
+
+nginx / openresty, the whole site:
 
 ```nginx
-root /home/<user>/labs/dist;
-
-location / {
-    try_files $uri $uri/ /index.html;
+server {
+    listen 80;
+    server_name labs.hacettepeaiclub.com;
+    return 301 https://$host$request_uri;
 }
 
-# The bundles are content-hashed, so they can be cached forever.
-location /assets/ {
-    try_files $uri =404;
-    add_header Cache-Control "public, max-age=31536000, immutable";
-}
+server {
+    listen 443 ssl;
+    http2 on;                       # older nginx: `listen 443 ssl http2;`
+    server_name labs.hacettepeaiclub.com;
+    # ssl_certificate … as the panel already has it
 
-# The HTML is not. A stale index.html serves a bundle that no longer exists.
-location ~* \.html$ {
-    add_header Cache-Control "no-cache";
+    root /home/<user>/labs/dist;
+
+    # Keep the scheme when adding a directory's trailing slash.
+    absolute_redirect off;
+
+    gzip on;
+    gzip_types text/css application/javascript application/json image/svg+xml
+               application/xml text/plain application/manifest+json;
+    gzip_min_length 1024;
+
+    # One place for the headers, because an `add_header` inside a location
+    # replaces every `add_header` inherited from outside it.
+    set $hsts "max-age=31536000; includeSubDomains";
+
+    location / {
+        try_files $uri $uri/ /index.html;
+        add_header Strict-Transport-Security $hsts always;
+        add_header X-Content-Type-Options nosniff always;
+        add_header Content-Security-Policy "frame-ancestors 'none'" always;
+        add_header Permissions-Policy "camera=(), microphone=(), geolocation=()" always;
+        add_header Cache-Control "no-cache";
+    }
+
+    # The bundles are content-hashed, so they can be cached forever.
+    location /assets/ {
+        try_files $uri =404;
+        add_header Strict-Transport-Security $hsts always;
+        add_header X-Content-Type-Options nosniff always;
+        add_header Cache-Control "public, max-age=31536000, immutable";
+    }
 }
 ```
+
+`Cache-Control: no-cache` on everything outside `/assets/` is deliberate: an
+`index.html` kept from yesterday points at bundles today's build deleted.
+`no-cache` still lets the browser keep the file and revalidate it with the
+ETag, which costs a 304 and a few hundred bytes.
+
+**The SPA fallback must not shadow the prerendered files.** The rule is: serve
+the file if it exists, then the directory's `index.html`, and only then fall
+back to `/index.html`, which is what `try_files $uri $uri/ /index.html` says.
+
+After changing it, check from any machine:
+
+```bash
+curl -sI http://labs.hacettepeaiclub.com/ | grep -i location
+curl -sI https://labs.hacettepeaiclub.com/labs/sorting | grep -i location
+curl -sI -H "Accept-Encoding: gzip" https://labs.hacettepeaiclub.com/assets/ | head -n 1
+```
+
+The first must print `https://…`, the second a relative `/labs/sorting/`, and
+every bundle under `/assets/` must come back with `Content-Encoding: gzip` and
+the year-long `Cache-Control`.
 
 **Old lab addresses should answer with a 301.** The slugs were renamed on
 2026-10-03 (`src/labs/renamed.ts` lists them). The build already writes a page
@@ -52,15 +123,15 @@ at each old address that forwards the browser, so nothing breaks without this;
 a real 301 is better, because it tells search engines to move the ranking too:
 
 ```nginx
-location = /labs/hash-playground        { return 301 /labs/cryptographic-hashing; }
-location = /labs/hash-table             { return 301 /labs/hash-tables; }
-location = /labs/sorting-race           { return 301 /labs/sorting; }
-location = /labs/pathfinding            { return 301 /labs/graph-search; }
-location = /labs/tokenizer              { return 301 /labs/tokenization; }
-location = /labs/neural-playground      { return 301 /labs/multilayer-perceptrons; }
-location = /labs/reward-playground      { return 301 /labs/reinforcement-learning; }
-location = /labs/embedding-universe     { return 301 /labs/word-embeddings; }
-location = /labs/embedding-universe-3d  { return 301 /labs/word-embeddings-3d; }
+location = /labs/hash-playground        { return 301 /labs/cryptographic-hashing/; }
+location = /labs/hash-table             { return 301 /labs/hash-tables/; }
+location = /labs/sorting-race           { return 301 /labs/sorting/; }
+location = /labs/pathfinding            { return 301 /labs/graph-search/; }
+location = /labs/tokenizer              { return 301 /labs/tokenization/; }
+location = /labs/neural-playground      { return 301 /labs/multilayer-perceptrons/; }
+location = /labs/reward-playground      { return 301 /labs/reinforcement-learning/; }
+location = /labs/embedding-universe     { return 301 /labs/word-embeddings/; }
+location = /labs/embedding-universe-3d  { return 301 /labs/word-embeddings-3d/; }
 ```
 
 A `try_files $uri /index.html` that omits `$uri/` will serve the home page's
@@ -68,7 +139,7 @@ head for every lab, which is the bug this whole arrangement exists to fix.
 After deploying, check one:
 
 ```bash
-curl -s https://labs.hacettepeaiclub.com/labs/tokenization | grep -o '<title>[^<]*'
+curl -s https://labs.hacettepeaiclub.com/labs/tokenization/ | grep -o '<title>[^<]*'
 ```
 
 It must print `Cheap Words · BPE tokenization — AI Club Labs`, not `AI Club Labs`.
