@@ -101,7 +101,11 @@ export function ConditionalStage() {
                       {/* Two named children, not two initials. "BG" is only
                           shorter if you already know the convention, and which
                           child is which is the entire difficulty here. */}
-                      <dl className={cn("space-y-0.5", !kept && "opacity-60")}>
+                      {/* No dimming on top of the faint colour and the strike-through: the
+                          three together put a discarded family at 2.65:1,
+                          under the 4.5:1 small text needs, and the line
+                          through it already says it is out. */}
+                      <dl className="space-y-0.5">
                         {[
                           [c.older, name(older)],
                           [c.younger, name(younger)],
