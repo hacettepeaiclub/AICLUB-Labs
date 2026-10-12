@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Badge } from "@/components/ui";
 import { Figure, LabSlider, Stage, Transport } from "@/components/lab";
 import { useLabCopy } from "@/i18n/labs";
-import { useLocalStorage } from "@/hooks";
+import { useInView, useLocalStorage } from "@/hooks";
 import { formatPercent } from "@/lib/format";
 import { generateDataset, splitDataset } from "../datasets";
 import { useTrainer } from "../useTrainer";
@@ -51,6 +51,10 @@ export function SpiralChallenge() {
   const hidden = useMemo(() => Array.from({ length: layers }, () => neurons), [layers, neurons]);
   const total = layers * neurons;
 
+  // Started by the visitor, paused while scrolled out of view.
+  const rootRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(rootRef);
+  const active = running && inView;
   const trainer = useTrainer(
     train,
     test,
@@ -63,7 +67,7 @@ export function SpiralChallenge() {
       seed: 31 + attempt,
       epochsPerFrame: 6,
     },
-    running,
+    active,
   );
   const { stats } = trainer;
 
@@ -88,78 +92,80 @@ export function SpiralChallenge() {
   };
 
   return (
-    <Stage
-      width="wide"
-      secondaryLabel={c.architecture}
-      caption={solved ? c.solvedNote : c.objectiveLine(formatPercent(TARGET, 0))}
-      announcement={solved ? c.announceSolved(total, formatPercent(stats.testAccuracy, 1)) : ""}
-      viewport={
-        <DecisionCanvas
-          netRef={trainer.netRef}
-          points={points}
-          running={running}
-          revision={trainer.generation + trainer.revision}
-          ariaLabel={c.canvasLabel(total, formatPercent(stats.testAccuracy, 1), stats.epoch)}
-          /* Nothing is drawn on this one by hand, so it does not need the
+    <div ref={rootRef}>
+      <Stage
+        width="wide"
+        secondaryLabel={c.architecture}
+        caption={solved ? c.solvedNote : c.objectiveLine(formatPercent(TARGET, 0))}
+        announcement={solved ? c.announceSolved(total, formatPercent(stats.testAccuracy, 1)) : ""}
+        viewport={
+          <DecisionCanvas
+            netRef={trainer.netRef}
+            points={points}
+            running={active}
+            revision={trainer.generation + trainer.revision}
+            ariaLabel={c.canvasLabel(total, formatPercent(stats.testAccuracy, 1), stats.epoch)}
+            /* Nothing is drawn on this one by hand, so it does not need the
              full column: at 558px square it left the rail beside it empty. */
-          className="mx-auto max-w-md"
-        />
-      }
-      readout={
-        <div className="flex flex-wrap items-center gap-2">
-          {/* A word as well as a colour: "Solved" / "Not yet". */}
-          <Badge dotClassName={solved ? "bg-signal-green" : "bg-fg-faint"}>
-            {solved ? lab.solvedBadge : lab.notYet}
-          </Badge>
-          <p className="text-caption text-fg-faint">
-            {best
-              ? c.bestLine(best.neurons, formatPercent(best.accuracy, 1), best.epoch)
-              : c.noBest}
-          </p>
-        </div>
-      }
-      primary={
-        <Transport
-          running={running}
-          onRun={() => setRunning((value) => !value)}
-          onStep={() => trainer.step(20)}
-          onReset={retry}
-          runLabel={c.train}
-          stepDisabled={running}
-        />
-      }
-      figures={
-        <>
-          <Figure
-            label={c.neuronsUsed}
-            value={String(total)}
-            tone={solved ? "accent" : "default"}
+            className="mx-auto max-w-md"
           />
-          <Figure label={c.testAccuracy} value={formatPercent(stats.testAccuracy, 1)} />
-          <Figure label={c.target} value={formatPercent(TARGET, 0)} tone="muted" />
-          <Figure label={c.yourBest} value={best ? String(best.neurons) : "—"} />
-        </>
-      }
-      secondary={
-        <>
-          <LabSlider label={c.hiddenLayers} value={layers} min={1} max={3} onChange={setLayers} />
-          <LabSlider
-            label={c.neuronsPerLayer}
-            value={neurons}
-            min={1}
-            max={8}
-            onChange={setNeurons}
+        }
+        readout={
+          <div className="flex flex-wrap items-center gap-2">
+            {/* A word as well as a colour: "Solved" / "Not yet". */}
+            <Badge dotClassName={solved ? "bg-signal-green" : "bg-fg-faint"}>
+              {solved ? lab.solvedBadge : lab.notYet}
+            </Badge>
+            <p className="text-caption text-fg-faint">
+              {best
+                ? c.bestLine(best.neurons, formatPercent(best.accuracy, 1), best.epoch)
+                : c.noBest}
+            </p>
+          </div>
+        }
+        primary={
+          <Transport
+            running={running}
+            onRun={() => setRunning((value) => !value)}
+            onStep={() => trainer.step(20)}
+            onReset={retry}
+            runLabel={c.train}
+            stepDisabled={running}
           />
-          <LabSlider
-            label={c.learningRate}
-            value={rateIndex}
-            min={0}
-            max={LEARNING_RATES.length - 1}
-            onChange={setRateIndex}
-            format={(i) => String(LEARNING_RATES[i] ?? 0.1)}
-          />
-        </>
-      }
-    />
+        }
+        figures={
+          <>
+            <Figure
+              label={c.neuronsUsed}
+              value={String(total)}
+              tone={solved ? "accent" : "default"}
+            />
+            <Figure label={c.testAccuracy} value={formatPercent(stats.testAccuracy, 1)} />
+            <Figure label={c.target} value={formatPercent(TARGET, 0)} tone="muted" />
+            <Figure label={c.yourBest} value={best ? String(best.neurons) : "—"} />
+          </>
+        }
+        secondary={
+          <>
+            <LabSlider label={c.hiddenLayers} value={layers} min={1} max={3} onChange={setLayers} />
+            <LabSlider
+              label={c.neuronsPerLayer}
+              value={neurons}
+              min={1}
+              max={8}
+              onChange={setNeurons}
+            />
+            <LabSlider
+              label={c.learningRate}
+              value={rateIndex}
+              min={0}
+              max={LEARNING_RATES.length - 1}
+              onChange={setRateIndex}
+              format={(i) => String(LEARNING_RATES[i] ?? 0.1)}
+            />
+          </>
+        }
+      />
+    </div>
   );
 }

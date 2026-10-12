@@ -72,7 +72,7 @@ export function ProbeStage() {
                           : "border-line/10 bg-ink-900 text-fg-faint",
                   )}
                 >
-                  <span className="text-[0.65rem] leading-none opacity-70">{slot}</span>
+                  <span className="text-[0.65rem] leading-none">{slot}</span>
                   {filled && <span className="mt-0.5 leading-none">→{homes[key]}</span>}
                 </li>
               );

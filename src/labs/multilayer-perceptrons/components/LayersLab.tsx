@@ -1,5 +1,6 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef } from "react";
 import { Figure, Stage, Transport } from "@/components/lab";
+import { useInView } from "@/hooks";
 import { useLabCopy } from "@/i18n/labs";
 import { formatPercent } from "@/lib/format";
 import { generateDataset, splitDataset } from "../datasets";
@@ -27,8 +28,12 @@ export function LayersLab() {
   const points = useMemo(() => generateDataset("xor", 160, 0.06, 3), []);
   const { train, test } = useMemo(() => splitDataset(points, 0.75, 9), [points]);
 
-  const flat = useTrainer(train, test, { ...BASE, hidden: [], seed: 4 + round }, running);
-  const deep = useTrainer(train, test, { ...BASE, hidden: [4], seed: 4 + round }, running);
+  // Started by the visitor, paused while scrolled out of view.
+  const rootRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(rootRef);
+  const active = running && inView;
+  const flat = useTrainer(train, test, { ...BASE, hidden: [], seed: 4 + round }, active);
+  const deep = useTrainer(train, test, { ...BASE, hidden: [4], seed: 4 + round }, active);
 
   const restart = () => {
     setRunning(false);
@@ -56,61 +61,63 @@ export function LayersLab() {
   const decided = flat.stats.epoch > 600;
 
   return (
-    <Stage
-      width="full"
-      // One button, two networks, and the whole point is watching them race.
-      // In the rail this left a 288px column empty for 422px beside the
-      // canvases; centred underneath, Run sits between the two things it
-      // starts.
-      controls="stack"
-      caption={decided ? lab.layersCaption.solved : lab.layersCaption.idle}
-      announcement={decided ? lab.layersCaption.solved : ""}
-      viewport={
-        <div className="grid gap-4 sm:grid-cols-2">
-          {columns.map((column) => (
-            <div key={column.key} className="min-w-0 space-y-2">
-              <div className="flex items-baseline justify-between gap-3">
-                <h3 className="text-body-sm font-semibold text-fg">{column.title}</h3>
-                <span className="font-mono text-caption text-fg-faint">{column.sizes}</span>
-              </div>
-              <p className="text-caption text-fg-muted">{column.subtitle}</p>
-              <DecisionCanvas
-                netRef={column.trainer.netRef}
-                points={points}
-                running={running}
-                revision={column.trainer.generation + column.trainer.revision}
-                ariaLabel={lab.layers.panelLabel(
-                  column.title,
-                  Math.round(column.trainer.stats.accuracy * 100),
-                  column.trainer.stats.epoch,
-                )}
-                /* Two pictures to compare, not two billboards: given the
+    <div ref={rootRef}>
+      <Stage
+        width="full"
+        // One button, two networks, and the whole point is watching them race.
+        // In the rail this left a 288px column empty for 422px beside the
+        // canvases; centred underneath, Run sits between the two things it
+        // starts.
+        controls="stack"
+        caption={decided ? lab.layersCaption.solved : lab.layersCaption.idle}
+        announcement={decided ? lab.layersCaption.solved : ""}
+        viewport={
+          <div className="grid gap-4 sm:grid-cols-2">
+            {columns.map((column) => (
+              <div key={column.key} className="min-w-0 space-y-2">
+                <div className="flex items-baseline justify-between gap-3">
+                  <h3 className="text-body-sm font-semibold text-fg">{column.title}</h3>
+                  <span className="font-mono text-caption text-fg-faint">{column.sizes}</span>
+                </div>
+                <p className="text-caption text-fg-muted">{column.subtitle}</p>
+                <DecisionCanvas
+                  netRef={column.trainer.netRef}
+                  points={points}
+                  running={active}
+                  revision={column.trainer.generation + column.trainer.revision}
+                  ariaLabel={lab.layers.panelLabel(
+                    column.title,
+                    Math.round(column.trainer.stats.accuracy * 100),
+                    column.trainer.stats.epoch,
+                  )}
+                  /* Two pictures to compare, not two billboards: given the
                    full width they grew to 511px square each. */
-                className="mx-auto max-w-sm"
-              />
-              <div className="flex flex-wrap items-start gap-x-8 gap-y-2">
-                <Figure
-                  label={lab.layers.accuracy}
-                  value={formatPercent(column.trainer.stats.accuracy, 1)}
-                  tone={column.key === "deep" ? "accent" : "default"}
+                  className="mx-auto max-w-sm"
                 />
+                <div className="flex flex-wrap items-start gap-x-8 gap-y-2">
+                  <Figure
+                    label={lab.layers.accuracy}
+                    value={formatPercent(column.trainer.stats.accuracy, 1)}
+                    tone={column.key === "deep" ? "accent" : "default"}
+                  />
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      }
-      primary={
-        <Transport
-          running={running}
-          onRun={() => setRunning((value) => !value)}
-          onStep={() => {
-            for (const column of columns) column.trainer.step(20);
-          }}
-          onReset={restart}
-          runLabel={lab.layers.trainBoth}
-          stepDisabled={running}
-        />
-      }
-    />
+            ))}
+          </div>
+        }
+        primary={
+          <Transport
+            running={running}
+            onRun={() => setRunning((value) => !value)}
+            onStep={() => {
+              for (const column of columns) column.trainer.step(20);
+            }}
+            onReset={restart}
+            runLabel={lab.layers.trainBoth}
+            stepDisabled={running}
+          />
+        }
+      />
+    </div>
   );
 }

@@ -3,7 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="AI Club Labs — interactive experiences that teach Computer Science and AI." />
+    <meta
+      name="description"
+      content="AI Club Labs — interactive experiences that teach Computer Science and AI."
+    />
     <meta name="theme-color" content="#0a0a0f" />
     <!-- The deer alone, no ground: white on a dark browser, navy on a light
          one. The SVG does that with prefers-color-scheme; the .ico is the
@@ -34,6 +37,15 @@
       data-do-not-track="true"
     ></script>
     <script>
+      // On the real site, an http address goes straight to its https twin.
+      // The hashing lab needs a secure context, and a page that loaded over
+      // http, from an old link or after a browser's "continue anyway", would
+      // otherwise sit there unable to run it.
+      if (location.protocol === "http:" && location.hostname === "labs.hacettepeaiclub.com") {
+        location.replace(
+          "https://" + location.host + location.pathname + location.search + location.hash,
+        );
+      }
       // Runs before the stylesheet paints and before React exists, so a visitor
       // who chose light never sees a dark frame first. The markup already says
       // data-theme="dark", which is the default and also the correct answer for

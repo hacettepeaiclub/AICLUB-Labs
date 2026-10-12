@@ -6,6 +6,7 @@ export { useLocalControls } from "./useLocalControls";
 export { useKeyPress } from "./useKeyPress";
 export { useDrag, type DragOptions, type DragPoint } from "./useDrag";
 export { useDebouncedValue } from "./useDebouncedValue";
+export { useInView } from "./useInView";
 export { useRepaintFlag, type RepaintFlag } from "./useRepaintFlag";
 export { usePaletteVersion } from "./usePaletteVersion";
 // Re-exported so labs import all motion-safety from one place.

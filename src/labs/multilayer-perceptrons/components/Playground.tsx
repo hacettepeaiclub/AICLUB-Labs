@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useReducedMotion, useKeyPress } from "@/hooks";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useInView, useKeyPress, useReducedMotion } from "@/hooks";
 import { Button, Kbd, Segmented } from "@/components/ui";
 import { LabSlider, Stage, Transport } from "@/components/lab";
 import { useLabCopy } from "@/i18n/labs";
@@ -138,7 +138,15 @@ export function Playground() {
     epochsPerFrame: SPEED,
   };
 
-  const trainer = useTrainer(train, test, config, running);
+  // Training is what the visitor asked for; whether it costs anything is
+  // whether they can see it. Scrolled away, the network and its pictures
+  // wait — the Pause button still says "running", and it picks up where it
+  // left off when the playground comes back into view.
+  const rootRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(rootRef);
+  const active = running && inView;
+
+  const trainer = useTrainer(train, test, config, active);
   const { netRef, stats, history, generation, revision, reset, step } = trainer;
 
   const regenerate = useCallback((kind: DatasetKind, level: number, seed: number) => {
@@ -196,144 +204,146 @@ export function Playground() {
   const canvasLabel = lab.canvasLabel(points.length, Math.round(stats.accuracy * 100));
 
   return (
-    <Stage
-      width="full"
-      secondaryLabel={p.dataAndArchitecture}
-      caption={p.caption}
-      announcement=""
-      viewport={
-        /* The network's two pictures, side by side: what it predicts across
+    <div ref={rootRef}>
+      <Stage
+        width="full"
+        secondaryLabel={p.dataAndArchitecture}
+        caption={p.caption}
+        announcement=""
+        viewport={
+          /* The network's two pictures, side by side: what it predicts across
            the whole square, and what it is made of. The diagram used to sit at
            the very bottom of the section, under the scoreboard and a heading —
            the thing the lab is named after, last. */
-        /* Stacked, not side by side. Placed in a row they were both short and
+          /* Stacked, not side by side. Placed in a row they were both short and
            the stage's rail — this lab has eight controls, more than any other
            — ran 547px past the bottom of them, so half the screen column was
            empty. One under the other, the two pictures fill the height the
            controls need, and the canvas gets the width it was splitting. */
-        <div className="grid gap-3">
-          <div className="min-w-0 space-y-2">
-            <DecisionCanvas
-              netRef={netRef}
-              points={points}
-              running={running}
-              revision={generation + revision}
-              onPaint={handlePaint}
-              ariaLabel={canvasLabel}
-            />
-            <Legend />
-          </div>
-          {/* Open when there is room; folded away when there is not, so the
-              Train button follows the canvas instead of the network. */}
-          <div className="min-w-0">
-            {diagramOpen ? (
-              <NetworkDiagram
+          <div className="grid gap-3">
+            <div className="min-w-0 space-y-2">
+              <DecisionCanvas
                 netRef={netRef}
-                sizes={sizes}
-                running={running}
+                points={points}
+                running={active}
                 revision={generation + revision}
-                editing={editing}
+                onPaint={handlePaint}
+                ariaLabel={canvasLabel}
               />
-            ) : (
-              <details className="group rounded border border-line/10">
-                <summary
-                  className="flex min-h-11 cursor-pointer select-none items-center justify-between
+              <Legend />
+            </div>
+            {/* Open when there is room; folded away when there is not, so the
+              Train button follows the canvas instead of the network. */}
+            <div className="min-w-0">
+              {diagramOpen ? (
+                <NetworkDiagram
+                  netRef={netRef}
+                  sizes={sizes}
+                  running={active}
+                  revision={generation + revision}
+                  editing={editing}
+                />
+              ) : (
+                <details className="group rounded border border-line/10">
+                  <summary
+                    className="flex min-h-11 cursor-pointer select-none items-center justify-between
                     gap-2 px-3 text-body-sm text-fg-muted transition-colors duration-fast
                     hover:text-fg focus-visible:text-fg"
-                >
-                  {p.insideTitle}
-                  <span aria-hidden className="text-fg-faint group-open:hidden">
-                    +
-                  </span>
-                  <span aria-hidden className="hidden text-fg-faint group-open:inline">
-                    −
-                  </span>
-                </summary>
-                <div className="border-t border-line/10 p-3">
-                  <NetworkDiagram
-                    netRef={netRef}
-                    sizes={sizes}
-                    running={running}
-                    revision={generation + revision}
-                    editing={editing}
-                  />
-                </div>
-              </details>
-            )}
+                  >
+                    {p.insideTitle}
+                    <span aria-hidden className="text-fg-faint group-open:hidden">
+                      +
+                    </span>
+                    <span aria-hidden className="hidden text-fg-faint group-open:inline">
+                      −
+                    </span>
+                  </summary>
+                  <div className="border-t border-line/10 p-3">
+                    <NetworkDiagram
+                      netRef={netRef}
+                      sizes={sizes}
+                      running={active}
+                      revision={generation + revision}
+                      editing={editing}
+                    />
+                  </div>
+                </details>
+              )}
+            </div>
           </div>
-        </div>
-      }
-      readout={
-        <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
-          <div className="flex items-center gap-3">
+        }
+        readout={
+          <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
+            <div className="flex items-center gap-3">
+              <Segmented
+                label={p.draw}
+                value={paintClass === 1 ? "a" : "b"}
+                options={[
+                  { value: "a", label: lab.classA },
+                  { value: "b", label: lab.classB },
+                ]}
+                onChange={(value) => setPaintClass(value === "a" ? 1 : -1)}
+              />
+              <Button variant="ghost" onClick={() => setPoints([])} className="min-h-[44px]">
+                {p.clearPoints}
+              </Button>
+            </div>
+            <p className="text-caption text-fg-faint">{p.drawHint}</p>
+          </div>
+        }
+        primary={
+          <Transport
+            running={running}
+            onRun={() => setRunning((value) => !value)}
+            onStep={() => step(20)}
+            onReset={handleRestart}
+            runLabel={p.train}
+            stepDisabled={running}
+          />
+        }
+        figures={<TrainingFigures stats={stats} history={history} />}
+        secondary={
+          <>
             <Segmented
-              label={p.draw}
-              value={paintClass === 1 ? "a" : "b"}
-              options={[
-                { value: "a", label: lab.classA },
-                { value: "b", label: lab.classB },
-              ]}
-              onChange={(value) => setPaintClass(value === "a" ? 1 : -1)}
+              label={p.data}
+              value={dataset}
+              options={datasetOptions}
+              onChange={handleDataset}
             />
-            <Button variant="ghost" onClick={() => setPoints([])} className="min-h-[44px]">
-              {p.clearPoints}
+            <p className="text-caption text-fg-faint">{hint}</p>
+            <LabSlider
+              label={p.noise}
+              value={noise}
+              min={0}
+              max={0.4}
+              step={0.02}
+              onChange={handleNoise}
+              format={(v) => formatNumber(v, 2)}
+            />
+            <Button variant="secondary" onClick={handleReshuffle} className="min-h-[44px] w-full">
+              {p.newSample}
             </Button>
-          </div>
-          <p className="text-caption text-fg-faint">{p.drawHint}</p>
-        </div>
-      }
-      primary={
-        <Transport
-          running={running}
-          onRun={() => setRunning((value) => !value)}
-          onStep={() => step(20)}
-          onReset={handleRestart}
-          runLabel={p.train}
-          stepDisabled={running}
-        />
-      }
-      figures={<TrainingFigures stats={stats} history={history} />}
-      secondary={
-        <>
-          <Segmented
-            label={p.data}
-            value={dataset}
-            options={datasetOptions}
-            onChange={handleDataset}
-          />
-          <p className="text-caption text-fg-faint">{hint}</p>
-          <LabSlider
-            label={p.noise}
-            value={noise}
-            min={0}
-            max={0.4}
-            step={0.02}
-            onChange={handleNoise}
-            format={(v) => formatNumber(v, 2)}
-          />
-          <Button variant="secondary" onClick={handleReshuffle} className="min-h-[44px] w-full">
-            {p.newSample}
-          </Button>
 
-          <Segmented
-            label={p.activation}
-            value={activation}
-            options={activationOptions}
-            onChange={setActivation}
-          />
-          <LabSlider
-            label={p.learningRate}
-            value={rateIndex}
-            min={0}
-            max={LEARNING_RATES.length - 1}
-            onChange={setRateIndex}
-            format={(i) => String(LEARNING_RATES[i] ?? 0.03)}
-          />
-          <p className="text-caption text-fg-faint">
-            <Kbd>Space</Kbd> {lab.keyboardHint.trainPause} <Kbd>R</Kbd> {lab.keyboardHint.restart}
-          </p>
-        </>
-      }
-    />
+            <Segmented
+              label={p.activation}
+              value={activation}
+              options={activationOptions}
+              onChange={setActivation}
+            />
+            <LabSlider
+              label={p.learningRate}
+              value={rateIndex}
+              min={0}
+              max={LEARNING_RATES.length - 1}
+              onChange={setRateIndex}
+              format={(i) => String(LEARNING_RATES[i] ?? 0.03)}
+            />
+            <p className="text-caption text-fg-faint">
+              <Kbd>Space</Kbd> {lab.keyboardHint.trainPause} <Kbd>R</Kbd> {lab.keyboardHint.restart}
+            </p>
+          </>
+        }
+      />
+    </div>
   );
 }

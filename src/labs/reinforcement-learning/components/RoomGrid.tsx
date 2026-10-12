@@ -91,103 +91,115 @@ export function RoomGrid({
           className="absolute inset-0 grid grid-cols-6 grid-rows-6 gap-1"
           {...(interactive ? { role: "grid", "aria-label": label } : { "aria-hidden": true })}
         >
-          {cells.map((index) => {
-            const kind = cellKind(index);
-            const isWallCell = kind === "wall";
-            const value = values?.[index] ?? 0;
-            const action = policy?.[index] ?? -1;
-            const tint = largest > 0 ? Math.min(1, Math.abs(value) / largest) : 0;
+          {/* One row element per row of the room: a grid's cells have to sit
+              in rows for a screen reader to move by row and column. The rows
+              take no box of their own, so the layout is unchanged. */}
+          {Array.from({ length: ROWS }, (_, row) => (
+            <div key={row} role={interactive ? "row" : undefined} className="contents">
+              {cells.slice(row * COLS, (row + 1) * COLS).map((index) => {
+                const kind = cellKind(index);
+                const isWallCell = kind === "wall";
+                const value = values?.[index] ?? 0;
+                const action = policy?.[index] ?? -1;
+                const tint = largest > 0 ? Math.min(1, Math.abs(value) / largest) : 0;
 
-            const body = (
-              <>
-                {!isWallCell && values && (
-                  <span
-                    aria-hidden
-                    className={cn(
-                      "absolute inset-0 rounded-sm",
-                      value > 0 ? "bg-signal-green" : "bg-signal-rose",
+                const body = (
+                  <>
+                    {!isWallCell && values && (
+                      <span
+                        aria-hidden
+                        className={cn(
+                          "absolute inset-0 rounded-sm",
+                          value > 0 ? "bg-signal-green" : "bg-signal-rose",
+                        )}
+                        style={{ opacity: tint * 0.28 }}
+                      />
                     )}
-                    style={{ opacity: tint * 0.28 }}
-                  />
-                )}
-                {!isWallCell && (visits.get(index) ?? 0) > 0 && (
-                  <span aria-hidden className="absolute inset-0 rounded-sm bg-accent/15" />
-                )}
-                {index === GOAL && (
-                  <span aria-hidden className="relative font-mono text-body text-signal-green">
-                    ⌂
-                  </span>
-                )}
-                {index === TILE && (
-                  <span aria-hidden className="relative font-mono text-body text-signal-amber">
-                    ✦
-                  </span>
-                )}
-                {!isWallCell && index !== GOAL && index !== TILE && action >= 0 && (
-                  <span aria-hidden className="relative font-mono text-body leading-none text-fg">
-                    {ARROWS[action as 0 | 1 | 2 | 3]}
-                  </span>
-                )}
-                {!isWallCell && values && index !== GOAL && (
-                  <span
-                    aria-hidden
-                    className="relative mt-0.5 font-mono text-[0.55rem] leading-none tabular-nums text-fg-muted"
-                  >
-                    {value.toFixed(1)}
-                  </span>
-                )}
-              </>
-            );
-
-            const shared = cn(
-              "relative flex flex-col items-center justify-center rounded-sm",
-              KIND_CLASS[kind],
-              index === START && kind !== "tile" && kind !== "goal" && "ring-1 ring-line/20",
-              selected === index && "ring-2 ring-accent",
-            );
-
-            if (!interactive) {
-              // Still draws its contents: a non-interactive room is a picture
-              // of the policy, not an empty board. Only the wrapper's role
-              // changes — the whole grid is described by one label instead of
-              // thirty-six focusable cells nobody can act on.
-              return (
-                <div key={index} aria-hidden className={shared}>
-                  {body}
-                </div>
-              );
-            }
-
-            const spoken = isWallCell
-              ? copy.learn.wallCell(rowOf(index) + 1, colOf(index) + 1)
-              : copy.learn.cellLabel(
-                  rowOf(index) + 1,
-                  colOf(index) + 1,
-                  value.toFixed(2),
-                  action < 0 ? copy.learn.noAction : copy.learn.actions[action as 0 | 1 | 2 | 3],
+                    {!isWallCell && (visits.get(index) ?? 0) > 0 && (
+                      <span aria-hidden className="absolute inset-0 rounded-sm bg-accent/15" />
+                    )}
+                    {index === GOAL && (
+                      <span aria-hidden className="relative font-mono text-body text-signal-green">
+                        ⌂
+                      </span>
+                    )}
+                    {index === TILE && (
+                      <span aria-hidden className="relative font-mono text-body text-signal-amber">
+                        ✦
+                      </span>
+                    )}
+                    {!isWallCell && index !== GOAL && index !== TILE && action >= 0 && (
+                      <span
+                        aria-hidden
+                        className="relative font-mono text-body leading-none text-fg"
+                      >
+                        {ARROWS[action as 0 | 1 | 2 | 3]}
+                      </span>
+                    )}
+                    {!isWallCell && values && index !== GOAL && (
+                      <span
+                        aria-hidden
+                        className="relative mt-0.5 font-mono text-[0.55rem] leading-none tabular-nums text-fg-muted"
+                      >
+                        {value.toFixed(1)}
+                      </span>
+                    )}
+                  </>
                 );
 
-            return (
-              <button
-                key={index}
-                type="button"
-                role="gridcell"
-                aria-selected={selected === index}
-                aria-label={spoken}
-                tabIndex={selected === index ? 0 : -1}
-                disabled={isWallCell}
-                onClick={() => onSelect(index)}
-                className={cn(
-                  shared,
-                  "min-h-11 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
-                  "focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950",
-                  isWallCell && "cursor-default",
-                )}
-              >
-                {body}
-              </button>
-            );
-          })}
+                const shared = cn(
+                  "relative flex flex-col items-center justify-center rounded-sm",
+                  KIND_CLASS[kind],
+                  index === START && kind !== "tile" && kind !== "goal" && "ring-1 ring-line/20",
+                  selected === index && "ring-2 ring-accent",
+                );
+
+                if (!interactive) {
+                  // Still draws its contents: a non-interactive room is a picture
+                  // of the policy, not an empty board. Only the wrapper's role
+                  // changes — the whole grid is described by one label instead of
+                  // thirty-six focusable cells nobody can act on.
+                  return (
+                    <div key={index} aria-hidden className={shared}>
+                      {body}
+                    </div>
+                  );
+                }
+
+                const spoken = isWallCell
+                  ? copy.learn.wallCell(rowOf(index) + 1, colOf(index) + 1)
+                  : copy.learn.cellLabel(
+                      rowOf(index) + 1,
+                      colOf(index) + 1,
+                      value.toFixed(2),
+                      action < 0
+                        ? copy.learn.noAction
+                        : copy.learn.actions[action as 0 | 1 | 2 | 3],
+                    );
+
+                return (
+                  <button
+                    key={index}
+                    type="button"
+                    role="gridcell"
+                    aria-selected={selected === index}
+                    aria-label={spoken}
+                    tabIndex={selected === index ? 0 : -1}
+                    disabled={isWallCell}
+                    onClick={() => onSelect(index)}
+                    className={cn(
+                      shared,
+                      "min-h-11 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
+                      "focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950",
+                      isWallCell && "cursor-default",
+                    )}
+                  >
+                    {body}
+                  </button>
+                );
+              })}
+            </div>
+          ))}
         </div>
 
         {/* The trail and the agent, on top of everything. */}

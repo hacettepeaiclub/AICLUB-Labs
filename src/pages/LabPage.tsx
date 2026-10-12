@@ -9,6 +9,7 @@ import { findLab } from "@/labs/registry";
 import { RENAMED } from "@/labs/renamed";
 import { recordVisit } from "@/labs/visits";
 import { NotFoundPage } from "./NotFoundPage";
+import { labPath } from "@/lib/paths";
 
 function LabLoading() {
   const t = useT();
@@ -41,7 +42,7 @@ export function LabPage() {
 
   // An address from before the labs were renamed: go to where it lives now.
   const moved = slug ? RENAMED[slug] : undefined;
-  if (!lab && moved) return <Navigate to={`/labs/${moved}`} replace />;
+  if (!lab && moved) return <Navigate to={labPath(moved)} replace />;
   if (!lab) return <NotFoundPage />;
 
   const { meta, Component } = lab;

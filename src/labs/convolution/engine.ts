@@ -224,9 +224,6 @@ export function shift(image: Grid, dx: number, dy: number): Grid {
   return out;
 }
 
-/** Same-size output, for an odd kernel at stride 1: padding (k − 1) / 2. */
-export const samePadding = (kernel: number): number => (kernel - 1) / 2;
-
 // --------------------------------------------------------------- readings --
 
 export function sum(g: Grid): number {

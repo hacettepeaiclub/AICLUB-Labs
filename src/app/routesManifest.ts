@@ -2,6 +2,7 @@ import { en } from "@/i18n/en";
 import { labs } from "@/labs/registry";
 import { headTitle, homeMeta, labMeta, SITE_URL } from "./siteMeta";
 import type { PageMeta } from "./siteMeta";
+import { labPath } from "@/lib/paths";
 
 /**
  * Every URL this site serves, with the head each one should be given.
@@ -45,7 +46,7 @@ export const routes: Route[] = [
   ...labs.map((lab): Route => {
     const copy = en.labMeta[lab.meta.slug as keyof typeof en.labMeta];
     return {
-      path: `/labs/${lab.meta.slug}`,
+      path: labPath(lab.meta.slug),
       meta: labMeta(
         lab.meta.slug,
         headTitle(copy?.title ?? lab.meta.title, copy?.term),

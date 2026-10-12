@@ -1,4 +1,4 @@
-import type { Language } from "./preferences";
+import { labPath } from "@/lib/paths";
 
 /**
  * What every page of this site says about itself.
@@ -79,7 +79,7 @@ export function labMeta(slug: string, title: string, description: string): PageM
     title: `${title} — ${SITE_NAME}`,
     description,
     image: absolute(`/og/${slug}.jpg`),
-    url: absolute(`/labs/${slug}`),
+    url: absolute(labPath(slug)),
     type: "article",
   };
 }
@@ -94,6 +94,3 @@ export function notFoundMeta(title: string, description: string): PageMeta {
     type: "website",
   };
 }
-
-/** The document language a given page is written in. */
-export const htmlLang = (language: Language): string => language;

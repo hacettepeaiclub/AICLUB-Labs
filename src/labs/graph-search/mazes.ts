@@ -58,11 +58,6 @@ export interface PresetInfo {
   label: string;
 }
 
-export const WALL_PRESETS: readonly PresetInfo[] = [
-  { id: "simple", label: "Barrier" },
-  { id: "detour", label: "Long way round" },
-];
-
 const fill = (grid: Grid, r0: number, c0: number, r1: number, c1: number, value: number): void => {
   for (let r = r0; r <= r1; r++) {
     for (let c = c0; c <= c1; c++) {

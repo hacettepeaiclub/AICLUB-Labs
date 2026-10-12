@@ -176,10 +176,6 @@ export const ARROWS: Readonly<Record<Action, string>> = {
 
 // ------------------------------------------------------------- checkpoints ---
 
-/** The episode a scrubber position refers to. */
-export const episodeAt = (snapshots: readonly Snapshot[], index: number): number =>
-  snapshots[Math.max(0, Math.min(index, snapshots.length - 1))]?.episode ?? 0;
-
 /**
  * Whether the checkpoints really are denser early on.
  *

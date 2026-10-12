@@ -1,6 +1,6 @@
 export { LabShell } from "./LabShell";
 export { LabPlate } from "./LabPlate";
-export { ControlPanel, LabSlider, type LabSliderProps } from "./ControlPanel";
+export { LabSlider, type LabSliderProps } from "./ControlPanel";
 export { LabSection, type LabSectionProps } from "./LabSection";
 export { LabSources, type LabSourceEntry, type LabSourcesProps } from "./LabSources";
 export { LabRecap, type LabRecapProps } from "./LabRecap";

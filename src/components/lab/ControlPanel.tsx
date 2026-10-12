@@ -1,20 +1,5 @@
-import { useId, type CSSProperties, type ReactNode } from "react";
-import { useT } from "@/i18n";
+import { useId, type CSSProperties } from "react";
 import { cn } from "@/lib/cn";
-
-/** Container for a lab's controls — consistent panel across all experiments. */
-export function ControlPanel({ children, className }: { children: ReactNode; className?: string }) {
-  const t = useT();
-  return (
-    <div
-      role="group"
-      aria-label={t.common.controlsLabel}
-      className={cn("card-surface flex flex-wrap items-end gap-x-6 gap-y-4 p-5", className)}
-    >
-      {children}
-    </div>
-  );
-}
 
 export interface LabSliderProps {
   label: string;

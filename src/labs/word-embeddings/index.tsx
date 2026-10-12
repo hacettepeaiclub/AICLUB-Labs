@@ -198,6 +198,10 @@ export default function EmbeddingUniverse() {
         // honest shape for a hint — there is more of this than you can see.
         <div
           aria-hidden
+          // `inert` as well as `aria-hidden`: hidden from a screen reader is
+          // not the same as out of the tab order, and the map's own buttons
+          // were still reachable with Tab inside a region nothing announced.
+          {...{ inert: "" }}
           className="pointer-events-none -mb-2 max-h-[20rem] select-none overflow-hidden opacity-40"
         >
           <UniverseMap

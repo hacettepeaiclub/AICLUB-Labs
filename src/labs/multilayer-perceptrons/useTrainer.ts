@@ -29,6 +29,19 @@ const EMPTY_STATS: TrainerStats = { epoch: 0, loss: 0, accuracy: 0, testLoss: 0,
 const PUBLISH_INTERVAL_SEC = 0.1;
 const HISTORY_LENGTH = 180;
 
+/**
+ * The most a frame may spend training, in milliseconds.
+ *
+ * `epochsPerFrame` is how fast the visitor asked for; this is how fast the
+ * machine can afford. A frame trains up to that many epochs and stops early
+ * once this much time has gone, always finishing at least one. On a laptop
+ * the budget is never reached and nothing changes. On a slow phone, three
+ * epochs of a wide network used to take over 100 ms a frame, so the page
+ * froze while it trained; now it trains more slowly and stays responsive,
+ * and the epoch counter says how far it really got.
+ */
+const FRAME_BUDGET_MS = 8;
+
 export interface Trainer {
   /** The live network. Read it from rAF callbacks; never render from it directly. */
   netRef: MutableRefObject<Mlp>;
@@ -101,8 +114,10 @@ export function useTrainer(
       const { learningRate, batchSize, l2, epochsPerFrame } = configRef.current;
       const points = trainRef.current;
 
+      const start = performance.now();
       for (let i = 0; i < epochsPerFrame; i++) {
         trainEpoch(net, points, learningRate, batchSize, l2);
+        if (performance.now() - start > FRAME_BUDGET_MS) break;
       }
 
       sincePublishRef.current += dtSec;

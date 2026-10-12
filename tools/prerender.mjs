@@ -34,11 +34,14 @@
  */
 
 import { createServer } from "vite";
+import { createHash } from "node:crypto";
 import { existsSync } from "node:fs";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 
-const DIST = path.resolve("dist");
+// The same folder Vite just built into: `OUT_DIR` when the deploy builds
+// beside the live site, `dist` otherwise.
+const DIST = path.resolve(process.env.OUT_DIR ?? "dist");
 
 const escape = (value) =>
   String(value)
@@ -46,6 +49,82 @@ const escape = (value) =>
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
+
+/**
+ * The page's security policy, written into every page the build produces.
+ *
+ * The server sends no security headers of its own, so the policy travels in
+ * the page as a `<meta http-equiv>`, which browsers apply the same way except
+ * for `frame-ancestors` (see docs/DEPLOY.md for the header the server should
+ * add). It allows exactly what the site does: its own files, the analytics
+ * script and the address it reports to, a worker of its own, and the inline
+ * scripts in this very page, each allowed by the hash of its own text, so
+ * editing one cannot silently break it or open the door to any other.
+ * `upgrade-insecure-requests` turns any http request the page makes into an
+ * https one.
+ */
+const ANALYTICS = ["https://cloud.umami.is", "https://gateway.umami.is"];
+
+function securityPolicy(html) {
+  const hashes = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(
+    ([, body]) => `'sha256-${createHash("sha256").update(body, "utf8").digest("base64")}'`,
+  );
+  const policy =
+    [
+      "default-src 'self'",
+      `script-src 'self' ${ANALYTICS[0]} ${hashes.join(" ")}`.trim(),
+      // React writes style attributes, and the design tokens set custom
+      // properties inline; neither can carry a hash.
+      "style-src 'self' 'unsafe-inline'",
+      "img-src 'self' data: blob:",
+      "font-src 'self'",
+      `connect-src 'self' ${ANALYTICS.join(" ")}`,
+      "worker-src 'self'",
+      "object-src 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
+      "upgrade-insecure-requests",
+      // A closing semicolon on purpose. Some antivirus products append their
+      // own directive to a page's policy without one, and on a policy ending in
+      // `upgrade-insecure-requests` that turned the pair into one malformed
+      // directive and a console error on every page.
+    ].join("; ") + ";";
+  const tags = [
+    `<meta http-equiv="Content-Security-Policy" content="${escape(policy)}" />`,
+    '<meta name="referrer" content="strict-origin-when-cross-origin" />',
+  ];
+  // Straight after the charset, so the policy is in force before any script.
+  return html.replace(/(<meta charset="[^"]*" \/>)/i, `$1\n    ${tags.join("\n    ")}`);
+}
+
+/**
+ * `<link rel="modulepreload">` for a lab's own code.
+ *
+ * A lab is lazy-loaded, so its chunk used to be requested only after the
+ * entry bundle had downloaded, run, and routed: two round trips one after
+ * the other before the lab could draw. The page already knows which lab it
+ * is, so it names that lab's chunks itself and the browser fetches them
+ * alongside the entry. Read from Vite's manifest, so a renamed chunk can
+ * never leave a stale address behind; the entry's own chunks are already
+ * preloaded by Vite and are left out.
+ */
+function labPreloads(manifest, slug) {
+  const key = `src/labs/${slug}/index.tsx`;
+  if (!manifest[key]) return "";
+  const entry = Object.values(manifest).find((chunk) => chunk.isEntry);
+  const skip = new Set([entry?.file, ...(entry?.imports ?? []).map((k) => manifest[k]?.file)]);
+  const files = new Set();
+  const walk = (k) => {
+    const chunk = manifest[k];
+    if (!chunk || files.has(chunk.file) || skip.has(chunk.file)) return;
+    files.add(chunk.file);
+    for (const dep of chunk.imports ?? []) walk(dep);
+  };
+  walk(key);
+  return [...files]
+    .map((file) => `    <link rel="modulepreload" crossorigin href="/${file}" />`)
+    .join("\n");
+}
 
 /** The tags a route contributes, as one indented block. */
 function head(route) {
@@ -168,7 +247,17 @@ async function main() {
     await vite.close();
   }
 
-  const template = await readFile(path.join(DIST, "index.html"), "utf8");
+  // The template's own description is the dev server's; every route writes
+  // its own below, and a page with two leaves the choice to the crawler.
+  const template = (await readFile(path.join(DIST, "index.html"), "utf8")).replace(
+    /\s*<meta\s+name="description"[^>]*\/>/,
+    "",
+  );
+
+  const manifestPath = path.join(DIST, ".vite", "manifest.json");
+  const manifest = existsSync(manifestPath)
+    ? JSON.parse(await readFile(manifestPath, "utf8"))
+    : {};
 
   let fallbacks = 0;
   for (const route of routes) {
@@ -181,8 +270,10 @@ async function main() {
       fallbacks++;
     }
 
-    const withHead = template
-      .replace("</head>", `${head(route)}\n  </head>`)
+    const slug = route.path.startsWith("/labs/") ? route.path.split("/")[2] : null;
+    const preloads = slug ? labPreloads(manifest, slug) : "";
+    const withHead = securityPolicy(template)
+      .replace("</head>", `${head(route)}${preloads ? `\n${preloads}` : ""}\n  </head>`)
       .replace("<title>AI Club Labs</title>", `<title>${escape(route.meta.title)}</title>`)
       .replace('<div id="root"></div>', `<div id="root"></div>\n${noscript(route)}`);
 
@@ -200,10 +291,16 @@ async function main() {
   for (const [from, to] of Object.entries(renamed)) {
     const file = path.join(DIST, "labs", from, "index.html");
     await mkdir(path.dirname(file), { recursive: true });
-    await writeFile(file, redirectPage(`/labs/${to}`, `${siteUrl}/labs/${to}`), "utf8");
+    await writeFile(
+      file,
+      securityPolicy(redirectPage(`/labs/${to}/`, `${siteUrl}/labs/${to}/`)),
+      "utf8",
+    );
   }
 
   await writeFile(path.join(DIST, "sitemap.xml"), sitemap(routes, siteUrl), "utf8");
+  // Its work is done; the server has no reason to publish the file map.
+  await rm(path.join(DIST, ".vite"), { recursive: true, force: true });
   await writeFile(path.join(DIST, "robots.txt"), robots(siteUrl), "utf8");
 
   const indexed = routes.filter((r) => r.indexed).length;
@@ -211,7 +308,9 @@ async function main() {
     `prerendered ${routes.length} routes (${indexed} indexed), ${Object.keys(renamed).length} redirects from old addresses, sitemap.xml and robots.txt → ${siteUrl}`,
   );
   if (fallbacks > 0) {
-    console.log(`${fallbacks} route(s) have no card of their own yet and use /og/home.jpg — see docs/DEPLOY.md`);
+    console.log(
+      `${fallbacks} route(s) have no card of their own yet and use /og/home.jpg — see docs/DEPLOY.md`,
+    );
   }
 }
 

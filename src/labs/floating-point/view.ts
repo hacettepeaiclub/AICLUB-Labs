@@ -4,7 +4,6 @@ import {
   exactDecimal,
   scientific,
   type FloatFormat,
-  type Parsed,
   type Rational,
 } from "./engine";
 
@@ -104,10 +103,6 @@ export function divergence(
   }
   return { text, from: null };
 }
-
-/** The exact value a typed number stands for, when it has one. */
-export const typedValue = (parsed: Parsed | null): Rational | null =>
-  parsed?.kind === "finite" ? parsed.value : null;
 
 /** |stored − typed| ÷ |typed|, or null where that means nothing. */
 export function relative(error: Rational, typed: Rational): Rational | null {
