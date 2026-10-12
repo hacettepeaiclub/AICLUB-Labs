@@ -36,7 +36,7 @@
 import { createServer } from "vite";
 import { createHash } from "node:crypto";
 import { existsSync } from "node:fs";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 // The same folder Vite just built into: `OUT_DIR` when the deploy builds
@@ -95,6 +95,35 @@ function securityPolicy(html) {
   ];
   // Straight after the charset, so the policy is in force before any script.
   return html.replace(/(<meta charset="[^"]*" \/>)/i, `$1\n    ${tags.join("\n    ")}`);
+}
+
+/**
+ * `<link rel="modulepreload">` for a lab's own code.
+ *
+ * A lab is lazy-loaded, so its chunk used to be requested only after the
+ * entry bundle had downloaded, run, and routed: two round trips one after
+ * the other before the lab could draw. The page already knows which lab it
+ * is, so it names that lab's chunks itself and the browser fetches them
+ * alongside the entry. Read from Vite's manifest, so a renamed chunk can
+ * never leave a stale address behind; the entry's own chunks are already
+ * preloaded by Vite and are left out.
+ */
+function labPreloads(manifest, slug) {
+  const key = `src/labs/${slug}/index.tsx`;
+  if (!manifest[key]) return "";
+  const entry = Object.values(manifest).find((chunk) => chunk.isEntry);
+  const skip = new Set([entry?.file, ...(entry?.imports ?? []).map((k) => manifest[k]?.file)]);
+  const files = new Set();
+  const walk = (k) => {
+    const chunk = manifest[k];
+    if (!chunk || files.has(chunk.file) || skip.has(chunk.file)) return;
+    files.add(chunk.file);
+    for (const dep of chunk.imports ?? []) walk(dep);
+  };
+  walk(key);
+  return [...files]
+    .map((file) => `    <link rel="modulepreload" crossorigin href="/${file}" />`)
+    .join("\n");
 }
 
 /** The tags a route contributes, as one indented block. */
@@ -225,6 +254,11 @@ async function main() {
     "",
   );
 
+  const manifestPath = path.join(DIST, ".vite", "manifest.json");
+  const manifest = existsSync(manifestPath)
+    ? JSON.parse(await readFile(manifestPath, "utf8"))
+    : {};
+
   let fallbacks = 0;
   for (const route of routes) {
     // A lab whose card has not been made yet would advertise an image that
@@ -236,8 +270,10 @@ async function main() {
       fallbacks++;
     }
 
+    const slug = route.path.startsWith("/labs/") ? route.path.split("/")[2] : null;
+    const preloads = slug ? labPreloads(manifest, slug) : "";
     const withHead = securityPolicy(template)
-      .replace("</head>", `${head(route)}\n  </head>`)
+      .replace("</head>", `${head(route)}${preloads ? `\n${preloads}` : ""}\n  </head>`)
       .replace("<title>AI Club Labs</title>", `<title>${escape(route.meta.title)}</title>`)
       .replace('<div id="root"></div>', `<div id="root"></div>\n${noscript(route)}`);
 
@@ -263,6 +299,8 @@ async function main() {
   }
 
   await writeFile(path.join(DIST, "sitemap.xml"), sitemap(routes, siteUrl), "utf8");
+  // Its work is done; the server has no reason to publish the file map.
+  await rm(path.join(DIST, ".vite"), { recursive: true, force: true });
   await writeFile(path.join(DIST, "robots.txt"), robots(siteUrl), "utf8");
 
   const indexed = routes.filter((r) => r.indexed).length;
