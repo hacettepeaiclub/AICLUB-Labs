@@ -5,3 +5,5 @@ dist
 *.tsbuildinfo
 .idea
 references/
+dist-next
+dist-old

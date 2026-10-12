@@ -10,6 +10,10 @@ export default defineConfig({
     },
   },
   build: {
+    // `OUT_DIR` lets the server build the next version beside the live one
+    // and swap the two in one step (see .github/workflows/deploy.yml), so the
+    // site is never served half-built. Locally it is always `dist`.
+    outDir: process.env.OUT_DIR ?? "dist",
     // Each lab is lazy-loaded; keep vendor chunks stable so adding a lab
     // never invalidates the framework bundle.
     rollupOptions: {
