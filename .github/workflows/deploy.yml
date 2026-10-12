@@ -23,14 +23,17 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
-          # The next version is built beside the live one and swapped in with
-          # two renames, so a visitor never meets a half-written dist/: the
-          # build used to run inside the folder the server was serving, and
-          # for the length of it pages and bundles went missing. `npm ci`
-          # installs exactly the lockfile and never rewrites it, which a
-          # plain `npm install` could, leaving the next `git pull` blocked by
-          # a local change. `set -e` stops at the first failure with the old
-          # version still live.
+          # The next version is built beside the live one, then copied into the
+          # live dist/ in place. The directory itself must never be replaced:
+          # the web server runs in a container that mounts dist/, and a mount
+          # holds the directory it was given, not its name. Renaming a new
+          # dist/ into place (as one version of this script did) left the
+          # container serving the deleted old directory, empty, until it was
+          # restarted. rsync writes into the same directory: new files first,
+          # stale ones deleted only after everything new has arrived, so a page
+          # never points at a bundle that is not there yet. `npm ci` installs
+          # exactly the lockfile and never rewrites it. `set -e` stops at the
+          # first failure with the old version still live.
           script: |
             set -e
             cd ~/labs
@@ -38,7 +41,12 @@ jobs:
             npm ci
             rm -rf dist-next
             OUT_DIR=dist-next npm run build
-            rm -rf dist-old
-            if [ -d dist ]; then mv dist dist-old; fi
-            mv dist-next dist
-            rm -rf dist-old
+            mkdir -p dist
+            if command -v rsync >/dev/null 2>&1; then
+              rsync -a --delete-after dist-next/ dist/
+            else
+              # No rsync: overwrite in place and leave stale hashed bundles,
+              # which nothing links to, rather than empty the directory first.
+              cp -a dist-next/. dist/
+            fi
+            rm -rf dist-next
