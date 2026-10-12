@@ -1,9 +1,10 @@
-import { Figure, Stage } from "@/components/lab";
+import { Figure, LabSlider, Stage } from "@/components/lab";
 import { Segmented } from "@/components/ui";
 import { useLabCopy } from "@/i18n/labs";
-import { TEST_TYPES, type Params, type Result, type TestType } from "../engine";
-import { prob } from "../view";
+import { BOUNDS, TEST_TYPES, type Params, type Result, type TestType } from "../engine";
+import { coord, prob } from "../view";
 import { DistributionPlot } from "./DistributionPlot";
+import { SecondaryControls } from "./SecondaryControls";
 
 export interface BetaStageProps {
   result: Result;
@@ -27,7 +28,7 @@ export interface BetaStageProps {
 export function BetaStage({ result, onChange }: BetaStageProps) {
   const copy = useLabCopy("hypothesis-testing");
   const b = copy.betaSection;
-  const { testType } = result.params;
+  const { testType, mu1 } = result.params;
 
   return (
     <Stage
@@ -36,15 +37,7 @@ export function BetaStage({ result, onChange }: BetaStageProps) {
       controls="stack"
       caption={b.caption}
       announcement={b.announce(prob(result.beta), prob(result.power))}
-      viewport={
-        <DistributionPlot
-          result={result}
-          handles={{
-            mu1: (value) => onChange({ mu1: value }),
-            critical: (value) => onChange({ alpha: value }),
-          }}
-        />
-      }
+      viewport={<DistributionPlot result={result} />}
       readout={
         result.warning ? (
           // Not styled as an error: it is a true statement about a legitimate
@@ -71,7 +64,15 @@ export function BetaStage({ result, onChange }: BetaStageProps) {
             options={TEST_TYPES.map((type) => ({ value: type, label: copy.testType[type] }))}
             onChange={(next: TestType) => onChange({ testType: next })}
           />
-          <p className="text-body-sm text-fg-muted">{b.dragHint}</p>
+          <LabSlider
+            label={b.mu1Label}
+            value={Math.round(mu1 * 10)}
+            min={Math.round(BOUNDS.mu1.min * 10)}
+            max={Math.round(BOUNDS.mu1.max * 10)}
+            onChange={(value) => onChange({ mu1: value / 10 })}
+            format={() => coord(mu1)}
+            valueText={() => b.mu1Value(coord(mu1))}
+          />
         </div>
       }
       figures={
@@ -85,6 +86,10 @@ export function BetaStage({ result, onChange }: BetaStageProps) {
           />
           <Figure label={b.alphaLabel} value={prob(result.params.alpha)} />
         </>
+      }
+      secondaryLabel={copy.controls.moreLabel}
+      secondary={
+        <SecondaryControls result={result} onChange={onChange} show={["alpha", "mu0", "sigma"]} />
       }
     />
   );

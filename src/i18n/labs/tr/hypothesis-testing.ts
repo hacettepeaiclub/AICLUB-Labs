@@ -24,11 +24,6 @@ const copy: typeof en = {
     h1: "H\u2081",
     alphaTag: (value: string) => `\u03b1 = ${value}`,
     betaTag: (value: string) => `\u03b2 = ${value}`,
-    handleMu1: "H\u2081: eksen boyunca s\u00fcr\u00fckleyin",
-    handleMu1Value: (value: string) => `\u03bc\u2081 = ${value}`,
-    handleCritical: "Kritik de\u011fer: eksen boyunca s\u00fcr\u00fckleyin",
-    handleCriticalValue: (critical: string, alpha: string) =>
-      `s\u0131n\u0131r ${critical}, \u03b1 = ${alpha}`,
     summary: (
       mu0: string,
       mu1: string,
@@ -61,8 +56,9 @@ const copy: typeof en = {
     question: "\u0130ki hipotez birbirinden uzakla\u015ft\u0131\u011f\u0131nda ne olur?",
     caption:
       "Ayn\u0131 anak\u00fctle ortalamas\u0131 hakk\u0131nda iki iddia. Hi\u00e7bir e\u011fri verinin kendisi de\u011fildir: her biri X\u0304'in \u00f6rnekleme da\u011f\u0131l\u0131m\u0131d\u0131r, yani o iddia do\u011fruysa n \u00f6l\u00e7\u00fcm\u00fcn ortalamas\u0131n\u0131n nas\u0131l davranaca\u011f\u0131d\u0131r [Casella & Berger, 2. bask\u0131, s. 213-214, 218].",
-    mu1Hint:
-      "Grafikteki H\u2081'i tutup s\u00fcr\u00fckleyin: \u03bc\u2080 \u00fczerinden ge\u00e7irip di\u011fer tarafa ta\u015f\u0131y\u0131n.",
+    mu1Label: "\u03bc\u2081: alternatifi hareket ettirin",
+    mu1Value: (value: string) => `\u03bc\u2081 = ${value}`,
+    mu1Hint: "\u03bc\u2080 \u00fczerinden ge\u00e7irip di\u011fer tarafa ta\u015f\u0131y\u0131n.",
     mu0Label: "\u03bc\u2080",
     mu1Figure: "\u03bc\u2081",
     gapLabel: "Aral\u0131k",
@@ -77,9 +73,10 @@ const copy: typeof en = {
       "Tek bir reddetme b\u00f6lgesi; i\u00e7ine d\u00fc\u015fen her \u015fey kan\u0131t say\u0131l\u0131r.",
     lede: "Bir testin kurala ihtiyac\u0131 vard\u0131r: X\u0304, \u03bc\u2080'dan ne kadar uza\u011fa d\u00fc\u015ferse H\u2080 reddedilir? Reddetmeye yol a\u00e7an de\u011ferler reddetme b\u00f6lgesini olu\u015fturur (Casella ve Berger bunu kritik b\u00f6lge olarak da adland\u0131r\u0131r); kritik de\u011fer ise bu b\u00f6lgenin ba\u015flad\u0131\u011f\u0131 noktad\u0131r. Anlaml\u0131l\u0131k d\u00fczeyi \u03b1, \u03bc = \u03bc\u2080 iken X\u0304'in bu b\u00f6lgeye d\u00fc\u015fme olas\u0131l\u0131\u011f\u0131d\u0131r [Casella & Berger, 2. bask\u0131, Tan\u0131m 8.1.3, s. 374; Tan\u0131m 8.3.5-8.3.6, s. 385].",
     caption:
-      "\u03b1 veriden \u00f6nce sabitlenir: \u03bc = \u03bc\u2080 iken X\u0304'in reddetme b\u00f6lgesine d\u00fc\u015fme olas\u0131l\u0131\u011f\u0131d\u0131r. Onu de\u011fi\u015ftirmenin e\u011friyi de\u011fil kritik de\u011feri oynatmas\u0131n\u0131n nedeni de budur. H\u2080 do\u011fruyken onu reddetmek I. tip hatad\u0131r [Casella & Berger, 2. bask\u0131, B\u00f6l\u00fcm 8.3.1, s. 382-383].",
-    alphaHint:
-      "Kesikli \u00e7izgiyi s\u00fcr\u00fckleyin. H\u2080'\u0131n onun \u00f6tesinde kalan taral\u0131 alan\u0131 tam olarak \u03b1'd\u0131r ve say\u0131 elinizi izler.",
+      "\u03b1 veriden \u00f6nce sabitlenir: \u03bc = \u03bc\u2080 iken X\u0304'in reddetme b\u00f6lgesine d\u00fc\u015fme olas\u0131l\u0131\u011f\u0131d\u0131r. Kayd\u0131r\u0131c\u0131n\u0131n e\u011friyi de\u011fil kritik de\u011feri oynatmas\u0131n\u0131n nedeni de budur. H\u2080 do\u011fruyken onu reddetmek I. tip hatad\u0131r [Casella & Berger, 2. bask\u0131, B\u00f6l\u00fcm 8.3.1, s. 382-383].",
+    alphaLabel: "\u03b1: kabul etti\u011finiz I. tip hata oran\u0131",
+    alphaValue: (value: string) => `\u03b1 = ${value}`,
+    alphaHint: "Reddetme b\u00f6lgesindeki taral\u0131 alan tam olarak bu say\u0131d\u0131r.",
     alphaFigure: "\u03b1",
     criticalLabel: "Kritik de\u011fer",
     criticalHint: "\u03bc\u2080 \u00b1 z\u00b7SE",
@@ -103,8 +100,8 @@ const copy: typeof en = {
     caption:
       "\u03b2, bu belirli \u03bc\u2081 do\u011fruyken H\u2080'\u0131n reddedilmeme olas\u0131l\u0131\u011f\u0131d\u0131r, yani II. tip hata; g\u00fc\u00e7 ise 1 \u2212 \u03b2'd\u0131r. \u0130kisi de modelin \u00f6zellikleridir, herhangi bir \u00f6rneklemin de\u011fil. G\u00fc\u00e7 tek bir \u03bc\u2081 yerine olabilecek b\u00fct\u00fcn \u03bc de\u011ferleri boyunca hesapland\u0131\u011f\u0131nda g\u00fc\u00e7 fonksiyonu elde edilir [Casella & Berger, 2. bask\u0131, Tan\u0131m 8.3.1, s. 383].",
     testTypeLabel: "H\u2081 ne iddia ediyor",
-    dragHint:
-      "Hem H\u2081 hem kesikli \u00e7izgi s\u00fcr\u00fcklenebilir. \u00c7izgiyi bir y\u00f6ne itin: \u03b2 k\u00fc\u00e7\u00fcl\u00fcrken \u03b1 b\u00fcy\u00fcr. Sonra testi yanl\u0131\u015f y\u00f6ne \u00e7evirin.",
+    mu1Label: "\u03bc\u2081",
+    mu1Value: (value: string) => `\u03bc\u2081 = ${value}`,
     betaLabel: "\u03b2",
     betaHint: "H\u2081'in b\u00f6lge d\u0131\u015f\u0131ndaki alan\u0131",
     powerLabel: "G\u00fc\u00e7",
@@ -135,8 +132,6 @@ const copy: typeof en = {
     powerLabel: "G\u00fc\u00e7",
     betaLabel: "\u03b2",
     curveTitle: "\u00d6rneklem b\u00fcy\u00fckl\u00fc\u011f\u00fcne kar\u015f\u0131 g\u00fc\u00e7",
-    curveHint:
-      "n'yi se\u00e7mek i\u00e7in e\u011fri boyunca bas\u0131n ya da s\u00fcr\u00fckleyin.",
     eighty: "0,80",
     curveLabel: (from: number, to: number, first: string, last: string) =>
       `Di\u011fer her \u015fey sabitken n = ${from}'den n = ${to}'e g\u00fc\u00e7. ${first} civar\u0131nda ba\u015fl\u0131yor ve yakla\u015f\u0131k ${last} de\u011ferine ula\u015f\u0131yor.`,

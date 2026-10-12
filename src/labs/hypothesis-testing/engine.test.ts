@@ -8,7 +8,6 @@ import {
   N_DEFAULT,
   SIGMA_DEFAULT,
   TEST_TYPES,
-  alphaForCritical,
   computeBeta,
   computePower,
   directionWarning,
@@ -296,19 +295,5 @@ describe("the direction warning", () => {
     expect(wrong.warning).toBe("left");
     expect(wrong.power).toBeLessThan(0.001);
     expect(wrong.beta).toBeGreaterThan(0.999);
-  });
-});
-
-describe("dragging the boundary", () => {
-  it("is the exact inverse of placing it from α", () => {
-    for (const testType of ["right", "left", "two"] as const) {
-      for (const alpha of [0.01, 0.05, 0.1, 0.2]) {
-        const r = evaluate({ mu0: 0.5, mu1: 2, sigma: 1.5, alpha, n: 12, testType });
-        for (const c of [r.criticals.left, r.criticals.right]) {
-          if (c === undefined) continue;
-          expect(alphaForCritical(c, 0.5, r.se, testType)).toBeCloseTo(alpha, 9);
-        }
-      }
-    }
   });
 });
