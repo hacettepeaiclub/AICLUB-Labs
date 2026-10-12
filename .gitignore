@@ -5,3 +5,6 @@ dist
 *.tsbuildinfo
 .idea
 references/
+
+# Raw images waiting to be processed; the processed copies live under public/.
+assets-incoming/
