@@ -4,6 +4,7 @@ import { AdamStage } from "./components/AdamStage";
 import { CompareStage } from "./components/CompareStage";
 import { DescentChallenge } from "./components/DescentChallenge";
 import { DescentStage } from "./components/DescentStage";
+import { GolfGame } from "./components/GolfGame";
 import { GradientStage } from "./components/GradientStage";
 
 /**
@@ -53,6 +54,12 @@ export default function GradientDescent() {
           defaultLearningRateIndex={40}
           caption={g.rate.caption}
         />
+      </LabSection>
+
+      {/* Between the ceiling and the ways around it: play it. Every stroke
+          is one step of plain descent; the visitor holds only η. */}
+      <LabSection kicker={g.golf.kicker} title={g.golf.title} lede={g.golf.lede}>
+        <GolfGame />
       </LabSection>
 
       {/* 4 — A consequence: accumulated gradients, a wider stability range,

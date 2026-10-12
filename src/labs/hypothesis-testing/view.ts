@@ -68,10 +68,8 @@ export interface Scale {
  * this only matters while a value is mid-drag — but sharing it is the reason
  * the two areas can be compared by eye at all.
  */
-export function scaleOf(result: Result, frozen?: Domain): Scale {
-  // A drag holds the window still: if it refitted to every new μ1, the curve
-  // would slide out from under the pointer that is moving it.
-  const domain = frozen ?? domainOf(result);
+export function scaleOf(result: Result): Scale {
+  const domain = domainOf(result);
   const span = domain.hi - domain.lo || 1;
   const peak = normalPdf(0, 0, result.se) || 1;
   const baseline = PLOT.height - PLOT.padBottom;
@@ -85,10 +83,6 @@ export function scaleOf(result: Result, frozen?: Domain): Scale {
     y: (density) => baseline - (density / peak) * usable,
   };
 }
-
-/** Plot x back to data x: where on the axis a pointer is. */
-export const invert = (scale: Scale, plotX: number): number =>
-  scale.domain.lo + (plotX / PLOT.width) * (scale.domain.hi - scale.domain.lo);
 
 /** Evenly spaced x values across the domain, in data units. */
 export function samples(domain: Domain, count = SAMPLES): Float64Array {

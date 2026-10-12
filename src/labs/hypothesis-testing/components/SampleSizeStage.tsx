@@ -1,4 +1,3 @@
-import type { PointerEvent } from "react";
 import { Figure, LabSlider, Stage } from "@/components/lab";
 import { useLabCopy } from "@/i18n/labs";
 import { BOUNDS, evaluate, type Params, type Result } from "../engine";
@@ -49,13 +48,6 @@ export function SampleSizeStage({ result, onChange }: SampleSizeStageProps) {
     .join(" ");
   const markerX = ((n - BOUNDS.n.min) / (BOUNDS.n.max - BOUNDS.n.min)) * PLOT.width;
 
-  // The power curve is a control too: press or drag along it to pick n.
-  const nAt = (event: PointerEvent<HTMLDivElement>) => {
-    const box = event.currentTarget.getBoundingClientRect();
-    const fraction = Math.min(1, Math.max(0, (event.clientX - box.left) / box.width));
-    onChange({ n: Math.round(BOUNDS.n.min + fraction * (BOUNDS.n.max - BOUNDS.n.min)) });
-  };
-
   return (
     <Stage
       width="full"
@@ -63,71 +55,50 @@ export function SampleSizeStage({ result, onChange }: SampleSizeStageProps) {
       announcement={s.announce(n, coord(result.se), prob(result.power))}
       viewport={
         <div className="space-y-3">
-          <DistributionPlot
-            result={result}
-            handles={{
-              mu1: (value) => onChange({ mu1: value }),
-              critical: (value) => onChange({ alpha: value }),
-            }}
-          />
+          <DistributionPlot result={result} />
           <div className="rounded border border-line/10 bg-ink-950 p-3">
             <p className="text-overline uppercase text-fg-faint">{s.curveTitle}</p>
-            {/* Not focusable itself: the n slider beside it is the same
-                control for a keyboard. */}
-            <div
-              onPointerDown={(event) => {
-                if (event.button !== 0) return;
-                event.currentTarget.setPointerCapture(event.pointerId);
-                nAt(event);
-              }}
-              onPointerMove={(event) => {
-                if (event.currentTarget.hasPointerCapture(event.pointerId)) nAt(event);
-              }}
-              className="cursor-ew-resize touch-pan-y select-none"
+            <svg
+              viewBox={`0 0 ${PLOT.width} 34`}
+              preserveAspectRatio="none"
+              role="img"
+              aria-label={s.curveLabel(
+                BOUNDS.n.min,
+                BOUNDS.n.max,
+                prob(curve[0]?.power ?? 0),
+                prob(curve[curve.length - 1]?.power ?? 0),
+              )}
+              className="mt-2 h-20 w-full"
             >
-              <svg
-                viewBox={`0 0 ${PLOT.width} 34`}
-                preserveAspectRatio="none"
-                role="img"
-                aria-label={s.curveLabel(
-                  BOUNDS.n.min,
-                  BOUNDS.n.max,
-                  prob(curve[0]?.power ?? 0),
-                  prob(curve[curve.length - 1]?.power ?? 0),
-                )}
-                className="mt-2 h-20 w-full"
-              >
-                {/* 0.80 is a convention, not a law, so it is a quiet rule with
+              {/* 0.80 is a convention, not a law, so it is a quiet rule with
                   its own printed label rather than a highlighted threshold. */}
-                <line
-                  x1="0"
-                  y1={30 - 0.8 * 26}
-                  x2={PLOT.width}
-                  y2={30 - 0.8 * 26}
-                  className="stroke-line/40"
-                  strokeWidth="0.25"
-                  strokeDasharray="1.5 1.5"
-                />
-                <text
-                  x="0.5"
-                  y={30 - 0.8 * 26 - 1}
-                  className="fill-fg-faint font-mono"
-                  style={{ fontSize: 2.6 }}
-                >
-                  {s.eighty}
-                </text>
-                <path d={path} fill="none" className="stroke-data" strokeWidth="0.6" />
-                <line
-                  x1={markerX}
-                  y1="1"
-                  x2={markerX}
-                  y2="30"
-                  className="stroke-accent"
-                  strokeWidth="0.4"
-                />
-              </svg>
-            </div>
-            <p className="mt-1 text-caption text-fg-faint">{s.curveHint}</p>
+              <line
+                x1="0"
+                y1={30 - 0.8 * 26}
+                x2={PLOT.width}
+                y2={30 - 0.8 * 26}
+                className="stroke-line/40"
+                strokeWidth="0.25"
+                strokeDasharray="1.5 1.5"
+              />
+              <text
+                x="0.5"
+                y={30 - 0.8 * 26 - 1}
+                className="fill-fg-faint font-mono"
+                style={{ fontSize: 2.6 }}
+              >
+                {s.eighty}
+              </text>
+              <path d={path} fill="none" className="stroke-data" strokeWidth="0.6" />
+              <line
+                x1={markerX}
+                y1="1"
+                x2={markerX}
+                y2="30"
+                className="stroke-accent"
+                strokeWidth="0.4"
+              />
+            </svg>
           </div>
         </div>
       }
@@ -154,7 +125,9 @@ export function SampleSizeStage({ result, onChange }: SampleSizeStageProps) {
         </>
       }
       secondaryLabel={copy.controls.moreLabel}
-      secondary={<SecondaryControls result={result} onChange={onChange} show={["sigma"]} />}
+      secondary={
+        <SecondaryControls result={result} onChange={onChange} show={["sigma", "alpha", "mu1"]} />
+      }
     />
   );
 }

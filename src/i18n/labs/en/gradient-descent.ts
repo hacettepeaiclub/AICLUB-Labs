@@ -145,6 +145,125 @@ const copy = {
       "The stability limit is 2 ÷ the larger curvature, so it moves when the landscape does. No step size is large or small on its own: the same η that leaves this landscape entirely settles quietly on a gentler one.",
   },
 
+  golf: {
+    kicker: "Now play it",
+    title: "Gradient golf.",
+    lede: "Six holes on the landscapes above. You cannot aim: the slope decides the direction of every stroke. You choose the club, and the club is the step size.",
+    caption:
+      "A stroke is one step of plain gradient descent, computed by the same engine as the rest of the lab. Par is found for each tee by searching the same six clubs you hold.",
+    start: "Tee off",
+    again: "Play a new round",
+    hit: (club: string) => `Hit with the ${club}`,
+    playOut: (club: string) => `Play every stroke with the ${club}`,
+    nextHole: "Next hole",
+    finish: "See the scorecard",
+    out: "Out of bounds: one penalty stroke, and the ball is put back.",
+    firstShot:
+      "Pick a club and hit. The arrow shows which way the ball will go; how far it goes is up to the club.",
+    didNotFinish: "Did not finish.",
+    holeLabel: (i: number, total: number) => `Hole ${i} of ${total}`,
+    freeRule: "Any club on any stroke",
+    fixedRule: "One club for every stroke",
+    mapLabel: (name: string, strokes: number) =>
+      `${name}: contour map of the hole, ${strokes} ${strokes === 1 ? "stroke" : "strokes"} so far.`,
+    clubLabel: "Club",
+    clubs: {
+      putter: "Putter",
+      wedge: "Wedge",
+      iron9: "9-iron",
+      iron5: "5-iron",
+      wood: "Wood",
+      driver: "Driver",
+    },
+    shotLine: (n: number, club: string, eta: string, slope: string, distance: string) =>
+      `${n}. ${club}: η ${eta} × slope ${slope} = ${distance}`,
+    results: { out: "out of bounds, +1", holed: "in the cup" },
+    figures: {
+      par: "Par",
+      strokes: "Strokes",
+      slope: "Slope |∇f|",
+      slopeHint: "the club multiplies this",
+      round: "Round",
+      best: "Best round",
+    },
+    announce: {
+      hole: (i: number, name: string, par: number) => `Hole ${i}: ${name}. Par ${par}.`,
+      holed: (strokes: number) => `In the cup. Strokes: ${strokes}.`,
+      rolled: (strokes: number) => `Strokes: ${strokes}.`,
+      round: (score: string) => `Round over: ${score} against par.`,
+    },
+    scoreNames: {
+      holeInOne: "Hole in one!",
+      eagle: "Eagle.",
+      birdie: "Birdie.",
+      par: "Par.",
+      bogey: "Bogey.",
+      doubleBogey: "Double bogey.",
+      worse: "Well over par.",
+    },
+    holeScore: (strokes: number, par: number) =>
+      `${strokes} ${strokes === 1 ? "stroke" : "strokes"}, par ${par}.`,
+    parLine: (clubs: string) => `Par from this tee: ${clubs}.`,
+    fixedLine: (club: string, par: number) =>
+      `The best single club from this tee was the ${club}, in ${par} strokes.`,
+    fixedFail: (club: string) =>
+      `The ${club} never got there: either its η is at or past 2 over the steep curvature, or it is too short to arrive within the stroke limit.`,
+    holes: {
+      bowl: {
+        name: "The Bowl",
+        lesson:
+          "On a round bowl the slope points straight at the cup, so one club sinks it from anywhere: the one whose η is 1 over the curvature, here 1/2. Twice that lands on the mirror point, and anything more throws the ball further out each time.",
+      },
+      oval: {
+        name: "The Oval",
+        lesson:
+          "Stretch the bowl and the slope stops pointing at the cup. Each direction shrinks by its own factor, 1 − η·c, so a club that settles the steep direction barely moves the ball along the flat one, and one stroke is no longer enough.",
+      },
+      ravine: {
+        name: "The Ravine",
+        lesson:
+          "Across the ravine the curvature is 20, so the wedge, η = 1/20, lands exactly on the floor. From there the slope runs along the ravine and a long club finishes. At η = 2/20 the steep direction stops shrinking, and beyond it the ball flies off the course.",
+      },
+      valley: {
+        name: "The Long Valley",
+        lesson:
+          "No club lands exactly on this floor. A long shot multiplies whatever is left across the valley by 1 − η·18, so the steep direction has to be made small first, with short clubs, before the long club is safe.",
+      },
+      oneClub: {
+        name: "One Club",
+        lesson:
+          "One club for every stroke is a fixed learning rate. It has to stay below 2 over the steepest curvature, so along the flat direction it crawls: this is the same landscape as hole 2, and it takes several times the strokes.",
+      },
+      oneClubNarrow: {
+        name: "One Club, Narrow",
+        lesson:
+          "Narrower still, and the stroke count climbs again. With one learning rate the steep direction sets the limit and the flat direction pays for it. Momentum and Adam, in the next two sections, are two ways out.",
+      },
+    },
+    scorecard: { title: "Scorecard", hole: "Hole", par: "Par", you: "You" },
+    intro: {
+      kicker: "The course",
+      story:
+        "The ball is the parameters and the cup is the minimum. You do not aim: every stroke goes downhill, straight along −∇f. All you choose is the club, and a club is a learning rate.",
+      rules: [
+        "A stroke moves the ball by η times the steepness under it. Steep ground sends it far; near the cup it barely moves.",
+        "Leaving the map is out of bounds: one penalty stroke, and the ball comes back.",
+        "Every round has new tees. Par is computed for each one by searching the same clubs you hold, so it can always be reached.",
+        "The last two holes give you one club for every stroke, which is how an optimizer with a fixed learning rate works.",
+      ],
+    },
+    end: {
+      kicker: "The round",
+      relative: "Against par: E is even, and minus is under par.",
+      newBest: "A new best for this browser.",
+      takeaways: [
+        "The slope chose the direction of every stroke and you chose only η. The distance was η times the steepness, which is why the same club flew on the walls and crept near the cup.",
+        "Each direction is multiplied by 1 − η·c for its own curvature c. At η = 1/c it lands on the floor, at 2/c it bounces to the mirror point, and beyond that it leaves. The steepest direction sets the ceiling.",
+        "Choosing a club per stroke beat any single club. A plain optimizer has one learning rate for every step, so a badly conditioned landscape costs it strokes; the next two sections are about winning them back.",
+      ],
+    },
+  },
+
   momentumSection: {
     kicker: "Momentum",
     title: "Carrying something over from the last step.",

@@ -145,6 +145,124 @@ const copy: typeof en = {
       "Kararlılık sınırı, 2 bölü büyük eğriliktir; yüzey değişince o da değişir. Hiçbir adım boyu tek başına büyük ya da küçük değildir: bu yüzeyi tamamen terk eden η, daha yumuşak bir yüzeye sakince yerleşir.",
   },
 
+  golf: {
+    kicker: "Şimdi oynayın",
+    title: "Gradyan golfü.",
+    lede: "Yukarıdaki yüzeylerde altı delik. Nişan alamazsınız: her vuruşun yönünü eğim belirler. Siz sopayı seçersiniz; sopa da adım boyudur.",
+    caption:
+      "Her vuruş, laboratuvarın geri kalanıyla aynı motorun hesapladığı tek bir sade gradient descent adımıdır. Par, her başlangıç noktası için elinizdeki altı sopanın aynısıyla arama yapılarak bulunur.",
+    start: "Oyuna başla",
+    again: "Yeni bir tur oyna",
+    hit: (club: string) => `${club} ile vur`,
+    playOut: (club: string) => `Tüm vuruşları ${club} ile oyna`,
+    nextHole: "Sonraki delik",
+    finish: "Skor kartını gör",
+    out: "Saha dışı: bir ceza vuruşu ve top yerine kondu.",
+    firstShot:
+      "Bir sopa seçip vurun. Ok, topun hangi yöne gideceğini gösterir; ne kadar gideceği sopaya bağlıdır.",
+    didNotFinish: "Bitiremedi.",
+    holeLabel: (i: number, total: number) => `Delik ${i} / ${total}`,
+    freeRule: "Her vuruşta istediğiniz sopa",
+    fixedRule: "Bütün vuruşlar için tek sopa",
+    mapLabel: (name: string, strokes: number) =>
+      `${name}: deliğin eş yükselti haritası, şimdiye dek vuruş sayısı ${strokes}.`,
+    clubLabel: "Sopa",
+    clubs: {
+      putter: "Putter",
+      wedge: "Wedge",
+      iron9: "Demir 9",
+      iron5: "Demir 5",
+      wood: "Ahşap",
+      driver: "Driver",
+    },
+    shotLine: (n: number, club: string, eta: string, slope: string, distance: string) =>
+      `${n}. ${club}: η ${eta} × eğim ${slope} = ${distance}`,
+    results: { out: "saha dışı, +1", holed: "delikte" },
+    figures: {
+      par: "Par",
+      strokes: "Vuruş",
+      slope: "Eğim |∇f|",
+      slopeHint: "sopa bunu çarpar",
+      round: "Tur",
+      best: "En iyi tur",
+    },
+    announce: {
+      hole: (i: number, name: string, par: number) => `Delik ${i}: ${name}. Par ${par}.`,
+      holed: (strokes: number) => `Delikte. Vuruş sayısı: ${strokes}.`,
+      rolled: (strokes: number) => `Vuruş sayısı: ${strokes}.`,
+      round: (score: string) => `Tur bitti. Par farkı: ${score}.`,
+    },
+    scoreNames: {
+      holeInOne: "Tek vuruşta delik!",
+      eagle: "Eagle.",
+      birdie: "Birdie.",
+      par: "Par.",
+      bogey: "Bogey.",
+      doubleBogey: "Çift bogey.",
+      worse: "Parın epey üstünde.",
+    },
+    holeScore: (strokes: number, par: number) => `Vuruş: ${strokes}, par: ${par}.`,
+    parLine: (clubs: string) => `Bu başlangıçtan par yolu: ${clubs}.`,
+    fixedLine: (club: string, par: number) =>
+      `Bu başlangıçtan en iyi tek sopa ${club} oldu. Vuruş sayısı: ${par}.`,
+    fixedFail: (club: string) =>
+      `${club} hiç ulaşamadı: ya η'sı 2 bölü dik eğriliğe eşit ya da ondan büyük, ya da vuruş sınırı içinde varamayacak kadar kısa.`,
+    holes: {
+      bowl: {
+        name: "Kase",
+        lesson:
+          "Yuvarlak bir kasede eğim doğrudan deliği gösterir, bu yüzden tek bir sopa topu her yerden sokar: η'sı 1 bölü eğrilik olan, burada 1/2. Bunun iki katı topu ayna noktasına indirir; daha fazlası topu her seferinde daha uzağa savurur.",
+      },
+      oval: {
+        name: "Oval",
+        lesson:
+          "Kaseyi uzatınca eğim artık deliği göstermez. Her yön kendi çarpanıyla, 1 − η·c ile küçülür; dik yönü yatıştıran sopa topu yatık yönde neredeyse hiç ilerletmez ve tek vuruş artık yetmez.",
+      },
+      ravine: {
+        name: "Yarık",
+        lesson:
+          "Yarığın enine eğrilik 20'dir, bu yüzden wedge, yani η = 1/20, topu tam tabana indirir. Oradan eğim yarık boyunca uzanır ve uzun bir sopa işi bitirir. η = 2/20'de dik yön küçülmeyi bırakır; bunun ötesinde top sahadan uçar.",
+      },
+      valley: {
+        name: "Uzun Vadi",
+        lesson:
+          "Hiçbir sopa topu bu tabana tam indirmez. Uzun bir vuruş, vadinin enine kalan her şeyi 1 − η·18 ile çarpar; bu yüzden uzun sopa güvenli hâle gelmeden önce dik yön kısa sopalarla küçültülmelidir.",
+      },
+      oneClub: {
+        name: "Tek Sopa",
+        lesson:
+          "Her vuruş için tek sopa, sabit bir adım boyudur. 2 bölü en dik eğrilikten küçük kalmak zorundadır, bu yüzden yatık yönde sürünür: bu, 2. delikle aynı yüzeydir ve kat kat fazla vuruş ister.",
+      },
+      oneClubNarrow: {
+        name: "Tek Sopa, Dar",
+        lesson:
+          "Daha da dar bir yüzey ve vuruş sayısı yine artar. Tek bir adım boyuyla sınırı dik yön koyar, bedelini yatık yön öder. Sonraki iki bölümdeki momentum ve Adam, bundan çıkmanın iki yoludur.",
+      },
+    },
+    scorecard: { title: "Skor kartı", hole: "Delik", par: "Par", you: "Siz" },
+    intro: {
+      kicker: "Saha",
+      story:
+        "Top parametrelerdir, delik de minimum. Nişan almazsınız: her vuruş yokuş aşağı, tam −∇f doğrultusunda gider. Seçtiğiniz tek şey sopadır ve bir sopa, bir adım boyudur.",
+      rules: [
+        "Bir vuruş topu η çarpı altındaki eğim kadar ilerletir. Dik zemin onu uzağa yollar; deliğe yakın neredeyse kıpırdamaz.",
+        "Haritadan çıkmak saha dışıdır: bir ceza vuruşu ve top geri gelir.",
+        "Her turda başlangıç noktaları yenidir. Par her biri için elinizdeki sopaların aynısıyla arama yapılarak hesaplanır, yani her zaman ulaşılabilir.",
+        "Son iki delik size bütün vuruşlar için tek sopa verir; sabit adım boylu bir optimizer da tam böyle çalışır.",
+      ],
+    },
+    end: {
+      kicker: "Tur",
+      relative: "Par farkı: E eşit demektir, eksi par altıdır.",
+      newBest: "Bu tarayıcıdaki yeni rekorunuz.",
+      takeaways: [
+        "Her vuruşun yönünü eğim seçti, siz yalnızca η'yı seçtiniz. Gidilen mesafe η çarpı eğimdi; aynı sopanın duvarlarda uçup deliğe yakın sürünmesinin nedeni budur.",
+        "Her yön kendi eğriliği c için 1 − η·c ile çarpılır. η = 1/c'de tabana iner, 2/c'de ayna noktasına seker, ötesinde sahadan çıkar. Tavanı en dik yön belirler.",
+        "Her vuruşta sopa seçmek, herhangi tek bir sopadan iyi sonuç verdi. Sade bir optimizer'ın her adım için tek bir adım boyu vardır; kötü koşullu bir yüzey ona vuruş kaybettirir. Sonraki iki bölüm bunları geri kazanmakla ilgilidir.",
+      ],
+    },
+  },
+
   momentumSection: {
     kicker: "Momentum",
     title: "Bir önceki adımdan bir şeyler taşımak.",
