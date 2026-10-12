@@ -117,7 +117,7 @@ the machine learning that stands on all of it.
 | [The Cost of Order](../src/labs/sorting/) · sorting | Algorithms       | intermediate | 6 min  | 2026-09-06 |
 | [The Spreading Search](../src/labs/graph-search/) · graph search | Algorithms       | intermediate | 6 min  | 2026-09-05 |
 | [Cheap Words](../src/labs/tokenization/) · BPE tokenization | Machine learning | intermediate | 8 min  | 2026-09-07 |
-| [The Size of a Step](../src/labs/gradient-descent/) · gradient descent | Machine learning | intermediate | 7 min  | 2026-09-06 |
+| [The Size of a Step](../src/labs/gradient-descent/) · gradient descent | Machine learning | intermediate | 10 min | 2026-09-06 |
 | [Bending the Line](../src/labs/multilayer-perceptrons/) · multilayer perceptrons | Neural networks  | intermediate | 6 min  | 2026-09-04 |
 | [Who Is to Blame?](../src/labs/backpropagation/) · backpropagation | Neural networks  | intermediate | 9 min  | 2026-10-04 |
 | [Nine Weights](../src/labs/convolution/) · convolution | Neural networks  | intermediate | 9 min  | 2026-10-03 |
@@ -188,6 +188,14 @@ only order the graph allows. One small reverse-mode engine computes all of it,
 held to central differences for every graph on the page; the race against
 numeric gradients is timed for real, and the challenge plants three real
 backprop bugs for a gradient check to find.
+
+**A game** — **The Size of a Step** follows its step-size section with
+gradient golf ([`golf.ts`](../src/labs/gradient-descent/golf.ts)): every
+stroke is one step of plain descent, the slope picks the direction and the
+visitor picks only the club, η, so the clubs that land on a valley floor
+(η = 1/c) and the ones that fly off the course (η > 2/c) are found by losing
+strokes. Tees are random each round and par is searched for each tee over the
+same clubs, so it is always reachable.
 
 ## 5. How the platform delivers it
 
