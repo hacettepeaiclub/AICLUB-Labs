@@ -40,15 +40,6 @@ export interface LabEntry {
   Component: LazyExoticComponent<ComponentType>;
 }
 
-export const CATEGORY_LABEL: Record<LabCategory, string> = {
-  algorithms: "Algorithms",
-  "data-structures": "Data Structures",
-  "machine-learning": "Machine Learning",
-  "neural-networks": "Neural Networks",
-  systems: "Systems",
-  theory: "Theory",
-};
-
 /** Tailwind classes per category — keeps category color usage consistent. */
 export const CATEGORY_STYLE: Record<LabCategory, { dot: string; text: string }> = {
   algorithms: { dot: "bg-signal-cyan", text: "text-signal-cyan" },

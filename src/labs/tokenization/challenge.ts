@@ -16,7 +16,7 @@
  *   by effort.
  */
 
-import { MAX_MERGES, type CorpusId } from "./corpora";
+import type { CorpusId } from "./corpora";
 
 export type ChallengeId = "say-it-cheaper" | "feed-it-the-right-words";
 
@@ -137,5 +137,3 @@ export interface TokenizerChoice {
   readonly corpus: CorpusId;
   readonly merges: number;
 }
-
-export const DEFAULT_CHOICE: TokenizerChoice = { corpus: "english", merges: MAX_MERGES };

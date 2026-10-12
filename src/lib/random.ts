@@ -15,15 +15,6 @@ export function createRng(seed: number): () => number {
   };
 }
 
-export const randomInt = (rng: () => number, min: number, max: number): number =>
-  Math.floor(rng() * (max - min + 1)) + min;
-
-export const randomPick = <T>(rng: () => number, items: readonly T[]): T => {
-  const item = items[Math.floor(rng() * items.length)];
-  if (item === undefined) throw new Error("randomPick: empty array");
-  return item;
-};
-
 /** Fisher–Yates shuffle (returns a new array). */
 export const shuffle = <T>(rng: () => number, items: readonly T[]): T[] => {
   const out = [...items];

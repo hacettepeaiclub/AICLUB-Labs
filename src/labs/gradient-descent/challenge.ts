@@ -28,15 +28,6 @@ export interface Verdict {
   optimizer: OptimizerKind;
 }
 
-export const IDLE_VERDICT = (spec: ChallengeSpec, optimizer: OptimizerKind): Verdict => ({
-  kind: "idle",
-  steps: null,
-  budget: spec.budget,
-  finalObjective: Number.NaN,
-  tolerance: spec.tolerance,
-  optimizer,
-});
-
 /**
  * Room to run past the budget before giving up.
  *

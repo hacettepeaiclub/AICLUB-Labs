@@ -222,8 +222,6 @@ export const CHALLENGES: Record<ChallengeId, ChallengeSpec> = {
   },
 };
 
-export const challengeIds = Object.keys(CHALLENGES) as ChallengeId[];
-
 /**
  * The step size whose first step from `start` ends nearest `tip`.
  *

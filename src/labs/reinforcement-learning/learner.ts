@@ -282,11 +282,6 @@ export function runEpisode(learner: Learner): StepRecord[] {
   return taken;
 }
 
-/** Run `count` whole episodes, or until the run is finished. */
-export function runEpisodes(learner: Learner, count: number): void {
-  for (let i = 0; i < count && !learner.done; i++) runEpisode(learner);
-}
-
 /** Run the whole thing. Used by the equivalence test and by the challenge. */
 export function runAll(learner: Learner): void {
   while (!learner.done) runEpisode(learner);
