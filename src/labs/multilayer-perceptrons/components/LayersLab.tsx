@@ -62,62 +62,62 @@ export function LayersLab() {
 
   return (
     <div ref={rootRef}>
-    <Stage
-      width="full"
-      // One button, two networks, and the whole point is watching them race.
-      // In the rail this left a 288px column empty for 422px beside the
-      // canvases; centred underneath, Run sits between the two things it
-      // starts.
-      controls="stack"
-      caption={decided ? lab.layersCaption.solved : lab.layersCaption.idle}
-      announcement={decided ? lab.layersCaption.solved : ""}
-      viewport={
-        <div className="grid gap-4 sm:grid-cols-2">
-          {columns.map((column) => (
-            <div key={column.key} className="min-w-0 space-y-2">
-              <div className="flex items-baseline justify-between gap-3">
-                <h3 className="text-body-sm font-semibold text-fg">{column.title}</h3>
-                <span className="font-mono text-caption text-fg-faint">{column.sizes}</span>
-              </div>
-              <p className="text-caption text-fg-muted">{column.subtitle}</p>
-              <DecisionCanvas
-                netRef={column.trainer.netRef}
-                points={points}
-                running={active}
-                revision={column.trainer.generation + column.trainer.revision}
-                ariaLabel={lab.layers.panelLabel(
-                  column.title,
-                  Math.round(column.trainer.stats.accuracy * 100),
-                  column.trainer.stats.epoch,
-                )}
-                /* Two pictures to compare, not two billboards: given the
+      <Stage
+        width="full"
+        // One button, two networks, and the whole point is watching them race.
+        // In the rail this left a 288px column empty for 422px beside the
+        // canvases; centred underneath, Run sits between the two things it
+        // starts.
+        controls="stack"
+        caption={decided ? lab.layersCaption.solved : lab.layersCaption.idle}
+        announcement={decided ? lab.layersCaption.solved : ""}
+        viewport={
+          <div className="grid gap-4 sm:grid-cols-2">
+            {columns.map((column) => (
+              <div key={column.key} className="min-w-0 space-y-2">
+                <div className="flex items-baseline justify-between gap-3">
+                  <h3 className="text-body-sm font-semibold text-fg">{column.title}</h3>
+                  <span className="font-mono text-caption text-fg-faint">{column.sizes}</span>
+                </div>
+                <p className="text-caption text-fg-muted">{column.subtitle}</p>
+                <DecisionCanvas
+                  netRef={column.trainer.netRef}
+                  points={points}
+                  running={active}
+                  revision={column.trainer.generation + column.trainer.revision}
+                  ariaLabel={lab.layers.panelLabel(
+                    column.title,
+                    Math.round(column.trainer.stats.accuracy * 100),
+                    column.trainer.stats.epoch,
+                  )}
+                  /* Two pictures to compare, not two billboards: given the
                    full width they grew to 511px square each. */
-                className="mx-auto max-w-sm"
-              />
-              <div className="flex flex-wrap items-start gap-x-8 gap-y-2">
-                <Figure
-                  label={lab.layers.accuracy}
-                  value={formatPercent(column.trainer.stats.accuracy, 1)}
-                  tone={column.key === "deep" ? "accent" : "default"}
+                  className="mx-auto max-w-sm"
                 />
+                <div className="flex flex-wrap items-start gap-x-8 gap-y-2">
+                  <Figure
+                    label={lab.layers.accuracy}
+                    value={formatPercent(column.trainer.stats.accuracy, 1)}
+                    tone={column.key === "deep" ? "accent" : "default"}
+                  />
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      }
-      primary={
-        <Transport
-          running={running}
-          onRun={() => setRunning((value) => !value)}
-          onStep={() => {
-            for (const column of columns) column.trainer.step(20);
-          }}
-          onReset={restart}
-          runLabel={lab.layers.trainBoth}
-          stepDisabled={running}
-        />
-      }
-    />
+            ))}
+          </div>
+        }
+        primary={
+          <Transport
+            running={running}
+            onRun={() => setRunning((value) => !value)}
+            onStep={() => {
+              for (const column of columns) column.trainer.step(20);
+            }}
+            onReset={restart}
+            runLabel={lab.layers.trainBoth}
+            stepDisabled={running}
+          />
+        }
+      />
     </div>
   );
 }

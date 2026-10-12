@@ -346,7 +346,7 @@
     background: radial-gradient(
       circle,
       rgb(var(--accent-fill) / 0.44),
-      rgb(var(--accent-fill) / 0.30) 30%,
+      rgb(var(--accent-fill) / 0.3) 30%,
       rgb(var(--accent-fill) / 0.14) 50%,
       rgb(var(--accent-fill) / 0.04) 62%,
       transparent 72%
