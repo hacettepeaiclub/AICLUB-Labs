@@ -320,29 +320,20 @@
   /* ---------------------------------------------------------------- */
   /* Ambient background (AmbientBackground.tsx).                       */
   /*                                                                   */
-  /* Two very large, very blurred pools of the club navy drifting on   */
-  /* a 40-second cycle. They are what "navy folded into black" means:  */
-  /* no surface is navy, the dark simply leans blue where they pass.   */
-  /* On paper they become a pale mist, so they fade to a third.        */
+  /* One still pool of the club navy in the top-left of the viewport:  */
+  /* the dark leans blue there and nowhere else. It used to drift, with */
+  /* a second pool and a field of moving points; the colour carried the */
+  /* identity and the movement carried nothing. On paper it becomes a  */
+  /* pale wash, so it fades to a third.                                */
   /* ---------------------------------------------------------------- */
-  /* No `filter: blur()`: a 90px blur over two pools this size had to be */
-  /* recomputed on the GPU on every frame they moved, on every page.     */
-  /* The gradients below fall off in steps instead, which looks the      */
-  /* same and costs nothing to move.                                     */
   .ambient-fog {
     position: absolute;
+    width: 70vw;
+    height: 70vw;
+    left: -22vw;
+    top: -30vw;
     border-radius: 9999px;
     opacity: 0.55;
-    will-change: transform;
-  }
-  :root[data-theme="light"] .ambient-fog {
-    opacity: 0.2;
-  }
-  .ambient-fog-a {
-    width: 60vw;
-    height: 60vw;
-    left: -18vw;
-    top: -22vw;
     background: radial-gradient(
       circle,
       rgb(var(--accent-fill) / 0.44),
@@ -351,22 +342,9 @@
       rgb(var(--accent-fill) / 0.04) 62%,
       transparent 72%
     );
-    animation: ambient-drift-a 38s ease-in-out infinite alternate;
   }
-  .ambient-fog-b {
-    width: 50vw;
-    height: 50vw;
-    right: -20vw;
-    top: 30vh;
-    background: radial-gradient(
-      circle,
-      rgb(var(--accent-fill) / 0.28),
-      rgb(var(--accent-fill) / 0.19) 30%,
-      rgb(var(--accent-fill) / 0.09) 50%,
-      rgb(var(--accent-fill) / 0.02) 62%,
-      transparent 72%
-    );
-    animation: ambient-drift-b 46s ease-in-out infinite alternate;
+  :root[data-theme="light"] .ambient-fog {
+    opacity: 0.2;
   }
 
   /* ---------------------------------------------------------------- */
@@ -462,18 +440,6 @@
   .brand-link:hover .brand-mark,
   .brand-link:active .brand-mark {
     animation-name: brand-signal-again;
-  }
-  .header-glow::after {
-    content: "";
-    position: absolute;
-    inset: auto 0 -1px 0;
-    height: 1px;
-    background: radial-gradient(
-      180px 1px at var(--mx, -200px) 50%,
-      rgb(var(--data) / 0.9),
-      transparent
-    );
-    pointer-events: none;
   }
 
   /* ---------------------------------------------------------------- */
@@ -809,15 +775,5 @@
   }
   to {
     background-position: 0 100%;
-  }
-}
-@keyframes ambient-drift-a {
-  to {
-    transform: translate(8vw, 6vh) scale(1.08);
-  }
-}
-@keyframes ambient-drift-b {
-  to {
-    transform: translate(-10vw, -8vh) scale(0.95);
   }
 }
