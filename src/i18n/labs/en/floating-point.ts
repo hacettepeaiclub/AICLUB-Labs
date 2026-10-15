@@ -307,6 +307,53 @@ const copy = {
     footer:
       "In code, this is why two computed floats are compared with a tolerance rather than with ==, why money is counted in whole cents, and why a long sum can come out differently when it is added up in a different order.",
   },
+
+  // The guided tours, one per experiment (components/lab/guide/tours.ts).
+  tour: {
+    intro: "Type a number and see what your computer actually keeps for it, digit by digit.",
+    stages: {
+      store: {
+        type: "Type a number in this box. The tour typed 0.1.",
+        stored:
+          "What is actually stored for it. The marked digits are where it stops agreeing with what you typed.",
+        offBy: "How far the stored value is from yours, as a number and relative to its size.",
+        another: "This button fills in another example to try.",
+      },
+      sum: {
+        line: "a and b as stored, their exact sum, and where float64 rounds it to.",
+        type: "Put in any two numbers. The tour changed b to 0.4.",
+        steps:
+          "How far the rounded sum is from the true answer, counted in steps between neighbouring values.",
+        reset: "This brings back 0.1 + 0.2.",
+      },
+      bits: {
+        bits: "float32, one square per bit: sign, exponent, fraction.",
+        flip: "Click a bit to flip it. The tour flipped the second one, the top of the exponent.",
+        value: "The value those bits now mean, and the power of two the exponent picks.",
+        set: "Or set a value here and see which bits it takes.",
+      },
+      ruler: {
+        line: "Every value a toy format can store, on one line. Each doubling holds the same number of values.",
+        pick: "Pick a value with this slider. Out here the values are spread far apart.",
+        bits: "Add exponent bits and the line reaches further; add fraction bits and it fills in.",
+      },
+      gap: {
+        chart: "float32 again: the distance from a number to the next one it can store.",
+        size: "Slide to a bigger number. The tour went up towards the top of the range.",
+        gap: "The gap grew with the number, but gap ÷ number hardly moved: about 7 significant digits anywhere.",
+      },
+      formats: {
+        type: "Type a number and see it in float32, float16 and bfloat16. The tour typed a tiny gradient.",
+        rows: "bfloat16 keeps it, float16 turns it into 0: same 16 bits, spent differently.",
+        examples: "Try the other examples here.",
+      },
+      challenge: {
+        pick: "Three things arithmetic says cannot happen. Pick one here.",
+        work: "Find a number that makes it happen. The page checks it with exact arithmetic.",
+        solved: "Solved puzzles are remembered in this browser.",
+      },
+    },
+  },
 };
 
 export default copy;

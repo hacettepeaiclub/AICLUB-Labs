@@ -236,6 +236,41 @@ const copy = {
     footer:
       "Real models are trained this way too, on far more text and on raw bytes rather than characters, which is why a language that is scarce in the training data stays expensive to write in, long after the model has learned to speak it.",
   },
+
+  // The guided tours, one per experiment (components/lab/guide/tours.ts).
+  tour: {
+    intro:
+      "A language model reads text in pieces. Guess where it cuts a sentence, then reveal where it really does.",
+    stages: {
+      guess: {
+        strip: "This sentence is what the model reads. Mark where you think it gets cut.",
+        cut: "Tap a letter to put a cut in front of it. The tour put one.",
+        reveal: "Mark the rest of your guesses, then “Reveal” shows the real cuts.",
+      },
+      train: {
+        corpus: "A corpus small enough to read. Right now every piece is a single character.",
+        merge: "Merge: the commonest neighbouring pair fuses into one piece, everywhere it occurs.",
+        figures: "Merges so far, the size of the vocabulary, and what the corpus costs in tokens.",
+        all: "Or train it all the way at once.",
+      },
+      merge: {
+        sentence: "Edit the sentence to anything you like. The tour added a word.",
+        rewind:
+          "This slider rewinds the training. With few merges learned, the same sentence costs many more tokens.",
+        cost: "Pieces and cost at this point of the training.",
+      },
+      compare: {
+        text: "Two tokenizers, one trained on English, one on Turkish. Give them the same text: the tour added a word.",
+        samples: "Or pick a sample here.",
+        bill: "What the same text costs each of them. Each is cheap at what it has read.",
+      },
+      challenge: {
+        puzzle: "Two puzzles, one budget. Pick the puzzle above.",
+        verdict: "The verdict updates as you work: tokens used against the budget.",
+        figures: "Tokens and budget. Only one of the two puzzles can be solved by trying harder.",
+      },
+    },
+  },
 };
 
 export default copy;

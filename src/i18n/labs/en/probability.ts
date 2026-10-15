@@ -520,6 +520,50 @@ const copy = {
     footer:
       "Each of these is a worked problem with a stated model, not a general rule about chance. The exact probabilities are computed in closed form; the simulated ones come from running the experiment against a seeded generator and are always labelled as such. Where a question is genuinely ambiguous (the two-children problem is the clearest case), the assumption is written down rather than chosen quietly.",
   },
+
+  // The guided tours, one per experiment (components/lab/guide/tours.ts).
+  tour: {
+    intro:
+      "Three doors, one car. Play a round against the host and find out whether to keep your door or switch.",
+    stages: {
+      monty: {
+        pick: "Pick a door. The tour picked the first one.",
+        choose:
+          "The host opened a door with a goat behind it. Your choice: keep your door, or switch to the other closed one.",
+        score: "Your rounds add up here. After a few, you can play a thousand at once.",
+      },
+      birthday: {
+        guess: "Guess first: how many people until a shared birthday is more likely than not?",
+        people: "Add people one at a time with the button, or jump with this slider.",
+        room: "Every new person brings a new pair with everyone already in the room.",
+        chance: "People, pairs and the exact chance. The pairs outrun the head count fast.",
+      },
+      conditional: {
+        families:
+          "Every two-child family, equally likely. The clue crosses out the ones it rules out.",
+        clue: "Change the wording of the clue. The tour switched it: a different set of families is left.",
+        answer: "Families kept, how many have two boys, and the answer.",
+      },
+      simpson: {
+        table: "Two kidney-stone treatments, small stones first.",
+        large: "Add the large stones. The same treatment wins in both groups.",
+        choose: "Choose a treatment, then see both groups added together.",
+        rates: "Better in every group, worse overall: the groups are not the same size.",
+      },
+      pascal: {
+        board: "A board of pegs, and the binomial model's prediction beside it.",
+        drop: "Drop a ball: gravity and the pegs decide where it lands. The tour dropped one.",
+        many: "Drop a lot at once and the bell shape appears.",
+        rows: "Change the number of rows here.",
+      },
+      largeNumbers: {
+        chart: "The proportion of wins as rounds add up, against the theoretical value.",
+        trials: "Choose how many rounds to play. The tour picked the most.",
+        figures:
+          "Observed against theoretical. The gap does not shrink at every step, but it settles.",
+      },
+    },
+  },
 };
 
 export default copy;

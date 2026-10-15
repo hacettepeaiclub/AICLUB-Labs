@@ -151,6 +151,21 @@ export const tr: Translation = {
    * category, minutes) so a lab can be listed without being loaded at all.
    */
 
+  guide: {
+    howItWorks: "Nasıl çalışıyor?",
+    welcomeKicker: "İlk kez mi buradasınız?",
+    show: "Bana gösterin",
+    explore: "Kendim keşfedeyim",
+    later:
+      "Turu istediğiniz zaman başlığın altındaki “Nasıl çalışıyor?” düğmesinden yeniden izleyebilirsiniz.",
+    tourLabel: "Rehberli tur",
+    progress: (n: number, total: number) => `${n}/${total}`,
+    next: "İleri",
+    back: "Geri",
+    done: "Anladım",
+    close: "Turu kapat",
+  },
+
   palette: {
     open: "Laboratuvar bul",
     label: "Laboratuvar bul",

@@ -149,6 +149,37 @@ const copy: typeof en = {
     footer:
       'Bu sayfadaki hiçbir şey saklanmıyor ya da taklit edilmiyor: her özet, yazdığınız metin üzerinde tarayıcınızda çalışan crypto.subtle.digest("SHA-256", …) çağrısının sonucu.',
   },
+
+  // The guided tours, one per experiment (components/lab/guide/tours.ts).
+  tour: {
+    intro:
+      "Ne yazarsanız yazın 64 hex karaktere dönüşür. Tek bir karakteri değiştirip sonucun ne kadarının değiştiğini sayarsınız.",
+    stages: {
+      digest: {
+        type: "Bu kutuya istediğinizi yazın. Tur, metnin sonuna bir ünlem ekledi.",
+        digest: "Tek bir karakter fazlası, özetin bitlerinin yaklaşık yarısını değiştirdi.",
+        length:
+          "Mesaj istediğiniz uzunlukta olabilir; özet her zaman 64 hex karakter, yani 256 bit.",
+      },
+      determinism: {
+        again: "Aynı mesajı yeniden hash'leyin. Her basış yeni bir SHA-256 hesabı.",
+        runs: "Her çalıştırma bu listeye eklenir ve hepsi aynı özet.",
+        distinct: "Şimdiye kadarki çalıştırmalar ve kaç farklı özet verdikleri: her zaman bir.",
+      },
+      avalanche: {
+        edit: "Mesajı buradan değiştirin. Tur tek bir harf ekledi.",
+        compare: "Önceki ve sonraki özet. Farklı olan her karakter ikisinde de işaretli.",
+        count:
+          "Değişen bitler, iki gerçek özet bit bit karşılaştırılarak sayıldı: yaklaşık yarısı.",
+      },
+      collision: {
+        fields: "İki mesaj, iki özet. Amaç, ilk karakterlerinin aynı olması.",
+        type: "İkinci mesajı değiştirip yeniden deneyin. Tur bir harf ekledi.",
+        rounds:
+          "Her tur bir karakter daha eşleşmesini ister ve bir öncekinden on altı kat daha zordur.",
+      },
+    },
+  },
 };
 
 export default copy;

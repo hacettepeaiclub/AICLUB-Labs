@@ -139,6 +139,9 @@ export function SumStage() {
         }}
       />
 
+      {/* Until the guess, a stand-in: the guided tours count stages in page
+          order, and the ones below must not change places when this appears. */}
+      {guess === null && <div data-stage hidden />}
       {guess !== null && (
         <Stage
           width="full"

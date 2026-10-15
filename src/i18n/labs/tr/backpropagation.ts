@@ -235,6 +235,56 @@ const copy: typeof en = {
     footer:
       "Bugün eğitilen her yapay sinir ağı, bu sayfanın başındakinden milyarlarca ağırlıklı olanlara kadar, bu tek geri yürüyüşle öğrenir. Framework'ler onu sizin için yazar; yazdıkları budur.",
   },
+
+  // The guided tours, one per experiment (components/lab/guide/tours.ts).
+  tour: {
+    intro:
+      "Küçük bir ağ ve tutup çekebileceğiniz bir çıktı noktası. Çıktıyı bir yere çektiğinizde her ağırlık, suçtan aldığı pay kadar parlar.",
+    stages: {
+      pull: {
+        pull: "Bu nokta ağın çıktısı. Yukarı ya da aşağı sürükleyin veya ok tuşlarını kullanın; tur onu yukarı çekti.",
+        letGo: "Bıraktığınızda her ağırlık, çekişteki payı kadar değişir.",
+        result:
+          "Nereye hedeflediğiniz, nereye vardığı ve ne kadar ıskaladığı. Daha uzağa çektikçe ıska büyür.",
+      },
+      zoom: {
+        curve:
+          "Tek bir ağırlık değişirken kayıp. Kesik çizgi, geri yayılımın bulduğu eğim. Eğri boyunca sürükleyebilirsiniz.",
+        zoom: "Tur sonuna kadar yaklaştı: eğri ile çizgi artık ayırt edilemiyor.",
+        slope:
+          "Geri yayılımın eğimi ve pencere boyunca ölçülen eğim yan yana. Yaklaştıkça fark küçülür; gradyan tam olarak bu eğim.",
+      },
+      chain: {
+        dial: "İlk kadranı sürükleyerek ya da ok tuşlarıyla çevirin. Tur onu biraz çevirdi.",
+        links: "Her bağlantıdaki sayı, önceki kadran azıcık dönünce o kadranın ne kadar döndüğü.",
+        last: "Bağlantıların çarpımı ve son çevirişinizde ölçülen değer yan yana. İkisi tutar; zincir kuralı budur.",
+      },
+      ledger: {
+        graph:
+          "Gerçek bir kayıp, graf olarak. Her düğüm ileri değerini gösteriyor; gradyanları siz dolduracaksınız.",
+        tap: "Bir düğüme dokununca gradyanı yazılır. Önce kayıp gelir; tur onu doldurdu.",
+        order:
+          "Kaç düğümü doldurduğunuz ve iki yolun toplamı olan ∂L/∂w. Bir düğüme erken dokunursanız neyi beklediğini söyler.",
+      },
+      cost: {
+        columns:
+          "Aynı gradyanı bulmanın iki yolu: her ağırlığı dürtüp ağı yeniden çalıştırmak ya da tek bir geri geçiş.",
+        width: "Bu, her katmanda kaç nöron olduğunu belirler. Tur ağı genişletti.",
+        race: "İkisini bu tarayıcıda yarıştırın. Ağ genişledikçe dürtme yöntemi daha da geride kalır.",
+      },
+      depth: {
+        chart: "Gradyanın ne kadarının her katmana ulaştığı, sondan başa doğru.",
+        add: "Katman eklemek için sonuncuyu sağa sürükleyin ya da ok tuşlarını kullanın. Tur dört katman ekledi.",
+        activation: "Buradan başka bir aktivasyon deneyin: ReLU ile sinyal değişmeden geçer.",
+      },
+      challenge: {
+        cases: "Her birinin geri geçişinde bir hata olan üç graf. Buradan birini seçin.",
+        check:
+          "Bir parametreyi kontrol edin: geri geçişin gradyanı ölçülen değerle karşılaştırılır. Tur ilkini kontrol etti.",
+        accuse: "Hatanın nerede olduğunu bulunca o düğümü buradan suçlayın.",
+      },
+    },
+  },
 };
 
 export default copy;

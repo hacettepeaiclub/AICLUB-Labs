@@ -155,6 +155,35 @@ const copy = {
     footer:
       'Nothing on this page is stored or simulated: every digest is crypto.subtle.digest("SHA-256", …) on what you typed, computed in your browser.',
   },
+
+  // The guided tours, one per experiment (components/lab/guide/tours.ts).
+  tour: {
+    intro:
+      "Whatever you type turns into 64 hex characters. You change one character and count how much of the result changes.",
+    stages: {
+      digest: {
+        type: "Type anything in this box. The tour added an exclamation mark to the end.",
+        digest: "One character more, and about half of the digest's bits changed.",
+        length: "The message can be any length; the digest is always 64 hex characters, 256 bits.",
+      },
+      determinism: {
+        again: "Hash the same message again. Each press is a fresh SHA-256 call.",
+        runs: "Every run lands in this list, and every one is the same digest.",
+        distinct: "Runs so far, and how many different digests they gave: always one.",
+      },
+      avalanche: {
+        edit: "Change the message here. The tour added one letter.",
+        compare: "The digest before and after. Every character that differs is marked in both.",
+        count: "Bits changed, counted one by one across the two real digests: about half.",
+      },
+      collision: {
+        fields: "Two messages, two digests. The goal is for their first characters to match.",
+        type: "Change the second message and try again. The tour added a letter.",
+        rounds:
+          "Each round asks for one more matching character, and is sixteen times harder than the last.",
+      },
+    },
+  },
 };
 
 export default copy;

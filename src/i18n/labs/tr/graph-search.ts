@@ -148,6 +148,45 @@ const copy: typeof en = {
     footer:
       "Telefonunuzun bugüne kadar önerdiği her güzergâh buna benzer bir döngüden çıktı: bir sınır, kesinleşmiş bir küme ve sıradaki hücreyi seçen bir kural.",
   },
+
+  // The guided tours, one per experiment (components/lab/guide/tours.ts).
+  tour: {
+    intro:
+      "Bir arama, ızgarada başlangıçtan hedefe bir yol arar. Duvarları siz çizersiniz; hangi karelere baktığı ızgarada belirir.",
+    stages: {
+      find: {
+        grid: "S başlangıç, G hedef. Arama G'nin nerede olduğunu bilmiyor.",
+        run: "Çalıştırın: halkalı hücreler aramanın sınırı, dolu hücreler kesinleşmiş olanlar.",
+        explored: "Kaç hücreye baktığı ve bulduğu yolun uzunluğu.",
+        walls:
+          "Şimdi ızgarada sürükleyerek duvar çizin ya da S ile G'yi taşıyın, sonra yeniden çalıştırın.",
+      },
+      bfs: {
+        grid: "Bu kez bir dolambaç var. Adım adım ilerleyin.",
+        step: "Adımla: sınırdan bir hücre alınır, komşuları sınıra eklenir.",
+        layers:
+          "Adımlamaya devam edin: arama katman katman, en yakın hücrelerden başlayarak yayılır.",
+      },
+      cost: {
+        swamp: "Çamura girmek 5, açık zemine girmek 1'e mal olur.",
+        run: "Önce BFS ile çalıştırın.",
+        algorithm:
+          "Sonra buradan Dijkstra'ya geçip yeniden çalıştırın; isterseniz daha fazla çamur çizin.",
+        compare: "BFS en az hamleyi yapar; Dijkstra en az bedeli öder.",
+      },
+      astar: {
+        grid: "Açık bir alan. Dijkstra her yöne eşit yayılır.",
+        run: "Çalıştırın, sonra aşağıdan A*'a geçip yeniden çalıştırın.",
+        algorithm: "A* kalan mesafe için bir tahmin ekler ve hedefe yönelir.",
+        explored: "Aynı yol, aynı maliyet. Her birinin kaç hücreye baktığını karşılaştırın.",
+      },
+      challenge: {
+        maze: "Sabit bir harita: en ucuz yol ve bütçeyi aşmayan sayıda incelenen hücre. Haritayı yukarıdan seçin.",
+        algorithm: "Algoritmayı seçin.",
+        run: "Çalıştırın ve iki koşulun da sağlanıp sağlanmadığına bakın.",
+      },
+    },
+  },
 };
 
 export default copy;

@@ -9,6 +9,7 @@ import { LabNext } from "./LabNext";
 import { LabProgress } from "./LabProgress";
 import { orderedLabs } from "@/labs/registry";
 import { LabPlate } from "./LabPlate";
+import { GuideButton, LabGuideProvider } from "./guide/LabGuide";
 
 /**
  * Frame that every experiment renders inside. Gives all 100+ labs the same
@@ -32,47 +33,50 @@ export function LabShell({ meta, children }: { meta: LabMeta; children: ReactNod
 
   return (
     <div ref={rootRef} className="shell py-10 md:py-14">
-      <LabProgress targetRef={rootRef} colour={CATEGORY_VAR[meta.category]} />
+      <LabGuideProvider key={meta.slug} slug={meta.slug} title={title} rootRef={rootRef}>
+        <LabProgress targetRef={rootRef} colour={CATEGORY_VAR[meta.category]} />
 
-      <nav aria-label={t.shell.breadcrumb} className="mb-6">
-        <Link
-          to="/"
-          className="-my-3 inline-flex min-h-11 items-center rounded text-body-sm text-fg-muted
+        <nav aria-label={t.shell.breadcrumb} className="mb-6">
+          <Link
+            to="/"
+            className="-my-3 inline-flex min-h-11 items-center rounded text-body-sm text-fg-muted
             transition-colors duration-fast hover:text-fg"
-        >
-          {t.shell.backToLabs}
-        </Link>
-      </nav>
+          >
+            {t.shell.backToLabs}
+          </Link>
+        </nav>
 
-      {/* The lab's plate sits beside the title from tablet width up. On a
+        {/* The lab's plate sits beside the title from tablet width up. On a
           phone it would push the experiment a full screen down, and the
           experiment is what the visitor came for, so it is left out there. */}
-      <header className="mb-10 grid items-center gap-8 md:grid-cols-[minmax(0,1fr)_16rem] lg:grid-cols-[minmax(0,1fr)_20rem]">
-        <div className="max-w-prose">
-          <div className="mb-4 flex items-center gap-2">
-            <Badge dotClassName={category.dot}>{t.category[meta.category]}</Badge>
-            <Badge>{t.difficulty[meta.difficulty]}</Badge>
-            <Badge>{t.shell.minutes(meta.minutes)}</Badge>
+        <header className="mb-10 grid items-center gap-8 md:grid-cols-[minmax(0,1fr)_16rem] lg:grid-cols-[minmax(0,1fr)_20rem]">
+          <div className="max-w-prose">
+            <div className="mb-4 flex items-center gap-2">
+              <Badge dotClassName={category.dot}>{t.category[meta.category]}</Badge>
+              <Badge>{t.difficulty[meta.difficulty]}</Badge>
+              <Badge>{t.shell.minutes(meta.minutes)}</Badge>
+            </div>
+            {term && (
+              <p lang={copy?.termLang} className="mb-2 text-overline uppercase text-fg-faint">
+                {term}
+              </p>
+            )}
+            <h1 className="text-display-lg text-fg">{title}</h1>
+            <p className="mt-4 text-body-lg text-fg-muted">{description}</p>
+            <GuideButton className="mt-6" />
           </div>
-          {term && (
-            <p lang={copy?.termLang} className="mb-2 text-overline uppercase text-fg-faint">
-              {term}
-            </p>
-          )}
-          <h1 className="text-display-lg text-fg">{title}</h1>
-          <p className="mt-4 text-body-lg text-fg-muted">{description}</p>
-        </div>
-        <LabPlate
-          slug={meta.slug}
-          colour={CATEGORY_VAR[meta.category]}
-          caption={t.shell.labPlate(plateNumber(meta.slug), term ?? title, copy?.figure ?? "")}
-          className="hidden md:block"
-        />
-      </header>
+          <LabPlate
+            slug={meta.slug}
+            colour={CATEGORY_VAR[meta.category]}
+            caption={t.shell.labPlate(plateNumber(meta.slug), term ?? title, copy?.figure ?? "")}
+            className="hidden md:block"
+          />
+        </header>
 
-      {children}
+        {children}
 
-      <LabNext slug={meta.slug} />
+        <LabNext slug={meta.slug} />
+      </LabGuideProvider>
     </div>
   );
 }

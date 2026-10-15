@@ -271,6 +271,50 @@ const copy: typeof en = {
     footer:
       "Az önce izlediğiniz her şey 300 satırlık sıradan aritmetikti. Bugünün yapay zekâsının arkasındaki modeller de aynı dört adımdan oluşuyor, sadece çok daha fazla ağırlıkla.",
   },
+
+  // The guided tours, one per experiment (components/lab/guide/tours.ts).
+  tour: {
+    intro:
+      "Küçük bir yapay sinir ağı iki renk noktayı birbirinden ayırmayı öğrenir; o eğitilirken kendi noktalarınızı da ekleyebilirsiniz.",
+    stages: {
+      playground: {
+        data: "Her nokta iki sınıftan birine ait. Arkadaki renkler, ağın her yer için tahmini.",
+        train:
+          "Eğitim zaten sürüyor: ağırlıklar adım adım değişir, bölgeler de noktalara uyacak biçimde yeniden şekillenir. Bu düğme eğitimi duraklatır.",
+        draw: "Resme tıklayarak iki renkten de nokta ekleyin ya da hepsini silin; ağ yeniden uyum sağlamak zorunda kalır.",
+        setup: "Veri, gürültü, aktivasyon ve adım boyu burada.",
+      },
+      neuron: {
+        line: "Tek bir nöron: iki ağırlık, bir bias ve bir sıkıştırma. Sınırını taşımak için resmin üzerinde sürükleyin.",
+        weight: "Ya da sayıları doğrudan ayarlayın. Tur ilk ağırlığı değiştirdi; çizgi döndü.",
+        bias: "Bias çizgiyi döndürmeden kaydırır. Nasıl ayarlarsanız ayarlayın, çizgi düz kalır.",
+      },
+      handXor: {
+        points: "Dört XOR noktası. Her birini doğru tarafa getirmek için çizgiyi sürükleyin.",
+        mode: "Tek çizgi en fazla üçünü doğru yapabilir. Tur size ikinci bir çizgi verdi.",
+        score:
+          "Kaçının doğru olduğu, en iyi sonucunuz ve bu kadar çizgiyle ulaşılabilecek en yüksek değer.",
+      },
+      layers: {
+        pair: "Solda gizli katmanı olmayan bir ağ, sağda bir gizli katmanı olan. Veri aynı: XOR.",
+        run: "İkisini yan yana çalıştırın.",
+        accuracy: "Soldaki tam doğruluğa ulaşamadan takılır; çözümün tamamı gizli katman.",
+      },
+      descent: {
+        slope:
+          "Tek bir ağırlık için kayıp. Topu oraya koymak için eğrinin herhangi bir yerine tıklayın.",
+        run: "Çalıştırın: top eğimin tersine adım adım ilerler.",
+        figures: "Ağırlık, kayıp, eğim ve bir sonraki adım: adım boyu çarpı eğim.",
+        rate: "Adım boyunu buradan büyütün; top hedefi aşmaya başlar.",
+      },
+      challenge: {
+        spiral: "İç içe iki sarmal. On altı nöronla herkes ayırabilir.",
+        size: "Katman ve nöron sayısını buradan ayarlayın: ne kadar az, o kadar iyi.",
+        run: "Eğitin ve şekli tutup tutamadığına bakın.",
+        result: "Doğruluk ve kullanılan nöron sayısı.",
+      },
+    },
+  },
 };
 
 export default copy;

@@ -777,3 +777,66 @@
     background-position: 0 100%;
   }
 }
+
+/* ------------------------------------------------------------------ */
+/* The guided tour (components/lab/guide)                             */
+/*                                                                    */
+/* The cursor dips when it presses, and a ring spreads from its tip:  */
+/* the one moment in the tour that says "this was clicked".           */
+/* ------------------------------------------------------------------ */
+.guide-arrow {
+  display: block;
+  transform: translate(-3px, -2px);
+  filter: drop-shadow(0 2px 4px rgb(var(--ink-950) / 0.5));
+}
+.guide-arrow.is-pressing {
+  animation: guide-press 0.26s ease-out;
+}
+.guide-ripple {
+  position: absolute;
+  left: -14px;
+  top: -14px;
+  width: 28px;
+  height: 28px;
+  border-radius: 9999px;
+  border: 2px solid rgb(var(--accent));
+  animation: guide-ripple 0.6s ease-out forwards;
+}
+@keyframes guide-press {
+  50% {
+    transform: translate(-3px, -2px) scale(0.82);
+  }
+}
+@keyframes guide-ripple {
+  from {
+    opacity: 0.9;
+    transform: scale(0.3);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+}
+.guide-caret {
+  animation: guide-caret 1.05s step-end infinite;
+}
+@keyframes guide-caret {
+  50% {
+    opacity: 0;
+  }
+}
+/* The welcome sits in the middle of the window, not where the palette does. */
+.lab-palette.lab-guide-welcome[open] {
+  align-items: center;
+  padding-top: 1rem;
+}
+@media (prefers-reduced-motion: reduce) {
+  .guide-arrow.is-pressing,
+  .guide-caret,
+  .guide-ripple {
+    animation: none;
+  }
+  .guide-ripple {
+    opacity: 0;
+  }
+}

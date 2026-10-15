@@ -180,6 +180,41 @@ const copy = {
     footer:
       "The numbers are your processor's own. Real caches have several levels, limited ways and a prefetcher that guesses ahead, so they bend the model's clean steps, but not its direction: near is cheap, far is not.",
   },
+
+  // The guided tours, one per experiment (components/lab/guide/tours.ts).
+  tour: {
+    intro:
+      "Two loops add up the same four million numbers, in a different order. You time both on your own computer.",
+    stages: {
+      race: {
+        lanes:
+          "The top loop reads the numbers row by row, the bottom one column by column. Same numbers, same sum.",
+        run: "This times both on your processor. It takes a few seconds.",
+        ratio: "How many times longer the columns took. Only the order of reading changed.",
+      },
+      line: {
+        grid: "Each row of this grid is one cache line of eight numbers. The cache beside it holds four lines.",
+        run: "Run the reads one by one: • is a hit, × is a miss that fetches a whole line.",
+        score:
+          "Misses and hits so far. Rows miss once per line; columns miss on almost every read.",
+        options:
+          "Switch to column order, a bigger cache, or your own order, where you click the numbers yourself.",
+      },
+      stride: {
+        chart:
+          "Below, the model's misses per read at each stride; above, what your processor charges for each read.",
+        measure:
+          "Measure it on this computer. The cost climbs with the gap, up to one read per line.",
+        show: "Pick a stride here to see which numbers it reads first.",
+      },
+      order: {
+        orders:
+          "Six ways to nest the three loops of a matrix product, and how the innermost loop walks each matrix.",
+        time: "Time the chosen order on this computer and set it against the model.",
+        all: "Or time all six at once and see which order wins.",
+      },
+    },
+  },
 };
 
 export default copy;

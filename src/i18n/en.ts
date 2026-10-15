@@ -172,6 +172,21 @@ export const en = {
    * instruments, and a box that promised more would be a box that mostly
    * returned nothing.
    */
+  // The guided tour on a lab page (components/lab/guide).
+  guide: {
+    howItWorks: "How does it work?",
+    welcomeKicker: "First time here?",
+    show: "Show me",
+    explore: "I'll explore on my own",
+    later: "You can watch the tour again any time from “How does it work?” under the title.",
+    tourLabel: "Guided tour",
+    progress: (n: number, total: number) => `${n}/${total}`,
+    next: "Next",
+    back: "Back",
+    done: "Got it",
+    close: "Close the tour",
+  },
+
   palette: {
     open: "Find a lab",
     label: "Find a lab",

@@ -268,6 +268,48 @@ const copy = {
     footer:
       "Everything you just watched was 300 lines of plain arithmetic. The models behind today’s AI are the same four steps: with a great many more weights.",
   },
+
+  // The guided tours, one per experiment (components/lab/guide/tours.ts).
+  tour: {
+    intro:
+      "A small neural network learns to separate two colours of dots, and you can add dots of your own while it trains.",
+    stages: {
+      playground: {
+        data: "Each dot belongs to one of two classes. The shaded background is what the network predicts at each spot.",
+        train:
+          "Training is already running: the weights change step by step and the regions reshape to fit the dots. This button pauses it.",
+        draw: "Click on the picture to add dots of either colour, or clear them, and the network has to adapt.",
+        setup: "The data, the noise, the activation and the step size are all here.",
+      },
+      neuron: {
+        line: "One neuron: two weights, a bias and a squash. Drag on the picture to move its boundary.",
+        weight: "Or set the numbers directly. The tour changed the first weight: the line turned.",
+        bias: "The bias moves the line without turning it. However you set them, it stays straight.",
+      },
+      handXor: {
+        points: "Four XOR points. Drag the line to put each one on the right side.",
+        mode: "One line can get at most three right. The tour gave you a second line.",
+        score: "How many are right, your best, and the ceiling for this many lines.",
+      },
+      layers: {
+        pair: "Left, a network with no hidden layer; right, one with a hidden layer. Same XOR data.",
+        run: "Run both side by side.",
+        accuracy: "The left one gets stuck below full accuracy; the hidden layer is the whole fix.",
+      },
+      descent: {
+        slope: "The loss for one weight. Click anywhere on the curve to put the ball there.",
+        run: "Run: the ball moves against the slope, one step at a time.",
+        figures: "The weight, the loss, the slope and the next step: step size times slope.",
+        rate: "Make the step size bigger here and watch it overshoot.",
+      },
+      challenge: {
+        spiral: "Two interleaved spirals. Anyone can separate them with sixteen neurons.",
+        size: "Set the layers and neurons here: the fewer, the better.",
+        run: "Train it and see whether it holds the shape.",
+        result: "Accuracy and the neurons used.",
+      },
+    },
+  },
 };
 
 export default copy;

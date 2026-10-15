@@ -199,6 +199,42 @@ const copy: typeof en = {
     pages:
       "Sayfa numaralar\u0131, bu revizyonda kullan\u0131lan ikinci bask\u0131n\u0131n bas\u0131l\u0131 sayfalar\u0131na aittir. Yay\u0131n y\u0131l\u0131, incelenen n\u00fcshadan do\u011frulanamad\u0131\u011f\u0131 i\u00e7in verilmemi\u015ftir.",
   },
+
+  // The guided tours, one per experiment (components/lab/guide/tours.ts).
+  tour: {
+    intro:
+      "Aynı ortalama hakkında iki iddia, iki eğri olarak çizili. Birini kaydırır ve ne zaman ayırt edilebildiklerini bulursunuz.",
+    stages: {
+      separation: {
+        curves:
+          "Her eğri, o iddia (μ₀ ya da μ₁) doğruysa n ölçümün ortalamasının nasıl dağılacağını gösterir.",
+        move: "Bu kaydırıcı μ₁'i taşır. Onu μ₀'ın içinden geçirip öbür tarafa çıkarın.",
+        gap: "İkisi arasındaki fark, standart hata cinsinden. Fark küçüldükçe eğriler üst üste biner.",
+      },
+      alpha: {
+        region: "Gölgeli kuyruk ret bölgesi: ortalama oraya düşerse H₀ aleyhine kanıt sayılır.",
+        alpha:
+          "Bu kaydırıcı α'yı, yani H₀ doğruyken onu reddetme riskini belirler. Tur onu yükseltti.",
+        critical: "α büyüdükçe kritik değer içeri kayar ve bölge genişler.",
+      },
+      beta: {
+        curves:
+          "β, H₁ eğrisinin ret bölgesi dışında kalan kısmı: testin kaçırdığı gerçek bir etki.",
+        type: "Testi öbür yöne çevirin. Tur yönü değiştirdi; β'ya ne olduğuna bakın.",
+        power: "β, güç (1 − β) ve α yan yana.",
+      },
+      sample: {
+        curves: "İki eğri ve bu kadar ölçümle ne kadar geniş oldukları.",
+        n: "Daha çok ölçüm alın. Tur n'yi artırdı; iki eğri de daraldı ve örtüşme küçüldü.",
+        figures: "Daha çok veri, α'yı artırmadan β'yı düşürür.",
+      },
+      challenge: {
+        task: "Her görev bir sonuç ister: ulaşılması gereken bir güç. Görevi yukarıdan seçin.",
+        controls: "Test yönü, n, α ve σ'yı siz ayarlarsınız.",
+        power: "Modelin şu anki gücü. Geçmek için hedefe ulaşın.",
+      },
+    },
+  },
 };
 
 export default copy;

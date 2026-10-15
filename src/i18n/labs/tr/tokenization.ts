@@ -226,6 +226,44 @@ const copy: typeof en = {
     footer:
       "Gerçek modeller de bu yolla eğitiliyor; çok daha fazla metinle, karakterler yerine ham baytlar üzerinde. Eğitim verisinde az bulunan bir dilin, model onu konuşmayı öğrendikten çok sonra bile pahalı kalmasının nedeni de bu.",
   },
+
+  // The guided tours, one per experiment (components/lab/guide/tours.ts).
+  tour: {
+    intro:
+      "Bir dil modeli metni parça parça okur. Bir cümleyi nereden böldüğünü tahmin edin, sonra gerçekte nereden böldüğünü açın.",
+    stages: {
+      guess: {
+        strip: "Modelin okuduğu cümle bu. Nereden bölündüğünü düşünüyorsanız işaretleyin.",
+        cut: "Bir harfe dokunduğunuzda önüne bir kesim konur. Tur bir tane koydu.",
+        reveal: "Diğer tahminlerinizi de işaretleyin; “Sonucu aç” gerçek kesimleri gösterir.",
+      },
+      train: {
+        corpus: "Okunabilecek kadar küçük bir derlem. Şu anda her parça tek bir karakter.",
+        merge:
+          "Birleştirin: en sık yan yana gelen çift, geçtiği her yerde tek bir parçaya dönüşür.",
+        figures:
+          "Şimdiye kadarki birleştirmeler, sözlüğün büyüklüğü ve derlemin token cinsinden maliyeti.",
+        all: "Ya da eğitimi tek seferde sonuna kadar götürün.",
+      },
+      merge: {
+        sentence: "Cümleyi istediğiniz gibi değiştirin. Tur bir kelime ekledi.",
+        rewind:
+          "Bu kaydırıcı eğitimi geri sarar. Az birleştirme öğrenilmişken aynı cümle çok daha fazla token tutar.",
+        cost: "Eğitimin bu noktasında parça sayısı ve maliyet.",
+      },
+      compare: {
+        text: "Biri İngilizce, biri Türkçe üzerinde eğitilmiş iki tokenizer. İkisine aynı metni verin; tur bir kelime ekledi.",
+        samples: "Ya da buradan bir örnek seçin.",
+        bill: "Aynı metnin ikisine maliyeti. Her biri okuduğu dilde ucuz.",
+      },
+      challenge: {
+        puzzle: "İki bulmaca, tek bütçe. Bulmacayı yukarıdan seçin.",
+        verdict: "Siz çalıştıkça sonuç güncellenir: kullanılan token ve bütçe.",
+        figures:
+          "Token sayısı ve bütçe. İki bulmacadan yalnızca biri daha çok uğraşarak çözülebilir.",
+      },
+    },
+  },
 };
 
 export default copy;
