@@ -2,8 +2,15 @@
 
 `npm run build` produces `dist/`, and `.github/workflows/deploy.yml` runs it on
 the server on every push to `main`. The server builds the next version into
-`dist-next/` (`OUT_DIR`) and swaps it in with two renames, so a visitor never
-meets a half-built site.
+`dist-next/` (`OUT_DIR`) and copies it into `dist/` with `rsync`, so a visitor
+never meets a half-built site.
+
+**`dist/` itself must never be replaced, only written into.** The site is
+served by an nginx in a container that mounts `dist/`; a mount keeps the
+directory it was given, so renaming a new `dist/` into place leaves that
+nginx serving the deleted old one, empty, until the container restarts. This
+took the site down on 2026-10-12. The front openresty proxies to that nginx,
+which is also why its directory redirects came back as `http://`.
 
 ## What the build produces
 
