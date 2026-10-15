@@ -255,9 +255,11 @@ async function main() {
   );
 
   const manifestPath = path.join(DIST, ".vite", "manifest.json");
-  const manifest = existsSync(manifestPath)
-    ? JSON.parse(await readFile(manifestPath, "utf8"))
-    : {};
+  const manifest = existsSync(manifestPath) ? JSON.parse(await readFile(manifestPath, "utf8")) : {};
+
+  // The Turkish shell dictionary's chunk, for index.html's early preload.
+  const trShell = manifest["src/i18n/tr.ts"]?.file;
+  const templateWithShell = trShell ? template.replace("__TR_SHELL__", `/${trShell}`) : template;
 
   let fallbacks = 0;
   for (const route of routes) {
@@ -272,7 +274,7 @@ async function main() {
 
     const slug = route.path.startsWith("/labs/") ? route.path.split("/")[2] : null;
     const preloads = slug ? labPreloads(manifest, slug) : "";
-    const withHead = securityPolicy(template)
+    const withHead = securityPolicy(templateWithShell)
       .replace("</head>", `${head(route)}${preloads ? `\n${preloads}` : ""}\n  </head>`)
       .replace("<title>AI Club Labs</title>", `<title>${escape(route.meta.title)}</title>`)
       .replace('<div id="root"></div>', `<div id="root"></div>\n${noscript(route)}`);

@@ -161,7 +161,7 @@ const copy: typeof en = {
   depth: {
     kicker: "Katman üstüne katman",
     title: "Küçük pencereler üst üste binince uzağı görür.",
-    lede: "Tek bir 3×3 katman yan yana üç hücre görür. Üstüne bir tane daha koyun; onun her hücresi, alttaki üç hücrenin gördüğünü görür. Tepeden bir hücre seçin ve aşağıya doğru izleyin.",
+    lede: "Tek bir 3×3 katman yan yana üç hücre görür. Üstüne bir tane daha koyun; onun her hücresi, alttaki üç hücrenin gördüğünü görür. Tepeden bir hücre seçin; aşağıdaki katmanlarda hangi hücrelere dayandığı işaretlenir.",
     inputName: "Girdi",
     layerName: (l: number) => `Katman ${l}`,
     diagramLabel: (count: number, chosen: number, top: number, size: number) =>
@@ -206,7 +206,8 @@ const copy: typeof en = {
     curveLabel: "Her adımdan sonraki kayıp, logaritmik ölçekte.",
     found: (steps: number) =>
       `${steps} adımda buldu. Ağırlıklar artık gizli çekirdeğin kendisi: kenarın ne olduğunu onlara kimse söylemedi.`,
-    ready: "Dokuz rastgele ağırlık. Eğit düğmesine basın ve hareket etmelerini izleyin.",
+    ready:
+      "Dokuz rastgele ağırlık. Eğit'e basın; gradient descent onları adım adım saklı çekirdeğe doğru taşır.",
     searching: "Her adım, dokuz ağırlığın hepsini hatanın gradyanının tersine kaydırır.",
     train: "Eğit",
     pause: "Duraklat",

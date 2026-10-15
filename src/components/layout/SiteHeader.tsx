@@ -1,4 +1,4 @@
-import { useRef, type CSSProperties, type PointerEvent } from "react";
+import type { CSSProperties } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useTheme } from "@/app/ThemeProvider";
 import type { Language, ThemeName } from "@/app/preferences";
@@ -45,10 +45,9 @@ const MoonIcon = (
  * The header: settled, one line, and still.
  *
  * Nothing in it moves on its own except the mark, once, on load: a signal runs
- * up the logo's own strands. After that it only answers the pointer — a short
- * light on the hairline below it, under wherever the pointer is — and the mark
- * replays its signal on hover. The pointer position is written straight to a
- * CSS variable rather than into React state, so following it never re-renders.
+ * up the logo's own strands, and again when it is hovered. A light that used
+ * to follow the pointer along the hairline below was removed: it answered
+ * the cursor but told the visitor nothing.
  */
 export function SiteHeader({
   onFindLab,
@@ -61,7 +60,6 @@ export function SiteHeader({
   const t = useT();
   const { language, setLanguage } = useLanguage();
   const { theme, setTheme } = useTheme();
-  const headerRef = useRef<HTMLElement>(null);
 
   const languages: readonly ToggleOption<Language>[] = [
     { value: "en", label: t.preferences.english, title: t.preferences.englishFull },
@@ -73,20 +71,8 @@ export function SiteHeader({
     { value: "dark", label: t.preferences.dark, icon: MoonIcon },
   ];
 
-  const followPointer = (event: PointerEvent<HTMLElement>) => {
-    if (event.pointerType !== "mouse") return;
-    const rect = event.currentTarget.getBoundingClientRect();
-    headerRef.current?.style.setProperty("--mx", `${event.clientX - rect.left}px`);
-  };
-  const releasePointer = () => headerRef.current?.style.setProperty("--mx", "-200px");
-
   return (
-    <header
-      ref={headerRef}
-      onPointerMove={followPointer}
-      onPointerLeave={releasePointer}
-      className="header-glow sticky top-0 z-40 border-b border-line/10 bg-ink-950/95"
-    >
+    <header className="sticky top-0 z-40 border-b border-line/10 bg-ink-950/95">
       {/* The header takes a tighter gutter than `.shell` at the smallest
           widths. At 360px the two preference pills plus the wordmark overran
           the viewport by 18px; the page gutter is generous for reading and too

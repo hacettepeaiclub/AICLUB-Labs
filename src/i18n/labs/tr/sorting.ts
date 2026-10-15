@@ -57,7 +57,7 @@ const copy: typeof en = {
       `${title}: ${size} değerden oluşan çubuk grafik. ${state}`,
   },
   watch: {
-    kicker: "Çalışırken izleyin",
+    kicker: "Adım adım",
     title: "Biri süpürür. Diğeri parmak ucuyla yürür.",
     lede: "Adım adım ilerleyin. Sıralayıcı A hiçbir şeyi kımıldatmadan önce kalanın tamamını yeniden tarar; Sıralayıcı B tek bir değeri alıp yalnızca gerektiği kadar geriye yürütür.",
     caption:
@@ -79,20 +79,19 @@ const copy: typeof en = {
   },
   challenge: {
     architecture: "Mimari",
-    neuronsUsed: "Kullan\u0131lan n\u00f6ron",
-    testAccuracy: "Test do\u011frulu\u011fu",
+    neuronsUsed: "Kullanılan nöron",
+    testAccuracy: "Test doğruluğu",
     target: "Hedef",
     objectiveLine: (accuracy: string) =>
-      `Spiralde ${accuracy} test do\u011frulu\u011funa ula\u015f\u0131n: olabildi\u011fince az gizli n\u00f6ron kullanarak.`,
-    solvedNote: "\u00c7\u00f6z\u00fcld\u00fc. \u015eimdi bir n\u00f6ron eksiltip yeniden deneyin.",
-    noBest:
-      "Hen\u00fcz yok. Bol n\u00f6ronla ba\u015flay\u0131n, sonra bozulana kadar azalt\u0131n.",
+      `Spiralde ${accuracy} test doğruluğuna ulaşın: olabildiğince az gizli nöron kullanarak.`,
+    solvedNote: "Çözüldü. Şimdi bir nöron eksiltip yeniden deneyin.",
+    noBest: "Henüz yok. Bol nöronla başlayın, sonra bozulana kadar azaltın.",
     bestLine: (neurons: number, accuracy: string, epoch: number) =>
-      `En iyi: ${neurons} gizli n\u00f6ron, ${epoch.toLocaleString("en-US")} epok sonra ${accuracy}.`,
+      `En iyi: ${neurons} gizli nöron, ${epoch.toLocaleString("en-US")} epok sonra ${accuracy}.`,
     canvasLabel: (neurons: number, accuracy: string, epoch: number) =>
-      `Spiral g\u00f6revi: ${neurons} gizli n\u00f6ron, ${epoch} epok sonra ${accuracy} test do\u011frulu\u011fu.`,
+      `Spiral görevi: ${neurons} gizli nöron, ${epoch} epok sonra ${accuracy} test doğruluğu.`,
     announceSolved: (neurons: number, accuracy: string) =>
-      `${neurons} gizli n\u00f6ronla, ${accuracy} test do\u011frulu\u011funda \u00e7\u00f6z\u00fcld\u00fc.`,
+      `${neurons} gizli nöronla, ${accuracy} test doğruluğunda çözüldü.`,
     kicker: "Meydan okuma",
     title: "Neyi saydığınıza göre ucuz değişir.",
     lede: "Üç sabit dizi, üç bütçe, ve bütçe her zaman aynı sayıyla ilgili değil.",

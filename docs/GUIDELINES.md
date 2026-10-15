@@ -19,7 +19,7 @@ Every lab must feel like it belongs to the same product. These rules are how.
 
 ## Typography
 
-- `font-display` (Sora) for `display-*` and `title` sizes only. `font-body` (Inter) for everything else. `font-mono` for numbers that update live, code, and keyboard hints.
+- `font-display` (Outfit) for `display-*` and `title` sizes only. `font-body` (Inter) for everything else. `font-mono` for numbers that update live, code, and keyboard hints.
 - Use the named scale (`text-display-xl` … `text-overline`) — never arbitrary sizes.
 - Line length for prose ≤ `max-w-prose` (65ch).
 

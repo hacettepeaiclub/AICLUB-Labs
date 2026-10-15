@@ -61,6 +61,18 @@
           }
           var lang = localStorage.getItem("aiclub-labs-language");
           if (lang === "tr" || lang === "en") document.documentElement.setAttribute("lang", lang);
+          // A Turkish visitor's dictionary is fetched alongside the entry
+          // bundle instead of after it. The address is written in by
+          // tools/prerender.mjs; on the dev server it is left as a
+          // placeholder and nothing is preloaded.
+          var trShell = "__TR_SHELL__";
+          if (lang === "tr" && trShell.indexOf("__") !== 0) {
+            var link = document.createElement("link");
+            link.rel = "modulepreload";
+            link.crossOrigin = "";
+            link.href = trShell;
+            document.head.appendChild(link);
+          }
         } catch (e) {
           // Storage can be blocked outright; the defaults in the markup stand.
         }

@@ -6,7 +6,7 @@ const copy: typeof en = {
   sources: {
     title: "Kaynaklar",
     qLearning:
-      "Tablo tabanl\u0131 Q-\u00f6\u011frenme g\u00fcncelleme kural\u0131n\u0131 ve yak\u0131nsama ko\u015fullar\u0131n\u0131 destekler. Izgara, \u00f6d\u00fcller ve ziyaret\u00e7inin ayarlad\u0131\u011f\u0131 karo laboratuvara aittir.",
+      "Tablo tabanlı Q-öğrenme güncelleme kuralını ve yakınsama koşullarını destekler. Izgara, ödüller ve ziyaretçinin ayarladığı karo laboratuvara aittir.",
   },
 
   room: {
@@ -221,7 +221,7 @@ const copy: typeof en = {
   rules: {
     kicker: "Kuralları değiştirin",
     title: "Üç kadran ve her birinin gerçekte neyi değiştirdiği.",
-    lede: "Bunlardan birini oynattığınızda koşu birinci turdan yeniden başlar; çünkü öğrenme oranını yarı yolda değiştirmek diye bir şey yoktur. Sonra yukarıdaki bölümde Eğit'e basıp eğriyi izleyin.",
+    lede: "Bunlardan birini oynattığınızda koşu birinci turdan yeniden başlar; çünkü öğrenme oranını yarı yolda değiştirmek diye bir şey yoktur. Sonra yukarıdaki bölümde Eğit'e basın; eğri yeni ayarla baştan çizilir.",
     caption:
       "Bu oda küçük. Üçünü de taradığımızda ajanın neredeyse her ayarla odayı çözdüğü görüldü: bunların değiştirdiği şey, eğrinin ne kadar hızlı oturduğu, yolda ne kadar gürültülü olduğu ve oturup oturmadığı.",
     curveTitle: "Bu koşuda tur başına ödül",

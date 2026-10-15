@@ -53,6 +53,23 @@ async function load(language: Language): Promise<Translation> {
 }
 
 /**
+ * Load the visitor's dictionary before the app first renders.
+ *
+ * Without it a returning Turkish visitor saw the page in English for as long
+ * as the Turkish chunk took to arrive, with the document already marked
+ * `lang="tr"`, so uppercase English labels came out with a dotted İ
+ * ("İNSTRUMENTS"). `main.tsx` waits on this, and the page has usually started
+ * fetching the chunk already (see `index.html`), so the wait is short. A
+ * failure to load is not fatal: the app renders in English, as before.
+ */
+export function preloadLanguage(language: Language): Promise<void> {
+  return load(language).then(
+    () => undefined,
+    () => undefined,
+  );
+}
+
+/**
  * Owns the visitor's language.
  *
  * There is no key-string lookup here and no `t("some.dotted.key")`: components

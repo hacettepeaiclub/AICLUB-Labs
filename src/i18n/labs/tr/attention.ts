@@ -6,12 +6,13 @@ const copy: typeof en = {
   sources: {
     title: "Kaynaklar",
     transformer:
-      "Bu laboratuvar\u0131n hesaplad\u0131\u011f\u0131 \u00f6l\u00e7eklenmi\u015f nokta \u00e7arp\u0131m\u0131 dikkatini destekler. Laboratuvar tek bir ba\u015fl\u0131\u011f\u0131 elle kurar; makalenin tan\u0131tt\u0131\u011f\u0131 mimarinin tamam\u0131n\u0131 uygulamaz.",
+      "Bu laboratuvarın hesapladığı ölçeklenmiş nokta çarpımı dikkatini destekler. Laboratuvar tek bir başlığı elle kurar; makalenin tanıttığı mimarinin tamamını uygulamaz.",
   },
 
   hero: {
     title: "Bu kelime nereye bakıyor?",
-    question: "Her kelime diğerlerine bakıyor. Birini seçin ve nereye baktığını görün.",
+    question:
+      "Her kelime diğerlerine bakıyor. Birini seçin: dikkatini hangi kelimelere verdiği hemen belirir.",
   },
 
   sentenceLabel: "Cümle. Nereye baktığını görmek için bir kelime seçin.",
@@ -142,7 +143,7 @@ const copy: typeof en = {
     caption:
       "Her pay, her harekette bütün satırdan, modelin kullandığı softmax ile yeniden hesaplanıyor. Sürüklediğiniz puanlar 'ya şöyle olsaydı'; modelinkiler işaretli duruyor.",
     dragHint:
-      "Herhangi bir kelimenin eşleşmesini sürükleyin. Birini yükseltin ve dokunmadıklarınız da dahil diğer bütün payların düştüğünü izleyin.",
+      "Herhangi bir kelimenin eşleşmesini sürükleyin. Birini yükseltin: dokunmadıklarınız dahil diğer bütün paylar düşer, çünkü toplam hep 1.",
     reset: "Modelin eşleşmelerine dön",
     legend: "Çentikler modelin kendi eşleşmesini ve payını gösterir.",
     pickAnother: "Başka bir kelimeyi sorun",

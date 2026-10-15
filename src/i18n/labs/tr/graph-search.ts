@@ -6,9 +6,9 @@ const copy: typeof en = {
   sources: {
     title: "Kaynaklar",
     astar:
-      "Laboratuvarda \u00e7al\u0131\u015fan A* kurgusunu destekler: \u015fimdiye kadarki maliyet ile sezgisel tahminin toplam\u0131na g\u00f6re s\u0131ralanan en-iyi-\u00f6nce arama ve bu sezgiselin sa\u011flamas\u0131 gereken kabul edilebilirlik ko\u015fulu.",
+      "Laboratuvarda çalışan A* kurgusunu destekler: şimdiye kadarki maliyet ile sezgisel tahminin toplamına göre sıralanan en-iyi-önce arama ve bu sezgiselin sağlaması gereken kabul edilebilirlik koşulu.",
     dijkstra:
-      "Sezgisel kapat\u0131ld\u0131\u011f\u0131nda laboratuvar\u0131n \u00e7al\u0131\u015ft\u0131rd\u0131\u011f\u0131 en k\u0131sa yol y\u00f6ntemini ve bu y\u00f6ntemin varsayd\u0131\u011f\u0131 negatif olmayan kenar maliyetlerini destekler.",
+      "Sezgisel kapatıldığında laboratuvarın çalıştırdığı en kısa yol yöntemini ve bu yöntemin varsaydığı negatif olmayan kenar maliyetlerini destekler.",
   },
   findTheWay: "Yolu bulun",
   algorithm: "Algoritma",
@@ -68,10 +68,10 @@ const copy: typeof en = {
   intro: {
     question: "İlk olarak hangi kareye bakıyor?",
     caption:
-      "Birkaç engel çizin, sonra Çalıştır'a basın. Aramanın gerçekte nereye yayıldığını izleyin, hedefin olmadığı yerler de dahil.",
+      "Birkaç engel çizin, sonra Çalıştır'a basın. Arama, hedefin olmadığı yerler dahil gerçekte nerelere yayıldıysa orada iz bırakır.",
   },
   bfs: {
-    kicker: "Düşünürken izleyin",
+    kicker: "Arama sürerken",
     title: "Çizgiler hâlinde değil, katmanlar hâlinde yayılır.",
     lede: "Adım adım ilerleyin. Halkalı hücreler bilinen ama henüz ziyaret edilmemiş hücrelerdir, yani sınır. Dolu hücreler ise kesinleşmiştir: arama, her birine kaç hamlede ulaşıldığını bilir ve bir daha oraya bakmaz.",
     caption:

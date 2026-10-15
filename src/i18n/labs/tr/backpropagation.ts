@@ -53,7 +53,7 @@ const copy: typeof en = {
   zoom: {
     kicker: "Sayının anlamı",
     title: "Eğri bir çizgi olana kadar yaklaşın.",
-    lede: "Biri hariç bütün ağırlıkları sabit tutun; kayıp bir eğriye dönüşür. Tek bir noktasına yaklaşın ve düzleşmesini izleyin.",
+    lede: "Biri hariç bütün ağırlıkları sabit tutun; kayıp bir eğriye dönüşür. Tek bir noktasına yeterince yaklaşınca eğri düz bir çizgiye döner.",
     caption:
       "Kesikli çizginin eğimi, geri yayılımın bu ağırlık için verdiği eğimdir. Uzaktan bakınca kötü bir uyumdur; yakından bakınca eğri ile çizgi ayırt edilemez. Gradyan bundan ibarettir: bu ağırlık değiştiğinde kaybın ne kadar hızlı değiştiği, yeterince yakından bakıldığında. Eğri boyunca ilerlemek için grafiği sürükleyin.",
     announce: (half: string, slope: string, gap: string) =>
@@ -157,8 +157,8 @@ const copy: typeof en = {
   // 6 ----------------------------------------------------------------------
   depth: {
     kicker: "Bozulduğu yer",
-    title: "Ağı uzatın ve sinyalin sönmesini izleyin.",
-    lede: "Her biri tek nöronlu katmanlardan oluşan bir zincir. Katman eklemek için sonuncuyu sağa sürükleyin ve gradyanın ne kadarının hâlâ başa ulaştığını görün.",
+    title: "Ağ uzadıkça sinyal söner.",
+    lede: "Her biri tek nöronlu katmanlardan oluşan bir zincir. Katman eklemek için sonuncuyu sağa sürükleyin; gradyanın ne kadarının başa ulaştığı her katmanda yeniden hesaplanır.",
     caption:
       "Her katman gradyanı w ile aktivasyonunun eğiminin çarpımıyla çarpar. Sigmoid'in eğimi en fazla dörtte birdir; bu yüzden w = 1'de on katman en az altı büyüklük mertebesine mal olur ve ilk katmanlar öğrenmeyi bırakır. ReLU, sinyal pozitif kaldıkça gradyanı olduğu gibi geçirir; 1'den büyük bir ağırlık ise onu büyütür: gradyan patlar.",
     announce: (depth: number, first: string) => `${depth} katman. Girdiye ulaşan gradyan ${first}.`,
