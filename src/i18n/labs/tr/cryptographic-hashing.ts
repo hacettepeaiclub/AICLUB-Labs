@@ -5,7 +5,7 @@ import type en from "../en/cryptographic-hashing";
 const copy: typeof en = {
   sources: {
     title: "Kaynaklar",
-    sha2: "Bu laboratuvar\u0131n taray\u0131c\u0131n\u0131n Web Crypto uygulamas\u0131ndan istedi\u011fi SHA-256 \u00f6zetini tan\u0131mlar. Laboratuvar \u00f6zet i\u015flevini kendisi uygulamaz.",
+    sha2: "Bu laboratuvarın tarayıcının Web Crypto uygulamasından istediği SHA-256 özetini tanımlar. Laboratuvar özet işlevini kendisi uygulamaz.",
   },
   inputLabel: "Mesajınız",
   inputPlaceholder: "merhaba dünya",
@@ -42,7 +42,7 @@ const copy: typeof en = {
     question: "İki farklı mesaj aynı uzunlukta çıktı üretebilir mi?",
     digestLabel: "SHA-256 özeti",
     caption:
-      "Ne isterseniz yazın. Mesaj ne kadar uzun olursa olsun tam 64 hex karakter geri döner, ve mesajın kendisi bunların içinde yoktur.",
+      "Ne isterseniz yazın. Mesaj ne kadar uzun olursa olsun karşılığında tam 64 hex karakter gelir ve mesajın kendisi bu karakterlerin içinde saklı değildir.",
     help: "Bir mesaj yazın. SHA-256 özeti alanın altında görünür ve siz yazdıkça güncellenir.",
     announce: (start: string) => `Özet güncellendi, artık ${start} ile başlıyor.`,
   },
@@ -50,7 +50,7 @@ const copy: typeof en = {
   determinism: {
     kicker: "Aynı mesaj, aynı özet",
     title: "Her seferinde aynı yanıtı veriyor.",
-    lede: "Mesajı yeniden hash'leyin. Hiçbir şey önbelleğe alınmıyor ve önceki çalıştırmadan kopyalanmıyor: her basış, aynı metin üzerinde yeni bir SHA-256 çağrısı.",
+    lede: "Mesajı yeniden hash'leyin. Sonuç hiçbir yerde saklanmıyor, bir önceki çalıştırmadan da kopyalanmıyor: her basış, aynı metin için yeni bir SHA-256 hesabı.",
     hashAgain: "Yeniden hash'le",
     enough: "Bu kadar çalıştırma yeter",
     empty: "Henüz çalıştırma yok. Bu mesajı hash'lemek için düğmeye basın.",
@@ -59,13 +59,13 @@ const copy: typeof en = {
     distinctLabel: "Farklı özet",
     distinctHint: "kaç kez çalıştırılırsa çalıştırılsın",
     caption:
-      "Mesajı değiştirmek listeyi temizler, çünkü eski mesajın çalıştırması yenisi hakkında bir şey söylemez.",
+      "Mesajı değiştirince liste temizlenir: eski mesajın sonuçları yenisi hakkında bir şey söylemez.",
     announce: (runs: number, distinct: number) => `${runs} çalıştırma, ${distinct} farklı özet.`,
   },
 
   avalanche: {
     kicker: "Tek küçük değişiklik",
-    title: "Tek bir tuş her şeyi yeniden yazıyor.",
+    title: "Tek bir tuş, özetin yarısını değiştiriyor.",
     lede: "Tek bir karakteri değiştirin ve iki özeti karşılaştırın. Farklı olan her karakter ikisinde de işaretlenir: gidende üstü çizili, yerine gelende altı çizili.",
     before: "Önce",
     after: "Sonra",
@@ -73,9 +73,9 @@ const copy: typeof en = {
     help: "Mesajı düzenleyin. Düzenlemeden önceki ve sonraki özetler yukarıda karakter karakter karşılaştırılır.",
     editPrompt: "İki özeti karşılaştırmak için mesajdaki bir karakteri değiştirin.",
     caption:
-      "Sayım, iki gerçek özet üzerinde bit bit ölçülüyor: tahmin edilmiyor ve bir sayıya doğru canlandırılmıyor.",
+      "Sayım, iki gerçek özet bit bit karşılaştırılarak yapılıyor; tahmin edilmiyor, bir hedef sayıya doğru canlandırılmıyor da.",
     announce: (changed: number, total: number, percent: number) =>
-      `${total} bitten ${changed} tanesi değişti, özetin yüzde ${percent}'i.`,
+      `${total} bitten ${changed} tanesi değişti, özetin %${percent} kadarı.`,
   },
 
   bits: {
@@ -89,19 +89,19 @@ const copy: typeof en = {
   challenge: {
     kicker: "Meydan okuma",
     title: "İki farklı mesajın aynı özeti üretmesini sağlayabilir misiniz?",
-    lede: "Özetin tamamı değil: ilk karakterinden başlayın. Her tur bir karakter daha istiyor ve her tur bir öncekinden on altı kat daha düşük olasılıklı. Bu eğri, çakışma direncinin kalbi; ve bunu dürüstçe hissetmenin tek yolu bu: burada bir çakışma bulunmuyor, uydurulmuyor da.",
+    lede: "Özetin tamamıyla değil, ilk karakteriyle başlayın. Her tur bir karakter daha istiyor ve her biri bir öncekinden on altı kat daha olasılıksız. Çakışma direnci tam olarak bu tırmanış: burada hazır bir çakışma yok, uydurulan bir eşleşme de yok.",
     inputA: "Mesaj A",
     inputB: "Mesaj B",
     identical:
       "İki mesaj da aynı, dolayısıyla özetler tanım gereği eşleşiyor. Çakışma için iki farklı mesaj gerekir.",
     target: (round: number, odds: string) =>
-      `${round}. tur: ilk ${round} hex karakteri paylaşsınlar. Deneme başına olasılık: ${odds}'de 1.`,
+      `${round}. tur: ilk ${round} hex karakter aynı olsun. Deneme başına olasılık: 1/${odds}.`,
     nextRound: (round: number) => `${round}. tur, on altı kat zor`,
     keepTrying: "Denemeye devam",
-    maxRound: "İnsanların durduğu yer burası",
+    maxRound: "Elle deneyenlerin durduğu yer burası",
     matchedLabel: "Ortak ön ek",
     roundLabelFull: "Tur",
-    oddsHint: (odds: string) => `deneme başına ${odds}'de 1`,
+    oddsHint: (odds: string) => `deneme başına 1/${odds}`,
     bestLabel: "En iyi",
     attemptsLabel: "Deneme",
     ladderLabel: (matched: number, total: number, round: number) =>
@@ -143,8 +143,8 @@ const copy: typeof en = {
   recap: {
     lessons: [
       "Aynı mesaj her zaman aynı özeti üretir ve özet, girene bakılmaksızın aynı uzunluktadır",
-      "Tek bir karakteri değiştirmek 256 bitin yaklaşık yarısını değiştirir: çığ etkisi, burada iddia edilmiyor ölçülüyor",
-      "İki özetin paylaştığı her ek hex karakter on altı kat daha düşük olasılıklıdır; 64'ünün birden eşleşmesinin erişilemez olmasının nedeni budur",
+      "Tek bir karakteri değiştirmek 256 bitin yaklaşık yarısını değiştirir; çığ etkisi denen bu davranış burada varsayılmıyor, ölçülüyor",
+      "İki özetin baştan paylaştığı her yeni hex karakter on altı kat daha olasılıksızdır; 64 karakterin birden tutmasının ulaşılmaz olmasının nedeni bu",
     ],
     footer:
       'Bu sayfadaki hiçbir şey saklanmıyor ya da taklit edilmiyor: her özet, yazdığınız metin üzerinde tarayıcınızda çalışan crypto.subtle.digest("SHA-256", …) çağrısının sonucu.',

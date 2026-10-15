@@ -6,12 +6,12 @@ const copy: typeof en = {
   sources: {
     title: "Kaynaklar",
     gloveVectors:
-      "Bu laboratuvar\u0131n ger\u00e7ekten kulland\u0131\u011f\u0131 vekt\u00f6rleri destekler: kendi g\u00f6mme y\u00f6ntemini uygulamaz, \u00f6nceden e\u011fitilmi\u015f GloVe vekt\u00f6rlerini okur.",
+      "Bu laboratuvarın gerçekten kullandığı vektörleri destekler: kendi gömme yöntemini uygulamaz, önceden eğitilmiş GloVe vektörlerini okur.",
   },
 
   predict: {
     question: (word: string) => `${word} kelimesine en yakın hangisi?`,
-    hint: "Üçü de ilgili, sen hangisini beklersin?",
+    hint: "Üçü de ilgili. Siz hangisini beklerdiniz?",
     loading: "Kelime vektörleri yükleniyor…",
     chose: (word: string, rank: number, total: number, score: string) =>
       `${word} dedin: ${total} kelime içinde ${rank}. sırada, ${score} benzerlikle.`,
@@ -57,7 +57,7 @@ const copy: typeof en = {
     wordHeader: "Kelime",
     scoreHeader: "Benzerlik",
     rowLabel: (word: string, gloss: string, rank: number, score: string) =>
-      `${word}, ${gloss}. ${rank}. en yakın, benzerlik ${score}. Haritayı buraya taşımak için seç.`,
+      `${word}, ${gloss}. ${rank}. en yakın, benzerlik ${score}. Haritayı buraya taşımak için seçin.`,
   },
 
   projection: {
@@ -68,7 +68,7 @@ const copy: typeof en = {
     modeNone: "Kendi seçimim",
     modeHidden: "Yakın, uzağa çizilmiş",
     modeFalse: "Uzak, yakına çizilmiş",
-    idle: "Yukarıdaki ikisinden birini seç ve o kelimelerin haritada nerede olduğuna bak.",
+    idle: "Yukarıdaki ikisinden birini seçin; o kelimelerin haritadaki yeri belirsin.",
     // Türkçe sıra sayıları düzenli: sayının ardından nokta yeter.
     ordinal: (n: number) => `${n}.`,
     hiddenBody: (

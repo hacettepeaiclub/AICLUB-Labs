@@ -58,7 +58,7 @@ const copy: typeof en = {
   sum: {
     kicker: "İkisini toplamak",
     title: "0.1 + 0.2 kaç eder?",
-    lede: "Bakmadan önce karar verin. Sonra istediğiniz iki sayıyı girin ve toplamın tamamını kesin olarak görün.",
+    lede: "Bakmadan önce karar verin. Sonra istediğiniz iki sayıyı girin; toplamın kesin değeri, hiçbir basamağı atılmadan yazılır.",
     question: "Tarayıcınız 0.1 + 0.2 için ne buluyor?",
     options: {
       exact: "Tam olarak 0.3",

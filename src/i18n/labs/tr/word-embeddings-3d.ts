@@ -6,11 +6,11 @@ const copy: typeof en = {
   sources: {
     title: "Kaynaklar",
     gloveVectors:
-      "Bu laboratuvar\u0131n okudu\u011fu vekt\u00f6rleri destekler. \u00dc\u00e7 boyutlu g\u00f6r\u00fcn\u00fcm izd\u00fc\u015f\u00fcm\u00fc de\u011fi\u015ftirir, alt\u0131ndaki g\u00f6mmeleri de\u011fil.",
+      "Bu laboratuvarın okuduğu vektörleri destekler. Üç boyutlu görünüm izdüşümü değiştirir, altındaki gömmeleri değil.",
   },
-  lede: "Aynı kelimeler, aynı vektörler, bir eksen daha. Bulutu döndürmek için sürükle.",
+  lede: "Aynı kelimeler, aynı vektörler, bir eksen daha. Bulutu döndürmek için sürükleyin.",
   honesty:
-    "Bu, gömmenin gerçek görüntüsü değildir. Uzayın 300 boyutu var; döndürdüğün şey, onun üç PCA eksenine indirgenmiş bir görünümü: düz haritadan bir eksen fazla, yine de neredeyse hiçbiri.",
+    "Bu, gömmenin gerçek görüntüsü değildir. Uzayın 300 boyutu var; döndürdüğünüz şey, onun üç PCA eksenine indirgenmiş bir görünümü: düz haritadan bir eksen fazla, yine de neredeyse hiçbiri.",
   compare:
     "Bu bir prototip ve dersten bilerek ayrı tutuldu. Derinlik, bulutu bir mekân gibi hissettiriyor; ama projeksiyonu daha doğru yapmıyor. Bu takasın öğretmeye değip değmediğine karar vermek, prototipi yapmanın asıl sebebi.",
   error: "Kelime vektörleri yüklenemedi.",
@@ -27,7 +27,7 @@ const copy: typeof en = {
   },
   map: {
     mapLabel:
-      "Üç boyutta kelime bulutu. Döndürmek için sürükle. Ok tuşları en yakın kelimeler arasında gezinir, Shift ve ok tuşları görüşü çevirir, Enter seçer.",
+      "Üç boyutta kelime bulutu. Döndürmek için sürükleyin. Ok tuşları en yakın kelimeler arasında gezinir, Shift ve ok tuşları görüşü çevirir, Enter seçer.",
     hint: "Döndürmek için sürükle · Shift + ok tuşları",
     pointLabel: (word: string, gloss: string) => `${word}, ${gloss}`,
     neighbourLabel: (word: string, gloss: string, rank: number, score: string) =>

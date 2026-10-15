@@ -6,7 +6,7 @@ const copy: typeof en = {
   sources: {
     title: "Kaynaklar",
     subwordBpe:
-      "Bayt \u00e7ifti kodlamas\u0131n\u0131 bir alt s\u00f6zc\u00fck par\u00e7alama y\u00f6ntemi olarak destekler. Buradaki s\u00f6zl\u00fck, laboratuvar\u0131n kendi k\u00fc\u00e7\u00fck derlemi \u00fczerinde e\u011fitilir; herhangi bir \u00fcretim modelinin s\u00f6zl\u00fc\u011f\u00fc de\u011fildir.",
+      "Bayt çifti kodlamasını bir alt sözcük parçalama yöntemi olarak destekler. Buradaki sözlük, laboratuvarın kendi küçük derlemi üzerinde eğitilir; herhangi bir üretim modelinin sözlüğü değildir.",
   },
   honesty:
     "Bu laboratuvar için birkaç kilobaytlık metin üzerinde eğitilmiş küçük bir BPE tokenizer'ı. Herhangi bir GPT modelinin kullandığı tokenizer değil.",
@@ -73,7 +73,7 @@ const copy: typeof en = {
     trainAll: "Tümünü eğit",
     training: "Eğitiliyor…",
     untouched: (base: number, tokens: number) =>
-      `Şu anda her parça tek bir karakter: toplam ${base} parça ve derlemin maliyeti ${tokens} token. En sık geçen çifti birleştirin ve ne olduğunu görün.`,
+      `Şu anda her parça tek bir karakter: toplam ${base} parça ve derlemin maliyeti ${tokens} token. En sık geçen çifti birleştirin; parça sayısı da maliyet de değişir.`,
     merged: (
       index: number,
       left: string,
@@ -120,7 +120,7 @@ const copy: typeof en = {
   compare: {
     kicker: "Ne üzerinde eğitildi?",
     title: "Ne okuduysa onu ucuzlatır.",
-    lede: "İki tokenizer; aynı algoritma, aynı miktarda eğitim, farklı okuma. İkisine de aynı metni verin ve faturanın nasıl ayrıştığını görün. Sonra aradaki farkı kapatan bir cümle yazmayı deneyin.",
+    lede: "İki tokenizer; aynı algoritma, aynı miktarda eğitim, farklı okuma. İkisine de aynı metni verin: iki fatura birbirinden ayrılır. Sonra aradaki farkı kapatan bir cümle yazmayı deneyin.",
     textLabel: "İki tokenizer'ın da aldığı metin",
     textHint:
       "Metni istediğiniz gibi değiştirin. Hiçbir tokenizer'ı, hiç okumadığı bir dilde akıcı kılan bir cümle bulamayacaksınız.",
@@ -152,20 +152,19 @@ const copy: typeof en = {
 
   challenge: {
     architecture: "Mimari",
-    neuronsUsed: "Kullan\u0131lan n\u00f6ron",
-    testAccuracy: "Test do\u011frulu\u011fu",
+    neuronsUsed: "Kullanılan nöron",
+    testAccuracy: "Test doğruluğu",
     target: "Hedef",
     objectiveLine: (accuracy: string) =>
-      `Spiralde ${accuracy} test do\u011frulu\u011funa ula\u015f\u0131n: olabildi\u011fince az gizli n\u00f6ron kullanarak.`,
-    solvedNote: "\u00c7\u00f6z\u00fcld\u00fc. \u015eimdi bir n\u00f6ron eksiltip yeniden deneyin.",
-    noBest:
-      "Hen\u00fcz yok. Bol n\u00f6ronla ba\u015flay\u0131n, sonra bozulana kadar azalt\u0131n.",
+      `Spiralde ${accuracy} test doğruluğuna ulaşın: olabildiğince az gizli nöron kullanarak.`,
+    solvedNote: "Çözüldü. Şimdi bir nöron eksiltip yeniden deneyin.",
+    noBest: "Henüz yok. Bol nöronla başlayın, sonra bozulana kadar azaltın.",
     bestLine: (neurons: number, accuracy: string, epoch: number) =>
-      `En iyi: ${neurons} gizli n\u00f6ron, ${epoch.toLocaleString("en-US")} epok sonra ${accuracy}.`,
+      `En iyi: ${neurons} gizli nöron, ${epoch.toLocaleString("en-US")} epok sonra ${accuracy}.`,
     canvasLabel: (neurons: number, accuracy: string, epoch: number) =>
-      `Spiral g\u00f6revi: ${neurons} gizli n\u00f6ron, ${epoch} epok sonra ${accuracy} test do\u011frulu\u011fu.`,
+      `Spiral görevi: ${neurons} gizli nöron, ${epoch} epok sonra ${accuracy} test doğruluğu.`,
     announceSolved: (neurons: number, accuracy: string) =>
-      `${neurons} gizli n\u00f6ronla, ${accuracy} test do\u011frulu\u011funda \u00e7\u00f6z\u00fcld\u00fc.`,
+      `${neurons} gizli nöronla, ${accuracy} test doğruluğunda çözüldü.`,
     kicker: "Görev",
     title: "Tek bütçe. Onu kaçırmanın iki yolu.",
     lede: "İlk görevde tokenizer sabit, cümle sizin. İkincisinde cümle sabit, tokenizer sizin. Bunlardan yalnızca biri daha çok uğraşarak çözülebilir.",

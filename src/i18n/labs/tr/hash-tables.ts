@@ -98,7 +98,7 @@ const copy: typeof en = {
   probe: {
     kicker: "Açık adresleme",
     title: "Liste yok: yuvası dolu olan anahtar bir sağa geçer.",
-    lede: "32 yuvalı tek bir dizi. Her anahtarın bir ev yuvası var; o doluysa bir sonrakini, sonra bir sonrakini dener, ta ki boş bir yuva bulana kadar. Anahtar ekleyin ve yürüyüşlerin uzamasını izleyin.",
+    lede: "32 yuvalı tek bir dizi. Her anahtarın bir ev yuvası var; o doluysa bir sonrakini, sonra bir sonrakini dener, ta ki boş bir yuva bulana kadar. Anahtar ekledikçe boş yuva arayan yürüyüşler uzar.",
     caption:
       "Her dolu yuva, anahtarının istediği evi gösterir. Turuncu çerçeve, en yeni anahtarın denediği her yuvadır. Dolu yuva dizileri birleşerek büyür ve bir diziye düşen her anahtar sonuna kadar yürüyüp onu daha da uzatır.",
     announce: (count: number, home: number, slot: number, probes: number) =>
@@ -165,7 +165,7 @@ const copy: typeof en = {
   resize: {
     kicker: "Hızlı kalmak",
     title: "Dolunca iki katı büyüklükte bir tabloya taşının.",
-    lede: "Java'nın HashMap'i 16 kovayla başlar ve dörtte üçü dolduğunda her anahtarı kopyalayarak iki katına çıkar. Her taşınma pahalıdır. Anahtar ekleyin ve bunun ortalamada neye mal olduğunu görün.",
+    lede: "Java'nın HashMap'i 16 kovayla başlar ve dörtte üçü dolduğunda her anahtarı kopyalayarak iki katına çıkar. Her taşınma pahalıdır. Anahtar ekleyin; taşınmaların ortalamada neye mal olduğu her eklemede hesaplanır.",
     caption:
       "Her çubuk, tek bir eklemenin yaptığı iştir: anahtar için 1, bir taşınmayı tetiklediyse kopyalanan her anahtar için de birer. Taşınmalar büyür ama aynı hızla seyrekleşir; bu yüzden ortalama 3'ün altında kalır: kopyalar toplamı her zaman anahtar sayısının iki katından azdır.",
     announce: (n: number, capacity: number, average: string) =>
@@ -198,7 +198,7 @@ const copy: typeof en = {
   modulus: {
     kicker: "Kötü anahtarlar",
     title: "Eşit aralıklı anahtarlar yalnızca birkaç kovaya ulaşabilir.",
-    lede: "Sekizer artan kimlikler, onar artan fiyatlar, 64'e hizalı adresler: anahtarlar çoğu zaman bir adımı paylaşır. Bir tablo boyutu ve bir adım seçin, kaç kovaya ulaştıklarını görün.",
+    lede: "Sekizer artan kimlikler, onar artan fiyatlar, 64'e hizalı adresler: anahtarlar çoğu zaman bir adımı paylaşır. Bir tablo boyutu ve bir adım seçin: anahtarların kaç kovaya dağıldığı hemen sayılır.",
     caption:
       "0, s, 2s, … anahtarları, başka her şey ne olursa olsun tam olarak m / ebob(s, m) kovaya ulaşır. İkinin bir kuvveti ile çift bir adım en kötü durumdur; bir asal sayının paylaşacak çarpanı yoktur. HashMap ikinin kuvvetlerini kullanır; kova seçmeden önce hash'in yüksek bitlerini düşük bitlerine karıştırmasının nedeni budur.",
     announce: (used: number, m: number, most: number) =>

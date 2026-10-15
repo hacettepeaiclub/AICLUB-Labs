@@ -70,16 +70,15 @@ export const tr: Translation = {
     // İlk sürümdeki başlık geri alındı: hem bilgisayar bilimini hem yapay
     // zekâyı adıyla söylüyor ve yine bir eylemle başlıyor.
     title: "Bilgisayar biliminin ve yapay zekânın arkasındaki fikirlerle oynayın.",
-    lede: "On yedi etkileşimli deney: algoritmalar, yapay sinir ağları ve hesaplamanın işleyişi. Uzun anlatım yok, çevirip kaydıracağınız düğmeler var.",
+    lede: "Algoritmalar, yapay sinir ağları ve bilgisayarın içindeki işleyiş üzerine on yedi deney. Uzun anlatım yerine elinizle değiştirip sonucunu hemen göreceğiniz düzenekler var.",
     cta: "Denemeye başla",
     labs: "Laboratuvarlar",
     labCount: (n: number) => `${n} düzenek`,
     experiments: "Deneyler",
     emptyTitle: "İlk deneyler hazırlanıyor.",
-    emptyBody:
-      "Platform hazır: laboratuvarlar kendilerini kaydeder ve burada otomatik olarak görünür.",
+    emptyBody: "Laboratuvarlar eklendikçe burada listelenecek.",
     browse: "Laboratuvarlara göz at",
-    continueLab: (title: string) => `Kaldığın yerden devam et: ${title}`,
+    continueLab: (title: string) => `Kaldığınız yerden devam edin: ${title}`,
     filterLabel: "Laboratuvarları alana göre süz",
     allFields: "Tümü",
     otherLabs: "Diğer laboratuvarlar",
@@ -140,7 +139,7 @@ export const tr: Translation = {
     nextLab: "Koleksiyonda sıradaki",
     endOfCollection: "Koleksiyonun tamamı bu kadar.",
     endOfCollectionBody:
-      "Bütün laboratuvarlar, anlatının ilerlediği sırayla. Birini yeniden seçmek için ızgaraya dönün.",
+      "Laboratuvarların hepsi bu kadar. Başka birini açmak için listeye dönebilirsiniz.",
     backToCollection: "Tüm laboratuvarlar",
   },
 
@@ -178,34 +177,35 @@ export const tr: Translation = {
       term: "Word embedding",
       figure: "bir uzayda nokta olarak kelimeler ve bunlardan birine en yakın dördü.",
       description:
-        "Bir modelin APPLE'a en yakın gördüğü kelimeyi tahmin et, sonra bu kelime haritasının neyi sakladığını gör.",
+        "Bir modelin APPLE'a en yakın bulduğu kelimeyi tahmin edin; sonra bu haritanın kelimeler hakkında neyi tuttuğuna bakın.",
     },
     "hypothesis-testing": {
       title: "Emin Olmanın Bedeli",
       term: "Hipotez testi",
       figure: "iki örneklem dağılımı, aralarında karar veren çizgi ve onun ötesindeki kuyruk.",
       description:
-        "\u0130ki hipotezi birbirinden uzakla\u015ft\u0131r\u0131n ve emin olman\u0131n bedelini izleyin: reddetme b\u00f6lgesi, kabul etti\u011finiz hatalar ve kazand\u0131\u011f\u0131n\u0131z g\u00fc\u00e7.",
+        "İki hipotezi birbirinden uzaklaştırın: reddetme bölgesi, göze aldığınız hatalar ve testin gücü birlikte değişir.",
     },
     "reinforcement-learning": {
       title: "Tam İstediğiniz Gibi",
       term: "Pekiştirmeli öğrenme",
       figure: "karelerden bir oda, robotun başladığı yer ve ulaşınca ödül aldığı kare.",
       description:
-        "Bir robot için bir karenin ne kadar değerli olduğuna siz karar verin ve tam olarak dediğinizi yapmasını izleyin.",
+        "Bir robot için hangi karenin ne kadar değerli olduğunu siz belirleyin. Robot, istediğinizi değil ödüllendirdiğinizi öğrenir.",
     },
     attention: {
       title: "Model Nereye Bakıyor",
       term: "Attention",
       figure: "cümlesinin geri kalanına bakan bir kelime; en kalın yay, en çok baktığı yer.",
-      description: "Bir kelime seçin ve modelin cümlenin hangi kısmına yaslandığını izleyin.",
+      description:
+        "Bir kelime seçin ve cümlenin geri kalanına dağıttığı dikkati okuyun: en kalın yay, en çok baktığı kelime.",
     },
     "gradient-descent": {
       title: "Adımın Boyu",
       term: "Gradient descent",
       figure: "yukarıdan görülen bir çanak ve adımların tabanına indiği yol.",
       description:
-        "Bir yüzeyin biçiminin, atmanıza izin verilen adımın boyutunu nasıl belirlediğini görün.",
+        "Adım boyunu siz seçin. Yüzeyin biçimi o adımı kaldıramıyorsa yol hedefe inmek yerine dağılır.",
     },
     backpropagation: {
       title: "Suç Kimde?",
@@ -213,14 +213,14 @@ export const tr: Translation = {
       figure:
         "çıkışından geriye doğru hatanın aktığı küçük bir ağ; suçun çoğu nereye gidiyorsa orası daha kalın.",
       description:
-        "Bir ağın çıktısını çekin ve her ağırlığın suçtaki payını görün, sonra geri geçişi kendiniz yapın.",
+        "Bir ağın çıktısını çekin; her ağırlığın hatadaki payı anında belirir. Sonra geri geçişi kendi elinizle yapın.",
     },
     convolution: {
       title: "Dokuz Ağırlık",
       term: "Evrişim",
       figure: "bir resmin üzerinde 3×3'lük bir pencere ve çıktıda yazdığı hücre.",
       description:
-        "Dokuz ağırlığı bir resmin üzerinde kaydırın ve kenarları bulmalarını izleyin, sonra ağırlıkları sizin yerinize gradient descent bulsun.",
+        "Dokuz ağırlığı bir resmin üzerinde kaydırıp kenarları buldurun; sonra aynı ağırlıkları gradient descent'in kendi bulmasına bırakın.",
     },
     "floating-point": {
       title: "0,1 + 0,2",
@@ -228,7 +228,7 @@ export const tr: Translation = {
       figure:
         "işaret, üs ve kesir bitleri olarak bir sayı; altında bu bitlerin tutabildiği değerlerin cetveli.",
       description:
-        "0.1 yazın ve bilgisayarınızın gerçekte sakladığı sayıyı görün, sonra 0.1 + 0.2'nin neden 0.3 etmediğini öğrenin.",
+        "0.1 yazın: bilgisayarınızın sakladığı sayı tam olarak 0.1 değil. 0.1 + 0.2'nin neden 0.3 etmediği de buradan çıkıyor.",
     },
     "cache-locality": {
       title: "Komşular Bedava",
@@ -236,7 +236,7 @@ export const tr: Translation = {
       figure:
         "sekizli satırlar halinde sayılar; birini okumak bütün bloğunu, komşularıyla birlikte getirir.",
       description:
-        "Aynı sayıları iki farklı sırayla toplayın, ikisini kendi bilgisayarınızda ölçün ve birinin neden kat kat yavaş olduğunu görün.",
+        "Aynı sayıları iki sırayla toplayıp kendi bilgisayarınızda ölçün. Biri kat kat yavaş; nedeni bellekte yan yana duran komşular.",
     },
     "race-condition": {
       title: "Kayıp Güncelleme",
@@ -244,53 +244,56 @@ export const tr: Translation = {
       figure:
         "iki iş parçacığının adımları iç içe; ikisi de yazmadan önce okur ve bir güncelleme kaybolur.",
       description:
-        "Sayaca birer ekleyen iki iş parçacığının zamanlayıcısı siz olun ve sayacı kendi elinizle 1'de bitirin.",
+        "Sayaca birer ekleyen iki iş parçacığının sırasını siz belirleyin. Sayaç 2 yerine 1'de kalacak sırayı bulabilir misiniz?",
     },
     "hash-tables": {
       title: "Hesaplanan Adres",
       term: "Hash tabloları",
       figure: "dolu bir yuvaya düşen ve ilk boş yuvaya kadar sağa adımlayan bir anahtar.",
       description:
-        "Bir kelimeyi adrese çevirin, sonra tabloyu doldurun ve herhangi bir şeyi bulmanın maliyetinin patlamasını izleyin.",
+        "Bir kelimeyi bir adrese çevirin, sonra tabloyu doldurun: tablo doldukça bir şeyi bulmanın maliyeti hızla büyür.",
     },
     "cryptographic-hashing": {
       title: "Dijital Parmak İzi",
       term: "Kriptografik hash",
       figure: "farklı uzunlukta iki girdi, tek bir fonksiyon ve aynı boyda iki çıktı.",
-      description: "Tek bir karakteri değiştirin. Her şeyin değiştiğini görün.",
+      description:
+        "Tek bir karakteri değiştirin: SHA-256 özetinin bitlerinin yaklaşık yarısı değişir.",
     },
     "multilayer-perceptrons": {
       title: "Çizgiyi Bükmek",
       term: "Çok katmanlı algılayıcılar",
       figure: "üç girdi, dört nöronlu bir gizli katman ve iki çıktı; her bağlantı çizili.",
-      description: "İki tür nokta çizin. Bir ağın onları ayırt etmeyi öğrenişini izleyin.",
+      description:
+        "İki tür nokta çizin; onları ayıran sınırı bir ağın kendi kendine bulmasını izleyin.",
     },
     "graph-search": {
       title: "Yayılan Arama",
       term: "Graf araması",
       figure: "başlangıcından bir ızgaraya yayılan bir arama; parlak halka sınır.",
-      description: "Engeller çizin; BFS, Dijkstra ve A* algoritmalarının yol arayışını izleyin.",
+      description:
+        "Engelleri siz çizin. BFS, Dijkstra ve A*'ın yolu ararken nereleri dolaştığı haritada iz bırakır.",
     },
     probability: {
       title: "Önce Tahmin, Sonra Hesap",
       term: "Olasılık",
       figure: "üç kapı ve sunucunun açtığı kapı.",
       description:
-        "\u015eans hakk\u0131ndaki sezgine meydan okuyan alt\u0131 deney. \u00d6nce tahmin edin, sonra tahminin ne kadar yanl\u0131\u015f oldu\u011funu g\u00f6r\u00fcn.",
+        "Şans hakkındaki sezgilerinizi sınayan altı deney. Önce tahmininizi yapın, sonra sayılarla karşılaştırın.",
     },
     sorting: {
       title: "Düzenin Bedeli",
       term: "Sıralama algoritmaları",
       figure: "kısadan uzuna sıralanmış çubuklar; son yerleşenler vurgulu.",
       description:
-        "Veriyi siz çizin; her algoritmanın onu sıralamak için ne kadar iş yaptığını görün.",
+        "Veriyi siz çizin; her algoritmanın onu sıralarken kaç karşılaştırma ve kaç taşıma yaptığı sayılır.",
     },
     tokenization: {
       title: "Ucuz Kelimeler",
       term: "BPE tokenization",
       figure: "farklı uzunlukta token'lara bölünmüş bir cümle; biri vurgulu.",
       description:
-        "Bir tokenizer'ı elinizle eğitin ve ne okuduğunun, neyi söylemenin ucuz olduğunu nasıl belirlediğini görün.",
+        "Bir tokenizer'ı elinizle eğitin: okuduğu metin, hangi kelimelerin ona ucuza mal olacağını belirler.",
     },
   },
 };
