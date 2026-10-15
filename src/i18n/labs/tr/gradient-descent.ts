@@ -371,6 +371,60 @@ const copy: typeof en = {
     footer:
       "Buradaki her şey konveks ve ikinci dereceden: eğrilik her noktada aynı, gradyan tam, cevap daha başlamadan biliniyor. Gerçek eğitim bu üçünü de bırakır. Geriye kalan, ileri geri oynadığınız ilişkidir: yüzeyin biçimi, atmanıza izin verilen adımın boyutunu belirler.",
   },
+
+  // The guided tours, one per experiment (components/lab/guide/tours.ts).
+  tour: {
+    intro:
+      "Bir nokta, haritadaki en alçak yere inmek zorunda. Adım boyunu siz seçersiniz; o adımın işe yarayıp yaramayacağına yüzey karar verir.",
+    stages: {
+      find: {
+        map: "Yukarıdan bakılan yüzey bu. Camgöbeği ok, ilk adımın gerçek boyutu.",
+        step: "Bu kaydırıcı adım boyunu belirler. Tur adımı uzattı.",
+        run: "Çalıştırın: nokta yokuş aşağı adım adım iner. Fazla uzun bir adım hedefi aşar ve noktayı savurabilir.",
+        figures:
+          "Atılan adım sayısı, ulaşılan yükseklik ve koşunun oturup oturmadığı. Haritadaki okun ucunu da sürükleyebilirsiniz.",
+      },
+      direction: {
+        arrows:
+          "Düz ok, adımın gerçekte gittiği yön. Kesikli ok, minimuma giden düz çizgi. Noktayı haritada istediğiniz yere sürükleyin.",
+        curvature:
+          "Bu kaydırıcı bir yönü diğerinden daha dik yapar. Tur ikisini çok farklılaştırdı.",
+        angle: "İki ok arasındaki açı. Yalnızca eğrilikler eşitken 0° olur.",
+      },
+      rate: {
+        map: "Aynı fikir, daha dik bir yüzeyde; haritanın yanında kaybın zamanla değişimi var.",
+        rate: "Adım boyunu ayarlayın. Tur onu ilk işaretin ötesine itti.",
+        run: "Çalıştırın ve yolu haritanın altında yazan rejimle karşılaştırın.",
+        marks:
+          "İki işaret bu yüzeyin eğriliğinden hesaplanır: ikincisinin ötesinde her adım boyu dağılır.",
+      },
+      golf: {
+        course: "Altı delik. Nişan alamazsınız; her vuruşun yönüne eğim karar verir.",
+        start: "Bir tur başlatın.",
+        club: "Bir sopa seçin; her sopa bir adım boyu. Tur ortadakilerden birini aldı.",
+        hit: "Vurun. Fazla kısa olursa çok vuruş gerekir; fazla uzun olursa top saha dışına uçar.",
+        score: "Deliğin parı, vuruş sayınız ve topun altındaki eğim.",
+      },
+      momentum: {
+        map: "Uzun ve dar bir vadi: düz gradient descent onu zikzak çizerek geçer.",
+        beta: "β'yı, yani son adımın ne kadarının aktarıldığını artırın. Kadranı sürükleyin ya da ok tuşlarını kullanın.",
+        run: "Çalıştırın: hep aynı yöne iten adımlar birikir, zikzaklar birbirini götürür.",
+        figures: "Ulaşılan yükseklik ve oturup oturmadığı. β fazla olursa bu kez hedefi aşar.",
+      },
+      adam: {
+        map: "Adam her parametreye kendi adım boyunu verir; o parametrenin gradyan geçmişine göre ölçeklenmiş.",
+        rate: "Adım boyunu buradan ayarlayın.",
+        run: "Çalıştırın ve haritadaki yolu takip edin.",
+        steps: "Yeterince yaklaşmak için kaç adım gerektiği ve diğer değerler.",
+      },
+      challenge: {
+        map: "Her bulmacada yüzey, başlangıç ve adım bütçesi sabit. Bulmacayı haritanın üstünden seçin.",
+        settings: "Optimizer'ı ve ayarlarını siz seçersiniz.",
+        run: "Çalıştırın. Geç varmak geçer not değil.",
+        status: "Kullanılan adımlar, ulaşılan yükseklik ve sonuç.",
+      },
+    },
+  },
 };
 
 export default copy;

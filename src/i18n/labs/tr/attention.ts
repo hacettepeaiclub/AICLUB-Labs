@@ -161,6 +161,41 @@ const copy: typeof en = {
     tableCaption: "En çok katkı veren üç kelime için pay ve value vektörü.",
     outputLabel: "Karışmış çıktı, eksen eksen",
   },
+
+  // The guided tours, one per experiment (components/lab/guide/tours.ts).
+  tour: {
+    intro:
+      "Bir cümledeki her kelime diğer bütün kelimeleri tartar. Bir kelime seçerek başlarsınız: sayfa, dikkatinin nereye gittiğini gösterir ve cümleyi altından değiştirebilirsiniz.",
+    stages: {
+      sentence: {
+        sentence:
+          "Cümle bu. Bir kelime seçili; diğer her kelimenin altında, o kelimenin dikkatinden aldığı pay yazıyor.",
+        pick: "Başka bir kelime seçin; paylar bu kez o kelime için yeniden hesaplanır.",
+        swap: "Şimdi cümledeki bir kelimeyi değiştirin. Seçtiğiniz kelimeye dokunmadığınız halde onun dikkati de kayar.",
+      },
+      compare: {
+        bars: "Solda seçili kelimenin aradığı şey, yani query'si. Sağda en iyi eşleştiği kelimenin sunduğu şey, yani key'i.",
+        pick: "Buradan başka bir kelime seçin; iki taraf da onun için yeniden hesaplanır.",
+        match: "İkisini çubuk çubuk çarpıp toplayınca ham eşleşme çıkar. Bölündüğünde skor olur.",
+      },
+      scale: {
+        shares: "Aynı eşleşmeler, aşağıdaki bölenle paylara dönüştürülmüş hali.",
+        divisor: "Tur böleni kaldırdı. Bölen olmayınca en büyük eşleşme neredeyse her şeyi alır.",
+        model: "Bu, modelin kullandığı böleni geri koyar: eksen sayısının karekökü.",
+      },
+      softmax: {
+        rows: "Her satır bir kelimenin eşleşme skoru ve payı. Payların toplamı her zaman %100.",
+        drag: "Bir skoru sürükleyin ya da seçip ok tuşlarını kullanın. Tur ilkini yükseltti; diğer bütün paylar düştü.",
+        reset: "Bu düğme modelin kendi skorlarını geri getirir.",
+      },
+      mix: {
+        table:
+          "Her kelime value vektörünü payı oranında aktarır; alttaki çubuklar bunların toplamı.",
+        pick: "Başka bir kelime seçin; karışım onun paylarıyla yeniden yapılır.",
+        out: "Seçili kelimenin eksen eksen dönüştüğü şey; bir sonraki katmana giden bu.",
+      },
+    },
+  },
 };
 
 export default copy;

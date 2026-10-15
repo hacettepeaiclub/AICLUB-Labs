@@ -181,6 +181,41 @@ const copy: typeof en = {
     footer:
       "Sayılar sizin işlemcinizin kendi sayıları. Gerçek önbelleklerin birkaç seviyesi, sınırlı yolları ve önden tahmin eden bir ön getiricisi vardır; modelin temiz basamaklarını büker ama yönünü değiştirmez: yakın ucuz, uzak pahalı.",
   },
+
+  // The guided tours, one per experiment (components/lab/guide/tours.ts).
+  tour: {
+    intro:
+      "İki döngü aynı dört milyon sayıyı farklı sırayla topluyor. İkisini de kendi bilgisayarınızda ölçersiniz.",
+    stages: {
+      race: {
+        lanes:
+          "Üstteki döngü sayıları satır satır, alttaki sütun sütun okur. Sayılar da toplam da aynı.",
+        run: "Bu düğme ikisini de sizin işlemcinizde ölçer. Birkaç saniye sürer.",
+        ratio: "Sütun sırasının kaç kat uzun sürdüğü. Değişen tek şey okuma sırası.",
+      },
+      line: {
+        grid: "Bu ızgaranın her satırı sekiz sayılık bir önbellek satırı. Yanındaki önbellek dört satır tutar.",
+        run: "Okumaları tek tek çalıştırın: • isabet, × ise bütün bir satırı getiren ıska.",
+        score:
+          "Şimdiye kadarki ıska ve isabetler. Satır sırası her satırda bir kez ıskalar, sütun sırası neredeyse her okumada.",
+        options:
+          "Buradan sütun sırasına, daha büyük bir önbelleğe ya da sayılara kendiniz tıkladığınız kendi sıranıza geçin.",
+      },
+      stride: {
+        chart:
+          "Altta her adım aralığında okuma başına ıska modeli, üstte işlemcinizin her okuma için ödettiği süre.",
+        measure:
+          "Bu bilgisayarda ölçün. Maliyet aralıkla birlikte artar, ta ki her satırdan tek okumaya kadar.",
+        show: "Buradan bir adım aralığı seçin; önce hangi sayıları okuduğunu görürsünüz.",
+      },
+      order: {
+        orders:
+          "Matris çarpımının üç döngüsünü iç içe koymanın altı yolu ve en içteki döngünün her matriste nasıl yürüdüğü.",
+        time: "Seçili sırayı bu bilgisayarda ölçün ve modelle karşılaştırın.",
+        all: "Ya da altısını birden ölçüp hangi sıranın kazandığını görün.",
+      },
+    },
+  },
 };
 
 export default copy;

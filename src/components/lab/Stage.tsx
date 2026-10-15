@@ -1,6 +1,7 @@
-import type { ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
 import { useT } from "@/i18n";
 import { cn } from "@/lib/cn";
+import { GuideButton } from "./guide/LabGuide";
 
 /**
  * One interactive unit: the thing being computed, the controls that change it,
@@ -114,9 +115,13 @@ export function Stage({
 }: StageProps) {
   const t = useT();
   const stacked = controls === "stack";
+  const rootRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div className={cn("mx-auto", WIDTH[width], className)}>
+    // `data-stage` and `data-stage-part` are where a lab's guided tour points
+    // (see components/lab/guide): it names a stage's parts, not its classes,
+    // so restyling a stage cannot break a tour.
+    <div ref={rootRef} data-stage className={cn("mx-auto", WIDTH[width], className)}>
       {/* The chassis. A hairline, no shadow: this houses a measurement, it is
           not a card that wants to be clicked. */}
       <div className="rounded-card border border-line/10 bg-ink-800 p-3 md:p-4">
@@ -129,8 +134,8 @@ export function Stage({
         >
           {/* ------------------------------------------------ the screen -- */}
           <div className="min-w-0 space-y-2">
-            {viewport}
-            {readout}
+            <div data-stage-part="viewport">{viewport}</div>
+            {readout && <div data-stage-part="readout">{readout}</div>}
           </div>
 
           {/* ----------------------------------------------- the controls -- */}
@@ -152,10 +157,13 @@ export function Stage({
                 above the buttons, which put "Clear" at the top of the column —
                 a destructive action in the most prominent position, with the
                 Run button pushed below a paragraph of keyboard help. */}
-            <div className={cn(stacked && "w-full max-w-md")}>{primary}</div>
+            <div data-stage-part="primary" className={cn(stacked && "w-full max-w-md")}>
+              {primary}
+            </div>
 
             {figures && (
               <div
+                data-stage-part="figures"
                 className={cn(
                   "flex flex-wrap items-start gap-x-8 gap-y-3",
                   stacked && "justify-center text-left",
@@ -170,6 +178,7 @@ export function Stage({
                 {/* Below lg: a real <details>. No JS, no ARIA to get wrong,
                     and the browser's own disclosure semantics. */}
                 <details
+                  data-stage-part="secondary"
                   className={cn(
                     "group rounded border border-line/10",
                     stacked ? "w-full text-left" : "lg:hidden",
@@ -194,14 +203,22 @@ export function Stage({
                 {/* At lg and up the rail has room for all of it, so nothing
                     hides. Stacked, the disclosure above is the only copy —
                     a second one would repeat every control. */}
-                {!stacked && <div className="hidden space-y-3 lg:block">{secondary}</div>}
+                {!stacked && (
+                  <div data-stage-part="secondary" className="hidden space-y-3 lg:block">
+                    {secondary}
+                  </div>
+                )}
               </>
             )}
           </div>
         </div>
       </div>
 
-      {caption && <p className="mt-3 max-w-prose text-body-sm text-fg-muted">{caption}</p>}
+      {/* The line under the stage: what it shows, and a way to be shown. */}
+      <div className="mt-3 flex flex-wrap items-start justify-between gap-x-6 gap-y-2">
+        {caption && <p className="max-w-prose text-body-sm text-fg-muted">{caption}</p>}
+        <GuideButton stageRef={rootRef} className="ml-auto shrink-0" />
+      </div>
 
       {announcement !== undefined && (
         <p aria-live="polite" className="sr-only">

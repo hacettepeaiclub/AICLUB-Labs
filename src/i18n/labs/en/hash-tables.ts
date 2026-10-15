@@ -280,6 +280,54 @@ const copy = {
     footer:
       "Python's dictionaries, JavaScript's Map and Set, Java's HashMap: underneath each of them is this array, this remainder and this load factor.",
   },
+
+  // The guided tours, one per experiment (components/lab/guide/tours.ts).
+  tour: {
+    intro:
+      "Type a word and work out where it is stored, so that finding it again takes one look instead of a search.",
+    stages: {
+      address: {
+        type: "Type a word as a key. The tour typed pizza.",
+        bucket:
+          "Its hash, built letter by letter, picks one of 16 buckets, and that bucket lights up.",
+        put: "“Put it in”, and the word goes into that bucket.",
+        looks: "Finding it again only checks the keys in its own bucket.",
+      },
+      birthday: {
+        chart: "The chance that two keys share a bucket, as keys are added. Guess first, above.",
+        keys: "Set how many keys to throw.",
+        throw: "Throw them into random buckets and see whether two collide.",
+        chance: "The exact chance, the number of keys for an even bet, and your trials so far.",
+      },
+      probe: {
+        slots: "One array of 32 slots, no lists. A key whose home is taken steps right.",
+        add: "Add a key. The amber outline is every slot it tried.",
+        four: "Add four at once: as the table fills, the walks get longer.",
+        walks: "How full the table is, and how long the walks have got.",
+      },
+      compare: {
+        chart:
+          "The cost of finding a key against how full the table is: chaining and linear probing.",
+        load: "Drag along the chart, or use the arrow keys, to set the load factor. The tour filled it up.",
+        costs: "Near full, probing climbs steeply while chaining grows in a straight line.",
+      },
+      resize: {
+        bars: "Each bar is the work one insertion did, including every key copied when the table doubled.",
+        add: "Drag along the chart, or use the arrow keys, to add keys. The tour added a few.",
+        average: "Moves get rarer as they get bigger, so the average stays low.",
+      },
+      modulus: {
+        buckets: "Keys that go up in equal steps, and the buckets they land in.",
+        step: "Change the step. The tour picked an even one, and most buckets went unused.",
+        size: "Now try a prime table size here: every bucket gets used.",
+      },
+      challenge: {
+        pick: "Three properties to give a hash table. Pick one here.",
+        work: "Type your keys here; every change is checked with the same hash as the rest of the page.",
+        solved: "Anything with the property passes. There is no answer key.",
+      },
+    },
+  },
 };
 
 export default copy;

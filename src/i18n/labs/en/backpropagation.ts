@@ -234,6 +234,58 @@ const copy = {
     footer:
       "Every neural network trained today, from the one at the top of this page to the ones with billions of weights, learns by this one backward walk. Frameworks write it for you; this is what they write.",
   },
+
+  // The guided tours, one per experiment (components/lab/guide/tours.ts).
+  tour: {
+    intro:
+      "A small network, and its output as a dot you can grab. Pull it somewhere and every weight lights up with its share of the blame.",
+    stages: {
+      pull: {
+        pull: "This dot is the network's output. Drag it up or down, or use the arrow keys: the tour pulled it up.",
+        letGo: "Let go, and every weight moves by exactly its share of the pull.",
+        result:
+          "Where you aimed, where it landed, and by how much it missed. Pull it further and the miss grows.",
+      },
+      zoom: {
+        curve:
+          "The loss as one weight changes, with the slope backpropagation returned drawn as a dashed line. Drag along it.",
+        zoom: "The tour zoomed all the way in: the curve and the line can no longer be told apart.",
+        slope:
+          "Backprop's slope beside the one measured across the window. Zoom in and the difference shrinks: that slope is all a gradient is.",
+      },
+      chain: {
+        dial: "Turn the first dial by dragging it, or with the arrow keys. The tour turned it a little.",
+        links:
+          "The number on each link is how much that dial turns for a tiny turn of the one before it.",
+        last: "The links multiplied together, beside what your last turn measured. They agree: that is the chain rule.",
+      },
+      ledger: {
+        graph:
+          "A real loss as a graph. Each node shows its forward value; the gradients are yours to fill in.",
+        tap: "Tap a node to fill in its gradient. The loss comes first: the tour filled it in.",
+        order:
+          "How many you have filled in, and ∂L/∂w, which adds up two paths. Tap a node too early and it says what it is waiting for.",
+      },
+      cost: {
+        columns:
+          "Two ways to get the same gradient: nudge every weight and rerun, or one backward pass.",
+        width: "This sets how many neurons each layer has. The tour made the network wider.",
+        race: "Race them in this browser. The wider the network, the further behind nudging falls.",
+      },
+      depth: {
+        chart:
+          "How much of the gradient still reaches each layer, from the last back to the first.",
+        add: "Drag the last layer to the right, or use the arrow keys, to add layers. The tour added four.",
+        activation: "Try another activation here: with ReLU the signal passes through unchanged.",
+      },
+      challenge: {
+        cases: "Three graphs, each with one mistake in its backward pass. Pick one here.",
+        check:
+          "Check a parameter: its backward-pass gradient is compared with a measured one. The tour checked the first.",
+        accuse: "When you know where the fault is, accuse that node here.",
+      },
+    },
+  },
 };
 
 export default copy;

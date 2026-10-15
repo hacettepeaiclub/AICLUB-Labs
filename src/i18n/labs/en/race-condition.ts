@@ -197,6 +197,44 @@ const copy = {
     footer:
       "The lab simulates the scheduler, because a web page cannot share a plain variable between threads without special browser settings. For two threads and a few steps that loses nothing: a race is a property of the order, and every order is listed exactly.",
   },
+
+  // The guided tours, one per experiment (components/lab/guide/tours.ts).
+  tour: {
+    intro:
+      "Two threads each add 1 to the same counter. You decide which one runs next, and try to lose an update.",
+    stages: {
+      game: {
+        threads:
+          "Threads A and B each run counter++ once, in three steps: read, add 1, write. Each button runs its thread's next step.",
+        readA: "A reads the counter: 0 goes into its own register.",
+        readB: "B reads it too, before A has written, so it also has 0.",
+        goal: "From here, in whatever order you finish them, the counter ends at 1, not 2. Finish them and check.",
+      },
+      orders: {
+        cards:
+          "All twenty ways to interleave the six steps, each with the counter it leaves behind.",
+        open: "Open a card to see its order step by step.",
+        count: "Most orders lose an update.",
+      },
+      odds: {
+        runs: "Two threads count to a large number many times. Each run is one dot.",
+        slice:
+          "How long a thread runs before the scheduler switches. Shorter slices mean more chances to land mid-step.",
+        result: "How many runs came out right, the worst one, and the average.",
+      },
+      fix: {
+        threads: "The same game, with a fix in place.",
+        lock: "Choose the protection. The tour put a lock around the three steps.",
+        run: "Run A's first step, then try to slip B in: its button says why it has to wait.",
+        atomic: "Or try an atomic add: one step each, with nothing to slip between.",
+      },
+      atm: {
+        machines: "Two cash machines share one account holding 100. Each wants to withdraw 100.",
+        run: "Every step is indivisible, yet the order still matters. Run them and try to get 200 out.",
+        options: "The fix is here when you have found the problem.",
+      },
+    },
+  },
 };
 
 export default copy;

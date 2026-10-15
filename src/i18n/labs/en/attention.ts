@@ -159,6 +159,43 @@ const copy = {
     tableCaption: "Share and value vector for the three heaviest contributors.",
     outputLabel: "The blended output, axis by axis",
   },
+
+  // The guided tours, one per experiment (components/lab/guide/tours.ts).
+  tour: {
+    intro:
+      "Every word in a sentence weighs up every other word. Start by picking a word: the page shows where its attention goes, and you can change the sentence under it.",
+    stages: {
+      sentence: {
+        sentence:
+          "This is the sentence. One word is selected, and every other word shows the share of its attention it gets.",
+        pick: "Pick another word and the shares are worked out again, for that word.",
+        swap: "Now change one word of the sentence. The word you picked shifts its attention too, though you did not touch it.",
+      },
+      compare: {
+        bars: "Left, what the selected word is looking for: its query. Right, what the word it matches best offers: its key.",
+        pick: "Pick another word here: both sides are worked out again for it.",
+        match:
+          "Multiply the two bar by bar and add up: that is the raw match. Divided, it becomes the score.",
+      },
+      scale: {
+        shares: "The same matches, turned into shares with the divisor below.",
+        divisor:
+          "The tour took the divisor away. Without it, the biggest match takes almost everything.",
+        model: "This puts back the divisor the model uses: the square root of the number of axes.",
+      },
+      softmax: {
+        rows: "Each row is one word's match score and its share. The shares always add up to 100%.",
+        drag: "Drag a score, or focus it and use the arrow keys. The tour raised the first one; every other share fell.",
+        reset: "This puts the model's own scores back.",
+      },
+      mix: {
+        table:
+          "Each word hands over its value vector in proportion to its share; the bars below are the sum.",
+        pick: "Pick another word and the blend is made again from its shares.",
+        out: "What the selected word becomes, axis by axis: this is what the next layer receives.",
+      },
+    },
+  },
 };
 
 export default copy;

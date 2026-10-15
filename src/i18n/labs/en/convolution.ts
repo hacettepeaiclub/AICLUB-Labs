@@ -285,6 +285,58 @@ const copy = {
     footer:
       "Convolutional networks, from the 1989 reader of handwritten zip codes to the models that recognise photographs, are layers of exactly this sum, with more channels and many more kernels.",
   },
+
+  // The guided tours, one per experiment (components/lab/guide/tours.ts).
+  tour: {
+    intro:
+      "Nine weights slide across a small picture and leave a new picture behind. You move the window one cell at a time.",
+    stages: {
+      slide: {
+        picture:
+          "Left, a 9×9 picture of the letter T with a 3×3 window on it. Middle, the nine weights. Right, what they leave behind.",
+        step: "Each press slides the window one cell and works out one output cell.",
+        cell: "That cell is nine products added up: each weight times the pixel under it. The full sum is written above.",
+        fill: "Fill in the rest at once. Then click pixels in the picture to switch them on or off; the output follows.",
+      },
+      kernels: {
+        picture:
+          "Draw on the picture on the left; the right shows what the kernel picks up from it.",
+        preset: "Pick another kernel and the output is worked out again.",
+        type: "Or type your own weights into the kernel. The tour typed 2 into the first cell.",
+        sum: "The sum of the weights is what a flat patch gets multiplied by. Edge detectors add up to zero.",
+      },
+      shift: {
+        shapes: "A plus, and three decoys. The kernel is the shape it looks for.",
+        move: "Move the plus with these arrows. The tour moved it one cell to the right.",
+        peak: "The strongest output moved with it, cell for cell: the same weights are used at every position.",
+      },
+      size: {
+        grid: "The input with its padding dashed, and the output. Click an output cell to see the window that made it.",
+        stride:
+          "Four sliders: input, kernel, padding and stride. The tour made the window jump further.",
+        count: "The output shrank. Cells marked in amber are never read: the formula rounds down.",
+      },
+      depth: {
+        stack:
+          "Stacked 3×3 layers. Pick a cell at the top and follow what it sees down to the input.",
+        layers: "Add layers with this slider. The tour added them all.",
+        field:
+          "Each layer widens what the top can see, with fewer weights than one big kernel would need.",
+      },
+      learn: {
+        panels:
+          "A hidden kernel made the goal picture. The weights start random; the curve is the error.",
+        train:
+          "Train: gradient descent moves the nine weights towards the hidden kernel, step by step.",
+        loss: "Steps taken and the loss. When it reaches the bottom, the weights match the hidden kernel.",
+      },
+      challenge: {
+        pick: "Three behaviours to build by hand. Pick one here.",
+        type: "Type weights into the kernel; every change is checked against the pictures. The tour typed 1.",
+        solved: "Anything that behaves the right way passes. There is no answer key.",
+      },
+    },
+  },
 };
 
 export default copy;

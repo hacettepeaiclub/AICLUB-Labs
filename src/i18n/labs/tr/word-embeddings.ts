@@ -129,6 +129,24 @@ const copy: typeof en = {
     sentence: (a: string, b: string, score: string, rank: number, total: number) =>
       `${a} ile ${b} arasındaki kosinüs ${score}. Diğer ${total} kelime arasında ${b}, ${a} kelimesine en yakın ${rank}. kelime.`,
   },
+
+  // The guided tours, one per experiment (components/lab/guide/tours.ts).
+  tour: {
+    intro:
+      "Her kelimenin bir anlam haritasında bir yeri var. Hangi kelimelerin birbirine yakın durduğunu tahmin edin, sonra haritayı keşfedin.",
+    stages: {
+      intro: {
+        guess: "Bir kelime ve üç aday. Haritada hangisi ona en yakın?",
+        choose: "Birini seçin. Harita açılır ve kelimelerin gerçekte nerede durduğunu gösterir.",
+      },
+      map: {
+        map: "Her kelimenin bir yeri var. Haritanın yanındaki liste, seçili kelimenin en yakın komşuları.",
+        search: "Seçmek için bir kelime arayın. Tur dog yazdı.",
+        enter: "Enter onu seçer ve harita oraya gider.",
+        compare: "Buradan iki kelimeyi karşılaştırıp gerçekte ne kadar uzak olduklarına bakın.",
+      },
+    },
+  },
 };
 
 export default copy;

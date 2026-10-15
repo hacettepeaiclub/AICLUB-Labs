@@ -283,6 +283,54 @@ const copy: typeof en = {
     footer:
       "Python'un dict'leri, JavaScript'in Map ve Set'i, Java'nın HashMap'i: hepsinin altında bu dizi, bu kalan ve bu doluluk oranı vardır.",
   },
+
+  // The guided tours, one per experiment (components/lab/guide/tours.ts).
+  tour: {
+    intro:
+      "Bir kelime yazıp nerede saklanacağını hesaplarsınız; böylece onu yeniden bulmak arama değil, tek bir bakış olur.",
+    stages: {
+      address: {
+        type: "Anahtar olarak bir kelime yazın. Tur pizza yazdı.",
+        bucket: "Harf harf hesaplanan hash, 16 kovadan birini seçer ve o kova yanar.",
+        put: "“Tabloya koy” deyin: kelime o kovaya yerleşir.",
+        looks: "Onu yeniden bulmak için yalnızca kendi kovasındaki anahtarlara bakılır.",
+      },
+      birthday: {
+        chart:
+          "Anahtar eklendikçe iki anahtarın aynı kovaya düşme olasılığı. Önce yukarıda tahmininizi yapın.",
+        keys: "Kaç anahtar atılacağını ayarlayın.",
+        throw: "Onları rastgele kovalara atın ve ikisinin çakışıp çakışmadığına bakın.",
+        chance:
+          "Kesin olasılık, yarı yarıya ihtimal için gereken anahtar sayısı ve şimdiye kadarki denemeleriniz.",
+      },
+      probe: {
+        slots: "Liste yok, 32 yuvalık tek bir dizi. Evi dolu olan anahtar sağa kayar.",
+        add: "Bir anahtar ekleyin. Kehribar çerçeve, denediği her yuvayı gösterir.",
+        four: "Dördünü birden ekleyin: tablo doldukça yürüyüşler uzar.",
+        walks: "Tablonun doluluğu ve yürüyüşlerin ne kadar uzadığı.",
+      },
+      compare: {
+        chart: "Tablo doldukça bir anahtarı bulmanın maliyeti: zincirleme ve doğrusal yoklama.",
+        load: "Doluluk oranını grafik boyunca sürükleyerek ya da ok tuşlarıyla ayarlayın. Tur tabloyu doldurdu.",
+        costs: "Dolmaya yakınken yoklama dikleşerek artar, zincirleme ise düz bir çizgide büyür.",
+      },
+      resize: {
+        bars: "Her çubuk bir eklemenin yaptığı iş; tablo ikiye katlandığında kopyalanan bütün anahtarlar dahil.",
+        add: "Anahtar eklemek için grafik boyunca sürükleyin ya da ok tuşlarını kullanın. Tur birkaç tane ekledi.",
+        average: "Taşınmalar büyüdükçe seyrekleşir; bu yüzden ortalama düşük kalır.",
+      },
+      modulus: {
+        buckets: "Eşit adımlarla artan anahtarlar ve düştükleri kovalar.",
+        step: "Adımı değiştirin. Tur çift bir adım seçti ve kovaların çoğu boş kaldı.",
+        size: "Şimdi buradan asal bir tablo boyutu deneyin: bütün kovalar kullanılır.",
+      },
+      challenge: {
+        pick: "Bir hash tablosuna kazandırmanız gereken üç özellik. Buradan birini seçin.",
+        work: "Anahtarlarınızı buraya yazın; her değişiklik sayfanın geri kalanıyla aynı hash ile kontrol edilir.",
+        solved: "Bu özelliği taşıyan her şey geçer. Cevap anahtarı yok.",
+      },
+    },
+  },
 };
 
 export default copy;

@@ -212,6 +212,45 @@ const copy: typeof en = {
     footer:
       "Lab zamanlayıcıyı simüle ediyor, çünkü bir web sayfası özel tarayıcı ayarları olmadan iş parçacıkları arasında düz bir değişkeni paylaşamaz. İki iş parçacığı ve birkaç adım için bu hiçbir şey kaybettirmez: yarış sıranın bir özelliğidir ve her sıra eksiksiz listelenir.",
   },
+
+  // The guided tours, one per experiment (components/lab/guide/tours.ts).
+  tour: {
+    intro:
+      "İki iş parçacığı aynı sayaca 1 ekliyor. Sırayı siz belirlersiniz ve bir güncellemeyi kaybettirmeye çalışırsınız.",
+    stages: {
+      game: {
+        threads:
+          "A ve B, counter++ işlemini birer kez, üç adımda çalıştırır: oku, 1 ekle, yaz. Her düğme kendi iş parçacığının sıradaki adımını çalıştırır.",
+        readA: "A sayacı okur: kendi yazmacına 0 alır.",
+        readB: "B de A yazmadan önce okur, yani o da 0 alır.",
+        goal: "Buradan sonra hangi sırayla bitirirseniz bitirin sayaç 2'de değil, 1'de kalır. Bitirip kontrol edin.",
+      },
+      orders: {
+        cards:
+          "Altı adımı iç içe geçirmenin yirmi yolunun hepsi; her biri geride bıraktığı sayaçla birlikte.",
+        open: "Bir kartı açınca sırası adım adım görünür.",
+        count: "Sıraların çoğu bir güncellemeyi kaybeder.",
+      },
+      odds: {
+        runs: "İki iş parçacığı defalarca büyük bir sayıya kadar sayar. Her koşu bir nokta.",
+        slice:
+          "Zamanlayıcı geçiş yapmadan önce bir iş parçacığının ne kadar çalıştığı. Dilim kısaldıkça adımın ortasına denk gelme şansı artar.",
+        result: "Kaç koşunun doğru çıktığı, en kötüsü ve ortalama.",
+      },
+      fix: {
+        threads: "Aynı oyun, bu kez bir düzeltmeyle.",
+        lock: "Korumayı seçin. Tur üç adımın etrafına bir kilit koydu.",
+        run: "A'nın ilk adımını çalıştırın, sonra B'yi araya sokmaya çalışın; düğmesi neden beklemesi gerektiğini söyler.",
+        atomic: "Ya da atomik toplamayı deneyin: her biri tek adım, araya girecek bir boşluk yok.",
+      },
+      atm: {
+        machines:
+          "İki ATM, içinde 100 olan tek bir hesabı paylaşıyor. Her biri 100 çekmek istiyor.",
+        run: "Her adım bölünmez, yine de sıra önemli. Çalıştırın ve 200 çekmeye çalışın.",
+        options: "Sorunu bulduğunuzda düzeltmesi burada.",
+      },
+    },
+  },
 };
 
 export default copy;

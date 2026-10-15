@@ -65,7 +65,7 @@ export function PredictionCard({
   const picked = choices.find((c) => c.index === chosen) ?? null;
 
   return (
-    <div className="mx-auto max-w-prose text-center">
+    <div data-tour="predict" className="mx-auto max-w-prose text-center">
       <p
         className={cn(
           "text-fg",

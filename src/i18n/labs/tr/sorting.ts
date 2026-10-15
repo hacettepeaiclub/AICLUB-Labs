@@ -141,6 +141,44 @@ const copy: typeof en = {
     footer:
       "Gerçek sıralama kütüphaneleri tam olarak buna yaslanır: neredeyse sıralı parçaları eklemeli sıralamaya devrederler, çünkü o biçimde işin neredeyse tamamı zaten yapılmıştır.",
   },
+
+  // The guided tours, one per experiment (components/lab/guide/tours.ts).
+  tour: {
+    intro:
+      "İki sıralama algoritmasına aynı karışık çubuklar verilir. Tek düğme ikisini birden başlatır; farkı sayaçlar gösterir.",
+    stages: {
+      race: {
+        bars: "İki sıralayıcı, aynı karışık çubuklar.",
+        sort: "Tek düğme ikisini birden başlatır.",
+        counters:
+          "Her birinin altında karşılaştırma ve taşıma sayısı. Sonuç aynı, maliyet çok farklı.",
+      },
+      watch: {
+        bars: "Her seferinde tek sıralayıcı, yavaşlatılmış.",
+        step: "Adımla: tek bir karşılaştırma ya da taşıma. Vurgulanan çubuklar o an bakılanlar.",
+        algorithm:
+          "Buradan A ve B sıralayıcıları arasında geçiş yapıp ikisinde de adım adım ilerleyin.",
+      },
+      data: {
+        shape:
+          "Verinin biçimini buradan seçin: karışık, neredeyse sıralı, ters. Grafiğin üzerinde sürükleyerek de çizebilirsiniz.",
+        sort: "Yeniden sıralayın.",
+        figures:
+          "Selection Sort her seferinde aynı sayıda soru sorar; Insertion Sort'un sayısı veriyle değişir.",
+      },
+      distance: {
+        bars: "Sıralı çubuklar. Birini yerinden çok uzağa sürükleyin ya da birkaçını hafifçe kaydırın.",
+        sort: "Sıralayın ve maliyeti karşılaştırın.",
+        figures:
+          "Önemli olan kaç tanesinin yanlış olduğu değil, ne kadar uzakta olduğu: yanlış sıradaki her çift bir kaydırmaya mal olur.",
+      },
+      challenge: {
+        array: "Üç sabit dizi, üç bütçe. Bulmacayı yukarıdan seçin.",
+        algorithm: "Sıralayıcıyı seçin: hangisinin daha ucuz olduğu neyin sayıldığına bağlı.",
+        sort: "Sıralayın ve bütçenin içinde kalıp kalmadığına bakın.",
+      },
+    },
+  },
 };
 
 export default copy;

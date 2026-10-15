@@ -135,6 +135,24 @@ const copy = {
     sentence: (a: string, b: string, score: string, rank: number, total: number) =>
       `The cosine between ${a} and ${b} is ${score}. Out of ${total} other words, ${b} is the ${rank}th closest to ${a}.`,
   },
+
+  // The guided tours, one per experiment (components/lab/guide/tours.ts).
+  tour: {
+    intro:
+      "Every word has a place on a map of meaning. Guess which words sit close together, then explore the map.",
+    stages: {
+      intro: {
+        guess: "One word, three candidates. Which one sits closest to it on the map?",
+        choose: "Pick one. The map opens and shows where the words really are.",
+      },
+      map: {
+        map: "Every word has a place. The list beside the map is the selected word's nearest neighbours.",
+        search: "Search for a word to select it. The tour typed dog.",
+        enter: "Enter selects it, and the map moves to it.",
+        compare: "Compare two words here, and see how far apart they really are.",
+      },
+    },
+  },
 };
 
 export default copy;

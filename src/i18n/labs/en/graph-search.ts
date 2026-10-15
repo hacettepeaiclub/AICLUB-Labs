@@ -142,6 +142,42 @@ const copy = {
     footer:
       "Every route your phone has ever suggested came out of a loop like this one: a frontier, a settled set, and a rule for which cell to look at next.",
   },
+
+  // The guided tours, one per experiment (components/lab/guide/tours.ts).
+  tour: {
+    intro:
+      "A search looks for a way from start to goal on a grid. You draw walls and see which squares it checks.",
+    stages: {
+      find: {
+        grid: "S is the start, G the goal. The search does not know where G is.",
+        run: "Run it: ringed cells are its frontier, filled cells are settled.",
+        explored: "How many cells it checked, and how long the path it found is.",
+        walls: "Now drag on the grid to draw walls, or drag S and G, and run it again.",
+      },
+      bfs: {
+        grid: "A detour this time. Go through it one move at a time.",
+        step: "Step: one cell is taken off the frontier and its neighbours are added.",
+        layers: "Keep stepping: the search spreads in layers, nearest cells first.",
+      },
+      cost: {
+        swamp: "Mud costs 5 to enter, open ground 1.",
+        run: "Run it with BFS first.",
+        algorithm: "Then switch to Dijkstra here, run it again, and draw more mud if you like.",
+        compare: "BFS takes the fewest moves; Dijkstra pays the least.",
+      },
+      astar: {
+        grid: "An open field. Dijkstra spreads evenly in every direction.",
+        run: "Run it, then switch to A* below and run it again.",
+        algorithm: "A* adds an estimate of the distance left and heads for the goal.",
+        explored: "Same path, same cost. Compare how many cells each one explored.",
+      },
+      challenge: {
+        maze: "A fixed map: the cheapest path, and no more explored cells than the budget. Pick the map above.",
+        algorithm: "Choose the algorithm.",
+        run: "Run it and see whether both conditions hold.",
+      },
+    },
+  },
 };
 
 export default copy;

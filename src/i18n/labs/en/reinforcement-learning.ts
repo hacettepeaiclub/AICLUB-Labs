@@ -312,6 +312,49 @@ const copy = {
     announceSolved: (title: string) => `Solved: ${title}.`,
     announceAttempt: (behaviour: string) => `After retraining, ${behaviour}.`,
   },
+
+  // The guided tours, one per experiment (components/lab/guide/tours.ts).
+  tour: {
+    intro:
+      "An agent in a small room, and a reward you set. First you drive it yourself; later it learns on its own.",
+    stages: {
+      world: {
+        room: "The room from above: the agent, the walls, a marked square and the door. The door pays 20 and ends the run.",
+        move: "Move it with these arrows, or the arrow keys. Every move costs 0.5.",
+        reward:
+          "This slider sets what the marked square pays. It is the one thing about the world you decide.",
+      },
+      train: {
+        map: "The agent starts in the corner knowing nothing. The curve below the map is its reward per episode.",
+        run: "Run the training: it wanders, falls through the door by accident, and from then on has something to go on.",
+        figures:
+          "Episodes run, how often it reached the door, and the steps and reward of the last one.",
+      },
+      policy: {
+        maps: "Left, before any episode; right, after training. Each arrow is the move with the biggest number.",
+        pick: "Pick a square on the map to see its four numbers.",
+        route: "The route is just what you get by always taking the largest number.",
+      },
+      update: {
+        step: "Take one action: the agent moves once and changes exactly one number. The tour took one.",
+        update:
+          "The number it held, what the world paid, the best guess about what comes next, and the new number.",
+        error: "The error, how far the number moved, and how often it explores at random.",
+      },
+      rules: {
+        chart: "How the run behaves with these settings.",
+        epsilon:
+          "Three dials: learning rate, discount and exploration. The tour raised exploration; the run starts over.",
+        restore: "This puts the original settings back.",
+        figures: "When it settled, how often it succeeds, and how many steps it takes.",
+      },
+      challenge: {
+        map: "In each task the agent does something you did not ask for. Pick the task above.",
+        lever: "One number is yours to change. The run starts again every time you move it.",
+        result: "What the agent now does, and whether it does what the task asks.",
+      },
+    },
+  },
 };
 
 export default copy;

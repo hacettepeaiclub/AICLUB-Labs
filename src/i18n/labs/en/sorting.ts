@@ -139,6 +139,42 @@ const copy = {
     footer:
       "Real sorting libraries lean on exactly this: they hand nearly-ordered runs to an insertion sort, because on that shape the work has almost already been done.",
   },
+
+  // The guided tours, one per experiment (components/lab/guide/tours.ts).
+  tour: {
+    intro:
+      "Two sorting algorithms get the same shuffled bars. One button starts both, and the counters show the difference.",
+    stages: {
+      race: {
+        bars: "Two sorters, the same shuffled bars.",
+        sort: "One button starts both.",
+        counters: "Under each one: comparisons and moves. The same answer, at very different cost.",
+      },
+      watch: {
+        bars: "One sorter at a time, slowed down.",
+        step: "Step: one comparison or one move. The highlighted bars are the ones being looked at.",
+        algorithm: "Switch between Sorter A and Sorter B here and step through both.",
+      },
+      data: {
+        shape:
+          "Pick a shape for the data here: shuffled, nearly sorted, reversed. You can also drag across the chart.",
+        sort: "Sort it again.",
+        figures:
+          "Selection Sort asks the same number of questions every time; Insertion Sort's number moves with the data.",
+      },
+      distance: {
+        bars: "Sorted bars. Drag one far from where it belongs, or nudge a few slightly.",
+        sort: "Sort it and compare the cost.",
+        figures:
+          "It is not how many are wrong, but how far: each pair in the wrong order costs one shift.",
+      },
+      challenge: {
+        array: "Three fixed arrays, three budgets. Pick the puzzle above.",
+        algorithm: "Choose the sorter: the cheaper one depends on what is counted.",
+        sort: "Sort it and see whether it stays within budget.",
+      },
+    },
+  },
 };
 
 export default copy;

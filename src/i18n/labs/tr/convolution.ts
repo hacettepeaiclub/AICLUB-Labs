@@ -290,6 +290,56 @@ const copy: typeof en = {
     footer:
       "1989'da posta kodlarındaki el yazısını okuyan ağdan bugün fotoğrafları tanıyan modellere kadar evrişimli ağlar, tam olarak bu toplamın katmanlarıdır; yalnızca daha çok kanal ve çok daha fazla çekirdekle.",
   },
+
+  // The guided tours, one per experiment (components/lab/guide/tours.ts).
+  tour: {
+    intro:
+      "Dokuz ağırlık küçük bir resmin üzerinde kayar ve geride yeni bir resim bırakır. Pencereyi hücre hücre siz ilerletirsiniz.",
+    stages: {
+      slide: {
+        picture:
+          "Solda T harfinin 9×9'luk resmi ve üzerinde 3×3'lük pencere. Ortada dokuz ağırlık. Sağda geride bıraktıkları.",
+        step: "Her basışta pencere bir hücre kayar ve çıktının bir hücresi hesaplanır.",
+        cell: "O hücre dokuz çarpımın toplamı: her ağırlık, altındaki pikselle çarpılır. Toplamın tamamı yukarıda yazıyor.",
+        fill: "Kalanını tek seferde doldurun. Sonra resimdeki piksellere tıklayıp açıp kapatın; çıktı da onlarla değişir.",
+      },
+      kernels: {
+        picture: "Soldaki resmin üzerine çizin; sağda çekirdeğin ondan neyi yakaladığı görünür.",
+        preset: "Başka bir çekirdek seçin; çıktı yeniden hesaplanır.",
+        type: "Ya da çekirdeğe kendi ağırlıklarınızı yazın. Tur ilk hücreye 2 yazdı.",
+        sum: "Ağırlıkların toplamı, düz bir bölgenin çarpıldığı sayı. Kenar bulucuların toplamı sıfırdır.",
+      },
+      shift: {
+        shapes: "Bir artı işareti ve üç tuzak. Çekirdek, aradığı şeklin ta kendisi.",
+        move: "Artıyı bu oklarla taşıyın. Tur onu bir hücre sağa taşıdı.",
+        peak: "En güçlü çıktı da onunla birlikte hücre hücre kaydı; çünkü her konumda aynı ağırlıklar kullanılıyor.",
+      },
+      size: {
+        grid: "Kesikli dolgusuyla girdi ve çıktı. Bir çıktı hücresine tıklayınca onu üreten pencere görünür.",
+        stride:
+          "Dört kaydırıcı: girdi, çekirdek, dolgu ve adım. Tur pencerenin daha uzağa sıçramasını sağladı.",
+        count: "Çıktı küçüldü. Kehribar renkli hücreler hiç okunmuyor; formül aşağı yuvarlar.",
+      },
+      depth: {
+        stack:
+          "Üst üste 3×3'lük katmanlar. En üstten bir hücre seçip girdiye kadar neyi gördüğünü takip edin.",
+        layers: "Bu kaydırıcıyla katman ekleyin. Tur hepsini ekledi.",
+        field:
+          "Her katman tepenin gördüğü alanı genişletir; hem de tek büyük bir çekirdeğin gerektireceğinden daha az ağırlıkla.",
+      },
+      learn: {
+        panels:
+          "Hedef resmi gizli bir çekirdek üretti. Ağırlıklar rastgele başlıyor; eğri hatayı gösteriyor.",
+        train: "Eğitin: gradient descent dokuz ağırlığı adım adım gizli çekirdeğe doğru taşır.",
+        loss: "Atılan adımlar ve kayıp. Dibe ulaşınca ağırlıklar gizli çekirdekle aynı olur.",
+      },
+      challenge: {
+        pick: "Elle kurmanız gereken üç davranış. Buradan birini seçin.",
+        type: "Çekirdeğe ağırlık yazın; her değişiklik resimler üzerinde denenir. Tur 1 yazdı.",
+        solved: "Doğru davranan her çekirdek geçer. Cevap anahtarı yok.",
+      },
+    },
+  },
 };
 
 export default copy;

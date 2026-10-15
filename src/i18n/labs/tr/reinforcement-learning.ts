@@ -318,6 +318,47 @@ const copy: typeof en = {
     announceSolved: (title: string) => `Çözüldü: ${title}.`,
     announceAttempt: (behaviour: string) => `Yeniden eğitildi, ${behaviour}.`,
   },
+
+  // The guided tours, one per experiment (components/lab/guide/tours.ts).
+  tour: {
+    intro:
+      "Küçük bir odada bir ajan ve sizin belirlediğiniz bir ödül. Önce ajanı siz yönetirsiniz; sonra kendi kendine öğrenir.",
+    stages: {
+      world: {
+        room: "Odanın üstten görünüşü: ajan, duvarlar, işaretli kare ve kapı. Kapı 20 kazandırır ve koşuyu bitirir.",
+        move: "Ajanı bu oklarla ya da klavyenin ok tuşlarıyla hareket ettirin. Her hamle 0,5'e mal olur.",
+        reward:
+          "Bu kaydırıcı işaretli karenin ne kazandıracağını belirler. Dünyada kararını sizin verdiğiniz tek şey bu.",
+      },
+      train: {
+        map: "Ajan köşeden hiçbir şey bilmeden başlar. Haritanın altındaki eğri, bölüm başına aldığı ödül.",
+        run: "Eğitimi çalıştırın: ajan dolaşır, kapıyı tesadüfen bulur ve o andan itibaren elinde bir ipucu olur.",
+        figures:
+          "Kaç bölüm koşulduğu, kapıya ne sıklıkla ulaştığı ve son bölümün adım sayısıyla ödülü.",
+      },
+      policy: {
+        maps: "Solda hiç bölüm koşulmadan önce, sağda eğitimden sonra. Her ok, en büyük sayıya sahip hamle.",
+        pick: "Dört sayısını görmek için haritadan bir kare seçin.",
+        route: "Rota, her seferinde en büyük sayıyı seçince ortaya çıkan yol.",
+      },
+      update: {
+        step: "Bir eylem yaptırın: ajan bir kez hareket eder ve tam olarak bir sayıyı değiştirir. Tur bir eylem yaptırdı.",
+        update: "Elindeki sayı, dünyanın ödediği, sonrası için en iyi tahmin ve yeni sayı.",
+        error: "Hata, sayının ne kadar kaydığı ve ne sıklıkla rastgele keşfe çıktığı.",
+      },
+      rules: {
+        chart: "Bu ayarlarla koşunun nasıl davrandığı.",
+        epsilon: "Üç ayar: öğrenme oranı, indirim ve keşif. Tur keşfi artırdı; koşu baştan başlar.",
+        restore: "Bu düğme başlangıç ayarlarını geri getirir.",
+        figures: "Ne zaman oturduğu, ne sıklıkla başardığı ve kaç adım attığı.",
+      },
+      challenge: {
+        map: "Her görevde ajan sizin istemediğiniz bir şey yapıyor. Görevi yukarıdan seçin.",
+        lever: "Değiştirebileceğiniz tek bir sayı var. Her oynattığınızda koşu yeniden başlar.",
+        result: "Ajanın şimdi ne yaptığı ve görevin istediğini yapıp yapmadığı.",
+      },
+    },
+  },
 };
 
 export default copy;

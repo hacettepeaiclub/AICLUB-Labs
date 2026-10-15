@@ -310,6 +310,55 @@ const copy: typeof en = {
     footer:
       "Kodda bu, hesaplanmış iki float'ın == ile değil bir tolerans payıyla karşılaştırılmasının, paranın tam kuruşlarla sayılmasının ve uzun bir toplamın farklı sırayla toplandığında farklı çıkabilmesinin nedenidir.",
   },
+
+  // The guided tours, one per experiment (components/lab/guide/tours.ts).
+  tour: {
+    intro:
+      "Bir sayı yazın; bilgisayarınızın onun yerine gerçekte neyi sakladığı basamak basamak yazılır.",
+    stages: {
+      store: {
+        type: "Bu kutuya bir sayı yazın. Tur 0.1 yazdı.",
+        stored:
+          "Gerçekte saklanan değer. İşaretli basamaklar, yazdığınızla uyuşmadığı yerden başlar.",
+        offBy:
+          "Saklanan değerin sizinkinden ne kadar saptığı: hem sayı olarak hem de büyüklüğüne oranla.",
+        another: "Bu düğme denemeniz için başka bir örnek yazar.",
+      },
+      sum: {
+        line: "a ve b'nin saklanan halleri, kesin toplamları ve float64'ün onu yuvarladığı yer.",
+        type: "İstediğiniz iki sayıyı girin. Tur b'yi 0.4 yaptı.",
+        steps:
+          "Yuvarlanmış toplamın gerçek cevaptan uzaklığı, komşu değerler arasındaki adımlarla sayılmış.",
+        reset: "Bu düğme 0.1 + 0.2'yi geri getirir.",
+      },
+      bits: {
+        bits: "float32, her bit bir kare: işaret, üs ve kesir.",
+        flip: "Bir bite tıklayınca tersine döner. Tur ikinciyi, üssün en üst bitini çevirdi.",
+        value: "Bu bitlerin şimdi anlattığı değer ve üssün seçtiği ikinin kuvveti.",
+        set: "Ya da buradan bir değer seçip hangi bitleri gerektirdiğine bakın.",
+      },
+      ruler: {
+        line: "Küçük bir biçimin saklayabildiği bütün değerler, tek bir çizgide. Her ikiye katlanan aralıkta aynı sayıda değer var.",
+        pick: "Bu kaydırıcıyla bir değer seçin. Bu uçta değerler birbirinden çok uzak.",
+        bits: "Üs biti eklerseniz çizgi uzar; kesir biti eklerseniz sıklaşır.",
+      },
+      gap: {
+        chart: "Yine float32: bir sayıdan saklanabilen bir sonraki sayıya olan uzaklık.",
+        size: "Daha büyük bir sayıya kaydırın. Tur aralığın tepesine doğru çıktı.",
+        gap: "Aralık sayıyla birlikte büyüdü ama aralık ÷ sayı neredeyse aynı kaldı: her yerde yaklaşık 7 anlamlı basamak.",
+      },
+      formats: {
+        type: "Bir sayı yazın; float32, float16 ve bfloat16'daki hali görünür. Tur çok küçük bir gradyan yazdı.",
+        rows: "bfloat16 onu korur, float16 ise 0'a çevirir: aynı 16 bit, farklı harcanmış.",
+        examples: "Diğer örnekleri buradan deneyin.",
+      },
+      challenge: {
+        pick: "Aritmetiğe göre olamayacak üç şey. Buradan birini seçin.",
+        work: "Bunu gerçekleştiren bir sayı bulun. Sayfa, kesin aritmetikle kontrol eder.",
+        solved: "Çözülen bulmacalar bu tarayıcıda hatırlanır.",
+      },
+    },
+  },
 };
 
 export default copy;

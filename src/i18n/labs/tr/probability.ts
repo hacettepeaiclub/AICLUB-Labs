@@ -505,6 +505,51 @@ const copy: typeof en = {
     footer:
       "Bunların her biri, belirtilmiş bir modeli olan çözümlü birer problemdir; şansa dair genel bir kural değil. Tam olasılıklar kapalı formda hesaplanır; simüle edilenler ise deneyin tohumlanmış bir üreteçle gerçekten çalıştırılmasından gelir ve her zaman böyle etiketlenir. Bir soru gerçekten belirsizse (en açık örnek iki çocuk problemidir), varsayım sessizce seçilmez, yazılır.",
   },
+
+  // The guided tours, one per experiment (components/lab/guide/tours.ts).
+  tour: {
+    intro:
+      "Üç kapı, bir araba. Sunucuya karşı bir tur oynayın ve kapınızda kalmanın mı, değiştirmenin mi kazandırdığını bulun.",
+    stages: {
+      monty: {
+        pick: "Bir kapı seçin. Tur ilk kapıyı seçti.",
+        choose:
+          "Sunucu arkasında keçi olan bir kapıyı açtı. Karar sizin: kapınızda kalın ya da kapalı olan öbür kapıya geçin.",
+        score:
+          "Oynadığınız turlar burada toplanır. Birkaç turdan sonra bin turu tek seferde oynatabilirsiniz.",
+      },
+      birthday: {
+        guess:
+          "Önce tahmin edin: kaç kişide ortak bir doğum günü olması olmamasından daha olası hale gelir?",
+        people: "Kişileri düğmeyle teker teker ekleyin ya da bu kaydırıcıyla atlayın.",
+        room: "Odaya giren her yeni kişi, içerideki herkesle yeni bir çift oluşturur.",
+        chance: "Kişi, çift ve kesin olasılık. Çift sayısı kişi sayısını hızla geçer.",
+      },
+      conditional: {
+        families:
+          "Eşit olasılıklı bütün iki çocuklu aileler. İpucu, dışarıda bıraktıklarının üstünü çizer.",
+        clue: "İpucunun ifadesini değiştirin. Tur değiştirdi; geriye farklı aileler kaldı.",
+        answer: "Kalan aileler, kaçında iki erkek çocuk olduğu ve cevap.",
+      },
+      simpson: {
+        table: "İki böbrek taşı tedavisi; önce küçük taşlar.",
+        large: "Büyük taşları ekleyin. İki grupta da aynı tedavi kazanıyor.",
+        choose: "Bir tedavi seçin, sonra iki grubun toplamına bakın.",
+        rates: "Her grupta daha iyi, toplamda daha kötü: grupların büyüklüğü aynı değil.",
+      },
+      pascal: {
+        board: "Çivili bir tahta ve yanında binom modelinin tahmini.",
+        drop: "Bir bilye bırakın; nereye düşeceğine yerçekimi ve çiviler karar verir. Tur bir tane bıraktı.",
+        many: "Bir seferde çok sayıda bırakın; çan eğrisi ortaya çıkar.",
+        rows: "Sıra sayısını buradan değiştirin.",
+      },
+      largeNumbers: {
+        chart: "Turlar biriktikçe kazanma oranı ve teorik değer.",
+        trials: "Kaç tur oynanacağını seçin. Tur en çoğunu seçti.",
+        figures: "Gözlenen ve teorik değer. Fark her adımda küçülmez ama sonunda oturur.",
+      },
+    },
+  },
 };
 
 export default copy;

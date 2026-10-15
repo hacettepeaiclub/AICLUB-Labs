@@ -372,6 +372,60 @@ const copy = {
     footer:
       "Everything here is a convex quadratic: the curvature is the same at every point, the gradient is exact, and the answer is known before you start. Real training gives up all three. What survives is the relationship you have been moving back and forth: the shape of the surface decides what step size you are allowed to take.",
   },
+
+  // The guided tours, one per experiment (components/lab/guide/tours.ts).
+  tour: {
+    intro:
+      "A point has to walk down to the lowest spot on a map. You choose the step size; the surface decides whether that step works.",
+    stages: {
+      find: {
+        map: "This is the landscape, seen from above. The cyan arrow is the first step, drawn to scale.",
+        step: "This slider sets the step size. The tour made it longer.",
+        run: "Run it: the point goes downhill one step at a time. Too long a step overshoots and can fly off.",
+        figures:
+          "Steps taken, the height reached, and whether the run settled or diverged. You can also drag the arrow's tip on the map.",
+      },
+      direction: {
+        arrows:
+          "Solid: where a step actually goes. Dashed: the straight line to the minimum. Drag the point anywhere on the map.",
+        curvature:
+          "This slider makes one direction steeper than the other. The tour made them very different.",
+        angle: "The angle between the two arrows. It is 0° only when the curvatures are equal.",
+      },
+      rate: {
+        map: "The same idea on a steeper landscape, with the loss over time beside the map.",
+        rate: "Set the step size. The tour pushed it past the first mark.",
+        run: "Run it and compare the route with the regime written under the map.",
+        marks:
+          "The two marks come from this landscape's curvature: past the second, every step size diverges.",
+      },
+      golf: {
+        course: "Six holes. You cannot aim: the slope decides the direction of every stroke.",
+        start: "Start a round.",
+        club: "Pick a club: each one is a step size. The tour took a middle one.",
+        hit: "Hit. Too short and it takes many strokes; too long and it flies out of bounds.",
+        score: "Par for the hole, your strokes, and the slope under the ball.",
+      },
+      momentum: {
+        map: "A long narrow valley: plain descent zig-zags across it.",
+        beta: "Turn up β, how much of the last step is carried over. Drag the dial or use the arrow keys.",
+        run: "Run it: pushes that keep pointing the same way add up, and the zig-zags cancel.",
+        figures: "The height reached and whether it settled. Too much β and it overshoots instead.",
+      },
+      adam: {
+        map: "Adam gives every parameter its own step size, scaled by that parameter's gradient history.",
+        rate: "Set its step size here.",
+        run: "Run it and follow the route on the map.",
+        steps: "How many steps it took to get close enough, beside the other figures.",
+      },
+      challenge: {
+        map: "Each puzzle fixes a landscape, a start and a budget of steps. Pick the puzzle above the map.",
+        settings: "The optimizer and its settings are yours to choose.",
+        run: "Run it. Arriving slowly is not a pass.",
+        status: "Steps used, the height reached and the verdict.",
+      },
+    },
+  },
 };
 
 export default copy;

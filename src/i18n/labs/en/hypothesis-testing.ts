@@ -193,6 +193,42 @@ const copy = {
     pages:
       "Page numbers refer to the printed pages of the second edition consulted for this revision. No publication year is given because it could not be verified from the copy consulted.",
   },
+
+  // The guided tours, one per experiment (components/lab/guide/tours.ts).
+  tour: {
+    intro:
+      "Two claims about the same average, drawn as two curves. You move one and see when they can be told apart.",
+    stages: {
+      separation: {
+        curves:
+          "Each curve is how an average of n measurements would come out if that claim, μ₀ or μ₁, were true.",
+        move: "This slider moves μ₁. Drag it through μ₀ and out the other side.",
+        gap: "The gap between the two, in standard errors. Too small a gap and the curves overlap.",
+      },
+      alpha: {
+        region:
+          "The shaded tail is the rejection region: an average that lands there counts as evidence against H₀.",
+        alpha: "This slider sets α, the risk of rejecting H₀ when it is true. The tour raised it.",
+        critical: "A bigger α moves the critical value in, and the region grows.",
+      },
+      beta: {
+        curves:
+          "β is the part of H₁'s curve left outside the rejection region: a real effect the test misses.",
+        type: "Point the test the other way. The tour switched it; see what happens to β.",
+        power: "β, the power 1 − β, and α side by side.",
+      },
+      sample: {
+        curves: "Both curves, and how wide they are for this many measurements.",
+        n: "Take more measurements. The tour raised n: both curves narrowed and the overlap shrank.",
+        figures: "More data lowers β without raising α.",
+      },
+      challenge: {
+        task: "Each task asks for a result, a power to reach. Pick the task above.",
+        controls: "Test direction, n, α and σ are yours to set.",
+        power: "The power the model reports right now. Reach the target to pass.",
+      },
+    },
+  },
 };
 
 export default copy;
