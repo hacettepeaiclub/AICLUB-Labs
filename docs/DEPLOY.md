@@ -28,101 +28,75 @@ Every one of those HTML files loads the same JavaScript. They differ only in
 `<head>` — title, description, canonical, Open Graph and Twitter tags — and in
 a `<noscript>` block naming the page. See `tools/prerender.mjs` for why.
 
-## What the server has to do
+## How the server is set up
 
-The live server (openresty, behind the hosting panel) was checked on
-2026-10-12 against what follows. Four things were wrong, and the first is why
-some visitors saw Chrome's "this site doesn't support a secure connection":
+Checked on 2026-10-15. Several sites share one machine.
 
-1. **An https request could be redirected to http.** Asking for
-   `https://…/labs/sorting` (no trailing slash) answered `301 Location:
-http://…/labs/sorting/`. nginx adds the slash for a directory and, when it
-   builds the absolute address, used the plain scheme. A browser set to always
-   use secure connections treats a downgrade like that as "https does not
-   work here" and shows the warning; a visitor who clicks through gets the
-   page over http, where the hashing lab cannot run. `absolute_redirect off`
-   makes nginx send a relative `Location`, which keeps whatever scheme the
-   request came in on. The site now also links every lab with its slash
-   (`src/lib/paths.ts`), so it never asks for that redirect itself.
-2. **http was served as is**, never sent to https, and there was no HSTS.
-3. **Nothing but the HTML was compressed**, and nothing was cached: the
-   bundles went out at full size on every visit, about 400 KB more than
-   needed on the first one.
-4. **HTTP/1.1 only**, so the two dozen files of a lab page queued six at a
-   time.
-
-The page carries its own Content-Security-Policy and referrer policy as
-`<meta>` tags (`tools/prerender.mjs`). The headers below repeat the parts a
-`<meta>` cannot set: `frame-ancestors`, `X-Content-Type-Options`, HSTS.
-
-nginx / openresty, the whole site:
-
-```nginx
-server {
-    listen 80;
-    server_name labs.hacettepeaiclub.com;
-    return 301 https://$host$request_uri;
-}
-
-server {
-    listen 443 ssl;
-    http2 on;                       # older nginx: `listen 443 ssl http2;`
-    server_name labs.hacettepeaiclub.com;
-    # ssl_certificate … as the panel already has it
-
-    root /home/<user>/labs/dist;
-
-    # Keep the scheme when adding a directory's trailing slash.
-    absolute_redirect off;
-
-    gzip on;
-    gzip_types text/css application/javascript application/json image/svg+xml
-               application/xml text/plain application/manifest+json;
-    gzip_min_length 1024;
-
-    # One place for the headers, because an `add_header` inside a location
-    # replaces every `add_header` inherited from outside it.
-    set $hsts "max-age=31536000; includeSubDomains";
-
-    location / {
-        try_files $uri $uri/ /index.html;
-        add_header Strict-Transport-Security $hsts always;
-        add_header X-Content-Type-Options nosniff always;
-        add_header Content-Security-Policy "frame-ancestors 'none'" always;
-        add_header Permissions-Policy "camera=(), microphone=(), geolocation=()" always;
-        add_header Cache-Control "no-cache";
-    }
-
-    # The bundles are content-hashed, so they can be cached forever.
-    location /assets/ {
-        try_files $uri =404;
-        add_header Strict-Transport-Security $hsts always;
-        add_header X-Content-Type-Options nosniff always;
-        add_header Cache-Control "public, max-age=31536000, immutable";
-    }
-}
+```
+browser ──https──▶ Nginx Proxy Manager (openresty, TLS)   ports 80/443, admin on 81
+                        │  proxy_net
+                        ▼
+                   labs_site  (image nginx)               host port 8086 → 80
+                        │  mounts, read-only
+                        ├─ /root/labs/dist        → /usr/share/nginx/html
+                        └─ /root/labs-nginx       → /etc/nginx/conf.d
 ```
 
-`Cache-Control: no-cache` on everything outside `/assets/` is deliberate: an
-`index.html` kept from yesterday points at bundles today's build deleted.
-`no-cache` still lets the browser keep the file and revalidate it with the
-ETag, which costs a 304 and a few hundred bytes.
+- **Nginx Proxy Manager** terminates TLS and forwards to `labs_site`. In its
+  proxy host for `labs.hacettepeaiclub.com`, the SSL tab should have **Force
+  SSL** and **HTTP/2 Support** on.
+- **`labs_site`** serves the files. Its configuration is
+  [`deploy/labs-nginx.conf`](../deploy/labs-nginx.conf), copied to
+  `/root/labs-nginx/default.conf` on the server. It turns off absolute
+  redirects (see below), compresses text behind the proxy, caches the hashed
+  bundles for a year and revalidates pages, and adds HSTS, `nosniff` and
+  `frame-ancestors 'none'`. The page's own `<meta>` Content-Security-Policy
+  (`tools/prerender.mjs`) covers the rest.
+
+Until 2026-10-15 `labs_site` ran nginx's default configuration, and three
+things followed from it. A lab address without its trailing slash answered
+`301 Location: http://…/` because this nginx only ever sees http, and that
+downgrade is what made Chrome warn "this site doesn't support a secure
+connection" and left the hashing lab without a secure context. Nothing but
+the HTML was compressed, because nginx does not compress proxied requests
+unless told to. And nothing was cached.
+
+### Changing the nginx configuration
+
+Edit `deploy/labs-nginx.conf`, then on the server:
+
+```bash
+cp ~/labs/deploy/labs-nginx.conf /root/labs-nginx/default.conf
+docker exec labs_site nginx -t && docker exec labs_site nginx -s reload
+```
+
+### Recreating the container
+
+If `labs_site` is ever removed, this brings it back exactly:
+
+```bash
+docker run -d --name labs_site --restart unless-stopped -p 8086:80 \
+  -v /root/labs/dist:/usr/share/nginx/html:ro \
+  -v /root/labs-nginx:/etc/nginx/conf.d:ro \
+  nginx
+docker network connect proxy_net labs_site
+```
+
+### After any change, check
+
+```bash
+curl -sI https://labs.hacettepeaiclub.com/labs/sorting | grep -i location
+curl -sI -H "Accept-Encoding: gzip" https://labs.hacettepeaiclub.com/ | grep -iE "content-encoding|cache-control|strict"
+```
+
+The first must print a relative `Location: /labs/sorting/`. The second must
+show `gzip`, `no-cache` and `Strict-Transport-Security`; a file under
+`/assets/` must show `max-age=31536000, immutable`.
 
 **The SPA fallback must not shadow the prerendered files.** The rule is: serve
 the file if it exists, then the directory's `index.html`, and only then fall
-back to `/index.html`, which is what `try_files $uri $uri/ /index.html` says.
-
-After changing it, check from any machine:
-
-```bash
-curl -sI http://labs.hacettepeaiclub.com/ | grep -i location
-curl -sI https://labs.hacettepeaiclub.com/labs/sorting | grep -i location
-curl -sI -H "Accept-Encoding: gzip" https://labs.hacettepeaiclub.com/assets/ | head -n 1
-```
-
-The first must print `https://…`, the second a relative `/labs/sorting/`, and
-every bundle under `/assets/` must come back with `Content-Encoding: gzip` and
-the year-long `Cache-Control`.
+back to `/index.html`, which is what `try_files $uri $uri/ /index.html` in
+`deploy/labs-nginx.conf` says.
 
 **Old lab addresses should answer with a 301.** The slugs were renamed on
 2026-10-03 (`src/labs/renamed.ts` lists them). The build already writes a page
