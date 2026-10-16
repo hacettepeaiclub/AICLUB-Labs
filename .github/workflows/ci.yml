@@ -41,3 +41,14 @@ jobs:
         run: npm run build
       - name: Bundle size budget
         run: npm run size
+      # On a push to main (deploy.yml calls this workflow), the build that just
+      # passed every check is the one that ships: the server receives these
+      # files and never builds anything itself.
+      - name: Keep the build for the deploy
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: dist/
+          retention-days: 3
+          if-no-files-found: error

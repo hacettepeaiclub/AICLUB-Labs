@@ -78,9 +78,16 @@ describe("the deploy", () => {
     expect(deploy).not.toMatch(/rm -rf dist(\s|$)/m);
   });
 
-  it("installs exactly the lockfile and stops at the first failure", () => {
-    expect(deploy).toMatch(/npm ci/);
-    expect(deploy).not.toMatch(/npm install/);
+  it("ships the build CI checked, and builds nothing on the server", () => {
+    expect(deploy).toMatch(/needs: checks/);
+    expect(deploy).toMatch(/actions\/download-artifact@v4/);
+    expect(deploy).not.toMatch(/npm (ci|install|run)/);
+    expect(deploy).not.toMatch(/git pull/);
     expect(deploy).toMatch(/set -e/);
+  });
+
+  it("refuses an unknown host key", () => {
+    expect(deploy).toMatch(/StrictHostKeyChecking=yes/);
+    expect(deploy).toMatch(/SSH_KNOWN_HOSTS/);
   });
 });

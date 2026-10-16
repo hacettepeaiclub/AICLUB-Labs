@@ -1,9 +1,27 @@
 # Deploying
 
-`npm run build` produces `dist/`, and `.github/workflows/deploy.yml` runs it on
-the server on every push to `main`. The server builds the next version into
-`dist-next/` (`OUT_DIR`) and copies it into `dist/` with `rsync`, so a visitor
-never meets a half-built site.
+`npm run build` produces `dist/`. On every push to `main`,
+`.github/workflows/deploy.yml` runs the same checks a pull request runs
+(`ci.yml`: typecheck, lint, tests, the build, the end-to-end tests, the bundle
+budget) and ships the build those checks passed. The server builds nothing: it
+receives the files, unpacks them into `dist-next/` and copies them into
+`dist/` with `rsync`, so a visitor never meets a half-built site.
+
+Until 2026-10-16 the server pulled the repository and ran `npm ci` and the
+build itself, so the whole toolchain ran on the production machine on every
+merge. The checkout at `~/labs` is still there, and is now used only for
+`deploy/labs-nginx.conf` (see below).
+
+### The deploy's secrets
+
+Set under the repository's Settings → Secrets and variables → Actions:
+
+| Secret            | What it is                                                                                                                                                                                                             |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `SSH_HOST`        | The server's address.                                                                                                                                                                                                  |
+| `SSH_USER`        | The account the deploy logs in as. It needs to write `~/labs/dist` and nothing else; a dedicated account is better than `root`.                                                                                        |
+| `SSH_KEY`         | That account's private key.                                                                                                                                                                                            |
+| `SSH_KNOWN_HOSTS` | The server's host key, as a `known_hosts` line. Without it the deploy takes whatever key answers on trust. On a machine that already connects to the server, `ssh-keygen -F labs.hacettepeaiclub.com` prints the line. |
 
 **`dist/` itself must never be replaced, only written into.** The site is
 served by an nginx in a container that mounts `dist/`; a mount keeps the
@@ -65,12 +83,17 @@ unless told to. And nothing was cached.
 
 ### Changing the nginx configuration
 
-Edit `deploy/labs-nginx.conf`, then on the server:
+Edit `deploy/labs-nginx.conf` and merge it; the deploy does not carry it to
+the server, so on the server:
 
 ```bash
+git -C ~/labs pull --ff-only origin main
+cp /root/labs-nginx/default.conf /root/labs-nginx/default.conf.bak
 cp ~/labs/deploy/labs-nginx.conf /root/labs-nginx/default.conf
 docker exec labs_site nginx -t && docker exec labs_site nginx -s reload
 ```
+
+If `nginx -t` fails, nothing has changed yet: put the `.bak` back.
 
 ### Recreating the container
 
