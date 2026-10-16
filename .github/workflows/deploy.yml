@@ -4,49 +4,78 @@ on:
     branches: [main]
 
 jobs:
-  # The server builds the site itself, so a commit that does not build, or
-  # fails its tests, used to be found out there, in production. Nothing reaches
-  # it now until the checks a pull request runs have passed on this commit.
+  # Nothing reaches the server until the checks a pull request runs have
+  # passed on this commit. The same run builds the site and keeps the result.
   checks:
     uses: ./.github/workflows/ci.yml
 
   deploy:
     needs: checks
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     # Two quick merges deploy one after the other, never at the same time.
     concurrency:
       group: deploy
       cancel-in-progress: false
     steps:
-      - uses: appleboy/ssh-action@v1.0.3
+      # The files CI built and checked, not a second build of the same commit.
+      - uses: actions/download-artifact@v4
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          # The next version is built beside the live one, then copied into the
-          # live dist/ in place. The directory itself must never be replaced:
-          # the web server runs in a container that mounts dist/, and a mount
-          # holds the directory it was given, not its name. Renaming a new
-          # dist/ into place (as one version of this script did) left the
-          # container serving the deleted old directory, empty, until it was
-          # restarted. rsync writes into the same directory: new files first,
-          # stale ones deleted only after everything new has arrived, so a page
-          # never points at a bundle that is not there yet. `npm ci` installs
-          # exactly the lockfile and never rewrites it. `set -e` stops at the
-          # first failure with the old version still live.
-          script: |
-            set -e
-            cd ~/labs
-            git pull --ff-only origin main
-            npm ci
-            rm -rf dist-next
-            OUT_DIR=dist-next npm run build
-            mkdir -p dist
-            if command -v rsync >/dev/null 2>&1; then
-              rsync -a --delete-after dist-next/ dist/
-            else
-              # No rsync: overwrite in place and leave stale hashed bundles,
-              # which nothing links to, rather than empty the directory first.
-              cp -a dist-next/. dist/
-            fi
-            rm -rf dist-next
+          name: site
+          path: dist
+
+      # The server used to pull the repository and build there: `npm ci` and
+      # the whole toolchain ran on the production machine, as the deploy user,
+      # on every merge. Now it only receives finished files.
+      #
+      # The next version is unpacked beside the live one, then copied into the
+      # live dist/ in place. The directory itself must never be replaced: the
+      # web server runs in a container that mounts dist/, and a mount holds the
+      # directory it was given, not its name. Renaming a new dist/ into place
+      # (as one version of this script did) left the container serving the
+      # deleted old directory, empty, until it was restarted. rsync writes into
+      # the same directory: new files first, stale ones deleted only after
+      # everything new has arrived, so a page never points at a bundle that is
+      # not there yet. `set -e` stops at the first failure with the old version
+      # still live.
+      #
+      # The server's host key comes from the SSH_KNOWN_HOSTS secret when it is
+      # set (see docs/DEPLOY.md), which is what stops a deploy from handing the
+      # site to an impostor; without it the key is taken on trust, as the
+      # previous action did.
+      - name: Ship the build
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          if [ -n "$SSH_KNOWN_HOSTS" ]; then
+            printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          else
+            ssh-keyscan -H "$SSH_HOST" > ~/.ssh/known_hosts 2>/dev/null
+          fi
+          ssh_opts=(-i ~/.ssh/deploy_key -o BatchMode=yes -o StrictHostKeyChecking=yes)
+
+          tar -C dist -czf site.tgz .
+          scp "${ssh_opts[@]}" site.tgz "$SSH_USER@$SSH_HOST:labs/site.tgz"
+          ssh "${ssh_opts[@]}" "$SSH_USER@$SSH_HOST" 'bash -s' <<'REMOTE'
+          set -e
+          cd ~/labs
+          rm -rf dist-next
+          mkdir dist-next
+          tar -xzf site.tgz -C dist-next
+          mkdir -p dist
+          if command -v rsync >/dev/null 2>&1; then
+            rsync -a --delete-after dist-next/ dist/
+          else
+            # No rsync: overwrite in place and leave stale hashed bundles,
+            # which nothing links to, rather than empty the directory first.
+            cp -a dist-next/. dist/
+          fi
+          rm -rf dist-next site.tgz
+          REMOTE

@@ -121,8 +121,11 @@ export function MontyStage() {
         }
         viewport={
           <div className="space-y-3">
+            {/* A group, not an image: the doors are the buttons you play with,
+                and an `img` role hides everything inside it from a screen
+                reader, buttons included. */}
             <div
-              role="img"
+              role="group"
               aria-label={round ? m.doorsLabel(round.picked + 1, round.opened + 1) : m.doorsIdle}
               className="rounded border border-line/10 bg-ink-950 p-4"
             >

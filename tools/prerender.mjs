@@ -66,8 +66,15 @@ const escape = (value) =>
 const ANALYTICS = ["https://cloud.umami.is", "https://gateway.umami.is"];
 
 function securityPolicy(html) {
+  // Hashed as the browser hashes it: its HTML parser turns every CRLF into
+  // LF before the script is checked. A checkout with Windows line endings
+  // used to produce a hash no browser would match, and every page's inline
+  // script was refused.
   const hashes = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(
-    ([, body]) => `'sha256-${createHash("sha256").update(body, "utf8").digest("base64")}'`,
+    ([, body]) =>
+      `'sha256-${createHash("sha256")
+        .update(body.replace(/\r\n?/g, "\n"), "utf8")
+        .digest("base64")}'`,
   );
   const policy =
     [
@@ -98,7 +105,8 @@ function securityPolicy(html) {
 }
 
 /**
- * `<link rel="modulepreload">` for a lab's own code.
+ * `<link rel="modulepreload">` for a lazy chunk's own code: a lab's, or the
+ * home page's.
  *
  * A lab is lazy-loaded, so its chunk used to be requested only after the
  * entry bundle had downloaded, run, and routed: two round trips one after
@@ -108,8 +116,7 @@ function securityPolicy(html) {
  * never leave a stale address behind; the entry's own chunks are already
  * preloaded by Vite and are left out.
  */
-function labPreloads(manifest, slug) {
-  const key = `src/labs/${slug}/index.tsx`;
+function chunkPreloads(manifest, key) {
   if (!manifest[key]) return "";
   const entry = Object.values(manifest).find((chunk) => chunk.isEntry);
   const skip = new Set([entry?.file, ...(entry?.imports ?? []).map((k) => manifest[k]?.file)]);
@@ -272,8 +279,14 @@ async function main() {
       fallbacks++;
     }
 
+    // A lab page asks for its lab's chunks, the home page for its own: both
+    // are split out of the entry, and both would otherwise wait for it.
     const slug = route.path.startsWith("/labs/") ? route.path.split("/")[2] : null;
-    const preloads = slug ? labPreloads(manifest, slug) : "";
+    const preloads = slug
+      ? chunkPreloads(manifest, `src/labs/${slug}/index.tsx`)
+      : route.path === "/"
+        ? chunkPreloads(manifest, "src/pages/HomePage.tsx")
+        : "";
     const withHead = securityPolicy(templateWithShell)
       .replace("</head>", `${head(route)}${preloads ? `\n${preloads}` : ""}\n  </head>`)
       .replace("<title>AI Club Labs</title>", `<title>${escape(route.meta.title)}</title>`)
@@ -286,6 +299,31 @@ async function main() {
     await mkdir(path.dirname(file), { recursive: true });
     await writeFile(file, withHead, "utf8");
   }
+
+  // The page for an address that has none. The server answers every unknown
+  // path with this file and a real 404 status (deploy/labs-nginx.conf), so a
+  // search engine stops indexing typos as pages and a link checker can see a
+  // broken link. It is the app's own shell: the app boots, finds no route,
+  // and shows its not-found page in the visitor's language.
+  await writeFile(
+    path.join(DIST, "404.html"),
+    securityPolicy(templateWithShell)
+      .replace(
+        "</head>",
+        `    <meta name="robots" content="noindex" />
+  </head>`,
+      )
+      .replace("<title>AI Club Labs</title>", "<title>Page not found · AI Club Labs</title>")
+      .replace(
+        '<div id="root"></div>',
+        `<div id="root"></div>
+    <noscript>
+      <h1>Page not found</h1>
+      <p><a href="/">All labs</a></p>
+    </noscript>`,
+      ),
+    "utf8",
+  );
 
   // Every address a lab used to have still answers, by sending the browser to
   // the new one. The server can do this better with a 301 (see DEPLOY.md);

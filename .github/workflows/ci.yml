@@ -39,5 +39,31 @@ jobs:
         run: npm test
       - name: Build (with prerender)
         run: npm run build
+      # Every lab, in a real browser, against the build just made: no errors
+      # on load, a tour for every stage, the learning guide opens, and no
+      # serious accessibility finding (playwright.config.ts, e2e/).
+      - name: Browser for end-to-end tests
+        run: npx playwright install --with-deps chromium
+      - name: End-to-end
+        run: npm run e2e
+      - name: Keep the trace of a failed end-to-end test
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-traces
+          path: test-results/
+          retention-days: 7
+          if-no-files-found: ignore
       - name: Bundle size budget
         run: npm run size
+      # On a push to main (deploy.yml calls this workflow), the build that just
+      # passed every check is the one that ships: the server receives these
+      # files and never builds anything itself.
+      - name: Keep the build for the deploy
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: dist/
+          retention-days: 3
+          if-no-files-found: error

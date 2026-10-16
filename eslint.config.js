@@ -62,7 +62,7 @@ export default tseslint.config(
 
   // Tests run in Node and reach for its APIs.
   {
-    files: ["**/*.test.{ts,tsx}"],
+    files: ["**/*.test.{ts,tsx}", "e2e/**/*.ts"],
     languageOptions: { globals: { ...globals.node } },
   },
 

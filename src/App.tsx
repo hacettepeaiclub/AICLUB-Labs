@@ -1,10 +1,18 @@
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { AmbientBackground } from "@/components/layout/AmbientBackground";
 import { PageShell } from "@/components/layout/PageShell";
-import { HomePage } from "@/pages/HomePage";
 import { LabPage } from "@/pages/LabPage";
 import { NotFoundPage } from "@/pages/NotFoundPage";
+
+/**
+ * The home page is its own chunk. A visitor who arrives on a lab, which is
+ * how a shared link arrives, never needed the grid or the field of marks
+ * behind it, and they were most of the entry bundle. The home page's own HTML
+ * asks for the chunk alongside the entry (tools/prerender.mjs), so arriving
+ * on the home page costs no extra round trip.
+ */
+const HomePage = lazy(() => import("@/pages/HomePage").then((m) => ({ default: m.HomePage })));
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -30,7 +38,14 @@ function AnimatedRoutes() {
   return (
     <PageShell routeKey={location.pathname}>
       <Routes location={location}>
-        <Route path="/" element={<HomePage />} />
+        <Route
+          path="/"
+          element={
+            <Suspense fallback={null}>
+              <HomePage />
+            </Suspense>
+          }
+        />
         <Route path="/labs/:slug" element={<LabPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
