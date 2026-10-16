@@ -331,6 +331,22 @@ const copy: typeof en = {
       },
     },
   },
+
+  // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
+  study: {
+    topics: {
+      address: "Adresi hesaplamak",
+      collisions: "Zincirleme ve doğrusal yoklama",
+      resize: "Dolunca iki katına çıkmak",
+    },
+    notes: {
+      "mit-6006-hashing": "MIT'nin en baştan hash tabloları dersi.",
+      "cp-birthday": "İki anahtarın neden sandığınızdan erken aynı kovaya düştüğü.",
+      "mit-6006-openaddr": "Açık adresleme ve doğrusal yoklama, maliyetleriyle.",
+      "algs4-hash": "Lab'ın kullandığı yoklama formülleri (Önerme M).",
+      "java-hashmap": "Java'nın kendi kuralı: 0,75 doluluk, sonra yaklaşık iki kat kova.",
+    },
+  },
 };
 
 export default copy;

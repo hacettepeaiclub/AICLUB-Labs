@@ -235,6 +235,22 @@ const copy: typeof en = {
       },
     },
   },
+
+  // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
+  study: {
+    topics: {
+      alpha: "İki hipotez, α ve ret bölgesi",
+      power: "β, güç ve örneklem büyüklüğü",
+    },
+    notes: {
+      "sq-hyptest": "Sıfır hipotezinin ne olduğu ve onu reddetmenin anlamı.",
+      "sq-althyp": "Alternatif hipotez: lab'daki öbür eğri.",
+      "sq-power": "Gücün, gerçek bir farkı yakalama olasılığı olması.",
+      "sq-power-analysis": "Belirli bir güç için kaç ölçüm gerektiği.",
+      "khan-power": "Güç, α ve β birlikte.",
+      "openintro-stats": "Test ve güç üzerine ücretsiz bir ders kitabı bölümü.",
+    },
+  },
 };
 
 export default copy;

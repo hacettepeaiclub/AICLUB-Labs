@@ -359,6 +359,23 @@ const copy: typeof en = {
       },
     },
   },
+
+  // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
+  study: {
+    topics: {
+      stored: "Bir float neyi saklayabilir, neyi saklayamaz",
+      rounding: "Tekrar tekrar yuvarlama",
+      formats: "Aralık mı, hassasiyet mi",
+    },
+    notes: {
+      "cp-float": "0,1 + 0,2'nin neden 0,3 olmadığı, en baştan.",
+      "cp-float-1": "İşaret, üs ve kesir, bit bit.",
+      "cp-float-2": "İki float'ın nasıl toplandığı ve yuvarlamanın nerede olduğu.",
+      "goldberg-float": "Yuvarlama hatası ve IEEE aritmetiği üzerine klasik makale.",
+      "google-bfloat16":
+        "bfloat16'nın neden float32'nin üssünü koruyup kesir bitlerinden vazgeçtiği.",
+    },
+  },
 };
 
 export default copy;

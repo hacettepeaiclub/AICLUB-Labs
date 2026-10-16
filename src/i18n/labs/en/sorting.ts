@@ -175,6 +175,21 @@ const copy = {
       },
     },
   },
+
+  // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
+  study: {
+    topics: {
+      two: "Selection sort and insertion sort",
+      cost: "The work is in the data",
+    },
+    notes: {
+      "sambol-selection": "Selection sort in under three minutes.",
+      "sambol-insertion": "Insertion sort in under three minutes.",
+      "mit-6006-sorting": "MIT's lecture on sorting, both algorithms included.",
+      "tomscott-sorting": "Why counting the work matters more than the code.",
+      "algs4-sorts": "Insertion sort's exchanges equal the number of inversions.",
+    },
+  },
 };
 
 export default copy;

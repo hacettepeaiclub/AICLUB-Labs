@@ -10,6 +10,7 @@ import { LabProgress } from "./LabProgress";
 import { orderedLabs } from "@/labs/registry";
 import { LabPlate } from "./LabPlate";
 import { GuideButton, LabGuideProvider } from "./guide/LabGuide";
+import { LabLearning } from "./LabLearning";
 
 /**
  * Frame that every experiment renders inside. Gives all 100+ labs the same
@@ -74,6 +75,8 @@ export function LabShell({ meta, children }: { meta: LabMeta; children: ReactNod
         </header>
 
         {children}
+
+        <LabLearning key={meta.slug} slug={meta.slug} title={title} />
 
         <LabNext slug={meta.slug} />
       </LabGuideProvider>

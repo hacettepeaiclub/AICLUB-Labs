@@ -359,6 +359,23 @@ const copy: typeof en = {
       },
     },
   },
+
+  // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
+  study: {
+    topics: {
+      reward: "Ödüller, durumlar ve eylemler",
+      q: "Deneyerek öğrenmek: Q-learning",
+      gaming: "Yazdığınızı optimize eder",
+    },
+    notes: {
+      "sq-rl": "Pekiştirmeli öğrenmenin ana fikirleri.",
+      "cp-mdp": "Odanın bir Markov karar süreci olarak ele alınması.",
+      "deeplizard-q": "Q değerleri, güncelleme kuralı ve keşif.",
+      "sutton-barto": "Alanın ders kitabı, yazarlarından ücretsiz (Q-learning için 6. bölüm).",
+      "miles-spec": "Puanı tutturup asıl amacı ıskalayan ajanların dokuz gerçek örneği.",
+      "deepmind-specgaming": "DeepMind'ın şartname oyunları (specification gaming) yazısı.",
+    },
+  },
 };
 
 export default copy;

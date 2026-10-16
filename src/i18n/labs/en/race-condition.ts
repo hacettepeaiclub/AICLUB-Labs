@@ -235,6 +235,22 @@ const copy = {
       },
     },
   },
+
+  // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
+  study: {
+    topics: {
+      steps: "counter++ is three steps",
+      fix: "Locks and atomic instructions",
+      check: "Check, then act",
+    },
+    notes: {
+      "cp-race": "Race conditions acted out at human scale.",
+      "ostep-threads": "The same shared counter as the lab, and why it loses updates.",
+      "spanning-race": "Protecting the critical section, with Dekker's algorithm.",
+      "ostep-locks": "How locks are built, from atomic hardware instructions up.",
+      "ostep-bugs": "Atomicity violations in real software (32.2 Non-Deadlock Bugs).",
+    },
+  },
 };
 
 export default copy;

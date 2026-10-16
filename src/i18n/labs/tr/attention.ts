@@ -196,6 +196,25 @@ const copy: typeof en = {
       },
     },
   },
+
+  // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
+  study: {
+    topics: {
+      qkv: "Query, key ve eşleşme skoru",
+      softmax: "Softmax: %100'lük tek bütçe",
+      transformer: "Attention'ın modeldeki yeri",
+    },
+    notes: {
+      "3b1b-attention":
+        "Mekanizmanın tamamı adım adım: bir kelimenin ne aradığı, diğerlerinin ne sunduğu ve nasıl karşılaştırıldıkları.",
+      "sq-attention": "Aynı fikir, elle takip edilebilecek küçük sayılarla.",
+      "d2l-attention": "Ölçekli nokta çarpımı ve böleni, açık açık yazılmış hali.",
+      "sq-softmax": "Softmax'ın her skoru toplamı 1 olan paylara neden çevirdiği.",
+      "3b1b-transformers": "Etrafındaki transformer: attention'dan önce ve sonra ne olduğu.",
+      "karpathy-gpt": "Attention katmanı dahil, sıfırdan yazılan küçük bir GPT.",
+      "alammar-transformer": "Mimarinin açıklamalı çizimlerle anlatımı.",
+    },
+  },
 };
 
 export default copy;

@@ -354,6 +354,22 @@ const copy = {
       },
     },
   },
+
+  // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
+  study: {
+    topics: {
+      stored: "What a float can and cannot store",
+      rounding: "Rounding, again and again",
+      formats: "Range or precision",
+    },
+    notes: {
+      "cp-float": "Why 0.1 + 0.2 is not 0.3, from first principles.",
+      "cp-float-1": "Sign, exponent and fraction, bit by bit.",
+      "cp-float-2": "How two floats are added, and where the rounding happens.",
+      "goldberg-float": "The classic paper on rounding error and IEEE arithmetic.",
+      "google-bfloat16": "Why bfloat16 keeps float32's exponent and drops fraction bits.",
+    },
+  },
 };
 
 export default copy;

@@ -337,6 +337,24 @@ const copy = {
       },
     },
   },
+
+  // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
+  study: {
+    topics: {
+      window: "A sliding window of weights",
+      sharing: "The same weights everywhere",
+      size: "Padding, stride and output size",
+    },
+    notes: {
+      "ng-edge": "A 3×3 edge kernel slid across an image, sum by sum.",
+      "sq-cnn": "Where kernels sit in a network that classifies images.",
+      "ng-why-conv": "Parameter sharing and why it needs so few weights.",
+      "cs231n-conv": "The layer in full: sharing, receptive field, depth.",
+      "ng-padding": "Padding, and the output-size formula the lab uses.",
+      "ng-stride": "Stride, and the rounding down.",
+      "d2l-padding": "The same formula with worked examples.",
+    },
+  },
 };
 
 export default copy;

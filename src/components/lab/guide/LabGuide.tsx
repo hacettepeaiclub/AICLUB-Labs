@@ -1,5 +1,4 @@
 import {
-  Component,
   lazy,
   Suspense,
   useEffect,
@@ -12,6 +11,7 @@ import {
 import { Button } from "@/components/ui";
 import { useT } from "@/i18n";
 import { useLabCopy, type LabSlug } from "@/i18n/labs";
+import { Quiet } from "../Quiet";
 import { GuideContext, useGuide, type Guide } from "./context";
 
 /**
@@ -218,15 +218,4 @@ function Welcome({
       </div>
     </dialog>
   );
-}
-
-/** Renders nothing if anything below it throws. */
-class Quiet extends Component<{ children: ReactNode }, { failed: boolean }> {
-  state = { failed: false };
-  static getDerivedStateFromError() {
-    return { failed: true };
-  }
-  render() {
-    return this.state.failed ? null : this.props.children;
-  }
 }

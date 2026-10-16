@@ -215,6 +215,21 @@ const copy = {
       },
     },
   },
+
+  // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
+  study: {
+    topics: {
+      line: "Memory arrives a line at a time",
+      order: "Stride and loop order",
+    },
+    notes: {
+      "cp-caches-why": "Why a processor needs a cache at all.",
+      "cp-caches-how": "Caches, lines and hits explained at length.",
+      "mit-6172-l14":
+        "A full lecture on cache-efficient code, tiled matrix multiplication included.",
+      "drepper-memory": "The long reference on how memory and caches really behave.",
+    },
+  },
 };
 
 export default copy;

@@ -564,6 +564,24 @@ const copy = {
       },
     },
   },
+
+  // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
+  study: {
+    topics: {
+      monty: "Monty Hall and conditioning",
+      birthday: "Birthdays: pairs, not people",
+      simpson: "Simpson's paradox",
+      galton: "The Galton board and the bell curve",
+    },
+    notes: {
+      "np-monty": "The game explained in five minutes.",
+      "stat110-l6": "Harvard's lecture on Monty Hall and Simpson's paradox.",
+      "stat110-l3": "The birthday problem worked out in lecture.",
+      "mp-simpson": "Better in every group, worse overall, in four minutes.",
+      "3b1b-clt": "Starts from a Galton board and arrives at the central limit theorem.",
+      "stat110-l29": "The law of large numbers and the central limit theorem in lecture.",
+    },
+  },
 };
 
 export default copy;

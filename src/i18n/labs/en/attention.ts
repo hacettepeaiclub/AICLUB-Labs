@@ -196,6 +196,26 @@ const copy = {
       },
     },
   },
+
+  // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
+  study: {
+    topics: {
+      qkv: "Query, key and the match score",
+      softmax: "Softmax: one budget of 100%",
+      transformer: "Where attention sits in a model",
+    },
+    notes: {
+      "3b1b-attention":
+        "The whole mechanism drawn step by step: what a word asks for, what the others offer, and how they are compared.",
+      "sq-attention": "The same idea with small numbers you can follow by hand.",
+      "d2l-attention": "The scaled dot product and its divisor, written out.",
+      "sq-softmax": "Why softmax turns any scores into shares that add up to 1.",
+      "3b1b-transformers":
+        "The transformer around it: what comes before attention and what follows.",
+      "karpathy-gpt": "A small GPT written from scratch, attention head included.",
+      "alammar-transformer": "The architecture in annotated diagrams.",
+    },
+  },
 };
 
 export default copy;

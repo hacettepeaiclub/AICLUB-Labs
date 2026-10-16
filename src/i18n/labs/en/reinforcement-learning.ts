@@ -355,6 +355,23 @@ const copy = {
       },
     },
   },
+
+  // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
+  study: {
+    topics: {
+      reward: "Rewards, states and actions",
+      q: "Learning by trying: Q-learning",
+      gaming: "It optimises what you wrote down",
+    },
+    notes: {
+      "sq-rl": "The main ideas of reinforcement learning.",
+      "cp-mdp": "The room as a Markov decision process.",
+      "deeplizard-q": "Q-values, the update rule and exploration.",
+      "sutton-barto": "The field's textbook, free from its authors (ch. 6 for Q-learning).",
+      "miles-spec": "Nine real cases of agents scoring well while missing the point.",
+      "deepmind-specgaming": "DeepMind on specification gaming.",
+    },
+  },
 };
 
 export default copy;

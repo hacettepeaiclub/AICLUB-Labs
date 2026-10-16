@@ -286,6 +286,27 @@ const copy = {
       },
     },
   },
+
+  // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
+  study: {
+    topics: {
+      slope: "A gradient is a slope; the chain rule",
+      graph: "The graph, and the order of the backward pass",
+      depth: "Vanishing and exploding gradients",
+      check: "Gradient check",
+    },
+    notes: {
+      "3b1b-backprop": "What backpropagation is doing, without the formulas first.",
+      "3b1b-backprop-calc": "The same, with the chain rule written out.",
+      "sq-chain": "The chain rule worked through on real numbers.",
+      "karpathy-micrograd":
+        "Build backpropagation yourself, node by node, in about a hundred lines.",
+      "sq-backprop": "One weight at a time: which way to move it and by how much.",
+      "cs231n-backprop": "Gates, local gradients and the sum where a value is used twice.",
+      "ng-vanishing": "Why a long chain of factors below or above 1 shrinks or blows up.",
+      "ng-gradcheck": "Comparing backprop with nudging, as the lab's last section does.",
+    },
+  },
 };
 
 export default copy;
