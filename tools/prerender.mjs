@@ -66,8 +66,15 @@ const escape = (value) =>
 const ANALYTICS = ["https://cloud.umami.is", "https://gateway.umami.is"];
 
 function securityPolicy(html) {
+  // Hashed as the browser hashes it: its HTML parser turns every CRLF into
+  // LF before the script is checked. A checkout with Windows line endings
+  // used to produce a hash no browser would match, and every page's inline
+  // script was refused.
   const hashes = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(
-    ([, body]) => `'sha256-${createHash("sha256").update(body, "utf8").digest("base64")}'`,
+    ([, body]) =>
+      `'sha256-${createHash("sha256")
+        .update(body.replace(/\r\n?/g, "\n"), "utf8")
+        .digest("base64")}'`,
   );
   const policy =
     [
