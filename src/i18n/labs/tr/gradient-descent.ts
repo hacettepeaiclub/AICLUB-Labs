@@ -425,6 +425,23 @@ const copy: typeof en = {
       },
     },
   },
+
+  // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
+  study: {
+    topics: {
+      downhill: "Adım adım yokuş aşağı",
+      ceiling: "Adım boyu tavanı ve koşul sayısı",
+      momentum: "Momentum ve Adam",
+    },
+    notes: {
+      "3b1b-gd": "Negatif gradyanın yokuş aşağı yön olması.",
+      "sq-gd": "Adım boyu dahil, elle çözülmüş gradient descent.",
+      "distill-momentum":
+        "Etkileşimli: en büyük kararlı adımın neden eğriliğe bağlı olduğu ve κ'nın etkisi.",
+      "ng-momentum": "Gradyanların hareketli ortalaması ve zikzakın neden söndüğü.",
+      "ng-adam": "Her parametreye kendi geçmişine göre ölçeklenmiş bir adım boyu.",
+    },
+  },
 };
 
 export default copy;

@@ -216,6 +216,20 @@ const copy: typeof en = {
       },
     },
   },
+
+  // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
+  study: {
+    topics: {
+      line: "Bellek satır satır gelir",
+      order: "Adım aralığı ve döngü sırası",
+    },
+    notes: {
+      "cp-caches-why": "İşlemcinin neden bir önbelleğe ihtiyaç duyduğu.",
+      "cp-caches-how": "Önbellek, satırlar ve isabetler, ayrıntılı olarak.",
+      "mit-6172-l14": "Önbellek dostu kod üzerine tam bir ders; döşemeli matris çarpımı dahil.",
+      "drepper-memory": "Bellek ve önbelleğin gerçekte nasıl davrandığına dair uzun başvuru metni.",
+    },
+  },
 };
 
 export default copy;

@@ -187,6 +187,26 @@ export const en = {
     close: "Close the tour",
   },
 
+  // The learning guide at the foot of a lab (components/lab/LabLearning).
+  learn: {
+    kicker: "Keep learning",
+    title: "Take this lab's ideas further",
+    body: "Videos, university lectures and readings, grouped under the ideas you just used.",
+    open: "Open the learning guide",
+    dialogKicker: "Learning guide",
+    close: "Close",
+    kinds: {
+      video: "Video",
+      lecture: "Lecture",
+      book: "Book",
+      notes: "Notes",
+      article: "Article",
+      interactive: "Interactive",
+    },
+    inEnglish: "Every resource here is in English.",
+    newTab: "(opens in a new tab)",
+  },
+
   palette: {
     open: "Find a lab",
     label: "Find a lab",

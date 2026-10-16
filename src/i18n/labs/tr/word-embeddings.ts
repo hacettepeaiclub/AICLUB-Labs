@@ -147,6 +147,24 @@ const copy: typeof en = {
       },
     },
   },
+
+  // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
+  study: {
+    topics: {
+      vectors: "Vektör olarak kelimeler",
+      usage: "Anlam kullanımdan gelir",
+      shadow: "İki boyutlu harita bir gölgedir",
+    },
+    notes: {
+      "sq-word2vec": "word2vec'in kelimeleri nasıl sayılara çevirdiği.",
+      "cp-vectoring": "Kelime vektörleri ve ünlü kral − erkek + kadın.",
+      "alammar-word2vec": "Çizimlerle word2vec.",
+      "cs224n-l1":
+        "Stanford'un ilk dersi: anlam, kelimenin birlikte kullanıldığı kelimelerden gelir.",
+      "sq-pca": "Lab'daki haritanın kullandığı izdüşüm: PCA.",
+      "distill-tsne": "Başka bir izdüşüm, aynı uyarı: haritadaki uzaklıklar yanıltabilir.",
+    },
+  },
 };
 
 export default copy;

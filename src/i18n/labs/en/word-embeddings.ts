@@ -153,6 +153,23 @@ const copy = {
       },
     },
   },
+
+  // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
+  study: {
+    topics: {
+      vectors: "Words as vectors",
+      usage: "Meaning from usage",
+      shadow: "A 2-D map is a shadow",
+    },
+    notes: {
+      "sq-word2vec": "How word2vec turns words into numbers.",
+      "cp-vectoring": "Word vectors and the famous king − man + woman.",
+      "alammar-word2vec": "word2vec in illustrations.",
+      "cs224n-l1": "Stanford's first lecture: meaning from the company a word keeps.",
+      "sq-pca": "PCA, the projection the lab's map uses.",
+      "distill-tsne": "Another projection, the same warning: distances on the map can mislead.",
+    },
+  },
 };
 
 export default copy;

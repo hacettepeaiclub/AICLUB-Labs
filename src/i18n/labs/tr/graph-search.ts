@@ -187,6 +187,24 @@ const copy: typeof en = {
       },
     },
   },
+
+  // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
+  study: {
+    topics: {
+      bfs: "BFS: katman katman yayılma",
+      dijkstra: "Dijkstra: en ucuz yol",
+      astar: "A*: hedefe nişan almak",
+    },
+    notes: {
+      "reducible-bfs": "Sınırıyla birlikte, animasyonlu genişlik öncelikli arama.",
+      "mit-6006-bfs": "MIT dersi: ilk giren ilk çıkar düzeninin neden en az hamleyi bulduğu.",
+      "cp-dijkstra": "Dijkstra algoritması küçük bir harita üzerinde, elle.",
+      "mit-6006-dijkstra": "Ders: doğruluğu ve maliyetlerin neden negatif olmaması gerektiği.",
+      "cp-astar": "A*'ın Dijkstra'yla karşılaştırmalı anlatımı.",
+      "reducible-astar": "Harita uygulamalarının kullandığı haliyle A* ve sezgisel tahmin.",
+      "redblob-astar": "Etkileşimli ızgaralar: BFS, Dijkstra, greedy ve A* yan yana.",
+    },
+  },
 };
 
 export default copy;

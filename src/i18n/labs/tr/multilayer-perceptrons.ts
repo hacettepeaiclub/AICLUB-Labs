@@ -315,6 +315,23 @@ const copy: typeof en = {
       },
     },
   },
+
+  // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
+  study: {
+    topics: {
+      neuron: "Bir nöron bir doğrudur",
+      xor: "XOR ve gizli katman",
+      learning: "Kayıp ve öğrenme",
+    },
+    notes: {
+      "3b1b-nn": "Nöronlar, ağırlıklar ve bias'lar, en baştan.",
+      "sq-nn": "Birkaç nöronun bir doğruyu nasıl eğriye çevirdiği.",
+      "lavrenko-xor": "Üniversite dersi: tek gizli katman XOR'u çözer.",
+      "tf-playground": "Tarayıcıda küçük bir ağ eğitin, katmanları kendiniz ekleyin.",
+      "nielsen-universal": "Yeterli gizli nöronun neden her şekli çizebildiği.",
+      "3b1b-gd": "Ağın kaybında yokuş aşağı yürüyerek nasıl öğrendiği.",
+    },
+  },
 };
 
 export default copy;

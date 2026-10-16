@@ -251,6 +251,22 @@ const copy: typeof en = {
       },
     },
   },
+
+  // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
+  study: {
+    topics: {
+      steps: "counter++ üç adımdır",
+      fix: "Kilitler ve atomik komutlar",
+      check: "Önce kontrol, sonra eylem",
+    },
+    notes: {
+      "cp-race": "Yarış durumları insan ölçeğinde canlandırılmış.",
+      "ostep-threads": "Lab'daki sayacın aynısı ve neden güncelleme kaybettiği.",
+      "spanning-race": "Kritik bölgeyi korumak: Dekker algoritması.",
+      "ostep-locks": "Kilitlerin atomik donanım komutlarından nasıl kurulduğu.",
+      "ostep-bugs": "Gerçek yazılımlarda atomiklik ihlalleri (32.2 Non-Deadlock Bugs).",
+    },
+  },
 };
 
 export default copy;

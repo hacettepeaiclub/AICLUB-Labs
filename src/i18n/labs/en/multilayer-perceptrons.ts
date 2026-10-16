@@ -310,6 +310,23 @@ const copy = {
       },
     },
   },
+
+  // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
+  study: {
+    topics: {
+      neuron: "A neuron is a line",
+      xor: "XOR and the hidden layer",
+      learning: "Loss and learning",
+    },
+    notes: {
+      "3b1b-nn": "Neurons, weights and biases, from the beginning.",
+      "sq-nn": "How a few neurons bend a line into a curve.",
+      "lavrenko-xor": "A university lecture: one hidden layer solves XOR.",
+      "tf-playground": "Train a small network in the browser and add layers yourself.",
+      "nielsen-universal": "Why enough hidden neurons can draw any shape.",
+      "3b1b-gd": "How the network learns by walking downhill on its loss.",
+    },
+  },
 };
 
 export default copy;

@@ -229,6 +229,22 @@ const copy = {
       },
     },
   },
+
+  // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
+  study: {
+    topics: {
+      alpha: "Two hypotheses, α and the rejection region",
+      power: "β, power and sample size",
+    },
+    notes: {
+      "sq-hyptest": "What a null hypothesis is, and what rejecting it means.",
+      "sq-althyp": "The alternative hypothesis, the other curve in the lab.",
+      "sq-power": "Power as the chance of detecting a real difference.",
+      "sq-power-analysis": "How many measurements a given power needs.",
+      "khan-power": "Power, α and β introduced together.",
+      "openintro-stats": "A free textbook chapter on testing and power.",
+    },
+  },
 };
 
 export default copy;

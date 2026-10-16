@@ -166,6 +166,25 @@ export const tr: Translation = {
     close: "Turu kapat",
   },
 
+  learn: {
+    kicker: "Öğrenmeye devam edin",
+    title: "Bu lab'daki fikirleri derinleştirin",
+    body: "Az önce kullandığınız fikirler için videolar, üniversite dersleri ve okumalar, konu konu.",
+    open: "Öğrenme rehberini aç",
+    dialogKicker: "Öğrenme rehberi",
+    close: "Kapat",
+    kinds: {
+      video: "Video",
+      lecture: "Ders",
+      book: "Kitap",
+      notes: "Ders notu",
+      article: "Makale",
+      interactive: "Etkileşimli",
+    },
+    inEnglish: "Buradaki kaynakların hepsi İngilizce.",
+    newTab: "(yeni sekmede açılır)",
+  },
+
   palette: {
     open: "Laboratuvar bul",
     label: "Laboratuvar bul",

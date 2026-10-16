@@ -184,6 +184,20 @@ const copy = {
       },
     },
   },
+
+  // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
+  study: {
+    topics: {
+      digest: "Fixed length, same answer every time",
+      collision: "Collision resistance",
+    },
+    notes: {
+      "paar-hash": "A university lecture on what a hash function must guarantee.",
+      "mit-6046-hash": "MIT's lecture on cryptographic hash functions and their properties.",
+      "cp-birthday": "Why collisions come sooner than expected, and what that means for a digest.",
+      "3b1b-256bit": "How large 2²⁵⁶ really is, and why searching it is out of reach.",
+    },
+  },
 };
 
 export default copy;

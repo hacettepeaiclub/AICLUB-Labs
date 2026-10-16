@@ -285,6 +285,28 @@ const copy: typeof en = {
       },
     },
   },
+
+  // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
+  study: {
+    topics: {
+      slope: "Gradyan bir eğimdir; zincir kuralı",
+      graph: "Hesap grafiği ve geri geçişin sırası",
+      depth: "Kaybolan ve patlayan gradyanlar",
+      check: "Gradyan kontrolü",
+    },
+    notes: {
+      "3b1b-backprop": "Geri yayılımın ne yaptığı, önce formülsüz.",
+      "3b1b-backprop-calc": "Aynısı, zincir kuralı yazılarak.",
+      "sq-chain": "Zincir kuralının gerçek sayılarla adım adım uygulanışı.",
+      "karpathy-micrograd": "Geri yayılımı düğüm düğüm, yüz satır kadar kodla kendiniz kurun.",
+      "sq-backprop": "Her seferinde tek ağırlık: hangi yöne ve ne kadar oynatılacağı.",
+      "cs231n-backprop": "Kapılar, yerel gradyanlar ve iki yerde kullanılan değerde toplama.",
+      "ng-vanishing":
+        "1'in altındaki ya da üstündeki uzun bir çarpan zincirinin neden söndüğü ya da patladığı.",
+      "ng-gradcheck":
+        "Lab'ın son bölümündeki gibi, geri yayılımı dürterek ölçmeyle karşılaştırmak.",
+    },
+  },
 };
 
 export default copy;

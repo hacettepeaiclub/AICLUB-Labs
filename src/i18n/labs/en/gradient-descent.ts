@@ -426,6 +426,23 @@ const copy = {
       },
     },
   },
+
+  // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
+  study: {
+    topics: {
+      downhill: "Downhill, one step at a time",
+      ceiling: "The step-size ceiling and the condition number",
+      momentum: "Momentum and Adam",
+    },
+    notes: {
+      "3b1b-gd": "The negative gradient as the direction downhill.",
+      "sq-gd": "Gradient descent worked through by hand, step size included.",
+      "distill-momentum":
+        "Interactive: why the largest stable step depends on curvature, and what κ does.",
+      "ng-momentum": "A running average of gradients, and why the zig-zag cancels.",
+      "ng-adam": "One step size per parameter, scaled by its own history.",
+    },
+  },
 };
 
 export default copy;

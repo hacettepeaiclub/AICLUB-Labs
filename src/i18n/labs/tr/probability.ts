@@ -550,6 +550,24 @@ const copy: typeof en = {
       },
     },
   },
+
+  // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
+  study: {
+    topics: {
+      monty: "Monty Hall ve koşullu olasılık",
+      birthday: "Doğum günleri: kişiler değil, çiftler",
+      simpson: "Simpson paradoksu",
+      galton: "Galton tahtası ve çan eğrisi",
+    },
+    notes: {
+      "np-monty": "Oyun beş dakikada.",
+      "stat110-l6": "Harvard'ın Monty Hall ve Simpson paradoksu dersi.",
+      "stat110-l3": "Doğum günü probleminin derste çözümü.",
+      "mp-simpson": "Her grupta daha iyi, toplamda daha kötü; dört dakikada.",
+      "3b1b-clt": "Bir Galton tahtasından başlayıp merkezi limit teoremine varır.",
+      "stat110-l29": "Büyük sayılar yasası ve merkezi limit teoremi, derste.",
+    },
+  },
 };
 
 export default copy;

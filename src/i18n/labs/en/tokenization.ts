@@ -271,6 +271,20 @@ const copy = {
       },
     },
   },
+
+  // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
+  study: {
+    topics: {
+      bpe: "Pieces learned by counting",
+      quirks: "What a token is, and what it costs",
+    },
+    notes: {
+      "karpathy-tokenizer": "A BPE tokenizer built from scratch, merges and all.",
+      "hf-bpe": "The BPE training loop with a worked example.",
+      "cp-glitch": "Odd tokens a tokenizer learned, and what they do to a model.",
+      "petrov-unfair": "The same text costs very different amounts across languages.",
+    },
+  },
 };
 
 export default copy;

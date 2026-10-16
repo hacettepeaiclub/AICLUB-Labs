@@ -264,6 +264,20 @@ const copy: typeof en = {
       },
     },
   },
+
+  // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
+  study: {
+    topics: {
+      bpe: "Sayılarak öğrenilen parçalar",
+      quirks: "Token nedir, neye mal olur",
+    },
+    notes: {
+      "karpathy-tokenizer": "Birleştirmeleriyle birlikte, sıfırdan kurulan bir BPE tokenizer.",
+      "hf-bpe": "Çözümlü örnekle BPE eğitim döngüsü.",
+      "cp-glitch": "Bir tokenizer'ın öğrendiği tuhaf token'lar ve modele etkileri.",
+      "petrov-unfair": "Aynı metin dillere göre çok farklı maliyet çıkarır.",
+    },
+  },
 };
 
 export default copy;

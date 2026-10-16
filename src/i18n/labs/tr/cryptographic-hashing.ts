@@ -180,6 +180,20 @@ const copy: typeof en = {
       },
     },
   },
+
+  // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
+  study: {
+    topics: {
+      digest: "Sabit uzunluk, her seferinde aynı cevap",
+      collision: "Çakışma direnci",
+    },
+    notes: {
+      "paar-hash": "Bir hash fonksiyonunun neyi garanti etmesi gerektiğine dair üniversite dersi.",
+      "mit-6046-hash": "MIT'nin kriptografik hash fonksiyonları ve özellikleri üzerine dersi.",
+      "cp-birthday": "Çakışmaların neden beklenenden erken geldiği ve bunun bir özet için anlamı.",
+      "3b1b-256bit": "2²⁵⁶'nın gerçekte ne kadar büyük olduğu ve aramanın neden imkânsız olduğu.",
+    },
+  },
 };
 
 export default copy;

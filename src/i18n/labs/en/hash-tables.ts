@@ -328,6 +328,22 @@ const copy = {
       },
     },
   },
+
+  // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
+  study: {
+    topics: {
+      address: "Computing an address",
+      collisions: "Chaining and linear probing",
+      resize: "Doubling when full",
+    },
+    notes: {
+      "mit-6006-hashing": "MIT's lecture on hash tables from the start.",
+      "cp-birthday": "Why two keys share a bucket sooner than you think.",
+      "mit-6006-openaddr": "Open addressing and linear probing, with their costs.",
+      "algs4-hash": "The probing formulas the lab uses (Proposition M).",
+      "java-hashmap": "Java's own rule: load factor 0.75, then about twice the buckets.",
+    },
+  },
 };
 
 export default copy;

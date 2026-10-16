@@ -179,6 +179,21 @@ const copy: typeof en = {
       },
     },
   },
+
+  // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
+  study: {
+    topics: {
+      two: "Seçmeli ve eklemeli sıralama",
+      cost: "İş verinin içinde",
+    },
+    notes: {
+      "sambol-selection": "Üç dakikadan kısa sürede seçmeli sıralama.",
+      "sambol-insertion": "Üç dakikadan kısa sürede eklemeli sıralama.",
+      "mit-6006-sorting": "MIT'nin sıralama dersi, iki algoritma da dahil.",
+      "tomscott-sorting": "İşi saymanın neden koddan daha önemli olduğu.",
+      "algs4-sorts": "Eklemeli sıralamanın yer değiştirme sayısı ters çift sayısına eşittir.",
+    },
+  },
 };
 
 export default copy;

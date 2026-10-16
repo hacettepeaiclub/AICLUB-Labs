@@ -178,6 +178,24 @@ const copy = {
       },
     },
   },
+
+  // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
+  study: {
+    topics: {
+      bfs: "BFS: spreading in layers",
+      dijkstra: "Dijkstra: the cheapest route",
+      astar: "A*: aiming for the goal",
+    },
+    notes: {
+      "reducible-bfs": "Breadth-first search animated, frontier and all.",
+      "mit-6006-bfs": "MIT's lecture: why first-in, first-out finds the fewest moves.",
+      "cp-dijkstra": "Dijkstra's algorithm on a small map, by hand.",
+      "mit-6006-dijkstra": "The lecture: correctness and why costs must be non-negative.",
+      "cp-astar": "A* explained against Dijkstra.",
+      "reducible-astar": "A* and heuristics as map applications use them.",
+      "redblob-astar": "Interactive grids: BFS, Dijkstra, greedy and A* side by side.",
+    },
+  },
 };
 
 export default copy;

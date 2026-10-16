@@ -340,6 +340,24 @@ const copy: typeof en = {
       },
     },
   },
+
+  // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
+  study: {
+    topics: {
+      window: "Kayan bir ağırlık penceresi",
+      sharing: "Her yerde aynı ağırlıklar",
+      size: "Dolgu, adım ve çıktı boyutu",
+    },
+    notes: {
+      "ng-edge": "3×3'lük bir kenar çekirdeğinin resim üzerinde toplam toplam kaydırılması.",
+      "sq-cnn": "Resim sınıflandıran bir ağda çekirdeklerin yeri.",
+      "ng-why-conv": "Parametre paylaşımı ve neden bu kadar az ağırlık gerektirdiği.",
+      "cs231n-conv": "Katmanın tamamı: paylaşım, alıcı alan, derinlik.",
+      "ng-padding": "Dolgu ve lab'ın kullandığı çıktı boyutu formülü.",
+      "ng-stride": "Adım ve aşağı yuvarlama.",
+      "d2l-padding": "Aynı formül, çözümlü örneklerle.",
+    },
+  },
 };
 
 export default copy;
