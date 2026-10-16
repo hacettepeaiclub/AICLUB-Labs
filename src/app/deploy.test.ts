@@ -32,8 +32,12 @@ describe("the nginx that serves the site", () => {
     expect(pages).toMatch(/Cache-Control "no-cache"/);
   });
 
-  it("serves the prerendered page before falling back to the app", () => {
-    expect(nginx).toMatch(/try_files \$uri \$uri\/ \/index\.html;/);
+  it("serves the prerendered page, and a real 404 for an address with none", () => {
+    // Every route is a file, so there is nothing to fall back to: the old
+    // `/index.html` fallback answered 200 to any address at all.
+    expect(nginx).toMatch(/try_files \$uri \$uri\/ =404;/);
+    expect(nginx).not.toMatch(/try_files[^;]*\/index\.html;/);
+    expect(nginx).toMatch(/error_page 404 \/404\.html;/);
   });
 
   it("sends the security headers from every location", () => {
@@ -48,6 +52,17 @@ describe("the nginx that serves the site", () => {
       expect({ location, nosniff: /X-Content-Type-Options "nosniff"/.test(block) }).toEqual({
         location,
         nosniff: true,
+      });
+      expect({
+        location,
+        referrer: /Referrer-Policy "strict-origin-when-cross-origin"/.test(block),
+      }).toEqual({
+        location,
+        referrer: true,
+      });
+      expect({ location, permissions: /Permissions-Policy "camera=\(\)/.test(block) }).toEqual({
+        location,
+        permissions: true,
       });
     }
   });

@@ -18,6 +18,7 @@ which is also why its directory redirects came back as `http://`.
 dist/
   index.html                      the home page's head, and the app
   labs/<slug>/index.html          one per lab, same app, that lab's head
+  404.html                        the app's not-found page, served with a 404
   og/…                            copied from public/, the link-preview cards
   assets/…                        the hashed bundles
   sitemap.xml
@@ -49,8 +50,9 @@ browser ──https──▶ Nginx Proxy Manager (openresty, TLS)   ports 80/443
   [`deploy/labs-nginx.conf`](../deploy/labs-nginx.conf), copied to
   `/root/labs-nginx/default.conf` on the server. It turns off absolute
   redirects (see below), compresses text behind the proxy, caches the hashed
-  bundles for a year and revalidates pages, and adds HSTS, `nosniff` and
-  `frame-ancestors 'none'`. The page's own `<meta>` Content-Security-Policy
+  bundles for a year and revalidates pages, answers an unknown address with
+  `404.html` and a real 404, and adds HSTS, `nosniff`, `frame-ancestors
+'none'`, `Referrer-Policy` and `Permissions-Policy`. The page's own `<meta>` Content-Security-Policy
   (`tools/prerender.mjs`) covers the rest.
 
 Until 2026-10-15 `labs_site` ran nginx's default configuration, and three
@@ -93,10 +95,19 @@ The first must print a relative `Location: /labs/sorting/`. The second must
 show `gzip`, `no-cache` and `Strict-Transport-Security`; a file under
 `/assets/` must show `max-age=31536000, immutable`.
 
-**The SPA fallback must not shadow the prerendered files.** The rule is: serve
-the file if it exists, then the directory's `index.html`, and only then fall
-back to `/index.html`, which is what `try_files $uri $uri/ /index.html` in
-`deploy/labs-nginx.conf` says.
+**Every page is a file, so there is no SPA fallback.** The rule is: serve the
+file if it exists, then the directory's `index.html`, and otherwise answer 404
+with `404.html`, which is what `try_files $uri $uri/ =404` and `error_page 404
+/404.html` in `deploy/labs-nginx.conf` say. Until 2026-10-16 the last step was
+`/index.html`, which answered 200 to any address at all, so search engines
+could index a typo as a page and no link checker could see a broken link.
+Check it:
+
+```bash
+curl -s -o /dev/null -w "%{http_code}\n" https://labs.hacettepeaiclub.com/nonexistent
+```
+
+It must print `404`.
 
 **Old lab addresses should answer with a 301.** The slugs were renamed on
 2026-10-03 (`src/labs/renamed.ts` lists them). The build already writes a page

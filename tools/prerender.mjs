@@ -294,6 +294,31 @@ async function main() {
     await writeFile(file, withHead, "utf8");
   }
 
+  // The page for an address that has none. The server answers every unknown
+  // path with this file and a real 404 status (deploy/labs-nginx.conf), so a
+  // search engine stops indexing typos as pages and a link checker can see a
+  // broken link. It is the app's own shell: the app boots, finds no route,
+  // and shows its not-found page in the visitor's language.
+  await writeFile(
+    path.join(DIST, "404.html"),
+    securityPolicy(templateWithShell)
+      .replace(
+        "</head>",
+        `    <meta name="robots" content="noindex" />
+  </head>`,
+      )
+      .replace("<title>AI Club Labs</title>", "<title>Page not found · AI Club Labs</title>")
+      .replace(
+        '<div id="root"></div>',
+        `<div id="root"></div>
+    <noscript>
+      <h1>Page not found</h1>
+      <p><a href="/">All labs</a></p>
+    </noscript>`,
+      ),
+    "utf8",
+  );
+
   // Every address a lab used to have still answers, by sending the browser to
   // the new one. The server can do this better with a 301 (see DEPLOY.md);
   // this page is what makes the old links work even where it does not.
