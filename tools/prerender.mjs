@@ -105,7 +105,8 @@ function securityPolicy(html) {
 }
 
 /**
- * `<link rel="modulepreload">` for a lab's own code.
+ * `<link rel="modulepreload">` for a lazy chunk's own code: a lab's, or the
+ * home page's.
  *
  * A lab is lazy-loaded, so its chunk used to be requested only after the
  * entry bundle had downloaded, run, and routed: two round trips one after
@@ -115,8 +116,7 @@ function securityPolicy(html) {
  * never leave a stale address behind; the entry's own chunks are already
  * preloaded by Vite and are left out.
  */
-function labPreloads(manifest, slug) {
-  const key = `src/labs/${slug}/index.tsx`;
+function chunkPreloads(manifest, key) {
   if (!manifest[key]) return "";
   const entry = Object.values(manifest).find((chunk) => chunk.isEntry);
   const skip = new Set([entry?.file, ...(entry?.imports ?? []).map((k) => manifest[k]?.file)]);
@@ -279,8 +279,14 @@ async function main() {
       fallbacks++;
     }
 
+    // A lab page asks for its lab's chunks, the home page for its own: both
+    // are split out of the entry, and both would otherwise wait for it.
     const slug = route.path.startsWith("/labs/") ? route.path.split("/")[2] : null;
-    const preloads = slug ? labPreloads(manifest, slug) : "";
+    const preloads = slug
+      ? chunkPreloads(manifest, `src/labs/${slug}/index.tsx`)
+      : route.path === "/"
+        ? chunkPreloads(manifest, "src/pages/HomePage.tsx")
+        : "";
     const withHead = securityPolicy(templateWithShell)
       .replace("</head>", `${head(route)}${preloads ? `\n${preloads}` : ""}\n  </head>`)
       .replace("<title>AI Club Labs</title>", `<title>${escape(route.meta.title)}</title>`)

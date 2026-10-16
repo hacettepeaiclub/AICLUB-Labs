@@ -3,7 +3,6 @@ import {
   Suspense,
   useEffect,
   useMemo,
-  useRef,
   useState,
   type ReactNode,
   type RefObject,
@@ -27,6 +26,8 @@ import { GuideContext, useGuide, type Guide } from "./context";
  */
 
 const TourRunner = lazy(() => import("./TourRunner"));
+// Shown once per lab, on the first visit: not worth a byte on every other.
+const Welcome = lazy(() => import("./Welcome"));
 
 /** The tour's words, as the lab's copy carries them. */
 export interface TourCopy {
@@ -104,15 +105,17 @@ export function LabGuideProvider({ slug, title, rootRef, children }: LabGuidePro
       </Quiet>
 
       {tour && welcome && (
-        <Welcome
-          title={title}
-          intro={tour.intro}
-          onStart={() => {
-            setWelcome(false);
-            guide?.start(null);
-          }}
-          onClose={() => setWelcome(false)}
-        />
+        <Suspense fallback={null}>
+          <Welcome
+            title={title}
+            intro={tour.intro}
+            onStart={() => {
+              setWelcome(false);
+              guide?.start(null);
+            }}
+            onClose={() => setWelcome(false)}
+          />
+        </Suspense>
       )}
 
       {tour && run && rootRef.current && (
@@ -166,56 +169,5 @@ export function GuideButton({
       </span>
       {t.guide.howItWorks}
     </Button>
-  );
-}
-
-function Welcome({
-  title,
-  intro,
-  onStart,
-  onClose,
-}: {
-  title: string;
-  intro: string;
-  onStart: () => void;
-  onClose: () => void;
-}) {
-  const t = useT();
-  const ref = useRef<HTMLDialogElement>(null);
-  const startRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    const dialog = ref.current;
-    if (!dialog || dialog.open) return;
-    dialog.showModal();
-    startRef.current?.focus();
-  }, []);
-
-  return (
-    <dialog
-      ref={ref}
-      aria-labelledby="lab-guide-title"
-      className="lab-palette lab-guide-welcome"
-      onClose={onClose}
-      // A click on the dialog itself, not on the panel, is on the backdrop.
-      onClick={(event) => event.target === ref.current && ref.current?.close()}
-    >
-      <div className="lab-palette-panel max-w-md p-6">
-        <p className="text-overline uppercase text-fg-faint">{t.guide.welcomeKicker}</p>
-        <h2 id="lab-guide-title" className="mt-2 text-title text-fg">
-          {title}
-        </h2>
-        <p className="mt-3 text-body text-fg-muted">{intro}</p>
-        <div className="mt-6 flex flex-wrap gap-2">
-          <Button ref={startRef} onClick={onStart}>
-            {t.guide.show}
-          </Button>
-          <Button variant="ghost" onClick={() => ref.current?.close()}>
-            {t.guide.explore}
-          </Button>
-        </div>
-        <p className="mt-4 text-caption text-fg-faint">{t.guide.later}</p>
-      </div>
-    </dialog>
   );
 }
