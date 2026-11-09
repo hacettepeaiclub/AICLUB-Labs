@@ -60,7 +60,7 @@ export function TokenStrip({ tokens, label, muted, size = "md", className }: Tok
   return (
     <div
       className={cn(
-        "flex flex-wrap items-center gap-1 rounded-card border border-line/10 bg-ink-900 p-3",
+        "flex flex-wrap items-center gap-1.5 rounded-lg border border-line/20 bg-ink-900 p-4",
         muted && "opacity-50",
         className,
       )}
@@ -76,11 +76,11 @@ export function TokenStrip({ tokens, label, muted, size = "md", className }: Tok
           aria-hidden
           className={cn(
             "inline-flex items-center rounded border font-mono tabular-nums",
-            size === "sm" ? "px-1 py-0.5 text-caption" : "px-1.5 py-1 text-body-sm",
+            size === "sm" ? "px-1 py-0.5 text-caption" : "px-2 py-1.5 text-body-sm",
             // The alternating fill is a redundant cue, not the boundary itself.
-            i % 2 === 0 ? "bg-ink-700/70" : "bg-ink-800",
+            i % 2 === 0 ? "bg-accent/10" : "bg-ink-700",
             token.known
-              ? "border-line/10 text-fg"
+              ? "border-accent/35 text-fg"
               : "border-dashed border-signal-amber/60 text-signal-amber",
           )}
         >

@@ -44,7 +44,7 @@ export function ModulusStage() {
       caption={t.caption}
       announcement={t.announce(used, m, most)}
       viewport={
-        <div className="rounded border border-line/10 bg-ink-950 p-4">
+        <div className="rounded-lg border border-line/20 bg-ink-900 p-4">
           <p className="text-overline uppercase text-fg-faint">{t.keysLine(step, KEYS)}</p>
           <ol
             aria-label={t.chartLabel(m, used, most)}

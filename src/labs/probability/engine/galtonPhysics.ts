@@ -1,3 +1,4 @@
+import { subscribePalette } from "@/design/tokens";
 /**
  * The physical board: a rigid-body Galton board, simulated rather than scripted.
  *
@@ -380,7 +381,7 @@ export function createPainter(canvas: HTMLCanvasElement, world: GaltonWorld): Pa
   // Captured after the guard so the hoisted painter below keeps the narrowing.
   const context = maybe;
 
-  const palette = paletteOf(canvas);
+  let palette = paletteOf(canvas);
   const { geometry } = world;
 
   const resize = () => {
@@ -438,7 +439,17 @@ export function createPainter(canvas: HTMLCanvasElement, world: GaltonWorld): Pa
     }
   }
 
-  return { draw, dispose: () => observer.disconnect() };
+  const unsubscribe = subscribePalette(() => {
+    palette = paletteOf(canvas);
+    draw();
+  });
+  return {
+    draw,
+    dispose: () => {
+      observer.disconnect();
+      unsubscribe();
+    },
+  };
 }
 
 export interface BoardHandlers {

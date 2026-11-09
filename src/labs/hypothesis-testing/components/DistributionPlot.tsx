@@ -78,7 +78,7 @@ export function DistributionPlot({
     <div
       role="img"
       aria-label={label}
-      className={cn("rounded border border-line/10 bg-ink-950 p-3", className)}
+      className={cn("rounded-lg border border-line/20 bg-ink-900 p-3", className)}
     >
       <svg
         viewBox={`0 0 ${PLOT.width} ${PLOT.height}`}
@@ -141,8 +141,8 @@ export function DistributionPlot({
         {/* ---- the two densities ---------------------------------------- */}
         <g aria-hidden fill="none">
           {/* H1 first, so H0 sits on top where they overlap. */}
-          <path d={h1} className="stroke-data" strokeWidth="0.55" strokeDasharray="2.2 1.6" />
-          <path d={h0} className="stroke-accent" strokeWidth="0.55" />
+          <path d={h1} className="stroke-data" strokeWidth="0.7" strokeDasharray="2.2 1.6" />
+          <path d={h0} className="stroke-accent" strokeWidth="0.7" />
         </g>
 
         {/* ---- the boundary, and what it separates ---------------------- */}

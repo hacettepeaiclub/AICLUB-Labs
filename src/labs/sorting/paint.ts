@@ -10,7 +10,7 @@
  * and the keyboard cursor is a dashed frame. Colours come from `design/tokens`.
  */
 
-import { color, paletteVersion } from "@/design/tokens";
+import { labColor as color, paletteVersion } from "@/design/tokens";
 import { MAX_VALUE, MIN_VALUE } from "./arrays";
 import type { Sort } from "./engine";
 import { clearCanvas } from "@/lib/canvas";
@@ -40,7 +40,7 @@ function inks(): Ink {
   if (ink !== null && inkVersion === paletteVersion()) return ink;
   inkVersion = paletteVersion();
   ink = {
-    bar: color("fgFaint", 0.45),
+    bar: color("fgFaint", 0.8),
     /*
      * Two roles, two colours, and they are the same two the rest of the
      * collection uses. `accent` is the sorted prefix — the answer, being built
@@ -54,7 +54,7 @@ function inks(): Ink {
      * signature on the home page, where the sorted prefix has always been
      * `accent`.
      */
-    barSettled: color("accent", 0.55),
+    barSettled: color("accent", 0.8),
     rule: color("accent", 0.95),
     mark: color("data"),
     held: color("data", 0.9),

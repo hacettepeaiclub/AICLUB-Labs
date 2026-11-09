@@ -71,7 +71,7 @@ export function ConditionalStage() {
                 analysis.kept.map((o) => c.outcome[o.id as keyof typeof c.outcome]).join(", "),
                 percent(analysis.probability),
               )}
-              className="rounded border border-line/10 bg-ink-950 p-4"
+              className="rounded-lg border border-line/20 bg-ink-900 p-4"
             >
               <p className="mb-2 text-caption text-fg-faint">{c.familiesTitle}</p>
               <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
@@ -148,7 +148,7 @@ export function ConditionalStage() {
               the question still being asked in the rail, so it arrives with
               the reveal rather than before it. */}
             {answered && (
-              <div className="rounded border border-line/10 bg-ink-950 p-4">
+              <div className="rounded-lg border border-line/20 bg-ink-900 p-4">
                 <table className="w-full border-collapse text-body-sm">
                   <caption className="sr-only">{c.compareCaption}</caption>
                   <thead>
@@ -200,7 +200,7 @@ export function ConditionalStage() {
         }
         readout={
           answered ? (
-            <div className="rounded border border-line/10 bg-ink-950 p-4">
+            <div className="rounded-lg border border-line/20 bg-ink-900 p-4">
               <p className="text-body-sm text-fg-muted">{c.explain[clue]}</p>
               <Explain
                 what={c.explainWhat}

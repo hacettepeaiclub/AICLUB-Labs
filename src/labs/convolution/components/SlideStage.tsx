@@ -58,7 +58,7 @@ export function SlideStage() {
       caption={t.caption}
       announcement={t.announce(j + 1, i + 1, formatValue(value))}
       viewport={
-        <div className="space-y-4 rounded border border-line/10 bg-ink-950 p-4">
+        <div className="space-y-4 rounded-lg border border-line/20 bg-ink-900 p-4">
           {/* On a phone the kernel drops under the pair it connects, at a size
               where its numbers can still be read. */}
           <div className="grid grid-cols-2 items-center gap-3 sm:grid-cols-[minmax(0,9fr)_minmax(0,3fr)_minmax(0,7fr)] sm:gap-5">

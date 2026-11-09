@@ -95,7 +95,7 @@ export function SchedulerStage({
         caption={caption}
         announcement={finished ? `${said} ${verdict(state)}` : said}
         viewport={
-          <div className="space-y-4 rounded border border-line/10 bg-ink-950 p-3 sm:p-4">
+          <div className="space-y-4 rounded-lg border border-line/20 bg-ink-900 p-3 sm:p-4">
             <div className="grid gap-3 [grid-template-areas:'mem_mem''a_b'] [grid-template-columns:minmax(0,1fr)_minmax(0,1fr)] md:[grid-template-areas:'a_mem_b'] md:[grid-template-columns:minmax(0,1fr)_minmax(0,9rem)_minmax(0,1fr)]">
               {THREADS.map((thread) => (
                 <ThreadCard
@@ -108,7 +108,8 @@ export function SchedulerStage({
               ))}
 
               {/* Shared memory: the only thing both threads can see. */}
-              <section
+              <div
+                role="group"
                 aria-label={t.memory}
                 className="rounded border border-line/15 bg-ink-900 p-3 [grid-area:mem]"
               >
@@ -138,7 +139,7 @@ export function SchedulerStage({
                     </div>
                   )}
                 </dl>
-              </section>
+              </div>
             </div>
 
             {/* The order so far: the one thing the visitor chose. */}
@@ -218,7 +219,8 @@ function ThreadCard({
   const usesRegister = program.lines.some((l) => l.instruction.op === "load");
 
   return (
-    <section
+    <div
+      role="group"
       aria-label={t.thread(name)}
       className={cn(
         "flex min-w-0 flex-col rounded border bg-ink-900 p-2 sm:p-3",
@@ -269,7 +271,7 @@ function ThreadCard({
       >
         {done ? t.status.done : blocked ? t.status.waiting : t.run(name)}
       </Button>
-    </section>
+    </div>
   );
 }
 

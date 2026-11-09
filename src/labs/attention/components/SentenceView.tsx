@@ -44,7 +44,7 @@ interface Point {
  * no second, text-only version to keep in sync.
  *
  * Attention strength is carried by four redundant channels, none of them hue:
- * type weight, opacity, the width of an underline bar, and a printed
+ * type weight, text colour, the width of an underline bar, and a printed
  * percentage on the three that matter. Arcs are a fifth, decorative channel —
  * `aria-hidden`, capped at three, and drawn only between tokens that share a
  * line, so a wrapped sentence never grows a diagonal across the page.
@@ -143,7 +143,7 @@ export function SentenceView({
       width="full"
       announcement={summary}
       viewport={
-        <div ref={containerRef} className="relative rounded border border-line/10 bg-ink-950">
+        <div ref={containerRef} className="relative rounded-lg border border-line/20 bg-ink-900">
           {/* Decorative reinforcement only. Everything an arc says is already in
               the button labels, the bars and the ranked list below. */}
           <svg
@@ -195,7 +195,7 @@ export function SentenceView({
             aria-label={a.sentenceLabel}
             aria-describedby={listId}
             onKeyDown={handleKeyDown}
-            className="flex flex-wrap items-end justify-center gap-x-1 gap-y-8 px-2 py-6 sm:gap-x-2"
+            className="flex flex-wrap items-end justify-center gap-x-2 gap-y-8 px-3 py-8 sm:gap-x-3"
           >
             {tokens.map((token) => (
               <button
@@ -237,7 +237,6 @@ export function SentenceView({
                           ? "font-medium text-fg-muted"
                           : "text-fg-faint",
                   )}
-                  style={{ opacity: token.selected ? 1 : 0.45 + token.emphasis * 0.55 }}
                 >
                   {token.word}
                 </span>
@@ -247,7 +246,7 @@ export function SentenceView({
                 <span aria-hidden className="mt-2 h-1 w-full rounded-pill bg-line/10">
                   <span
                     className={cn(
-                      "block h-full rounded-pill bg-accent",
+                      "block h-full rounded-sm bg-accent",
                       !reduced && "transition-[width] duration-fast",
                     )}
                     style={{
@@ -300,9 +299,9 @@ export function SentenceView({
                 <span className="w-24 shrink-0 truncate font-mono text-body-sm text-fg">
                   {words[entry.index]}
                 </span>
-                <span aria-hidden className="h-1.5 flex-1 rounded-pill bg-line/10">
+                <span aria-hidden className="h-2.5 flex-1 rounded-sm bg-line/10">
                   <span
-                    className="block h-full rounded-pill bg-accent"
+                    className="block h-full rounded-sm bg-accent"
                     style={{ width: `${Math.max(entry.weight * 100, 2)}%` }}
                   />
                 </span>

@@ -74,7 +74,7 @@ export function ChallengeStage() {
           <p className="text-body text-fg">{t[puzzle].task}</p>
           <p className="text-caption text-fg-faint">{t[puzzle].hint}</p>
 
-          <div className="grid gap-4 rounded border border-line/10 bg-ink-950 p-4 sm:grid-cols-[8.5rem_minmax(0,1fr)] sm:items-start">
+          <div className="grid gap-4 rounded-lg border border-line/20 bg-ink-900 p-4 sm:grid-cols-[8.5rem_minmax(0,1fr)] sm:items-start">
             <KernelEditor
               cells={cells[puzzle]}
               onChange={(next) => setCells((c) => ({ ...c, [puzzle]: next }))}

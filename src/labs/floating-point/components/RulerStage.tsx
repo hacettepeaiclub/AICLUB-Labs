@@ -135,7 +135,7 @@ export function RulerStage() {
               2 ** fractionBits,
             )}
             onClick={onClick}
-            className="w-full cursor-pointer rounded border border-line/10 bg-ink-950"
+            className="w-full cursor-pointer rounded-lg border border-line/20 bg-ink-900"
           >
             <line
               x1={PAD / 2}

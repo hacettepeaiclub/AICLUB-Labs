@@ -106,7 +106,12 @@ export function SimpsonStage() {
         }
         viewport={
           <div className="space-y-3">
-            <div className="overflow-x-auto rounded border border-line/10 bg-ink-950 p-4">
+            <div
+              tabIndex={0}
+              role="group"
+              aria-label={s.tableCaption}
+              className="overflow-x-auto rounded-lg border border-line/20 bg-ink-900 p-4"
+            >
               <table className="w-full min-w-[22rem] border-collapse text-body-sm">
                 <caption className="sr-only">{s.tableCaption}</caption>
                 <thead>
@@ -207,7 +212,7 @@ export function SimpsonStage() {
                 percent(table.overall.a.rate ?? 0),
                 percent(table.overall.b.rate ?? 0),
               )}
-              className="space-y-3 rounded border border-line/10 bg-ink-950 p-4"
+              className="space-y-3 rounded-lg border border-line/20 bg-ink-900 p-4"
             >
               {[
                 {

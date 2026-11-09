@@ -146,7 +146,12 @@ export function PascalStage() {
                 left pair of columns is arithmetic; the right pair is whatever
                 the simulation did. */}
             {dropped > 0 && (
-              <div className="overflow-x-auto rounded border border-line/10 bg-ink-950 p-4">
+              <div
+                tabIndex={0}
+                role="group"
+                aria-label={p.tableCaption(rows, dropped)}
+                className="overflow-x-auto rounded-lg border border-line/20 bg-ink-900 p-4"
+              >
                 <table className="w-full border-collapse text-caption">
                   <caption className="sr-only">{p.tableCaption(rows, dropped)}</caption>
                   <thead>
@@ -216,7 +221,7 @@ export function PascalStage() {
           </div>
         }
         readout={
-          <div className="rounded border border-line/10 bg-ink-950 p-4">
+          <div className="rounded-lg border border-line/20 bg-ink-900 p-4">
             <p className="text-body-sm text-fg-muted">
               {dropped > 0 ? p.reading(dropped, rows) : p.readingEmpty}
             </p>

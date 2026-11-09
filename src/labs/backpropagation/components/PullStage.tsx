@@ -184,11 +184,11 @@ export function PullStage() {
             : ""
       }
       viewport={
-        <div className="rounded border border-line/10 bg-ink-950 p-3">
+        <div className="rounded-lg border border-line/20 bg-ink-900 p-3">
           <svg
             ref={svgRef}
             viewBox={`0 0 ${W} ${H}`}
-            role="img"
+            role="group"
             aria-label={t.diagramLabel(formatValue(out))}
             className="block h-auto w-full touch-none select-none"
             onPointerMove={(e) => dragging.current && pointToTarget(e)}

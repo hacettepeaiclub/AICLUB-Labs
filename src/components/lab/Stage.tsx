@@ -124,12 +124,12 @@ export function Stage({
     <div ref={rootRef} data-stage className={cn("mx-auto", WIDTH[width], className)}>
       {/* The chassis. A hairline, no shadow: this houses a measurement, it is
           not a card that wants to be clicked. */}
-      <div className="rounded-card border border-line/10 bg-ink-800 p-3 md:p-4">
+      <div className="stage-chassis rounded-lg border border-line/15 bg-ink-800 p-3 md:p-5">
         <div
           className={cn(
             // `items-start` so the rail is as tall as its own contents rather
             // than stretching to match the viewport beside it.
-            !stacked && "lg:grid lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start lg:gap-4",
+            !stacked && "lg:grid lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start lg:gap-5",
           )}
         >
           {/* ------------------------------------------------ the screen -- */}
@@ -141,9 +141,10 @@ export function Stage({
           {/* ----------------------------------------------- the controls -- */}
           <div
             role="group"
+            data-controls={controls}
             aria-label={t.common.controlsLabel}
             className={cn(
-              "mt-3 space-y-3",
+              "stage-controls mt-4 space-y-4",
               stacked
                 ? // Under the viewport: the action sits centred beneath the
                   // thing it acts on, and the figures read as one line.
@@ -165,7 +166,7 @@ export function Stage({
               <div
                 data-stage-part="figures"
                 className={cn(
-                  "flex flex-wrap items-start gap-x-8 gap-y-3",
+                  "stage-figures flex flex-wrap items-start gap-x-6 gap-y-4",
                   stacked && "justify-center text-left",
                 )}
               >

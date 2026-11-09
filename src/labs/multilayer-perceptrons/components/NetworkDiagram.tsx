@@ -9,7 +9,7 @@ import {
 } from "react";
 import { useCanvas2D, useElementSize, useRepaintFlag } from "@/hooks";
 import { useLabCopy } from "@/i18n/labs";
-import { palette } from "@/design/tokens";
+import { labPalette as palette } from "@/design/tokens";
 import { formatNumber } from "@/lib/format";
 import { clamp } from "@/lib/math";
 import { cn } from "@/lib/cn";
@@ -288,6 +288,7 @@ export function NetworkDiagram({
                 rx={6}
                 fill="transparent"
                 tabIndex={0}
+                role="img"
                 aria-label={d.neuron(node.label)}
                 aria-describedby={isFocused(node) ? tooltipId : undefined}
                 className="cursor-help focus-visible:stroke-accent focus-visible:stroke-2"

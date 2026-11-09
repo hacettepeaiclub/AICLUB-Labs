@@ -31,8 +31,8 @@ export const colors = {
   fg: "237 237 244",
   fgMuted: "158 158 178",
   fgFaint: "108 108 128",
-  accent: "115 144 190",
-  accentSoft: "24 44 82",
+  accent: "167 239 158",
+  accentSoft: "32 55 35",
   data: "79 195 247",
   signalCyan: "34 211 238",
   signalGreen: "52 211 153",
@@ -64,6 +64,7 @@ const CSS_VARIABLE: Palette = {
 };
 
 let cache: Palette | null = null;
+let labCache: Palette | null = null;
 let version = 0;
 const listeners = new Set<() => void>();
 
@@ -110,6 +111,7 @@ export const paletteVersion = (): number => version;
 /** Called by the theme provider after `data-theme` changes on the document. */
 export function refreshPalette(): void {
   cache = null;
+  labCache = null;
   version++;
   for (const listener of listeners) listener();
 }
@@ -126,3 +128,20 @@ export const categorical = (): readonly string[] => [
   color("signalRose"),
   color("signalBlue"),
 ];
+
+/** Shared lab palette, cached alongside the site palette. CSS and canvas use
+ * the same roles; categorical colours keep their independent meanings. */
+export function labPalette(): Palette {
+  if (labCache) return labCache;
+  const resolved = { ...palette() };
+  if (typeof document !== "undefined" && typeof getComputedStyle === "function") {
+    const computed = getComputedStyle(document.documentElement);
+    for (const token of Object.keys(CSS_VARIABLE) as ColorToken[]) {
+      const value = computed.getPropertyValue(CSS_VARIABLE[token].replace("--", "--lab-")).trim();
+      if (value) resolved[token] = value;
+    }
+  }
+  return (labCache = resolved);
+}
+
+export const labColor = (token: ColorToken, alpha = 1): string => rgb(labPalette()[token], alpha);

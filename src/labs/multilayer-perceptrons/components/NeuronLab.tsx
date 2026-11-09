@@ -92,7 +92,7 @@ export function NeuronLab() {
                 formatNumber(state.w2, 1),
                 formatNumber(state.bias, 1),
               )}
-              className="absolute inset-0 h-full w-full rounded border border-line/10 bg-ink-950"
+              className="absolute inset-0 h-full w-full rounded-lg border border-line/20 bg-ink-900"
             />
             <LineOverlay
               lines={[line]}

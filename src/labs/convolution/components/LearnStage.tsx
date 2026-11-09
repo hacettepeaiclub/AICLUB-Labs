@@ -114,7 +114,7 @@ export function LearnStage() {
       caption={t.caption}
       announcement={done ? t.announceDone(steps) : ""}
       viewport={
-        <div className="space-y-4 rounded border border-line/10 bg-ink-950 p-4">
+        <div className="space-y-4 rounded-lg border border-line/20 bg-ink-900 p-4">
           <div className="grid grid-cols-3 gap-3 sm:gap-4">
             <Panel label={t.input}>
               <GridView grid={PICTURE} kind="image" ariaLabel={t.inputLabel} />

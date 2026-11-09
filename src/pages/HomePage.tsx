@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { cn } from "@/lib/cn";
 import { fromState, track } from "@/app/analytics";
 import { LabSignature } from "@/components/lab/LabSignature";
-import { MarkField } from "@/components/home/MarkField";
 import { useDocumentHead } from "@/app/useDocumentHead";
 import { homeMeta } from "@/app/siteMeta";
 import { useLabMeta, useLanguage, useT } from "@/i18n";
@@ -13,58 +12,7 @@ import { orderedLabs, preloadLab } from "@/labs/registry";
 import { readVisits } from "@/labs/visits";
 import { labPath } from "@/lib/paths";
 
-/**
- * The home page.
- *
- * ## What it is trying to do
- *
- * Say what this is, and then get out of the way. The whole collection — every
- * lab, no curation, no path — still starts on the first screen, because the
- * fastest way to explain a laboratory is to show what is in it.
- *
- * ## The hero, and why it is allowed back
- *
- * The page once had no hero visual at all: an earlier one, a live insertion
- * sort, argued for one lab from the position that speaks for all of them and
- * pushed the grid below the fold. The mark that stands beside the headline now
- * does neither. It is the club's own logo, assembled from points, so it speaks
- * for the whole collection rather than one lab; and it sits *beside* the copy,
- * in a hero kept short enough that the first row of labs is still in view on a
- * laptop. The headline stays the largest thing on the page.
- *
- * ## The game in the mark
- *
- * One button under the mark scatters it, and the visitor sweeps it back
- * together against the clock (see `MarkField`). It is the hero's single
- * lever: it is about the club's own mark rather than any one lab, so it does
- * not argue for one subject from the position that speaks for all of them,
- * and it lives inside the mark's box, so on a laptop the hero is no taller
- * and the first row of labs is still in view. (On a phone the box grew by the
- * strip its controls need, so the mark above them is the size it was.) Its result names the idea the visitor just
- * used — a gradient step with momentum — and links to the lab about it.
- *
- * ## The field filter, and why it reorders instead of dimming
- *
- * Picking a field lights its chip and the frames of its labs in the field's
- * colour, and moves them to the front. The rest follow under their own
- * heading at full strength. Dimming them was tried first: a card at a quarter
- * opacity is unreadable and still clickable, which reads as "disabled" and is
- * not. Picking the same field again, or "All", puts the collection back in its
- * written order.
- *
- * ## What it remembers
- *
- * Which labs this browser has opened, and the last one. That is the only thing
- * a returning visitor to a collection really wants — "what have I tried, and
- * where was I" — and it needs no account: see `labs/visits.ts`.
- *
- * ## What it deliberately does not contain
- *
- * No team, commissions, events, partnerships, testimonials or membership
- * pitch. Those belong to hacettepeaiclub.com, which is the community's site;
- * this is the community's laboratory. The primary action here is never "join"
- * — it is "open a lab".
- */
+/** The collection sits in a green terminal field; the hero keeps the copy central. */
 export function HomePage() {
   const t = useT();
   const copy = t.home;
@@ -128,18 +76,21 @@ export function HomePage() {
   return (
     <div>
       {/* ---------------------------------------------------------- hero -- */}
-      <section aria-labelledby="home-title" className="relative border-b border-line/10">
-        <div className="shell relative grid items-center gap-2 pb-8 pt-6 md:min-h-[min(62vh,34rem)] md:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] md:gap-8 md:py-14">
-          <div>
+      <section aria-labelledby="home-title" className="terminal-hero relative">
+        <div className="shell relative flex min-h-[65vh] items-center py-16 md:min-h-[72vh] md:py-24">
+          <div className="terminal-hero-copy max-w-4xl">
             <p className="font-mono text-caption uppercase tracking-[0.14em] text-fg-muted">
-              <span className="font-semibold text-data">{copy.labCount(labs.length)}</span>
+              <span className="font-semibold text-accent">{copy.labCount(labs.length)}</span>
               {" · "}
               {t.shell.parentOrg}
             </p>
-            <h1 id="home-title" className="mt-4 max-w-[19ch] font-display text-display-lg text-fg">
+            <h1
+              id="home-title"
+              className="mt-6 max-w-[21ch] font-mono text-[clamp(2rem,4.5vw,4rem)] font-semibold leading-[1.12] tracking-[-0.02em] text-fg"
+            >
               {copy.title}
             </h1>
-            <p className="mt-4 max-w-[48ch] text-body-lg text-fg-muted">{copy.lede}</p>
+            <p className="mt-6 max-w-[48ch] text-body-lg text-fg-muted">{copy.lede}</p>
             <div className="mt-7 flex flex-wrap items-center gap-x-4 gap-y-2">
               <a
                 href="#labs"
@@ -175,16 +126,6 @@ export function HomePage() {
               )}
             </div>
           </div>
-          {/* The box the mark assembles into, and the only place it can
-              appear: the canvas fills this element rather than the section, so
-              nothing is ever drawn over the headline. Above the copy on a
-              phone, where it is taller than it used to be — the mark is a
-              still drawing there and has to read as one. Not hidden from
-              assistive technology any more: the game's controls live in it,
-              and the canvas hides itself. */}
-          <div className="relative order-first h-56 md:order-none md:h-[min(46vh,23rem)]">
-            <MarkField />
-          </div>
         </div>
       </section>
 
@@ -208,7 +149,7 @@ export function HomePage() {
             {!field && opened > 0 && (
               <>
                 {" · "}
-                <span className="text-data">{copy.opened(opened)}</span>
+                <span className="text-accent">{copy.opened(opened)}</span>
               </>
             )}
           </p>
@@ -407,7 +348,7 @@ function LabTile({ meta, lit, visited }: { meta: LabMeta; lit: boolean; visited:
               fill="none"
               stroke="currentColor"
               strokeWidth="1.6"
-              className="text-data"
+              className="text-accent"
               aria-hidden
             >
               <path d="M2 6.5l2.5 2.5L10 3.5" />

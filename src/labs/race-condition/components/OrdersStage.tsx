@@ -42,7 +42,7 @@ export function OrdersStage() {
         outcome.memory.counter ?? 0,
       )}
       viewport={
-        <div className="space-y-5 rounded border border-line/10 bg-ink-950 p-3 sm:p-4">
+        <div className="space-y-5 rounded-lg border border-line/20 bg-ink-900 p-3 sm:p-4">
           <ul className="grid grid-cols-[repeat(auto-fill,minmax(8.5rem,1fr))] gap-1.5">
             {OUTCOMES.map((o, i) => {
               const right = o.memory.counter === 2;
@@ -91,7 +91,7 @@ export function OrdersStage() {
 
           {/* The chosen order, step by step: what each thread held, and what
               memory held, after every instruction. */}
-          <div className="overflow-x-auto">
+          <div tabIndex={0} role="region" aria-label={t.traceCaption} className="overflow-x-auto">
             <table className="w-full min-w-[22rem] text-left font-mono text-caption">
               <caption className="mb-2 text-left font-body text-caption text-fg-muted">
                 {t.traceCaption}

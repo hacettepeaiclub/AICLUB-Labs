@@ -25,19 +25,19 @@ export interface BarsProps {
  */
 export function Bars({ names, values, scale, signed = false, label }: BarsProps) {
   return (
-    <ul className="space-y-2" aria-label={label}>
+    <ul className="space-y-3" aria-label={label}>
       {names.map((name, i) => {
         const value = values[i] ?? 0;
         const width = (Math.abs(value) / scale) * (signed ? 50 : 100);
         return (
           <li key={name} className="flex items-center gap-3">
             <span className="w-20 shrink-0 text-caption text-fg-muted">{name}</span>
-            <span aria-hidden className="relative h-2 flex-1 rounded-pill bg-line/10">
+            <span aria-hidden className="relative h-3 flex-1 rounded-sm bg-line/10">
               {signed && <span className="absolute inset-y-0 left-1/2 w-px bg-line/20" />}
               <span
                 className={cn(
-                  "absolute inset-y-0 rounded-pill",
-                  value < 0 ? "bg-fg-faint" : "bg-accent",
+                  "absolute inset-y-0 rounded-sm",
+                  value < 0 ? "bg-signal-cyan" : "bg-accent",
                 )}
                 style={
                   signed

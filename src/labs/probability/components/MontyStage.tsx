@@ -127,7 +127,7 @@ export function MontyStage() {
             <div
               role="group"
               aria-label={round ? m.doorsLabel(round.picked + 1, round.opened + 1) : m.doorsIdle}
-              className="rounded border border-line/10 bg-ink-950 p-4"
+              className="rounded-lg border border-line/20 bg-ink-900 p-4"
             >
               <div className="grid grid-cols-3 gap-3">
                 {DOORS.map((door) => {
@@ -187,7 +187,7 @@ export function MontyStage() {
             </div>
 
             {/* The batch, kept apart from the exact answer. */}
-            <div className="rounded border border-line/10 bg-ink-950 p-4">
+            <div className="rounded-lg border border-line/20 bg-ink-900 p-4">
               <p className="text-overline uppercase text-fg-faint">{m.batchTitle}</p>
               {batch === null ? (
                 <p className="mt-2 text-body-sm text-fg-muted">{m.batchIdle(BATCH)}</p>
@@ -234,7 +234,7 @@ export function MontyStage() {
           </div>
         }
         readout={
-          <div className="relative rounded border border-line/10 bg-ink-950 p-4">
+          <div className="relative rounded-lg border border-line/20 bg-ink-900 p-4">
             {/* The host himself, beside the line he is saying.
 
                 He stands here rather than among the doors on purpose: the

@@ -82,7 +82,7 @@ export function ZoomStage() {
       caption={t.caption}
       announcement={t.announce(formatSmall(half), formatValue(slope, 4), formatSmall(gap))}
       viewport={
-        <div className="rounded border border-line/10 bg-ink-950 p-3">
+        <div className="rounded-lg border border-line/20 bg-ink-900 p-3">
           <svg
             viewBox={`0 0 ${W} ${H}`}
             preserveAspectRatio="none"

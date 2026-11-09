@@ -93,7 +93,7 @@ export function KernelStage() {
           : ""
       }
       viewport={
-        <div className="space-y-4 rounded border border-line/10 bg-ink-950 p-4">
+        <div className="space-y-4 rounded-lg border border-line/20 bg-ink-900 p-4">
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-[minmax(0,1fr)_7.5rem_minmax(0,1fr)] sm:items-start sm:gap-4">
             <Panel label={t.input} note={t.drawHint}>
               <GridView grid={picture} kind="image" onCell={brush} paint ariaLabel={t.inputLabel} />

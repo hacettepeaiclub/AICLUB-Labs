@@ -140,7 +140,7 @@ export function GapStage() {
             viewBox={`0 0 ${W} ${H}`}
             role="img"
             aria-label={t.chartLabel(gap ? readable(gap) : "—")}
-            className="w-full rounded border border-line/10 bg-ink-950"
+            className="w-full rounded-lg border border-line/20 bg-ink-900"
           >
             {/* gap = 1 and gap = 2: where whole numbers start to go missing */}
             <line

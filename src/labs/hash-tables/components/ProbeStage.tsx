@@ -48,7 +48,7 @@ export function ProbeStage() {
         lastPath ? t.announce(count, lastHome ?? 0, lastPath.slot, lastPath.probes) : ""
       }
       viewport={
-        <div className="space-y-4 rounded border border-line/10 bg-ink-950 p-4">
+        <div className="space-y-4 rounded-lg border border-line/20 bg-ink-900 p-4">
           <ol
             aria-label={t.tableLabel(count, M)}
             className="grid grid-cols-8 gap-1.5 sm:grid-cols-[repeat(16,minmax(0,1fr))]"

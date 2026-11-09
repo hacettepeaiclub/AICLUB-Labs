@@ -95,7 +95,7 @@ export function GaltonCanvas({
     <div
       role="img"
       aria-label={label}
-      className="overflow-hidden rounded border border-line/10 bg-ink-950 p-2"
+      className="overflow-hidden rounded-lg border border-line/20 bg-ink-900 p-2"
     >
       <canvas
         ref={canvasRef}

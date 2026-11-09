@@ -37,7 +37,7 @@ export const BitGrid = memo(function BitGrid({ bits, changed }: BitGridProps) {
     <div
       role="img"
       aria-label={t.bits.gridLabel(HASH_BITS, lit, HASH_BITS - lit, flipped)}
-      className="grid gap-[3px] rounded border border-line/10 bg-ink-950 p-2"
+      className="grid gap-[3px] rounded-lg border border-line/20 bg-ink-900 p-2"
       style={{ gridTemplateColumns: "repeat(16, minmax(0, 1fr))" }}
     >
       {bits.map((bit, i) => (

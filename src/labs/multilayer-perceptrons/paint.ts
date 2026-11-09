@@ -9,7 +9,7 @@
  * Colors come from `design/tokens` — never a literal here.
  */
 
-import { palette, paletteVersion, type ColorToken } from "@/design/tokens";
+import { labPalette as palette, paletteVersion, type ColorToken } from "@/design/tokens";
 import { clamp } from "@/lib/math";
 import type { Point } from "./datasets";
 import { forward, type Mlp } from "./engine";
@@ -211,7 +211,7 @@ export function createNeuronFieldPainter(res = 20): NeuronFieldPainter {
 /** Faint axes through the origin — an anchor for reading the boundary. */
 export function drawAxes(ctx: CanvasRenderingContext2D, width: number, height: number): void {
   ctx.save();
-  ctx.strokeStyle = "rgb(255 255 255 / 0.08)";
+  ctx.strokeStyle = css(rgb("fgFaint"), 0.24);
   ctx.lineWidth = 1;
   ctx.beginPath();
   ctx.moveTo(width / 2, 0);

@@ -50,7 +50,7 @@ export function AlphaStage({ result, onChange }: AlphaStageProps) {
         </div>
       }
       readout={
-        <div className="rounded border border-line/10 bg-ink-950 p-4">
+        <div className="rounded-lg border border-line/20 bg-ink-900 p-4">
           <p className="text-body-sm text-fg-muted">
             {testType === "two" ? a.twoSided(prob(alpha / 2)) : a.oneSided(prob(alpha))}
           </p>

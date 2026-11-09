@@ -87,7 +87,7 @@ export function StrideStage({ bench }: { bench: Bench }) {
             : ""
       }
       viewport={
-        <div className="space-y-5 rounded border border-line/10 bg-ink-950 p-3 sm:p-4">
+        <div className="space-y-5 rounded-lg border border-line/20 bg-ink-900 p-3 sm:p-4">
           {/* Which numbers one pass at the chosen stride reads, and so how
               many lines it has to bring in. */}
           <div>

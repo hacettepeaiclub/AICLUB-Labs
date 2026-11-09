@@ -94,7 +94,7 @@ export function BirthdayStage() {
                     )
                   : b.roomLabel(people)
               }
-              className="rounded border border-line/10 bg-ink-950 p-4"
+              className="rounded-lg border border-line/20 bg-ink-900 p-4"
             >
               {/* Every person carries the date they were born on.
                   This used to be a grid of blank circles, which showed that a
@@ -166,7 +166,7 @@ export function BirthdayStage() {
               </p>
             </div>
 
-            <div className="rounded border border-line/10 bg-ink-950 p-4">
+            <div className="rounded-lg border border-line/20 bg-ink-900 p-4">
               <table className="w-full border-collapse text-body-sm">
                 <caption className="sr-only">{b.tableCaption(people)}</caption>
                 <tbody>
@@ -192,7 +192,7 @@ export function BirthdayStage() {
           </div>
         }
         readout={
-          <div className="rounded border border-line/10 bg-ink-950 p-4">
+          <div className="rounded-lg border border-line/20 bg-ink-900 p-4">
             <p className="text-body-sm text-fg-muted">{b.reading(people, pairCount(people))}</p>
             {answered && (
               <Explain

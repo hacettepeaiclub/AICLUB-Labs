@@ -78,7 +78,7 @@ export function ComparePanel({
         </>
       ) : (
         <>
-          <div className="rounded border border-line/10 bg-ink-950 px-3 py-2">
+          <div className="rounded-lg border border-line/20 bg-ink-900 px-3 py-2">
             <p className="font-mono text-body-sm text-fg">{copy.holding(held.en)}</p>
           </div>
 

@@ -101,7 +101,7 @@ export function BirthdayStage() {
         caption={t.caption}
         announcement={t.announce(keys, lab.percent((p * 100).toFixed(1)))}
         viewport={
-          <div className="space-y-4 rounded border border-line/10 bg-ink-950 p-4">
+          <div className="space-y-4 rounded-lg border border-line/20 bg-ink-900 p-4">
             <div>
               <p className="text-overline uppercase text-fg-faint">{t.curveTitle(m)}</p>
               <svg

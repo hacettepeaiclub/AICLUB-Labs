@@ -57,13 +57,13 @@ export function UpdateStage({ run, tileReward }: UpdateStageProps) {
       viewport={
         <div className="space-y-3">
           {!last ? (
-            <div className="rounded border border-line/10 bg-ink-950 p-6">
+            <div className="rounded-lg border border-line/20 bg-ink-900 p-6">
               <p className="text-body-sm text-fg-muted">{update.nothingYet}</p>
             </div>
           ) : (
             <>
               {/* What happened, as a sentence, before any algebra. */}
-              <div className="rounded border border-line/10 bg-ink-950 p-4">
+              <div className="rounded-lg border border-line/20 bg-ink-900 p-4">
                 <p className="text-overline uppercase text-fg-faint">{update.whatHappened}</p>
                 <p className="mt-2 text-body-sm text-fg">
                   {update.sentence(
@@ -111,7 +111,10 @@ export function UpdateStage({ run, tileReward }: UpdateStageProps) {
                     value: last.qAfter,
                   },
                 ].map((panel, i) => (
-                  <div key={panel.title} className="rounded border border-line/10 bg-ink-950 p-4">
+                  <div
+                    key={panel.title}
+                    className="rounded-lg border border-line/20 bg-ink-900 p-4"
+                  >
                     <p className="text-overline uppercase text-fg-faint">{panel.title}</p>
                     <p
                       className={cn(
@@ -127,7 +130,12 @@ export function UpdateStage({ run, tileReward }: UpdateStageProps) {
               </div>
 
               {/* The formula last, once every term above has a number. */}
-              <div className="overflow-x-auto rounded border border-line/10 bg-ink-950 p-4">
+              <div
+                tabIndex={0}
+                role="group"
+                aria-label={update.tableCaption}
+                className="overflow-x-auto rounded-lg border border-line/20 bg-ink-900 p-4"
+              >
                 <p className="text-overline uppercase text-fg-faint">{update.formulaTitle}</p>
                 <p className="mt-2 whitespace-nowrap font-mono text-body-sm text-fg">
                   Q(s,a) ← Q(s,a) + α · [ r + γ · max Q(s′,a′) − Q(s,a) ]

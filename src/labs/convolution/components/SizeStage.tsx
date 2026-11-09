@@ -55,7 +55,7 @@ export function SizeStage() {
       caption={t.caption}
       announcement={t.announce(o)}
       viewport={
-        <div className="space-y-4 rounded border border-line/10 bg-ink-950 p-4">
+        <div className="space-y-4 rounded-lg border border-line/20 bg-ink-900 p-4">
           <div className="grid grid-cols-[minmax(0,3fr)_minmax(0,2fr)] items-start gap-4">
             <Panel label={t.input}>
               <GridView

@@ -37,11 +37,13 @@ export interface LabSectionProps {
  */
 export function LabSection({ kicker, title, lede, children }: LabSectionProps) {
   return (
-    <section>
+    <section className="lab-section">
       {kicker && <p className="text-overline uppercase text-fg-faint">{kicker}</p>}
-      <h2 className="mt-3 text-display-md text-fg">{title}</h2>
+      <h2 className="mt-3 text-[clamp(1.375rem,2.5vw,1.75rem)] font-semibold leading-snug tracking-tight text-fg">
+        {title}
+      </h2>
       {lede && <p className="mt-3 max-w-prose text-body text-fg-muted">{lede}</p>}
-      <div className="mt-8">{children}</div>
+      <div className="mt-6">{children}</div>
     </section>
   );
 }

@@ -64,7 +64,7 @@ export function ChallengeStage() {
           <p className="text-body text-fg">{t[puzzle].task}</p>
           <p className="text-caption text-fg-faint">{t[puzzle].hint}</p>
 
-          <div className="space-y-4 rounded border border-line/10 bg-ink-950 p-4">
+          <div className="space-y-4 rounded-lg border border-line/20 bg-ink-900 p-4">
             {puzzle === "collide" && (
               <div className="grid gap-3 sm:grid-cols-2">
                 <TextField

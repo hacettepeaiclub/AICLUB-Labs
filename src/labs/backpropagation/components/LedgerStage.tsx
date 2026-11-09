@@ -117,8 +117,8 @@ export function LedgerStage() {
           : t.filledAnnounce(name(picked), formatValue(ADJ[picked] ?? 0, 4))
       }
       viewport={
-        <div className="space-y-3 rounded border border-line/10 bg-ink-950 p-3">
-          <div className="overflow-x-auto">
+        <div className="space-y-3 rounded-lg border border-line/20 bg-ink-900 p-3">
+          <div tabIndex={0} role="region" aria-label={t.diagramLabel} className="overflow-x-auto">
             <svg
               viewBox={`0 0 ${W} ${H}`}
               role="group"

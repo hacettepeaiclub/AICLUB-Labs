@@ -17,6 +17,8 @@ export default defineConfig({
   reporter: process.env.CI ? [["github"], ["list"]] : "list",
   use: {
     baseURL: "http://localhost:4173",
+    // Functional checks exclude decorative WebGL and entrance animations.
+    contextOptions: { reducedMotion: "reduce" },
     trace: "retain-on-failure",
   },
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],

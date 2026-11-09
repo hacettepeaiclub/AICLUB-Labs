@@ -54,7 +54,7 @@ export function ResizeStage() {
       caption={t.caption}
       announcement={t.announce(n, capacity, formatValue(average))}
       viewport={
-        <div className="rounded border border-line/10 bg-ink-950 p-4 pt-6">
+        <div className="rounded-lg border border-line/20 bg-ink-900 p-4 pt-6">
           <Scrub
             value={n}
             min={0}

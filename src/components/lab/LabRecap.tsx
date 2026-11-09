@@ -27,7 +27,7 @@ export function LabRecap({ lessons, footer, title }: LabRecapProps) {
 
   return (
     <div className="rounded-card border border-line/10 bg-ink-800 p-6 md:p-10">
-      <h3 className="text-display-md text-fg">{heading}</h3>
+      <h2 className="text-display-md text-fg">{heading}</h2>
       <ul className="mt-6 space-y-3">
         {lessons.map((lesson) => (
           <li key={lesson} className="flex items-start gap-3 text-body text-fg-muted">
