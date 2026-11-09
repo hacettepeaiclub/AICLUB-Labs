@@ -34,7 +34,7 @@ test("the home page lists every lab", async ({ page }) => {
   const errors = collectErrors(page);
   await page.goto("/");
   for (const slug of SLUGS) {
-    await expect(page.locator(`a[href="/labs/${slug}/"]`).first()).toBeVisible();
+    await expect(page.locator(`#labs a[href="/labs/${slug}/"]`)).toBeVisible();
   }
   expect(errors).toEqual([]);
 });

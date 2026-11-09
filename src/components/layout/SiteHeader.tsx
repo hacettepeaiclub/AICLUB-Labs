@@ -95,7 +95,7 @@ export function SiteHeader({
               that still reads as spaced, so the wordmark and both toggles
               stay on one line down to a 360px screen. */}
           <span className="whitespace-nowrap font-display text-[11px] font-semibold uppercase tracking-[0.08em] text-fg sm:text-body-sm sm:tracking-[0.22em]">
-            {t.shell.brand} <span className="text-fg-muted">{t.shell.brandSuffix}</span>
+            {t.shell.brand} <span className="brand-suffix">{t.shell.brandSuffix}</span>
           </span>
         </Link>
 

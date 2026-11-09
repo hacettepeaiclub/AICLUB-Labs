@@ -80,7 +80,7 @@ export function HomePage() {
         <div className="shell relative flex min-h-[65vh] items-center py-16 md:min-h-[72vh] md:py-24">
           <div className="terminal-hero-copy max-w-4xl">
             <p className="font-mono text-caption uppercase tracking-[0.14em] text-fg-muted">
-              <span className="font-semibold text-data">{copy.labCount(labs.length)}</span>
+              <span className="font-semibold text-accent">{copy.labCount(labs.length)}</span>
               {" · "}
               {t.shell.parentOrg}
             </p>
@@ -149,7 +149,7 @@ export function HomePage() {
             {!field && opened > 0 && (
               <>
                 {" · "}
-                <span className="text-data">{copy.opened(opened)}</span>
+                <span className="text-accent">{copy.opened(opened)}</span>
               </>
             )}
           </p>
@@ -348,7 +348,7 @@ function LabTile({ meta, lit, visited }: { meta: LabMeta; lit: boolean; visited:
               fill="none"
               stroke="currentColor"
               strokeWidth="1.6"
-              className="text-data"
+              className="text-accent"
               aria-hidden
             >
               <path d="M2 6.5l2.5 2.5L10 3.5" />

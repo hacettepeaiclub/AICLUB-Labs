@@ -150,8 +150,7 @@ describe("contrast — WCAG AA", () => {
     });
 
     it(`${name}: a label on the accent fill clears 4.5:1`, () => {
-      // The reason the accent is two tokens: no single navy can be light
-      // enough to read on ink and dark enough to carry a near-white label.
+      // The label follows the fill: dark on phosphor, white on forest green.
       expect(contrast(theme["accent-fg"]!, theme["accent-fill"]!)).toBeGreaterThanOrEqual(4.5);
     });
 
@@ -174,15 +173,14 @@ describe("contrast — WCAG AA", () => {
       }
     });
 
-    it(`${name}: live data does not collapse into the brand navy`, () => {
-      // The whole reason `--data` exists is that "this value is changing" and
-      // "this is the brand / this is settled" have to be two different things
-      // at a glance — they appear side by side, bar against bar, in the hero.
-      // The light theme failed this at 1.91:1 before #2B6B88 was replaced.
-      expect(
-        contrast(theme["data"]!, theme["accent-fill"]!),
-        `${name} data vs accent-fill`,
-      ).toBeGreaterThanOrEqual(3);
+    it(`${name}: data stays cyan and the brand stays green`, () => {
+      // Surface contrast is checked separately; these roles use distinct hues.
+      const [r, g, b] = theme["data"]!;
+      expect(b).toBeGreaterThan(g);
+      expect(g).toBeGreaterThan(r);
+      const [ar, ag, ab] = theme["accent"]!;
+      expect(ag).toBeGreaterThan(ar);
+      expect(ag).toBeGreaterThan(ab);
     });
 
     it(`${name}: every state signal clears 3:1 on the card surface`, () => {

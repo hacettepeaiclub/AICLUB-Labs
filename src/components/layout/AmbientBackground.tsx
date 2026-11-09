@@ -33,16 +33,17 @@ export function AmbientBackground() {
   return (
     <div aria-hidden className="ambient pointer-events-none fixed inset-0 -z-10 overflow-hidden">
       <div className="ambient-terminal" data-mode={hero ? "hero" : "ambient"}>
-        {ready && theme === "dark" && !reduced && (
+        {ready && !reduced && (
           <Suspense fallback={null}>
             <FaultyTerminal
-              tint="#A7EF9E"
+              tint={theme === "light" ? "#52705B" : "#A7EF9E"}
+              lightMode={theme === "light"}
               glyphs="blocks"
               scale={1.5}
               digitSize={1.2}
               timeScale={hero ? 0.5 : 0.035}
-              brightness={0.75}
-              glow={0.5}
+              brightness={theme === "light" ? 0.45 : 0.75}
+              glow={theme === "light" ? 0.25 : 0.5}
               persistence={0.5}
               mouseStrength={0.5}
               mouseGlow={0.6}
