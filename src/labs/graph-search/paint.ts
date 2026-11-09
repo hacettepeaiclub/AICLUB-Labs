@@ -11,7 +11,7 @@
  * Colours come from `design/tokens`.
  */
 
-import { color, paletteVersion } from "@/design/tokens";
+import { labColor as color, paletteVersion } from "@/design/tokens";
 import { CLOSED, FRONTIER, MUD, PATH, WALL, type Grid, type Search } from "./engine";
 import { clearCanvas } from "@/lib/canvas";
 
@@ -48,8 +48,8 @@ function inks(): Ink {
   if (ink !== null && inkVersion === paletteVersion()) return ink;
   inkVersion = paletteVersion();
   ink = {
-    surface: color("ink800"),
-    gridLine: color("ink950", 0.55),
+    surface: color("ink900"),
+    gridLine: color("fgFaint", 0.16),
     wallFill: color("ink700"),
     wallTint: color("fgMuted", 0.4),
     wallEdge: color("fgMuted", 0.55),
@@ -140,7 +140,7 @@ function glyph(
   size: number,
 ): void {
   ctx.fillStyle = inks().marker;
-  ctx.font = `700 ${Math.round(size * 0.62)}px ui-monospace, monospace`;
+  ctx.font = `700 ${Math.round(size * 0.62)}px "JetBrains Mono", ui-monospace, monospace`;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
   ctx.fillText(letter, x + size / 2, y + size / 2 + 0.5);

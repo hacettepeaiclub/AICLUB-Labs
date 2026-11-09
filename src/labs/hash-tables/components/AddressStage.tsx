@@ -53,7 +53,7 @@ export function AddressStage() {
       caption={t.caption}
       announcement={typed ? t.announce(typed, bucket, present, looks) : ""}
       viewport={
-        <div className="space-y-4 rounded border border-line/10 bg-ink-950 p-4">
+        <div className="space-y-4 rounded-lg border border-line/20 bg-ink-900 p-4">
           <TextField
             value={word}
             onChange={setWord}
@@ -63,7 +63,12 @@ export function AddressStage() {
           />
 
           {typed && (
-            <div className="overflow-x-auto">
+            <div
+              tabIndex={0}
+              role="region"
+              aria-label={t.workingCaption}
+              className="overflow-x-auto"
+            >
               <table className="w-full min-w-[16rem] font-mono text-caption tabular-nums">
                 <caption className="sr-only">{t.workingCaption}</caption>
                 <thead>

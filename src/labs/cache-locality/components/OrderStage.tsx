@@ -101,9 +101,12 @@ export function OrderStage({ bench }: { bench: Bench }) {
               : ""
       }
       viewport={
-        <div className="space-y-5 rounded border border-line/10 bg-ink-950 p-3 sm:p-4">
+        <div className="space-y-5 rounded-lg border border-line/20 bg-ink-900 p-3 sm:p-4">
           <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,14rem)]">
-            <pre className="overflow-x-auto rounded bg-ink-900 p-3 font-mono text-caption leading-relaxed text-fg">
+            <pre
+              tabIndex={0}
+              className="overflow-x-auto rounded bg-ink-900 p-3 font-mono text-caption leading-relaxed text-fg"
+            >
               <code>{code}</code>
             </pre>
             <ul className="space-y-1.5" aria-label={t.walkLabel}>

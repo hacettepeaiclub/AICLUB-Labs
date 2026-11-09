@@ -63,7 +63,7 @@ export function ShiftStage() {
       caption={t.caption}
       announcement={t.announce(peak.x + 1, peak.y + 1, formatValue(peak.value))}
       viewport={
-        <div className="space-y-3 rounded border border-line/10 bg-ink-950 p-4">
+        <div className="space-y-3 rounded-lg border border-line/20 bg-ink-900 p-4">
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-[minmax(0,1fr)_5rem_minmax(0,1fr)] sm:items-start sm:gap-4">
             <Panel label={t.input}>
               <GridView

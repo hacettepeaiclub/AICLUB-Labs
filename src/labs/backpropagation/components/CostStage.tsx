@@ -100,7 +100,7 @@ export function CostStage() {
       caption={t.caption}
       announcement={result && ratio ? t.announce(formatValue(ratio, 0), result.params) : ""}
       viewport={
-        <div className="space-y-4 rounded border border-line/10 bg-ink-950 p-4">
+        <div className="space-y-4 rounded-lg border border-line/20 bg-ink-900 p-4">
           <p className="text-body-sm text-fg-muted">
             {t.sizeLine(count.toLocaleString(language === "tr" ? "tr-TR" : "en-US"), 2 * count)}
           </p>

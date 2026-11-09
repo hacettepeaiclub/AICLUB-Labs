@@ -82,11 +82,11 @@ export function ChainStage() {
         formatValue(state.product, 3),
       )}
       viewport={
-        <div className="overflow-x-auto rounded border border-line/10 bg-ink-950 p-3">
+        <div className="overflow-x-auto rounded-lg border border-line/20 bg-ink-900 p-3">
           <svg
             ref={svgRef}
             viewBox={`0 0 ${W} ${H}`}
-            role="img"
+            role="group"
             aria-label={t.diagramLabel(state.values.map((v) => formatValue(v, 2)).join(", "))}
             className="block h-auto w-full min-w-[30rem] touch-none select-none"
             onPointerMove={(e) => dragging.current && fromPointer(e)}

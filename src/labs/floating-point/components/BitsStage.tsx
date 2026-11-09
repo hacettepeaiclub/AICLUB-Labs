@@ -208,7 +208,7 @@ export function BitsStage() {
             <p className="text-caption text-fg-muted">{t.hint}</p>
           )}
 
-          <div className="rounded border border-line/10 bg-ink-950 p-4">
+          <div className="rounded-lg border border-line/20 bg-ink-900 p-4">
             <p className="font-mono text-display-md text-fg">{printed}</p>
             {value && (kind === "normal" || kind === "subnormal") && (
               <ExactDigits

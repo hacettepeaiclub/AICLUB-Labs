@@ -136,7 +136,7 @@ export interface CoachProps {
  */
 export function Coach({ label, questions }: CoachProps) {
   return (
-    <section aria-label={label} className="mt-6 max-w-prose">
+    <div role="group" aria-label={label} className="mt-6 max-w-prose">
       <h3 className="text-overline uppercase text-fg-faint">{label}</h3>
       <div className="mt-2 divide-y divide-line/10 border-y border-line/10">
         {questions.map((item) => (
@@ -158,6 +158,6 @@ export function Coach({ label, questions }: CoachProps) {
           </details>
         ))}
       </div>
-    </section>
+    </div>
   );
 }

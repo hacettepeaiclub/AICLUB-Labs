@@ -33,7 +33,11 @@ export function LabShell({ meta, children }: { meta: LabMeta; children: ReactNod
   const rootRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div ref={rootRef} className="shell py-10 md:py-14">
+    <div
+      ref={rootRef}
+      data-lab={meta.slug}
+      className="lab-workspace lab-console shell py-7 md:py-10"
+    >
       <LabGuideProvider key={meta.slug} slug={meta.slug} title={title} rootRef={rootRef}>
         <LabProgress targetRef={rootRef} colour={CATEGORY_VAR[meta.category]} />
 
@@ -50,9 +54,9 @@ export function LabShell({ meta, children }: { meta: LabMeta; children: ReactNod
         {/* The lab's plate sits beside the title from tablet width up. On a
           phone it would push the experiment a full screen down, and the
           experiment is what the visitor came for, so it is left out there. */}
-        <header className="mb-10 grid items-center gap-8 md:grid-cols-[minmax(0,1fr)_16rem] lg:grid-cols-[minmax(0,1fr)_20rem]">
+        <header className="lab-header mb-9 grid items-center gap-6 md:grid-cols-[minmax(0,1fr)_12rem] lg:grid-cols-[minmax(0,1fr)_14rem]">
           <div className="max-w-prose">
-            <div className="mb-4 flex items-center gap-2">
+            <div className="mb-4 flex flex-wrap items-center gap-2">
               <Badge dotClassName={category.dot}>{t.category[meta.category]}</Badge>
               <Badge>{t.difficulty[meta.difficulty]}</Badge>
               <Badge>{t.shell.minutes(meta.minutes)}</Badge>
@@ -62,9 +66,11 @@ export function LabShell({ meta, children }: { meta: LabMeta; children: ReactNod
                 {term}
               </p>
             )}
-            <h1 className="text-display-lg text-fg">{title}</h1>
-            <p className="mt-4 text-body-lg text-fg-muted">{description}</p>
-            <GuideButton className="mt-6" />
+            <h1 className="text-[clamp(2rem,3.6vw,2.75rem)] font-semibold leading-tight tracking-[-0.025em] text-fg">
+              {title}
+            </h1>
+            <p className="mt-4 text-body text-fg-muted">{description}</p>
+            <GuideButton className="mt-4" />
           </div>
           <LabPlate
             slug={meta.slug}

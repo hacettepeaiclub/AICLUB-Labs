@@ -84,7 +84,7 @@ export function RaceStage({ bench }: { bench: Bench }) {
             : ""
       }
       viewport={
-        <div className="space-y-5 rounded border border-line/10 bg-ink-950 p-4">
+        <div className="space-y-5 rounded-lg border border-line/20 bg-ink-900 p-4">
           {lane("row")}
           {lane("column")}
           <p className="text-caption text-fg-faint">

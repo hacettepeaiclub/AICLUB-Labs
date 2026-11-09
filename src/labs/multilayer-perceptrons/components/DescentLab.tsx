@@ -111,7 +111,7 @@ export function DescentLab() {
       caption={verdict}
       announcement={verdict}
       viewport={
-        <div className="rounded border border-line/10 bg-ink-950 p-4 sm:p-6">
+        <div className="rounded-lg border border-line/20 bg-ink-900 p-4 sm:p-6">
           <svg
             viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
             className="w-full cursor-pointer touch-none"

@@ -104,7 +104,18 @@ export function GridCanvas({
     const observer = new ResizeObserver(resize);
     observer.observe(canvas);
     resize();
+    // Idle grids also need the real face once the asynchronous font arrives.
+    let disposed = false;
+    void document.fonts
+      .load('700 12px "JetBrains Mono"')
+      .then(() => {
+        if (!disposed) draw();
+      })
+      .catch(() => {
+        /* Keep the readable monospace fallback if loading fails. */
+      });
     return () => {
+      disposed = true;
       observer.disconnect();
       ctxRef.current = null;
     };

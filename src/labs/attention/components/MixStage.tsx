@@ -46,7 +46,12 @@ export function MixStage({ attention, words, selected, onSelect }: MixStageProps
       viewport={
         <div className="space-y-3">
           {/* The multiplication, written out: share × value, per contributor. */}
-          <div className="overflow-x-auto rounded border border-line/10 bg-ink-950 p-4">
+          <div
+            tabIndex={0}
+            role="region"
+            aria-label={a.mix.tableCaption}
+            className="overflow-x-auto rounded border border-line/10 bg-ink-950 p-4"
+          >
             <p className="mb-3 text-overline uppercase text-fg-faint">{a.mixLabel}</p>
             <table className="w-full min-w-[22rem] border-collapse text-body-sm">
               <caption className="sr-only">{a.mix.tableCaption}</caption>

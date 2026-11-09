@@ -63,7 +63,7 @@ export function TrainStage({ run }: TrainStageProps) {
           />
 
           {/* The curve. Every point is one episode that was actually run. */}
-          <div className="rounded border border-line/10 bg-ink-950 p-4">
+          <div className="rounded-lg border border-line/20 bg-ink-900 p-4">
             <p className="text-overline uppercase text-fg-faint">{train.curveTitle}</p>
             {trend.length < 2 ? (
               <p className="mt-2 text-body-sm text-fg-muted">{train.curveEmpty}</p>
@@ -99,7 +99,7 @@ export function TrainStage({ run }: TrainStageProps) {
         </div>
       }
       readout={
-        <div className="rounded border border-line/10 bg-ink-950 p-4">
+        <div className="rounded-lg border border-line/20 bg-ink-900 p-4">
           <p className="text-body-sm text-fg-muted">
             {lastEpisode
               ? train.lastEpisode(

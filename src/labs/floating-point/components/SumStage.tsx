@@ -169,7 +169,7 @@ export function SumStage() {
 
               {view && (
                 <>
-                  <dl className="divide-y divide-line/5 rounded border border-line/10 bg-ink-950">
+                  <dl className="divide-y divide-line/5 rounded-lg border border-line/20 bg-ink-900">
                     {(
                       [
                         [t.rows.a, view.dA, null],
@@ -270,7 +270,7 @@ function NumberLine({
       viewBox={`0 0 ${W} 132`}
       role="img"
       aria-label={t.lineLabel(same ? t.same : t.apart(t.steps(steps)))}
-      className="w-full rounded border border-line/10 bg-ink-950"
+      className="w-full rounded-lg border border-line/20 bg-ink-900"
     >
       <line
         x1={PAD / 2}

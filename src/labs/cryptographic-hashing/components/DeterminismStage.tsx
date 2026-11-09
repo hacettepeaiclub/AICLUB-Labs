@@ -65,13 +65,13 @@ export function DeterminismStage({ input }: DeterminismStageProps) {
       viewport={
         <div className="space-y-3">
           {runs.length === 0 ? (
-            <p className="rounded border border-line/10 bg-ink-950 px-4 py-6 text-center text-body-sm text-fg-muted">
+            <p className="rounded-lg border border-line/20 bg-ink-900 px-4 py-6 text-center text-body-sm text-fg-muted">
               {t.determinism.empty}
             </p>
           ) : (
             <ol className="space-y-2">
               {runs.map((hex, i) => (
-                <li key={i} className="rounded border border-line/10 bg-ink-950 p-3">
+                <li key={i} className="rounded-lg border border-line/20 bg-ink-900 p-3">
                   <DigestPanel hex={hex} label={t.determinism.run(i + 1)} />
                 </li>
               ))}

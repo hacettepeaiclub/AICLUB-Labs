@@ -77,7 +77,7 @@ export function Prediction<T extends string>({
           ))}
         </div>
       ) : (
-        <div className="space-y-2 rounded border border-line/10 bg-ink-950 p-4">
+        <div className="space-y-2 rounded-lg border border-line/20 bg-ink-900 p-4">
           <div className="flex flex-wrap items-baseline gap-x-6 gap-y-1">
             <span className="text-caption text-fg-faint">
               {copy.yours}{" "}

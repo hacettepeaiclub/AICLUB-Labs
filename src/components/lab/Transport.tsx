@@ -53,7 +53,7 @@ export function Transport({
   const t = useT();
 
   return (
-    <div className={cn("flex flex-wrap items-center gap-2", className)}>
+    <div className={cn("lab-transport flex flex-wrap items-center gap-2", className)}>
       <Button onClick={onRun} className="min-h-[44px] flex-1">
         {running ? t.common.pause : (runLabel ?? t.common.run)}
       </Button>

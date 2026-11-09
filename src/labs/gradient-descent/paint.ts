@@ -14,7 +14,7 @@
  * Colours come from `design/tokens`, resolved once per theme.
  */
 
-import { color, paletteVersion } from "@/design/tokens";
+import { labColor as color, paletteVersion } from "@/design/tokens";
 import { contourSemiAxes } from "./landscape";
 import type { Landscape, Point } from "./engine";
 import { clearCanvas } from "@/lib/canvas";
@@ -50,8 +50,8 @@ function inks(): Ink {
   if (ink !== null && inkVersion === paletteVersion()) return ink;
   inkVersion = paletteVersion();
   ink = {
-    contour: color("fgFaint", 0.28),
-    contourStrong: color("fgFaint", 0.5),
+    contour: color("fgFaint", 0.38),
+    contourStrong: color("fgFaint", 0.65),
     axis: color("fgFaint", 0.18),
     /*
      * The trajectory is the answer being built, so it is `accent`; the point

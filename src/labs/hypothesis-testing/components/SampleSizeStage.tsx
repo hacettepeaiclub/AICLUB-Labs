@@ -56,7 +56,7 @@ export function SampleSizeStage({ result, onChange }: SampleSizeStageProps) {
       viewport={
         <div className="space-y-3">
           <DistributionPlot result={result} />
-          <div className="rounded border border-line/10 bg-ink-950 p-3">
+          <div className="rounded-lg border border-line/20 bg-ink-900 p-3">
             <p className="text-overline uppercase text-fg-faint">{s.curveTitle}</p>
             <svg
               viewBox={`0 0 ${PLOT.width} 34`}

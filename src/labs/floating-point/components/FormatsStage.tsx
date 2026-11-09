@@ -103,7 +103,7 @@ export function FormatsStage() {
           />
 
           {rows && (
-            <ul className="divide-y divide-line/5 rounded border border-line/10 bg-ink-950">
+            <ul className="divide-y divide-line/5 rounded-lg border border-line/20 bg-ink-900">
               {rows.map((row) => (
                 <li
                   key={row.format.id}
@@ -149,7 +149,7 @@ export function FormatsStage() {
             </ul>
           )}
 
-          <div className="overflow-x-auto">
+          <div tabIndex={0} role="region" aria-label={t.table.caption} className="overflow-x-auto">
             <table className="w-full min-w-[34rem] text-left text-caption">
               <caption className="pb-2 text-left text-overline uppercase text-fg-faint">
                 {t.table.caption}

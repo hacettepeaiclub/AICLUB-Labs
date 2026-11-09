@@ -80,7 +80,7 @@ export function RoomGrid({
 
   return (
     <div
-      className={cn("rounded border border-line/10 bg-ink-950 p-3", className)}
+      className={cn("rounded-lg border border-line/20 bg-ink-900 p-3", className)}
       {...(interactive ? {} : { role: "img", "aria-label": label })}
     >
       {/* Capped so the whole room fits on one screen: at full column width

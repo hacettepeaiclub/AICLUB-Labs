@@ -85,7 +85,7 @@ export function AvalancheStage({
               />
             </div>
           ) : (
-            <p className="rounded border border-line/10 bg-ink-950 px-4 py-8 text-center text-body-sm text-fg-muted">
+            <p className="rounded-lg border border-line/20 bg-ink-900 px-4 py-8 text-center text-body-sm text-fg-muted">
               {t.avalanche.editPrompt}
             </p>
           )}

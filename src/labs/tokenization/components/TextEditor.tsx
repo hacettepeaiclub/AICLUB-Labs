@@ -69,8 +69,8 @@ export function TextEditor({
         aria-describedby={hint ? hintId : undefined}
         onChange={(event) => onChange(event.target.value)}
         className={cn(
-          "w-full resize-y rounded-card border border-line/10 bg-ink-900 p-3",
-          "font-mono text-body-sm text-fg placeholder:text-fg-faint",
+          "w-full resize-y rounded-lg border border-line/30 bg-ink-900 p-4",
+          "font-mono text-body leading-relaxed text-fg placeholder:text-fg-faint",
           readOnly && "cursor-default text-fg-muted",
         )}
       />

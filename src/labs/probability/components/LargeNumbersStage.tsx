@@ -114,7 +114,7 @@ export function LargeNumbersStage() {
                 result.final.proportion.toFixed(4),
                 RIGHT_PROBABILITY.toFixed(4),
               )}
-              className="rounded border border-line/10 bg-ink-950 p-4"
+              className="rounded-lg border border-line/20 bg-ink-900 p-4"
             >
               <div className="relative aspect-[16/7] w-full">
                 {/* The theoretical probability: one flat rule, drawn behind
@@ -158,7 +158,7 @@ export function LargeNumbersStage() {
 
             {/* Small runs can still be watched one outcome at a time. */}
             {outcomes.length > 0 && (
-              <div className="rounded border border-line/10 bg-ink-950 p-4">
+              <div className="rounded-lg border border-line/20 bg-ink-900 p-4">
                 <p className="mb-2 text-caption text-fg-faint">
                   {l.outcomesLabel(outcomes.length)}
                 </p>
@@ -185,7 +185,12 @@ export function LargeNumbersStage() {
 
             {/* The same run, read at each scale it has passed through. */}
             {answered && (
-              <div className="overflow-x-auto rounded border border-line/10 bg-ink-950 p-4">
+              <div
+                tabIndex={0}
+                role="group"
+                aria-label={l.tableCaption}
+                className="overflow-x-auto rounded-lg border border-line/20 bg-ink-900 p-4"
+              >
                 <table className="w-full border-collapse text-caption">
                   <caption className="sr-only">{l.tableCaption}</caption>
                   <thead>
@@ -232,7 +237,7 @@ export function LargeNumbersStage() {
           </div>
         }
         readout={
-          <div className="rounded border border-line/10 bg-ink-950 p-4">
+          <div className="rounded-lg border border-line/20 bg-ink-900 p-4">
             <p className="text-body-sm text-fg-muted">{l.reading(count(trials))}</p>
             {answered && (
               <Explain

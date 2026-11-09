@@ -2,66 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ------------------------------------------------------------------ */
-/* Typefaces — self-hosted, matching hacettepeaiclub.com.              */
-/*                                                                     */
-/* Outfit for display, Inter for body: the same pairing the community  */
-/* site uses, so the two properties read as one organisation. They are */
-/* served from `public/fonts` rather than Google's CDN because a       */
-/* third-party stylesheet in <head> is render-blocking on a domain we  */
-/* do not control.                                                     */
-/*                                                                     */
-/* Both are variable fonts, so one file covers every weight the type   */
-/* scale asks for. `unicode-range` splits latin from latin-ext, and    */
-/* the browser fetches the second file only when a page actually uses  */
-/* it — which for us means Turkish: ğ, ş, ı and İ live in latin-ext.   */
-/* An English reader never downloads it.                               */
-/*                                                                     */
-/* `font-display: swap` keeps text readable during the fetch; the      */
-/* fallback stacks below are metric-similar enough that the swap does  */
-/* not reflow the page noticeably.                                     */
-/* ------------------------------------------------------------------ */
+/* One self-hosted variable family for prose, UI, diagrams and code.
+   Full glyph coverage includes Turkish; weight variants share one request. */
 @font-face {
-  font-family: "Inter";
+  font-family: "JetBrains Mono";
   font-style: normal;
-  font-weight: 300 700;
+  font-weight: 100 800;
   font-display: swap;
-  src: url("/fonts/inter-latin.woff2") format("woff2");
-  unicode-range:
-    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
-    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-@font-face {
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 300 700;
-  font-display: swap;
-  src: url("/fonts/inter-latin-ext.woff2") format("woff2");
-  unicode-range:
-    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
-    U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
-    U+A720-A7FF;
-}
-@font-face {
-  font-family: "Outfit";
-  font-style: normal;
-  font-weight: 400 800;
-  font-display: swap;
-  src: url("/fonts/outfit-latin.woff2") format("woff2");
-  unicode-range:
-    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
-    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-@font-face {
-  font-family: "Outfit";
-  font-style: normal;
-  font-weight: 400 800;
-  font-display: swap;
-  src: url("/fonts/outfit-latin-ext.woff2") format("woff2");
-  unicode-range:
-    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
-    U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
-    U+A720-A7FF;
+  src: url("/fonts/jetbrains-mono-variable.woff2") format("woff2");
 }
 
 /* ------------------------------------------------------------------ */
@@ -137,8 +85,8 @@
   --shadow-card-hover: 0 1px 2px rgb(0 0 0 / 0.4), 0 16px 40px -12px rgb(0 0 0 / 0.6);
 
   /* Typography */
-  --font-display: "Outfit", "Inter", system-ui, sans-serif;
-  --font-body: "Inter", system-ui, -apple-system, sans-serif;
+  --font-display: "JetBrains Mono", ui-monospace, monospace;
+  --font-body: "JetBrains Mono", ui-monospace, monospace;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", monospace;
 }
 
@@ -219,6 +167,7 @@
   body {
     @apply bg-ink-950 font-body text-body text-fg;
     text-rendering: optimizeLegibility;
+    font-variant-ligatures: none;
   }
 
   ::selection {
@@ -320,12 +269,55 @@
   /* ---------------------------------------------------------------- */
   /* Ambient background (AmbientBackground.tsx).                       */
   /*                                                                   */
-  /* One still pool of the club navy in the top-left of the viewport:  */
-  /* the dark leans blue there and nowhere else. It used to drift, with */
-  /* a second pool and a field of moving points; the colour carried the */
-  /* identity and the movement carried nothing. On paper it becomes a  */
-  /* pale wash, so it fades to a third.                                */
-  /* ---------------------------------------------------------------- */
+  /* Full green terminal on the home page; quiet texture on lab routes. */
+  .ambient-terminal {
+    position: absolute;
+    inset: 0;
+    opacity: 0.12;
+    transition: opacity 700ms ease;
+  }
+  .ambient-terminal[data-mode="hero"] {
+    opacity: 1;
+  }
+  /* One continuous viewport scrim, rather than a hero-sized dark rectangle. */
+  .ambient::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      rgb(var(--ink-950) / 0.88),
+      rgb(var(--ink-950) / 0.55) 55%,
+      transparent
+    );
+  }
+  :root[data-theme="dark"] #home-title {
+    /* A faint phosphor halo, without warping or animating the glyphs. */
+    text-shadow:
+      0 0 5px rgb(167 239 158 / 0.16),
+      0 0 14px rgb(167 239 158 / 0.08);
+  }
+  :root[data-theme="dark"] .terminal-hero-copy .text-data {
+    color: #a7ef9e;
+  }
+  :root[data-theme="dark"] .terminal-hero-copy > p {
+    color: #c2d4c6;
+  }
+  :root[data-theme="dark"] .lab-card {
+    background-color: rgb(var(--ink-950) / 0.96);
+  }
+  :root[data-theme="dark"] #labs > div:first-child {
+    text-shadow: 0 2px 12px rgb(0 0 0 / 0.8);
+  }
+  :root[data-theme="light"] .ambient-terminal {
+    display: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ambient-terminal {
+      display: none;
+      transition: none;
+    }
+  }
   .ambient-fog {
     position: absolute;
     width: 70vw;
@@ -333,13 +325,13 @@
     left: -22vw;
     top: -30vw;
     border-radius: 9999px;
-    opacity: 0.55;
+    opacity: 0.3;
     background: radial-gradient(
       circle,
-      rgb(var(--accent-fill) / 0.44),
-      rgb(var(--accent-fill) / 0.3) 30%,
-      rgb(var(--accent-fill) / 0.14) 50%,
-      rgb(var(--accent-fill) / 0.04) 62%,
+      rgb(38 120 56 / 0.44),
+      rgb(38 120 56 / 0.3) 30%,
+      rgb(38 120 56 / 0.14) 50%,
+      rgb(38 120 56 / 0.04) 62%,
       transparent 72%
     );
   }
@@ -839,4 +831,139 @@
   .guide-ripple {
     opacity: 0;
   }
+}
+/* Lab console roles. The homepage retains its own palette. These root values
+   are also read by canvas renderers so theme changes use the same source. */
+:root {
+  --lab-ink-950: 9 13 11;
+  --lab-ink-900: 11 17 14;
+  --lab-ink-800: 16 23 19;
+  --lab-ink-700: 24 34 28;
+  --lab-fg: 231 239 232;
+  --lab-fg-muted: 168 184 172;
+  --lab-fg-faint: 146 165 151;
+  --lab-accent: 167 239 158;
+  --lab-accent-fill: 167 239 158;
+  --lab-accent-fg: 14 30 17;
+  --lab-accent-soft: 32 55 35;
+  --lab-data: 120 199 210;
+  --lab-signal-amber: 251 191 36;
+  --lab-signal-green: 52 211 153;
+}
+:root[data-theme="light"] {
+  --lab-ink-950: 244 247 244;
+  --lab-ink-900: 234 240 235;
+  --lab-ink-800: 255 255 255;
+  --lab-ink-700: 222 233 224;
+  --lab-fg: 20 35 24;
+  --lab-fg-muted: 65 86 71;
+  --lab-fg-faint: 76 98 82;
+  --lab-accent: 37 101 48;
+  --lab-accent-fill: 37 101 48;
+  --lab-accent-fg: 255 255 255;
+  --lab-accent-soft: 214 236 216;
+  --lab-data: 15 112 128;
+  --lab-signal-amber: 146 64 14;
+  --lab-signal-green: 6 96 68;
+}
+.lab-console {
+  --ink-950: var(--lab-ink-950);
+  --ink-900: var(--lab-ink-900);
+  --ink-800: var(--lab-ink-800);
+  --ink-700: var(--lab-ink-700);
+  --fg: var(--lab-fg);
+  --fg-muted: var(--lab-fg-muted);
+  --fg-faint: var(--lab-fg-faint);
+  --accent: var(--lab-accent);
+  --accent-fill: var(--lab-accent-fill);
+  --accent-fg: var(--lab-accent-fg);
+  --accent-soft: var(--lab-accent-soft);
+  --data: var(--lab-data);
+  --signal-amber: var(--lab-signal-amber);
+  --signal-green: var(--lab-signal-green);
+}
+.lab-header {
+  border-bottom: 1px solid rgb(var(--line) / 0.14);
+  padding-bottom: 2rem;
+}
+.lab-section > h2 {
+  max-width: 36ch;
+  text-wrap: balance;
+}
+.lab-section > p {
+  max-width: 64ch;
+}
+.lab-section > p:first-child {
+  color: rgb(var(--accent));
+  letter-spacing: 0.07em;
+}
+.lab-workspace .rounded-card {
+  border-radius: 0.5rem;
+}
+.lab-workspace [data-stage-part="viewport"] {
+  min-width: 0;
+}
+.lab-workspace .stage-chassis {
+  border-top: 2px solid rgb(var(--accent) / 0.5);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.08);
+}
+.lab-workspace .stage-controls {
+  min-width: 0;
+}
+.lab-workspace .stage-figures {
+  padding: 1rem 0;
+  border-block: 1px solid rgb(var(--line) / 0.14);
+  width: 100%;
+}
+.lab-workspace [data-stage-part="readout"] {
+  padding-top: 0.5rem;
+  line-height: 1.6;
+}
+.lab-workspace [data-stage-part="secondary"] {
+  border-color: rgb(var(--line) / 0.24);
+}
+.lab-workspace button {
+  border-radius: 0.375rem;
+}
+.lab-workspace button:disabled {
+  cursor: not-allowed;
+}
+.lab-workspace input[type="range"] {
+  accent-color: rgb(var(--accent));
+}
+.lab-workspace textarea {
+  caret-color: rgb(var(--accent));
+}
+.lab-workspace .lab-transport {
+  gap: 0.5rem;
+}
+.lab-workspace .lab-transport button:first-child {
+  font-weight: 700;
+}
+@media (min-width: 1024px) {
+  .lab-workspace .stage-controls[data-controls="rail"] {
+    border-left: 1px solid rgb(var(--line) / 0.14);
+    padding-left: 1.25rem;
+  }
+}
+@media (max-width: 639px) {
+  .lab-workspace .stage-chassis {
+    padding: 0.625rem;
+  }
+  .lab-workspace .stage-figures {
+    gap: 1rem;
+  }
+  .lab-workspace .lab-header {
+    padding-bottom: 1.5rem;
+  }
+  .lab-workspace .lab-transport button {
+    padding-inline: 0.75rem;
+  }
+}
+
+/* Labels may wrap in Turkish; preserve a 44px target without clipping text. */
+.lab-workspace button.h-11 {
+  height: auto;
+  min-height: 2.75rem;
+  padding-block: 0.5rem;
 }

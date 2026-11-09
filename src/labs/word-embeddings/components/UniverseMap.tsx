@@ -284,30 +284,7 @@ export function UniverseMap({
       : null;
 
   return (
-    <div
-      role="listbox"
-      tabIndex={0}
-      aria-label={copy.mapLabel}
-      aria-describedby={`${baseId}-links-note`}
-      aria-activedescendant={active !== null && points ? optionId(active) : undefined}
-      onKeyDown={onKeyDown}
-      onFocus={() => {
-        setActive((current) => current ?? selected);
-        setShowRing(true);
-      }}
-      onBlur={() => setShowRing(false)}
-      className={cn(
-        // The hero of the section, sized to the shape of the data.
-        //
-        // `aspect-[1000/909]` is the cloud's own extent, so the frame is full
-        // rather than a square with a fifth of it permanently empty. At the
-        // 48rem cap that is 768x698 on a desktop; on a phone it takes the full
-        // column width and comes out near enough square to read the same way.
-        "relative mx-auto aspect-[1000/909] w-full max-w-[48rem] overflow-hidden rounded-2xl",
-        "border border-line/10",
-        "outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950",
-      )}
-    >
+    <>
       {/* Said in words, because a line drawn between two stars looks like a
           fact about the model and is not one. */}
       <p id={`${baseId}-links-note`} className="sr-only">
@@ -328,12 +305,36 @@ export function UniverseMap({
           : ""}
       </p>
 
-      {/* Keyframes for decoration and the one-shot reveal. Rendered at all only
+      <div
+        role="listbox"
+        tabIndex={0}
+        aria-label={copy.mapLabel}
+        aria-describedby={`${baseId}-links-note`}
+        aria-activedescendant={active !== null && points ? optionId(active) : undefined}
+        onKeyDown={onKeyDown}
+        onFocus={() => {
+          setActive((current) => current ?? selected);
+          setShowRing(true);
+        }}
+        onBlur={() => setShowRing(false)}
+        className={cn(
+          // The hero of the section, sized to the shape of the data.
+          //
+          // `aspect-[1000/909]` is the cloud's own extent, so the frame is full
+          // rather than a square with a fifth of it permanently empty. At the
+          // 48rem cap that is 768x698 on a desktop; on a phone it takes the full
+          // column width and comes out near enough square to read the same way.
+          "relative mx-auto aspect-[1000/909] w-full max-w-[48rem] overflow-hidden rounded-lg",
+          "border border-line/20 bg-ink-900",
+          "outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950",
+        )}
+      >
+        {/* Keyframes for decoration and the one-shot reveal. Rendered at all only
           when motion is allowed, so under `prefers-reduced-motion` the rules do
           not exist and nothing can move. No embedding point is ever a target of
           a rule that changes position. */}
-      {!reduced && (
-        <style>{`
+        {!reduced && (
+          <style>{`
 @keyframes eu-drift {
   from { transform: translate(0, 0); }
   to   { transform: translate(var(--eu-travel), calc(var(--eu-travel) * -0.6)); }
@@ -344,293 +345,296 @@ export function UniverseMap({
   55%  { opacity: 1; }
   100% { opacity: 0.75; }
 }`}</style>
-      )}
+        )}
 
-      {!points && (
-        <p className="absolute inset-0 flex items-center justify-center px-6 text-center text-body-sm text-fg-faint">
-          {copy.pending}
-        </p>
-      )}
+        {!points && (
+          <p className="absolute inset-0 flex items-center justify-center px-6 text-center text-body-sm text-fg-faint">
+            {copy.pending}
+          </p>
+        )}
 
-      {points && (
-        <svg
-          ref={svgRef}
-          viewBox={`0 0 ${frameWidth} ${frameHeight}`}
-          className="h-full w-full touch-none"
-          role="presentation"
-          style={reduced ? undefined : { animation: "eu-arrive 650ms ease-out both" }}
-        >
-          <defs>
-            {/* One soft-light definition, referenced by all 318 points. */}
-            <radialGradient id={glowId}>
-              <stop offset="0%" stopColor="currentColor" stopOpacity="0.45" />
-              <stop offset="45%" stopColor="currentColor" stopOpacity="0.12" />
-              <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
-            </radialGradient>
-            <radialGradient id={coreId}>
-              <stop offset="0%" stopColor="currentColor" stopOpacity="1" />
-              <stop offset="55%" stopColor="currentColor" stopOpacity="0.9" />
-              <stop offset="100%" stopColor="currentColor" stopOpacity="0.25" />
-            </radialGradient>
-          </defs>
+        {points && (
+          <svg
+            ref={svgRef}
+            viewBox={`0 0 ${frameWidth} ${frameHeight}`}
+            className="h-full w-full touch-none"
+            role="presentation"
+            style={reduced ? undefined : { animation: "eu-arrive 650ms ease-out both" }}
+          >
+            <defs>
+              {/* One soft-light definition, referenced by all 318 points. */}
+              <radialGradient id={glowId}>
+                <stop offset="0%" stopColor="currentColor" stopOpacity="0.45" />
+                <stop offset="45%" stopColor="currentColor" stopOpacity="0.12" />
+                <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
+              </radialGradient>
+              <radialGradient id={coreId}>
+                <stop offset="0%" stopColor="currentColor" stopOpacity="1" />
+                <stop offset="55%" stopColor="currentColor" stopOpacity="0.9" />
+                <stop offset="100%" stopColor="currentColor" stopOpacity="0.25" />
+              </radialGradient>
+            </defs>
 
-          {/* ---- atmosphere: decoration only, never data ------------------ */}
-          <g aria-hidden="true" className="pointer-events-none">
-            {/* Two faint fields, offset from centre so the space has a bias to
+            {/* ---- atmosphere: decoration only, never data ------------------ */}
+            <g aria-hidden="true" className="pointer-events-none">
+              {/* Two faint fields, offset from centre so the space has a bias to
                 it rather than reading as a vignette. */}
-            <ellipse
-              cx={frameWidth * 0.34}
-              cy={frameHeight * 0.4}
-              rx={frameWidth * 0.48}
-              ry={frameHeight * 0.42}
-              className="text-fg"
-              fill={`url(#${glowId})`}
-              opacity={0.2}
-            />
-            <ellipse
-              cx={frameWidth * 0.74}
-              cy={frameHeight * 0.68}
-              rx={frameWidth * 0.36}
-              ry={frameHeight * 0.32}
-              className="text-accent"
-              fill={`url(#${glowId})`}
-              opacity={0.14}
-            />
-            {/* Rings centred on the cloud's real centroid: they trace where the
+              <ellipse
+                cx={frameWidth * 0.34}
+                cy={frameHeight * 0.4}
+                rx={frameWidth * 0.48}
+                ry={frameHeight * 0.42}
+                className="text-fg"
+                fill={`url(#${glowId})`}
+                opacity={0.2}
+              />
+              <ellipse
+                cx={frameWidth * 0.74}
+                cy={frameHeight * 0.68}
+                rx={frameWidth * 0.36}
+                ry={frameHeight * 0.32}
+                className="text-accent"
+                fill={`url(#${glowId})`}
+                opacity={0.14}
+              />
+              {/* Rings centred on the cloud's real centroid: they trace where the
                 data actually thins, rather than sitting at arbitrary radii. */}
-            {rings.map((r, i) => (
-              <circle
-                key={i}
-                cx={r.cx}
-                cy={r.cy}
-                r={r.r}
-                fill="none"
-                className="stroke-fg"
-                strokeWidth={0.09}
-                opacity={0.06}
-              />
-            ))}
-            {stars.map((star, i) => (
-              <circle
-                key={i}
-                cx={star.x}
-                cy={star.y}
-                r={star.r}
-                className="fill-fg"
-                opacity={star.opacity}
-                style={
-                  reduced
-                    ? undefined
-                    : {
-                        animation: `eu-drift ${star.duration}s ease-in-out ${star.delay}s infinite alternate`,
-                        ["--eu-travel" as string]: `${star.travel.toFixed(2)}px`,
-                      }
-                }
-              />
-            ))}
-          </g>
-
-          {/* One transparent surface for every pointer and touch. */}
-          <rect
-            x="0"
-            y="0"
-            width={frameWidth}
-            height={frameHeight}
-            fill="transparent"
-            onPointerMove={(e) => setHovered(pick(e.clientX, e.clientY))}
-            onPointerLeave={() => setHovered(null)}
-            onPointerDown={(e) => {
-              const index = pick(e.clientX, e.clientY);
-              if (index !== null) {
-                onSelect(index);
-                setActive(index);
-              }
-            }}
-          />
-
-          {/* ---- constellation: an overlay, not edges in the model -------- */}
-          <g className="pointer-events-none">
-            {highlighted.length === 0 &&
-              links.map((link, i) => (
-                <line
+              {rings.map((r, i) => (
+                <circle
                   key={i}
-                  x1={link.from.x}
-                  y1={link.from.y}
-                  x2={link.to.x}
-                  y2={link.to.y}
-                  className="stroke-accent"
-                  strokeWidth={0.16}
-                  opacity={0.14 + link.weight * 0.26}
+                  cx={r.cx}
+                  cy={r.cy}
+                  r={r.r}
+                  fill="none"
+                  className="stroke-fg"
+                  strokeWidth={0.09}
+                  opacity={0.06}
                 />
               ))}
-            {/* The comparison tether: two words the visitor put side by side,
+              {stars.map((star, i) => (
+                <circle
+                  key={i}
+                  cx={star.x}
+                  cy={star.y}
+                  r={star.r}
+                  className="fill-fg"
+                  opacity={star.opacity}
+                  style={
+                    reduced
+                      ? undefined
+                      : {
+                          animation: `eu-drift ${star.duration}s ease-in-out ${star.delay}s infinite alternate`,
+                          ["--eu-travel" as string]: `${star.travel.toFixed(2)}px`,
+                        }
+                  }
+                />
+              ))}
+            </g>
+
+            {/* One transparent surface for every pointer and touch. */}
+            <rect
+              x="0"
+              y="0"
+              width={frameWidth}
+              height={frameHeight}
+              fill="transparent"
+              onPointerMove={(e) => setHovered(pick(e.clientX, e.clientY))}
+              onPointerLeave={() => setHovered(null)}
+              onPointerDown={(e) => {
+                const index = pick(e.clientX, e.clientY);
+                if (index !== null) {
+                  onSelect(index);
+                  setActive(index);
+                }
+              }}
+            />
+
+            {/* ---- constellation: an overlay, not edges in the model -------- */}
+            <g className="pointer-events-none">
+              {highlighted.length === 0 &&
+                links.map((link, i) => (
+                  <line
+                    key={i}
+                    x1={link.from.x}
+                    y1={link.from.y}
+                    x2={link.to.x}
+                    y2={link.to.y}
+                    className="stroke-accent"
+                    strokeWidth={0.16}
+                    opacity={0.14 + link.weight * 0.26}
+                  />
+                ))}
+              {/* The comparison tether: two words the visitor put side by side,
                 with the cosine the engine measured printed on it. Dashes and a
                 printed number, never colour alone — and it is the one line in
                 this map that carries a value rather than a rank. */}
-            {compare && (
-              <g>
+              {compare && (
+                <g>
+                  <line
+                    x1={compare.from.x}
+                    y1={compare.from.y}
+                    x2={compare.to.x}
+                    y2={compare.to.y}
+                    className="stroke-fg"
+                    strokeWidth={0.22}
+                    strokeDasharray="2 1.4"
+                    opacity={0.55}
+                  />
+                  {pinnedSimilarity !== null && (
+                    <text
+                      x={(compare.from.x + compare.to.x) / 2}
+                      y={(compare.from.y + compare.to.y) / 2 - 1}
+                      textAnchor="middle"
+                      className="fill-fg font-mono"
+                      style={{
+                        fontSize: 3.2,
+                        paintOrder: "stroke",
+                        stroke: "rgb(var(--ink-950))",
+                        strokeWidth: 1.1,
+                        strokeLinejoin: "round",
+                      }}
+                    >
+                      {formatScore(pinnedSimilarity)}
+                    </text>
+                  )}
+                </g>
+              )}
+              {pair && pair.from && pair.to && (
                 <line
-                  x1={compare.from.x}
-                  y1={compare.from.y}
-                  x2={compare.to.x}
-                  y2={compare.to.y}
-                  className="stroke-fg"
-                  strokeWidth={0.22}
-                  strokeDasharray="2 1.4"
-                  opacity={0.55}
+                  x1={pair.from.x}
+                  y1={pair.from.y}
+                  x2={pair.to.x}
+                  y2={pair.to.y}
+                  className="stroke-accent"
+                  strokeWidth={0.3}
+                  strokeDasharray="1.4 1.1"
+                  opacity={0.7}
                 />
-                {pinnedSimilarity !== null && (
-                  <text
-                    x={(compare.from.x + compare.to.x) / 2}
-                    y={(compare.from.y + compare.to.y) / 2 - 1}
-                    textAnchor="middle"
-                    className="fill-fg font-mono"
-                    style={{
-                      fontSize: 3.2,
-                      paintOrder: "stroke",
-                      stroke: "rgb(var(--ink-950))",
-                      strokeWidth: 1.1,
-                      strokeLinejoin: "round",
-                    }}
+              )}
+            </g>
+
+            {/* ---- the 318 words ------------------------------------------- */}
+            <g>
+              {points.map((point, index) => {
+                const role = pointRole(index, selected, neighbourIndices, highlighted);
+                const style = ROLE_STYLE[role];
+                const emphasised = role !== "base" && role !== "dimmed";
+                return (
+                  <g
+                    key={index}
+                    id={optionId(index)}
+                    role="option"
+                    aria-selected={index === selected}
+                    aria-label={describe(index)}
+                    className={cn(style.className, "pointer-events-none")}
+                    opacity={style.opacity}
                   >
-                    {formatScore(pinnedSimilarity)}
-                  </text>
-                )}
-              </g>
-            )}
-            {pair && pair.from && pair.to && (
-              <line
-                x1={pair.from.x}
-                y1={pair.from.y}
-                x2={pair.to.x}
-                y2={pair.to.y}
-                className="stroke-accent"
+                    {style.glow > 0 && (
+                      <circle
+                        cx={point.x}
+                        cy={point.y}
+                        r={style.glow}
+                        fill={`url(#${glowId})`}
+                        style={
+                          !reduced && role === "selected"
+                            ? { animation: "eu-pulse 1200ms ease-out 1" }
+                            : undefined
+                        }
+                      />
+                    )}
+                    {emphasised && (
+                      <path
+                        d={rayPath(point.x, point.y, style.rays)}
+                        fill="currentColor"
+                        opacity={0.45}
+                      />
+                    )}
+                    <circle cx={point.x} cy={point.y} r={style.core} fill={`url(#${coreId})`} />
+                  </g>
+                );
+              })}
+            </g>
+
+            {/* The held word wears a ring. A second shape channel, so "pinned"
+              is not another shade of the same blue. */}
+            {heldPoint && (
+              <circle
+                cx={heldPoint.x}
+                cy={heldPoint.y}
+                r={3.4}
+                fill="none"
+                className="stroke-fg"
                 strokeWidth={0.3}
-                strokeDasharray="1.4 1.1"
-                opacity={0.7}
+                opacity={0.8}
               />
             )}
-          </g>
 
-          {/* ---- the 318 words ------------------------------------------- */}
-          <g>
-            {points.map((point, index) => {
-              const role = pointRole(index, selected, neighbourIndices, highlighted);
-              const style = ROLE_STYLE[role];
-              const emphasised = role !== "base" && role !== "dimmed";
-              return (
-                <g
-                  key={index}
-                  id={optionId(index)}
-                  role="option"
-                  aria-selected={index === selected}
-                  aria-label={describe(index)}
-                  className={cn(style.className, "pointer-events-none")}
-                  opacity={style.opacity}
-                >
-                  {style.glow > 0 && (
-                    <circle
-                      cx={point.x}
-                      cy={point.y}
-                      r={style.glow}
-                      fill={`url(#${glowId})`}
-                      style={
-                        !reduced && role === "selected"
-                          ? { animation: "eu-pulse 1200ms ease-out 1" }
-                          : undefined
-                      }
-                    />
-                  )}
-                  {emphasised && (
-                    <path
-                      d={rayPath(point.x, point.y, style.rays)}
-                      fill="currentColor"
-                      opacity={0.45}
-                    />
-                  )}
-                  <circle cx={point.x} cy={point.y} r={style.core} fill={`url(#${coreId})`} />
-                </g>
-              );
-            })}
-          </g>
+            {/* Drawn focus indicator: never depends on SVG focus-ring support. */}
+            {ring && (
+              <circle
+                cx={ring.x}
+                cy={ring.y}
+                r={4.6}
+                fill="none"
+                className="stroke-accent"
+                strokeWidth={0.4}
+                strokeDasharray="1.6 1.2"
+              />
+            )}
 
-          {/* The held word wears a ring. A second shape channel, so "pinned"
-              is not another shade of the same blue. */}
-          {heldPoint && (
-            <circle
-              cx={heldPoint.x}
-              cy={heldPoint.y}
-              r={3.4}
-              fill="none"
-              className="stroke-fg"
-              strokeWidth={0.3}
-              opacity={0.8}
-            />
-          )}
-
-          {/* Drawn focus indicator: never depends on SVG focus-ring support. */}
-          {ring && (
-            <circle
-              cx={ring.x}
-              cy={ring.y}
-              r={4.6}
-              fill="none"
-              className="stroke-accent"
-              strokeWidth={0.4}
-              strokeDasharray="1.6 1.2"
-            />
-          )}
-
-          {/* ---- labels, tethered to their stars -------------------------- */}
-          <g className="pointer-events-none">
-            {placed.map((label) => {
-              const anchor = points[label.index];
-              if (!anchor) return null;
-              const isSelected = label.index === selected;
-              // A label is nudged off its point to clear its neighbours; the
-              // tether is what keeps it legible as *that* star's name rather
-              // than text floating nearby.
-              const gap = Math.hypot(label.x - anchor.x, label.y - anchor.y);
-              return (
-                <g key={label.index}>
-                  {gap > label.size * 1.7 && (
-                    <line
-                      x1={anchor.x}
-                      y1={anchor.y}
-                      x2={label.x}
-                      y2={label.y + label.size * 0.3}
-                      className="stroke-fg"
-                      strokeWidth={0.1}
-                      opacity={0.28}
-                    />
-                  )}
-                  <text
-                    x={label.x}
-                    y={label.y}
-                    textAnchor="middle"
-                    className={cn(
-                      "font-mono",
-                      isSelected || highlighted.includes(label.index) ? "fill-fg" : "fill-fg-muted",
+            {/* ---- labels, tethered to their stars -------------------------- */}
+            <g className="pointer-events-none">
+              {placed.map((label) => {
+                const anchor = points[label.index];
+                if (!anchor) return null;
+                const isSelected = label.index === selected;
+                // A label is nudged off its point to clear its neighbours; the
+                // tether is what keeps it legible as *that* star's name rather
+                // than text floating nearby.
+                const gap = Math.hypot(label.x - anchor.x, label.y - anchor.y);
+                return (
+                  <g key={label.index}>
+                    {gap > label.size * 1.7 && (
+                      <line
+                        x1={anchor.x}
+                        y1={anchor.y}
+                        x2={label.x}
+                        y2={label.y + label.size * 0.3}
+                        className="stroke-fg"
+                        strokeWidth={0.1}
+                        opacity={0.28}
+                      />
                     )}
-                    style={{
-                      fontSize: label.size,
-                      letterSpacing: isSelected ? "0.08em" : "0.02em",
-                      // A thin ground in the page colour, so a word stays
-                      // readable where it crosses a star, a ring or a link.
-                      paintOrder: "stroke",
-                      stroke: "rgb(var(--ink-950))",
-                      strokeWidth: label.size * 0.24,
-                      strokeLinejoin: "round",
-                    }}
-                  >
-                    {label.text}
-                  </text>
-                </g>
-              );
-            })}
-          </g>
-        </svg>
-      )}
-    </div>
+                    <text
+                      x={label.x}
+                      y={label.y}
+                      textAnchor="middle"
+                      className={cn(
+                        "font-mono",
+                        isSelected || highlighted.includes(label.index)
+                          ? "fill-fg"
+                          : "fill-fg-muted",
+                      )}
+                      style={{
+                        fontSize: label.size,
+                        letterSpacing: isSelected ? "0.08em" : "0.02em",
+                        // A thin ground in the page colour, so a word stays
+                        // readable where it crosses a star, a ring or a link.
+                        paintOrder: "stroke",
+                        stroke: "rgb(var(--ink-950))",
+                        strokeWidth: label.size * 0.24,
+                        strokeLinejoin: "round",
+                      }}
+                    >
+                      {label.text}
+                    </text>
+                  </g>
+                );
+              })}
+            </g>
+          </svg>
+        )}
+      </div>
+    </>
   );
 }
