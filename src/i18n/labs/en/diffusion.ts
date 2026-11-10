@@ -23,7 +23,6 @@ const copy = {
   },
   study: {
     topics: {
-      ddim: "Reverse sampling and denoising",
       visual: "Start visually",
       foundations: "Mathematical foundations",
       practice: "Build and sample",

@@ -23,7 +23,6 @@ const copy = {
   },
   study: {
     topics: {
-      ddim: "Ters örnekleme ve gürültü giderme",
       visual: "Görsel başlangıç",
       foundations: "Matematiksel temeller",
       practice: "Kodla kur ve örnekle",
