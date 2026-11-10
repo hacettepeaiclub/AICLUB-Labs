@@ -14,6 +14,11 @@ import { NotFoundPage } from "@/pages/NotFoundPage";
  */
 const HomePage = lazy(() => import("@/pages/HomePage").then((m) => ({ default: m.HomePage })));
 
+/** The calculator page and its simulator: their own chunk, fetched only there. */
+const CalculatorPage = lazy(() =>
+  import("@/pages/CalculatorPage").then((m) => ({ default: m.CalculatorPage })),
+);
+
 function ScrollToTop() {
   const { pathname } = useLocation();
   // Block body on purpose: `scrollTo` returns a Promise in current Chrome, and
@@ -47,6 +52,14 @@ function AnimatedRoutes() {
           }
         />
         <Route path="/labs/:slug" element={<LabPage />} />
+        <Route
+          path="/calculator"
+          element={
+            <Suspense fallback={null}>
+              <CalculatorPage />
+            </Suspense>
+          }
+        />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </PageShell>

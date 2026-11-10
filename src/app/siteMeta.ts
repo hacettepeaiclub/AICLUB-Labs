@@ -1,4 +1,4 @@
-import { labPath } from "@/lib/paths";
+import { CALCULATOR_PATH, labPath } from "@/lib/paths";
 
 /**
  * What every page of this site says about itself.
@@ -80,6 +80,17 @@ export function labMeta(slug: string, title: string, description: string): PageM
     description,
     image: absolute(`/og/${slug}.jpg`),
     url: absolute(labPath(slug)),
+    type: "article",
+  };
+}
+
+/** The calculator page: a tool rather than a lab, with the collection's card. */
+export function calculatorMeta(title: string, description: string): PageMeta {
+  return {
+    title: `${title} — ${SITE_NAME}`,
+    description,
+    image: absolute(DEFAULT_OG_IMAGE),
+    url: absolute(CALCULATOR_PATH),
     type: "article",
   };
 }

@@ -22,6 +22,8 @@ export const en = {
     brandSuffix: "Labs",
     primaryNav: "Primary",
     allLabs: "All labs",
+    // The calculator page (pages/CalculatorPage.tsx), in the header.
+    calculator: "Calculator",
     breadcrumb: "Breadcrumb",
     backToLabs: "← All labs",
     footerTagline: "AI Club Labs: Learn computer science by playing with it.",
@@ -88,6 +90,8 @@ export const en = {
     // The hero's link down to the collection, and the one-line way back into
     // the lab a returning visitor last opened.
     browse: "Browse labs",
+    // The hero's second door: the calculator page.
+    calculator: "Learn your calculator",
     continueLab: (title: string) => `Continue: ${title}`,
     // Field filter above the grid.
     filterLabel: "Filter labs by field",
