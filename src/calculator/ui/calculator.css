@@ -406,9 +406,6 @@
   grid-template-columns: 1.25rem minmax(0, 1fr);
   gap: 0.5rem;
 }
-.calc-step[data-state="later"] {
-  opacity: 0.55;
-}
 .calc-dot {
   display: grid;
   width: 1.25rem;

@@ -3,6 +3,7 @@ import { en } from "./en";
 import { tr } from "./tr";
 import { enLabs } from "./labs/en";
 import { trLabs } from "./labs/tr";
+import { isEnglishHeading } from "./headingPolicy";
 
 /**
  * The shell dictionary and the lab prose ship as separate chunks, but they are
@@ -129,7 +130,7 @@ describe("Turkish quality", () => {
   it("actually translates the prose", () => {
     const untranslated: string[] = [];
     for (const [path, value] of enLeaves) {
-      if (typeof value !== "string" || SHARED.has(path)) continue;
+      if (typeof value !== "string" || SHARED.has(path) || isEnglishHeading(path)) continue;
       // Short labels can coincide; long prose never should.
       if (value.length < 12) continue;
       if (trLeaves.get(path) === value) untranslated.push(path);
@@ -165,6 +166,7 @@ describe("Turkish quality", () => {
       ([, v]) => typeof v === "string" && /%/.test(v),
     );
     for (const [path, value] of percentages) {
+      if (isEnglishHeading(path)) continue;
       // In Turkish the sign leads: %50, never 50%.
       expect(String(value), `tr.${path}`).not.toMatch(/\d\s*%/);
     }

@@ -16,12 +16,12 @@ export const journeys: Record<string, { en: Journey; tr: Journey }> = {
     tr: [
       "Özgün resmi kurtarmak ile olası bir örnek üretmeyi ayır.",
       "Gürültüyü artır; sonra bir ters adım at.",
-      "Asıl şekli önbilgiden çıkarmadan önce ve sonra temiz tahmini karşılaştır.",
-      "Asıl şekil önbilgide yok. Daha çok ters adım onu mutlaka geri getirir mi?",
+      "Başlangıçtaki şekli seçeneklerden çıkar. Önceki temiz görüntü tahminiyle yeni tahmini karşılaştır.",
+      "Başlangıçtaki şekil seçeneklerde yok. Daha çok ters adım onu mutlaka geri getirir mi?",
       "Hayır; ters süreç izin verilen şekillere dayanır.",
       "Evet; yeterince adım tam kaynağı geri getirmelidir.",
       "Evet; rastgele seed özgün resmi saklar.",
-      "Asıl şekli çıkarıp aynı gürültülü girdiyi karşılaştır. Bu model sonlu önbilgisinden tahmin yapar; özgün resmi gizlice okumaz.",
+      "Şekli seçeneklerden çıkarıp aynı gürültülü girdiyi yeniden dene. Model tahminini kalan şekillerin olasılıklarından hesaplar; başlangıç görüntüsünü doğrudan kullanmaz.",
     ],
   },
   generalization: {

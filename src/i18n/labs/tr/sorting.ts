@@ -3,13 +3,13 @@ import type en from "../en/sorting";
 /** Türkçe metin: sorting. Şekli `en/sorting.ts` ile birebir aynı olmak zorundadır. */
 
 const copy: typeof en = {
-  theRace: "Yarış",
+  theRace: "The race",
   algorithm: "Algoritma",
   shape: "Biçim",
   shapeAndKeys: "Biçim ve klavye",
   puzzle: "Görev",
-  sorterA: "Sıralayıcı A",
-  sorterB: "Sıralayıcı B",
+  sorterA: "Sorter A",
+  sorterB: "Sorter B",
   sort: "Sırala",
   algorithms: { selection: "Seçmeli Sıralama", insertion: "Eklemeli Sıralama" },
   shapes: {
@@ -27,11 +27,11 @@ const copy: typeof en = {
     valuesRelocated: "yeri değişen değer",
     inversions: (n: number) => `${n} terslik`,
   },
-  drawHint: "Veriyi yeniden biçimlendirmek için grafiğin üzerinde sürükleyin.",
+  drawHint: "Veriyi yeniden biçimlendirmek için grafiğin üzerinde sürükle.",
   keyboardHint: "bir çubuk seçer,",
   keyboardHint2: "yüksekliğini değiştirir.",
   keyboardHelp:
-    "Grafiği yeniden biçimlendirmek için üzerinde sürükleyin. Grafik odaktayken sol ve sağ oklar bir çubuk seçer, yukarı ve aşağı oklar yüksekliğini değiştirir.",
+    "Grafiği yeniden biçimlendirmek için üzerinde sürükle. Grafik odaktayken sol ve sağ oklar bir çubuk seçer, yukarı ve aşağı oklar yüksekliğini değiştirir.",
   chartLabel: (size: number, algorithm: string, disorder: number, state: string) =>
     `${size} değerden oluşan çubuk grafik. ${algorithm}. Düzensizlik: ${disorder} terslik. ${state}`,
   state: {
@@ -57,23 +57,23 @@ const copy: typeof en = {
       `${title}: ${size} değerden oluşan çubuk grafik. ${state}`,
   },
   watch: {
-    kicker: "Adım adım",
-    title: "Biri süpürür. Diğeri parmak ucuyla yürür.",
-    lede: "Adım adım ilerleyin. Sıralayıcı A hiçbir şeyi kımıldatmadan önce kalanın tamamını yeniden tarar; Sıralayıcı B tek bir değeri alıp yalnızca gerektiği kadar geriye yürütür.",
+    kicker: "Watch them work",
+    title: "One sweeps. The other tiptoes.",
+    lede: "Birer adım ilerle. A’nın kalan diziyi nasıl taradığını, B’nin ise seçtiği değeri nasıl yerine taşıdığını karşılaştır.",
     caption:
-      "Bunlar Seçmeli Sıralama ve Eklemeli Sıralama. Uzun ve kesintisiz karşılaştırma dizileri birincisine; karşılaştır-kaydır-karşılaştır ritmi ikincisine ait.",
+      "A, selection sort; B, insertion sort uygular. Karşılaştırma ve yazma sayılarını ayrı ayrı izle.",
   },
   data: {
-    kicker: "Veriyi çizin",
-    title: "İş verinin içinde.",
-    lede: "Grafiği yeniden biçimlendirin (üzerinde sürükleyin ya da bir biçim seçin), sonra yeniden sıralayın.",
+    kicker: "Draw the data",
+    title: "The work is in the data.",
+    lede: "Çubukları sürükleyerek diziyi değiştir veya hazır bir dizi seç. Aynı diziyi iki algoritmayla yeniden sırala.",
     caption:
-      "Seçmeli Sıralama burada her seferinde 496 soru sorar; sıralı, karışık ya da ters fark etmez, çünkü kalan her çifti yine de kontrol eder. Eklemeli Sıralama'nın sayısı ise çizdiğiniz biçimle birlikte değişir.",
+      "32 eleman için selection sort her seferinde 496 karşılaştırma yapar. Insertion sort’un karşılaştırma ve yazma sayıları ise girdinin ne kadar sıralı olduğuna bağlıdır.",
   },
   distance: {
-    kicker: "Evinden ne kadar uzakta",
-    title: "Mesele kaç tanesinin yanlış olduğu değil.",
-    lede: "Sıralı biçimden başlayın. Bir çubuğu ait olduğu yerden çok uzağa sürükleyin, sonra bunun yerine üç çubuğu hafifçe oynatın. Her birinin maliyetini karşılaştırın.",
+    kicker: "How far from home",
+    title: "It isn't how many are wrong.",
+    lede: "Sıralı bir dizide tek bir çubuğu uzağa taşı. Ardından birkaç çubuğu küçük miktarlarda değiştir. İki durumda gereken yazma sayısını karşılaştır.",
     caption:
       "Terslik, sırası yanlış olan bir çifttir. Bu eklemeli sıralama, kendisine verilen dizideki her terslik için tam bir kez kaydırır, yani evinden çok uzaktaki tek bir değer, birkaç küçük hatadan daha pahalıya gelebilir. Taşıma ise bu kaydırmalara, yeri değişen her değeri yerine yazan son işlemi de ekler; bu yüzden Düzensizlik'in biraz üzerinde durur.",
   },
@@ -84,52 +84,52 @@ const copy: typeof en = {
     target: "Hedef",
     objectiveLine: (accuracy: string) =>
       `Spiralde ${accuracy} test doğruluğuna ulaşın: olabildiğince az gizli nöron kullanarak.`,
-    solvedNote: "Çözüldü. Şimdi bir nöron eksiltip yeniden deneyin.",
-    noBest: "Henüz yok. Bol nöronla başlayın, sonra bozulana kadar azaltın.",
+    solvedNote: "Çözüldü. Şimdi bir nöron eksiltip yeniden dene.",
+    noBest: "Henüz yok. Bol nöronla başlayın, sonra bozulana kadar azalt.",
     bestLine: (neurons: number, accuracy: string, epoch: number) =>
       `En iyi: ${neurons} gizli nöron, ${epoch.toLocaleString("en-US")} epok sonra ${accuracy}.`,
     canvasLabel: (neurons: number, accuracy: string, epoch: number) =>
       `Spiral görevi: ${neurons} gizli nöron, ${epoch} epok sonra ${accuracy} test doğruluğu.`,
     announceSolved: (neurons: number, accuracy: string) =>
       `${neurons} gizli nöronla, ${accuracy} test doğruluğunda çözüldü.`,
-    kicker: "Meydan okuma",
-    title: "Neyi saydığınıza göre ucuz değişir.",
-    lede: "Üç sabit dizi, üç bütçe, ve bütçe her zaman aynı sayıyla ilgili değil.",
+    kicker: "The challenge",
+    title: "Cheaper depends on what you count.",
+    lede: "Her görevde sabit bir dizi ve işlem sınırı var. Karşılaştırma veya yazma bütçesine uyan ayarı bul.",
     budget: "Bütçe",
     atMost: (unit: string) => `en fazla ${unit}`,
     barsChanged: "değişen çubuk",
     beaten: (done: number, total: number) => `${total} görevden ${done} tanesi geçildi`,
     fixedTo: (algorithm: string) => `${algorithm} sabit. Onun yerine veriyi yeniden biçimlendirin.`,
-    goal: (budget: number, unit: string) => `Hedef: en fazla ${budget} ${unit}.`,
+    goal: (budget: number, unit: string) => `Hedef: en fazla ${budget}  ${unit}.`,
     chartLabel: (title: string, size: number, disorder: number, goal: string, state: string) =>
-      `${title}: ${size} değerden oluşan çubuk grafik. Düzensizlik: ${disorder} terslik. ${goal} ${state}`,
+      `${title}: ${size} değerden oluşan çubuk grafik. Düzensizlik: ${disorder} terslik. ${goal}  ${state}`,
     editsUsed: (used: number, max: number) => `${max} düzenlemeden ${used} tanesi kullanıldı.`,
     finished: (comparisons: number, moves: number) =>
       `${comparisons} karşılaştırma ve ${moves} taşıma ile bitti.`,
-    budgetValue: (budget: number, unit: string) => `${budget} ${unit}`,
+    budgetValue: (budget: number, unit: string) => `${budget}  ${unit}`,
     editsLeft: (used: number, max: number) => `${max} düzenlemeden ${used} tanesi kullanıldı`,
     units: { comparisons: "karşılaştırma", moves: "taşıma" },
     puzzles: {
       "which-one-cares": {
-        title: "Hangisi umursuyor?",
-        brief: "Bütçenin izin verdiğinden daha az soru sorarak sıralayın.",
+        title: "Which one cares?",
+        brief: "Bütçenin izin verdiğinden daha az soru sorarak sırala.",
       },
       "fewest-writes": {
-        title: "En az yazma",
-        brief: "İstediğiniz kadar soru sorun: yeter ki fazla veri taşımayın.",
+        title: "Fewest writes",
+        brief: "İstediğin kadar soru sorun: yeter ki fazla veri taşımayın.",
       },
       "three-edits": {
-        title: "Üç düzenleme",
+        title: "Three edits",
         brief: "En fazla üç çubuğu yeniden biçimlendirin, sonra bütçenin altına inin.",
       },
     },
     verdict: {
       tooManyEdits: (edits: number, max: number) =>
-        `${edits} çubuk değiştirdiniz. En fazla ${max} değiştirebilirsiniz.`,
+        `${edits} çubuk değiştirdin. En fazla ${max} değiştirebilirsin.`,
       overBudget: (used: number, unit: string, budget: number) =>
-        `${used} ${unit}. Bütçe: ${budget}.`,
+        `${used}  ${unit}. Bütçe: ${budget}.`,
       passed: (used: number, unit: string, budget: number) =>
-        `${budget} bütçesinin altında, ${used} ${unit} ile çözüldü.`,
+        `${budget} bütçesinin altında, ${used}  ${unit} ile çözüldü.`,
     },
   },
   recap: {
@@ -139,13 +139,13 @@ const copy: typeof en = {
       "Terslik, sırası yanlış olan bir çifttir ve bu eklemeli sıralama her biri için bir kez kaydırır; Taşıma buna her değeri yerine yazan son işlemi de ekler, ama daha az soru sormak, daha az veri yazmakla aynı hedef değildir",
     ],
     footer:
-      "Gerçek sıralama kütüphaneleri tam olarak buna yaslanır: neredeyse sıralı parçaları eklemeli sıralamaya devrederler, çünkü o biçimde işin neredeyse tamamı zaten yapılmıştır.",
+      "Bazı sıralama kütüphaneleri küçük veya büyük ölçüde sıralı parçaları insertion sort ile işler. Hangi yöntemin uygun olduğu girdiye ve önem verilen maliyete bağlıdır.",
   },
 
   // The guided tours, one per experiment (components/lab/guide/tours.ts).
   tour: {
     intro:
-      "İki sıralama algoritmasına aynı karışık çubuklar verilir. Tek düğme ikisini birden başlatır; farkı sayaçlar gösterir.",
+      "Aynı diziyi iki algoritmayla sırala. Oynatma hızından önce karşılaştırma ve yazma sayaçlarına bak.",
     stages: {
       race: {
         bars: "İki sıralayıcı, aynı karışık çubuklar.",
@@ -161,21 +161,21 @@ const copy: typeof en = {
       },
       data: {
         shape:
-          "Verinin biçimini buradan seçin: karışık, neredeyse sıralı, ters. Grafiğin üzerinde sürükleyerek de çizebilirsiniz.",
-        sort: "Yeniden sıralayın.",
+          "Verinin biçimini buradan seç: karışık, neredeyse sıralı, ters. Grafiğin üzerinde sürükleyerek de çizebilirsin.",
+        sort: "Yeniden sırala.",
         figures:
           "Selection Sort her seferinde aynı sayıda soru sorar; Insertion Sort'un sayısı veriyle değişir.",
       },
       distance: {
-        bars: "Sıralı çubuklar. Birini yerinden çok uzağa sürükleyin ya da birkaçını hafifçe kaydırın.",
-        sort: "Sıralayın ve maliyeti karşılaştırın.",
+        bars: "Sıralı çubuklar. Birini yerinden çok uzağa sürükle ya da birkaçını hafifçe kaydırın.",
+        sort: "Sırala ve maliyeti karşılaştır.",
         figures:
           "Önemli olan kaç tanesinin yanlış olduğu değil, ne kadar uzakta olduğu: yanlış sıradaki her çift bir kaydırmaya mal olur.",
       },
       challenge: {
-        array: "Üç sabit dizi, üç bütçe. Bulmacayı yukarıdan seçin.",
-        algorithm: "Sıralayıcıyı seçin: hangisinin daha ucuz olduğu neyin sayıldığına bağlı.",
-        sort: "Sıralayın ve bütçenin içinde kalıp kalmadığına bakın.",
+        array: "Üç sabit dizi, üç bütçe. Bulmacayı yukarıdan seç.",
+        algorithm: "Sıralayıcıyı seç: hangisinin daha ucuz olduğu neyin sayıldığına bağlı.",
+        sort: "Sırala ve bütçenin içinde kalıp kalmadığına bak.",
       },
     },
   },
@@ -183,8 +183,8 @@ const copy: typeof en = {
   // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
   study: {
     topics: {
-      two: "Seçmeli ve eklemeli sıralama",
-      cost: "İş verinin içinde",
+      two: "Selection sort and insertion sort",
+      cost: "The work is in the data",
     },
     notes: {
       "sambol-selection": "Üç dakikadan kısa sürede seçmeli sıralama.",

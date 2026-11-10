@@ -96,7 +96,9 @@ export function RaceStage() {
           {panels.map((panel) => (
             <div key={panel.key} className="min-w-0 space-y-2">
               <div className="flex items-baseline justify-between gap-3">
-                <h3 className="text-body-lg font-semibold text-fg">{panel.title}</h3>
+                <h3 lang="en" className="text-body-lg font-semibold text-fg">
+                  {panel.title}
+                </h3>
                 {/* Not a badge: a word, in the colour that means "settled"
                     everywhere else in this lab. */}
                 <span className="text-caption text-accent">

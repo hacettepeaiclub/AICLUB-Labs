@@ -42,8 +42,10 @@ export default function LearningDialog({
       <div className="lab-palette-panel flex max-h-[min(48rem,calc(100dvh-2rem))] max-w-2xl flex-col">
         <header className="flex items-start justify-between gap-4 border-b border-line/10 p-5 md:p-6">
           <div>
-            <p className="text-overline uppercase text-fg-faint">{t.learn.dialogKicker}</p>
-            <h2 id="lab-learning-title" className="mt-1 text-title text-fg">
+            <p lang="en" className="text-overline uppercase text-fg-faint">
+              {t.learn.dialogKicker}
+            </p>
+            <h2 lang="en" id="lab-learning-title" className="mt-1 text-title text-fg">
               {title}
             </h2>
             <p className="mt-1 text-caption text-fg-faint">{t.learn.inEnglish}</p>
@@ -63,7 +65,7 @@ export default function LearningDialog({
           <div className="space-y-8">
             {guide.map(({ topic, items }) => (
               <section key={topic} aria-labelledby={`learn-${topic}`}>
-                <h3 id={`learn-${topic}`} className="text-body-lg font-semibold text-fg">
+                <h3 lang="en" id={`learn-${topic}`} className="text-body-lg font-semibold text-fg">
                   {learn.topics[topic]}
                 </h3>
                 <ul className="mt-3 space-y-4">

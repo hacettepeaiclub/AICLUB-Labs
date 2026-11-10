@@ -4,10 +4,10 @@ import type en from "../en/cryptographic-hashing";
 
 const copy: typeof en = {
   sources: {
-    title: "Kaynaklar",
+    title: "Sources",
     sha2: "Bu laboratuvarın tarayıcının Web Crypto uygulamasından istediği SHA-256 özetini tanımlar. Laboratuvar özet işlevini kendisi uygulamaz.",
   },
-  inputLabel: "Mesajınız",
+  inputLabel: "Mesajın",
   inputPlaceholder: "merhaba dünya",
   copy: "Kopyala",
   copied: "Kopyalandı",
@@ -15,12 +15,12 @@ const copy: typeof en = {
   hashCopied: "Özet kopyalandı",
 
   unavailable: {
-    title: "Bu laboratuvar burada çalışamıyor.",
+    title: "This lab cannot run here.",
     insecureContext:
-      "Bu laboratuvarın tarayıcınızda özet hesaplayabilmesi için güvenli bir bağlantı (HTTPS) gerekiyor. Sayfayı https:// ile açmak sorunu çözecektir.",
+      "Bu laboratuvarın tarayıcında özet hesaplayabilmesi için güvenli bir bağlantı (HTTPS) gerekiyor. Sayfayı https:// ile açmak sorunu çözecektir.",
     unsupported:
-      "Tarayıcınız yerleşik özetleme özelliğini (Web Crypto) kullanıma sunmadı, bu yüzden gösterilecek bir özet yok. Bir ayar ya da bir eklenti bunu kapatmış olabilir.",
-    note: "Burada hiçbir şey taklit edilmiyor: tarayıcının gerçek SHA-256'sı olmadan dürüstçe gösterilebilecek bir şey yok.",
+      "Tarayıcın yerleşik özetleme özelliğini (Web Crypto) kullanıma sunmadı, bu yüzden gösterilecek bir özet yok. Bir ayar ya da bir eklenti bunu kapatmış olabilir.",
+    note: "Bu deney tarayıcının SHA-256 desteğini gerektirir. Destek yoksa özet hesaplanamaz.",
   },
 
   figures: {
@@ -38,22 +38,22 @@ const copy: typeof en = {
   },
 
   hero: {
-    title: "Ne çıkıyor",
+    title: "What comes out",
     question: "İki farklı mesaj aynı uzunlukta çıktı üretebilir mi?",
     digestLabel: "SHA-256 özeti",
     caption:
-      "Ne isterseniz yazın. Mesaj ne kadar uzun olursa olsun karşılığında tam 64 hex karakter gelir ve mesajın kendisi bu karakterlerin içinde saklı değildir.",
-    help: "Bir mesaj yazın. SHA-256 özeti alanın altında görünür ve siz yazdıkça güncellenir.",
+      "Bir mesaj yaz. SHA-256, mesajın uzunluğundan bağımsız olarak 64 onaltılık karakter üretir. Bu çıktı, mesajın geri okunabilir bir kopyası değildir.",
+    help: "Bir mesaj yaz. SHA-256 özeti alanın altında görünür ve yazdıkça güncellenir.",
     announce: (start: string) => `Özet güncellendi, artık ${start} ile başlıyor.`,
   },
 
   determinism: {
-    kicker: "Aynı mesaj, aynı özet",
-    title: "Her seferinde aynı yanıtı veriyor.",
-    lede: "Mesajı yeniden hash'leyin. Sonuç hiçbir yerde saklanmıyor, bir önceki çalıştırmadan da kopyalanmıyor: her basış, aynı metin için yeni bir SHA-256 hesabı.",
+    kicker: "Same message, same digest",
+    title: "It answers the same way every time.",
+    lede: "Aynı mesajın özetini yeniden hesapla. Her tıklama yeni bir SHA-256 çağrısı yapar; önceki sonuç kullanılmaz.",
     hashAgain: "Yeniden hash'le",
     enough: "Bu kadar çalıştırma yeter",
-    empty: "Henüz çalıştırma yok. Bu mesajı hash'lemek için düğmeye basın.",
+    empty: "Henüz çalıştırma yok. Bu mesajı hash'lemek için düğmeye bas.",
     run: (n: number) => `${n}. çalıştırma`,
     runsLabel: "Çalıştırma",
     distinctLabel: "Farklı özet",
@@ -64,16 +64,15 @@ const copy: typeof en = {
   },
 
   avalanche: {
-    kicker: "Tek küçük değişiklik",
-    title: "Tek bir tuş, özetin yarısını değiştiriyor.",
-    lede: "Tek bir karakteri değiştirin ve iki özeti karşılaştırın. Farklı olan her karakter ikisinde de işaretlenir: gidende üstü çizili, yerine gelende altı çizili.",
+    kicker: "One tiny change",
+    title: "One keystroke rewrites everything.",
+    lede: "Mesajın tek karakterini değiştir. İki özette farklı olan karakterler işaretlenir.",
     before: "Önce",
     after: "Sonra",
-    fieldLabel: "Bir karakteri değiştirin",
+    fieldLabel: "Bir karakteri değiştir",
     help: "Mesajı düzenleyin. Düzenlemeden önceki ve sonraki özetler yukarıda karakter karakter karşılaştırılır.",
-    editPrompt: "İki özeti karşılaştırmak için mesajdaki bir karakteri değiştirin.",
-    caption:
-      "Sayım, iki gerçek özet bit bit karşılaştırılarak yapılıyor; tahmin edilmiyor, bir hedef sayıya doğru canlandırılmıyor da.",
+    editPrompt: "İki özeti karşılaştırmak için mesajdaki bir karakteri değiştir.",
+    caption: "Değişen bit sayısı, iki SHA-256 özeti bit bit karşılaştırılarak hesaplanır.",
     announce: (changed: number, total: number, percent: number) =>
       `${total} bitten ${changed} tanesi değişti, özetin %${percent} kadarı.`,
   },
@@ -87,9 +86,9 @@ const copy: typeof en = {
   },
 
   challenge: {
-    kicker: "Meydan okuma",
-    title: "İki farklı mesajın aynı özeti üretmesini sağlayabilir misiniz?",
-    lede: "Özetin tamamıyla değil, ilk karakteriyle başlayın. Her tur bir karakter daha istiyor ve her biri bir öncekinden on altı kat daha olasılıksız. Çakışma direnci tam olarak bu tırmanış: burada hazır bir çakışma yok, uydurulan bir eşleşme de yok.",
+    kicker: "The challenge",
+    title: "Can you make two different messages produce the same digest?",
+    lede: "Önce özetin ilk karakterini eşleştirmeyi dene. Her turda bir karakter daha istenir. Rastgele bir denemenin başarı olasılığı her ek karakterde 16 kat azalır.",
     inputA: "Mesaj A",
     inputB: "Mesaj B",
     identical:
@@ -113,13 +112,13 @@ const copy: typeof en = {
   },
 
   usage: {
-    kicker: "Gerçek hayatta",
-    title: "Özetlerin karşınıza çıktığı yerler.",
+    kicker: "In the wild",
+    title: "Where digests turn up.",
     lede: "Aynı sabit boyutlu parmak izi, beş farklı biçimde kullanılıyor.",
     items: {
       git: {
         label: "Git",
-        body: "Git her commit'i, içeriğini ve ebeveyninin hash'ini hash'leyerek tanımlar. Geçmişteki bir satırı değiştirin, sonraki bütün hash'ler değişir, kurcalama görünür olur.",
+        body: "Git her commit'i, içeriğini ve ebeveyninin hash'ini hash'leyerek tanımlar. Geçmişteki bir satırı değiştir, sonraki bütün hash'ler değişir, kurcalama görünür olur.",
       },
       passwords: {
         label: "Parolalar",
@@ -131,7 +130,7 @@ const copy: typeof en = {
       },
       blockchain: {
         label: "Blok zinciri",
-        body: "Her blok bir öncekinin hash'ini içerir ve böylece birbirlerine zincirlenir. Eski bir bloğu değiştirin, sonraki bütün hash'ler bozulur; defteri kurcalamaya karşı görünür kılan da budur.",
+        body: "Her blok bir öncekinin hash'ini içerir ve böylece birbirlerine zincirlenir. Eski bir bloğu değiştir, sonraki bütün hash'ler bozulur; defteri kurcalamaya karşı görünür kılan da budur.",
       },
       signatures: {
         label: "İmzalar",
@@ -147,19 +146,18 @@ const copy: typeof en = {
       "İki özetin baştan paylaştığı her yeni hex karakter on altı kat daha olasılıksızdır; 64 karakterin birden tutmasının ulaşılmaz olmasının nedeni bu",
     ],
     footer:
-      'Bu sayfadaki hiçbir şey saklanmıyor ya da taklit edilmiyor: her özet, yazdığınız metin üzerinde tarayıcınızda çalışan crypto.subtle.digest("SHA-256", …) çağrısının sonucu.',
+      'Özetler tarayıcında crypto.subtle.digest("SHA-256", …) ile hesaplanır. Mesaj ve özetler bu sayfa tarafından kaydedilmez.',
   },
 
   // The guided tours, one per experiment (components/lab/guide/tours.ts).
   tour: {
     intro:
-      "Ne yazarsanız yazın 64 hex karaktere dönüşür. Tek bir karakteri değiştirip sonucun ne kadarının değiştiğini sayarsınız.",
+      "Bir mesaj yaz, ardından tek karakterini değiştir. Özette değişen karakterleri ve bit sayısını karşılaştır.",
     stages: {
       digest: {
-        type: "Bu kutuya istediğinizi yazın. Tur, metnin sonuna bir ünlem ekledi.",
+        type: "Bu kutuya istediğini yaz. Tur, metnin sonuna bir ünlem ekledi.",
         digest: "Tek bir karakter fazlası, özetin bitlerinin yaklaşık yarısını değiştirdi.",
-        length:
-          "Mesaj istediğiniz uzunlukta olabilir; özet her zaman 64 hex karakter, yani 256 bit.",
+        length: "Mesaj istediğin uzunlukta olabilir; özet her zaman 64 hex karakter, yani 256 bit.",
       },
       determinism: {
         again: "Aynı mesajı yeniden hash'leyin. Her basış yeni bir SHA-256 hesabı.",
@@ -167,14 +165,14 @@ const copy: typeof en = {
         distinct: "Şimdiye kadarki çalıştırmalar ve kaç farklı özet verdikleri: her zaman bir.",
       },
       avalanche: {
-        edit: "Mesajı buradan değiştirin. Tur tek bir harf ekledi.",
+        edit: "Mesajı buradan değiştir. Tur tek bir harf ekledi.",
         compare: "Önceki ve sonraki özet. Farklı olan her karakter ikisinde de işaretli.",
         count:
           "Değişen bitler, iki gerçek özet bit bit karşılaştırılarak sayıldı: yaklaşık yarısı.",
       },
       collision: {
         fields: "İki mesaj, iki özet. Amaç, ilk karakterlerinin aynı olması.",
-        type: "İkinci mesajı değiştirip yeniden deneyin. Tur bir harf ekledi.",
+        type: "İkinci mesajı değiştirip yeniden dene. Tur bir harf ekledi.",
         rounds:
           "Her tur bir karakter daha eşleşmesini ister ve bir öncekinden on altı kat daha zordur.",
       },
@@ -184,8 +182,8 @@ const copy: typeof en = {
   // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
   study: {
     topics: {
-      digest: "Sabit uzunluk, her seferinde aynı cevap",
-      collision: "Çakışma direnci",
+      digest: "Fixed length, same answer every time",
+      collision: "Collision resistance",
     },
     notes: {
       "paar-hash": "Bir hash fonksiyonunun neyi garanti etmesi gerektiğine dair üniversite dersi.",

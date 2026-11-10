@@ -92,7 +92,9 @@ export function LessonPanel({
       <nav aria-label={copy.lessonsLabel} className="space-y-3">
         {TOPICS.map((topic) => (
           <div key={topic}>
-            <p className="text-overline uppercase text-fg-faint">{TOPIC_TITLE[topic][language]}</p>
+            <p lang="en" className="text-overline uppercase text-fg-faint">
+              {TOPIC_TITLE[topic].en}
+            </p>
             <div className="mt-1.5 flex flex-wrap gap-1.5">
               {LESSONS.filter((l) => l.topic === topic).map((l) => (
                 <button
@@ -104,7 +106,7 @@ export function LessonPanel({
                   onClick={() => onPick(l.id)}
                   className="calc-lesson"
                 >
-                  {l.title[language]}
+                  <span lang="en">{l.title.en}</span>
                   {!offered(l, model.id) && (
                     <span className="sr-only"> ({copy.notOnModel(model.name)})</span>
                   )}
@@ -117,7 +119,9 @@ export function LessonPanel({
 
       <div className="calc-card">
         <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-          <h3 className="text-title text-fg">{lesson.title[language]}</h3>
+          <h3 lang="en" className="text-title text-fg">
+            {lesson.title.en}
+          </h3>
           {available && (
             <p className="font-mono text-caption text-fg-faint">
               {finished ? copy.done : copy.step(current + 1, steps.length)}
@@ -196,7 +200,7 @@ export function LessonPanel({
           )}
           {finished && next && (
             <Button size="sm" onClick={() => onPick(next.id)}>
-              {copy.nextLesson}: {next.title[language]}
+              {copy.nextLesson}: <span lang="en">{next.title.en}</span>
             </Button>
           )}
         </div>

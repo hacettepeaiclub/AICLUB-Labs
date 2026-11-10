@@ -4,20 +4,20 @@ import type en from "../en/word-embeddings-3d";
 
 const copy: typeof en = {
   sources: {
-    title: "Kaynaklar",
+    title: "Sources",
     gloveVectors:
       "Bu laboratuvarın okuduğu vektörleri destekler. Üç boyutlu görünüm izdüşümü değiştirir, altındaki gömmeleri değil.",
   },
-  lede: "Aynı kelimeler, aynı vektörler, bir eksen daha. Bulutu döndürmek için sürükleyin.",
+  lede: "Aynı kelime vektörlerinin üç boyutlu PCA izdüşümünü incele. Görünümü döndürmek için sürükle.",
   honesty:
-    "Bu, gömmenin gerçek görüntüsü değildir. Uzayın 300 boyutu var; döndürdüğünüz şey, onun üç PCA eksenine indirgenmiş bir görünümü: düz haritadan bir eksen fazla, yine de neredeyse hiçbiri.",
+    "Bu görünüm 300 boyutlu vektörlerin yalnız üç PCA bileşenini gösterir. Bir eksen eklemek bütün uzaklıkların korunduğu anlamına gelmez.",
   compare:
     "Bu bir prototip ve dersten bilerek ayrı tutuldu. Derinlik, bulutu bir mekân gibi hissettiriyor; ama projeksiyonu daha doğru yapmıyor. Bu takasın öğretmeye değip değmediğine karar vermek, prototipi yapmanın asıl sebebi.",
   error: "Kelime vektörleri yüklenemedi.",
   varianceLabel: "Açıklanan varyans",
   varianceHint: (dimensions: number) => `${dimensions} eksenin üçü`,
   selectedLabel: "Seçili",
-  recapTitle: "Bu prototip ne gösteriyor",
+  recapTitle: "What this prototype shows",
   recap: {
     lessons: [
       "Üç eksen, uzayın ikiden biraz fazlasını taşıyor, yine de neredeyse hiçbirini.",
@@ -27,7 +27,7 @@ const copy: typeof en = {
   },
   map: {
     mapLabel:
-      "Üç boyutta kelime bulutu. Döndürmek için sürükleyin. Ok tuşları en yakın kelimeler arasında gezinir, Shift ve ok tuşları görüşü çevirir, Enter seçer.",
+      "Üç boyutta kelime bulutu. Döndürmek için sürükle. Ok tuşları en yakın kelimeler arasında gezinir, Shift ve ok tuşları görüşü çevirir, Enter seçer.",
     hint: "Döndürmek için sürükle · Shift + ok tuşları",
     pointLabel: (word: string, gloss: string) => `${word}, ${gloss}`,
     neighbourLabel: (word: string, gloss: string, rank: number, score: string) =>

@@ -92,7 +92,13 @@ test("an address with no lab shows the not-found page", async ({ page }) => {
 
 // Automated accessibility checks catch only part of what matters, but what
 // they catch is never acceptable: a serious or critical finding fails.
-for (const path of ["/", "/labs/gradient-descent/", "/labs/hash-tables/", "/labs/probability/"]) {
+for (const path of [
+  "/",
+  "/calculator/",
+  "/labs/gradient-descent/",
+  "/labs/hash-tables/",
+  "/labs/probability/",
+]) {
   test(`accessibility: ${path}`, async ({ page }) => {
     await page.goto(path);
     await expect(page.locator("h1")).toBeVisible();

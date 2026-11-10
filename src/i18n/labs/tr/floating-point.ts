@@ -4,7 +4,7 @@ import type en from "../en/floating-point";
 
 const copy: typeof en = {
   sources: {
-    title: "Kaynaklar",
+    title: "Sources",
     ieee754:
       "Bu laboratuvarın hesap yaptığı ikili formatları (float64, float32 ve float16), özel değerlerini ve varsayılan yuvarlamayı tanımlar: en yakın değere, eşitlikte çift olana. Laboratuvarın aritmetiği bu kuralların kendi kesin uygulamasıdır ve tarayıcınınkiyle karşılaştırılarak doğrulanmıştır.",
     goldberg:
@@ -17,7 +17,7 @@ const copy: typeof en = {
       "Ağırlıkları, aktivasyonları ve gradyanları float16 olarak saklayıp belleği neredeyse yarıya indirerek ağ eğitir; float16'nın dar aralığında kaybolan küçük gradyan değerlerini geri kazanmak için kaybı ölçeklendirir.",
   },
 
-  invalid: "Bu laboratuvarın okuyabileceği bir sayı değil. 0.1, -2.5e-8, 1/3 ya da 0,1 deneyin.",
+  invalid: "Bu laboratuvarın okuyabileceği bir sayı değil. 0.1, -2.5e-8, 1/3 ya da 0,1 dene.",
   showAll: (count: number) => `${count} basamağın hepsini göster`,
   showLess: "Yeniden katla",
   storedExactly: "Kesin olarak saklandı: hiçbir şey kaybolmadı.",
@@ -31,20 +31,21 @@ const copy: typeof en = {
 
   // 1 ----------------------------------------------------------------------
   store: {
-    title: "Gerçekte saklanan",
-    question: "Bir sayı yazın. Bilgisayarınız gerçekte neyi saklıyor?",
+    title: "What is actually stored",
+    question:
+      "Bir sayı yaz. Saklanan değerin tam ondalık gösterimini girdiğin sayıyla karşılaştır.",
     inputLabel: "Bir sayı",
     storedAs: "Saklanan değer",
     format: "float64, JavaScript'in tek sayı türü",
     prints: (shown: string) =>
-      `Tarayıcınız bunu ${shown} olarak yazdırır: aynı saklanan değere geri dönüşen en kısa ondalık.`,
+      `Tarayıcın bunu ${shown} olarak yazdırır: aynı saklanan değere geri dönüşen en kısa ondalık.`,
     tooBig: "64 bite sığmayacak kadar büyük. Infinity olarak saklanır.",
     tooSmall: "64 bitle gösterilemeyecek kadar küçük. 0 olarak saklanır.",
     infinity: "Infinity kendi başına bir değerdir ve kesin olarak saklanır.",
     notANumber: "NaN kendisi olarak saklanır: kendisine bile eşit olmayan tek değer.",
     another: "Başka bir tane göster",
     caption:
-      "İşaretli basamaklar, saklanan değerin yazdığınızla uyuşmayı bıraktığı yerdir. Bu sayfadaki her saklanan değer kesin olarak gösterilir: laboratuvar float ile değil, tam sayılarla hesap yapar.",
+      "İşaretlenen basamaklar, saklanan değer ile girdinin farklılaştığı yeri gösterir. Tam ondalık açılımı hesaplamak için tamsayı aritmetiği kullanılır.",
     figures: {
       offBy: "Fark",
       relative: "Oransal fark",
@@ -56,18 +57,18 @@ const copy: typeof en = {
 
   // 2 ----------------------------------------------------------------------
   sum: {
-    kicker: "İkisini toplamak",
-    title: "0.1 + 0.2 kaç eder?",
-    lede: "Bakmadan önce karar verin. Sonra istediğiniz iki sayıyı girin; toplamın kesin değeri, hiçbir basamağı atılmadan yazılır.",
-    question: "Tarayıcınız 0.1 + 0.2 için ne buluyor?",
+    kicker: "Adding two of them",
+    title: "What is 0.1 + 0.2?",
+    lede: "Önce toplamı tahmin et. Sonra iki sayıyı gir ve float işleminin ürettiği değerin tam açılımını incele.",
+    question: "Tarayıcın 0.1 + 0.2 için ne buluyor?",
     options: {
       exact: "Tam olarak 0.3",
       above: "0.3'ten biraz fazla",
       below: "0.3'ten biraz az",
     },
-    yours: "Tahmininiz",
+    yours: "Tahminin",
     actual: "Olan",
-    agreed: "Bunu bekliyordunuz.",
+    agreed: "Bunu bekliyordun.",
     disagreed: "Neredeyse herkes tam olarak 0.3 bekler.",
     answer:
       "Biraz fazla: 0.30000000000000004. İki sayı da saklanırken biraz yukarı yuvarlandı ve toplamları, 0.3'ün aldığı değerin bir adım üstündeki saklanan değere yuvarlanıyor.",
@@ -89,7 +90,7 @@ const copy: typeof en = {
       sum: "a + b",
       target: "saklanan sonuç",
     },
-    same: "Aynı saklanan değer: burada toplam, sonucu doğrudan yazmışsınız gibi çıkıyor.",
+    same: "Aynı saklanan değer: burada toplam, sonucu doğrudan yazmışsın gibi çıkıyor.",
     tie: "Kesin toplam iki float64 değerinin tam ortasına düşüyor. Eşitlikte kural, son biti 0 olana gitmektir; burada o da üstteki.",
     apart: (steps: string) =>
       `${steps} uzakta: toplam, sonucu doğrudan yazınca elde edilen sayı değil.`,
@@ -112,10 +113,10 @@ const copy: typeof en = {
 
   // 3 ----------------------------------------------------------------------
   bits: {
-    kicker: "Bitlerin içi",
-    title: "Bir biti çevirin, sayıyı izleyin.",
-    lede: "Bu float32: float64 ile aynı tasarım, yarısı kadar bit, böylece hepsi sığıyor. Her kare bir bit. Herhangi birine tıklayın.",
-    hint: "Önce soldan ikinci kareyi, sonra en sondakini deneyin.",
+    kicker: "Inside the bits",
+    title: "Flip a bit and watch the number.",
+    lede: "Float32 sayıları 32 bitle saklanır. Her kare bir bittir. Bir kareye tıklayıp işaret, üs veya kesir alanındaki değişimin sayıyı nasıl etkilediğini gör.",
+    hint: "Önce soldan ikinci kareyi, sonra en sondakini dene.",
     groupLabel: "Bir float32'nin 32 biti, en anlamlıdan başlayarak",
     bitLabel: (position: number, field: string, value: number) =>
       `32 bitin ${position}. biti, ${field}, şu an ${value}`,
@@ -132,7 +133,7 @@ const copy: typeof en = {
     named:
       "Üç alan. Üs, ikili noktanın yerini kaydırır; kesir, noktadan sonraki basamakları tutar. Tasarımın tamamı bu; float64 da aynısı, yalnızca 11 ve 52 bitle.",
     formula: "Okunuşu",
-    setLabel: "Bitleri bir sayıdan ayarlayın",
+    setLabel: "Bitleri bir sayıdan ayarla",
     specials: {
       infinity: "Üs bitlerinin hepsi 1, kesir sıfır: bu desen Infinity demek.",
       nan: "Üs bitlerinin hepsi 1, kesir sıfır değil: bu desen NaN, yani sayı değil demek.",
@@ -152,13 +153,13 @@ const copy: typeof en = {
 
   // 4 ----------------------------------------------------------------------
   ruler: {
-    kicker: "Yazabildiği her değer",
-    title: "Sayılar eşit aralıklı değil.",
-    lede: "Gerçek bir format milyarlarca değer tutar, çizilemeyecek kadar çok. Bu, aynı tasarımın oyuncak boyutu; saklayabildiği her değer tek bir çizgiye sığıyor.",
+    kicker: "Every value it can write",
+    title: "The numbers are not evenly spaced.",
+    lede: "Bu küçük format, kayan noktalı sayıların çalışma biçimini az sayıda bitle gösterir. Temsil edilebilen değerlerin tamamını çizgi üzerinde görebilirsin.",
     exponentBits: "Üs bitleri",
     fractionBits: "Kesir bitleri",
     controlsLabel: "Format",
-    pick: "Bir değer seçin",
+    pick: "Bir değer seç",
     pickValue: (value: string, n: number, total: number) => `${value}, ${total} değerin ${n}.'si`,
     lineLabel: (count: number, largest: string, perDoubling: number) =>
       `0 ile ${largest} arasında ${count} değer. Her iki katına çıkışta ${perDoubling} tane var, bu yüzden aralıklar her seferinde ikiye katlanıyor.`,
@@ -181,12 +182,12 @@ const copy: typeof en = {
 
   // 5 ----------------------------------------------------------------------
   gap: {
-    kicker: "Yakınlaştırmak",
-    title: "Büyük sayı, büyük boşluk.",
-    lede: "Gerçek bir formata dönelim: float32. Sayının büyüklüğünü kaydırın ve saklayabildiği bir sonraki sayıya olan uzaklığa bakın.",
+    kicker: "Zooming in",
+    title: "Bigger numbers, bigger gaps.",
+    lede: "Float32 sayının büyüklüğünü değiştir. Temsil edilebilen bir sonraki sayıya olan uzaklığı incele.",
     slider: "Sayının büyüklüğü",
     sliderValue: (power: string) => `yaklaşık 2 üzeri ${power}`,
-    inputLabel: "Ya da yazın",
+    inputLabel: "Ya da yaz",
     value: "Bu float32",
     next: "Bir sonraki",
     plusOne: "Bu sayı + 1",
@@ -214,8 +215,8 @@ const copy: typeof en = {
 
   // 6 ----------------------------------------------------------------------
   formats: {
-    kicker: "Yapay zekâ için daha az bit",
-    title: "Aralık mı, hassasiyet mi: birini seçin.",
+    kicker: "Fewer bits, for AI",
+    title: "Range or precision: pick one.",
     lede: "Bir yapay sinir ağı milyarlarca sayı saklar ve 16 bitlik bir sayı, 32 bitlik bir sayının yarısı kadar bellek kaplar. İki 16 bitlik format bitlerini farklı harcar: float16 daha çok kesir biti tutar, bfloat16 float32'nin üssünü korur.",
     examplesLabel: "Örnek değerler",
     examples: {
@@ -224,7 +225,7 @@ const copy: typeof en = {
       activation: "Büyük bir aktivasyon",
       third: "Üçte bir",
     },
-    inputLabel: "Ya da bir sayı yazın",
+    inputLabel: "Ya da bir sayı yaz",
     status: {
       exact: "kesin",
       rounded: (offBy: string) => `yuvarlandı, fark ${offBy}`,
@@ -245,46 +246,46 @@ const copy: typeof en = {
     bfloatNote:
       "bfloat16, IEEE 754'te yer almaz. float32 ile aynı yerleşime sahiptir, yalnızca kesir 23 bitten 7 bite kısaltılmıştır; laboratuvar ona da diğerleri gibi yuvarlar: en yakın değere, eşitlikte çift olana.",
     caption:
-      "2 × 10⁻⁸ büyüklüğündeki bir gradyan bfloat16'da 2.0023 × 10⁻⁸ olarak yaşar, float16'da ise 0 olur, çünkü float16 yaklaşık 6 × 10⁻⁸'in altına inemez. bfloat16 ile eğitim bu tür değerleri ek bir düzenek olmadan korur; float16 ile eğitimde kaybolmasınlar diye kaybın büyütülmesi gerekir.",
+      "Yaklaşık 2 × 10⁻⁸ büyüklüğündeki değer bfloat16’da sıfırdan farklı kalır, float16’da ise sıfıra yuvarlanır. Float16 eğitiminde küçük gradyanların kaybolmasını azaltmak için loss scaling kullanılabilir.",
   },
 
   // 7 ----------------------------------------------------------------------
   challenge: {
-    kicker: "Sıra sizde",
-    title: "Aritmetiğin olamaz dediği üç şey.",
-    lede: "Her biri bu sayfadaki formatların gerçek bir özelliği. Sayfa cevabınızı baştan beri kullandığı kesin aritmetikle denetliyor.",
+    kicker: "Your turn",
+    title: "Three things arithmetic says cannot happen.",
+    lede: "Görevleri çözmek için sayı formatlarının sınırlarını kullan. Yanıtlar bu labın tam aritmetik hesabıyla kontrol edilir.",
     pickLabel: "Bulmaca",
     solvedLabel: "Çözülen",
     reset: "Baştan başla",
     plusOne: {
       tab: "x + 1 = x",
-      task: "float32'de x + 1'in x'e eşit olduğu bir x sayısı bulun.",
-      hint: "Boşluğun 2'ye ulaştığı yere geri bakın.",
+      task: "float32'de x + 1'in x'e eşit olduğu bir x sayısı bul.",
+      hint: "Boşluğun 2'ye ulaştığı yere geri bak.",
       xLabel: "x",
       stored: "float32'de x",
       result: "float32'de x + 1",
       solved: "Çözüldü: 1 eklemek hiçbir şeyi değiştirmedi.",
       notYet: "Henüz değil: x + 1 farklı bir sayı.",
       infinite:
-        "Infinity + 1 yine Infinity, ama bu boşluklar hakkında bir şey söylemez. Sonlu bir x bulun.",
-      best: (value: string) => `Bulduğunuz en küçük: ${value}`,
+        "Infinity + 1 yine Infinity, ama bu boşluklar hakkında bir şey söylemez. Sonlu bir x bul.",
+      best: (value: string) => `Bulduğun en küçük: ${value}`,
     },
     associative: {
       tab: "(a + b) + c",
-      task: "(a + b) + c ile a + (b + c)'nin farklı çıktığı a, b ve c sayılarını bulun; JavaScript gibi float64'te.",
-      hint: "Çok büyük bir sayıyı küçük bir sayıyla birleştirin.",
+      task: "(a + b) + c ile a + (b + c)'nin farklı çıktığı a, b ve c sayılarını bul; JavaScript gibi float64'te.",
+      hint: "Çok büyük bir sayıyı küçük bir sayıyla birleştir.",
       left: "(a + b) + c",
       right: "a + (b + c)",
       solved: "Çözüldü: toplamaların sırası sonucu değiştirdi.",
       notYet: "Henüz değil: iki sıra da aynı sonucu veriyor.",
       notFinite:
-        "Sonuçlardan biri sonlu bir sayı değil. NaN hiçbir şeye, kendisine bile eşit olmaz, bu yüzden sayılmaz: sonlu a, b ve c bulun.",
+        "Sonuçlardan biri sonlu bir sayı değil. NaN hiçbir şeye, kendisine bile eşit olmaz, bu yüzden sayılmaz: sonlu a, b ve c bul.",
     },
     exact: {
       tab: "Kesin bir ondalık",
-      task: "0 ile 1 arasında, noktadan sonra en fazla üç basamaklı ve float32'nin kesin olarak sakladığı bir sayı bulun. 0.5 sayılmaz.",
+      task: "0 ile 1 arasında, noktadan sonra en fazla üç basamaklı ve float32'nin kesin olarak sakladığı bir sayı bul. 0.5 sayılmaz.",
       hint: "İkili sistem hangi kesirleri kalansız yazabilir?",
-      inputLabel: "Sayınız",
+      inputLabel: "Sayın",
       rules: {
         range: "0 ile 1 arasında",
         places: "noktadan sonra en fazla üç basamak",
@@ -313,20 +314,19 @@ const copy: typeof en = {
 
   // The guided tours, one per experiment (components/lab/guide/tours.ts).
   tour: {
-    intro:
-      "Bir sayı yazın; bilgisayarınızın onun yerine gerçekte neyi sakladığı basamak basamak yazılır.",
+    intro: "Bir sayı yaz. Girdinin saklanan float64 değerinden hangi basamakta ayrıldığını incele.",
     stages: {
       store: {
-        type: "Bu kutuya bir sayı yazın. Tur 0.1 yazdı.",
+        type: "Bu kutuya bir sayı yaz. Tur 0.1 yazdı.",
         stored:
-          "Gerçekte saklanan değer. İşaretli basamaklar, yazdığınızla uyuşmadığı yerden başlar.",
+          "Gerçekte saklanan değer. İşaretli basamaklar, yazdığınla uyuşmadığı yerden başlar.",
         offBy:
           "Saklanan değerin sizinkinden ne kadar saptığı: hem sayı olarak hem de büyüklüğüne oranla.",
-        another: "Bu düğme denemeniz için başka bir örnek yazar.",
+        another: "Bu düğme denemen için başka bir örnek yazar.",
       },
       sum: {
         line: "a ve b'nin saklanan halleri, kesin toplamları ve float64'ün onu yuvarladığı yer.",
-        type: "İstediğiniz iki sayıyı girin. Tur b'yi 0.4 yaptı.",
+        type: "İstediğin iki sayıyı gir. Tur b'yi 0.4 yaptı.",
         steps:
           "Yuvarlanmış toplamın gerçek cevaptan uzaklığı, komşu değerler arasındaki adımlarla sayılmış.",
         reset: "Bu düğme 0.1 + 0.2'yi geri getirir.",
@@ -335,11 +335,11 @@ const copy: typeof en = {
         bits: "float32, her bit bir kare: işaret, üs ve kesir.",
         flip: "Bir bite tıklayınca tersine döner. Tur ikinciyi, üssün en üst bitini çevirdi.",
         value: "Bu bitlerin şimdi anlattığı değer ve üssün seçtiği ikinin kuvveti.",
-        set: "Ya da buradan bir değer seçip hangi bitleri gerektirdiğine bakın.",
+        set: "Ya da buradan bir değer seçip hangi bitleri gerektirdiğine bak.",
       },
       ruler: {
         line: "Küçük bir biçimin saklayabildiği bütün değerler, tek bir çizgide. Her ikiye katlanan aralıkta aynı sayıda değer var.",
-        pick: "Bu kaydırıcıyla bir değer seçin. Bu uçta değerler birbirinden çok uzak.",
+        pick: "Bu kaydırıcıyla bir değer seç. Bu uçta değerler birbirinden çok uzak.",
         bits: "Üs biti eklerseniz çizgi uzar; kesir biti eklerseniz sıklaşır.",
       },
       gap: {
@@ -348,13 +348,13 @@ const copy: typeof en = {
         gap: "Aralık sayıyla birlikte büyüdü ama aralık ÷ sayı neredeyse aynı kaldı: her yerde yaklaşık 7 anlamlı basamak.",
       },
       formats: {
-        type: "Bir sayı yazın; float32, float16 ve bfloat16'daki hali görünür. Tur çok küçük bir gradyan yazdı.",
+        type: "Bir sayı yaz; float32, float16 ve bfloat16'daki hali görünür. Tur çok küçük bir gradyan yazdı.",
         rows: "bfloat16 onu korur, float16 ise 0'a çevirir: aynı 16 bit, farklı harcanmış.",
-        examples: "Diğer örnekleri buradan deneyin.",
+        examples: "Diğer örnekleri buradan dene.",
       },
       challenge: {
-        pick: "Aritmetiğe göre olamayacak üç şey. Buradan birini seçin.",
-        work: "Bunu gerçekleştiren bir sayı bulun. Sayfa, kesin aritmetikle kontrol eder.",
+        pick: "Aritmetiğe göre olamayacak üç şey. Buradan birini seç.",
+        work: "Bunu gerçekleştiren bir sayı bul. Sayfa, kesin aritmetikle kontrol eder.",
         solved: "Çözülen bulmacalar bu tarayıcıda hatırlanır.",
       },
     },
@@ -363,9 +363,9 @@ const copy: typeof en = {
   // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
   study: {
     topics: {
-      stored: "Bir float neyi saklayabilir, neyi saklayamaz",
-      rounding: "Tekrar tekrar yuvarlama",
-      formats: "Aralık mı, hassasiyet mi",
+      stored: "What a float can and cannot store",
+      rounding: "Rounding, again and again",
+      formats: "Range or precision",
     },
     notes: {
       "cp-float": "0,1 + 0,2'nin neden 0,3 olmadığı, en baştan.",

@@ -139,14 +139,14 @@ export const isLabSlug = (slug: string): slug is LabSlug =>
   Object.prototype.hasOwnProperty.call(en.labMeta, slug);
 
 /**
- * A lab's name and one-line description, in the active language.
+ * Canonical English identity with a description in the active language.
  *
  * The registry keeps `meta.ts` as the structural source of truth (slug,
  * category, minutes) and the wording lives here, so the home page can list a
  * lab without loading it and still say its name in Turkish.
  *
  * `termLang` is "en" when the active language leaves the term in English;
- * put it on whatever shows the term, as `lang`. See `englishTerms`.
+ * put it on whatever shows the term, as `lang`. Titles and terms are English.
  *
  * `term` is the subject's own technical name — "Floating point" under the
  * title "0.1 + 0.2". The title says what the lab is about; the term says what
@@ -161,7 +161,12 @@ export function useLabMeta(
 ): { title: string; term: string; termLang?: "en"; figure: string; description: string } | null {
   const t = useT();
   if (!isLabSlug(slug)) return null;
-  return { ...t.labMeta[slug], termLang: t.englishTerms.includes(slug) ? "en" : undefined };
+  return {
+    ...t.labMeta[slug],
+    title: en.labMeta[slug].title,
+    term: en.labMeta[slug].term,
+    termLang: "en",
+  };
 }
 
 export type { Translation } from "./types";

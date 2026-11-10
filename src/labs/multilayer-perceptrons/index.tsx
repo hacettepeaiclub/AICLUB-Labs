@@ -23,7 +23,7 @@ export default function NeuralPlayground() {
       {/* 1 — The playground itself, plus the network's own view of the data */}
       <section aria-labelledby="playground-heading">
         {/* See the note in sorting: hidden heading, honest outline. */}
-        <h2 id="playground-heading" className="sr-only">
+        <h2 lang="en" id="playground-heading" className="sr-only">
           {t.liveTraining}
         </h2>
         <p className="mb-6 max-w-prose text-body-lg text-fg">{t.question}</p>

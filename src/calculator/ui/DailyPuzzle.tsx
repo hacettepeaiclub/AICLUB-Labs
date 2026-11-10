@@ -104,12 +104,12 @@ export function DailyCta({
       <div className="min-w-0">
         <p className="calc-cta-overline">
           <span aria-hidden className="calc-cta-dot" />
-          {copy.dailyOverline(number)}
+          <span lang="en">{copy.dailyOverline(number)}</span>
           {stats.streak > 0 && (
             <span className="text-signal-amber">· {copy.dailyStreak(stats.streak)}</span>
           )}
         </p>
-        <h2 id="calc-cta-title" className="mt-1.5 text-title text-fg">
+        <h2 id="calc-cta-title" lang="en" className="mt-1.5 text-title text-fg">
           {copy.dailyTitle}
         </h2>
         <p className="mt-1.5 max-w-prose text-body-sm text-fg-muted">{copy.dailyLede(modelName)}</p>
@@ -152,7 +152,7 @@ export function DailyQuestion({
     <div className="calc-task">
       <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
         <p className="text-overline uppercase text-fg-faint">
-          {copy.dailyQuestion(index + 1, PUZZLE_LENGTH, task.topic[language])}
+          {copy.dailyQuestion(index + 1, PUZZLE_LENGTH)} · <span lang="en">{task.topic.en}</span>
         </p>
         <p className="calc-tries" aria-label={copy.dailyTriesLeft(left)}>
           {Array.from({ length: TRIES }, (_, i) => (
@@ -199,7 +199,6 @@ function verdictText(verdict: Daily["verdict"], copy: CalculatorCopy): string {
 export function DailyPanel({
   daily,
   copy,
-  language,
   modelName,
   stats,
   today,
@@ -207,7 +206,6 @@ export function DailyPanel({
 }: {
   daily: Daily;
   copy: CalculatorCopy;
-  language: Language;
   modelName: string;
   stats: Stats;
   today: string;
@@ -236,13 +234,16 @@ export function DailyPanel({
   return (
     <div className="min-w-0 space-y-5">
       <div className="calc-card">
-        <h3 className="text-title text-fg">{copy.dailyBoard}</h3>
+        <h3 lang="en" className="text-title text-fg">
+          {copy.dailyBoard}
+        </h3>
         <ol className="calc-grid">
           {daily.tasks.map((task, i) => (
             <BoardRow
               key={task.kind}
               row={daily.progress[i]}
-              label={`${i + 1}. ${task.topic[language]}`}
+              number={i + 1}
+              topic={task.topic.en}
               current={!finished && i === current}
               copy={copy}
             />
@@ -304,12 +305,14 @@ export function DailyPanel({
 
 function BoardRow({
   row,
-  label,
+  number,
+  topic,
   current,
   copy,
 }: {
   row: Row | undefined;
-  label: string;
+  number: number;
+  topic: string;
   current: boolean;
   copy: CalculatorCopy;
 }) {
@@ -327,7 +330,9 @@ function BoardRow({
   while (cells.length < TRIES) cells.push({ state: "open", mark: "", name: copy.dailyCell.open });
   return (
     <li className="calc-grid-row" data-current={current || undefined}>
-      <span className="calc-grid-label">{label}</span>
+      <span className="calc-grid-label">
+        {number}. <span lang="en">{topic}</span>
+      </span>
       <span className="calc-grid-cells">
         {cells.map((cell, i) => (
           <span key={i} className="calc-cell-try" data-state={cell.state} title={cell.name}>

@@ -62,7 +62,7 @@ const en = {
   dailyStreak: (days: number) => (days === 1 ? "1-day streak" : `${days}-day streak`),
   dailyHow:
     "Work the answer out on the calculator, then press “This is my answer”: it reads the screen. A wrong answer tells you whether the right one is higher or lower. 3 points for a first try, 2 for a second, 1 for a third.",
-  dailyQuestion: (n: number, of: number, topic: string) => `Question ${n} of ${of} · ${topic}`,
+  dailyQuestion: (n: number, of: number) => `Question ${n} of ${of}`,
   dailyTriesLeft: (left: number) => (left === 1 ? "1 try left" : `${left} tries left`),
   dailyAnswer: "This is my answer",
   dailyGiveUp: "Give up",
@@ -103,14 +103,14 @@ const en = {
 export type CalculatorCopy = typeof en;
 
 const tr: CalculatorCopy = {
-  overline: "Bilimsel hesap makinesi",
+  overline: en.overline,
   badge: "Araç",
   minutes: "15 dk",
-  title: "Hesap makinemi nasıl kullanırım?",
+  title: en.title,
   description:
-    "Modelini seç ve tuş tuş öğren: işlem önceliği, derece ve radyan, varyans ve regresyon, olasılık, denklemler, integral ve matrisler. Simülatör yalnızca doğru tuşu kabul eder, yani kaybolmazsın.",
-  pickKicker: "1. adım",
-  pickTitle: "Hangi hesap makinesine sahipsin?",
+    "Hesap makinenin modelini seç ve bir ders aç. İşlem önceliği, açı birimleri, istatistik, denklemler ve matrisler için tuş sıralarını dene. Ders modunda sıradaki tuş gösterilir.",
+  pickKicker: en.pickKicker,
+  pickTitle: en.pickTitle,
   pickLede:
     "Model adı ekranın hemen üstünde yazar. Burada aynısını seç; tuşlar ve menüler birebir eşleşir.",
   modelLabel: "Hesap makinesi modeli",
@@ -118,8 +118,8 @@ const tr: CalculatorCopy = {
   notListed:
     "fx-991CW henüz yok: Casio menülerinin sırasını yayımlamıyor, tahminle yazılmış bir ders seni yanlış tuşa götürür.",
   notOnModel: (name: string) => `${name} bunu yapamaz: bunun için bir tuşu ya da modu yok.`,
-  practiseKicker: "2. adım",
-  practiseTitle: "Tuş tuş öğren",
+  practiseKicker: en.practiseKicker,
+  practiseTitle: en.practiseTitle,
   practiseLede:
     "Bir ders seç. Sıradaki tuş ışıkla gösterilir; ona ekranda bas ya da klavyeden yaz. Sonra aynı tuşları kendi hesap makinende dene.",
   practiceLabel: "Çalışma biçimi",
@@ -135,7 +135,7 @@ const tr: CalculatorCopy = {
   restart: "Baştan başla",
   nextLesson: "Sonraki ders",
   done: "Tamamlandı.",
-  allDone: "Son dersi de bitirdin. Başka her şey için serbest kullanım açık.",
+  allDone: "Bu model için dersler tamamlandı. Serbest kullanımda kendi işlemlerini deneyebilirsin.",
   device: (name: string) => `${name} simülatörü`,
   keyboardHint:
     "Bilgisayarda klavyeden de yazabilirsin: rakamlar, + − * / ^ ( ), = için Enter, DEL için Backspace, AC için Esc, ok tuşları.",
@@ -144,8 +144,8 @@ const tr: CalculatorCopy = {
   disclaimer:
     "Bu bir simülasyon. Tuş sıraları Casio'nun bu modeller için yayımladığı kılavuzlardan alındı, ama ekran sadeleştirildi: tek satır giriş, ders kitabı görünümü yok ve yalnızca derslerin kullandığı menüler var. Hesap makinen farklı bir şey gösterirse kendi hesap makinene güven.",
   shiftLabel: "SHIFT açık: sıradaki tuş, üstünde turuncu yazan işi yapar.",
-  dailyOverline: (n: number) => `Günün bulmacası #${n}`,
-  dailyTitle: "Beş soru, her birine üç hak",
+  dailyOverline: en.dailyOverline,
+  dailyTitle: en.dailyTitle,
   dailyLede: (model: string) =>
     `${model} için bugünün soruları. Tuş gösterilmez, yolu sınavdaki gibi sen bulursun. Aynı hesap makinesine sahip herkes aynı beş soruyu alır.`,
   dailyPlay: "Bugünün bulmacasını çöz",
@@ -155,7 +155,7 @@ const tr: CalculatorCopy = {
   dailyStreak: (days: number) => `${days} günlük seri`,
   dailyHow:
     "Cevabı hesap makinesinde bul, sonra “Cevabım bu” düğmesine bas: ekranı okur. Yanlış cevapta doğru cevabın daha büyük mü küçük mü olduğu söylenir. İlk denemede 3, ikincide 2, üçüncüde 1 puan.",
-  dailyQuestion: (n: number, of: number, topic: string) => `Soru ${n} / ${of} · ${topic}`,
+  dailyQuestion: (n: number, of: number) => `Soru ${n} / ${of}`,
   dailyTriesLeft: (left: number) => `${left} hakkın kaldı`,
   dailyAnswer: "Cevabım bu",
   dailyGiveUp: "Pes et",
@@ -164,7 +164,7 @@ const tr: CalculatorCopy = {
   dailyHigher: (left: string) => `Olmadı: cevap daha büyük. ${left}.`,
   dailyLower: (left: string) => `Olmadı: cevap daha küçük. ${left}.`,
   dailyEmpty: "Ekranda henüz bu sorunun cevabı olabilecek bir sonuç yok. Önce hesapla.",
-  dailyBoard: "Bugünün tablosu",
+  dailyBoard: en.dailyBoard,
   dailyCell: {
     higher: "yanlış, cevap daha büyük",
     lower: "yanlış, cevap daha küçük",

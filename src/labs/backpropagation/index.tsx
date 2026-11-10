@@ -38,7 +38,7 @@ export default function Backpropagation() {
     <div className="space-y-20 md:space-y-28">
       {/* 1 — Behaviour first: grab the output. */}
       <section aria-labelledby="bp-pull-heading">
-        <h2 id="bp-pull-heading" className="sr-only">
+        <h2 lang="en" id="bp-pull-heading" className="sr-only">
           {t.pull.title}
         </h2>
         <p className="mb-6 max-w-prose text-body-lg text-fg">{t.pull.question}</p>
