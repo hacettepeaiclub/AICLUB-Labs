@@ -45,7 +45,7 @@ export default function HashTable() {
       </section>
 
       {/* 2 — Two keys, one bucket: sooner than anyone guesses. */}
-      <LabSection kicker={t.birthday.kicker} title={t.birthday.title} lede={t.birthday.lede}>
+      <LabSection deeper kicker={t.birthday.kicker} title={t.birthday.title} lede={t.birthday.lede}>
         <BirthdayStage />
       </LabSection>
 
@@ -55,7 +55,7 @@ export default function HashTable() {
       </LabSection>
 
       {/* 4 — Both strategies, measured against their formulas. */}
-      <LabSection kicker={t.compare.kicker} title={t.compare.title} lede={t.compare.lede}>
+      <LabSection deeper kicker={t.compare.kicker} title={t.compare.title} lede={t.compare.lede}>
         <CompareStage />
       </LabSection>
 
@@ -65,7 +65,7 @@ export default function HashTable() {
       </LabSection>
 
       {/* 6 — Keys that share a step, and a size that shares it too. */}
-      <LabSection kicker={t.modulus.kicker} title={t.modulus.title} lede={t.modulus.lede}>
+      <LabSection deeper kicker={t.modulus.kicker} title={t.modulus.title} lede={t.modulus.lede}>
         <ModulusStage />
       </LabSection>
 

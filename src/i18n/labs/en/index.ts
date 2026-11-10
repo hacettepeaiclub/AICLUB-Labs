@@ -1,3 +1,4 @@
+import generalization from "./generalization";
 import attention from "./attention";
 import backpropagation from "./backpropagation";
 import cacheLocality from "./cache-locality";
@@ -33,6 +34,7 @@ import wordEmbeddings3D from "./word-embeddings-3d";
  * the grid needs those before any lab is chosen.
  */
 export const enLabs = {
+  generalization,
   "word-embeddings-3d": wordEmbeddings3D,
   "word-embeddings": wordEmbeddings,
   "hypothesis-testing": hypothesisTesting,

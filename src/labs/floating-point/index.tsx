@@ -65,7 +65,7 @@ export default function FloatingPoint() {
       </LabSection>
 
       {/* 6 — Spending sixteen bits: range or precision. */}
-      <LabSection kicker={t.formats.kicker} title={t.formats.title} lede={t.formats.lede}>
+      <LabSection deeper kicker={t.formats.kicker} title={t.formats.title} lede={t.formats.lede}>
         <FormatsStage />
       </LabSection>
 

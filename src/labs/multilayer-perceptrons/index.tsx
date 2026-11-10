@@ -46,12 +46,12 @@ export default function NeuralPlayground() {
       </LabSection>
 
       {/* 4 — How learning actually happens */}
-      <LabSection kicker={t.descent.kicker} title={t.descent.title} lede={t.descent.lede}>
+      <LabSection deeper kicker={t.descent.kicker} title={t.descent.title} lede={t.descent.lede}>
         <DescentLab />
       </LabSection>
 
       {/* 5 — The vocabulary, once the behavior is familiar */}
-      <LabSection kicker={t.loop.kicker} title={t.loop.title} lede={t.loop.lede}>
+      <LabSection deeper kicker={t.loop.kicker} title={t.loop.title} lede={t.loop.lede}>
         <ConceptList />
       </LabSection>
 

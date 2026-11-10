@@ -2,6 +2,7 @@ import { useId } from "react";
 import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import { normalPdf, type Result } from "../engine";
+import type { Domain } from "../view";
 import { PLOT, areaPath, coord, criticalList, curvePath, prob, regionsOf, scaleOf } from "../view";
 
 export interface DistributionPlotProps {
@@ -11,6 +12,7 @@ export interface DistributionPlotProps {
   /** Shade the H1 mass that would be missed. Off until section 3. */
   showBeta?: boolean;
   className?: string;
+  domain?: Domain;
 }
 
 /**
@@ -46,6 +48,7 @@ export function DistributionPlot({
   showCritical = true,
   showBeta = true,
   className,
+  domain,
 }: DistributionPlotProps) {
   const copy = useLabCopy("hypothesis-testing");
   const plot = copy.plot;
@@ -54,7 +57,7 @@ export function DistributionPlot({
   const betaHatch = `${baseId}-beta`;
 
   const { mu0, mu1, alpha } = result.params;
-  const scale = scaleOf(result);
+  const scale = scaleOf(result, domain);
   const regions = regionsOf(result.criticals, result.params.testType);
   const criticals = criticalList(result.criticals);
 

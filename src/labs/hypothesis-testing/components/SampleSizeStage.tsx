@@ -1,4 +1,7 @@
 import { Figure, LabSlider, Stage } from "@/components/lab";
+import { useState } from "react";
+import { useLanguage } from "@/i18n";
+import { domainOf } from "../view";
 import { useLabCopy } from "@/i18n/labs";
 import { BOUNDS, evaluate, type Params, type Result } from "../engine";
 import { PLOT, coord, prob } from "../view";
@@ -19,9 +22,8 @@ const CURVE_N = Array.from({ length: BOUNDS.n.max - BOUNDS.n.min + 1 }, (_, i) =
  * Everything in this section falls out of one line, `SE = sigma / sqrt(n)`,
  * and the section's job is to make that chain visible rather than assert it:
  * n moves SE, SE moves the critical value, the critical value moves beta, and
- * beta is power. The plot narrows because the window narrows with it — the
- * reference implementation frames the x axis at `+/- 4.5 SE`, so this is the
- * honest version of "the curves get tighter".
+ * beta is power. A fixed horizontal domain makes narrowing visible; the
+ * optional automatic domain keeps the reference implementation's framing.
  *
  * The power curve beside it is the same `evaluate()` the rest of the lab uses,
  * run once per sample size with everything else held. Its square-root shape is
@@ -31,6 +33,9 @@ export function SampleSizeStage({ result, onChange }: SampleSizeStageProps) {
   const copy = useLabCopy("hypothesis-testing");
   const s = copy.sampleSection;
   const { n } = result.params;
+  const { language } = useLanguage();
+  const [fixed, setFixed] = useState(true);
+  const fixedDomain = domainOf(evaluate({ ...result.params, n: BOUNDS.n.min }));
 
   // One real run per n. 99 evaluations of closed-form arithmetic: cheaper than
   // the render it feeds.
@@ -55,7 +60,28 @@ export function SampleSizeStage({ result, onChange }: SampleSizeStageProps) {
       announcement={s.announce(n, coord(result.se), prob(result.power))}
       viewport={
         <div className="space-y-3">
-          <DistributionPlot result={result} />
+          <div className="flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              aria-pressed={fixed}
+              onClick={() => setFixed(!fixed)}
+              className="min-h-11 rounded border border-accent/40 px-3 text-body-sm text-accent"
+            >
+              {language === "tr"
+                ? fixed
+                  ? "X ekseni: sabit"
+                  : "X ekseni: otomatik"
+                : fixed
+                  ? "X axis: fixed"
+                  : "X axis: automatic"}
+            </button>
+            <p className="text-caption text-fg-muted">
+              {language === "tr"
+                ? "Sabit ölçekte n arttıkça eğrinin yatayda daralmasını izle. Yükseklik otomatik ölçeklenir."
+                : "On a fixed horizontal scale, watch the curves narrow as n grows. Height is scaled automatically."}
+            </p>
+          </div>
+          <DistributionPlot result={result} domain={fixed ? fixedDomain : undefined} />
           <div className="rounded-lg border border-line/20 bg-ink-900 p-3">
             <p className="text-overline uppercase text-fg-faint">{s.curveTitle}</p>
             <svg

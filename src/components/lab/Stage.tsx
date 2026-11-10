@@ -80,6 +80,8 @@ export interface StageProps {
   announcement?: string;
   /** Names what the disclosure holds. Never "Advanced", never a gear icon. */
   secondaryLabel?: string;
+  /** Keep infrequent settings behind a disclosure on desktop as well. */
+  secondaryCollapsible?: boolean;
   width?: StageWidth;
   /**
    * Where the controls sit on a wide screen.
@@ -109,6 +111,7 @@ export function Stage({
   caption,
   announcement,
   secondaryLabel,
+  secondaryCollapsible = false,
   width = "wide",
   controls = "rail",
   className,
@@ -182,7 +185,7 @@ export function Stage({
                   data-stage-part="secondary"
                   className={cn(
                     "group rounded border border-line/10",
-                    stacked ? "w-full text-left" : "lg:hidden",
+                    stacked || secondaryCollapsible ? "w-full text-left" : "lg:hidden",
                   )}
                 >
                   <summary
@@ -204,7 +207,7 @@ export function Stage({
                 {/* At lg and up the rail has room for all of it, so nothing
                     hides. Stacked, the disclosure above is the only copy —
                     a second one would repeat every control. */}
-                {!stacked && (
+                {!stacked && !secondaryCollapsible && (
                   <div data-stage-part="secondary" className="hidden space-y-3 lg:block">
                     {secondary}
                   </div>

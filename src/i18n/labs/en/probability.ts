@@ -1,6 +1,13 @@
 /** English prose for the probability lab. Its shape is the contract `tr/probability.ts` must meet. */
 
 const copy = {
+  routes: {
+    label: "Choose a short exploration",
+    hint: "Six independent experiments. Start with one question; you do not need to finish them all in one visit.",
+    clues: "01 · When a clue changes the odds",
+    groups: "02 · When combining groups misleads",
+    repeats: "03 · When repetition reveals a pattern",
+  },
   sources: {
     title: "Sources",
     statisticalInference:

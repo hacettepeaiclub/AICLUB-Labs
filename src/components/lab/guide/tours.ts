@@ -68,6 +68,21 @@ type Tours = {
  * claims, for a lab that opens with something other than a stage.
  */
 export const TOURS: Tours = {
+  generalization: {
+    experiment: [
+      { id: "map", target: { part: "viewport" } },
+      {
+        id: "reveal",
+        target: { part: "primary", select: "button", nth: 0 },
+        action: { kind: "click" },
+      },
+      {
+        id: "smooth",
+        target: { part: "primary", select: "input[type=range]" },
+        action: { kind: "slide", to: 0.3 },
+      },
+    ],
+  },
   attention: {
     sentence: [
       { id: "sentence", target: { part: "viewport", select: "[role=listbox]" } },

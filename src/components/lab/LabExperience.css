@@ -1,0 +1,87 @@
+/* Learning chrome: compact invitations, optional depth and explicit feedback. */
+.lab-orientation {
+  margin-top: 1.25rem;
+  padding: 1rem 1.125rem 0.25rem;
+  border: 1px solid rgb(var(--accent) / 0.25);
+  border-left: 3px solid rgb(var(--accent));
+  border-radius: 0.5rem;
+  background: rgb(var(--ink-800) / 0.92);
+}
+.journey-chapter {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  min-height: 44px;
+  padding: 0.65rem 0.5rem;
+  border-radius: 0.25rem;
+  text-align: left;
+  font-size: 0.8rem;
+  color: rgb(var(--fg-muted));
+}
+.lab-orientation > div > div {
+  flex-basis: 13rem;
+}
+.journey-chapter:hover {
+  background: rgb(var(--accent-soft));
+  color: rgb(var(--fg));
+}
+.lab-content [data-stage],
+.lab-content .lab-section,
+.lab-content h2 {
+  scroll-margin-top: 6rem;
+}
+.lab-content > div > .lab-section {
+  margin-top: 3.5rem;
+}
+.lab-deeper {
+  border: 1px solid rgb(var(--line) / 0.18);
+  border-radius: 0.5rem;
+  padding: 1rem 1.25rem;
+  background: rgb(var(--ink-800) / 0.8);
+}
+.lab-deeper > summary {
+  cursor: pointer;
+  padding: 0.25rem 0;
+  min-height: 44px;
+}
+.lab-deeper[open] > summary {
+  border-bottom: 1px solid rgb(var(--line) / 0.15);
+  padding-bottom: 1rem;
+}
+.transfer-check {
+  margin-bottom: 1.5rem;
+  border: 1px solid rgb(var(--accent) / 0.3);
+  border-top: 3px solid rgb(var(--accent));
+  border-radius: 0.5rem;
+  padding: clamp(1rem, 3vw, 2rem);
+  background: rgb(var(--ink-800));
+}
+.transfer-option {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-height: 52px;
+  padding: 0.85rem 1rem;
+  border: 1px solid rgb(var(--line) / 0.2);
+  border-radius: 0.375rem;
+  color: rgb(var(--fg));
+  text-align: left;
+  font-size: 0.875rem;
+}
+.transfer-option:hover {
+  border-color: rgb(var(--accent) / 0.6);
+}
+.transfer-option[aria-pressed="true"] {
+  border-color: rgb(var(--accent));
+  background: rgb(var(--accent-soft));
+}
+.transfer-letter {
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  flex-shrink: 0;
+  border: 1px solid rgb(var(--line) / 0.25);
+  border-radius: 0.25rem;
+  color: rgb(var(--accent));
+}

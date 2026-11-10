@@ -9,12 +9,10 @@ const SLUGS = Object.keys(GUIDES);
 test.beforeEach(async ({ page }) => {
   // A test run is not a visit: the analytics script never loads.
   await page.route("**/cloud.umami.is/**", (route) => route.abort());
-  // English, and every lab's first-visit welcome already seen, so no modal
-  // stands between the test and the page.
-  await page.addInitScript((slugs) => {
+  // A genuinely fresh visit: orientation is inline, no welcome dismissal.
+  await page.addInitScript(() => {
     localStorage.setItem("aiclub-labs-language", "en");
-    localStorage.setItem("aiclub-labs-welcomed", JSON.stringify(slugs));
-  }, SLUGS);
+  });
 });
 
 /** Uncaught exceptions and console errors, collected for the whole test. */
@@ -44,6 +42,8 @@ for (const slug of SLUGS) {
     const errors = collectErrors(page);
     await page.goto(`/labs/${slug}/`);
     await expect(page.locator("h1")).toBeVisible();
+    await expect(page.getByRole("button", { name: "Try it", exact: false })).toBeEnabled();
+    await page.getByRole("button", { name: "Try it", exact: false }).click();
 
     // The embedding lab opens with a guess; its map, and its one stage,
     // arrive once the guess is made.
@@ -53,6 +53,10 @@ for (const slug of SLUGS) {
       await expect(predict).toBeEnabled({ timeout: 15_000 });
       await predict.click();
     }
+
+    await expect(page.locator("[data-transfer-check]")).toHaveCount(1);
+    await page.locator("[data-transfer-check] button").first().click();
+    await expect(page.locator("[data-transfer-check] [aria-live]")).not.toBeEmpty();
 
     // A stage gets the tour at its position on the page, so the two counts
     // must agree: a stage added without a tour, or a tour left behind when a

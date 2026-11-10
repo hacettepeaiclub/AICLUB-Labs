@@ -68,8 +68,7 @@ export interface Scale {
  * this only matters while a value is mid-drag — but sharing it is the reason
  * the two areas can be compared by eye at all.
  */
-export function scaleOf(result: Result): Scale {
-  const domain = domainOf(result);
+export function scaleOf(result: Result, domain: Domain = domainOf(result)): Scale {
   const span = domain.hi - domain.lo || 1;
   const peak = normalPdf(0, 0, result.se) || 1;
   const baseline = PLOT.height - PLOT.padBottom;

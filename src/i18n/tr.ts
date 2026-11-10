@@ -70,7 +70,7 @@ export const tr: Translation = {
     // İlk sürümdeki başlık geri alındı: hem bilgisayar bilimini hem yapay
     // zekâyı adıyla söylüyor ve yine bir eylemle başlıyor.
     title: "Bilgisayar biliminin ve yapay zekânın arkasındaki fikirlerle oynayın.",
-    lede: "Algoritmalar, yapay sinir ağları ve bilgisayarın içindeki işleyiş üzerine on yedi deney. Uzun anlatım yerine elinizle değiştirip sonucunu hemen göreceğiniz düzenekler var.",
+    lede: "Algoritmaları, sinir ağlarını ve bilgisayarın içindeki işleyişi keşfet. Tahmin et, bir şeyi değiştir ve sonucun neden değiştiğini gör.",
     cta: "Denemeye başla",
     labs: "Laboratuvarlar",
     labCount: (n: number) => `${n} düzenek`,
@@ -200,6 +200,12 @@ export const tr: Translation = {
   // terimi burada değil: içinde Türkçe bir kelime de var.
   englishTerms: ["attention", "gradient-descent", "tokenization", "word-embeddings"],
   labMeta: {
+    generalization: {
+      title: "Ezberledi mi, öğrendi mi?",
+      term: "Genelleme",
+      figure: "esnek bir sınır tanıdık noktalara uyuyor, sonra yeni örneklerle karşılaşıyor.",
+      description: "Gördüğün noktalara uyan bir model kur. Sonra hiç karşılaşmadığı örnekleri aç.",
+    },
     "word-embeddings-3d": {
       title: "Anlam Haritası, 3B",
       term: "Word embedding, prototip",

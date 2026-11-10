@@ -3,6 +3,13 @@ import type en from "../en/probability";
 /** Türkçe metin: probability. Şekli `en/probability.ts` ile birebir aynı olmak zorundadır. */
 
 const copy: typeof en = {
+  routes: {
+    label: "Kısa bir keşif seç",
+    hint: "Altı bağımsız deney. Bir soruyla başla; hepsini tek ziyarette bitirmen gerekmiyor.",
+    clues: "01 · İpucu olasılığı değiştirince",
+    groups: "02 · Grupları birleştirmek yanıltınca",
+    repeats: "03 · Tekrar bir örüntü gösterince",
+  },
   sources: {
     title: "Kaynaklar",
     statisticalInference:

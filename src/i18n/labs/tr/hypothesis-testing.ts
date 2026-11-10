@@ -122,7 +122,7 @@ const copy: typeof en = {
     title: "Daha fazla veri her \u015feyi ayn\u0131 anda daralt\u0131r.",
     lede: "E\u011friler ayn\u0131 geni\u015flikte kald\u0131\u011f\u0131 s\u00fcrece \u03b1 ile \u03b2 birbirine kar\u015f\u0131 takas edilir. Geni\u015fli\u011fi de\u011fi\u015ftiren \u015fey n'dir: SE = \u03c3/\u221an. B\u00f6ylece iki \u00f6rnekleme da\u011f\u0131l\u0131m\u0131 da kendi ortalamas\u0131 etraf\u0131nda s\u0131k\u0131\u015f\u0131r ve \u03b1 y\u00fckseltilmeden \u00f6rt\u00fc\u015fme azal\u0131r [Casella & Berger, 2. bask\u0131, s. 217 ve s. 385].",
     caption:
-      "x ekseni \u00b14,5 SE olarak \u00e7izilir, yani pencere de e\u011frilerle birlikte daral\u0131r. Kayd\u0131r\u0131c\u0131n\u0131n ikinci yar\u0131s\u0131n\u0131n ilk yar\u0131s\u0131ndan \u00e7ok daha az kazand\u0131rmas\u0131n\u0131n nedeni \u221an'dir.",
+      "Sabit x ekseni eğri genişliklerini doğrudan karşılaştırır. Otomatik mod eğrileri izler. n arttıkça SE karekök oranında azalır; her ek örnek daha az kazandırır.",
     nLabel: "n: \u00f6rneklem b\u00fcy\u00fckl\u00fc\u011f\u00fc",
     nValue: (value: number) => `n = ${value}`,
     formula: (se: string) => `SE = \u03c3/\u221an = ${se}`,

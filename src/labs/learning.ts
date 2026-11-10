@@ -37,6 +37,12 @@ export interface LearningResource {
 }
 
 export const RESOURCES = {
+  "sklearn-generalization": {
+    kind: "notes",
+    title: "Cross-validation: evaluating estimator performance",
+    by: "scikit-learn",
+    url: "https://scikit-learn.org/stable/modules/cross_validation.html",
+  },
   "3b1b-attention": {
     kind: "video",
     title: "Attention in transformers, step-by-step | Deep Learning Chapter 6",
@@ -692,6 +698,7 @@ export type ResourceId = keyof typeof RESOURCES;
  * here are in the lab's copy, keyed the same way.
  */
 export const GUIDES: Record<string, readonly { topic: string; items: readonly ResourceId[] }[]> = {
+  generalization: [{ topic: "generalisation", items: ["sklearn-generalization"] }],
   attention: [
     { topic: "qkv", items: ["3b1b-attention", "sq-attention", "d2l-attention"] },
     { topic: "softmax", items: ["sq-softmax"] },

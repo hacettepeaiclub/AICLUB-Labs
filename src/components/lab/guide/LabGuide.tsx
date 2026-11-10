@@ -18,7 +18,7 @@ import { GuideContext, useGuide, type Guide } from "./context";
  *
  * Every experiment carries a "How does it work?" button under it (see
  * `Stage`), the lab's header carries one for its first experiment, and the
- * first time a lab is opened a short welcome offers that same tour.
+ * inline first-move card introduces the experiment without interrupting it.
  *
  * The tour itself (the cursor, the text caret, the lit control, the card) is
  * its own chunk, fetched when it is asked for; what ships with every lab page
@@ -26,40 +26,11 @@ import { GuideContext, useGuide, type Guide } from "./context";
  */
 
 const TourRunner = lazy(() => import("./TourRunner"));
-// Shown once per lab, on the first visit: not worth a byte on every other.
-const Welcome = lazy(() => import("./Welcome"));
 
 /** The tour's words, as the lab's copy carries them. */
 export interface TourCopy {
   intro: string;
   stages: Record<string, Record<string, string>>;
-}
-
-// ------------------------------------------------- which labs were met --
-
-const SEEN_KEY = "aiclub-labs-welcomed";
-
-function seen(slug: string): boolean {
-  try {
-    const raw = window.localStorage.getItem(SEEN_KEY);
-    const list: unknown = raw ? JSON.parse(raw) : [];
-    return Array.isArray(list) && list.includes(slug);
-  } catch {
-    // Nothing remembered means nothing to go on; a welcome that cannot be
-    // stored as seen would come back on every visit, so say it was seen.
-    return true;
-  }
-}
-
-function markSeen(slug: string) {
-  try {
-    const raw = window.localStorage.getItem(SEEN_KEY);
-    const list: unknown = raw ? JSON.parse(raw) : [];
-    const next = Array.isArray(list) ? list.filter((s) => s !== slug) : [];
-    window.localStorage.setItem(SEEN_KEY, JSON.stringify([...next, slug]));
-  } catch {
-    // Not worth breaking the page over.
-  }
 }
 
 // ------------------------------------------------------------ provider --
@@ -72,20 +43,9 @@ export interface LabGuideProps {
   children: ReactNode;
 }
 
-export function LabGuideProvider({ slug, title, rootRef, children }: LabGuideProps) {
+export function LabGuideProvider({ slug, rootRef, children }: LabGuideProps) {
   const [tour, setTour] = useState<TourCopy | null>(null);
   const [run, setRun] = useState<{ n: number; stage: HTMLElement | null } | null>(null);
-  const [welcome, setWelcome] = useState(false);
-
-  useEffect(() => {
-    if (!tour || seen(slug)) return;
-    const id = window.setTimeout(() => {
-      markSeen(slug);
-      setWelcome(true);
-    }, 700);
-    return () => window.clearTimeout(id);
-  }, [slug, tour]);
-
   const guide = useMemo<Guide | null>(
     () => (tour ? { start: (stage) => setRun((r) => ({ n: (r?.n ?? 0) + 1, stage })) } : null),
     [tour],
@@ -103,20 +63,6 @@ export function LabGuideProvider({ slug, title, rootRef, children }: LabGuidePro
           <LoadTour slug={slug} onTour={setTour} />
         </Suspense>
       </Quiet>
-
-      {tour && welcome && (
-        <Suspense fallback={null}>
-          <Welcome
-            title={title}
-            intro={tour.intro}
-            onStart={() => {
-              setWelcome(false);
-              guide?.start(null);
-            }}
-            onClose={() => setWelcome(false)}
-          />
-        </Suspense>
-      )}
 
       {tour && run && rootRef.current && (
         <Quiet>
