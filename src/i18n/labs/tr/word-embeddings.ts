@@ -4,14 +4,14 @@ import type en from "../en/word-embeddings";
 
 const copy: typeof en = {
   sources: {
-    title: "Kaynaklar",
+    title: "Sources",
     gloveVectors:
       "Bu laboratuvarın gerçekten kullandığı vektörleri destekler: kendi gömme yöntemini uygulamaz, önceden eğitilmiş GloVe vektörlerini okur.",
   },
 
   predict: {
     question: (word: string) => `${word} kelimesine en yakın hangisi?`,
-    hint: "Üçü de ilgili. Siz hangisini beklerdiniz?",
+    hint: "Üçü de ilgili. hangisini beklerdin?",
     loading: "Kelime vektörleri yükleniyor…",
     chose: (word: string, rank: number, total: number, score: string) =>
       `${word} dedin: ${total} kelime içinde ${rank}. sırada, ${score} benzerlikle.`,
@@ -21,8 +21,8 @@ const copy: typeof en = {
   },
 
   explore: {
-    title: "Evreni keşfet",
-    neighboursTitle: "En yakın kelimeler",
+    title: "Explore the universe",
+    neighboursTitle: "Nearest words",
     announce: (word: string, gloss: string) => `${word} seçildi, ${gloss}.`,
     selectedLabel: "Seçili",
     nearestLabel: "En yakın, kosinüs",
@@ -36,7 +36,7 @@ const copy: typeof en = {
     selectedLabel: (word: string, gloss: string) => `${word}, ${gloss}. Seçili`,
     pending: "Kelimelerin nereye düştüğü hesaplanıyor…",
     linksNote:
-      "Çizgiler, seçili kelimeyi yanında listelenen sekiz kelimeye bağlar. Bunlar okumayı kolaylaştırmak içindir, modelin parçası değildir: gömmede bağlantı yoktur, yalnızca mesafeler vardır.",
+      "Çizgiler seçili kelimeyi listelenen sekiz komşusuna bağlar. Bu çizgiler yalnız görünümü açıklar; vektör verisinin parçası değildir.",
     pinnedLabel: (word: string, gloss: string) =>
       `${word} (${gloss}), karşılaştırma için tutuluyor`,
     compareLabel: (a: string, b: string, score: string) =>
@@ -52,23 +52,23 @@ const copy: typeof en = {
   },
 
   neighbours: {
-    title: (word: string) => `${word} kelimesine en yakınlar`,
+    title: (word: string) => `Nearest to ${word}`,
     rankHeader: "Sıra",
     wordHeader: "Kelime",
     scoreHeader: "Benzerlik",
     rowLabel: (word: string, gloss: string, rank: number, score: string) =>
-      `${word}, ${gloss}. ${rank}. en yakın, benzerlik ${score}. Haritayı buraya taşımak için seçin.`,
+      `${word}, ${gloss}. ${rank}. en yakın, benzerlik ${score}. Haritayı buraya taşımak için seç.`,
   },
 
   projection: {
-    kicker: "Haritanın göstermedikleri",
-    title: "Uzayın kendisine bakmıyorsun",
-    lede: "Yukarıdaki kelimeler gerçek. Konumları ise 300 sayının 2'ye yassıltılmış hâli ve yassıltmak bir şeyleri kaybetmek zorunda. Tam olarak neyi kaybettiği burada.",
+    kicker: "What the map is not showing",
+    title: "You are not looking at the space",
+    lede: "Harita 300 boyutlu kelime vektörlerini iki boyutta gösterir. Bu dönüşüm bazı ilişkileri kaybeder. Ekrandaki uzaklıkları, asıl vektörlerin benzerlikleriyle karşılaştır.",
     modeLabel: "Bana göster",
     modeNone: "Kendi seçimim",
     modeHidden: "Yakın, uzağa çizilmiş",
     modeFalse: "Uzak, yakına çizilmiş",
-    idle: "Yukarıdaki ikisinden birini seçin; o kelimelerin haritadaki yeri belirsin.",
+    idle: "Yukarıdaki ikisinden birini seç; o kelimelerin haritadaki yeri belirsin.",
     // Türkçe sıra sayıları düzenli: sayının ardından nokta yeter.
     ordinal: (n: number) => `${n}.`,
     hiddenBody: (
@@ -112,17 +112,17 @@ const copy: typeof en = {
 
   honesty: {
     source:
-      "Vektörler GloVe 6B 300d; Stanford NLP tarafından Wikipedia 2014 ve Gigaword 5 üzerinde önceden eğitildi. Bu lab her kelimeyi o yayımlanmış tablodan arayıp birim uzunluğa normalize ediyor; burada hiçbir şey eğitilmiyor, ince ayar yapılmıyor ya da üretilmiyor.",
+      "Vektörler, Wikipedia 2014 ve Gigaword 5 üzerinde eğitilen Stanford NLP GloVe 6B 300d verisinden alınır. Her vektör birim uzunluğa normalize edilir. Bu labda model eğitilmez veya ince ayar yapılmaz.",
     turkish:
-      "Gömme uzayı İngilizcedir. Buradaki Türkçe kelimeler okumayı kolaylaştırmak için bizim eklediğimiz etiketlerdir: gömülmediler ve bu bir Türkçe gömme uzayı değildir.",
+      "Vektörler İngilizce kelimelere aittir. Türkçe etiketler okumayı kolaylaştırmak için eklenmiştir; Bu bir Türkçe gömme uzayı değildir.",
   },
   compare: {
-    title: "İki kelimeyi karşılaştırın",
+    title: "Compare two words",
     hold: "Bu kelimeyi tut",
     holding: (word: string) => `Tutulan: ${word}`,
     release: "Bırak",
-    idle: "Bir kelimeyi tutun, sonra haritadan bir başkasını seçin. Aralarındaki kosinüs bir yerden bakılmıyor, ölçülüyor.",
-    samePoint: "Tuttuğunuz kelime bu. Başka birini seçin.",
+    idle: "Bir kelimeyi tut, sonra haritadan bir başkasını seç. Aralarındaki kosinüs bir yerden bakılmıyor, ölçülüyor.",
+    samePoint: "Tuttuğun kelime bu. Başka birini seç.",
     scoreLabel: "Benzerlik",
     rankLabel: "Sıra",
     rankValue: (rank: number, total: number) => `${total} içinde ${rank}.`,
@@ -133,17 +133,17 @@ const copy: typeof en = {
   // The guided tours, one per experiment (components/lab/guide/tours.ts).
   tour: {
     intro:
-      "Her kelimenin bir anlam haritasında bir yeri var. Hangi kelimelerin birbirine yakın durduğunu tahmin edin, sonra haritayı keşfedin.",
+      "En yakın kelimeyi tahmin et. Haritadaki konumlarla 300 boyuttaki kosinüs benzerliklerini karşılaştır.",
     stages: {
       intro: {
         guess: "Bir kelime ve üç aday. Haritada hangisi ona en yakın?",
-        choose: "Birini seçin. Harita açılır ve kelimelerin gerçekte nerede durduğunu gösterir.",
+        choose: "Birini seç. Harita açılır ve kelimelerin gerçekte nerede durduğunu gösterir.",
       },
       map: {
         map: "Her kelimenin bir yeri var. Haritanın yanındaki liste, seçili kelimenin en yakın komşuları.",
         search: "Seçmek için bir kelime arayın. Tur dog yazdı.",
         enter: "Enter onu seçer ve harita oraya gider.",
-        compare: "Buradan iki kelimeyi karşılaştırıp gerçekte ne kadar uzak olduklarına bakın.",
+        compare: "Buradan iki kelimeyi karşılaştırıp gerçekte ne kadar uzak olduklarına bak.",
       },
     },
   },
@@ -151,9 +151,9 @@ const copy: typeof en = {
   // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
   study: {
     topics: {
-      vectors: "Vektör olarak kelimeler",
-      usage: "Anlam kullanımdan gelir",
-      shadow: "İki boyutlu harita bir gölgedir",
+      vectors: "Words as vectors",
+      usage: "Meaning from usage",
+      shadow: "A 2-D map is a shadow",
     },
     notes: {
       "sq-word2vec": "word2vec'in kelimeleri nasıl sayılara çevirdiği.",

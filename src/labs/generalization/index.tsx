@@ -60,8 +60,8 @@ export default function GeneralizationLab() {
   return (
     <div className="space-y-12">
       <section aria-labelledby="generalization-heading">
-        <h2 id="generalization-heading" className="mb-4 text-title text-fg">
-          {t.question}
+        <h2 lang="en" id="generalization-heading" className="mb-4 text-title text-fg">
+          {"Perfect on familiar points. What about new ones?"}
         </h2>
         <Stage
           width="full"
@@ -170,7 +170,9 @@ export default function GeneralizationLab() {
         />
       </section>
       <aside className="rounded-lg border border-line/20 bg-ink-800 p-5">
-        <h2 className="text-title text-fg">{t.bridgeTitle}</h2>
+        <h2 lang="en" className="text-title text-fg">
+          {t.bridgeTitle}
+        </h2>
         <p className="mt-2 text-body text-fg-muted">{t.bridge}</p>
         <Link
           className="mt-3 inline-flex min-h-11 items-center text-accent underline"

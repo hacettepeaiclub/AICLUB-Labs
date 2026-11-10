@@ -48,9 +48,9 @@ export function SampleSizeStage({ result, onChange }: SampleSizeStageProps) {
     .map((point, i) => {
       const x = ((point.n - BOUNDS.n.min) / (BOUNDS.n.max - BOUNDS.n.min)) * PLOT.width;
       const y = 30 - point.power * 26;
-      return `${i === 0 ? "M" : "L"}${x.toFixed(2)} ${y.toFixed(2)}`;
+      return `${i === 0 ? "M" : "L"}${x.toFixed(2)}  ${y.toFixed(2)}`;
     })
-    .join(" ");
+    .join("  ");
   const markerX = ((n - BOUNDS.n.min) / (BOUNDS.n.max - BOUNDS.n.min)) * PLOT.width;
 
   return (

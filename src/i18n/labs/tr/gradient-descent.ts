@@ -4,10 +4,10 @@ import type en from "../en/gradient-descent";
 
 const copy: typeof en = {
   sources: {
-    title: "Kaynaklar",
+    title: "Sources",
     momentum:
       "Laboratuvar\u0131n sundu\u011fu momentum y\u00f6ntemini ve bu y\u00f6ntemin t\u00fcredi\u011fi a\u011f\u0131r top g\u00fcncellemesini destekler.",
-    adam: "Laboratuvar\u0131n sundu\u011fu Adam eniyileyicisini, motorun hesaplad\u0131\u011f\u0131 moment kestirimleri ve yanl\u0131l\u0131k d\u00fczeltmesi dahil olmak \u00fczere destekler.",
+    adam: "Laboratuvarın sunduğu Adam optimizer’ı, motorun hesapladığı moment kestirimleri ve yanlılık düzeltmesi dahil olmak üzere destekler.",
   },
 
   controls: {
@@ -80,26 +80,25 @@ const copy: typeof en = {
 
   drop: {
     instruction:
-      "Topu bırakmak için haritaya dokunun, yuvarlanmasını izlemek için bırakın. Her adımı uzatıp kısaltmak için camgöbeği ucu sürükleyin.",
+      "Topu bırakmak için haritaya dokun, yuvarlanmasını izlemek için bırak. Her adımı uzatıp kısaltmak için camgöbeği ucu sürükle.",
     mapHint:
-      "Başlangıç noktasını koymak için haritaya dokunun ya da sürükleyin, çalıştırmak için bırakın; ok tuşları noktayı taşır, Enter çalıştırır.",
-    handleLabel:
-      "İlk adımın ucu. Adım boyunu değiştirmek için sürükleyin ya da ok tuşlarını kullanın.",
+      "Başlangıç noktasını koymak için haritaya dokun ya da sürükle, çalıştırmak için bırak; ok tuşları noktayı taşır, Enter çalıştırır.",
+    handleLabel: "İlk adımın ucu. Adım boyunu değiştirmek için sürükle ya da ok tuşlarını kullan.",
     moreLabel: "Tam adım boyu ve adım adım denetimler",
     momentumHint:
-      "Topun son adımından daha fazlasını korumasını sağlamak için kadranı çevirin. Başka bir yere bırakmak için haritalardan birine dokunun.",
+      "Topun son adımından daha fazlasını korumasını sağlamak için kadranı çevir. Başka bir yere bırakmak için haritalardan birine dokun.",
   },
   find: {
-    title: "Dibi bulun",
-    question: "Ne kadar büyük bir adım atabilirsiniz?",
+    title: "Find the bottom",
+    question: "Ne kadar büyük bir adım atabilirsin?",
     caption:
-      "Camgöbeği ok, ölçeğine uygun çizilmiş ilk adımdır. Onu uzatınca bütün adımlar onunla birlikte büyür. Sayılardan çok yolun biçimine bakın.",
+      "Camgöbeği ok, ölçeğine uygun çizilmiş ilk adımdır. Onu uzatınca bütün adımlar onunla birlikte büyür. Sayılardan çok yolun biçimine bak.",
   },
 
   direction: {
-    kicker: "Neden o yön",
-    title: "Gradyan bir vektördür ve cevabı gösteren bir işaret değildir.",
-    lede: "Mevcut noktadan iki ok çıkıyor: düz olan, adımın gerçekte gittiği yön, −∇f = −(a·x, b·y); kesikli olan ise minimuma giden doğru, −(x, y). Her koordinat kendi eğriliğiyle ölçekleniyor; bu yüzden iki yön ancak eğrilikler eşitken çakışır. Önce noktayı, sonra eğriliği sürükleyin.",
+    kicker: "Why that direction",
+    title: "A gradient is a vector, and it is not a pointer to the answer.",
+    lede: "Düz ok negatif gradyanı, −∇f = −(a·x, b·y), kesikli ok ise minimuma giden yönü, −(x, y), gösterir. Eğrilikler farklı olduğunda bu yönler genellikle ayrılır. Noktayı ve eğrilik oranını değiştirerek karşılaştır.",
     descent: "Adımın gittiği yön: −∇f",
     target: "Minimuma giden doğru",
     equalLength: "İki ok da aynı uzunlukta çiziliyor; karşılaştırılan tek şey yönleri.",
@@ -108,23 +107,23 @@ const copy: typeof en = {
     aligned: "Burada eğrilikler eşit, dolayısıyla iki yön tam olarak çakışıyor.",
     apart: "Eğrilikler farklı; adım minimuma değil dik eksene doğru çekiliyor.",
     onAxis:
-      "Koordinatlardan biri zaten sıfır, yani eşit olmayan ölçeklemenin etki edeceği bir şey yok. Okları ayırmak için noktayı eksenden çıkarın.",
+      "Koordinatlardan biri zaten sıfır, yani eşit olmayan ölçeklemenin etki edeceği bir şey yok. Okları ayırmak için noktayı eksenden çıkar.",
     dragHint:
-      "Noktayı taşımak için harita üzerinde herhangi bir yeri sürükleyin ya da haritaya odaklanıp",
-    keyboardHint: "tuşlarını kullanın; başa döndürmek için:",
+      "Noktayı taşımak için harita üzerinde herhangi bir yeri sürükle ya da haritaya odaklanıp",
+    keyboardHint: "tuşlarını kullan; başa döndürmek için:",
     keyboardHelp:
-      "Noktayı taşımak için harita üzerinde herhangi bir yeri sürükleyin. Harita odaktayken ok tuşları noktayı taşır, Home tuşu ise başlangıç konumuna geri gönderir.",
+      "Noktayı taşımak için harita üzerinde herhangi bir yeri sürükle. Harita odaktayken ok tuşları noktayı taşır, Home tuşu ise başlangıç konumuna geri gönderir.",
     legendAndKeys: "Oklar ve klavye",
     label: (x: string, y: string, kappa: string, angle: string) =>
       `Taşınabilir noktası olan eşyükselti haritası. Nokta ${x}, ${y} konumunda. Koşul sayısı ${kappa}. İniş yönü, minimuma giden doğrudan ${angle} derece sapmış durumda.`,
     caption:
-      "Eğrilik oranını 1'e indirin; iki ok tek bir oka dönüşür. Eksenlerin dışında bu, ikisinin çakıştığı tek durumdur, ve tek boyutlu bir resmin hiçbir şekilde gösteremeyeceği bir durumdur, çünkü tek eksende gradyan yalnızca bir işarettir.",
+      "Eğrilik oranı 1 olduğunda oklar çakışır. Oran farklıyken, koordinat eksenleri dışındaki noktalarda negatif gradyan doğrudan minimumu göstermez.",
   },
 
   rate: {
-    kicker: "Adım boyu",
-    title: "Tavanı belirleyen, algoritma değil yüzeydir.",
-    lede: "Aynı yüzey, değişen tek bir sayı: o ilk adımın uzunluğu. Haritanın altındaki iki işaret bu yüzeyin eğriliğinden hesaplanıyor; gösterim işe yarasın diye seçilmiş değiller.",
+    kicker: "The step size",
+    title: "The ceiling belongs to the surface.",
+    lede: "Aynı yüzeyde yalnız adım boyunu değiştir. Haritanın altındaki eşikler bu yüzeyin eğriliklerinden hesaplanır.",
     marks: { monotone: "aşma yok", stability: "kararlılık sınırı" },
     regimes: {
       monotone: "Doğrudan yaklaşıyor",
@@ -142,15 +141,15 @@ const copy: typeof en = {
     scope:
       "Bu eşikler burada kullanılan ikinci dereceden fonksiyon için tam geçerlidir; onun eğriliği her noktada aynıdır. Eğriliğin konuma göre değiştiği yerde kullanılabilir adım boyu da onunla değişir.",
     caption:
-      "Kararlılık sınırı, 2 bölü büyük eğriliktir; yüzey değişince o da değişir. Hiçbir adım boyu tek başına büyük ya da küçük değildir: bu yüzeyi tamamen terk eden η, daha yumuşak bir yüzeye sakince yerleşir.",
+      "Bu yüzeyde kararlılık sınırı 2 / max(a, b) ile belirlenir. Yüzeyin eğriliği değiştiğinde kullanılabilecek adım boyu da değişir.",
   },
 
   golf: {
-    kicker: "Şimdi oynayın",
-    title: "Gradyan golfü.",
-    lede: "Yukarıdaki yüzeylerde altı delik. Nişan alamazsınız: her vuruşun yönünü eğim belirler. Siz sopayı seçersiniz; sopa da adım boyudur.",
+    kicker: "Now play it",
+    title: "Gradient golf.",
+    lede: "Altı farklı başlangıçta minimuma ulaşmaya çalış. Yönü negatif gradyan belirler. Seçtiğin sopa adım boyunu değiştirir.",
     caption:
-      "Her vuruş, laboratuvarın geri kalanıyla aynı motorun hesapladığı tek bir sade gradient descent adımıdır. Par, her başlangıç noktası için elinizdeki altı sopanın aynısıyla arama yapılarak bulunur.",
+      "Her vuruş, laboratuvarın geri kalanıyla aynı motorun hesapladığı tek bir sade gradient descent adımıdır. Par, her başlangıç noktası için elindeki altı sopanın aynısıyla arama yapılarak bulunur.",
     start: "Oyuna başla",
     again: "Yeni bir tur oyna",
     hit: (club: string) => `${club} ile vur`,
@@ -162,7 +161,7 @@ const copy: typeof en = {
       "Bir sopa seçip vurun. Ok, topun hangi yöne gideceğini gösterir; ne kadar gideceği sopaya bağlıdır.",
     didNotFinish: "Bitiremedi.",
     holeLabel: (i: number, total: number) => `Delik ${i} / ${total}`,
-    freeRule: "Her vuruşta istediğiniz sopa",
+    freeRule: "Her vuruşta istediğin sopa",
     fixedRule: "Bütün vuruşlar için tek sopa",
     mapLabel: (name: string, strokes: number) =>
       `${name}: deliğin eş yükselti haritası, şimdiye dek vuruş sayısı ${strokes}.`,
@@ -239,24 +238,24 @@ const copy: typeof en = {
           "Daha da dar bir yüzey ve vuruş sayısı yine artar. Tek bir adım boyuyla sınırı dik yön koyar, bedelini yatık yön öder. Sonraki iki bölümdeki momentum ve Adam, bundan çıkmanın iki yoludur.",
       },
     },
-    scorecard: { title: "Skor kartı", hole: "Delik", par: "Par", you: "Siz" },
+    scorecard: { title: "Scorecard", hole: "Delik", par: "Par", you: "Sen" },
     intro: {
-      kicker: "Saha",
+      kicker: "The course",
       story:
-        "Top parametrelerdir, delik de minimum. Nişan almazsınız: her vuruş yokuş aşağı, tam −∇f doğrultusunda gider. Seçtiğiniz tek şey sopadır ve bir sopa, bir adım boyudur.",
+        "Top parametrelerdir, delik de minimum. Nişan almazsın: her vuruş yokuş aşağı, tam −∇f doğrultusunda gider. Seçtiğin tek şey sopadır ve bir sopa, bir adım boyudur.",
       rules: [
         "Bir vuruş topu η çarpı altındaki eğim kadar ilerletir. Dik zemin onu uzağa yollar; deliğe yakın neredeyse kıpırdamaz.",
         "Haritadan çıkmak saha dışıdır: bir ceza vuruşu ve top geri gelir.",
-        "Her turda başlangıç noktaları yenidir. Par her biri için elinizdeki sopaların aynısıyla arama yapılarak hesaplanır, yani her zaman ulaşılabilir.",
+        "Her turda başlangıç noktaları yenidir. Par her biri için elindeki sopaların aynısıyla arama yapılarak hesaplanır, yani her zaman ulaşılabilir.",
         "Son iki delik size bütün vuruşlar için tek sopa verir; sabit adım boylu bir optimizer da tam böyle çalışır.",
       ],
     },
     end: {
-      kicker: "Tur",
+      kicker: "The round",
       relative: "Par farkı: E eşit demektir, eksi par altıdır.",
-      newBest: "Bu tarayıcıdaki yeni rekorunuz.",
+      newBest: "Bu tarayıcıdaki yeni rekorun.",
       takeaways: [
-        "Her vuruşun yönünü eğim seçti, siz yalnızca η'yı seçtiniz. Gidilen mesafe η çarpı eğimdi; aynı sopanın duvarlarda uçup deliğe yakın sürünmesinin nedeni budur.",
+        "Her vuruşun yönünü eğim seçti, yalnızca η'yı seçtin. Gidilen mesafe η çarpı eğimdi; aynı sopanın duvarlarda uçup deliğe yakın sürünmesinin nedeni budur.",
         "Her yön kendi eğriliği c için 1 − η·c ile çarpılır. η = 1/c'de tabana iner, 2/c'de ayna noktasına seker, ötesinde sahadan çıkar. Tavanı en dik yön belirler.",
         "Her vuruşta sopa seçmek, herhangi tek bir sopadan iyi sonuç verdi. Sade bir optimizer'ın her adım için tek bir adım boyu vardır; kötü koşullu bir yüzey ona vuruş kaybettirir. Sonraki iki bölüm bunları geri kazanmakla ilgilidir.",
       ],
@@ -265,11 +264,11 @@ const copy: typeof en = {
 
   momentumSection: {
     kicker: "Momentum",
-    title: "Bir önceki adımdan bir şeyler taşımak.",
-    lede: "Momentum bir hız değeri tutar: v ← β·v + ∇f, ardından θ ← θ − η·v. Aynı yöne bakmayı sürdüren itmeler birikir; sürekli yön değiştirenler birbirini götürür. β'yı yükseltin ve ikinci işaretin hareketine bakın.",
+    title: "Carrying something over from the last step.",
+    lede: "Momentum, önceki gradyanların etkisini bir hız değişkeninde tutar: v ← β·v + ∇f, ardından θ ← θ − η·v. β’yı değiştir ve aynı başlangıçtan yapılan iki çalıştırmayı karşılaştır.",
     marks: { plain: "düz sınır", momentum: "momentum sınırı" },
     caption:
-      "Kararlılık koşulu η·max(a,b) < 2(1+β) olur; bu, düz inişin η·max(a,b) < 2 koşulundan daha geniştir. Yani momentum, düz inişin taşıyamayacağı kadar büyük bir adım boyunu taşıyabilir. Bu aralığın bedeli salınımdır. Adım boyunu sabit tutup β'yı yükseltin: çalışma önce kısalır, belli bir noktadan sonra yeniden uzar.",
+      "Kararlılık koşulu η·max(a,b) < 2(1+β) olur; bu, düz inişin η·max(a,b) < 2 koşulundan daha geniştir. Yani momentum, düz inişin taşıyamayacağı kadar büyük bir adım boyunu taşıyabilir. Bu aralığın bedeli salınımdır. Adım boyunu sabit tutup β'yı yükselt: çalışma önce kısalır, belli bir noktadan sonra yeniden uzar.",
     announce: (
       plainSteps: number,
       plainStatus: string,
@@ -281,9 +280,9 @@ const copy: typeof en = {
 
   adam: {
     kicker: "Adam",
-    title: "Her parametre için ayrı bir adım boyu.",
-    lede: "Adam, her koordinatın adımını o koordinatın kendi gradyan büyüklüğüne dair yürüyen bir tahmine böler. m ortalama gradyan, s ise ortalama karesel gradyandır; ikisi de sıfırdan başlamanın yarattığı sapmaya karşı düzeltilir ve güncelleme η·m̂ ÷ (√ŝ + ε) olur.",
-    firstStepTitle: "İki eğriliğin bir milyon kat ayrıldığı yerde ilk adım",
+    title: "One step size per parameter.",
+    lede: "Adam, gradyanların ve karelerinin hareketli ortalamalarını kullanır. Başlangıç yanlılığı düzeltildikten sonra güncelleme η·m̂ / (√ŝ + ε) olarak hesaplanır. Her koordinatın adımı bu değerlerle ölçeklenir.",
+    firstStepTitle: "The first step, where the two curvatures are a million apart",
     firstStepLede: (a: string, b: string) =>
       `Bir eksende eğrilik ${a}, diğerinde ${b}. Gradyanın iki bileşeni arasında yaklaşık bir milyon kat fark var. Aşağıdaki her sayı, engine tek adım çalıştırılarak ölçülüyor.`,
     tableCaption:
@@ -298,20 +297,20 @@ const copy: typeof en = {
       "Sapma düzeltmesinden sonra ilk güncelleme η·g ÷ (|g| + ε) hâline gelir. Gradyanın büyüklüğü sadeleşir ve iki eksen de yaklaşık η kadar hareket eder: düzeltmenin atlanmayıp gerçekten uygulanmasının nedeni budur.",
     rate: "Adam adım boyu η",
     honesty:
-      "Bunların hiçbiri Adam daha hızlı yakınsar demek değildir. Yukarıdaki κ = 60 vadisinde 300 adım boyu taranarak ölçüldüğünde Adam'ın en iyi sonucu 17 adımdır; iyi seçilmiş bir momentum ayarı ise aynı toleransa yaklaşık 10 adımda ulaşır. 0,10 gibi ölçülü bir adım boyunda Adam'ın ihtiyacı 66 adımdır. Seçilecek bir adım boyu hâlâ vardır ve onu kötü seçmenin bedeli hâlâ ödenir.",
+      "Adam her yüzeyde daha hızlı yakınsamaz. Bu labdaki κ = 60 vadisinde, taranan ayarlar içinde Adam 17 adımda, momentum yaklaşık 10 adımda aynı toleransa ulaşır. Adam için η = 0,10 seçildiğinde 66 adım gerekir. Yöntem kadar adım boyu seçimi de sonucu etkiler.",
   },
 
   challenge: {
-    kicker: "Üç soru",
-    title: "Bütçe adım cinsinden sayılır.",
-    lede: "Her biri bir yüzeyi, bir başlangıç noktasını ve bir adım sayısını sabitliyor. Yavaşça varmak geçmek sayılmaz ve üçünün cevabı aynı değil.",
+    kicker: "Three questions",
+    title: "The budget is counted in steps.",
+    lede: "Her görevde yüzey, başlangıç noktası ve adım sınırı sabittir. Verilen adım sayısı içinde hedef toleransa ulaşan ayarları bul.",
     puzzle: "Soru",
     budget: (n: number) => `${n} adım`,
     goal: (budget: number, tolerance: string) =>
       `Hedef: ${budget} adım içinde amaç değeri ≤ ${tolerance}.`,
     progress: (done: number, total: number) => `${total} görevden ${done} tanesi çözüldü`,
     pressRun:
-      "Bu denemenin sonucunu görmek için Çalıştır'a basın ya da adım kaydırıcısını sona sürükleyin.",
+      "Bu denemenin sonucunu görmek için Çalıştır'a bas ya da adım kaydırıcısını sona sürükle.",
     pass: "Çözüldü.",
     notYet: "Henüz değil.",
     optimizerAndSettings: "Optimizer ve ayarlar",
@@ -327,7 +326,7 @@ const copy: typeof en = {
         "Çalışma yüzeyi terk etti: bu ayarlarda adım boyu buradaki kararlılık sınırında ya da üzerinde.",
     },
     transfer: {
-      title: "Aynı sayı, daha yumuşak bir yüzeyde",
+      title: "The same number, on a gentler landscape",
       divergesHereConvergesThere: (
         rate: string,
         limitHere: string,
@@ -336,7 +335,7 @@ const copy: typeof en = {
       ) =>
         `η = ${rate}, bu yüzeyin ${limitHere} olan kararlılık sınırının üzerinde; bu yüzden çalışma patlıyor. Daha yumuşak yüzeyin sınırı ${limitThere} ve tam olarak aynı η orada ${steps} adımda yerleşiyor. Değişen adım boyu değil, yüzeydi.`,
       worksOnBoth: (steps: number) =>
-        `Bu η iki yüzeyde de yakınsıyor: burada ve daha yumuşak olanda ${steps} adımda. Yukarı doğru itin ve hangisinin önce pes ettiğine bakın.`,
+        `Bu η iki yüzeyde de yakınsıyor: burada ve daha yumuşak olanda ${steps} adımda. Yukarı doğru itin ve hangisinin önce pes ettiğine bak.`,
       worksOnNeither:
         "Bu η, izin verilen adım sayısı içinde hiçbir yüzeyde hedefe ulaşmıyor. Sorun büyük olması değil, küçük olması.",
       mapLabel: (rate: string, status: string, steps: number) =>
@@ -344,17 +343,17 @@ const copy: typeof en = {
     },
     items: {
       c1: {
-        title: "Tam nokta",
+        title: "Sweet spot",
         brief:
           "Tek bir yüzey, düz gradient descent ve dar bir bütçe. Oraya çabucak ulaştıran bir adım boyu var; ulaştırmayan pek çok adım boyu da var.",
       },
       c2: {
-        title: "Fazla büyük",
+        title: "Too big",
         brief:
-          "Bu, kararlılık sınırının üzerinde başlıyor ve ilk Çalıştır'da patlıyor. İşe yarayan bir adım boyu bulun: sonra aynı sayının daha yumuşak bir yüzeyde ne yaptığına bakın.",
+          "Bu, kararlılık sınırının üzerinde başlıyor ve ilk Çalıştır'da patlıyor. İşe yarayan bir adım boyu bul: sonra aynı sayının daha yumuşak bir yüzeyde ne yaptığına bak.",
       },
       c3: {
-        title: "Dar vadi",
+        title: "Narrow valley",
         brief:
           "κ = 60 olan bir vadi. Hiçbir adım boyu, düz gradient descent'in bu bütçe içinde bitirmesini sağlamıyor; diğer iki optimizer'ın var olma nedeni de bu.",
       },
@@ -369,58 +368,58 @@ const copy: typeof en = {
       "Momentum kararlı aralığı η·max(a,b) < 2(1+β) değerine genişletir ve uzun bir zikzağı kısaltabilir; Adam her koordinatı kendi gradyan geçmişiyle ölçekler, böylece gradyan büyüklüğündeki bir milyon katlık fark adım boyunda bir milyon kat olmaz. Yine de ikisinde de seçilecek bir adım boyu kalır.",
     ],
     footer:
-      "Buradaki her şey konveks ve ikinci dereceden: eğrilik her noktada aynı, gradyan tam, cevap daha başlamadan biliniyor. Gerçek eğitim bu üçünü de bırakır. Geriye kalan, ileri geri oynadığınız ilişkidir: yüzeyin biçimi, atmanıza izin verilen adımın boyutunu belirler.",
+      "Bu lab ikinci dereceden konveks yüzeyler kullanır; eğrilik sabittir ve gradyan tam hesaplanır. Büyük modellerde bu koşullar genellikle sağlanmaz. Buradaki karşılaştırmalar, yüzey ile adım boyu arasındaki ilişkiyi gösterir.",
   },
 
   // The guided tours, one per experiment (components/lab/guide/tours.ts).
   tour: {
     intro:
-      "Bir nokta, haritadaki en alçak yere inmek zorunda. Adım boyunu siz seçersiniz; o adımın işe yarayıp yaramayacağına yüzey karar verir.",
+      "Haritaya bir nokta bırak. Adım boyunu değiştir ve negatif gradyan yönündeki hareketin minimuma yaklaşıp yaklaşmadığını incele.",
     stages: {
       find: {
         map: "Yukarıdan bakılan yüzey bu. Camgöbeği ok, ilk adımın gerçek boyutu.",
         step: "Bu kaydırıcı adım boyunu belirler. Tur adımı uzattı.",
-        run: "Çalıştırın: nokta yokuş aşağı adım adım iner. Fazla uzun bir adım hedefi aşar ve noktayı savurabilir.",
+        run: "Çalıştır: nokta yokuş aşağı adım adım iner. Fazla uzun bir adım hedefi aşar ve noktayı savurabilir.",
         figures:
-          "Atılan adım sayısı, ulaşılan yükseklik ve koşunun oturup oturmadığı. Haritadaki okun ucunu da sürükleyebilirsiniz.",
+          "Atılan adım sayısı, ulaşılan yükseklik ve koşunun oturup oturmadığı. Haritadaki okun ucunu da sürükleyebilirsin.",
       },
       direction: {
         arrows:
-          "Düz ok, adımın gerçekte gittiği yön. Kesikli ok, minimuma giden düz çizgi. Noktayı haritada istediğiniz yere sürükleyin.",
+          "Düz ok, adımın gerçekte gittiği yön. Kesikli ok, minimuma giden düz çizgi. Noktayı haritada istediğin yere sürükle.",
         curvature:
           "Bu kaydırıcı bir yönü diğerinden daha dik yapar. Tur ikisini çok farklılaştırdı.",
         angle: "İki ok arasındaki açı. Yalnızca eğrilikler eşitken 0° olur.",
       },
       rate: {
         map: "Aynı fikir, daha dik bir yüzeyde; haritanın yanında kaybın zamanla değişimi var.",
-        rate: "Adım boyunu ayarlayın. Tur onu ilk işaretin ötesine itti.",
-        run: "Çalıştırın ve yolu haritanın altında yazan rejimle karşılaştırın.",
+        rate: "Adım boyunu ayarla. Tur onu ilk işaretin ötesine itti.",
+        run: "Çalıştır ve yolu haritanın altında yazan rejimle karşılaştır.",
         marks:
           "İki işaret bu yüzeyin eğriliğinden hesaplanır: ikincisinin ötesinde her adım boyu dağılır.",
       },
       golf: {
-        course: "Altı delik. Nişan alamazsınız; her vuruşun yönüne eğim karar verir.",
-        start: "Bir tur başlatın.",
-        club: "Bir sopa seçin; her sopa bir adım boyu. Tur ortadakilerden birini aldı.",
+        course: "Altı delik. Nişan alamazsın; her vuruşun yönüne eğim karar verir.",
+        start: "Bir tur başlat.",
+        club: "Bir sopa seç; her sopa bir adım boyu. Tur ortadakilerden birini aldı.",
         hit: "Vurun. Fazla kısa olursa çok vuruş gerekir; fazla uzun olursa top saha dışına uçar.",
-        score: "Deliğin parı, vuruş sayınız ve topun altındaki eğim.",
+        score: "Deliğin parı, vuruş sayın ve topun altındaki eğim.",
       },
       momentum: {
         map: "Uzun ve dar bir vadi: düz gradient descent onu zikzak çizerek geçer.",
-        beta: "β'yı, yani son adımın ne kadarının aktarıldığını artırın. Kadranı sürükleyin ya da ok tuşlarını kullanın.",
-        run: "Çalıştırın: hep aynı yöne iten adımlar birikir, zikzaklar birbirini götürür.",
+        beta: "β'yı, yani son adımın ne kadarının aktarıldığını artır. Kadranı sürükle ya da ok tuşlarını kullan.",
+        run: "Çalıştır: hep aynı yöne iten adımlar birikir, zikzaklar birbirini götürür.",
         figures: "Ulaşılan yükseklik ve oturup oturmadığı. β fazla olursa bu kez hedefi aşar.",
       },
       adam: {
         map: "Adam her parametreye kendi adım boyunu verir; o parametrenin gradyan geçmişine göre ölçeklenmiş.",
-        rate: "Adım boyunu buradan ayarlayın.",
-        run: "Çalıştırın ve haritadaki yolu takip edin.",
+        rate: "Adım boyunu buradan ayarla.",
+        run: "Çalıştır ve haritadaki yolu takip edin.",
         steps: "Yeterince yaklaşmak için kaç adım gerektiği ve diğer değerler.",
       },
       challenge: {
-        map: "Her bulmacada yüzey, başlangıç ve adım bütçesi sabit. Bulmacayı haritanın üstünden seçin.",
-        settings: "Optimizer'ı ve ayarlarını siz seçersiniz.",
-        run: "Çalıştırın. Geç varmak geçer not değil.",
+        map: "Her bulmacada yüzey, başlangıç ve adım bütçesi sabit. Bulmacayı haritanın üstünden seç.",
+        settings: "Optimizer'ı ve ayarlarını seçersin.",
+        run: "Çalıştır. Geç varmak geçer not değil.",
         status: "Kullanılan adımlar, ulaşılan yükseklik ve sonuç.",
       },
     },
@@ -429,9 +428,9 @@ const copy: typeof en = {
   // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
   study: {
     topics: {
-      downhill: "Adım adım yokuş aşağı",
-      ceiling: "Adım boyu tavanı ve koşul sayısı",
-      momentum: "Momentum ve Adam",
+      downhill: "Downhill, one step at a time",
+      ceiling: "The step-size ceiling and the condition number",
+      momentum: "Momentum and Adam",
     },
     notes: {
       "3b1b-gd": "Negatif gradyanın yokuş aşağı yön olması.",

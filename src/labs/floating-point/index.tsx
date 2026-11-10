@@ -37,7 +37,7 @@ export default function FloatingPoint() {
     <div className="space-y-20 md:space-y-28">
       {/* 1 — Behaviour first: a field and what it becomes. */}
       <section aria-labelledby="fp-store-heading">
-        <h2 id="fp-store-heading" className="sr-only">
+        <h2 lang="en" id="fp-store-heading" className="sr-only">
           {t.store.title}
         </h2>
         <p className="mb-6 max-w-prose text-body-lg text-fg">{t.store.question}</p>

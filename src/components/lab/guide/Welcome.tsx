@@ -39,7 +39,7 @@ export default function Welcome({
     >
       <div className="lab-palette-panel max-w-md p-6">
         <p className="text-overline uppercase text-fg-faint">{t.guide.welcomeKicker}</p>
-        <h2 id="lab-guide-title" className="mt-2 text-title text-fg">
+        <h2 lang="en" id="lab-guide-title" className="mt-2 text-title text-fg">
           {title}
         </h2>
         <p className="mt-3 text-body text-fg-muted">{intro}</p>

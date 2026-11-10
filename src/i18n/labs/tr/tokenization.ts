@@ -4,44 +4,46 @@ import type en from "../en/tokenization";
 
 const copy: typeof en = {
   sources: {
-    title: "Kaynaklar",
+    title: "Sources",
     subwordBpe:
-      "Bayt çifti kodlamasını bir alt sözcük parçalama yöntemi olarak destekler. Buradaki sözlük, laboratuvarın kendi küçük derlemi üzerinde eğitilir; herhangi bir üretim modelinin sözlüğü değildir.",
+      "Bayt çifti kodlamasını bir alt sözcük parçalama yöntemi olarak destekler. Buradaki sözlük, laboratuvarın kendi küçük eğitim metnini üzerinde eğitilir; herhangi bir üretim modelinin sözlüğü değildir.",
   },
   honesty:
-    "Bu laboratuvar için birkaç kilobaytlık metin üzerinde eğitilmiş küçük bir BPE tokenizer'ı. Herhangi bir GPT modelinin kullandığı tokenizer değil.",
+    "Bu lab birkaç kilobaytlık metinle eğitilen küçük bir BPE tokenizer kullanır. Belirli bir GPT modelinin tokenizer’ını temsil etmez.",
   nothingToTokenize: "Henüz tokenleştirilecek bir şey yok.",
   stripSummary: (label: string, count: number, list: string) => `${label}. ${count} token: ${list}`,
 
   guess: {
-    sectionLabel: "Kesikleri tahmin edin",
-    heading: "Sizce bu metin nerelerden ayrılıyor?",
-    lede: "Bir dil modeli bu cümleyi hiçbir zaman harfler olarak görmez; tam olarak kelimeler olarak da görmez. Onun ne gördüğünü söylemeden önce, cümleyi nerelerden parçaladığını düşünüyorsanız oraları işaretleyin. Sonra sonucu açın.",
+    sectionLabel: "Guess the cuts",
+    heading: "Where do you think this gets cut?",
+    lede: "Cümlenin hangi parçalara ayrılacağını tahmin et. Bir parçanın başlangıcı olduğunu düşündüğün harfleri işaretle, sonra tokenizer’ın sonucunu aç.",
     stripLabel: (sentence: string) =>
-      `“${sentence}” cümlesi. Nerelerden ayrıldığını düşünüyorsanız işaretleyin. Sol ve sağ yön tuşlarıyla hareket edin, Boşluk ile kesik koyun veya kaldırın.`,
+      `“${sentence}” cümlesi. Nerelerden ayrıldığını düşünüyorsanız işaretle. Sol ve sağ yön tuşlarıyla hareket edin, Boşluk ile kesik koyun veya kaldırın.`,
     cellLabel: (character: string, position: number) =>
       `${character} karakterinden önce kes, konum ${position}`,
     theSpace: "boşluk",
-    hint: "Bir harfin önünden kesmek için ona dokunun. Şerit odaktayken",
+    hint: "Bir harfin önünden kesmek için ona dokun. Şerit odaktayken",
     hintMove: "hareket eder,",
     hintPlace: "kesik koyar.",
     hintSpace: "bir boşluğu gösterir.",
     reveal: "Sonucu aç",
     preparing: "Hazırlanıyor…",
     cutEveryWord: "Her kelimeden kes",
-    legendReal: "gerçekte kestiği yer",
-    legendImagined: "işaretlediğiniz ama orada olmayan kesik",
-    legendMatched: "bunu bildiniz",
+    legendReal: "tokenizer’ın seçtiği sınır",
+    legendImagined: "eşleşmeyen tahmin",
+    legendMatched: "eşleşen tahmin",
     resultOne: (matched: boolean) =>
-      `1 kesik işaretlediniz ve bu, gerçek kesiklerden biri ${matched ? "" : "değil"}.`,
+      matched
+        ? "İşaretlediğin sınır tokenizer’ın sonucuyla eşleşiyor."
+        : "İşaretlediğin sınır tokenizer’ın seçtiği sınırlardan biri değil.",
     resultMany: (guessed: number, matched: number) =>
-      `${guessed} kesik işaretlediniz ve bunlardan ${matched} tanesi gerçek.`,
+      `İşaretlediğin ${guessed} sınırdan ${matched} tanesi tokenizer’ın sonucuyla eşleşiyor.`,
     resultTail: (actual: number, tokens: number) =>
-      `Tokenizer toplam ${actual} kesik yaptı ve geriye ${tokens} parça kaldı.`,
+      `Tokenizer metni ${tokens} parçaya ayırdı. Parçalar arasında ${actual} sınır var.`,
     explain:
       "Kelime değiller. “gardeners” ikiye ayrıldı: “garden” ve “ers”. Nokta tek başına duruyor ve her boşluk kendisinden sonraki kelimeye aittir, aralarında durmuyor.",
     actualLabel: "Cümlenin gerçekte ayrıldığı parçalar",
-    announceCleared: "Temizlendi. Kesikleri yeniden işaretleyin.",
+    announceCleared: "Temizlendi. Kesikleri yeniden işaretle.",
     announceEveryWord: "Her kelimenin önüne bir kesik konuldu.",
     describe: (
       guessed: number,
@@ -52,12 +54,12 @@ const copy: typeof en = {
       tokens: number,
     ) =>
       guessed === 0
-        ? `Hiç kesik işaretlemediniz. Tokenizer ${actual} kesik yaptı ve cümleyi ${tokens} tokene ayırdı.`
-        : `${guessed} kesik işaretlediniz. Bunlardan ${matched} tanesi gerçek. ` +
-          `${imagined} tanesi orada değil. ${missed} tanesini kaçırdınız. ` +
+        ? `Hiç kesik işaretlemedin. Tokenizer ${actual} kesik yaptı ve cümleyi ${tokens} tokene ayırdı.`
+        : `${guessed} kesik işaretledin. Bunlardan ${matched} tanesi gerçek. ` +
+          `${imagined} tanesi orada değil. ${missed} tanesini kaçırdın. ` +
           `Tokenizer toplam ${actual} kesik yaptı ve cümleyi ${tokens} tokene ayırdı.`,
     figures: {
-      yourCuts: "Sizin kesikleriniz",
+      yourCuts: "kesiklerin",
       matched: "Tutan",
       actualCuts: "Gerçek kesikler",
       tokens: "Parça",
@@ -65,15 +67,15 @@ const copy: typeof en = {
   },
 
   train: {
-    kicker: "Parçalar nereden geliyor",
-    title: "O parçaları kimse seçmedi.",
-    lede: "Onlar sayıldı. Burada adım adım izleyebileceğiniz kadar küçük bir derlem var: Birleştir'e basın, derlemdeki en sık geçen komşu çift, geçtiği her yerde tek bir parçaya kaynaşsın. Sonra sayım yeniden başlar.",
-    corpusLabel: "Okuduğu derlem",
+    kicker: "Where the pieces come from",
+    title: "Nobody chose those pieces.",
+    lede: "Bu küçük eğitim metninde en sık geçen komşu çifti bul. Birleştir düğmesi, bu çiftin bütün eşleşmelerini tek parçaya dönüştürür. Sonraki adım için çiftler yeniden sayılır.",
+    corpusLabel: "Okuduğu eğitim metni",
     mergeNext: "Sıradaki çifti birleştir",
     trainAll: "Tümünü eğit",
     training: "Eğitiliyor…",
     untouched: (base: number, tokens: number) =>
-      `Şu anda her parça tek bir karakter: toplam ${base} parça ve derlemin maliyeti ${tokens} token. En sık geçen çifti birleştirin; parça sayısı da maliyet de değişir.`,
+      `Şu anda her parça tek bir karakter: toplam ${base} parça ve eğitim metninin maliyeti ${tokens} token. En sık geçen çifti birleştir; parça sayısı da maliyet de değişir.`,
     merged: (
       index: number,
       left: string,
@@ -83,27 +85,27 @@ const copy: typeof en = {
       vocabulary: number,
       tokens: number,
     ) =>
-      `${index}. birleştirme: en sık geçen komşu çift ${left} + ${right} idi, ${frequency} kez görüldü. Artık tek bir token: ${token}. Sözlük: ${vocabulary} parça. Derlemin maliyeti ${tokens} token.`,
+      `${index}. birleştirme: en sık geçen komşu çift ${left} + ${right} idi, ${frequency} kez görüldü. Artık tek bir token: ${token}. Sözlük: ${vocabulary} parça. Eğitim metninin maliyeti ${tokens} token.`,
     exhausted: (merges: number, vocabulary: number) =>
       `Birleştirilecek bir şey kalmadı. Artık hiçbir çift birden fazla geçmiyor, dolayısıyla birini kaynaştırmak öğrenmek değil ezberlemek olurdu. ${merges} birleştirmede durdu; sözlük ${vocabulary} parçadan oluşuyor.`,
     explain:
-      "İşte byte-pair encoding (BPE) budur. Bütün komşu çiftleri sayın, en sık olanı kaynaştırın, yeniden sayın. Sonunda elde ettiği parçalar onun sözlüğüdür ve her kaynaşma bir birleştirmedir. Kimse ona “·read” bir kelimedir demedi; bu, ilk dört sayım turunun sırayla ürettiği bir sonuçtan ibaret. Boşluğun daha ilk birleştirmeden itibaren parçaya dâhil olduğuna dikkat edin: öğrendiği parça “read” değil, “·read”. “·every” ise sonuna kadar parçalı kalıyor, çünkü metinde yalnızca bir kez geçiyor.",
+      "İşte byte-pair encoding (BPE) budur. Bütün komşu çiftleri say, en sık olanı kaynaştırın, yeniden say. Sonunda elde ettiği parçalar onun sözlüğüdür ve her kaynaşma bir birleştirmedir. Kimse ona “·read” bir kelimedir demedi; bu, ilk dört sayım turunun sırayla ürettiği bir sonuçtan ibaret. Boşluğun daha ilk birleştirmeden itibaren parçaya dâhil olduğuna dikkat edin: öğrendiği parça “read” değil, “·read”. “·every” ise sonuna kadar parçalı kalıyor, çünkü metinde yalnızca bir kez geçiyor.",
     announceFinished:
       "Eğitim tamamlandı. Birden fazla geçen hiçbir çift kalmadı, dolayısıyla birleştirmeye değer bir şey yok.",
     announceFinishedAfter: (merges: number) => `Eğitim ${merges} birleştirmeden sonra tamamlandı.`,
-    announceReset: "Derlem sıfırlandı. Henüz hiçbir şey öğrenilmedi.",
+    announceReset: "Eğitim metni sıfırlandı. Henüz hiçbir şey öğrenilmedi.",
     mergesLabel: "Birleştirme",
     vocabularyLabel: "Sözlük",
-    corpusTokensLabel: "Derlem parçası",
+    corpusTokensLabel: "Eğitim metni parçası",
   },
 
   merge: {
-    kicker: "Ne kadar öğrendi?",
-    title: "“Tek token” değişken bir hedeftir.",
-    lede: "Bu tokenizer birkaç kilobaytlık Türkçe okudu. Eğitimini geri sarmak için kaydırıcıyı sürükleyin ve cümleyi dilediğiniz gibi değiştirin. Parçalar her konumda gerçekten yeniden hesaplanır.",
+    kicker: "How much has it learned?",
+    title: "“One token” is a moving target.",
+    lede: "Kaydırıcıyla kullanılan BPE birleşim sayısını değiştir. Aynı cümlenin parçalara ayrılışını karşılaştır; istersen kendi cümleni yaz.",
     sentenceLabel: "Cümleniz",
     sentenceHint:
-      "Cümleyi değiştirin ya da kendiniz yazın. Türkçe veya İngilizce, tokenizer ikisine de yanıt verir.",
+      "Cümleyi değiştir ya da kendin yaz. Türkçe veya İngilizce, tokenizer ikisine de yanıt verir.",
     mergesLearned: "Öğrenilen birleştirme",
     mergesValueText: (merges: number, max: number) => `${max} birleştirmeden ${merges} tanesi`,
     untrained: "Eğitimsiz",
@@ -111,19 +113,19 @@ const copy: typeof en = {
     stripLabel: (merges: number) => `Cümleniz, ${merges} birleştirme sonrasında`,
     trainingProgress: (done: number, total: number) =>
       `Tokenizer eğitiliyor… ${total} birleştirmeden ${done} tanesi.`,
-    ready: "Tokenizer'ın eğitimi tamamlandı. Birleştirme kaydırıcısını sürükleyin.",
+    ready: "Tokenizer'ın eğitimi tamamlandı. Birleştirme kaydırıcısını sürükle.",
     explain:
-      "Sıfır birleştirmede her karakter kendi başına bir tokendir, çünkü tokenizer harflerden başka bir şey bilmiyordur. Sağa doğru sürükleyin ve “·ev · ler · imiz · den” dizisinin önce “·ev · lerimiz · den”e, sonra “·evlerimiz · den”e dönüşmesini izleyin. Bu parçalar Türkçe ekler ama algoritmanın hiçbir yerinde ekin ne olduğu yazmıyor; bunlar yalnızca sürekli yan yana çıkan komşular.",
+      "Sıfır birleştirmede her karakter kendi başına bir tokendir, çünkü tokenizer harflerden başka bir şey bilmiyordur. Sağa doğru sürükle ve “·ev · ler · imiz · den” dizisinin önce “·ev · lerimiz · den”e, sonra “·evlerimiz · den”e dönüşmesini izle. Bu parçalar Türkçe ekler ama algoritmanın hiçbir yerinde ekin ne olduğu yazmıyor; bunlar yalnızca sürekli yan yana çıkan komşular.",
     jumpTo: "Atla",
   },
 
   compare: {
-    kicker: "Ne üzerinde eğitildi?",
-    title: "Ne okuduysa onu ucuzlatır.",
-    lede: "İki tokenizer; aynı algoritma, aynı miktarda eğitim, farklı okuma. İkisine de aynı metni verin: iki fatura birbirinden ayrılır. Sonra aradaki farkı kapatan bir cümle yazmayı deneyin.",
+    kicker: "Trained on what?",
+    title: "It cheapens whatever it has read.",
+    lede: "Aynı algoritmayla, farklı metinlerde eğitilmiş iki tokenizer’ı karşılaştır. Aynı girdinin token sayıları neden farklı?",
     textLabel: "İki tokenizer'ın da aldığı metin",
     textHint:
-      "Metni istediğiniz gibi değiştirin. Hiçbir tokenizer'ı, hiç okumadığı bir dilde akıcı kılan bir cümle bulamayacaksınız.",
+      "Metni değiştir ve token sayılarını karşılaştır. Sonuç, her tokenizer’ın eğitim metninde gördüğü karakterlere ve öğrendiği birleşimlere bağlıdır.",
     trainedOnEnglish: "İngilizce üzerinde eğitildi",
     trainedOnTurkish: "Türkçe üzerinde eğitildi",
     englishCorpus: "birkaç kilobaytlık İngilizce düzyazı",
@@ -157,25 +159,25 @@ const copy: typeof en = {
     target: "Hedef",
     objectiveLine: (accuracy: string) =>
       `Spiralde ${accuracy} test doğruluğuna ulaşın: olabildiğince az gizli nöron kullanarak.`,
-    solvedNote: "Çözüldü. Şimdi bir nöron eksiltip yeniden deneyin.",
-    noBest: "Henüz yok. Bol nöronla başlayın, sonra bozulana kadar azaltın.",
+    solvedNote: "Çözüldü. Şimdi bir nöron eksiltip yeniden dene.",
+    noBest: "Henüz yok. Bol nöronla başlayın, sonra bozulana kadar azalt.",
     bestLine: (neurons: number, accuracy: string, epoch: number) =>
       `En iyi: ${neurons} gizli nöron, ${epoch.toLocaleString("en-US")} epok sonra ${accuracy}.`,
     canvasLabel: (neurons: number, accuracy: string, epoch: number) =>
       `Spiral görevi: ${neurons} gizli nöron, ${epoch} epok sonra ${accuracy} test doğruluğu.`,
     announceSolved: (neurons: number, accuracy: string) =>
       `${neurons} gizli nöronla, ${accuracy} test doğruluğunda çözüldü.`,
-    kicker: "Görev",
-    title: "Tek bütçe. Onu kaçırmanın iki yolu.",
-    lede: "İlk görevde tokenizer sabit, cümle sizin. İkincisinde cümle sabit, tokenizer sizin. Bunlardan yalnızca biri daha çok uğraşarak çözülebilir.",
+    kicker: "The challenge",
+    title: "One budget. Two ways to miss it.",
+    lede: "İlk görevde tokenizer’ı değiştirmeden metnin token sayısını azalt. İkinci görevde metin sabitken eğitim ayarını değiştir.",
     budgetBadge: (budget: number) => `bütçe ${budget} token`,
-    rewriteLabel: "Yeniden yazın",
+    rewriteLabel: "Yeniden yaz",
     rewriteHint:
-      "Büyük harfler, boşluklar, noktalama ve gereksiz sözcükler tamamen sizin elinizde. Listelenen kelimelerin metinde kalması gerekiyor.",
-    rewriteStrip: "Yeniden yazdığınız metin, tokenleştirilmiş hâli",
+      "Büyük harfler, boşluklar, noktalama ve gereksiz sözcükler tamamen elinde. Listelenen kelimelerin metinde kalması gerekiyor.",
+    rewriteStrip: "Yeniden yazdığın metin, tokenleştirilmiş hâli",
     fixedLabel: "Cümle (değiştirilemez)",
     fixedStrip: "Cümlenin tokenleştirilmiş hâli",
-    trainedOn: "Eğitildiği derlem",
+    trainedOn: "Eğitildiği eğitim metni",
     english: "İngilizce",
     turkish: "Türkçe",
     mergesLearned: "Öğrenilen birleştirme",
@@ -185,16 +187,16 @@ const copy: typeof en = {
       "İngilizce tokenizer'ın tam olarak eğitilmiş hâli bu, bu cümlede varabileceği en iyi nokta burası. Eksik olan şey daha fazla eğitim değil.",
     puzzles: {
       "say-it-cheaper": {
-        title: "Daha ucuza söyleyin",
+        title: "Say it cheaper",
         brief:
-          "Zorunlu kelimelerin hepsini koruyun ve aynı cümleyi bütçenin altına indirin. Nasıl yazıldığına dair geri kalan her şeyi değiştirebilirsiniz.",
+          "Zorunlu kelimelerin hepsini koruyun ve aynı cümleyi bütçenin altına indir. Nasıl yazıldığına dair geri kalan her şeyi değiştirebilirsin.",
         lesson:
           "Anlamda hiçbir şey değişmedi. Büyük harfler tokenizer'ın hiç öğrenmediği parçalar ve çift boşluk başlı başına bir token.",
       },
       "feed-it-the-right-words": {
-        title: "Doğru kelimeleri okutun",
+        title: "Feed it the right words",
         brief:
-          "Bu cümle değiştirilemez. Cümle bütçeye sığana kadar tokenizer'ın ne okuduğunu ve ne kadar eğitildiğini seçin.",
+          "Bu cümle değiştirilemez. Cümle bütçeye sığana kadar tokenizer'ın ne okuduğunu ve ne kadar eğitildiğini seç.",
         lesson:
           "İngilizce tokenizer'ı ne kadar eğitirseniz eğitin oraya ulaşamadı. Mesele çaba değil: bir tokenizer yalnızca gerçekten okuduğu bir dilde ucuz olabilir.",
       },
@@ -224,41 +226,40 @@ const copy: typeof en = {
       "Türkçe ekler yalnızca gerçekten Türkçe okumuş bir tokenizer için tek token hâline gelir",
     ],
     footer:
-      "Gerçek modeller de bu yolla eğitiliyor; çok daha fazla metinle, karakterler yerine ham baytlar üzerinde. Eğitim verisinde az bulunan bir dilin, model onu konuşmayı öğrendikten çok sonra bile pahalı kalmasının nedeni de bu.",
+      "BPE tabanlı üretim tokenizer’ları çok daha büyük metinlerle ve sıklıkla bayt düzeyinde eğitilir. Token sayısı yalnız cümlenin uzunluğuna değil, öğrenilen sözlüğe ve birleşimlere de bağlıdır.",
   },
 
   // The guided tours, one per experiment (components/lab/guide/tours.ts).
   tour: {
     intro:
-      "Bir dil modeli metni parça parça okur. Bir cümleyi nereden böldüğünü tahmin edin, sonra gerçekte nereden böldüğünü açın.",
+      "Cümledeki parça sınırlarını tahmin et. Ardından BPE sonucuyla karşılaştır ve birleşimlerin nasıl öğrenildiğini incele.",
     stages: {
       guess: {
-        strip: "Modelin okuduğu cümle bu. Nereden bölündüğünü düşünüyorsanız işaretleyin.",
-        cut: "Bir harfe dokunduğunuzda önüne bir kesim konur. Tur bir tane koydu.",
-        reveal: "Diğer tahminlerinizi de işaretleyin; “Sonucu aç” gerçek kesimleri gösterir.",
+        strip: "Modelin okuduğu cümle bu. Nereden bölündüğünü düşünüyorsanız işaretle.",
+        cut: "Bir harfe dokunduğunda önüne bir kesim konur. Tur bir tane koydu.",
+        reveal: "Diğer tahminlerini de işaretle; “Sonucu aç” gerçek kesimleri gösterir.",
       },
       train: {
-        corpus: "Okunabilecek kadar küçük bir derlem. Şu anda her parça tek bir karakter.",
-        merge:
-          "Birleştirin: en sık yan yana gelen çift, geçtiği her yerde tek bir parçaya dönüşür.",
+        corpus: "Okunabilecek kadar küçük bir eğitim metni. Şu anda her parça tek bir karakter.",
+        merge: "Birleştir: en sık yan yana gelen çift, geçtiği her yerde tek bir parçaya dönüşür.",
         figures:
-          "Şimdiye kadarki birleştirmeler, sözlüğün büyüklüğü ve derlemin token cinsinden maliyeti.",
+          "Şimdiye kadarki birleştirmeler, sözlüğün büyüklüğü ve eğitim metninin token cinsinden maliyeti.",
         all: "Ya da eğitimi tek seferde sonuna kadar götürün.",
       },
       merge: {
-        sentence: "Cümleyi istediğiniz gibi değiştirin. Tur bir kelime ekledi.",
+        sentence: "Cümleyi istediğin gibi değiştir. Tur bir kelime ekledi.",
         rewind:
           "Bu kaydırıcı eğitimi geri sarar. Az birleştirme öğrenilmişken aynı cümle çok daha fazla token tutar.",
         cost: "Eğitimin bu noktasında parça sayısı ve maliyet.",
       },
       compare: {
         text: "Biri İngilizce, biri Türkçe üzerinde eğitilmiş iki tokenizer. İkisine aynı metni verin; tur bir kelime ekledi.",
-        samples: "Ya da buradan bir örnek seçin.",
+        samples: "Ya da buradan bir örnek seç.",
         bill: "Aynı metnin ikisine maliyeti. Her biri okuduğu dilde ucuz.",
       },
       challenge: {
-        puzzle: "İki bulmaca, tek bütçe. Bulmacayı yukarıdan seçin.",
-        verdict: "Siz çalıştıkça sonuç güncellenir: kullanılan token ve bütçe.",
+        puzzle: "İki bulmaca, tek bütçe. Bulmacayı yukarıdan seç.",
+        verdict: "çalıştıkça sonuç güncellenir: kullanılan token ve bütçe.",
         figures:
           "Token sayısı ve bütçe. İki bulmacadan yalnızca biri daha çok uğraşarak çözülebilir.",
       },
@@ -268,8 +269,8 @@ const copy: typeof en = {
   // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
   study: {
     topics: {
-      bpe: "Sayılarak öğrenilen parçalar",
-      quirks: "Token nedir, neye mal olur",
+      bpe: "Pieces learned by counting",
+      quirks: "What a token is, and what it costs",
     },
     notes: {
       "karpathy-tokenizer": "Birleştirmeleriyle birlikte, sıfırdan kurulan bir BPE tokenizer.",

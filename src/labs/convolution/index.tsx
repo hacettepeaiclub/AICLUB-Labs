@@ -38,7 +38,7 @@ export default function Convolution() {
     <div className="space-y-20 md:space-y-28">
       {/* 1 — Behaviour first: one window, one sum, one step at a time. */}
       <section aria-labelledby="cv-slide-heading">
-        <h2 id="cv-slide-heading" className="sr-only">
+        <h2 lang="en" id="cv-slide-heading" className="sr-only">
           {t.slide.title}
         </h2>
         <p className="mb-6 max-w-prose text-body-lg text-fg">{t.slide.question}</p>

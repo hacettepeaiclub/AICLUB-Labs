@@ -71,7 +71,10 @@ export function LabShell({ meta, children }: { meta: LabMeta; children: ReactNod
                   {term}
                 </p>
               )}
-              <h1 className="text-[clamp(2rem,3.6vw,2.75rem)] font-semibold leading-tight tracking-[-0.025em] text-fg">
+              <h1
+                lang="en"
+                className="text-[clamp(2rem,3.6vw,2.75rem)] font-semibold leading-tight tracking-[-0.025em] text-fg"
+              >
                 {title}
               </h1>
               <p className="mt-4 text-body text-fg-muted">{description}</p>

@@ -38,8 +38,10 @@ function Learning({ slug, title }: { slug: string; title: string }) {
         md:flex-row md:items-center md:justify-between md:p-8"
     >
       <div className="max-w-prose">
-        <p className="text-overline uppercase text-fg-faint">{t.learn.kicker}</p>
-        <h2 id="lab-learning-heading" className="mt-2 text-title text-fg">
+        <p lang="en" className="text-overline uppercase text-fg-faint">
+          {t.learn.kicker}
+        </p>
+        <h2 lang="en" id="lab-learning-heading" className="mt-2 text-title text-fg">
           {t.learn.title}
         </h2>
         <p className="mt-2 text-body text-fg-muted">{t.learn.body}</p>

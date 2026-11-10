@@ -159,7 +159,9 @@ function Brief({ spec }: { spec: ChallengeSpec }) {
   return (
     <div className="max-w-prose">
       <div className="flex flex-wrap items-center gap-2">
-        <h3 className="text-title text-fg">{copy.title}</h3>
+        <h3 lang="en" className="text-title text-fg">
+          {copy.title}
+        </h3>
         <Badge>{c.budgetBadge(spec.budget)}</Badge>
       </div>
       <p className="mt-2 text-body-sm text-fg-muted">{copy.brief}</p>

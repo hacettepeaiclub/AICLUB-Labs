@@ -4,20 +4,20 @@ import type en from "../en/attention";
 
 const copy: typeof en = {
   sources: {
-    title: "Kaynaklar",
+    title: "Sources",
     transformer:
       "Bu laboratuvarın hesapladığı ölçeklenmiş nokta çarpımı dikkatini destekler. Laboratuvar tek bir başlığı elle kurar; makalenin tanıttığı mimarinin tamamını uygulamaz.",
   },
 
   hero: {
-    title: "Bu kelime nereye bakıyor?",
+    title: "Where is this word looking?",
     question:
-      "Her kelime diğerlerine bakıyor. Birini seçin: dikkatini hangi kelimelere verdiği hemen belirir.",
+      "Bir kelime seç. Dikkat ağırlıklarının cümledeki diğer kelimelere nasıl dağıldığını incele.",
   },
 
-  sentenceLabel: "Cümle. Nereye baktığını görmek için bir kelime seçin.",
+  sentenceLabel: "Cümle. Nereye baktığını görmek için bir kelime seç.",
   sentenceHint:
-    "Kelimeler arasında gezinmek için sol ve sağ ok tuşlarını, iki uca atlamak için Home ve End tuşlarını kullanın.",
+    "Kelimeler arasında gezinmek için sol ve sağ ok tuşlarını, iki uca atlamak için Home ve End tuşlarını kullan.",
   tokenLabel: (word: string, share: number, position: number, total: number) =>
     `${word}, yüzde ${share}, ${total} kelimeden ${position}.`,
   percent: (share: number) => `%${share}`,
@@ -25,54 +25,54 @@ const copy: typeof en = {
   announce: (word: string, targets: string) => `${word} en çok şuraya bakıyor: ${targets}.`,
   mostlyLookingAt: (word: string) => `“${word}” en çok şuraya bakıyor`,
   nearTie:
-    "Bu ikisi neredeyse başa baş. Bu küçük modelin dil bilgisi yok; seçtiğiniz kelimenin hangisiyle ilişkili olduğunu ayırt edemiyor.",
+    "Bu ikisi neredeyse başa baş. Bu küçük modelin dil bilgisi yok; seçtiğin kelimenin hangisiyle ilişkili olduğunu ayırt edemiyor.",
 
-  swapLabel: "Bir kelimeyi değiştirin",
+  swapLabel: "Bir kelimeyi değiştir",
   swapHint:
-    "Beşinci kelimeyi değiştirin ve seçili kelimeye ne olduğuna bakın, ona hiç dokunmadığınız hâlde.",
+    "Beşinci kelimeyi değiştir. Seçili kelime aynı kalırken dikkat ağırlıkları nasıl değişiyor?",
   dogNote:
-    "Artık iki canlı var ve model dikkatini ikisi arasında neredeyse eşit paylaştırdı. Dağılım değişti ama hangisinin yorgun olduğunu hâlâ ayırt edemiyor.",
+    "Cümlede artık iki canlı var. Model ağırlıkları ikisine yakın oranlarda dağıtıyor, ancak hangisinin yorgun olduğunu ayıramıyor.",
 
   reveal: {
-    kicker: "Nasıl karar verdi?",
-    title: "Tek bir sayı, baştan sona.",
-    lede: "Bu bölüm yukarıda seçili olan kelimeyi izler. Seçimi ya da değiştirilen kelimeyi değiştirin; buradaki her adım onunla birlikte değişir, çünkü bu, aynı hesabın kendisidir, ikinci bir kopyası değil.",
+    kicker: "How did it decide?",
+    title: "One number, from beginning to end.",
+    lede: "Bu bölüm seçili kelime için yapılan hesabı gösterir. Kelimeyi veya cümleyi değiştirdiğinde bütün değerler aynı attention hesabından yeniden alınır.",
   },
 
   trace: {
-    step1: "Seçtiğiniz kelime",
-    step1Title: (word: string) => `“${word}” ile başlayın`,
+    step1: "Seçtiğin kelime",
+    step1Title: (word: string) => `Start with “${word}”`,
     step1Note:
-      "Aşağıdaki her şey, bu tek kelimenin diğerlerinin her biriyle sırayla karşılaştırılmasıdır.",
+      "Seçili kelimenin query vektörü, diğer kelimelerin key vektörleriyle karşılaştırılır.",
 
     step2: "Ne aradığı",
-    step2Title: (word: string) => `“${word}” bunu istiyor, query'si`,
+    step2Title: (word: string) => `“${word}” asks for this: its query`,
     step2Note:
-      "Sağa uzanan bir çubuk kelimenin istediği bir özelliktir; sola uzanan ise özellikle aramadığı bir özelliktir. Bunlar modelin ne istediğine dair kendi ifadeleridir, okunabilir hâle getirilmiştir: gerçek bir modelinkiler hiç okunabilir değildir.",
+      "Sağa uzanan çubuklar pozitif, sola uzananlar negatif query bileşenlerini gösterir. Özellikler bu küçük modelde elle tanımlanmıştır; eğitilmiş bir modelin bileşenlerine aynı anlamlar verilemez.",
 
     step3: "Diğer kelimenin sunduğu",
-    step3Title: (word: string) => `“${word}” bunu sunuyor, key'i`,
+    step3Title: (word: string) => `“${word}” offers this: its key`,
     step3Note:
-      "Query ve key bilerek iki farklı projeksiyondan gelir: bir kelimenin sunduğu şey, istediği şeyle aynı değildir. Attention'ın benzerlik ölçmekten fazlası olmasının nedeni budur.",
+      "Query ve key farklı projeksiyonlarla hesaplanır. Bu nedenle attention skoru, iki kelimenin başlangıç vektörleri arasındaki benzerlikle aynı ölçü değildir.",
 
     step4: "Eşleşme",
-    step4Title: (score: string) => `Örtüşme değeri ${score}`,
+    step4Title: (score: string) => `They line up to ${score}`,
     step4Note: (from: string, to: string) =>
       `“${from}” kelimesinin istediğiyle “${to}” kelimesinin sunduğunu çarpın, toplayın ve eksen sayısının kareköküne bölün. Bu son adım, model genişledikçe sayıları çalışılabilir bir aralıkta tutar.`,
 
     step5: "%100'ün payı",
-    step5Title: (share: number) => `Bu da dikkatin %${share} kadarı oluyor`,
+    step5Title: (share: number) => `Which becomes ${share}% of the attention`,
     step5Note:
-      "Paylar her zaman %100'e tamamlanır; yani bunlar puan değil, pay. Yeni bir rakip eklendiğinde izlediğiniz pay da dahil olmak üzere diğer bütün payların küçülmesinin nedeni tam olarak budur.",
+      "Softmax ağırlıklarının toplamı %100 olur. Diğer skorlar sabitken bir skoru artırmak, kalan kelimelerin ağırlıklarını azaltır.",
     tableCaption: "En güçlü birkaç kelime için eşleşme ve dikkat payı.",
     colToken: "Kelime",
     colScore: "Eşleşme",
     colShare: "Pay",
 
     step6: "Neye dönüştüğü",
-    step6Title: (word: string) => `“${word}” artık bir karışım taşıyor`,
+    step6Title: (word: string) => `“${word}” now carries a blend`,
     step6Note:
-      "Attention yalnızca nereye bakılacağıyla ilgili değildir. Baktığı her kelime, payı oranında kendi value'sunu katar; böylece kelime, baktığı şeylerin bir karışımını taşımaya başlar. Gerçek bir modelde bir sonraki katmana ulaşan şey bu karışımdır.",
+      "Her value vektörü kendi attention ağırlığıyla çarpılır. Bu vektörlerin toplamı seçili kelimenin çıktısını oluşturur ve sonraki katmana aktarılır.",
 
     axes: {
       nounness: "ad gibi",
@@ -82,16 +82,16 @@ const copy: typeof en = {
   },
 
   honesty:
-    "Bu, küçük ve eğitim amaçlı bir self-attention modelidir. Yedi özelliği ve üç projeksiyon matrisi bu deney için elle yazıldı; metinden öğrenilmedi. Gerçek bir model, kimsenin adlandırmadığı temsilleri yüzlerce boyutta öğrenir. Burada gerçek olan aritmetiktir: bir Transformer'ın yaptığı karşılaştırmanın, ölçeklemenin, softmax'in ve ağırlıklı toplamın aynısı.",
+    "Bu eğitim modelinin yedi özelliği ve üç projeksiyon matrisi elle tanımlandı; metinden öğrenilmedi. Model, ölçeklenmiş noktasal çarpım, softmax ve ağırlıklı toplam işlemlerini hesaplar. Eğitilmiş Transformer modellerinin temsilleri çok daha kapsamlıdır.",
 
   recap: {
     lessons: [
       "Attention, bağlam üzerine sabit bir %100'lük odağı dağıtır; yani her kelime evet ya da hayır değil, bir pay alır.",
-      "Bir kelimeyi değiştirmek diğerlerinin paylarını da değiştirir: dokunmadığınız kelimeler dahil, çünkü hepsi aynı %100'ü paylaşıyor.",
+      "Bir kelimeyi değiştirmek diğerlerinin paylarını da değiştirir: dokunmadığın kelimeler dahil, çünkü hepsi aynı %100'ü paylaşıyor.",
       "Attention, çok daha büyük bir modelin içindeki tek bir mekanizmadır. Nereye bakılacağına ve neyin karıştırılacağına karar verir; tek başına cümleyi anlamaz.",
     ],
     footer:
-      "Buradaki kelimelere elle yazılmış yedi özellik verildi; bu yüzden model bir kediyi bir toptan ayırabiliyor ama bir topu bir aynadan ayıramıyor. Gerçek Transformer'lar çok daha zengin temsiller kurmak için çok sayıda head ve katmanı üst üste yığar: bu, bu sayfanın anlattığından farklı ve çok daha uzun bir hikâye.",
+      "Bu modelin elle tanımlanmış özellikleri bazı kelimeleri ayırt etmeye yeter, bazılarını ayırmaya yetmez. Büyük Transformer modelleri, veriden öğrenilen temsilleri birden fazla attention head ve katmanda işler.",
   },
   pickLabel: "Kelime",
   wholeRowLabel: "Bütün paylar, cümle sırasıyla",
@@ -109,13 +109,13 @@ const copy: typeof en = {
   },
 
   scale: {
-    kicker: "Bölme neden var?",
-    title: "Böleni kaldırın, paylar çöküyor.",
-    lede: "Eksen sayısının kareköküne bölmek, etkisini sonuca bakarak göremeyeceğiniz tek adımdır: onu değiştirene kadar sonuç her iki hâlde de makul görünür. Bu yüzden bölen sizde: onu hiç bölmemeye kadar indirin ya da modelin kullandığının ötesine götürün ve aynı eşleşmelerin bütçeyi nasıl farklı paylaştırdığını izleyin.",
+    kicker: "Why divide at all?",
+    title: "Take the divisor away and the shares collapse.",
+    lede: "Skorların bölündüğü değeri değiştir. Aynı skorlardan hesaplanan attention ağırlıklarını, modelin √d böleniyle elde ettiği ağırlıklarla karşılaştır.",
     collapse:
       "Bölme atlanınca puanlar daha büyük kalıyor ve daha büyük sayılar üzerindeki softmax daha keskin oluyor: bütçenin neredeyse tamamı tek bir kelimeye gidiyor, geri kalanı yuvarlanıp yok oluyor. Okunacak bir dağılımı ortada bırakan şey, bu bölme.",
-    note: "Her çubuk burada, aynı eşleşmeler üzerinde aynı softmax ile yeniden hesaplanıyor; her çubuktaki çentik modelin gerçekte kullandığı pay. Sayfanın başka her yerinde yalnızca o kullanılıyor.",
-    legend: "Çubuk: sizin böleninizdeki pay. Çentik: modelin ÷√d ile verdiği pay.",
+    note: "Çubuklar seçtiğin bölenle, çentikler modelin √d böleniyle hesaplanan ağırlıkları gösterir. Diğer bölümler modelin bölenini kullanır.",
+    legend: "Çubuk: bölenindeki pay. Çentik: modelin ÷√d ile verdiği pay.",
     divisorLabel: "Eşleşmeleri şuna böl",
     divisorValue: (value: string) => `÷${value}`,
     noneMark: "÷1, bölme yok",
@@ -125,57 +125,57 @@ const copy: typeof en = {
       "Daha az bölme eşleşmeleri birbirinden uzak bırakır ve softmax keskinleşir: önde olan bütçeden daha çok, diğerleri daha az alır.",
     flatter:
       "Daha çok bölme eşleşmeleri birbirine yaklaştırır ve paylar eşit dağılıma doğru düzleşir: önde olan öne çıkmaz olur.",
-    peakNowHint: "sizin böleninizde",
+    peakNowHint: "böleninde",
     peakModelLabel: "Modelinki",
     peakModelHint: "÷√d iken en büyük pay",
     announce: (divisor: string, peak: string) => `${divisor} ile bölününce en büyük pay ${peak}.`,
     tableCaption:
-      "En güçlü birkaç kelime için: eşleşme, modelin verdiği pay ve seçtiğiniz bölendeki payı.",
+      "En güçlü birkaç kelime için: eşleşme, modelin verdiği pay ve seçtiğin bölendeki payı.",
     colRaw: "Eşleşme",
     colWith: "Modelin payı",
-    colNow: "Sizin bölendeki pay",
+    colNow: "bölendeki pay",
   },
 
   softmax: {
-    kicker: "Eşleşmelerden paylara",
-    title: "On puan, tek bir bütçe.",
-    lede: "Softmax, eşleşme satırını toplamı %100 olan bir pay satırına çevirir. Hiçbir şey atılmaz ve hiçbir şey seçilmez: her kelime bir pay alır ve paylar ancak birbirinden çıkabilir. Eşleşmeler artık sizde: herhangi birini sürükleyin.",
+    kicker: "From matches to portions",
+    title: "Ten scores, one budget.",
+    lede: "Softmax, skorları toplamı %100 olan ağırlıklara dönüştürür. Bir skoru sürükleyerek değiştir ve diğer kelimelerin ağırlıklarını izle.",
     caption:
-      "Her pay, her harekette bütün satırdan, modelin kullandığı softmax ile yeniden hesaplanıyor. Sürüklediğiniz puanlar 'ya şöyle olsaydı'; modelinkiler işaretli duruyor.",
+      "Her değişiklikte bütün satır için softmax yeniden hesaplanır. Modelin başlangıç değerleri karşılaştırma için işaretlenir.",
     dragHint:
-      "Herhangi bir kelimenin eşleşmesini sürükleyin. Birini yükseltin: dokunmadıklarınız dahil diğer bütün paylar düşer, çünkü toplam hep 1.",
+      "Herhangi bir kelimenin eşleşmesini sürükle. Birini yükselt: dokunmadıkların dahil diğer bütün paylar düşer, çünkü toplam hep 1.",
     reset: "Modelin eşleşmelerine dön",
     legend: "Çentikler modelin kendi eşleşmesini ve payını gösterir.",
     pickAnother: "Başka bir kelimeyi sorun",
     scoreHandle: (word: string) => `“${word}” için eşleşme`,
     scoreValue: (value: string) => `eşleşme ${value}`,
     touchedLabel: "Değişen eşleşme",
-    touchedHint: "sizin elinizle",
+    touchedHint: "elinle",
     announce: (word: string, share: string) => `En büyük pay artık “${word}”, ${share}.`,
   },
 
   mix: {
-    kicker: "Payların harcandığı yer",
-    title: "Paylar bir hüküm değil, birer katsayı.",
-    lede: "Bakılan her kelime, payı oranında kendi value vektörünü verir. Bunları toplayınca seçili kelimenin dönüştüğü şey ortaya çıkar: gerçek bir modelde bir sonraki katmana ulaşan da budur.",
+    kicker: "What the shares are spent on",
+    title: "The shares are coefficients, not a verdict.",
+    lede: "Her kelimenin value vektörünü attention ağırlığıyla çarpıp topla. Elde edilen çıktı vektörünün bileşenleri aşağıda gösteriliyor.",
     tableCaption: "En çok katkı veren üç kelime için pay ve value vektörü.",
-    outputLabel: "Karışmış çıktı, eksen eksen",
+    outputLabel: "Çıktı vektörünün bileşenleri",
   },
 
   // The guided tours, one per experiment (components/lab/guide/tours.ts).
   tour: {
     intro:
-      "Bir cümledeki her kelime diğer bütün kelimeleri tartar. Bir kelime seçerek başlarsınız: sayfa, dikkatinin nereye gittiğini gösterir ve cümleyi altından değiştirebilirsiniz.",
+      "Bir kelime seç, cümlede başka bir kelimeyi değiştir ve attention ağırlıklarını karşılaştır.",
     stages: {
       sentence: {
         sentence:
           "Cümle bu. Bir kelime seçili; diğer her kelimenin altında, o kelimenin dikkatinden aldığı pay yazıyor.",
-        pick: "Başka bir kelime seçin; paylar bu kez o kelime için yeniden hesaplanır.",
-        swap: "Şimdi cümledeki bir kelimeyi değiştirin. Seçtiğiniz kelimeye dokunmadığınız halde onun dikkati de kayar.",
+        pick: "Başka bir kelime seç; paylar bu kez o kelime için yeniden hesaplanır.",
+        swap: "Şimdi cümledeki bir kelimeyi değiştir. Seçtiğin kelimeye dokunmadığın halde onun dikkati de kayar.",
       },
       compare: {
         bars: "Solda seçili kelimenin aradığı şey, yani query'si. Sağda en iyi eşleştiği kelimenin sunduğu şey, yani key'i.",
-        pick: "Buradan başka bir kelime seçin; iki taraf da onun için yeniden hesaplanır.",
+        pick: "Buradan başka bir kelime seç; iki taraf da onun için yeniden hesaplanır.",
         match: "İkisini çubuk çubuk çarpıp toplayınca ham eşleşme çıkar. Bölündüğünde skor olur.",
       },
       scale: {
@@ -185,13 +185,13 @@ const copy: typeof en = {
       },
       softmax: {
         rows: "Her satır bir kelimenin eşleşme skoru ve payı. Payların toplamı her zaman %100.",
-        drag: "Bir skoru sürükleyin ya da seçip ok tuşlarını kullanın. Tur ilkini yükseltti; diğer bütün paylar düştü.",
+        drag: "Bir skoru sürükle ya da seçip ok tuşlarını kullan. Tur ilkini yükseltti; diğer bütün paylar düştü.",
         reset: "Bu düğme modelin kendi skorlarını geri getirir.",
       },
       mix: {
         table:
           "Her kelime value vektörünü payı oranında aktarır; alttaki çubuklar bunların toplamı.",
-        pick: "Başka bir kelime seçin; karışım onun paylarıyla yeniden yapılır.",
+        pick: "Başka bir kelime seç; karışım onun paylarıyla yeniden yapılır.",
         out: "Seçili kelimenin eksen eksen dönüştüğü şey; bir sonraki katmana giden bu.",
       },
     },
@@ -200,9 +200,9 @@ const copy: typeof en = {
   // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
   study: {
     topics: {
-      qkv: "Query, key ve eşleşme skoru",
-      softmax: "Softmax: %100'lük tek bütçe",
-      transformer: "Attention'ın modeldeki yeri",
+      qkv: "Query, key and the match score",
+      softmax: "Softmax: one budget of 100%",
+      transformer: "Where attention sits in a model",
     },
     notes: {
       "3b1b-attention":

@@ -241,7 +241,9 @@ function ComparePanel({
   return (
     <div className="min-w-0 space-y-2">
       <div className="flex items-baseline justify-between gap-3">
-        <h3 className="text-body-sm font-semibold text-fg">{title}</h3>
+        <h3 lang="en" className="text-body-sm font-semibold text-fg">
+          {title}
+        </h3>
         <p className="font-mono text-caption text-fg-muted">
           {g.figures.stepsTaken(Math.min(index, view.count - 1))}
         </p>

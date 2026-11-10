@@ -85,6 +85,7 @@ export function HomePage() {
               {t.shell.parentOrg}
             </p>
             <h1
+              lang="en"
               id="home-title"
               className="mt-6 max-w-[21ch] font-mono text-[clamp(2rem,4.5vw,4rem)] font-semibold leading-[1.12] tracking-[-0.02em] text-fg"
             >
@@ -142,7 +143,7 @@ export function HomePage() {
         className="shell mt-8 scroll-mt-24 md:mt-10"
       >
         <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-3">
-          <h2 id="labs-heading" className="font-display text-display-md text-fg">
+          <h2 lang="en" id="labs-heading" className="font-display text-display-md text-fg">
             {copy.labs}
           </h2>
           <p
@@ -375,7 +376,9 @@ function LabTile({ meta, lit, visited }: { meta: LabMeta; lit: boolean; visited:
           </p>
         )}
         <div className="flex items-start justify-between gap-3">
-          <h3 className="min-w-0 font-display text-title text-fg">{copy?.title ?? meta.title}</h3>
+          <h3 lang="en" className="min-w-0 font-display text-title text-fg">
+            {copy?.title ?? meta.title}
+          </h3>
           <svg
             width="16"
             height="16"

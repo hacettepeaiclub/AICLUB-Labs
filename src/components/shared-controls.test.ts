@@ -137,11 +137,12 @@ describe("LabSection", () => {
   });
 
   it("keeps the kicker subordinate to the heading", () => {
-    const kickerLine = source.split("\n").find((line) => line.includes("{kicker}")) ?? "";
+    const kickerLine = source.match(/<p\b[^>]*>\s*\{kicker\}\s*<\/p>/)?.[0] ?? "";
     expect(kickerLine).toMatch(/text-overline/);
     expect(kickerLine).toMatch(/text-fg-faint/);
     // A paragraph, so a screen reader's heading list stays the section titles.
     expect(kickerLine).toMatch(/<p /);
+    expect(kickerLine).toContain('lang="en"');
     expect(kickerLine).not.toMatch(/<h[1-6]/);
   });
 

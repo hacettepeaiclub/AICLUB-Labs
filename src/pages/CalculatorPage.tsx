@@ -203,8 +203,13 @@ export function CalculatorPage() {
           <Badge dotClassName="bg-accent">{copy.badge}</Badge>
           <Badge>{copy.minutes}</Badge>
         </div>
-        <p className="mb-2 text-overline uppercase text-fg-faint">{copy.overline}</p>
-        <h1 className="text-[clamp(2rem,3.6vw,2.75rem)] font-semibold leading-tight tracking-[-0.025em] text-fg">
+        <p lang="en" className="mb-2 text-overline uppercase text-fg-faint">
+          {copy.overline}
+        </p>
+        <h1
+          lang="en"
+          className="text-[clamp(2rem,3.6vw,2.75rem)] font-semibold leading-tight tracking-[-0.025em] text-fg"
+        >
           {copy.title}
         </h1>
         <p className="mt-4 text-body text-fg-muted">{copy.description}</p>

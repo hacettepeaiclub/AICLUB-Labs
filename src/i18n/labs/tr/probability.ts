@@ -11,21 +11,21 @@ const copy: typeof en = {
     repeats: "03 · Tekrar bir örüntü gösterince",
   },
   sources: {
-    title: "Kaynaklar",
+    title: "Sources",
     statisticalInference:
       "İki çocuk deneyinin arkasındaki koşullu olasılık kurallarını (koşullu olasılık, s. 20; problemin kendisi Alıştırma 1.25, s. 40), Pascal satırının arkasındaki binom katsayılarını (s. 15) ve büyük sayılar kanununu (zayıf, s. 232; güçlü, s. 235) destekler. Buradaki benzetimler bu sonuçları gösterir; onları temellendirmez.",
     simpson:
-      "Dördüncü deneyin gösterdiği tersine dönmeyi destekler: her alt grupta geçerli olan bir ilişkinin, alt gruplar birleştirildiğinde yön değiştirmesi.",
+      "Dördüncü dene gösterdiği tersine dönmeyi destekler: her alt grupta geçerli olan bir ilişkinin, alt gruplar birleştirildiğinde yön değiştirmesi.",
   },
 
   scope:
-    "Dört çözümlü problem; olasılığın geneline bir bakış değil. Her biri belirtilmiş bir model kullanır (iki kurala bağlı bir sunucu, eşit olasılıklı 365 doğum günü, her biri bağımsız olarak erkek ya da kız olan iki çocuk, yayımlanmış tek bir klinik tablo) ve cevaplar bu modellere aittir. Bir sayı simülasyondan geliyorsa simülasyon olarak etiketlenir: bir deneyi çok kez çalıştırmak bir sonucu gösterir, kanıtlamaz.",
+    "Bu lab altı ayrı deney içerir. Her deneyin sonucu belirtilen varsayımlara bağlıdır. Tam olasılıklar, rastgele denemeler ve fizik simülasyonu ayrı etiketlenir. Simülasyon, sonucun davranışını gösterir; matematiksel kanıtın yerini tutmaz.",
 
   prediction: {
-    yours: "Siz dediniz",
+    yours: "dedin",
     actual: "Gerçekte",
-    agreed: "Sezginiz modelle aynı fikirde.",
-    disagreed: "Sezginizle model aynı fikirde değil. İlginç olan kısım da bu.",
+    agreed: "Sezgin modelle aynı fikirde.",
+    disagreed: "Sezginle model aynı fikirde değil. İlginç olan kısım da bu.",
   },
 
   // Her sonucun altındaki iki adım: önce nedeni, sonra hesabı.
@@ -35,7 +35,7 @@ const copy: typeof en = {
   },
 
   monty: {
-    title: "Üç kapı",
+    title: "Three doors",
     question: "Sunucuyu yenebilir misin?",
     setup: [
       "Üç kapı. Birinin arkasında bir araba, diğer ikisinin arkasında birer keçi.",
@@ -43,7 +43,7 @@ const copy: typeof en = {
       "Sunucu arabanın yerini bilir ve diğer ikisinden birini açar: her zaman arkasında keçi olanı.",
       "Sonra seçersin: kendi kapında kal ya da sunucunun dokunmadığı kapıyı al.",
     ],
-    coachLabel: "Herkesin sorduğu sorular",
+    coachLabel: "Questions people ask",
     coach: {
       notHalf: {
         q: "İki kapı kaldı. Neden 50/50 değil?",
@@ -60,44 +60,44 @@ const copy: typeof en = {
       },
     },
     caption:
-      "Sunucu iki kurala bağlıdır: sizin kapınızı asla açmaz, arabayı asla açmaz. Açmayı bilgilendirici kılan da bu kurallardır: rastgele kapı açan bir sunucu iki seçeneği eşit bırakırdı.",
+      "Sunucu iki kurala bağlıdır: kapını asla açmaz, arabayı asla açmaz. Açmayı bilgilendirici kılan da bu kurallardır: rastgele kapı açan bir sunucu iki seçeneği eşit bırakırdı.",
     predictQuestion: "Bir el oynadın. Çok sayıda elde hangisi daha iyi gider?",
     predict: { stay: "Kal", switch: "Değiştir", same: "Fark etmez" },
     predictAnswer: (value: string) => `Değiştirmek zamanın ${value} kadarında kazanır`,
     strategy: { stay: "Kal", switch: "Değiştir" },
     doorsIdle: "Üç kapalı kapı. Birinin arkasında araba, ikisinde keçi var.",
     doorsLabel: (picked: number, opened: number) =>
-      `Üç kapı. ${picked}. kapıyı seçtiniz. Sunucu keçiyi göstermek için ${opened}. kapıyı açtı.`,
+      `Üç kapı. ${picked}. kapıyı seçtin. Sunucu keçiyi göstermek için ${opened}. kapıyı açtı.`,
     doorLabel: (n: number, state: string) => `${n}. kapı, ${state}`,
     doorState: {
       closed: "kapalı",
-      picked: "sizin seçiminiz",
+      picked: "seçimin",
       opened: "sunucu açtı, keçi",
       revealed: "araba",
     },
-    won: "arabayı kazandınız",
-    lost: "arabayı kazanamadınız",
-    promptPick: "Bir kapı seçin.",
+    won: "arabayı kazandın",
+    lost: "arabayı kazanamadın",
+    promptPick: "Bir kapı seç.",
     promptDecide: (opened: number, other: number) =>
-      `Sunucu ${opened}. kapıyı açtı ve arkasından keçi çıktı. Kapınızda kalın mı, ${other}. kapıya mı geçin?`,
-    resultLine: (strategy: string, result: string) => `${strategy} dediniz, ${result}.`,
+      `Sunucu ${opened}. kapıyı açtı ve arkasından keçi çıktı. Kapında kalın mı, ${other}. kapıya mı geçin?`,
+    resultLine: (strategy: string, result: string) => `${strategy} dedin, ${result}.`,
     again: "Yeniden oyna",
     announceOpened: (n: number) => `Sunucu ${n}. kapıyı açtı. Arkasından keçi çıktı.`,
     announceResult: (result: string) => `Tur bitti: ${result}.`,
     runBatch: (n: number) => `${n.toLocaleString("tr-TR")} tur çalıştır`,
-    batchTitle: "Simüle edilen turlar",
+    batchTitle: "Simulated rounds",
     batchIdle: (n: number) =>
-      `Elle birkaç tur oynamak bunu çözmez. ${n.toLocaleString("tr-TR")} tur çalıştırın.`,
+      `Elle birkaç tur oynamak bunu çözmez. ${n.toLocaleString("tr-TR")} tur çalıştır.`,
     batchCaption: (n: number) =>
       `${n} simüle edilmiş turda kalmanın ve değiştirmenin kazanma oranları, tam olasılıkların yanında.`,
     strategyHeader: "Strateji",
     simulatedHeader: (n: number) => `Simülasyon (${n.toLocaleString("tr-TR")})`,
     exactHeader: "Tam değer",
     wins: (wins: number, rounds: number) => `${wins}/${rounds}`,
-    playedLabel: "Oynadığınız tur",
+    playedLabel: "Oynadığın tur",
     yourStayLabel: "Kalmak kazandırırdı",
     yourSwitchLabel: "Değiştirmek kazandırırdı",
-    handHint: "sizin turlarınızda",
+    handHint: "turlarında",
 
     hostPick: "Bir kapı seç. Hangisi olursa.",
     hostReveal: (opened: number) =>
@@ -115,8 +115,8 @@ const copy: typeof en = {
   },
 
   birthday: {
-    kicker: "Sandığınızdan küçük bir oda",
-    title: "İki kişinin doğum günü tutması için kaç kişi gerekir?",
+    kicker: "A smaller room than you think",
+    title: "How many people before two share a birthday?",
     setup: [
       "İnsanlar odaya teker teker giriyor.",
       "Herkesin doğum günü 365 günden biri ve her gün eşit olasılıkta.",
@@ -125,7 +125,7 @@ const copy: typeof en = {
     addPerson: "Bir kişi ekle",
     addPersonHint: "Çift sayısına ne olduğuna bak.",
     roomFull: "Oda doldu.",
-    coachLabel: "Herkesin sorduğu sorular",
+    coachLabel: "Questions people ask",
     coach: {
       soonWhy: {
         q: (n: number) => `${n} kişi nasıl yazı tura oluyor?`,
@@ -142,13 +142,13 @@ const copy: typeof en = {
       },
     },
     caption:
-      "Model: eşit olasılıklı 365 doğum günü, artık yıl yok, herkes bağımsız. Gerçek doğum günleri mevsime göre kümelenir ve bu, gerçek olasılığı biraz yükseltir, yani buradaki, temkinli olanı.",
-    predictQuestion: "Sizce olasılık ilk ne zaman %50'yi geçer?",
+      "Model, doğum günlerinin 365 güne eşit olasılıkla ve kişiler arasında bağımsız dağıldığını varsayar. Artık yılları ve gerçek doğum tarihlerinin mevsimsel farklılıklarını içermez.",
+    predictQuestion: "Sence olasılık ilk ne zaman %50'yi geçer?",
     predict: { count: (n: number) => `${n} kiÅi` },
     predictAnswer: (n: number, value: string) => `${n} kişi, ${value} ile`,
     peopleLabel: "Odadaki kişi",
     peopleValue: (n: number, value: string) => `${n} kişi, aynı doğum günü olasılığı ${value}`,
-    peopleHint: "Yirmili sayılardan yavaşça geçirin.",
+    peopleHint: "Yirmili sayılardan yavaşça geçir.",
     roomLabel: (n: number) => `${n} kişilik bir oda. Hiç kimsenin doğum günü tutmuyor.`,
     roomLabelMatch: (n: number, a: number, b: number, day: string) =>
       `${n} kişilik bir oda. ${a}. ve ${b}. kişinin doğum günü aynı: ${day}.`,
@@ -159,7 +159,7 @@ const copy: typeof en = {
       `${n} kişi arasında aynı doğum günü olasılığı: tam değer ve simülasyon.`,
     exactRow: "Tam olasılık",
     simulatedRow: (rooms: number) => `Simülasyon (${rooms.toLocaleString("tr-TR")} oda)`,
-    stale: (n: number) => `yeniden çalıştırın, son çalışma ${n} kişiydi`,
+    stale: (n: number) => `yeniden çalıştır, son çalışma ${n} kişiydi`,
     reading: (n: number, pairs: number) =>
       `${n} kişi ${pairs.toLocaleString("tr-TR")} farklı çift oluşturur ve her biri tutma şansıdır.`,
     peopleFigure: "Kişi",
@@ -182,7 +182,7 @@ const copy: typeof en = {
       "Soru, birinin seninle tutup tutmadığı değil. Herhangi iki kişinin birbiriyle tutup tutmadığı, ve odaya giren her yeni kişi, içerideki herkesle yeni bir çift kuruyor. Çiftler, insanlardan çok daha hızlı birikiyor.",
     explainMaths: (n: number, pairs: string, value: string) =>
       `${n} kişiyle ${pairs} çift olur. Hiçbir çiftin tutmama olasılığı 365/365 × 364/365 × … çarpımıdır; bunun bire tümleyeni ${value}.`,
-    simulateLabel: "Bunun yerine çalıştırın",
+    simulateLabel: "Bunun yerine çalıştır",
     runRooms: (n: number) => `${n.toLocaleString("tr-TR")} oda doldur`,
     simulateNote: (days: number) =>
       `Her oda, kişi başına eşit olasılıklı ${days} günden bir doğum günü çeker, sonra tekrar arar.`,
@@ -191,15 +191,15 @@ const copy: typeof en = {
   },
 
   conditional: {
-    kicker: "İşi yapan şey ipucu",
-    title: "Bir ailenin iki çocuğu var. İkisi de erkek mi?",
+    kicker: "The clue does the work",
+    title: "A family has two children. Are both boys?",
     setup: [
       "Bir ailenin iki çocuğu var: biri büyük, biri küçük.",
       "Her çocuk erkek ya da kız ve ikisi de eşit olasılıkta, yani eşit olasılıklı dört aile var.",
       "Biri sana bu aile hakkında doğru tek bir cümle söylüyor.",
       "Senin sorun: ikisinin de erkek olma olasılığı nedir?",
     ],
-    coachLabel: "Herkesin sorduğu sorular",
+    coachLabel: "Questions people ask",
     coach: {
       notHalf: {
         q: "Çocuklardan biri erkek, o zaman diğeri 50/50 değil mi?",
@@ -226,7 +226,7 @@ const copy: typeof en = {
       atLeastOneBoy: "En az biri erkek",
       firstIsBoy: "İlk çocuk erkek",
     },
-    clueHint: "Aynı aile, farklı cümle. Hangi kutuların kaldığına bakın.",
+    clueHint: "Aynı aile, farklı cümle. Hangi kutuların kaldığına bak.",
     outcome: { GG: "KK", GB: "KE", BG: "EK", BB: "EE" },
     possible: "hâlâ mümkün",
     counts: "ikisi de erkek",
@@ -256,7 +256,7 @@ const copy: typeof en = {
     girl: "Kız",
     familyLabel: (older: string, younger: string) =>
       `Büyük çocuğu ${older}, küçük çocuğu ${younger} olan aile`,
-    familiesTitle: "Eşit olasılıklı dört aile",
+    familiesTitle: "The four families, all equally likely",
     explainWhat: "Bir çocuk hakkında bilgi almak, diğerinin ne olma ihtimalini değiştirir.",
     explainWhy:
       "“En az biri erkek” hangisi olduğunu söylemez. Yalnızca iki kızlı aileyi eler ve kalan üç aileden ikisinde bir kız vardır. Bunun yerine “büyük olan erkek” dersen bir değil iki aile elenir: aynı aile, farklı cümle, farklı cevap.",
@@ -267,8 +267,8 @@ const copy: typeof en = {
   },
 
   simpson: {
-    kicker: "İki tedavi, tek bir karar",
-    title: "Hangi tedaviyi seçerdin?",
+    kicker: "Two treatments, one decision",
+    title: "Which treatment would you choose?",
     setup: [
       "Böbrek taşı için iki tedavi, A ve B: 1986 tarihli gerçek bir çalışmadan.",
       "Hastalar ya küçük taşla ya da büyük taşla geliyor; büyük olanlar zor vakalar.",
@@ -277,7 +277,7 @@ const copy: typeof en = {
     ],
     named:
       "Baktığın şeyin bir adı var: Simpson paradoksu: gruplar toplandığında tersine dönen bir karşılaştırma.",
-    coachLabel: "Herkesin sorduğu sorular",
+    coachLabel: "Questions people ask",
     coach: {
       howBoth: {
         q: "A her iki grupta kazanıp toplamda nasıl kaybedebilir?",
@@ -334,7 +334,7 @@ const copy: typeof en = {
       a: "büyük olan ameliyat",
       b: "küçük bir kesi, açık ameliyat yok",
     },
-    stepSmallTitle: "Kolay vakalarla başlayalım",
+    stepSmallTitle: "Start with the easier cases",
     stepLargeButton: "Şimdi büyük taşları göster",
     stepOverallButton: "İki grubu topla",
     seenBoth: "Her iki grupta da kazanan aynı.",
@@ -353,19 +353,19 @@ const copy: typeof en = {
   },
 
   bridge:
-    "Tek bir düzeneğin iki modeli, aynı gözler konusunda anlaşamıyor. Sıradaki deney önce modeli sabitler; böylece değişen tek şey, denemenin kaç kez yinelendiği olur.",
+    "Önceki deneyde iki farklı modelin sonuçlarını karşılaştırdık. Şimdi modeli sabit tutup deneme sayısını artıracağız.",
 
   pascal: {
-    kicker: "Pascal'ın bilyeleri",
-    title: "Aynı düzeneğin iki modeli.",
+    kicker: "Pascal's balls",
+    title: "Two models of the same board.",
     setup: [
       "Bilye, çivilerden oluşan üçgenin üstünden bırakılır ve yerçekimiyle düşer.",
       "Yön değişimlerinin her biri bir çarpışmadan doğar, bir yazı turadan değil.",
       "Sonunda durduğu göz hangisiyse orada sayılır.",
     ],
     caption:
-      "İdeal matematiksel model her sırayı bağımsız bir sol ya da sağ adımı olarak ele alır; bu da binom dağılımını verir. Ekrandaki fiziksel düzenekte ise adım diye bir şey yoktur: bilyenin nereye gideceğine yerçekimi, temas geometrisi, esneklik ve sürtünme karar verir. İkisi farklı mekanizmalardır ve tablo onları ayrı sütunlarda tutar.",
-    predictQuestion: "Birkaç bilye bırakın. Nerede durur bunlar?",
+      "İdeal model, her sırada bağımsız olarak sağa veya sola gidildiğini varsayar ve binom dağılımını verir. Fizik simülasyonunda ise bilyelerin hareketini yerçekimi, temas ve sürtünme belirler. İki sonuç ayrı sütunlarda gösterilir.",
+    predictQuestion: "Birkaç bilye bırak. Nerede durur bunlar?",
     predict: {
       edges: "İki uçta",
       centre: "Ortada",
@@ -378,28 +378,28 @@ const copy: typeof en = {
     dropHint: "Buradaki her bilye fizik motorunda benzetilir. Hiçbir sayı hesapla eklenmez.",
     falling: (n: number) => `${n} bilye hâlâ düşüyor`,
     boardLabel: (dropped: number, rows: number) =>
-      `${rows} sıra çividen oluşan bir düzenek. ${dropped} bilye fiziksel olarak aşağı düştü ve alttaki gözlerde durdu.`,
+      `${rows} sıra çivili bilye tahtası. ${dropped} bilye aşağı bırakıldı ve gözlerde toplandı.`,
     boardEmptyLabel: (rows: number) =>
-      `${rows} sıra çividen oluşan bir düzenek; altındaki gözler boş.`,
+      `${rows} sıra çividen oluşan bir simülasyon; altındaki gözler boş.`,
     tableCaption: (rows: number, dropped: number) =>
-      `${rows} sıralı düzeneğin her gözü: ideal modelin saydığı yol sayısı, öngördüğü pay ve fiziksel olarak benzetilen ${dropped} bilyenin ulaştığı gerçek pay.`,
+      `${rows} sıralı simülasyonun her gözü: ideal modelin saydığı yol sayısı, öngördüğü pay ve fiziksel olarak benzetilen ${dropped} bilyenin ulaştığı gerçek pay.`,
     binColumn: "Göz",
     pathsColumn: "Yol",
     idealColumn: "İdeal model",
-    physicalColumn: "Fiziksel düzenek",
+    physicalColumn: "Fizik simülasyonu",
     shapeColumn: "Biçim",
     legend:
-      "Üstteki çubuk ideal binom modelini, alttaki fiziksel sonuçları gösterir. Ayrıştıkları yerde düzenek, hesabın modellemediği bir şeyi söylüyordur.",
+      "Üst çubuk ideal binom olasılığını, alt çubuk simülasyonda gözlenen oranı gösterir. İki modelin varsayımları farklı olduğu için sonuçlar ayrılabilir.",
     reading: (dropped: number, rows: number) =>
       `${dropped} bilye, her biri ${rows} sıra çivinin arasından; hepsi tek tek benzetildi.`,
     readingEmpty:
-      "Gözler boş. Bir bilye bırakın; nereye düşeceğine yerçekimi ve çiviler karar verir.",
+      "Gözler boş. Bir bilye bırak; nereye düşeceğine yerçekimi ve çiviler karar verir.",
     explainWhat:
-      "İki model de bilyelerin çoğunu ortaya yakın yerleştirir; kaç tanesini konusunda ise anlaşamazlar.",
+      "İki modelde de merkezdeki gözlerde daha fazla bilye beklenir. Ancak bu gözlerin oranları aynı değildir.",
     explainWhy:
-      "İdeal model bir sayma sorusu sorar: bu büyüklükteki bir düzeneğin izin verdiği bütün sol-sağ dizileri içinde kaç tanesi hangi gözde biter? Fiziksel düzenekte ise hiçbir şey adım atmaz. Bilye bir çiviye belirli bir hız ve açıyla gelir, temasın verdiğiyle ayrılır ve bir sonrakine giderken yanal hareketinin bir kısmını sürtünmeye kaptırır. Bu kayıp onu ortaya doğru çeker; dolayısıyla bu düzenek, sayma argümanının öngördüğünden daha dar toplanır. İki yanıt da yanlış değildir; farklı soruların yanıtlarıdır.",
+      "İdeal model her sırada bağımsız ve eşit olasılıklı sağ-sol seçimi varsayar. Fizik simülasyonunda bilyenin hızı, çarpışmaları ve sürtünmesi hesaplanır. Bu simülasyonda yatay hareketin azalması sonuçları merkeze daha fazla toplayabilir. Bu nedenle iki sütun farklı oranlar gösterebilir.",
     explainMaths: (rows: number, paths: string, total: string) =>
-      `İdeal modelde ${rows} sıralı bir düzenek, her karar dizisine bir tane düşmek üzere ${total} yola izin verir; belirli bir gözde biten yolların sayısı da Pascal üçgeninin o satırındaki değerdir. En kalabalık göze ${paths} yol ulaşır, yani payı bu sayının ${total} değerine bölümüdür. Bu değerler binom katsayılarıdır, verdikleri paylar da binom dağılımıdır. Fiziksel sütun ise bunların hiçbirinden hesaplanmaz: benzetilen bilyelerin nerede durduğunun sayımıdır.`,
+      `İdeal modelde ${rows} sıra için ${total} sağ-sol dizisi vardır. Merkezdeki göze ${paths} dizi ulaşır; oranı ${paths} / ${total} olur. Yol sayıları Pascal üçgenindeki binom katsayılarıdır. Bu sayılardan elde edilen oranlar binom dağılımını verir. Fizik sütunu bu formülden hesaplanmaz; simülasyonda her göze düşen bilyeler sayılır.`,
     ballsFigure: "Benzetilen bilye",
     ballsHint: "Her biri bir fiziksel deneme",
     rowsFigure: "Sıra",
@@ -407,41 +407,41 @@ const copy: typeof en = {
     pathsHint: "2'nin sıra sayısı kuvveti",
     peakFigure: "En kalabalık göz",
     peakHint: (ideal: number) => `İdeal modelin en kalabalığı ${ideal}`,
-    boardSettings: "Düzenek",
+    boardSettings: "Tahta ayarları",
     rowsLabel: "Çivi sırası",
     rowsValue: (rows: number, paths: string) => `${rows} sıra, ideal modelde ${paths} yol`,
-    rowsHint: "Düzeneği yeniden kurmak gözleri boşaltır: farklı bir düzenek, farklı bir deneydir.",
+    rowsHint: "Sıra sayısını değiştirmek mevcut bilyeleri temizler ve deneyi yeniden başlatır.",
     emptyBoard: "Gözleri boşalt",
     announce: (dropped: number, bin: number) =>
       `${dropped} bilye benzetildi. En çok bilye ${bin} numaralı gözde.`,
-    coachLabel: "Sık sorulanlar",
+    coachLabel: "Questions people ask",
     coach: {
       twoModels: {
         q: "Neden iki dağılım var?",
-        a: "Çünkü iki model var. Biri, her sıranın bağımsız ve adil bir adım olduğu idealleştirilmiş bir düzenekteki yolları sayar. Diğeri ise içinde yerçekimi, temas ve sürtünme bulunan bir katı cisim benzetimidir. Aynı resmi anlatırlar ama aynı şey değildirler; bu yüzden tek bir eğride ortalanmak yerine ayrı sütunlarda gösterilirler.",
+        a: "Bir sütunda binom modelinin olasılıkları, diğerinde fizik simülasyonunda sayılan bilyeler var. Birincisi bağımsız ve eşit olasılıklı sağ-sol seçimlerini, ikincisi yerçekimi, temas ve sürtünmeyi kullanır. Sonuçlar bu yüzden ayrı gösterilir.",
       },
       whyDiffer: {
         q: "Hangisi doğru?",
-        a: "Her biri kendi konusunda doğrudur. Binom dağılımı, sayma modeli hakkında tam olarak doğrudur. Fiziksel sütun da bu benzetilmiş düzeneğin tam olarak yaptığı şeydir. Model, bir mekanizmanın idealleştirilmesidir; mekanizmada idealleştirmede bulunmayan şeyler varsa ikisi ayrışır. İşe yarar kısım da tam olarak nerede ayrıştıklarını fark etmektir.",
+        a: "İdeal sütun, bağımsız sağ-sol seçimleri için hesaplanan olasılıktır. Fizik sütunu, bu simülasyonda bilyelerin düştüğü gözleri sayar. Farklı varsayımlara dayandıkları için aynı sonucu vermeleri gerekmez.",
       },
       whyMiddle: {
         q: "İki modelde de orta neden doluyor?",
         a: (paths: string, total: string) =>
-          `İdeal modelde bu bir sayma meselesidir: düzeneğin izin verdiği ${total} yoldan ${paths} tanesi en kalabalık gözde, uçtaki gözlerin her birinde ise tam olarak bir tanesi biter. Fiziksel düzenekte ise bir bilyenin uca ulaşması için her sırada aynı yöne sapması gerekir; üstelik her temas yanal hızının bir kısmını alıp götürdüğü için böyle bir şans dizisi daha da seyrekleşir.`,
+          `İdeal modelde bu bir sayma meselesidir: simülasyonun izin verdiği ${total} yoldan ${paths} tanesi en kalabalık gözde, uçtaki gözlerin her birinde ise tam olarak bir tanesi biter. Fiziksel simülasyonda ise bir bilyenin uca ulaşması için her sırada aynı yöne sapması gerekir; üstelik her temas yanal hızının bir kısmını alıp götürdüğü için böyle bir şans dizisi daha da seyrekleşir.`,
       },
     },
   },
 
   largeNumbers: {
-    kicker: "Büyük Sayılar Kanunu",
-    title: "Kararı tekrarlayın; oran yerine oturur.",
+    kicker: "The law of large numbers",
+    title: "Repeat the decision, and the proportion settles.",
     setup: [
       "Tek bir çivi, tek bir adil karar: sol ya da sağ.",
       "Karar, bağımsız biçimde çok kez tekrarlanır.",
       "Sağa gidenlerin oranı teorik olasılıkla karşılaştırılır.",
     ],
     caption:
-      "Kanun, bağımsız denemeler biriktikçe gözlenen oranın teorik olasılığa yaklaşma eğiliminde olduğunu söyler. Aradaki farkın her adımda küçüleceğini söylemez; bu koşuda da küçülmez: çizgi yerine oturmadan önce uzaklaştığı yerleri izleyin.",
+      "Bağımsız deneme sayısı arttıkça gözlenen oran teorik olasılığa yaklaşır. Ancak aradaki farkın her adımda azalması gerekmez. Grafikte farkın yeniden büyüdüğü aralıkları da incele.",
     predictQuestion: "Deneme sayısı arttıkça gözlenen oran ne yapar?",
     predict: {
       settles: "Teorik değerin yakınında durulur",
@@ -470,7 +470,7 @@ const copy: typeof en = {
     observedColumn: "Gözlenen",
     deviationColumn: "Sapma",
     tableNote:
-      "Sapma sütununu yukarıdan aşağıya okuyun. Küçülme eğilimindedir; her satırda küçülmesi gerekmez.",
+      "Sapma sütununu yukarıdan aşağıya oku. Küçülme eğilimindedir; her satırda küçülmesi gerekmez.",
     reading: (trials: string) =>
       `Tek bir tohumdan üretilmiş ${trials} bağımsız karar. Aynı tohum her seferinde aynı koşuyu verir.`,
     explainWhat: "Oran başlarda gezinir, sonra teorik olasılığın yakınında durulur.",
@@ -485,7 +485,7 @@ const copy: typeof en = {
     deviationHint: "Teorik değere uzaklık",
     trialsFigure: "Deneme",
     announce: (trials: string, observed: string) => `${trials} deneme. Gözlenen oran ${observed}.`,
-    coachLabel: "Sık sorulanlar",
+    coachLabel: "Questions people ask",
     coach: {
       notEvenly: {
         q: "İki tarafın tam olarak eşitlenmesi gerekmez mi?",
@@ -497,62 +497,62 @@ const copy: typeof en = {
       },
       howMany: {
         q: "Kaç deneme yeterlidir?",
-        a: "Ne kadar yakın olmanız gerektiğine ve bundan ne kadar emin olmak istediğinize bağlıdır. Kanun bir takvim değil bir eğilim tarif eder ve gözlenen oranın teorik olasılığın yakınında kalacağını garanti eden bir sayı vermez.",
+        a: "Ne kadar yakın olman gerektiğine ve bundan ne kadar emin olmak istediğine bağlıdır. Kanun bir takvim değil bir eğilim tarif eder ve gözlenen oranın teorik olasılığın yakınında kalacağını garanti eden bir sayı vermez.",
       },
     },
   },
 
   recap: {
     lessons: [
-      "Sezgi bir olasılık hesaplayıcısı değildir. Dört deneyin dördünde de akla ilk gelen cevap yanlış olanıdır.",
+      "Sezgi bir olasılık hesaplayıcısı değildir. Dört dene dördünde de akla ilk gelen cevap yanlış olanıdır.",
       'Bir ipucu hangi sonuçların mümkün kaldığını değiştirir ve hangilerinin kalacağına cümlenin kuruluşu karar verir. "En az biri erkek" ile "ilki erkek" farklı kümeler bırakır.',
       "Tutma meselesi kişilerle değil çiftlerle ilgilidir. Yirmi üç kişi 253 çift oluşturur; aynı doğum gününün hissedildiğinden çok daha erken gelmesinin nedeni budur.",
       "Grupları toplamak, gruplar aynı biçimde doldurulmamışsa içlerindeki karşılaştırmayı tersine çevirebilir.",
     ],
     footer:
-      "Bunların her biri, belirtilmiş bir modeli olan çözümlü birer problemdir; şansa dair genel bir kural değil. Tam olasılıklar kapalı formda hesaplanır; simüle edilenler ise deneyin tohumlanmış bir üreteçle gerçekten çalıştırılmasından gelir ve her zaman böyle etiketlenir. Bir soru gerçekten belirsizse (en açık örnek iki çocuk problemidir), varsayım sessizce seçilmez, yazılır.",
+      "Her sonucu kendi varsayımlarıyla değerlendir. Hesaplanan olasılıklar, rastgele denemeler ve fizik simülasyonunun sonuçları birbirinin yerine kullanılmaz. İpucunun veriliş biçimi sonucu değiştiriyorsa bu koşul deneyde ayrıca belirtilir.",
   },
 
   // The guided tours, one per experiment (components/lab/guide/tours.ts).
   tour: {
     intro:
-      "Üç kapı, bir araba. Sunucuya karşı bir tur oynayın ve kapınızda kalmanın mı, değiştirmenin mi kazandırdığını bulun.",
+      "Bir kapı seç. Sunucu boş bir kapıyı açtıktan sonra seçimini değiştirip değiştirmeyeceğine karar ver. Sonucu çok sayıda turla karşılaştır.",
     stages: {
       monty: {
-        pick: "Bir kapı seçin. Tur ilk kapıyı seçti.",
+        pick: "Bir kapı seç. Tur ilk kapıyı seçti.",
         choose:
-          "Sunucu arkasında keçi olan bir kapıyı açtı. Karar sizin: kapınızda kalın ya da kapalı olan öbür kapıya geçin.",
+          "Sunucu arkasında keçi olan bir kapıyı açtı. Karar : kapında kalın ya da kapalı olan öbür kapıya geçin.",
         score:
-          "Oynadığınız turlar burada toplanır. Birkaç turdan sonra bin turu tek seferde oynatabilirsiniz.",
+          "Oynadığın turlar burada toplanır. Birkaç turdan sonra bin turu tek seferde oynatabilirsin.",
       },
       birthday: {
         guess:
           "Önce tahmin edin: kaç kişide ortak bir doğum günü olması olmamasından daha olası hale gelir?",
-        people: "Kişileri düğmeyle teker teker ekleyin ya da bu kaydırıcıyla atlayın.",
+        people: "Kişileri düğmeyle teker teker ekle ya da bu kaydırıcıyla atlayın.",
         room: "Odaya giren her yeni kişi, içerideki herkesle yeni bir çift oluşturur.",
         chance: "Kişi, çift ve kesin olasılık. Çift sayısı kişi sayısını hızla geçer.",
       },
       conditional: {
         families:
           "Eşit olasılıklı bütün iki çocuklu aileler. İpucu, dışarıda bıraktıklarının üstünü çizer.",
-        clue: "İpucunun ifadesini değiştirin. Tur değiştirdi; geriye farklı aileler kaldı.",
+        clue: "İpucunun ifadesini değiştir. Tur değiştirdi; geriye farklı aileler kaldı.",
         answer: "Kalan aileler, kaçında iki erkek çocuk olduğu ve cevap.",
       },
       simpson: {
         table: "İki böbrek taşı tedavisi; önce küçük taşlar.",
-        large: "Büyük taşları ekleyin. İki grupta da aynı tedavi kazanıyor.",
-        choose: "Bir tedavi seçin, sonra iki grubun toplamına bakın.",
+        large: "Büyük taşları ekle. İki grupta da aynı tedavi kazanıyor.",
+        choose: "Bir tedavi seç, sonra iki grubun toplamına bak.",
         rates: "Her grupta daha iyi, toplamda daha kötü: grupların büyüklüğü aynı değil.",
       },
       pascal: {
         board: "Çivili bir tahta ve yanında binom modelinin tahmini.",
-        drop: "Bir bilye bırakın; nereye düşeceğine yerçekimi ve çiviler karar verir. Tur bir tane bıraktı.",
-        many: "Bir seferde çok sayıda bırakın; çan eğrisi ortaya çıkar.",
-        rows: "Sıra sayısını buradan değiştirin.",
+        drop: "Bir bilye bırak; nereye düşeceğine yerçekimi ve çiviler karar verir. Tur bir tane bıraktı.",
+        many: "Bir seferde çok sayıda bırak; çan eğrisi ortaya çıkar.",
+        rows: "Sıra sayısını buradan değiştir.",
       },
       largeNumbers: {
         chart: "Turlar biriktikçe kazanma oranı ve teorik değer.",
-        trials: "Kaç tur oynanacağını seçin. Tur en çoğunu seçti.",
+        trials: "Kaç tur oynanacağını seç. Tur en çoğunu seçti.",
         figures: "Gözlenen ve teorik değer. Fark her adımda küçülmez ama sonunda oturur.",
       },
     },
@@ -561,10 +561,10 @@ const copy: typeof en = {
   // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
   study: {
     topics: {
-      monty: "Monty Hall ve koşullu olasılık",
-      birthday: "Doğum günleri: kişiler değil, çiftler",
-      simpson: "Simpson paradoksu",
-      galton: "Galton tahtası ve çan eğrisi",
+      monty: "Monty Hall and conditioning",
+      birthday: "Birthdays: pairs, not people",
+      simpson: "Simpson's paradox",
+      galton: "The Galton board and the bell curve",
     },
     notes: {
       "np-monty": "Oyun beş dakikada.",
