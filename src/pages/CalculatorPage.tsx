@@ -18,6 +18,8 @@ import {
   makePuzzle,
   puzzleNumber,
   TRIES,
+  screenAnswers,
+  type PuzzleTask,
   type Progress,
 } from "@/calculator/daily";
 import { CalcDevice } from "@/calculator/ui/CalcDevice";
@@ -85,6 +87,7 @@ type BenchAction =
   | { type: "practice"; practice: Bench["practice"] }
   | { type: "restart" }
   | { type: "dailyOpen"; day: string; progress: Progress }
+  | { type: "dailyNext" }
   | { type: "dailyAnswer" }
   | { type: "dailyGiveUp" };
 
@@ -108,7 +111,13 @@ function restart(bench: Bench, changes: Partial<Bench> = {}): Bench {
 /** The puzzle after an answer or giving up; a finished question clears the calculator. */
 function answer(bench: Bench, gaveUp: boolean): Bench {
   const daily = bench.practice === "daily" ? bench.daily : null;
-  if (!daily || isFinished(daily.progress)) return bench;
+  if (
+    !daily ||
+    daily.verdict?.kind === "right" ||
+    daily.verdict?.kind === "missed" ||
+    isFinished(daily.progress)
+  )
+    return bench;
   const index = answered(daily.progress);
   const task = daily.tasks[index]!;
   const judgement = gaveUp ? null : judge(task, bench.calc);
@@ -119,7 +128,7 @@ function answer(bench: Bench, gaveUp: boolean): Bench {
     const kind = row.done === "solved" ? "right" : "missed";
     return {
       ...bench,
-      calc: initialState(bench.model),
+      calc: bench.calc,
       daily: { ...daily, progress, verdict: { kind, answer: task.answer } },
     };
   }
@@ -131,6 +140,8 @@ function answer(bench: Bench, gaveUp: boolean): Bench {
 function reduce(bench: Bench, action: BenchAction): Bench {
   switch (action.type) {
     case "key": {
+      if (bench.daily?.verdict?.kind === "right" || bench.daily?.verdict?.kind === "missed")
+        return bench;
       const keys = keysOf(bench);
       const playing = false;
       if (bench.practice !== "lesson" || bench.progress >= keys.length) {
@@ -184,6 +195,12 @@ function reduce(bench: Bench, action: BenchAction): Bench {
           verdict: null,
         },
       };
+    case "dailyNext":
+      return {
+        ...bench,
+        calc: initialState(bench.model),
+        daily: bench.daily ? { ...bench.daily, verdict: null } : null,
+      };
     case "dailyAnswer":
       return answer(bench, false);
     case "dailyGiveUp":
@@ -222,6 +239,50 @@ export function CalculatorPage() {
   const reduced = useReducedMotion();
   const [bench, dispatch] = useReducer(reduce, undefined, initialBench);
 
+  const [trial, setTrial] = useState<PuzzleTask | null>(null);
+  const [trialResult, setTrialResult] = useState<string>("");
+  const startTrial = () => {
+    const aliases: Record<string, string> = {
+      angle: "trigDegrees",
+      variance: "popVariance",
+      regression: "slope",
+    };
+    const kind = aliases[bench.lesson] ?? bench.lesson;
+    let task: PuzzleTask | undefined;
+    for (let n = 0; n < 100 && !task; n++)
+      task = makePuzzle(bench.model, `practice-${bench.lesson}-${n}`).find((t) => t.kind === kind);
+    const extra: Record<string, { en: string; tr: string; answer: number }> = {
+      fraction: {
+        en: "Express 3/4 as a decimal.",
+        tr: "3/4 kesrini ondalık biçimde göster.",
+        answer: 0.75,
+      },
+      memory: {
+        en: "Store 5 in a variable, then multiply it by 3.",
+        tr: "Bir değişkene 5 kaydet, sonra bu değişkeni 3 ile çarp.",
+        answer: 15,
+      },
+      product: {
+        en: "Multiply [[1,2],[3,4]] by [[5,6],[7,8]]. Find the top-left entry.",
+        tr: "[[1,2],[3,4]] ile [[5,6],[7,8]] matrislerini bu sırayla çarp. Sol üst elemanı bul.",
+        answer: 19,
+      },
+    };
+    const custom = extra[bench.lesson];
+    if (custom)
+      task = {
+        kind: bench.lesson,
+        topic: { en: "Practice", tr: "Alıştırma" },
+        prompt: custom,
+        answer: custom.answer,
+        read: screenAnswers,
+        abs: 0,
+      };
+    if (!task) return;
+    setTrial(task);
+    setTrialResult("");
+    dispatch({ type: "practice", practice: "free" });
+  };
   const model = MODELS[bench.model];
   const lesson = lessonById(bench.lesson);
   const keys = keysOf(bench);
@@ -264,6 +325,8 @@ export function CalculatorPage() {
       ? daily.progress
       : store.load(today, bench.model);
   const openDaily = () => {
+    setTrial(null);
+    setTrialResult("");
     if (!inDaily || daily?.day !== today) {
       dispatch({ type: "dailyOpen", day: today, progress: store.load(today, bench.model) });
     }
@@ -335,7 +398,11 @@ export function CalculatorPage() {
             value: id,
             label: MODELS[id].name,
           }))}
-          onChange={(next) => dispatch({ type: "model", model: next })}
+          onChange={(next) => {
+            setTrial(null);
+            setTrialResult("");
+            dispatch({ type: "model", model: next });
+          }}
           className="max-w-2xl"
         />
         <p className="mt-2 text-caption text-fg-faint">{copy.sameKeys(model.siblings)}</p>
@@ -360,6 +427,56 @@ export function CalculatorPage() {
               className="mb-5 max-w-sm"
             />
 
+            {inLesson && bench.progress >= keys.length && keys.length > 0 && (
+              <button
+                className="mb-4 min-h-11 rounded border border-line/20 p-3 text-accent"
+                onClick={startTrial}
+              >
+                {language === "tr" ? "Tuşları görmeden dene" : "Try without key hints"}
+              </button>
+            )}
+            {trial && !inLesson && !inDaily && (
+              <section className="calc-card mb-5">
+                <h3 lang="en" className="text-title">
+                  Try it yourself
+                </h3>
+                <p className="my-3">{trial.prompt[language]}</p>
+                <button
+                  className="min-h-11 rounded border border-line/30 p-2"
+                  onClick={() => {
+                    const result = judge(trial, bench.calc);
+                    setTrialResult(
+                      result.kind === "right"
+                        ? language === "tr"
+                          ? "Doğru. Şimdi günlük soruları deneyebilirsin."
+                          : "Correct. Try the daily puzzle next."
+                        : language === "tr"
+                          ? "Sonucu kontrol et. Gerekirse derse dönüp tekrar dene."
+                          : "Check your result, or return to the lesson.",
+                    );
+                  }}
+                >
+                  {language === "tr" ? "Cevabımı kontrol et" : "Check my answer"}
+                </button>
+                <p role="status" className="my-3">
+                  {trialResult}
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  <button
+                    className="min-h-11 p-2 underline"
+                    onClick={() => {
+                      setTrial(null);
+                      dispatch({ type: "lesson", id: bench.lesson });
+                    }}
+                  >
+                    {language === "tr" ? "Derse dön" : "Return to lesson"}
+                  </button>
+                  <button className="min-h-11 p-2 underline" onClick={openDaily}>
+                    {language === "tr" ? "Günlük soruları aç" : "Open daily puzzle"}
+                  </button>
+                </div>
+              </section>
+            )}
             <div className="calc-bench">
               <div className="min-w-0 space-y-3">
                 {/* On a phone the lesson panel is below the device; the step
@@ -378,6 +495,11 @@ export function CalculatorPage() {
                     language={language}
                     onAnswer={() => dispatch({ type: "dailyAnswer" })}
                     onGiveUp={() => dispatch({ type: "dailyGiveUp" })}
+                    onNext={() => dispatch({ type: "dailyNext" })}
+                    onStudy={(topic) => {
+                      const found = LESSONS.find((l) => l.id === topic && l.steps[bench.model]);
+                      if (found) dispatch({ type: "lesson", id: found.id });
+                    }}
                   />
                 )}
                 <CalcDevice

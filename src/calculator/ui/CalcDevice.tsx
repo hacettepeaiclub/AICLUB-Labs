@@ -1,4 +1,4 @@
-import type { KeyboardEvent } from "react";
+import { useRef, type KeyboardEvent } from "react";
 import { cn } from "@/lib/cn";
 import type { DisplayModel } from "../engine/machine";
 import type { ModelSpec } from "../engine/models";
@@ -60,11 +60,13 @@ export interface CalcDeviceProps {
 }
 
 export function CalcDevice({ model, view, target, onKey, label }: CalcDeviceProps) {
+  const typing = useRef(false);
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.ctrlKey || event.metaKey || event.altKey) return;
+    if (event.key === "Tab") typing.current = false;
     // Enter or Space on a focused key is that key's own click.
     if (
-      (event.key === "Enter" || event.key === " ") &&
+      (event.key === " " || (event.key === "Enter" && !typing.current)) &&
       (event.target as HTMLElement).tagName === "BUTTON"
     ) {
       return;
@@ -73,6 +75,7 @@ export function CalcDevice({ model, view, target, onKey, label }: CalcDeviceProp
     const hasComma = model.functionRows.flat().some((def) => def.id === "comma");
     const key = event.key === "," && hasComma ? "comma" : KEYBOARD[event.key];
     if (!key) return;
+    typing.current = true;
     event.preventDefault();
     onKey(key);
   };

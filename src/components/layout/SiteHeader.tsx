@@ -157,6 +157,32 @@ export function SiteHeader({
             <Kbd>{PALETTE_SHORTCUT}</Kbd>
           </button>
 
+          <details className="relative sm:hidden">
+            <summary
+              className="cursor-pointer rounded border border-line/20 p-2"
+              aria-label={language === "tr" ? "Gezinme" : "Navigation"}
+            >
+              ☰
+            </summary>
+            <nav
+              onClick={(event) => {
+                const menu = event.currentTarget.closest("details");
+                if (menu) menu.open = false;
+              }}
+              style={{ top: "100%", minWidth: "12rem", right: 0, zIndex: 50 }}
+              className="absolute grid gap-2 rounded border border-line/20 bg-ink-950 p-3"
+            >
+              <Link className="p-2" to="/">
+                {t.shell.allLabs}
+              </Link>
+              <Link className="p-2" to={CALCULATOR_PATH}>
+                {t.shell.calculator}
+              </Link>
+              <button className="p-2 text-left" onClick={onFindLab}>
+                {t.palette.open}
+              </button>
+            </nav>
+          </details>
           <PreferenceToggle
             label={t.preferences.languageLabel}
             value={language}

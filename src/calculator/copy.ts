@@ -67,7 +67,7 @@ const en = {
   dailyAnswer: "This is my answer",
   dailyGiveUp: "Give up",
   dailyRight: (answer: string) => `Correct: ${answer}. On to the next one.`,
-  dailyMissed: (answer: string) => `No tries left. The answer was ${answer}.`,
+  dailyMissed: (answer: string) => `Question closed. The answer was ${answer}.`,
   dailyHigher: (left: string) => `Not quite: the answer is higher. ${left}.`,
   dailyLower: (left: string) => `Not quite: the answer is lower. ${left}.`,
   dailyEmpty: "Nothing on the screen answers this question yet. Work it out first.",
@@ -160,7 +160,7 @@ const tr: CalculatorCopy = {
   dailyAnswer: "Cevabım bu",
   dailyGiveUp: "Pes et",
   dailyRight: (answer: string) => `Doğru: ${answer}. Sıradaki soruya geç.`,
-  dailyMissed: (answer: string) => `Hakkın bitti. Cevap ${answer} idi.`,
+  dailyMissed: (answer: string) => `Soru tamamlandı. Doğru cevap: ${answer}.`,
   dailyHigher: (left: string) => `Olmadı: cevap daha büyük. ${left}.`,
   dailyLower: (left: string) => `Olmadı: cevap daha küçük. ${left}.`,
   dailyEmpty: "Ekranda henüz bu sorunun cevabı olabilecek bir sonuç yok. Önce hesapla.",
@@ -177,9 +177,9 @@ const tr: CalculatorCopy = {
     points === 15
       ? "Kusursuz. Hesap makinen tam söylediğini yapıyor."
       : points >= 12
-        ? "Keskin. Neredeyse hepsi ilk denemede."
+        ? "Neredeyse bütün soruları ilk denemede çözdün."
         : points >= 8
-          ? "Sağlam. Kaybettiğin puanlar neye çalışacağını gösteriyor."
+          ? "Yanlış yaptığın konuların derslerini tekrar deneyebilirsin."
           : "Bir başlangıç. Buradaki her sorunun yukarıda bir dersi var.",
   dailyShareText: (n: number, model: string) => `Hesap makinesi bulmacası #${n} · ${model}`,
   dailyShare: "Sonucumu kopyala",

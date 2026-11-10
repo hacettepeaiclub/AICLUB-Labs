@@ -705,3 +705,26 @@
     animation: none !important;
   }
 }
+
+@media (max-width: 767px) {
+  .calc-bench {
+    display: flex;
+    flex-direction: column;
+  }
+  .calc-lessons {
+    display: contents;
+  }
+  .calc-lessons > nav {
+    order: -1;
+    max-height: 12rem;
+    overflow-y: auto;
+    padding: 0.5rem;
+    border: 1px solid rgb(var(--line) / 0.2);
+  }
+  .calc-key {
+    min-height: 2.25rem;
+  }
+  .calc-legend {
+    font-size: 0.625rem;
+  }
+}

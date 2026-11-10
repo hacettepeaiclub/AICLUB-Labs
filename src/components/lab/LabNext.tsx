@@ -95,7 +95,7 @@ export function LabNext({ slug }: { slug: string }) {
         aria-labelledby="lab-next-heading"
         className="mt-16 border-t border-line/10 pt-10 md:mt-24"
       >
-        <p id="lab-next-heading" className="font-display text-title text-fg">
+        <p lang="en" id="lab-next-heading" className="font-display text-title text-fg">
           {t.common.endOfCollection}
         </p>
         <p className="mt-2 max-w-prose text-body-sm text-fg-muted">
@@ -122,6 +122,7 @@ export function LabNext({ slug }: { slug: string }) {
   return (
     <nav ref={navRef} aria-labelledby="lab-next-heading" className="mt-16 md:mt-24">
       <p
+        lang="en"
         id="lab-next-heading"
         className="mb-3 flex items-center gap-3.5 font-mono text-caption uppercase tracking-[0.14em] text-fg-faint
           after:h-px after:flex-1 after:bg-line/10"
