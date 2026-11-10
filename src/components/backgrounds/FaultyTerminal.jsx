@@ -4,7 +4,7 @@
 
 import { useEffect, useRef } from "react";
 import "./FaultyTerminal.css";
-import logoUrl from "@/assets/terminal-logo.png";
+import logoUrl from "@/assets/terminal-logo-mask.png";
 
 const INTRO_SECONDS = 2;
 const MAX_CLICKS = 4;
@@ -238,19 +238,19 @@ vec2 logoField(vec2 p, vec2 grid) {
   // Keep the cell rhythm, but retain enough continuous contour to read the mark.
   vec2 uv = (mix(p, snapped, 0.45) / uScale - uLogoRect.xy) / uLogoRect.zw;
   float within = step(0.0, uv.x) * step(uv.x, 1.0) * step(0.0, uv.y) * step(uv.y, 1.0);
+  vec2 edge = smoothstep(vec2(-0.18), vec2(0.12), uv) *
+              (1.0 - smoothstep(vec2(0.88), vec2(1.18), uv));
+  // Outside the mark, only its field suppression matters. Avoid texture
+  // reads for every glow tap without changing the resulting phosphor field.
+  if (within == 0.0 || uLogoReady == 0.0)
+    return vec2(0.0, edge.x * edge.y * uLogoReady);
   // Original transparent PNG bounds: (283,26)-(721,476), 1004x502.
   vec2 sourceUV = vec2((283.0 + uv.x * 438.0) / 1004.0,
                        (26.0 + (1.0 - uv.y) * 450.0) / 502.0);
-  // A small mask dilation connects thin strokes across the phosphor grid.
-  vec2 texel = vec2(1.25 / 1004.0, 1.25 / 502.0);
+  // Stroke dilation is baked once into the 2x alpha mask. All animation,
+  // displacement, phosphor shading and pointer heat still happen here.
   float alpha = texture(uLogo, sourceUV).a;
-  alpha = max(alpha, texture(uLogo, sourceUV + vec2(texel.x, 0.0)).a);
-  alpha = max(alpha, texture(uLogo, sourceUV - vec2(texel.x, 0.0)).a);
-  alpha = max(alpha, texture(uLogo, sourceUV + vec2(0.0, texel.y)).a);
-  alpha = max(alpha, texture(uLogo, sourceUV - vec2(0.0, texel.y)).a);
   float mark = alpha * within * uLogoReady;
-  vec2 edge = smoothstep(vec2(-0.18), vec2(0.12), uv) *
-              (1.0 - smoothstep(vec2(0.88), vec2(1.18), uv));
   return vec2(mark, edge.x * edge.y * uLogoReady);
 }
 
@@ -335,7 +335,7 @@ vec2 getLight(vec2 p) {
 
   const float off = 0.002;
   float sum = digit(p + vec2(-off, -off)) + digit(p + vec2(0.0, -off)) + digit(p + vec2(off, -off)) +
-              digit(p + vec2(-off, 0.0)) + digit(p + vec2(0.0, 0.0)) + digit(p + vec2(off, 0.0)) +
+              digit(p + vec2(-off, 0.0)) + middle + digit(p + vec2(off, 0.0)) +
               digit(p + vec2(-off, off)) + digit(p + vec2(0.0, off)) + digit(p + vec2(off, off));
 
   return vec2(0.9 * middle, sum * 0.1 * bar);
@@ -765,8 +765,7 @@ export default function FaultyTerminal({
       const s = settingsRef.current;
       const source = targets[current];
       gl.viewport(0, 0, canvas.width, canvas.height);
-      gl.clearColor(0, 0, 0, 0);
-      gl.clear(gl.COLOR_BUFFER_BIT);
+      // The full-screen triangle overwrites every pixel, including alpha.
       gl.useProgram(mainShader.program);
       gl.activeTexture(gl.TEXTURE0);
       gl.bindTexture(gl.TEXTURE_2D, source.rings);
@@ -826,8 +825,11 @@ export default function FaultyTerminal({
       view.height = Math.max(1, container.clientHeight);
       view.ratio = Math.min(s.dpr || 1.5, window.devicePixelRatio || 1, 1.5);
       view.columns = Math.min(1, view.width / view.height / 1.5);
-      canvas.width = Math.max(1, Math.floor(view.width * view.ratio));
-      canvas.height = Math.max(1, Math.floor(view.height * view.ratio));
+      const width = Math.max(1, Math.floor(view.width * view.ratio));
+      const height = Math.max(1, Math.floor(view.height * view.ratio));
+      // Assigning either dimension clears/reallocates the drawing buffer.
+      if (canvas.width !== width) canvas.width = width;
+      if (canvas.height !== height) canvas.height = height;
       layoutCells(s);
       stepCells(s, 0);
       draw();
