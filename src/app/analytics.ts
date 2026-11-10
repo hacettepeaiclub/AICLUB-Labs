@@ -45,6 +45,12 @@ type EventMap = {
   game_start: Record<string, never>;
   game_stop: Record<string, never>;
   game_finish: { seconds: number; best: boolean };
+  /** A calculator lesson played to its last key, by hand or with "Show me". */
+  calc_lesson_done: { lesson: string; model: string };
+  /** The day's calculator puzzle finished in this visit; `points` out of 15. */
+  daily_finish: { model: string; points: number };
+  /** A finished puzzle's result copied to share. */
+  daily_share: { model: string };
   /** A preference changed. */
   language: { to: string };
   theme: { to: string };

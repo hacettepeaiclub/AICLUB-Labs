@@ -53,15 +53,18 @@ previews and forks are not, and browsers that send Do Not Track are skipped.
 Beyond page views, the site sends a few named events
 ([`src/app/analytics.ts`](src/app/analytics.ts)):
 
-| Event                                    | Properties                 | What it answers                                     |
-| ---------------------------------------- | -------------------------- | --------------------------------------------------- |
-| `lab_open`                               | `lab`, `from`              | Which labs are opened, and from where               |
-| `lab_end`                                | `lab`                      | How many people read a lab to the end               |
-| `finder_open`                            | `via`                      | Whether the ⌘K finder is used, by key or button     |
-| `finder_empty`                           | `query`                    | What visitors search for that the collection lacks  |
-| `filter`                                 | `field`                    | Which fields people browse                          |
-| `game_start`, `game_stop`, `game_finish` | `seconds`, `best` (finish) | Whether the game in the mark is played and finished |
-| `language`, `theme`                      | `to`                       | Which preferences people change                     |
+| Event                                    | Properties                 | What it answers                                        |
+| ---------------------------------------- | -------------------------- | ------------------------------------------------------ |
+| `lab_open`                               | `lab`, `from`              | Which labs are opened, and from where                  |
+| `lab_end`                                | `lab`                      | How many people read a lab to the end                  |
+| `finder_open`                            | `via`                      | Whether the ⌘K finder is used, by key or button        |
+| `finder_empty`                           | `query`                    | What visitors search for that the collection lacks     |
+| `filter`                                 | `field`                    | Which fields people browse                             |
+| `game_start`, `game_stop`, `game_finish` | `seconds`, `best` (finish) | Whether the game in the mark is played and finished    |
+| `calc_lesson_done`                       | `lesson`, `model`          | Which calculator lessons are finished, on which model  |
+| `daily_finish`                           | `model`, `points`          | Whether the daily puzzle is played, and how hard it is |
+| `daily_share`                            | `model`                    | Whether people copy their puzzle result to share       |
+| `language`, `theme`                      | `to`                       | Which preferences people change                        |
 
 `from` is one of `grid`, `continue`, `finder`, `next`, `game`, `link` or
 `direct`. Comparing `lab_end` with `lab_open` for the same lab gives its
