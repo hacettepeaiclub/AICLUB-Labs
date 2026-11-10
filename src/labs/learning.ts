@@ -37,6 +37,58 @@ export interface LearningResource {
 }
 
 export const RESOURCES = {
+  "welch-diffusion": {
+    kind: "video",
+    title: "But how do AI images and videos actually work? | Guest video by Welch Labs",
+    by: "3Blue1Brown · Welch Labs",
+    length: "37:20",
+    url: "https://www.youtube.com/watch?v=iv-5mZ_9CPY",
+  },
+  "hf-diffusion-video": {
+    kind: "video",
+    title: "HuggingFace Diffusion Model Class, Unit 1 (casual notebook walkthough)",
+    by: "DataScienceCastnet · linked by the Hugging Face course",
+    length: "50:38",
+    url: "https://www.youtube.com/watch?v=09o5cv6u76c",
+  },
+  "hf-diffusion-course": {
+    kind: "notes",
+    title: "Unit 1: An Introduction to Diffusion Models",
+    by: "Hugging Face",
+    url: "https://huggingface.co/learn/diffusion-course/en/unit1/1",
+  },
+  "annotated-diffusion": {
+    kind: "article",
+    title: "The Annotated Diffusion Model",
+    by: "Niels Rogge & Kashif Rasul · Hugging Face",
+    url: "https://huggingface.co/blog/annotated-diffusion",
+  },
+  "ddpm-paper": {
+    kind: "article",
+    title: "Denoising Diffusion Probabilistic Models",
+    by: "Jonathan Ho, Ajay Jain & Pieter Abbeel",
+    year: 2020,
+    url: "https://arxiv.org/abs/2006.11239",
+  },
+  "ddim-paper": {
+    kind: "article",
+    title: "Denoising Diffusion Implicit Models",
+    by: "Jiaming Song, Chenlin Meng & Stefano Ermon",
+    year: 2020,
+    url: "https://arxiv.org/abs/2010.02502",
+  },
+  "diffusion-tutorial": {
+    kind: "notes",
+    title: "Step-by-Step Diffusion: An Elementary Tutorial",
+    by: "Nakkiran et al. · Apple Machine Learning Research",
+    url: "https://machinelearning.apple.com/research/diffusion-elementary-tutorial",
+  },
+  "hf-ddim": {
+    kind: "notes",
+    title: "DDIMScheduler",
+    by: "Hugging Face",
+    url: "https://huggingface.co/docs/diffusers/api/schedulers/ddim",
+  },
   "sklearn-generalization": {
     kind: "notes",
     title: "Cross-validation: evaluating estimator performance",
@@ -698,6 +750,11 @@ export type ResourceId = keyof typeof RESOURCES;
  * here are in the lab's copy, keyed the same way.
  */
 export const GUIDES: Record<string, readonly { topic: string; items: readonly ResourceId[] }[]> = {
+  diffusion: [
+    { topic: "visual", items: ["welch-diffusion", "hf-diffusion-video"] },
+    { topic: "foundations", items: ["diffusion-tutorial", "ddpm-paper", "ddim-paper"] },
+    { topic: "practice", items: ["hf-diffusion-course", "annotated-diffusion", "hf-ddim"] },
+  ],
   generalization: [{ topic: "generalisation", items: ["sklearn-generalization"] }],
   attention: [
     { topic: "qkv", items: ["3b1b-attention", "sq-attention", "d2l-attention"] },

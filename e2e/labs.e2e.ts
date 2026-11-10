@@ -2,8 +2,9 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
 import { tourFor } from "../src/components/lab/guide/tours";
 import { GUIDES } from "../src/labs/learning";
+import { publishedLabs } from "../src/labs/registry";
 
-/** Every lab on the home page has a learning guide, so this is the list. */
+/** Check guided drafts too, while home-page coverage only includes published labs. */
 const SLUGS = Object.keys(GUIDES);
 
 test.beforeEach(async ({ page }) => {
@@ -31,7 +32,7 @@ function collectErrors(page: Page): string[] {
 test("the home page lists every lab", async ({ page }) => {
   const errors = collectErrors(page);
   await page.goto("/");
-  for (const slug of SLUGS) {
+  for (const slug of publishedLabs().map((lab) => lab.meta.slug)) {
     await expect(page.locator(`#labs a[href="/labs/${slug}/"]`)).toBeVisible();
   }
   expect(errors).toEqual([]);

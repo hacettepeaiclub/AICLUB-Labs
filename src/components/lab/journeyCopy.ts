@@ -2,6 +2,28 @@
  * These are concept checks, not claims that scrolling or clicking proves mastery. */
 export type Journey = readonly [string, string, string, string, string, string, string, string];
 export const journeys: Record<string, { en: Journey; tr: Journey }> = {
+  diffusion: {
+    en: [
+      "Separate recovering an original from generating a plausible sample.",
+      "Raise the noise, then take a reverse step.",
+      "Compare the clean estimate before and after excluding the source shape.",
+      "The source shape is absent from the prior. Must more reverse steps recover it?",
+      "No: the reverse process depends on the allowed shapes.",
+      "Yes: enough steps must restore the exact original.",
+      "Yes: the random seed contains the original image.",
+      "Exclude the source and compare the same noisy input. This model estimates from its finite prior; it does not secretly read the original.",
+    ],
+    tr: [
+      "Özgün resmi kurtarmak ile olası bir örnek üretmeyi ayır.",
+      "Gürültüyü artır; sonra bir ters adım at.",
+      "Asıl şekli önbilgiden çıkarmadan önce ve sonra temiz tahmini karşılaştır.",
+      "Asıl şekil önbilgide yok. Daha çok ters adım onu mutlaka geri getirir mi?",
+      "Hayır; ters süreç izin verilen şekillere dayanır.",
+      "Evet; yeterince adım tam kaynağı geri getirmelidir.",
+      "Evet; rastgele seed özgün resmi saklar.",
+      "Asıl şekli çıkarıp aynı gürültülü girdiyi karşılaştır. Bu model sonlu önbilgisinden tahmin yapar; özgün resmi gizlice okumaz.",
+    ],
+  },
   generalization: {
     en: [
       "Tell memorising familiar examples apart from generalising to new ones.",

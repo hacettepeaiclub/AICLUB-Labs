@@ -236,6 +236,12 @@ export const en = {
    * category, minutes) so a lab can be listed without being loaded at all.
    */
   labMeta: {
+    diffusion: {
+      title: "From noise to a guess",
+      term: "Diffusion",
+      figure: "Gaussian noise and a finite prior",
+      description: "Explore a reverse process and the prior it depends on.",
+    },
     generalization: {
       title: "Learned or memorised?",
       term: "Generalisation",

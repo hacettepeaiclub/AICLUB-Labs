@@ -68,6 +68,31 @@ type Tours = {
  * claims, for a lab that opens with something other than a stage.
  */
 export const TOURS: Tours = {
+  diffusion: {
+    experiment: [
+      { id: "compare", target: { part: "viewport" } },
+      {
+        id: "noise",
+        target: { part: "primary", select: "input[type=range]" },
+        action: { kind: "slide", to: 0.9 },
+      },
+      {
+        id: "step",
+        target: { part: "primary", select: "button", nth: 0 },
+        action: { kind: "click" },
+      },
+      {
+        id: "prior",
+        target: { part: "primary", select: "input[type=checkbox]" },
+        action: { kind: "click" },
+      },
+      {
+        id: "finish",
+        target: { part: "primary", select: "button", nth: 1 },
+        action: { kind: "click" },
+      },
+    ],
+  },
   generalization: {
     experiment: [
       { id: "map", target: { part: "viewport" } },
