@@ -135,14 +135,19 @@ export function DailyQuestion({
   language,
   onAnswer,
   onGiveUp,
+  onNext,
+  onStudy,
 }: {
   daily: Daily;
   copy: CalculatorCopy;
   language: Language;
   onAnswer: () => void;
   onGiveUp: () => void;
+  onNext: () => void;
+  onStudy: (topic: string) => void;
 }) {
-  const index = answered(daily.progress);
+  const reviewing = daily.verdict?.kind === "right" || daily.verdict?.kind === "missed";
+  const index = answered(daily.progress) - (reviewing ? 1 : 0);
   const task = daily.tasks[index];
   if (!task) return null;
   const used = daily.progress[index]?.misses.length ?? 0;
@@ -162,10 +167,10 @@ export function DailyQuestion({
       </div>
       <p className="mt-1.5 text-body text-fg">{task.prompt[language]}</p>
       <div className="mt-3 flex flex-wrap gap-2">
-        <Button size="sm" onClick={onAnswer}>
+        <Button disabled={reviewing} size="sm" onClick={onAnswer}>
           {copy.dailyAnswer}
         </Button>
-        <Button variant="ghost" size="sm" onClick={onGiveUp}>
+        <Button disabled={reviewing} variant="ghost" size="sm" onClick={onGiveUp}>
           {copy.dailyGiveUp}
         </Button>
       </div>
@@ -176,6 +181,37 @@ export function DailyQuestion({
       >
         {verdictText(verdict, copy)}
       </p>
+      {reviewing && (
+        <div className="mt-3 flex flex-wrap gap-2">
+          <Button onClick={onNext}>
+            {language === "tr"
+              ? isFinished(daily.progress)
+                ? "Sonucu gör"
+                : "Sonraki soru"
+              : isFinished(daily.progress)
+                ? "See result"
+                : "Next question"}
+          </Button>
+          <Button
+            variant="ghost"
+            onClick={() =>
+              onStudy(
+                (
+                  {
+                    trigDegrees: "angle",
+                    trigRadians: "angle",
+                    sampleSd: "mean",
+                    popVariance: "variance",
+                    slope: "regression",
+                  } as Record<string, string>
+                )[task.kind] ?? task.kind,
+              )
+            }
+          >
+            {language === "tr" ? "Bu konuyu çalış" : "Practise this topic"}
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

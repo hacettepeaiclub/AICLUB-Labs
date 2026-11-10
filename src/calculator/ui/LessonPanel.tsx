@@ -88,7 +88,7 @@ export function LessonPanel({
   const next = LESSONS.slice(index + 1).find((l) => offered(l, model.id));
 
   return (
-    <div className="min-w-0 space-y-5">
+    <div className="calc-lessons min-w-0 space-y-5">
       <nav aria-label={copy.lessonsLabel} className="space-y-3">
         {TOPICS.map((topic) => (
           <div key={topic}>

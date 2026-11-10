@@ -6,7 +6,7 @@ const copy: typeof en = {
   sources: {
     title: "Sources",
     transformer:
-      "Bu laboratuvarın hesapladığı ölçeklenmiş nokta çarpımı dikkatini destekler. Laboratuvar tek bir başlığı elle kurar; makalenin tanıttığı mimarinin tamamını uygulamaz.",
+      "Bu laboratuvarın hesapladığı ölçeklenmiş nokta çarpımı dikkatini destekler. Laboratuvar tek bir attention head hesabını gösterir; makalenin tanıttığı mimarinin tamamını uygulamaz.",
   },
 
   hero: {
@@ -101,7 +101,7 @@ const copy: typeof en = {
     selected: "Seçili",
     biggestShare: "En büyük pay",
     sharesTotal: "Payların toplamı",
-    matchedWith: "Yaslandığı",
+    matchedWith: "Eşleşen kelime",
     rawMatch: "Eşleşme",
     score: "Bölme sonrası",
     divisor: "Bölen",
@@ -146,7 +146,7 @@ const copy: typeof en = {
       "Herhangi bir kelimenin eşleşmesini sürükle. Birini yükselt: dokunmadıkların dahil diğer bütün paylar düşer, çünkü toplam hep 1.",
     reset: "Modelin eşleşmelerine dön",
     legend: "Çentikler modelin kendi eşleşmesini ve payını gösterir.",
-    pickAnother: "Başka bir kelimeyi sorun",
+    pickAnother: "Başka bir kelime seç",
     scoreHandle: (word: string) => `“${word}” için eşleşme`,
     scoreValue: (value: string) => `eşleşme ${value}`,
     touchedLabel: "Değişen eşleşme",
