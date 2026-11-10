@@ -12,7 +12,7 @@ function Pixels({ values, label }: { values: Float64Array; label: string }) {
       <svg
         role="img"
         aria-label={label}
-        viewBox={`0 0 ${SIZE} ${SIZE}`}
+        viewBox={`0 0 ${SIZE}  ${SIZE}`}
         className="w-full rounded border border-line/20 bg-ink-950 text-accent"
         shapeRendering="crispEdges"
       >
@@ -66,10 +66,10 @@ export default function DiffusionLab() {
         viewport={
           <div className="space-y-5">
             <div className="grid grid-cols-2 gap-3">
-              <Pixels values={sample} label={tr ? "Şimdiki örnek xₜ" : "Current sample xₜ"} />
+              <Pixels values={sample} label={tr ? "Mevcut görüntü xₜ" : "Current sample xₜ"} />
               <Pixels
                 values={prediction.clean}
-                label={tr ? "Temiz örnek tahmini E[x₀|xₜ]" : "Clean estimate E[x₀|xₜ]"}
+                label={tr ? "Temiz görüntü tahmini E[x₀|xₜ]" : "Clean estimate E[x₀|xₜ]"}
               />
             </div>
             <div className="grid grid-cols-2 gap-2">
@@ -145,7 +145,7 @@ export default function DiffusionLab() {
                   reset(35);
                 }}
               />
-              {tr ? "Asıl şekli önbilgiden çıkar" : "Exclude source from prior"}
+              {tr ? "Başlangıçtaki şekli seçeneklerden çıkar" : "Exclude source from prior"}
             </label>
           </div>
         }
@@ -192,12 +192,12 @@ export default function DiffusionLab() {
         }
       />
       <section className="rounded-lg border border-line/20 bg-ink-800 p-5">
-        <h2 className="text-title text-fg">
-          {tr ? "Bu model ne biliyor?" : "What does this model know?"}
+        <h2 lang="en" className="text-title text-fg">
+          {"What does this model know?"}
         </h2>
         <p className="mt-3 text-body-sm text-fg-muted">
           {tr
-            ? "Bu taslakta sinir ağı eğitilmiyor. Eşit öncül olasılıklı dört sabit şekil ve Gauss gürültüsü için Bayes kuralıyla tam posterior ortalama hesaplanıyor. Gerçek diffusion modelleri bu tür bir denoiser'ı veriden öğrenir. Burada yeni nesneler, metin istemleri veya fotoğraflar üretilemez; model yalnız tanımlanan önbilgiye dayanır. Gürültüden başlatıldığında ilk örnek yaklaşık terminal dağılımıdır."
+            ? "Bu model dört sabit şekli eşit başlangıç olasılığıyla kullanır. Gürültülü görüntüye bakarak her şeklin olasılığını Bayes kuralıyla günceller. Temiz görüntü tahmini, bu şekillerin ağırlıklı ortalamasıdır. Sinir ağı eğitilmez ve yeni nesneler veya fotoğraflar üretilemez. Yalnız gürültüden başlatmak, son adımdaki dağılımın yaklaşık bir örneğini verir."
             : "No neural network is trained in this draft. It computes the exact posterior mean under a uniform prior over four fixed shapes and Gaussian corruption. Real diffusion models learn a denoiser from data. This model cannot generate new objects, text prompts or photos; it depends on its specified prior. Starting from noise approximates the terminal distribution."}
         </p>
         <a

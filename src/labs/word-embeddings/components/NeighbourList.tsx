@@ -45,7 +45,9 @@ export function NeighbourList({
 
   return (
     <div>
-      <h3 className="text-overline uppercase text-fg-faint">{copy.title(anchor.en)}</h3>
+      <h3 lang="en" className="text-overline uppercase text-fg-faint">
+        {copy.title(anchor.en)}
+      </h3>
       <ol className="mt-3 space-y-1">
         {neighbours.map((neighbour, position) => {
           const item = vocabulary[neighbour.index];

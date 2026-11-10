@@ -162,7 +162,9 @@ function ChallengeCard({ spec, onSolved }: { spec: ChallengeSpec; onSolved: () =
   return (
     <div className="space-y-4">
       <div>
-        <h3 className="text-body-lg font-semibold text-fg">{g.challenge.items[spec.id].title}</h3>
+        <h3 lang="en" className="text-body-lg font-semibold text-fg">
+          {g.challenge.items[spec.id].title}
+        </h3>
         <p className="mt-2 max-w-prose text-body-sm text-fg-muted">
           {g.challenge.items[spec.id].brief}
         </p>
@@ -277,7 +279,9 @@ function ChallengeCard({ spec, onSolved }: { spec: ChallengeSpec; onSolved: () =
 
       {moved && (
         <div className="rounded-card border border-line/10 bg-ink-800 p-5">
-          <h4 className="text-body-sm font-medium text-fg">{g.challenge.transfer.title}</h4>
+          <h4 lang="en" className="text-body-sm font-medium text-fg">
+            {g.challenge.transfer.title}
+          </h4>
           <p className="mt-2 max-w-prose text-body-sm text-fg-muted">
             {moved.divergentHere && moved.convergesThere
               ? g.challenge.transfer.divergesHereConvergesThere(

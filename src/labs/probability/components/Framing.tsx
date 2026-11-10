@@ -137,7 +137,9 @@ export interface CoachProps {
 export function Coach({ label, questions }: CoachProps) {
   return (
     <div role="group" aria-label={label} className="mt-6 max-w-prose">
-      <h3 className="text-overline uppercase text-fg-faint">{label}</h3>
+      <h3 lang="en" className="text-overline uppercase text-fg-faint">
+        {label}
+      </h3>
       <div className="mt-2 divide-y divide-line/10 border-y border-line/10">
         {questions.map((item) => (
           <details key={item.q} className="group">

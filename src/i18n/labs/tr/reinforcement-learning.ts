@@ -4,19 +4,19 @@ import type en from "../en/reinforcement-learning";
 
 const copy: typeof en = {
   sources: {
-    title: "Kaynaklar",
+    title: "Sources",
     qLearning:
       "Tablo tabanlı Q-öğrenme güncelleme kuralını ve yakınsama koşullarını destekler. Izgara, ödüller ve ziyaretçinin ayarladığı karo laboratuvara aittir.",
   },
 
   room: {
-    title: "Oda",
+    title: "The room",
     question:
-      "Bu robota çıkış yolunu kimse göstermedi. Yolu deneyerek buldu: neyi önemseyeceğine ise siz karar veriyorsunuz.",
+      "Ajan, ödüllere göre hareket etmeyi öğreniyor. Ödülü değiştirince çıkışa giden yol nasıl değişir?",
     sliderLabel: "İşaretli kare robot için ne kadar değerli?",
     sliderValue: (value: string) => `İşaretli karenin değeri ${value}`,
-    hint: "Sürükleyin. Her oynattığınızda yol sıfırdan yeniden öğreniliyor.",
-    wow: "Ona durmasını söylemediniz. O karenin kapıdan daha değerli olduğunu söylediniz.",
+    hint: "Sürükle. Her oynattığında yol sıfırdan yeniden öğreniliyor.",
+    wow: "Ona durmasını söylemedin. O karenin kapıdan daha değerli olduğunu söyledin.",
     behaviour: {
       avoided: "Kareye basmamak için uzun yoldan dolandı ve kapıya ulaştı.",
       passed: "Yolu üzerinde kareye basarak geçti ve kapıya ulaştı.",
@@ -28,9 +28,9 @@ const copy: typeof en = {
   },
 
   learn: {
-    kicker: "Bunu nasıl çözdü?",
-    title: "Yapabileceği her hamle için bir sayı tuttu.",
-    lede: "Buradaki hiçbir şey robotun öğrenmiş olabileceğinin bir resmi değil: kaydırıcıyı getirdiğiniz anda gerçekten öğrenmiş olduğu şey. Yukarıdaki kaydırıcıyı oynatın; bu sayfadaki her sayı yeni bir çalıştırmadan baştan hesaplanır.",
+    kicker: "How did it work this out?",
+    title: "It kept a number for every move it could make.",
+    lede: "Ödül ayarını değiştirdiğinde ajan yeniden eğitilir. Gösterilen Q-değerleri bu eğitimin sonucudur.",
 
     scrubber: "Ne kadar deneme yaptığı",
     episode: (n: number) => `${n}. deneme`,
@@ -47,7 +47,7 @@ const copy: typeof en = {
     actions: { 0: "yukarı", 1: "aşağı", 2: "sola", 3: "sağa" },
     noAction: "hiçbir yere: burası kapı",
     bestAction: "en iyi",
-    selectedTitle: (row: number, col: number) => `Satır ${row}, sütun ${col}`,
+    selectedTitle: (row: number, col: number) => `Row ${row}, column ${col}`,
     chain: (row: number, col: number, action: string, value: string) =>
       `Satır ${row}, sütun ${col} üzerindeyken robotun yapabileceği dört hamle ve her biri için bir sayı var. En büyüğünü seçiyor (${action} giderek elde ettiği ${value}), çünkü o hamle en son denediğinde onu daha iyi bir yere götürmüştü. Bunu birkaç yüz kez tekrarlayın, sayılar değişmeyi bırakır.`,
 
@@ -55,14 +55,14 @@ const copy: typeof en = {
     unexploredHint: "oraya gitmeyi bıraktı",
 
     propagation:
-      "Kaydırıcıyı en başa çekin. İlk on-on beş denemede hiçbir şeyin değeri yok: robot dolanıyor ve attığı her adım ona biraz pahalıya geliyor. Sonra kapıya tesadüfen giriyor, kapının yanındaki bir kare pozitife dönüyor ve sonraki birkaç denemede bu iyi haber odaya doğru, kare kare yayılıyor. Öğrenmenin tamamı bu yayılma.",
+      "Kaydırıcıyı en başa çek. İlk on-on beş denemede hiçbir şeyin değeri yok: robot dolanıyor ve attığı her adım ona biraz pahalıya geliyor. Sonra kapıya tesadüfen giriyor, kapının yanındaki bir kare pozitife dönüyor ve sonraki birkaç denemede bu iyi haber odaya doğru, kare kare yayılıyor. Öğrenmenin tamamı bu yayılma.",
 
-    formulaTitle: "Her hamleden sonra uyguladığı kural",
+    formulaTitle: "The rule it applies after every single move",
     formulaNote:
-      "Şöyle okuyun: az önce yaptığınız hamlenin sayısını, gerçekte elde ettiğiniz ödüle ve vardığınız yerden artık mümkün gördüğünüz en iyi değere doğru biraz kaydırın. α bu kaydırmanın büyüklüğü, γ ise ileride gelecek bir ödülün şimdikine kıyasla ne kadar değerli sayıldığı.",
+      "Şöyle oku: az önce yaptığın hamlenin sayısını, gerçekte elde ettiğin ödüle ve vardığın yerden artık mümkün gördüğün en iyi değere doğru biraz kaydırın. α bu kaydırmanın büyüklüğü, γ ise ileride gelecek bir ödülün şimdikine kıyasla ne kadar değerli sayıldığı.",
 
     honesty:
-      "Robot odanın tamamını öğrenmedi. İşine yarayan bir yol öğrendi ve geri kalanını keşfetmeyi bıraktı; bu yüzden bazı kareler hâlâ en baştaki tahminini taşıyor. Bu yöntemin bir kusuru değil: yalnızca kendi deneyiminden öğrenmek tam olarak böyle görünür.",
+      "Ajan bütün hücreleri aynı ölçüde ziyaret etmez. Az ziyaret edilen durumlarda Q-değerleri başlangıç değerlerine yakın kalabilir. Öğrenilen yol, ortamın tamamının öğrenildiği anlamına gelmez.",
 
     scheduleWarning:
       "Kaydedilen denemeler eşit aralıklı, bu da öğrenmenin gerçekleştiği kısmı gizliyor.",
@@ -70,27 +70,27 @@ const copy: typeof en = {
 
   recap: {
     lessons: [
-      "Ödül bir talimat değildir. Bir puandır ve robot en yüksek puanı veren davranışı bulur: aklınızdan hiç geçmemiş olanı bile.",
+      "Ödül bir talimat değildir. Bir puandır ve robot en yüksek puanı veren davranışı bulur: aklından hiç geçmemiş olanı bile.",
       "Deneyerek öğrenir: her hamle bir sayıyı günceller ve işe yarayan sayılar, ilk kez iyi giden şeyden dışa doğru yayılır.",
-      "Aklınızdaki sonucu değil, gerçekten yazdığınız ödülü optimize eder.",
+      "Aklındaki sonucu değil, gerçekten yazdığın ödülü optimize eder.",
     ],
     footer:
-      "Bu, küçük ve deterministic bir grid üzerinde gerçek tabular Q-learning'dir: yirmi yedi kare, dört hamle, her ikili için bir sayı. Gerçek robotlar ve büyük pekiştirmeli öğrenme sistemleri bundan çok daha karmaşıktır, ama verdiğiniz ödülle istediğiniz sonuç arasındaki açık, sistemler büyüdükçe kapanmıyor.",
+      "Ajan 27 hücreli deterministik ortamda tablo tabanlı Q-learning kullanır. Bu küçük örnek, verilen ödül ile istenen davranışın neden farklılaşabildiğini gösterir.",
   },
   world: {
-    title: "Oda",
+    title: "The room",
     question: "Ajan ne yapmalı?",
     sliderHint:
-      "Dünyaya dair karar verebileceğiniz tek şey bu. Geri kalan her şey (duvarlar, kapı, bir hamlenin maliyeti) sabit.",
+      "Dünyaya dair karar verebileceğin tek şey bu. Geri kalan her şey (duvarlar, kapı, bir hamlenin maliyeti) sabit.",
     caption:
-      "Henüz hiçbir şey öğrenmiyor. Kontrol sizde. Her hamle 0,5 götürür, işaretli kare her girişte sizin belirlediğiniz kadar öder, kapı ise 20 öder ve turu bitirir.",
+      "Henüz hiçbir şey öğrenmiyor. Kontrol sizde. Her hamle 0,5 götürür, işaretli kare her girişte belirlediğin kadar öder, kapı ise 20 öder ve turu bitirir.",
     mapLabel: (moves: number, total: string) =>
       `Yukarıdan görünen küçük bir oda: duvarlar, işaretli bir kare ve bir kapı. Ajan ${moves} hamle yaptı, toplam ${total}.`,
     padLabel: "Ajanı hareket ettirin",
-    padHint: "Ya da yön tuşlarını kullanın.",
-    arrived: "Kapıya ulaştınız. Bu, turu bitirir.",
+    padHint: "Ya da yön tuşlarını kullan.",
+    arrived: "Kapıya ulaştın. Bu, turu bitirir.",
     restart: "Başa dön",
-    ledgerTitle: "Her hamle ne ödedi",
+    ledgerTitle: "What each move paid",
     ledgerEmpty: "Bir hamle yapın. Neye mal olduğu ve nedeni burada görünecek.",
     consequence: {
       floor: "bir kare ilerledi",
@@ -111,9 +111,9 @@ const copy: typeof en = {
   },
 
   train: {
-    kicker: "Kimse ona yolu göstermedi",
-    title: "Deniyor; öğrenme de zaten bu deneme.",
-    lede: "Eğit'e basın. Ajan köşeden hiçbir şey bilmeden başlar, dolanır ve sonunda kapıya tesadüfen düşer. O andan itibaren elinde bir şey vardır. Aşağıdaki her ok, her sayı ve eğrideki her nokta o koşunun kendisidir, kaydı değil.",
+    kicker: "Nobody showed it the way",
+    title: "It tries, and the trying is the training.",
+    lede: "Eğit düğmesine bas. Ajan hareket ederek ödül toplar ve Q-değerlerini günceller. Oklar, sayılar ve eğri bu çalıştırmanın sonuçlarını gösterir.",
     caption:
       "Adım'a bir basış bir hamledir: seç, hareket et, ödülü topla, bir sayıyı güncelle. Eğit aynı şeyi tur tur tekrarlar.",
     runLabel: "Eğit",
@@ -121,14 +121,14 @@ const copy: typeof en = {
     speedLabel: "Saniyedeki tur",
     mapLabel: (episode: number, total: number) =>
       `${total} turun ${episode}. turunda oda. Oklar, politikanın her karede seçeceği hamledir; iz ise sürmekte olan turun rotasıdır.`,
-    curveTitle: "Tur başına ödül",
-    curveEmpty: "Bir iki tur çalıştırın, eğri burada başlasın.",
+    curveTitle: "Reward per episode",
+    curveEmpty: "Bir iki tur çalıştır, eğri burada başlasın.",
     curveLabel: (episodes: number, first: string, last: string) =>
       `${episodes} turun her birinde toplanan ödül, yumuşatılmış. ${first} civarında başlıyor ve sonunda ${last} civarına geliyor.`,
     episodeShort: (n: number) => `tur ${n}`,
     lastEpisode: (episode: number, steps: number, reward: string, outcome: string) =>
       `Tur ${episode}: ${steps} hamle, ${reward} toplandı, ${outcome}.`,
-    notStarted: "Henüz bir şey olmadı. Adım'a ya da Eğit'e basın.",
+    notStarted: "Henüz bir şey olmadı. Adım'a ya da Eğit'e bas.",
     outcome: { reached: "kapıya ulaştı", ranOut: "hamlesi bitti" },
     episodeLabel: "Tur",
     ofTotal: (total: number) => `/ ${total}`,
@@ -142,19 +142,19 @@ const copy: typeof en = {
   },
 
   policy: {
-    kicker: "Bunu yaparken ne kurdu",
-    title: "Her hamle için bir sayı, ve onlardan düşen bir rota.",
-    lede: "Ajan hiçbir zaman bir rota saklamadı. Kare başına, yön başına tek bir sayı sakladı (o hamlenin ne kadar iyi çıktığını) ve rota, hep en büyüğünü seçtiğinizde ortaya çıkan şeydir. Solda: tek bir tur öncesi. Sağda: şu an.",
+    kicker: "What it built while doing that",
+    title: "A number for every move, and a route that falls out of them.",
+    lede: "Ajan hazır bir rota saklamaz. Her hücre ve hareket için bir Q-değeri tutar. En yüksek değerli hareketleri izlediğinde bir rota oluşur. Eğitim öncesi ve sonrasını karşılaştır.",
     caption:
       "Bir ok, Q-değeri değildir. O karedeki en büyük Q-değerine sahip hamledir; politika kelimesinin anlamı da budur. Seçildiği dört sayı aşağıda.",
-    beforeTitle: "Eğitimden önce",
+    beforeTitle: "Before training",
     beforeLabel:
       "Hiç eğitim yapılmadan önceki oda. Bütün sayılar sıfır olduğu için her kare aynı yönü gösteriyor: hiçbir şey bilmemek böyle görünür.",
-    afterTitle: (episode: number) => `${episode} tur sonra`,
+    afterTitle: (episode: number) => `After ${episode} episodes`,
     afterLabel: (episode: number) =>
-      `${episode} tur sonrasında oda. Her kare, politikanın orada seçtiği hamleyi ve oradaki en iyi hamlenin ne kadar iyi olduğunu gösteriyor. Dört sayısını da görmek için bir kare seçin.`,
-    pickLabel: "Bir kareyi inceleyin",
-    pickHint: "Bir kareye tıklayın ya da yön tuşlarıyla gezinin.",
+      `${episode} tur sonrasında oda. Her kare, politikanın orada seçtiği hamleyi ve oradaki en iyi hamlenin ne kadar iyi olduğunu gösteriyor. Dört sayısını da görmek için bir kare seç.`,
+    pickLabel: "Bir kareyi incele",
+    pickHint: "Bir kareye tıkla ya da yön tuşlarıyla gezinin.",
     selects: (row: number, col: number, action: string, value: string) =>
       `${row}. satır, ${col}. sütunda dört hamlenin dört sayısı var. Politika ${action} yönünü seçiyor, çünkü ${value} bunların en büyüğü.`,
     episodeLabel: "Çalıştırılan tur",
@@ -166,12 +166,12 @@ const copy: typeof en = {
   },
 
   update: {
-    kicker: "Bunu neden öğrendi?",
-    title: "Tek bir sayı değişti. Bütün nedeni burada.",
-    lede: "Her hamleden sonra ajan tam olarak bir sayıyı değiştirir: az önce yaptığı hamleninkini. Aşağıdaki her şey yukarıdaki koşudan gelen en son güncellemedir: elindeki sayılar, dünyanın ödediği ve şimdi elinde tuttuğu.",
+    kicker: "Why did it learn that?",
+    title: "One number moved. Here is the whole reason.",
+    lede: "Her hareketin ardından yalnız ilgili durum-hareket çiftinin Q-değeri güncellenir. Aşağıda son hareketin ödülünü, hedef değerini ve güncelleme sonucunu görebilirsin.",
     caption:
-      "Bu sayfada hiçbir şey örnek değildir. Hiç hamle yapılmadıysa hiçbir şey gösterilmez; çünkü gerçekleşmemiş bir güncellemeye bakmanın değeri yoktur.",
-    nothingYet: "Henüz hamle yapılmadı. Yukarıdan ya da buradan Adım'a basın.",
+      "Henüz hareket yapılmadıysa güncelleme gösterilmez. Bir adım çalıştırarak hesabı incele.",
+    nothingYet: "Henüz hamle yapılmadı. Yukarıdan ya da buradan Adım'a bas.",
     stepLabel: "Bir hamle yap",
     stepHint: "Her basış ajanı bir kez hareket ettirir ve bir sayıyı günceller.",
     whatHappened: "Az önce ne oldu",
@@ -201,7 +201,7 @@ const copy: typeof en = {
       updated: "Şimdi neye inanıyor",
       updatedBody: "Eski sayı, yeni kanıta doğru yolun bir kısmını gitti.",
     },
-    formulaTitle: "Kural, hamle başına bir kez",
+    formulaTitle: "The rule, once per move",
     tableCaption: "Güncellemenin her terimi ve bu hamlede aldığı değer.",
     terms: {
       before: "Q(s,a) önce",
@@ -219,13 +219,13 @@ const copy: typeof en = {
   },
 
   rules: {
-    kicker: "Kuralları değiştirin",
-    title: "Üç kadran ve her birinin gerçekte neyi değiştirdiği.",
-    lede: "Bunlardan birini oynattığınızda koşu birinci turdan yeniden başlar; çünkü öğrenme oranını yarı yolda değiştirmek diye bir şey yoktur. Sonra yukarıdaki bölümde Eğit'e basın; eğri yeni ayarla baştan çizilir.",
+    kicker: "Change the rules",
+    title: "Three dials, and what each one actually changes.",
+    lede: "Bu labda bir eğitim ayarını değiştirmek çalıştırmayı sıfırlar. Yeni ayarla yeniden eğit ve öğrenme eğrisini karşılaştır.",
     caption:
       "Bu oda küçük. Üçünü de taradığımızda ajanın neredeyse her ayarla odayı çözdüğü görüldü: bunların değiştirdiği şey, eğrinin ne kadar hızlı oturduğu, yolda ne kadar gürültülü olduğu ve oturup oturmadığı.",
-    curveTitle: "Bu koşuda tur başına ödül",
-    curveEmpty: "Doldurmak için yukarıdan Eğit'e basın.",
+    curveTitle: "Reward per episode, this run",
+    curveEmpty: "Doldurmak için yukarıdan Eğit'e bas.",
     curveHint: "On tur üzerinden yumuşatıldı. Her nokta çalıştırılmış bir tur.",
     curveLabel: (episodes: number, last: string, settled: string) =>
       `${episodes} tur boyunca tur başına ödül, ${last} civarında bitiyor. ${settled}. turda oturdu.`,
@@ -254,13 +254,13 @@ const copy: typeof en = {
     stepsHint: "son 50'nin ortalaması",
     scopeLabel: "Bunun göstermediği",
     scope:
-      "Bu üçü, 27 kareli deterministik bir ızgarada tablo tabanlı Q-learning'in parametreleridir. Daha büyük bir pekiştirmeli öğrenme sisteminin aynı biçimde sahip olacağı ayarlar değildir ve herhangi birinin buradaki etkisi, başka yerdeki etkisinin büyüklüğü hakkında bir şey söylemez.",
+      "Bu ayarlar, 27 hücreli deterministik ortamda tablo tabanlı Q-learning içindir. Buradaki sonuçlar büyük ortamlarda aynı etkinin görüleceğini garanti etmez.",
   },
 
   challenge: {
-    kicker: "Şimdi ödülü siz belirleyin",
-    title: "Bunu ona öğretebilir misiniz?",
-    lede: "Üç görev. Her birinde ajan sizin istemediğiniz bir şey yapıyor ve değiştirebileceğiniz tek bir sayı var. Hiçbiri kaydırıcıyı belirli bir yere koyarak geçilemez: ajanın o şeyi gerçekten yapması gerekir.",
+    kicker: "Now you set the reward",
+    title: "Can you make it learn this?",
+    lede: "Üç görev. Her birinde ajan istemediğin bir şey yapıyor ve değiştirebileceğin tek bir sayı var. Hiçbiri kaydırıcıyı belirli bir yere koyarak geçilemez: ajanın o şeyi gerçekten yapması gerekir.",
     puzzleLabel: "Görev",
     levers: {
       tileReward: "İşaretli karenin ödediği",
@@ -273,25 +273,25 @@ const copy: typeof en = {
     },
     puzzles: {
       cross: {
-        title: "Üstünden geçsin",
+        title: "Walk over it",
         brief:
-          "Kare −3 değerinde, bu yüzden ajan iki fazla hamle yapıp etrafından dolaşıyor. Bunun yerine kapıya giderken karenin üstünden geçmesini sağlayın, ama orada durmasına yol açmadan.",
+          "Kare −3 değerinde, bu yüzden ajan iki fazla hamle yapıp etrafından dolaşıyor. Bunun yerine kapıya giderken karenin üstünden geçmesini sağla, ama orada durmasına yol açmadan.",
         lesson:
           "Bir eşik değil, bir aralık var. Karenin değeri, kazandırdığı dolambaçtan fazla ve yerini alacağı kapıdan az olmalı.",
       },
       camp: {
-        title: "Kapıdan vazgeçsin",
+        title: "Make it give up on the door",
         brief:
-          "Kare hiçbir şey etmiyor, bu yüzden ajan üstünden geçip yoluna devam ediyor. Kapıya hiç gitmemesini sağlayın. Kapıyı ya da duvarları oynatamazsınız, yalnızca karenin ödediğini.",
+          "Kare hiçbir şey etmiyor, bu yüzden ajan üstünden geçip yoluna devam ediyor. Kapıya hiç gitmemesini sağla. Kapıyı ya da duvarları oynatamazsın, yalnızca karenin ödediğini.",
         lesson:
-          "Ona durmasını hiç söylemediniz. Karenin bitirmekten daha değerli olduğunu söylediniz, o da size inandı. Tek bir kaydırıcıda bütün laboratuvar.",
+          "Ona durmasını hiç söylemedin. Karenin bitirmekten daha değerli olduğunu söyledin, o da size inandı. Tek bir kaydırıcıda bütün laboratuvar.",
       },
       settle: {
-        title: "Bir türlü oturmuyor",
+        title: "It never settles",
         brief:
-          "Keşif bütün koşu boyunca 0,9'a sabitlenmiş: on hamlenin dokuzu rastgele. Sondaki tablo gayet iyi ama ajan turları neredeyse hiç bitiremiyor. Kapıya güvenilir biçimde ulaşmasını sağlayın.",
+          "Keşif bütün koşu boyunca 0,9'a sabitlenmiş: on hamlenin dokuzu rastgele. Sondaki tablo gayet iyi ama ajan turları neredeyse hiç bitiremiyor. Kapıya güvenilir biçimde ulaşmasını sağla.",
         lesson:
-          "Rotayı bulan şey keşiftir; sonra da onu kullanmanızı engelleyen şey odur. Bu koşu rotayı sürekli çöpe atıyor.",
+          "Rotayı bulan şey keşiftir; sonra da onu kullanmanı engelleyen şey odur. Bu koşu rotayı sürekli çöpe atıyor.",
       },
     },
     behaviour: {
@@ -322,23 +322,23 @@ const copy: typeof en = {
   // The guided tours, one per experiment (components/lab/guide/tours.ts).
   tour: {
     intro:
-      "Küçük bir odada bir ajan ve sizin belirlediğiniz bir ödül. Önce ajanı siz yönetirsiniz; sonra kendi kendine öğrenir.",
+      "Önce ajanı elle hareket ettir ve ödülleri incele. Sonra eğitimi başlatıp öğrendiği davranışı karşılaştır.",
     stages: {
       world: {
         room: "Odanın üstten görünüşü: ajan, duvarlar, işaretli kare ve kapı. Kapı 20 kazandırır ve koşuyu bitirir.",
         move: "Ajanı bu oklarla ya da klavyenin ok tuşlarıyla hareket ettirin. Her hamle 0,5'e mal olur.",
         reward:
-          "Bu kaydırıcı işaretli karenin ne kazandıracağını belirler. Dünyada kararını sizin verdiğiniz tek şey bu.",
+          "Bu kaydırıcı işaretli karenin ne kazandıracağını belirler. Dünyada kararını verdiğin tek şey bu.",
       },
       train: {
         map: "Ajan köşeden hiçbir şey bilmeden başlar. Haritanın altındaki eğri, bölüm başına aldığı ödül.",
-        run: "Eğitimi çalıştırın: ajan dolaşır, kapıyı tesadüfen bulur ve o andan itibaren elinde bir ipucu olur.",
+        run: "Eğitimi çalıştır: ajan dolaşır, kapıyı tesadüfen bulur ve o andan itibaren elinde bir ipucu olur.",
         figures:
           "Kaç bölüm koşulduğu, kapıya ne sıklıkla ulaştığı ve son bölümün adım sayısıyla ödülü.",
       },
       policy: {
         maps: "Solda hiç bölüm koşulmadan önce, sağda eğitimden sonra. Her ok, en büyük sayıya sahip hamle.",
-        pick: "Dört sayısını görmek için haritadan bir kare seçin.",
+        pick: "Dört sayısını görmek için haritadan bir kare seç.",
         route: "Rota, her seferinde en büyük sayıyı seçince ortaya çıkan yol.",
       },
       update: {
@@ -353,8 +353,8 @@ const copy: typeof en = {
         figures: "Ne zaman oturduğu, ne sıklıkla başardığı ve kaç adım attığı.",
       },
       challenge: {
-        map: "Her görevde ajan sizin istemediğiniz bir şey yapıyor. Görevi yukarıdan seçin.",
-        lever: "Değiştirebileceğiniz tek bir sayı var. Her oynattığınızda koşu yeniden başlar.",
+        map: "Her görevde ajan istemediğin bir şey yapıyor. Görevi yukarıdan seç.",
+        lever: "Değiştirebileceğin tek bir sayı var. Her oynattığında koşu yeniden başlar.",
         result: "Ajanın şimdi ne yaptığı ve görevin istediğini yapıp yapmadığı.",
       },
     },
@@ -363,9 +363,9 @@ const copy: typeof en = {
   // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
   study: {
     topics: {
-      reward: "Ödüller, durumlar ve eylemler",
-      q: "Deneyerek öğrenmek: Q-learning",
-      gaming: "Yazdığınızı optimize eder",
+      reward: "Rewards, states and actions",
+      q: "Learning by trying: Q-learning",
+      gaming: "It optimises what you wrote down",
     },
     notes: {
       "sq-rl": "Pekiştirmeli öğrenmenin ana fikirleri.",

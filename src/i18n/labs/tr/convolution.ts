@@ -4,7 +4,7 @@ import type en from "../en/convolution";
 
 const copy: typeof en = {
   sources: {
-    title: "Kaynaklar",
+    title: "Sources",
     lecunZip:
       "Bu laboratuvarın konusu olan kısıtlı ağı tanıtır: ağırlıkları resmin her konumunda ortak kullanılan, geri yayılımla öğrenilen ve el yazısı rakamları okuyan küçük çekirdekler.",
     convArithmetic:
@@ -17,27 +17,28 @@ const copy: typeof en = {
   },
 
   cellLabel: (row: number, column: number) => `Ağırlık, satır ${row}, sütun ${column}`,
-  invalidWeight: "Her hücreye bir sayı gerekiyor: 1, -2, 0,5 ya da 1/9 deneyin.",
+  invalidWeight: "Her hücreye bir sayı gerekiyor: 1, -2, 0,5 ya da 1/9 dene.",
   kernelWord: "Çekirdek",
 
   // 1 ----------------------------------------------------------------------
   slide: {
-    title: "Kayan bir pencere",
-    question: "Dokuz ağırlık bir resmin üzerinde kayıyor. Geride ne bırakıyorlar?",
+    title: "A window that slides",
+    question:
+      "3×3 filtreyi görüntü üzerinde bir adım kaydır. Yeni çıktı hücresi nasıl hesaplanıyor?",
     input: "Resim",
     kernel: "Çekirdek",
     output: "Çıktı",
     inputLabel:
-      "T harfinin 9'a 9 resmi. Çerçeveli kare penceredir. Bir pikseli açıp kapatmak için tıklayın.",
+      "T harfinin 9'a 9 resmi. Çerçeveli kare penceredir. Bir pikseli açıp kapatmak için tıkla.",
     kernelLabel: "Çekirdek: sol sütunda eksi 1, ortada 0, sağda artı 1.",
     outputLabel: (done: number, total: number) =>
-      `Çıktı, ${total} hücreden ${done} tanesi hesaplandı. Pencereyi bir hücreye taşımak için tıklayın ya da ok tuşlarını kullanın.`,
+      `Çıktı, ${total} hücreden ${done} tanesi hesaplandı. Pencereyi bir hücreye taşımak için tıkla ya da ok tuşlarını kullan.`,
     arithmetic: "Bu hücrenin hesabı",
     step: "Bir adım kaydır",
     fillRest: "Kalanını doldur",
     reset: "Baştan başla",
     caption:
-      "Her çıktı hücresi, toplanan dokuz çarpımdır: ağırlık çarpı altındaki piksel. Ağırlıklar hiç değişmez; yalnızca pencere hareket eder. Resmin sağa doğru aydınlandığı yerde pozitif, karardığı yerde negatif.",
+      "Her çıktı hücresi dokuz çarpımın toplamıdır. Filtrenin ağırlıkları sabit kalır, pencerenin konumu değişir. Bu filtre, sağa doğru artan parlaklıkta pozitif, azalan parlaklıkta negatif sonuç verir.",
     announce: (column: number, row: number, value: string) =>
       `Pencere sütun ${column}, satır ${row}. Çıktı ${value}.`,
     figures: {
@@ -50,15 +51,15 @@ const copy: typeof en = {
 
   // 2 ----------------------------------------------------------------------
   kernels: {
-    kicker: "Dokuz sayı",
-    title: "Ağırlıkları değiştirin, gördüğü şey değişsin.",
-    lede: "Aynı kayan toplam, bu kez daha büyük bir resimde. Bir çekirdek seçin ya da kendinizinkini yazın, sonra resmin üzerine çizin ve neyi yakaladığına bakın.",
+    kicker: "Nine numbers",
+    title: "Change the weights, change what it sees.",
+    lede: "Bir filtre seç veya ağırlıkları kendin değiştir. Görüntüye çizim ekleyerek çıktının hangi bölgelerde değiştiğini incele.",
     input: "Resim",
     output: "Çıktı",
     inputLabel:
-      "32'ye 32 bir resim: bir disk, bir kare, eğik bir çubuk ve bir halka. Çizmek için üzerinde sürükleyin.",
+      "32'ye 32 bir resim: bir disk, bir kare, eğik bir çubuk ve bir halka. Çizmek için üzerinde sürükle.",
     outputLabel: "Çekirdekten geçmiş resim. Sıfırla dolgulandığı için boyutu aynı.",
-    drawHint: "Çizmek için sürükleyin.",
+    drawHint: "Çizmek için sürükle.",
     editorLabel: "Çekirdek",
     presetLabel: "Başlangıç",
     presets: {
@@ -81,7 +82,7 @@ const copy: typeof en = {
       outline:
         "Piksel, sekiz komşusunun hepsine karşı. Ağırlıkların toplamı 0 olduğu için düz olan her şey kaybolur, geriye yalnızca dış hatlar kalır.",
       custom:
-        "Kendi çekirdeğiniz. Ağırlıkların toplamını izleyin: düz bir alan tam olarak bu sayıyla çarpılır.",
+        "Kendi çekirdeğin. Ağırlıkların toplamını izle: düz bir alan tam olarak bu sayıyla çarpılır.",
     },
     restore: "Resmi geri getir",
     pictureLabel: "Resim",
@@ -99,9 +100,9 @@ const copy: typeof en = {
 
   // 3 ----------------------------------------------------------------------
   shift: {
-    kicker: "Resmin her yerinde",
-    title: "Şekli taşıyın. Yanıt onunla birlikte gelsin.",
-    lede: "Bu çekirdek, aradığı şeklin kendisi: artının olduğu yerde artı bir, çevresinde eksi bir. Artıyı taşıyın ve çıktının en güçlü olduğu yere bakın.",
+    kicker: "Anywhere in the picture",
+    title: "Move the shape. The answer moves with it.",
+    lede: "Bu çekirdek, aradığı şeklin kendisi: artının olduğu yerde artı bir, çevresinde eksi bir. Artıyı taşı ve çıktının en güçlü olduğu yere bak.",
     input: "Resim",
     detector: "Çekirdek",
     output: "Çıktı",
@@ -112,7 +113,7 @@ const copy: typeof en = {
       "5'e 5 bir çekirdek: artı şeklinin üzerinde artı 1, geri kalan her yerde eksi 1.",
     outputLabel: (x: number, y: number, value: string) =>
       `Çıktı. En güçlü olduğu yer sütun ${x}, satır ${y}; değeri ${value}.`,
-    keyboardHint: "Artıyı koymak için resme tıklayın ya da resmi seçip ok tuşlarını kullanın.",
+    keyboardHint: "Artıyı koymak için resme tıkla ya da resmi seçip ok tuşlarını kullan.",
     moveLabel: "Artıyı taşı",
     move: { left: "Sola taşı", up: "Yukarı taşı", down: "Aşağı taşı", right: "Sağa taşı" },
     caption:
@@ -131,22 +132,22 @@ const copy: typeof en = {
 
   // 4 ----------------------------------------------------------------------
   size: {
-    kicker: "Pencereleri saymak",
-    title: "Çıktı ne kadar büyük?",
-    lede: "Bunu dört sayı belirler: girdi, çekirdek, kenardaki dolgu ve pencerenin ne kadar sıçradığını söyleyen adım. Değiştirin ve sayın.",
+    kicker: "Counting the windows",
+    title: "How big is the output?",
+    lede: "Girdi boyutunu, filtre boyutunu, dolguyu ve adımı değiştir. Çıktının boyutunu formülle hesapla, ardından işlenen pencereleri say.",
     input: "Girdi ve dolgu",
     output: "Çıktı",
     inputLabel: (n: number, p: number) =>
       `${n} × ${n} hücrelik bir girdi ve çevresinde ${p} hücrelik sıfır dolgusu. Çerçeveli kare, seçilen çıktı hücresinin penceresidir.`,
     outputLabel: (o: number, x: number, y: number) =>
-      `Çıktı, ${o} × ${o}. Sütun ${x}, satır ${y} seçili. Bir hücreye tıklayın ya da ok tuşlarını kullanın.`,
+      `Çıktı, ${o} × ${o}. Sütun ${x}, satır ${y} seçili. Bir hücreye tıkla ya da ok tuşlarını kullan.`,
     noFit: "Çekirdek, dolgulu girdiden büyük: koyacak yer yok, dolayısıyla çıktı da yok.",
     leftover: (n: number) =>
       n === 1
         ? "Adım tam bölünmüyor: dolgulu girdinin son satırı ve sütunu hiçbir zaman pencerenin altına girmiyor."
         : `Adım tam bölünmüyor: dolgulu girdinin son ${n} satırı ve sütunu hiçbir zaman pencerenin altına girmiyor.`,
     caption:
-      "Kesikli hücreler sıfır dolgusudur. Bir çıktı hücresine tıklayınca onu üreten pencereyi görürsünüz. Turuncuyla işaretli hücreler hiç okunmaz: formül aşağı yuvarlar, her framework de öyle.",
+      "Kesikli hücreler sıfır dolguyu gösterir. Bir çıktı hücresine tıklayarak hesaplandığı pencereyi görebilirsin. Turuncu hücreler adım boyu nedeniyle pencerenin dışında kalır.",
     labels: { n: "Girdi n", k: "Çekirdek k", p: "Dolgu p", s: "Adım s" },
     figures: {
       output: "Çıktı",
@@ -159,13 +160,13 @@ const copy: typeof en = {
 
   // 5 ----------------------------------------------------------------------
   depth: {
-    kicker: "Katman üstüne katman",
-    title: "Küçük pencereler üst üste binince uzağı görür.",
-    lede: "Tek bir 3×3 katman yan yana üç hücre görür. Üstüne bir tane daha koyun; onun her hücresi, alttaki üç hücrenin gördüğünü görür. Tepeden bir hücre seçin; aşağıdaki katmanlarda hangi hücrelere dayandığı işaretlenir.",
+    kicker: "Layers on layers",
+    title: "Small windows, stacked, see far.",
+    lede: "3×3 katmanlar ekle. Üst katmandaki bir hücreyi seçerek giriş görüntüsünde hangi hücrelerden etkilendiğini incele.",
     inputName: "Girdi",
     layerName: (l: number) => `Katman ${l}`,
     diagramLabel: (count: number, chosen: number, top: number, size: number) =>
-      `16 girdilik bir satırın üzerinde 3'e 3 çekirdekli ${count} katman. Tepedeki ${top} hücreden ${chosen}. hücre seçili; yan yana ${size} girdiye bağlı. Başka birini seçmek için sol ve sağ ok tuşlarını kullanın.`,
+      `16 girdilik bir satırın üzerinde 3'e 3 çekirdekli ${count} katman. Tepedeki ${top} hücreden ${chosen}. hücre seçili; yan yana ${size} girdiye bağlı. Başka birini seçmek için sol ve sağ ok tuşlarını kullan.`,
     edgeNote:
       "Bu hücrenin alanının bir kısmı resmin dışında, sıfır dolgusunun üzerinde kalıyor; bu yüzden yanan gerçek girdi sayısı alanın genişliğinden az.",
     layersLabel: "Katman",
@@ -187,9 +188,9 @@ const copy: typeof en = {
 
   // 6 ----------------------------------------------------------------------
   learn: {
-    kicker: "Kimse tasarlamıyor",
-    title: "Çekirdeği ağırlıklar bulsun.",
-    lede: "Bu resmin üzerinden gizli bir çekirdek zaten geçirildi; ağırlıklarını değil, yalnızca çıktısını görüyorsunuz. Dokuz rastgele sayıdan başlayın ve aradaki farkı gradient descent kapatsın.",
+    kicker: "Nobody designs them",
+    title: "Let the weights find the kernel.",
+    lede: "Hedef çıktı bilinmeyen bir filtreyle hesaplandı. Rastgele dokuz ağırlıktan başlayarak aynı çıktıyı üretmeye çalış. Gradient descent, iki çıktı arasındaki hatayı azaltır.",
     input: "Resim",
     goal: "Hedef",
     current: "Şimdiki",
@@ -207,7 +208,7 @@ const copy: typeof en = {
     found: (steps: number) =>
       `${steps} adımda buldu. Ağırlıklar artık gizli çekirdeğin kendisi: kenarın ne olduğunu onlara kimse söylemedi.`,
     ready:
-      "Dokuz rastgele ağırlık. Eğit'e basın; gradient descent onları adım adım saklı çekirdeğe doğru taşır.",
+      "Dokuz rastgele ağırlık. Eğit'e bas; gradient descent onları adım adım saklı çekirdeğe doğru taşır.",
     searching: "Her adım, dokuz ağırlığın hepsini hatanın gradyanının tersine kaydırır.",
     train: "Eğit",
     pause: "Duraklat",
@@ -216,7 +217,7 @@ const copy: typeof en = {
     targetLabel: "Gizli çekirdek",
     targets: { vertical: "Kenar dedektörü", blur: "Bulanıklaştır", outline: "Dış hat" },
     reveal: "Gizli çekirdeği şimdi göster",
-    secondaryLabel: "Başka bir gizli çekirdek seçin",
+    secondaryLabel: "Başka bir gizli çekirdek seç",
     caption:
       "Hata, tek bir dibi olan bir çanaktır ve gizli çekirdek tam o diptedir; bu yüzden nereden başlarsa başlasın iniş onda biter. Ağların girdileriyle yaptığı gibi, önce resmin ortalama parlaklığı çıkarılır; bu, uyumun nerede biteceğini değil, ne kadar hızlı gideceğini değiştirir.",
     figures: { steps: "Adım", loss: "Kayıp" },
@@ -225,15 +226,15 @@ const copy: typeof en = {
 
   // 7 ----------------------------------------------------------------------
   challenge: {
-    kicker: "Sıra sizde",
-    title: "Elle bulunacak üç çekirdek.",
-    lede: "Her biri bir cevap değil, bir davranış istiyor. O davranışı gösteren her çekirdek geçer.",
+    kicker: "Your turn",
+    title: "Three kernels to find by hand.",
+    lede: "Her görev filtrenin belirli bir davranış göstermesini ister. Koşulları sağlayan birden fazla filtre olabilir.",
     pickLabel: "Görev",
-    yours: "Çıktınız",
+    yours: "Çıktın",
     reset: "İlerlememi unut",
     solvedLabel: "Çözülen",
     caption:
-      "Her karar, çekirdeğinizi gösterilen resimlerin üzerinden sayfanın geri kalanıyla aynı aritmetikle geçirir. Cevap anahtarı yok.",
+      "Filtren gösterilen görüntülere uygulanır ve sonuçlar görev koşullarıyla karşılaştırılır.",
     announce: (solved: number, total: number) => `${total} görevden ${solved} tanesi çözüldü.`,
     shift: {
       tab: "Kaydır",
@@ -242,7 +243,7 @@ const copy: typeof en = {
       input: "Resim",
       goal: "Hedef",
       solved: "Çözüldü. Solda tek bir 1: her çıktı solundaki pikseli okur ve bu, resmi sağa taşır.",
-      notYet: "Henüz değil: çıktınız hedefle eşleşmiyor.",
+      notYet: "Henüz değil: çıktın hedefle eşleşmiyor.",
       mirrored:
         "Bu, resmi sola taşıdı. Bir evrişim katmanı çekirdeği ters çevirmeden, yazıldığı gibi yerleştirir; bu yüzden 1'in öbür tarafa gitmesi gerekiyor.",
     },
@@ -256,8 +257,8 @@ const copy: typeof en = {
         edgeSeen: "Kenarda bir yerde 0'dan farklı",
       },
       solved:
-        "Çözüldü. Ağırlıklarınızın toplamı sıfır; bu yüzden düzlük birbirini götürür ve geriye yalnızca değişim kalır. Her kenar dedektörünün bu özelliği vardır.",
-      notYet: "Henüz değil: iki koşula bakın.",
+        "Çözüldü. Ağırlıklarının toplamı sıfır; bu yüzden düzlük birbirini götürür ve geriye yalnızca değişim kalır. Her kenar dedektörünün bu özelliği vardır.",
+      notYet: "Henüz değil: iki koşula bak.",
     },
     vertical: {
       tab: "Dikey",
@@ -265,15 +266,15 @@ const copy: typeof en = {
       hint: "Dikey çizgide bir yerde 0'ın üstünde, yatay çizgide hiçbir yerde 0'ın üstünde değil.",
       vertical: "Dikey çizgi",
       horizontal: "Yatay çizgi",
-      verticalOut: "Dikey çizgideki çıktınız.",
-      horizontalOut: "Yatay çizgideki çıktınız.",
+      verticalOut: "Dikey çizgideki çıktın.",
+      horizontalOut: "Yatay çizgideki çıktın.",
       rules: {
         fires: "Dikey çizgide bir yerde 0'ın üstünde",
         silent: "Yatay çizgide hiçbir yerde 0'ın üstünde değil",
       },
       solved:
-        "Çözüldü. Çekirdeğinizin bir sütununun toplamı 0'dan büyük ve hiçbir satırın toplamı 0'dan büyük değil. Tek bir yönün dedektörü tam olarak budur.",
-      notYet: "Henüz değil: iki koşula bakın.",
+        "Çözüldü. Çekirdeğinin bir sütununun toplamı 0'dan büyük ve hiçbir satırın toplamı 0'dan büyük değil. Tek bir yönün dedektörü tam olarak budur.",
+      notYet: "Henüz değil: iki koşula bak.",
     },
   },
 
@@ -288,30 +289,29 @@ const copy: typeof en = {
       "Çekirdekler elle tasarlanmaz: gradient descent onları örneklerden bulur",
     ],
     footer:
-      "1989'da posta kodlarındaki el yazısını okuyan ağdan bugün fotoğrafları tanıyan modellere kadar evrişimli ağlar, tam olarak bu toplamın katmanlarıdır; yalnızca daha çok kanal ve çok daha fazla çekirdekle.",
+      "Evrişimli ağlar aynı ağırlıkları farklı konumlarda kullanır. Büyük modellerde bu işlem birden fazla filtre, kanal ve katmanla tekrarlanır.",
   },
 
   // The guided tours, one per experiment (components/lab/guide/tours.ts).
   tour: {
-    intro:
-      "Dokuz ağırlık küçük bir resmin üzerinde kayar ve geride yeni bir resim bırakır. Pencereyi hücre hücre siz ilerletirsiniz.",
+    intro: "Filtreyi bir hücre ilerlet ve yeni çıktıyı oluşturan dokuz çarpımı incele.",
     stages: {
       slide: {
         picture:
           "Solda T harfinin 9×9'luk resmi ve üzerinde 3×3'lük pencere. Ortada dokuz ağırlık. Sağda geride bıraktıkları.",
         step: "Her basışta pencere bir hücre kayar ve çıktının bir hücresi hesaplanır.",
         cell: "O hücre dokuz çarpımın toplamı: her ağırlık, altındaki pikselle çarpılır. Toplamın tamamı yukarıda yazıyor.",
-        fill: "Kalanını tek seferde doldurun. Sonra resimdeki piksellere tıklayıp açıp kapatın; çıktı da onlarla değişir.",
+        fill: "Kalanını tek seferde doldur. Sonra resimdeki piksellere tıklayıp açıp kapat; çıktı da onlarla değişir.",
       },
       kernels: {
-        picture: "Soldaki resmin üzerine çizin; sağda çekirdeğin ondan neyi yakaladığı görünür.",
-        preset: "Başka bir çekirdek seçin; çıktı yeniden hesaplanır.",
-        type: "Ya da çekirdeğe kendi ağırlıklarınızı yazın. Tur ilk hücreye 2 yazdı.",
+        picture: "Soldaki resmin üzerine çiz; sağda çekirdeğin ondan neyi yakaladığı görünür.",
+        preset: "Başka bir çekirdek seç; çıktı yeniden hesaplanır.",
+        type: "Ya da çekirdeğe kendi ağırlıklarını yaz. Tur ilk hücreye 2 yazdı.",
         sum: "Ağırlıkların toplamı, düz bir bölgenin çarpıldığı sayı. Kenar bulucuların toplamı sıfırdır.",
       },
       shift: {
         shapes: "Bir artı işareti ve üç tuzak. Çekirdek, aradığı şeklin ta kendisi.",
-        move: "Artıyı bu oklarla taşıyın. Tur onu bir hücre sağa taşıdı.",
+        move: "Artıyı bu oklarla taşı. Tur onu bir hücre sağa taşıdı.",
         peak: "En güçlü çıktı da onunla birlikte hücre hücre kaydı; çünkü her konumda aynı ağırlıklar kullanılıyor.",
       },
       size: {
@@ -323,7 +323,7 @@ const copy: typeof en = {
       depth: {
         stack:
           "Üst üste 3×3'lük katmanlar. En üstten bir hücre seçip girdiye kadar neyi gördüğünü takip edin.",
-        layers: "Bu kaydırıcıyla katman ekleyin. Tur hepsini ekledi.",
+        layers: "Bu kaydırıcıyla katman ekle. Tur hepsini ekledi.",
         field:
           "Her katman tepenin gördüğü alanı genişletir; hem de tek büyük bir çekirdeğin gerektireceğinden daha az ağırlıkla.",
       },
@@ -334,8 +334,8 @@ const copy: typeof en = {
         loss: "Atılan adımlar ve kayıp. Dibe ulaşınca ağırlıklar gizli çekirdekle aynı olur.",
       },
       challenge: {
-        pick: "Elle kurmanız gereken üç davranış. Buradan birini seçin.",
-        type: "Çekirdeğe ağırlık yazın; her değişiklik resimler üzerinde denenir. Tur 1 yazdı.",
+        pick: "Elle kurman gereken üç davranış. Buradan birini seç.",
+        type: "Çekirdeğe ağırlık yaz; her değişiklik resimler üzerinde denenir. Tur 1 yazdı.",
         solved: "Doğru davranan her çekirdek geçer. Cevap anahtarı yok.",
       },
     },
@@ -344,9 +344,9 @@ const copy: typeof en = {
   // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
   study: {
     topics: {
-      window: "Kayan bir ağırlık penceresi",
-      sharing: "Her yerde aynı ağırlıklar",
-      size: "Dolgu, adım ve çıktı boyutu",
+      window: "A sliding window of weights",
+      sharing: "The same weights everywhere",
+      size: "Padding, stride and output size",
     },
     notes: {
       "ng-edge": "3×3'lük bir kenar çekirdeğinin resim üzerinde toplam toplam kaydırılması.",

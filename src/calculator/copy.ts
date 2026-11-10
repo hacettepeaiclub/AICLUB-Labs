@@ -50,20 +50,20 @@ const en = {
   full: "The data table is full.",
   disclaimer:
     "A simulation. The key sequences come from Casio's own guides for these models, but the screen is simplified: one line of input, no textbook layout, and only the menus the lessons use. When your calculator shows something different, trust your calculator.",
-  shiftLabel: "SHIFT is on: the next key does what is printed above it, in amber.",
+  shiftLabel: "SHIFT is on: the next key does what is printed above it, in turuncu.",
 };
 
 export type CalculatorCopy = typeof en;
 
 const tr: CalculatorCopy = {
-  overline: "Bilimsel hesap makinesi",
+  overline: en.overline,
   badge: "Araç",
   minutes: "15 dk",
-  title: "Hesap makinemi nasıl kullanırım?",
+  title: en.title,
   description:
-    "Modelini seç ve tuş tuş öğren: işlem önceliği, derece ve radyan, varyans ve regresyon, olasılık, denklemler, integral ve matrisler. Simülatör yalnızca doğru tuşu kabul eder, yani kaybolmazsın.",
-  pickKicker: "1. adım",
-  pickTitle: "Hangi hesap makinesine sahipsin?",
+    "Hesap makinenin modelini seç ve bir ders aç. İşlem önceliği, açı birimleri, istatistik, denklemler ve matrisler için tuş sıralarını dene. Ders modunda sıradaki tuş gösterilir.",
+  pickKicker: en.pickKicker,
+  pickTitle: en.pickTitle,
   pickLede:
     "Model adı ekranın hemen üstünde yazar. Burada aynısını seç; tuşlar ve menüler birebir eşleşir.",
   modelLabel: "Hesap makinesi modeli",
@@ -71,8 +71,8 @@ const tr: CalculatorCopy = {
   notListed:
     "fx-991CW henüz yok: Casio menülerinin sırasını yayımlamıyor, tahminle yazılmış bir ders seni yanlış tuşa götürür.",
   notOnModel: (name: string) => `${name} bunu yapamaz: bunun için bir tuşu ya da modu yok.`,
-  practiseKicker: "2. adım",
-  practiseTitle: "Tuş tuş öğren",
+  practiseKicker: en.practiseKicker,
+  practiseTitle: en.practiseTitle,
   practiseLede:
     "Bir ders seç. Sıradaki tuş ışıkla gösterilir; ona ekranda bas ya da klavyeden yaz. Sonra aynı tuşları kendi hesap makinende dene.",
   practiceLabel: "Çalışma biçimi",
@@ -88,7 +88,7 @@ const tr: CalculatorCopy = {
   restart: "Baştan başla",
   nextLesson: "Sonraki ders",
   done: "Tamamlandı.",
-  allDone: "Son dersi de bitirdin. Başka her şey için serbest kullanım açık.",
+  allDone: "Bu model için dersler tamamlandı. Serbest kullanımda kendi işlemlerini deneyebilirsin.",
   device: (name: string) => `${name} simülatörü`,
   keyboardHint:
     "Bilgisayarda klavyeden de yazabilirsin: rakamlar, + − * / ^ ( ), = için Enter, DEL için Backspace, AC için Esc, ok tuşları.",
