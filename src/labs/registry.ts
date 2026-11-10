@@ -1,3 +1,4 @@
+import { diffusionMeta } from "./diffusion/meta";
 import { generalizationMeta } from "./generalization/meta";
 import { lazy } from "react";
 import type { LabEntry, LabLoader, LabMeta } from "./types";
@@ -54,6 +55,7 @@ const entry = (meta: LabMeta, load: LabLoader): LabEntry => ({
 });
 
 export const labs: LabEntry[] = [
+  entry(diffusionMeta, () => import("./diffusion")),
   entry(generalizationMeta, () => import("./generalization")),
   entry(attentionMeta, () => import("./attention")),
   entry(backpropagationMeta, () => import("./backpropagation")),

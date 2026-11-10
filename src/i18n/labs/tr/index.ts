@@ -1,3 +1,4 @@
+import diffusion from "./diffusion";
 import generalization from "./generalization";
 import attention from "./attention";
 import backpropagation from "./backpropagation";
@@ -28,6 +29,7 @@ import type { LabsCopy } from "../types";
  * birebir aynı olmak zorundadır.
  */
 export const trLabs: LabsCopy = {
+  diffusion,
   generalization,
   "word-embeddings-3d": wordEmbeddings3D,
   "word-embeddings": wordEmbeddings,

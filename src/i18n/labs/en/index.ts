@@ -1,3 +1,4 @@
+import diffusion from "./diffusion";
 import generalization from "./generalization";
 import attention from "./attention";
 import backpropagation from "./backpropagation";
@@ -34,6 +35,7 @@ import wordEmbeddings3D from "./word-embeddings-3d";
  * the grid needs those before any lab is chosen.
  */
 export const enLabs = {
+  diffusion,
   generalization,
   "word-embeddings-3d": wordEmbeddings3D,
   "word-embeddings": wordEmbeddings,

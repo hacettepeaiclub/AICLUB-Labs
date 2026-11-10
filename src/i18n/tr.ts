@@ -200,6 +200,12 @@ export const tr: Translation = {
   // terimi burada değil: içinde Türkçe bir kelime de var.
   englishTerms: ["attention", "gradient-descent", "tokenization", "word-embeddings"],
   labMeta: {
+    diffusion: {
+      title: "Gürültüden bir tahmine",
+      term: "Diffusion",
+      figure: "Gauss gürültüsü ve sonlu önbilgi",
+      description: "Ters süreci ve dayandığı önbilgiyi keşfet.",
+    },
     generalization: {
       title: "Ezberledi mi, öğrendi mi?",
       term: "Genelleme",
