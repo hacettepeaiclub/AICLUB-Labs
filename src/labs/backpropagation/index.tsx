@@ -46,7 +46,7 @@ export default function Backpropagation() {
       </section>
 
       {/* 2 — What the number a weight receives actually is. */}
-      <LabSection kicker={t.zoom.kicker} title={t.zoom.title} lede={t.zoom.lede}>
+      <LabSection deeper kicker={t.zoom.kicker} title={t.zoom.title} lede={t.zoom.lede}>
         <ZoomStage />
       </LabSection>
 
@@ -61,12 +61,12 @@ export default function Backpropagation() {
       </LabSection>
 
       {/* 5 — Why it won: one pass back against two per weight. */}
-      <LabSection kicker={t.cost.kicker} title={t.cost.title} lede={t.cost.lede}>
+      <LabSection deeper kicker={t.cost.kicker} title={t.cost.title} lede={t.cost.lede}>
         <CostStage />
       </LabSection>
 
       {/* 6 — How it fails: a long chain of small factors. */}
-      <LabSection kicker={t.depth.kicker} title={t.depth.title} lede={t.depth.lede}>
+      <LabSection deeper kicker={t.depth.kicker} title={t.depth.title} lede={t.depth.lede}>
         <DepthStage />
       </LabSection>
 

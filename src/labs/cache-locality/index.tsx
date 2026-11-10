@@ -52,12 +52,12 @@ export default function CacheLocality() {
       </LabSection>
 
       {/* 3 — Stride: the distance between reads, priced. */}
-      <LabSection kicker={t.stride.kicker} title={t.stride.title} lede={t.stride.lede}>
+      <LabSection deeper kicker={t.stride.kicker} title={t.stride.title} lede={t.stride.lede}>
         <StrideStage bench={bench} />
       </LabSection>
 
       {/* 4 — Your turn: six loop orders, the model against the stopwatch. */}
-      <LabSection kicker={t.order.kicker} title={t.order.title} lede={t.order.lede}>
+      <LabSection deeper kicker={t.order.kicker} title={t.order.title} lede={t.order.lede}>
         <OrderStage bench={bench} />
       </LabSection>
 

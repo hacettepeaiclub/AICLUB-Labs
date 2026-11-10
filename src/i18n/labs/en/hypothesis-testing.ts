@@ -117,7 +117,7 @@ const copy = {
     title: "More data narrows everything at once.",
     lede: "\u03b1 and \u03b2 trade against each other as long as the curves stay the same width. n is what changes their width: SE = \u03c3/\u221an, so both sampling distributions tighten around their own mean and the overlap shrinks without raising \u03b1 [Casella & Berger, 2nd ed., p. 217 and p. 385].",
     caption:
-      "The x axis is drawn at \u00b14.5 SE, so the window narrows with the curves. \u221an is why the second half of the slider buys so much less than the first.",
+      "The fixed x axis lets you compare curve widths directly. Automatic mode follows the curves. Increasing n reduces SE by its square root, so each additional sample buys less.",
     nLabel: "n: sample size",
     nValue: (value: number) => `n is ${value}`,
     formula: (se: string) => `SE = \u03c3/\u221an = ${se}`,

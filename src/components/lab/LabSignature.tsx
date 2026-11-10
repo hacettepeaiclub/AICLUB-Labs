@@ -278,6 +278,24 @@ function Shape({ slug }: { slug: string }) {
         </g>
       );
     }
+    case "generalization": {
+      return (
+        <g>
+          <path
+            d="M4 26Q14 3 27 20T59 16"
+            fill="none"
+            className={`${structure} sig-draw`}
+            pathLength={1}
+            strokeWidth="1.5"
+          />
+          <path d="M4 29Q32 4 59 20" fill="none" className={inert} strokeDasharray="2 2" />
+          {[8, 18, 29, 41, 54].map((x, i) => (
+            <circle key={x} cx={x} cy={i % 2 ? 11 : 30} r="2" className="fill-accent" />
+          ))}
+          <path d="M33 12l3 6h-6zM46 27l3 6h-6z" className="fill-data" />
+        </g>
+      );
+    }
     case "sorting": {
       return (
         <g>

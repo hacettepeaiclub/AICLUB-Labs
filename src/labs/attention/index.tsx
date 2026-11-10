@@ -104,7 +104,7 @@ export default function AttentionPlayground() {
       </LabSection>
 
       {/* 3 — The divisor, shown by taking it away. */}
-      <LabSection kicker={a.scale.kicker} title={a.scale.title} lede={a.scale.lede}>
+      <LabSection deeper kicker={a.scale.kicker} title={a.scale.title} lede={a.scale.lede}>
         <ScaleStage
           attention={attention}
           words={words}

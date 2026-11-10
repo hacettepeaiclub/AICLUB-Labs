@@ -78,7 +78,7 @@ export const en = {
     // Also the original copy, tightened: it now states the size of the
     // collection, because the labs start one screen below and the count is
     // the fastest way to say what this place is.
-    lede: "Seventeen interactive experiments: algorithms, neural networks and the machinery of computation. No lectures, just levers to pull.",
+    lede: "Explore algorithms, neural networks and the machinery of computation. Make a prediction, change something, and discover why the result moves.",
     cta: "Start experimenting",
     labs: "Labs",
     labCount: (n: number) => `${n} instruments`,
@@ -236,6 +236,12 @@ export const en = {
    * category, minutes) so a lab can be listed without being loaded at all.
    */
   labMeta: {
+    generalization: {
+      title: "Learned or memorised?",
+      term: "Generalisation",
+      figure: "a flexible boundary fits familiar points, then meets new examples.",
+      description: "Fit the points you can see. Then reveal the ones your model has never met.",
+    },
     "word-embeddings-3d": {
       title: "The Map of Meaning, in 3D",
       term: "Word embeddings, prototype",

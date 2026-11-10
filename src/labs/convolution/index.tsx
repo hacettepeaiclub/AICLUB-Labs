@@ -56,17 +56,17 @@ export default function Convolution() {
       </LabSection>
 
       {/* 4 — Counting windows: padding and stride. */}
-      <LabSection kicker={t.size.kicker} title={t.size.title} lede={t.size.lede}>
+      <LabSection deeper kicker={t.size.kicker} title={t.size.title} lede={t.size.lede}>
         <SizeStage />
       </LabSection>
 
       {/* 5 — Stacking small windows. */}
-      <LabSection kicker={t.depth.kicker} title={t.depth.title} lede={t.depth.lede}>
+      <LabSection deeper kicker={t.depth.kicker} title={t.depth.title} lede={t.depth.lede}>
         <DepthStage />
       </LabSection>
 
       {/* 6 — The weights are found, not written. */}
-      <LabSection kicker={t.learn.kicker} title={t.learn.title} lede={t.learn.lede}>
+      <LabSection deeper kicker={t.learn.kicker} title={t.learn.title} lede={t.learn.lede}>
         <LearnStage />
       </LabSection>
 

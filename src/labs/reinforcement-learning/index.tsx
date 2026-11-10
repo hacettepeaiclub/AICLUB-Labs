@@ -107,12 +107,17 @@ export default function RewardPlayground() {
       </LabSection>
 
       {/* 4 — One update, from the run above. */}
-      <LabSection kicker={copy.update.kicker} title={copy.update.title} lede={copy.update.lede}>
+      <LabSection
+        deeper
+        kicker={copy.update.kicker}
+        title={copy.update.title}
+        lede={copy.update.lede}
+      >
         <UpdateStage run={run} tileReward={tileReward} />
       </LabSection>
 
       {/* 5 — The three dials. */}
-      <LabSection kicker={copy.rules.kicker} title={copy.rules.title} lede={copy.rules.lede}>
+      <LabSection deeper kicker={copy.rules.kicker} title={copy.rules.title} lede={copy.rules.lede}>
         <RulesStage
           run={run}
           settings={settings}

@@ -89,7 +89,7 @@ const copy: typeof en = {
     title: "Aynı doğru cevap, çok daha az arama.",
     lede: "Dijkstra hedefin nerede olduğunu bilmez, bu yüzden her yöne eşit yayılır. A* ise kalan uzaklık için bir tahmin ekler ve onu izler: f = g + h; burada g şu ana kadarki maliyet, h ise sezgisel, yani kalan mesafenin tahminidir.",
     caption:
-      "Aynı yol, aynı maliyet. İncelenen sayısına bakın. Buradaki sezgisel fonksiyon Manhattan uzaklığı. Dört yönlü bir ızgarada kalan mesafeyi asla olduğundan fazla gösteremez, yani kabul edilebilir; A*'ın ona güvenerek hiçbir şeyden ödün vermemesinin nedeni de tam olarak budur.",
+      "Aynı en düşük maliyet; yollar farklı olabilir. İncelenen sayısına bakın. Buradaki sezgisel fonksiyon Manhattan uzaklığı. Dört yönlü bir ızgarada kalan mesafeyi asla olduğundan fazla gösteremez, yani kabul edilebilir; A*'ın ona güvenerek hiçbir şeyden ödün vermemesinin nedeni de tam olarak budur.",
   },
   challenge: {
     kicker: "Görev",
@@ -178,7 +178,8 @@ const copy: typeof en = {
         grid: "Açık bir alan. Dijkstra her yöne eşit yayılır.",
         run: "Çalıştırın, sonra aşağıdan A*'a geçip yeniden çalıştırın.",
         algorithm: "A* kalan mesafe için bir tahmin ekler ve hedefe yönelir.",
-        explored: "Aynı yol, aynı maliyet. Her birinin kaç hücreye baktığını karşılaştırın.",
+        explored:
+          "Aynı en düşük maliyet; yollar farklı olabilir. Her birinin kaç hücreye baktığını karşılaştırın.",
       },
       challenge: {
         maze: "Sabit bir harita: en ucuz yol ve bütçeyi aşmayan sayıda incelenen hücre. Haritayı yukarıdan seçin.",

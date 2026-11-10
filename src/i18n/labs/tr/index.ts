@@ -1,3 +1,4 @@
+import generalization from "./generalization";
 import attention from "./attention";
 import backpropagation from "./backpropagation";
 import cacheLocality from "./cache-locality";
@@ -27,6 +28,7 @@ import type { LabsCopy } from "../types";
  * birebir aynı olmak zorundadır.
  */
 export const trLabs: LabsCopy = {
+  generalization,
   "word-embeddings-3d": wordEmbeddings3D,
   "word-embeddings": wordEmbeddings,
   "hypothesis-testing": hypothesisTesting,

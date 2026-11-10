@@ -47,12 +47,12 @@ export default function RaceCondition() {
       </section>
 
       {/* 2 — Every order: yours was no accident. */}
-      <LabSection kicker={t.orders.kicker} title={t.orders.title} lede={t.orders.lede}>
+      <LabSection deeper kicker={t.orders.kicker} title={t.orders.title} lede={t.orders.lede}>
         <OrdersStage />
       </LabSection>
 
       {/* 3 — At scale: rare, which is why it ships. */}
-      <LabSection kicker={t.odds.kicker} title={t.odds.title} lede={t.odds.lede}>
+      <LabSection deeper kicker={t.odds.kicker} title={t.odds.title} lede={t.odds.lede}>
         <OddsStage />
       </LabSection>
 

@@ -1,12 +1,16 @@
 import type { ReactNode } from "react";
+import { useLanguage } from "@/i18n";
 
 export interface LabSectionProps {
+  id?: string;
   /** Short uppercase label above the heading, e.g. "The avalanche effect". */
   kicker?: string;
   title: string;
   /** Optional one-paragraph introduction between the heading and the content. */
   lede?: string;
   children: ReactNode;
+  /** Optional deeper investigation; contents stay mounted to preserve state. */
+  deeper?: boolean;
 }
 
 /**
@@ -35,9 +39,26 @@ export interface LabSectionProps {
  * one unit rather than as two headings. A section that supplies no kicker gets
  * no element at all: an empty overline would still take a line of space.
  */
-export function LabSection({ kicker, title, lede, children }: LabSectionProps) {
+export function LabSection({ id, kicker, title, lede, children, deeper = false }: LabSectionProps) {
+  const { language } = useLanguage();
+  if (deeper)
+    return (
+      <details id={id} className="lab-section lab-deeper">
+        <summary>
+          <span className="text-overline uppercase text-accent">
+            {language === "tr" ? "Daha derine · İsteğe bağlı" : "Go deeper · Optional"}
+          </span>
+          <h2 className="mt-2 text-title font-semibold text-fg">{title}</h2>
+          {kicker && <p className="mt-2 text-overline text-fg-faint">{kicker}</p>}
+        </summary>
+        <div className="pt-5">
+          {lede && <p className="mb-5 max-w-prose text-body text-fg-muted">{lede}</p>}
+          {children}
+        </div>
+      </details>
+    );
   return (
-    <section className="lab-section">
+    <section id={id} className="lab-section">
       {kicker && <p className="text-overline uppercase text-fg-faint">{kicker}</p>}
       <h2 className="mt-3 text-[clamp(1.375rem,2.5vw,1.75rem)] font-semibold leading-snug tracking-tight text-fg">
         {title}

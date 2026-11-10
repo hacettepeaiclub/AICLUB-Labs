@@ -1,3 +1,4 @@
+import { generalizationMeta } from "./generalization/meta";
 import { lazy } from "react";
 import type { LabEntry, LabLoader, LabMeta } from "./types";
 import { attentionMeta } from "./attention/meta";
@@ -53,6 +54,7 @@ const entry = (meta: LabMeta, load: LabLoader): LabEntry => ({
 });
 
 export const labs: LabEntry[] = [
+  entry(generalizationMeta, () => import("./generalization")),
   entry(attentionMeta, () => import("./attention")),
   entry(backpropagationMeta, () => import("./backpropagation")),
   entry(convolutionMeta, () => import("./convolution")),
@@ -111,6 +113,7 @@ const LAB_ORDER = [
   "tokenization",
   "gradient-descent",
   "multilayer-perceptrons",
+  "generalization",
   "backpropagation",
   "convolution",
   "attention",

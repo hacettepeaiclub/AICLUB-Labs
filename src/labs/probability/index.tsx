@@ -40,6 +40,27 @@ export default function ProbabilityLab() {
 
   return (
     <div className="space-y-20 md:space-y-28">
+      <nav
+        aria-label={copy.routes.label}
+        className="rounded-lg border border-line/20 bg-ink-800 p-4"
+      >
+        <p className="text-body-sm text-fg-muted">{copy.routes.hint}</p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          {[
+            ["prob-monty", copy.routes.clues],
+            ["prob-simpson", copy.routes.groups],
+            ["prob-pascal", copy.routes.repeats],
+          ].map(([id, title]) => (
+            <a
+              key={id}
+              href={`#${id}`}
+              className="inline-flex min-h-11 items-center rounded border border-accent/25 px-3 py-2 text-caption text-accent hover:bg-accent-soft"
+            >
+              {title}
+            </a>
+          ))}
+        </div>
+      </nav>
       {/* Every section now opens the same way: the rules of the situation,
           then the thing itself. What used to sit here was a lede that named
           the result — "the answer is not 1/2", "Simpson's paradox" — which
@@ -47,7 +68,7 @@ export default function ProbabilityLab() {
           names arrive further down, after the behaviour. */}
 
       {/* 1 — a game with an answer nobody believes at first. */}
-      <section aria-labelledby="prob-monty-heading">
+      <section id="prob-monty" aria-labelledby="prob-monty-heading" className="scroll-mt-24">
         <h2 id="prob-monty-heading" className="sr-only">
           {copy.monty.title}
         </h2>
@@ -69,7 +90,7 @@ export default function ProbabilityLab() {
       </LabSection>
 
       {/* 4 — better in every group, worse overall. */}
-      <LabSection kicker={copy.simpson.kicker} title={copy.simpson.title}>
+      <LabSection id="prob-simpson" kicker={copy.simpson.kicker} title={copy.simpson.title}>
         <Setup rules={copy.simpson.setup} />
         <SimpsonStage />
       </LabSection>
@@ -77,7 +98,7 @@ export default function ProbabilityLab() {
       {/* 5 — a random route, and a shape that is not random. The first four
           experiments each end in a number that surprises; these last two are
           a pair, and they end in a shape and then in a limit. */}
-      <LabSection kicker={copy.pascal.kicker} title={copy.pascal.title}>
+      <LabSection id="prob-pascal" kicker={copy.pascal.kicker} title={copy.pascal.title}>
         <Setup rules={copy.pascal.setup} />
         <PascalStage />
       </LabSection>

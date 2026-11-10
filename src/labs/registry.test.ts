@@ -21,6 +21,7 @@ describe("the collection has an order, and it is the one we chose", () => {
       "tokenization",
       "gradient-descent",
       "multilayer-perceptrons",
+      "generalization",
       "backpropagation",
       "convolution",
       "attention",
@@ -39,7 +40,7 @@ describe("the collection has an order, and it is the one we chose", () => {
     // single card. That is a home-page layout decision rather than a registry
     // one, and it is left to the home page to answer.
     const shown = orderedLabs();
-    expect(shown).toHaveLength(17);
+    expect(shown).toHaveLength(18);
     expect(shown.map((lab) => lab.meta.slug).sort()).toEqual(
       publishedLabs()
         .map((lab) => lab.meta.slug)
@@ -64,7 +65,8 @@ describe("each lab points at the next one", () => {
     expect(nextLab("cache-locality")?.meta.slug).toBe("race-condition");
     expect(nextLab("race-condition")?.meta.slug).toBe("hash-tables");
     expect(nextLab("hash-tables")?.meta.slug).toBe("sorting");
-    expect(nextLab("multilayer-perceptrons")?.meta.slug).toBe("backpropagation");
+    expect(nextLab("multilayer-perceptrons")?.meta.slug).toBe("generalization");
+    expect(nextLab("generalization")?.meta.slug).toBe("backpropagation");
     expect(nextLab("backpropagation")?.meta.slug).toBe("convolution");
     expect(nextLab("convolution")?.meta.slug).toBe("attention");
     expect(nextLab("tokenization")?.meta.slug).toBe("gradient-descent");

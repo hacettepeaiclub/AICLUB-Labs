@@ -65,6 +65,7 @@ export default function GradientDescent() {
       {/* 4 — A consequence: accumulated gradients, a wider stability range,
           and oscillation as the price. */}
       <LabSection
+        deeper
         kicker={g.momentumSection.kicker}
         title={g.momentumSection.title}
         lede={g.momentumSection.lede}
@@ -79,7 +80,7 @@ export default function GradientDescent() {
 
       {/* 5 — A second consequence: a step size per parameter, scaled by that
           parameter's own gradient history. */}
-      <LabSection kicker={g.adam.kicker} title={g.adam.title} lede={g.adam.lede}>
+      <LabSection deeper kicker={g.adam.kicker} title={g.adam.title} lede={g.adam.lede}>
         <AdamStage />
       </LabSection>
 

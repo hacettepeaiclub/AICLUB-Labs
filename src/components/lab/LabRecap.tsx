@@ -1,5 +1,7 @@
-import type { ReactNode } from "react";
+import { lazy, Suspense, type ReactNode } from "react";
 import { useT } from "@/i18n";
+
+const LabTransfer = lazy(() => import("./LabExperience").then((m) => ({ default: m.LabTransfer })));
 
 export interface LabRecapProps {
   /** One line per takeaway. */
@@ -26,22 +28,29 @@ export function LabRecap({ lessons, footer, title }: LabRecapProps) {
   const heading = title ?? t.common.recapTitle;
 
   return (
-    <div className="rounded-card border border-line/10 bg-ink-800 p-6 md:p-10">
-      <h2 className="text-display-md text-fg">{heading}</h2>
-      <ul className="mt-6 space-y-3">
-        {lessons.map((lesson) => (
-          <li key={lesson} className="flex items-start gap-3 text-body text-fg-muted">
-            <span
-              aria-hidden
-              className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-pill bg-signal-green/15 text-caption text-signal-green"
-            >
-              ✓
-            </span>
-            {lesson}
-          </li>
-        ))}
-      </ul>
-      {footer && <p className="mt-8 text-body-sm text-fg-faint">{footer}</p>}
+    <div data-lab-summary>
+      <Suspense fallback={null}>
+        <LabTransfer />
+      </Suspense>
+      <details className="rounded-card border border-line/10 bg-ink-800 p-6 md:p-10">
+        <summary className="min-h-11 cursor-pointer text-title font-semibold text-fg">
+          {heading}
+        </summary>
+        <ul className="mt-6 space-y-3">
+          {lessons.map((lesson) => (
+            <li key={lesson} className="flex items-start gap-3 text-body text-fg-muted">
+              <span
+                aria-hidden
+                className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-pill bg-signal-green/15 text-caption text-signal-green"
+              >
+                ✓
+              </span>
+              {lesson}
+            </li>
+          ))}
+        </ul>
+        {footer && <p className="mt-8 text-body-sm text-fg-faint">{footer}</p>}
+      </details>
     </div>
   );
 }

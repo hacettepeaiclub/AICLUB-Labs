@@ -49,7 +49,7 @@ export default function SortingRace() {
       </LabSection>
 
       {/* 4 — Name the cause. */}
-      <LabSection kicker={t.distance.kicker} title={t.distance.title} lede={t.distance.lede}>
+      <LabSection deeper kicker={t.distance.kicker} title={t.distance.title} lede={t.distance.lede}>
         <SortStage
           preset="sorted"
           algorithms={["insertion"]}

@@ -80,6 +80,7 @@ export default function HashPlayground() {
       {/* 2 — The same message again. A property, demonstrated rather than
           claimed on a card. */}
       <LabSection
+        deeper
         kicker={t.determinism.kicker}
         title={t.determinism.title}
         lede={t.determinism.lede}
@@ -107,7 +108,7 @@ export default function HashPlayground() {
       </LabSection>
 
       {/* 5 — Five sentences, as five sentences. */}
-      <LabSection kicker={t.usage.kicker} title={t.usage.title} lede={t.usage.lede}>
+      <LabSection deeper kicker={t.usage.kicker} title={t.usage.title} lede={t.usage.lede}>
         <UsageList />
       </LabSection>
 

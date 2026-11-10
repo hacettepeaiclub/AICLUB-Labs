@@ -83,7 +83,7 @@ const copy = {
     title: "Right answer, far less looking.",
     lede: "Dijkstra has no idea where the goal is, so it spreads evenly in every direction. A* adds an estimate of the distance left and follows it: f = g + h, where g is the cost so far and h is the heuristic, an estimate of what is left.",
     caption:
-      "Same path, same cost. Look at Explored. The heuristic here is Manhattan distance. It can never overstate what is left on a four-way grid, which makes it admissible, and that is exactly why A* gives up nothing by trusting it.",
+      "Same minimum cost; the route can differ. Look at Explored. The heuristic here is Manhattan distance. It can never overstate what is left on a four-way grid, which makes it admissible, and that is exactly why A* gives up nothing by trusting it.",
   },
   challenge: {
     kicker: "The challenge",
@@ -169,7 +169,8 @@ const copy = {
         grid: "An open field. Dijkstra spreads evenly in every direction.",
         run: "Run it, then switch to A* below and run it again.",
         algorithm: "A* adds an estimate of the distance left and heads for the goal.",
-        explored: "Same path, same cost. Compare how many cells each one explored.",
+        explored:
+          "Same minimum cost; the route can differ. Compare how many cells each one explored.",
       },
       challenge: {
         maze: "A fixed map: the cheapest path, and no more explored cells than the budget. Pick the map above.",
