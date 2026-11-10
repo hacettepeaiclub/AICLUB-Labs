@@ -51,6 +51,53 @@ const en = {
   disclaimer:
     "A simulation. The key sequences come from Casio's own guides for these models, but the screen is simplified: one line of input, no textbook layout, and only the menus the lessons use. When your calculator shows something different, trust your calculator.",
   shiftLabel: "SHIFT is on: the next key does what is printed above it, in amber.",
+  dailyOverline: (n: number) => `Daily puzzle #${n}`,
+  dailyTitle: "Five questions, three tries each",
+  dailyLede: (model: string) =>
+    `Today's questions for the ${model}. No keys shown: you find the way, as in an exam. Everyone with the same calculator gets the same five.`,
+  dailyPlay: "Solve today's puzzle",
+  dailyContinue: "Carry on",
+  dailySeeResult: "See your result",
+  dailyNext: (time: string) => `Next puzzle in ${time}`,
+  dailyStreak: (days: number) => (days === 1 ? "1-day streak" : `${days}-day streak`),
+  dailyHow:
+    "Work the answer out on the calculator, then press “This is my answer”: it reads the screen. A wrong answer tells you whether the right one is higher or lower. 3 points for a first try, 2 for a second, 1 for a third.",
+  dailyQuestion: (n: number, of: number, topic: string) => `Question ${n} of ${of} · ${topic}`,
+  dailyTriesLeft: (left: number) => (left === 1 ? "1 try left" : `${left} tries left`),
+  dailyAnswer: "This is my answer",
+  dailyGiveUp: "Give up",
+  dailyRight: (answer: string) => `Correct: ${answer}. On to the next one.`,
+  dailyMissed: (answer: string) => `No tries left. The answer was ${answer}.`,
+  dailyHigher: (left: string) => `Not quite: the answer is higher. ${left}.`,
+  dailyLower: (left: string) => `Not quite: the answer is lower. ${left}.`,
+  dailyEmpty: "Nothing on the screen answers this question yet. Work it out first.",
+  dailyBoard: "Today's board",
+  dailyCell: {
+    higher: "wrong, the answer is higher",
+    lower: "wrong, the answer is lower",
+    solved: "right",
+    missed: "missed",
+    open: "not tried",
+  },
+  dailyPoints: (points: number, max: number) => `${points} / ${max} points`,
+  dailyVerdict: (points: number): string =>
+    points === 15
+      ? "Flawless. Your calculator does exactly what you tell it."
+      : points >= 12
+        ? "Sharp. Nearly all of it on the first try."
+        : points >= 8
+          ? "Solid. The points you lost show what to practise."
+          : "A start. Every question here has a lesson above.",
+  dailyShareText: (n: number, model: string) => `Calculator puzzle #${n} · ${model}`,
+  dailyShare: "Copy my result",
+  dailyCopied: "Copied. Paste it anywhere.",
+  dailyCopyHere: "Copy it from here:",
+  statsPlayed: "Played",
+  statsStreak: "Streak",
+  statsBest: "Best streak",
+  dailyNewDay: "A new puzzle is ready.",
+  dailyOpenNew: "Open it",
+  dailyLocal: "Your progress and streak are kept in this browser only.",
 };
 
 export type CalculatorCopy = typeof en;
@@ -97,6 +144,53 @@ const tr: CalculatorCopy = {
   disclaimer:
     "Bu bir simülasyon. Tuş sıraları Casio'nun bu modeller için yayımladığı kılavuzlardan alındı, ama ekran sadeleştirildi: tek satır giriş, ders kitabı görünümü yok ve yalnızca derslerin kullandığı menüler var. Hesap makinen farklı bir şey gösterirse kendi hesap makinene güven.",
   shiftLabel: "SHIFT açık: sıradaki tuş, üstünde turuncu yazan işi yapar.",
+  dailyOverline: (n: number) => `Günün bulmacası #${n}`,
+  dailyTitle: "Beş soru, her birine üç hak",
+  dailyLede: (model: string) =>
+    `${model} için bugünün soruları. Tuş gösterilmez, yolu sınavdaki gibi sen bulursun. Aynı hesap makinesine sahip herkes aynı beş soruyu alır.`,
+  dailyPlay: "Bugünün bulmacasını çöz",
+  dailyContinue: "Devam et",
+  dailySeeResult: "Sonucunu gör",
+  dailyNext: (time: string) => `Sonraki bulmacaya ${time} kaldı`,
+  dailyStreak: (days: number) => `${days} günlük seri`,
+  dailyHow:
+    "Cevabı hesap makinesinde bul, sonra “Cevabım bu” düğmesine bas: ekranı okur. Yanlış cevapta doğru cevabın daha büyük mü küçük mü olduğu söylenir. İlk denemede 3, ikincide 2, üçüncüde 1 puan.",
+  dailyQuestion: (n: number, of: number, topic: string) => `Soru ${n} / ${of} · ${topic}`,
+  dailyTriesLeft: (left: number) => `${left} hakkın kaldı`,
+  dailyAnswer: "Cevabım bu",
+  dailyGiveUp: "Pes et",
+  dailyRight: (answer: string) => `Doğru: ${answer}. Sıradaki soruya geç.`,
+  dailyMissed: (answer: string) => `Hakkın bitti. Cevap ${answer} idi.`,
+  dailyHigher: (left: string) => `Olmadı: cevap daha büyük. ${left}.`,
+  dailyLower: (left: string) => `Olmadı: cevap daha küçük. ${left}.`,
+  dailyEmpty: "Ekranda henüz bu sorunun cevabı olabilecek bir sonuç yok. Önce hesapla.",
+  dailyBoard: "Bugünün tablosu",
+  dailyCell: {
+    higher: "yanlış, cevap daha büyük",
+    lower: "yanlış, cevap daha küçük",
+    solved: "doğru",
+    missed: "kaçtı",
+    open: "denenmedi",
+  },
+  dailyPoints: (points: number, max: number) => `${points} / ${max} puan`,
+  dailyVerdict: (points: number): string =>
+    points === 15
+      ? "Kusursuz. Hesap makinen tam söylediğini yapıyor."
+      : points >= 12
+        ? "Keskin. Neredeyse hepsi ilk denemede."
+        : points >= 8
+          ? "Sağlam. Kaybettiğin puanlar neye çalışacağını gösteriyor."
+          : "Bir başlangıç. Buradaki her sorunun yukarıda bir dersi var.",
+  dailyShareText: (n: number, model: string) => `Hesap makinesi bulmacası #${n} · ${model}`,
+  dailyShare: "Sonucumu kopyala",
+  dailyCopied: "Kopyalandı. İstediğin yere yapıştır.",
+  dailyCopyHere: "Buradan kopyala:",
+  statsPlayed: "Oynanan",
+  statsStreak: "Seri",
+  statsBest: "En iyi seri",
+  dailyNewDay: "Yeni bulmaca hazır.",
+  dailyOpenNew: "Aç",
+  dailyLocal: "İlerlemen ve serin yalnızca bu tarayıcıda tutulur.",
 };
 
 export const CALCULATOR_COPY: Record<Language, CalculatorCopy> = { en, tr };

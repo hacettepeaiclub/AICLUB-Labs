@@ -1,4 +1,4 @@
-import { useEffect, useReducer, type ReactNode } from "react";
+import { useEffect, useMemo, useReducer, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { isModelId, MODEL_STORAGE_KEY } from "@/calculator/storage";
 import { calculatorMeta } from "@/app/siteMeta";
@@ -8,9 +8,22 @@ import { display, initialState, press, type CalcState } from "@/calculator/engin
 import { MODEL_IDS, MODELS } from "@/calculator/engine/models";
 import type { KeyId, ModelId } from "@/calculator/engine/types";
 import { LESSONS, type Lesson } from "@/calculator/lessons";
+import {
+  afterAnswer,
+  answered,
+  dailyStore,
+  dayKey,
+  isFinished,
+  judge,
+  makePuzzle,
+  puzzleNumber,
+  TRIES,
+  type Progress,
+} from "@/calculator/daily";
 import { CalcDevice } from "@/calculator/ui/CalcDevice";
 import { summarize } from "@/calculator/ui/CalcScreen";
 import { KeyChip, LessonPanel } from "@/calculator/ui/LessonPanel";
+import { DailyCta, DailyPanel, DailyQuestion, type Daily } from "@/calculator/ui/DailyPuzzle";
 import { LabSection } from "@/components/lab/LabSection";
 import { Badge, Segmented } from "@/components/ui";
 import { useReducedMotion } from "@/hooks";
@@ -42,19 +55,24 @@ import { cn } from "@/lib/cn";
  * key. "Show me" presses the remaining keys itself, a beat apart, or all at
  * once for a visitor who asked for less motion.
  *
- * The planned second version, a timed race with a leaderboard, is the same
- * machine and the same lessons with a clock: nothing here needs to change for
- * it.
+ * ## The daily puzzle
+ *
+ * Five questions a day, the same for everyone with the same model, three
+ * tries each and no keys shown (see `daily.ts`). It has its own card at the
+ * top of the page rather than a place among the practice modes, because it is
+ * what brings a student back. The calculator takes every key, as in free use,
+ * and is cleared before each question; "This is my answer" reads the screen.
  */
 
 interface Bench {
   model: ModelId;
   lesson: string;
-  practice: "lesson" | "free";
+  practice: "lesson" | "free" | "daily";
   calc: CalcState;
   progress: number;
   miss: KeyId | null;
   playing: boolean;
+  daily: Daily | null;
 }
 
 type BenchAction =
@@ -65,7 +83,10 @@ type BenchAction =
   | { type: "model"; model: ModelId }
   | { type: "lesson"; id: string }
   | { type: "practice"; practice: Bench["practice"] }
-  | { type: "restart" };
+  | { type: "restart" }
+  | { type: "dailyOpen"; day: string; progress: Progress }
+  | { type: "dailyAnswer" }
+  | { type: "dailyGiveUp" };
 
 const lessonById = (id: string): Lesson => LESSONS.find((l) => l.id === id) ?? LESSONS[0]!;
 
@@ -74,7 +95,37 @@ const keysOf = (bench: Pick<Bench, "lesson" | "model">): KeyId[] =>
 
 function restart(bench: Bench, changes: Partial<Bench> = {}): Bench {
   const next = { ...bench, ...changes };
-  return { ...next, calc: initialState(next.model), progress: 0, miss: null, playing: false };
+  return {
+    ...next,
+    calc: initialState(next.model),
+    progress: 0,
+    miss: null,
+    playing: false,
+    daily: null,
+  };
+}
+
+/** The puzzle after an answer or giving up; a finished question clears the calculator. */
+function answer(bench: Bench, gaveUp: boolean): Bench {
+  const daily = bench.practice === "daily" ? bench.daily : null;
+  if (!daily || isFinished(daily.progress)) return bench;
+  const index = answered(daily.progress);
+  const task = daily.tasks[index]!;
+  const judgement = gaveUp ? null : judge(task, bench.calc);
+  if (judgement?.kind === "empty") return { ...bench, daily: { ...daily, verdict: judgement } };
+  const progress = afterAnswer(daily.progress, judgement);
+  const row = progress[index]!;
+  if (row.done) {
+    const kind = row.done === "solved" ? "right" : "missed";
+    return {
+      ...bench,
+      calc: initialState(bench.model),
+      daily: { ...daily, progress, verdict: { kind, answer: task.answer } },
+    };
+  }
+  const hint = judgement?.kind === "wrong" ? judgement.hint : "higher";
+  const left = TRIES - row.misses.length;
+  return { ...bench, daily: { ...daily, progress, verdict: { kind: "wrong", hint, left } } };
 }
 
 function reduce(bench: Bench, action: BenchAction): Bench {
@@ -82,8 +133,9 @@ function reduce(bench: Bench, action: BenchAction): Bench {
     case "key": {
       const keys = keysOf(bench);
       const playing = false;
-      if (bench.practice === "free" || bench.progress >= keys.length) {
-        return { ...bench, calc: press(bench.calc, action.key), miss: null, playing };
+      if (bench.practice !== "lesson" || bench.progress >= keys.length) {
+        const daily = bench.daily?.verdict ? { ...bench.daily, verdict: null } : bench.daily;
+        return { ...bench, calc: press(bench.calc, action.key), miss: null, playing, daily };
       }
       const expected = keys[bench.progress]!;
       if (action.key !== expected) return { ...bench, miss: expected, playing };
@@ -120,6 +172,22 @@ function reduce(bench: Bench, action: BenchAction): Bench {
       return restart(bench, { practice: action.practice });
     case "restart":
       return restart(bench);
+    case "dailyOpen":
+      return {
+        ...restart(bench, { practice: "daily" }),
+        daily: {
+          day: action.day,
+          model: bench.model,
+          number: puzzleNumber(action.day),
+          tasks: makePuzzle(bench.model, action.day),
+          progress: action.progress,
+          verdict: null,
+        },
+      };
+    case "dailyAnswer":
+      return answer(bench, false);
+    case "dailyGiveUp":
+      return answer(bench, true);
   }
 }
 
@@ -139,6 +207,7 @@ function initialBench(): Bench {
     progress: 0,
     miss: null,
     playing: false,
+    daily: null,
   };
 }
 
@@ -157,6 +226,8 @@ export function CalculatorPage() {
   const lesson = lessonById(bench.lesson);
   const keys = keysOf(bench);
   const inLesson = bench.practice === "lesson";
+  const inDaily = bench.practice === "daily";
+  const daily = inDaily ? bench.daily : null;
   const target = inLesson ? (keys[bench.progress] ?? null) : null;
   const view = display(bench.calc);
 
@@ -168,6 +239,38 @@ export function CalculatorPage() {
       // Not remembered; nothing else depends on it.
     }
   }, [bench.model]);
+
+  // The daily puzzle: opened for today whenever the mode is on without one,
+  // which is also what happens when the model changes under it.
+  const store = useMemo(() => dailyStore(), []);
+  const today = dayKey(new Date());
+  const [stats, setStats] = useState(() => store.stats(today));
+  useEffect(() => {
+    if (bench.practice === "daily" && !bench.daily) {
+      dispatch({ type: "dailyOpen", day: today, progress: store.load(today, bench.model) });
+    }
+  }, [bench.practice, bench.daily, bench.model, store, today]);
+  // Every answer is kept at once, so a reload carries on where it was.
+  const saving = bench.daily;
+  useEffect(() => {
+    if (!saving) return;
+    store.save(saving.day, saving.model, saving.progress);
+    setStats(store.stats(dayKey(new Date())));
+    // Only a new answer is worth saving, not a key press that cleared a verdict.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [saving?.day, saving?.model, saving?.progress, store]);
+  const todays =
+    daily && daily.day === today && daily.model === bench.model
+      ? daily.progress
+      : store.load(today, bench.model);
+  const openDaily = () => {
+    if (!inDaily || daily?.day !== today) {
+      dispatch({ type: "dailyOpen", day: today, progress: store.load(today, bench.model) });
+    }
+    document
+      .getElementById("calc-practice")
+      ?.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
+  };
 
   // "Show me": one key a beat, or the rest at once under reduced motion.
   useEffect(() => {
@@ -210,6 +313,15 @@ export function CalculatorPage() {
         <p className="mt-4 text-body text-fg-muted">{copy.description}</p>
       </header>
 
+      <DailyCta
+        copy={copy}
+        number={puzzleNumber(today)}
+        modelName={model.name}
+        progress={todays}
+        stats={stats}
+        onOpen={openDaily}
+      />
+
       <LabSection kicker={copy.pickKicker} title={copy.pickTitle} lede={copy.pickLede}>
         <Segmented
           label={copy.modelLabel}
@@ -225,7 +337,7 @@ export function CalculatorPage() {
         <p className="mt-1 max-w-prose text-caption text-fg-faint">{copy.notListed}</p>
       </LabSection>
 
-      <div className="calc-section">
+      <div id="calc-practice" className="calc-section">
         <LabSection
           kicker={copy.practiseKicker}
           title={copy.practiseTitle}
@@ -252,6 +364,15 @@ export function CalculatorPage() {
                     text={currentStepText(lesson, bench.model, bench.progress, language)}
                     chip={<KeyChip model={model} id={target} state="next" />}
                     label={copy.nextKey}
+                  />
+                )}
+                {daily && (
+                  <DailyQuestion
+                    daily={daily}
+                    copy={copy}
+                    language={language}
+                    onAnswer={() => dispatch({ type: "dailyAnswer" })}
+                    onGiveUp={() => dispatch({ type: "dailyGiveUp" })}
                   />
                 )}
                 <CalcDevice
@@ -282,6 +403,18 @@ export function CalculatorPage() {
                   onShowMe={() => dispatch({ type: "play" })}
                   onRestart={() => dispatch({ type: "restart" })}
                 />
+              ) : inDaily ? (
+                daily && (
+                  <DailyPanel
+                    daily={daily}
+                    copy={copy}
+                    language={language}
+                    modelName={model.name}
+                    stats={stats}
+                    today={today}
+                    onOpenToday={openDaily}
+                  />
+                )
               ) : (
                 <p className="max-w-prose text-body-sm text-fg-muted">{copy.freeHint}</p>
               )}
