@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { track } from "@/app/analytics";
 import type { Language } from "@/app/preferences";
 import { SITE_URL } from "@/app/siteMeta";
 import { Button } from "@/components/ui";
@@ -262,6 +263,7 @@ export function DailyPanel({
     try {
       await navigator.clipboard.writeText(shareText);
       setCopied("yes");
+      track("daily_share", { model: daily.model });
     } catch {
       setCopied("failed");
     }

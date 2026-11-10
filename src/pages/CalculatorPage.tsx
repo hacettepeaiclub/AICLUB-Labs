@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useReducer, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useReducer, useRef, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { isModelId, MODEL_STORAGE_KEY } from "@/calculator/storage";
+import { track } from "@/app/analytics";
 import { calculatorMeta } from "@/app/siteMeta";
 import { useDocumentHead } from "@/app/useDocumentHead";
 import { CALCULATOR_COPY } from "@/calculator/copy";
@@ -14,6 +15,7 @@ import {
   dailyStore,
   dayKey,
   isFinished,
+  points,
   judge,
   makePuzzle,
   puzzleNumber,
@@ -313,10 +315,19 @@ export function CalculatorPage() {
   }, [bench.practice, bench.daily, bench.model, store, today]);
   // Every answer is kept at once, so a reload carries on where it was.
   const saving = bench.daily;
+  // The puzzle this visit has seen unfinished: only finishing one of those
+  // counts, so reopening a day already done does not count it again.
+  const playing = useRef<string | null>(null);
   useEffect(() => {
     if (!saving) return;
     store.save(saving.day, saving.model, saving.progress);
     setStats(store.stats(dayKey(new Date())));
+    const puzzle = `${saving.day}|${saving.model}`;
+    if (!isFinished(saving.progress)) playing.current = puzzle;
+    else if (playing.current === puzzle) {
+      playing.current = null;
+      track("daily_finish", { model: saving.model, points: points(saving.progress) });
+    }
     // Only a new answer is worth saving, not a key press that cleared a verdict.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [saving?.day, saving?.model, saving?.progress, store]);
@@ -334,6 +345,16 @@ export function CalculatorPage() {
       .getElementById("calc-practice")
       ?.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
   };
+
+  // A lesson counts once, when its last key goes in.
+  const lessonDone = inLesson && keys.length > 0 && bench.progress >= keys.length;
+  const wasDone = useRef(lessonDone);
+  useEffect(() => {
+    if (lessonDone && !wasDone.current) {
+      track("calc_lesson_done", { lesson: bench.lesson, model: bench.model });
+    }
+    wasDone.current = lessonDone;
+  }, [lessonDone, bench.lesson, bench.model]);
 
   // "Show me": one key a beat, or the rest at once under reduced motion.
   useEffect(() => {
