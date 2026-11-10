@@ -1,8 +1,9 @@
 import { en } from "@/i18n/en";
 import { labs } from "@/labs/registry";
-import { headTitle, homeMeta, labMeta, SITE_URL } from "./siteMeta";
+import { CALCULATOR_COPY } from "@/calculator/copy";
+import { calculatorMeta, headTitle, homeMeta, labMeta, SITE_URL } from "./siteMeta";
 import type { PageMeta } from "./siteMeta";
-import { labPath } from "@/lib/paths";
+import { CALCULATOR_PATH, labPath } from "@/lib/paths";
 
 /**
  * Every URL this site serves, with the head each one should be given.
@@ -56,6 +57,12 @@ export const routes: Route[] = [
       lastmod: lab.meta.publishedAt,
     };
   }),
+  {
+    path: CALCULATOR_PATH,
+    meta: calculatorMeta(CALCULATOR_COPY.en.title, CALCULATOR_COPY.en.description),
+    indexed: true,
+    lastmod: "2026-11-10",
+  },
 ];
 
 export const siteUrl = SITE_URL;

@@ -5,6 +5,7 @@ import type { Language, ThemeName } from "@/app/preferences";
 import logoMark from "@/assets/aiclub-mark-white.webp";
 import { useLanguage, useT } from "@/i18n";
 import { cn } from "@/lib/cn";
+import { CALCULATOR_PATH } from "@/lib/paths";
 import { track } from "@/app/analytics";
 import { Kbd } from "@/components/ui";
 import { PALETTE_SHORTCUT } from "./paletteShortcut";
@@ -100,7 +101,7 @@ export function SiteHeader({
         </Link>
 
         <div className="flex items-center gap-1.5 sm:gap-3">
-          <nav aria-label={t.shell.primaryNav} className="hidden sm:block">
+          <nav aria-label={t.shell.primaryNav} className="hidden sm:flex">
             <NavLink
               to="/"
               className={({ isActive }) =>
@@ -111,6 +112,17 @@ export function SiteHeader({
               }
             >
               {t.shell.allLabs}
+            </NavLink>
+            <NavLink
+              to={CALCULATOR_PATH}
+              className={({ isActive }) =>
+                cn(
+                  "rounded px-3 py-2 text-body-sm font-medium transition-colors duration-fast",
+                  isActive ? "text-fg" : "text-fg-muted hover:text-fg",
+                )
+              }
+            >
+              {t.shell.calculator}
             </NavLink>
           </nav>
 

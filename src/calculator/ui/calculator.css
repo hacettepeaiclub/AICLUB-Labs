@@ -1,0 +1,465 @@
+/*
+ * The calculator page's own styles.
+ *
+ * Imported by the page's chunk, so Vite ships it as a stylesheet of its own
+ * that only `/calculator/` loads. The stylesheet every visitor downloads sits
+ * on its size budget (tools/bundle-size.mjs), and a tool most visitors never
+ * open should not spend it. So the calculator's components use the site's
+ * existing utility classes for layout they share with everything else, and
+ * the `calc-*` classes below for what is theirs alone. Every colour is a
+ * theme token, so both themes work without a rule of their own.
+ */
+
+/* ------------------------------------------------------------ device -- */
+.calc-device {
+  max-width: 21.5rem;
+  border-radius: 1.25rem;
+  padding: 0.875rem;
+  box-shadow: var(--shadow-card);
+}
+@media (min-width: 640px) {
+  .calc-device {
+    padding: 1rem;
+  }
+}
+
+/* The two rows either side of the cursor pad. */
+.calc-top {
+  display: grid;
+  grid-template-columns: 1fr 5.75rem 1fr;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+.calc-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem 0.375rem;
+}
+.calc-functions {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.375rem;
+  margin-top: 0.5rem;
+}
+.calc-digits {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.375rem 0.5rem;
+  margin-top: 0.875rem;
+}
+
+/* What a key does after SHIFT (amber) or ALPHA (rose), above it. */
+.calc-legend {
+  display: flex;
+  height: 0.75rem;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.25rem;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 0.5625rem;
+  line-height: 1;
+}
+
+.calc-key {
+  display: flex;
+  height: 1.75rem;
+  min-width: 0;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.125rem;
+  border: 1px solid rgb(var(--line) / 0.15);
+  border-radius: 0.375rem;
+  background: rgb(var(--ink-700));
+  color: rgb(var(--fg-muted));
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1;
+  white-space: nowrap;
+  user-select: none;
+  transition:
+    background-color 0.15s,
+    border-color 0.15s,
+    box-shadow 0.15s,
+    transform 0.15s;
+}
+.calc-key:hover {
+  border-color: rgb(var(--line) / 0.35);
+  color: rgb(var(--fg));
+}
+.calc-key:active {
+  transform: translateY(1px);
+}
+.calc-key[data-tone="modifier"] {
+  font-size: 0.625rem;
+  font-weight: 600;
+}
+.calc-key:is(
+  [data-tone="digit"],
+  [data-tone="operator"],
+  [data-tone="clear"],
+  [data-tone="equals"]
+) {
+  height: 2.5rem;
+  background: rgb(var(--ink-800));
+  color: rgb(var(--fg));
+}
+.calc-key[data-tone="digit"] {
+  font-size: 1rem;
+  font-weight: 500;
+}
+/* "×10ˣ" and "Ans" share a row with single digits. */
+.calc-key[data-tone="digit"][data-long] {
+  font-size: 0.75rem;
+}
+.calc-key:is([data-tone="operator"], [data-tone="equals"]) {
+  font-size: 1.125rem;
+}
+.calc-key[data-tone="clear"] {
+  border-color: rgb(var(--signal-amber) / 0.5);
+  color: rgb(var(--signal-amber));
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+.calc-key[data-key="shift"] {
+  color: rgb(var(--signal-amber));
+}
+.calc-key[data-key="alpha"] {
+  color: rgb(var(--signal-rose));
+}
+.calc-key[data-key="shift"][aria-pressed="true"] {
+  border-color: rgb(var(--signal-amber));
+  background: rgb(var(--signal-amber) / 0.2);
+}
+.calc-key[data-key="alpha"][aria-pressed="true"] {
+  border-color: rgb(var(--signal-rose));
+  background: rgb(var(--signal-rose) / 0.2);
+}
+
+/* The REPLAY pad: four arrows round a disc. */
+.calc-pad {
+  display: grid;
+  aspect-ratio: 1;
+  grid-template: repeat(3, minmax(0, 1fr)) / repeat(3, minmax(0, 1fr));
+  padding: 0.25rem;
+  border: 1px solid rgb(var(--line) / 0.15);
+  border-radius: 9999px;
+  background: rgb(var(--ink-800));
+}
+.calc-pad button {
+  display: grid;
+  place-items: center;
+  border-radius: 0.375rem;
+  color: rgb(var(--fg-muted));
+  font-size: 0.625rem;
+  transition:
+    background-color 0.15s,
+    color 0.15s;
+}
+.calc-pad button:hover {
+  background: rgb(var(--line) / 0.1);
+  color: rgb(var(--fg));
+}
+.calc-pad [data-key="up"] {
+  grid-area: 1 / 2;
+}
+.calc-pad [data-key="left"] {
+  grid-area: 2 / 1;
+}
+.calc-pad [data-key="right"] {
+  grid-area: 2 / 3;
+}
+.calc-pad [data-key="down"] {
+  grid-area: 3 / 2;
+}
+
+/* The key a lesson wants next. It breathes so it can be found among fifty;
+   under reduced motion the site-wide rule stops the breathing and the ring
+   stays. */
+.calc-target {
+  border-color: rgb(var(--accent));
+  color: rgb(var(--fg));
+  box-shadow:
+    0 0 0 2px rgb(var(--accent) / 0.55),
+    0 0 18px -2px rgb(var(--accent) / 0.7);
+  animation: calc-target 1.1s ease-in-out infinite;
+}
+@keyframes calc-target {
+  50% {
+    box-shadow:
+      0 0 0 2px rgb(var(--accent) / 0.3),
+      0 0 8px -2px rgb(var(--accent) / 0.35);
+  }
+}
+
+/* ------------------------------------------------------------ screen -- */
+.calc-screen {
+  display: flex;
+  height: 10.75rem;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0.375rem 0.75rem 0.5rem;
+  border: 1px solid rgb(var(--line) / 0.2);
+  border-radius: 0.375rem;
+  background: rgb(var(--ink-950));
+  color: rgb(var(--accent));
+  font-family: var(--font-mono);
+}
+.calc-status {
+  display: flex;
+  height: 1rem;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.625rem;
+  font-weight: 600;
+  line-height: 1;
+}
+.calc-flag {
+  visibility: hidden;
+  border-radius: 0.125rem;
+  padding: 0 0.25rem;
+  color: rgb(var(--ink-950));
+}
+.calc-flag[data-on] {
+  visibility: visible;
+}
+.calc-flag[data-flag="shift"] {
+  background: rgb(var(--signal-amber));
+}
+.calc-flag[data-flag="alpha"] {
+  background: rgb(var(--signal-rose));
+}
+.calc-dim {
+  color: rgb(var(--accent) / 0.75);
+}
+.calc-body {
+  min-height: 0;
+  flex: 1;
+  margin-top: 0.25rem;
+}
+.calc-input {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  word-break: break-all;
+  font-size: 0.9375rem;
+  line-height: 1.375;
+}
+.calc-result {
+  text-align: right;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+}
+.calc-small {
+  font-size: 0.8125rem;
+  line-height: 1.25;
+}
+.calc-list {
+  font-size: 0.8125rem;
+  line-height: 1.35;
+}
+.calc-menu {
+  display: grid;
+  gap: 0.125rem 0.75rem;
+}
+.calc-menu[data-columns="2"] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.calc-colhead,
+.calc-row {
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+}
+.calc-colhead {
+  padding-bottom: 0.125rem;
+  border-bottom: 1px solid rgb(var(--accent) / 0.3);
+}
+.calc-row {
+  padding: 1px 0;
+}
+.calc-row[data-active],
+.calc-cell[data-active] {
+  background: rgb(var(--accent));
+  color: rgb(var(--ink-950));
+}
+.calc-more {
+  margin-top: auto;
+  text-align: right;
+  font-size: 0.6875rem;
+  color: rgb(var(--accent) / 0.7);
+}
+.calc-matrix {
+  display: flex;
+  align-items: stretch;
+  gap: 0.25rem;
+}
+.calc-bracket {
+  width: 0.375rem;
+  border: 1px solid rgb(var(--accent) / 0.8);
+}
+.calc-bracket:first-child {
+  border-right: 0;
+}
+.calc-bracket:last-child {
+  border-left: 0;
+}
+.calc-matrix-grid {
+  display: grid;
+  gap: 0.125rem 0.75rem;
+}
+.calc-cell {
+  padding: 0 0.125rem;
+  text-align: right;
+}
+.calc-caret {
+  display: inline-block;
+  height: 1em;
+  width: 2px;
+  margin: 0 -1px;
+  transform: translateY(0.125rem);
+  background: rgb(var(--accent));
+}
+/* "X=", "p=", "n=": the name before an answer, smaller than the answer. */
+.calc-label {
+  margin-right: 0.5rem;
+  color: rgb(var(--accent) / 0.75);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.calc-error {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* ----------------------------------------------------- lesson panel -- */
+.calc-chip {
+  display: inline-flex;
+  height: 1.5rem;
+  min-width: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.375rem;
+  border: 1px solid rgb(var(--line) / 0.2);
+  border-radius: 0.25rem;
+  background: rgb(var(--ink-900));
+  color: rgb(var(--fg-muted));
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1;
+}
+.calc-chip[data-state="done"] {
+  border-color: rgb(var(--line) / 0.1);
+  background: transparent;
+  color: rgb(var(--fg-faint));
+}
+.calc-chip[data-state="next"] {
+  border-color: rgb(var(--accent));
+  background: rgb(var(--accent-soft));
+  color: rgb(var(--fg));
+}
+.calc-chip[data-key="shift"]:not([data-state="done"]) {
+  color: rgb(var(--signal-amber));
+}
+
+.calc-lesson {
+  min-height: 2.25rem;
+  padding: 0.25rem 0.625rem;
+  border: 1px solid rgb(var(--line) / 0.15);
+  border-radius: 0.25rem;
+  color: rgb(var(--fg-muted));
+  font-size: 0.75rem;
+  text-align: left;
+  transition:
+    border-color 0.15s,
+    color 0.15s;
+}
+.calc-lesson:hover {
+  border-color: rgb(var(--line) / 0.3);
+  color: rgb(var(--fg));
+}
+/* A lesson this model cannot do: still there to say so, but quieter. */
+.calc-lesson[data-off] {
+  border-style: dashed;
+  opacity: 0.55;
+}
+.calc-lesson[aria-current] {
+  border-color: rgb(var(--accent));
+  background: rgb(var(--accent-soft));
+  color: rgb(var(--fg));
+}
+
+.calc-card {
+  padding: 1rem;
+  border: 1px solid rgb(var(--line) / 0.15);
+  border-radius: 0.375rem;
+  background: rgb(var(--ink-900) / 0.6);
+}
+.calc-step {
+  display: grid;
+  grid-template-columns: 1.25rem minmax(0, 1fr);
+  gap: 0.5rem;
+}
+.calc-step[data-state="later"] {
+  opacity: 0.55;
+}
+.calc-dot {
+  display: grid;
+  width: 1.25rem;
+  height: 1.25rem;
+  place-items: center;
+  margin-top: 0.125rem;
+  border: 1px solid rgb(var(--line) / 0.2);
+  border-radius: 9999px;
+  color: rgb(var(--fg-faint));
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+}
+.calc-step[data-state="now"] .calc-dot {
+  border-color: rgb(var(--accent));
+  color: rgb(var(--accent));
+}
+.calc-step[data-state="done"] .calc-dot {
+  border-color: rgb(var(--accent));
+  background: rgb(var(--accent));
+  color: rgb(var(--accent-fg));
+}
+
+/* ------------------------------------------------------------- page -- */
+.calc-bench {
+  display: grid;
+  align-items: start;
+  gap: 1.5rem;
+}
+@media (min-width: 1024px) {
+  .calc-bench {
+    grid-template-columns: 21.5rem minmax(0, 1fr);
+  }
+}
+/* On a phone the lesson panel is below the device, so the step you are on
+   is repeated above the keys it is about. */
+.calc-now {
+  padding: 0.625rem 0.75rem;
+  border: 1px solid rgb(var(--accent) / 0.4);
+  border-radius: 0.375rem;
+  background: rgb(var(--accent-soft) / 0.4);
+}
+@media (min-width: 1024px) {
+  .calc-now {
+    display: none;
+  }
+}
+.calc-notice {
+  min-height: 1.25rem;
+  text-align: center;
+  font-size: 0.75rem;
+}
+.calc-section {
+  margin-top: 3.5rem;
+}

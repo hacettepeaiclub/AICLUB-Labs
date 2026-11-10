@@ -12,3 +12,6 @@
  * built here.
  */
 export const labPath = (slug: string): string => `/labs/${slug}/`;
+
+/** The calculator page, served the same way as a lab: as a directory. */
+export const CALCULATOR_PATH = "/calculator/";

@@ -10,7 +10,7 @@ import { prefetchLabCopy } from "@/i18n/labs";
 import { CATEGORY_CODE, CATEGORY_VAR, type LabCategory, type LabMeta } from "@/labs/types";
 import { orderedLabs, preloadLab } from "@/labs/registry";
 import { readVisits } from "@/labs/visits";
-import { labPath } from "@/lib/paths";
+import { CALCULATOR_PATH, labPath } from "@/lib/paths";
 
 /** The collection sits in a green terminal field; the hero keeps the copy central. */
 export function HomePage() {
@@ -111,6 +111,12 @@ export function HomePage() {
                   <path d="M6 1v12M1 8l5 5 5-5" />
                 </svg>
               </a>
+              <Link
+                to={CALCULATOR_PATH}
+                className="inline-flex min-h-11 items-center gap-2 rounded px-1 text-body-sm text-fg-muted transition-colors duration-fast hover:text-fg"
+              >
+                {copy.calculator} <span aria-hidden>→</span>
+              </Link>
               {last && (
                 <Link
                   to={labPath(last.meta.slug)}
