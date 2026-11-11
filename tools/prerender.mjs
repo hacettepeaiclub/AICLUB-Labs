@@ -19,7 +19,7 @@
  * `<title>`, description, Open Graph and Twitter tags, canonical link, and a
  * `<noscript>` heading so there is something to read if the app never boots.
  * The app itself is untouched: the same bundle loads, React mounts over the
- * same empty root, and `useDocumentHead` takes the title from there.
+ * static introduction, and `useDocumentHead` takes the title from there.
  *
  * The route list is not written here. It is loaded out of the app's own source
  * through Vite's SSR pipeline, so adding a lab to the registry adds its page,
@@ -174,10 +174,9 @@ function head(route) {
  * page's name and its sentence, which is also what a crawler that does run
  * JavaScript will find confirmed a moment later.
  */
-function noscript(route) {
+function noscript() {
   return `    <noscript>
-      <h1>${escape(route.meta.title)}</h1>
-      <p>${escape(route.meta.description)}</p>
+      <p>Enable JavaScript to use the interactive experiments.</p>
       <p><a href="/">All labs</a></p>
     </noscript>`;
 }
@@ -256,10 +255,10 @@ async function main() {
 
   // The template's own description is the dev server's; every route writes
   // its own below, and a page with two leaves the choice to the crawler.
-  const template = (await readFile(path.join(DIST, "index.html"), "utf8")).replace(
-    /\s*<meta\s+name="description"[^>]*\/>/,
-    "",
-  );
+  const template = (await readFile(path.join(DIST, "index.html"), "utf8"))
+    .replace(/\s*<meta\s+name="description"[^>]*\/>/, "")
+    .replace(/<!-- static-sharing:start -->[\s\S]*?<!-- static-sharing:end -->/, "")
+    .replace(/<!-- static-noscript:start -->[\s\S]*?<!-- static-noscript:end -->/, "");
 
   const manifestPath = path.join(DIST, ".vite", "manifest.json");
   const manifest = existsSync(manifestPath) ? JSON.parse(await readFile(manifestPath, "utf8")) : {};
@@ -289,8 +288,12 @@ async function main() {
         : "";
     const withHead = securityPolicy(templateWithShell)
       .replace("</head>", `${head(route)}${preloads ? `\n${preloads}` : ""}\n  </head>`)
-      .replace("<title>AI Club Labs</title>", `<title>${escape(route.meta.title)}</title>`)
-      .replace('<div id="root"></div>', `<div id="root"></div>\n${noscript(route)}`);
+      .replace(/<title>[\s\S]*?<\/title>/, `<title>${escape(route.meta.title)}</title>`)
+      .replace(
+        /<!-- boot:start -->[\s\S]*?<!-- boot:end -->/,
+        `<main class="boot-content"><h1>${escape(route.meta.title)}</h1><p>${escape(route.meta.description)}</p><p>Loading the interactive experiments…</p><a href="/">All labs</a></main>`,
+      )
+      .replace("</body>", `${noscript()}\n</body>`);
 
     const file =
       route.path === "/"
@@ -313,14 +316,10 @@ async function main() {
         `    <meta name="robots" content="noindex" />
   </head>`,
       )
-      .replace("<title>AI Club Labs</title>", "<title>Page not found · AI Club Labs</title>")
+      .replace(/<title>[\s\S]*?<\/title>/, "<title>Page not found · AI Club Labs</title>")
       .replace(
-        '<div id="root"></div>',
-        `<div id="root"></div>
-    <noscript>
-      <h1>Page not found</h1>
-      <p><a href="/">All labs</a></p>
-    </noscript>`,
+        /<!-- boot:start -->[\s\S]*?<!-- boot:end -->/,
+        `<main class="boot-content"><h1>Page not found</h1><a href="/">All labs</a><noscript><p>Enable JavaScript to use the interactive experiments.</p></noscript></main>`,
       ),
     "utf8",
   );
