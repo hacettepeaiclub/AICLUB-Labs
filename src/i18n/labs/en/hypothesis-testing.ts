@@ -11,16 +11,16 @@ const copy = {
   },
 
   testType: {
-    right: "\u03bc\u2081 > \u03bc\u2080",
-    left: "\u03bc\u2081 < \u03bc\u2080",
-    two: "\u03bc\u2081 \u2260 \u03bc\u2080",
+    right: "Right tail",
+    left: "Left tail",
+    two: "Two tails",
   },
 
   plot: {
     h0: "H\u2080",
-    h1: "H\u2081",
+    h1: "Selected true mean",
     alphaTag: (value: string) => `\u03b1 = ${value}`,
-    betaTag: (value: string) => `\u03b2 = ${value}`,
+    betaTag: (value: string) => `Non-rejection = ${value}`,
     summary: (
       mu0: string,
       mu1: string,
@@ -93,14 +93,14 @@ const copy = {
     title: "\u03b2 is what H\u2081 leaves outside the rejection region.",
     lede: "\u03b1 is computed under H\u2080 and \u03b2 under H\u2081, on opposite sides of the same rejection region. Moving the critical value to shrink one enlarges the other, which is why the direction the test is pointed matters as much as where the critical value sits [Casella & Berger, 2nd ed., p. 385].",
     caption:
-      "\u03b2 is the probability of not rejecting H\u2080 when this particular \u03bc\u2081 is the true one, a Type II error, and power is 1 \u2212 \u03b2. Both are properties of the model, not of any sample. Evaluated across every possible \u03bc rather than at a single \u03bc\u2081, power becomes the power function [Casella & Berger, 2nd ed., Def. 8.3.1, p. 383].",
+      "At a true mean inside the alternative, rejection probability is power and non-rejection probability is beta. At the null mean or in the opposite direction, read these as rejection and non-rejection probabilities.",
     testTypeLabel: "What H\u2081 claims",
     mu1Label: "\u03bc\u2081",
     mu1Value: (value: string) => `\u03bc\u2081 is ${value}`,
-    betaLabel: "\u03b2",
-    betaHint: "H\u2081 area outside the region",
-    powerLabel: "Power",
-    powerHint: "1 \u2212 \u03b2",
+    betaLabel: "Non-rejection probability",
+    betaHint: "Beta for a mean in the alternative",
+    powerLabel: "Rejection probability",
+    powerHint: "Power for a mean in the alternative",
     alphaLabel: "\u03b1",
     reading: (beta: string) =>
       `\u03b2 = ${beta}: that share of the H\u2081 distribution falls outside the rejection region, where the test does not reject H\u2080.`,
@@ -113,9 +113,9 @@ const copy = {
   },
 
   sampleSection: {
-    kicker: "The only lever that helps both",
+    kicker: "The effect of sample size",
     title: "More data narrows everything at once.",
-    lede: "\u03b1 and \u03b2 trade against each other as long as the curves stay the same width. n is what changes their width: SE = \u03c3/\u221an, so both sampling distributions tighten around their own mean and the overlap shrinks without raising \u03b1 [Casella & Berger, 2nd ed., p. 217 and p. 385].",
+    lede: "Increasing n reduces SE = sigma/sqrt(n). At fixed alpha, power increases for a true effect in the alternative direction. At the null mean rejection probability stays alpha; in the opposite direction it can decrease.",
     caption:
       "The fixed x axis lets you compare curve widths directly. Automatic mode follows the curves. Increasing n reduces SE by its square root, so each additional sample buys less.",
     nLabel: "n: sample size",
@@ -124,9 +124,9 @@ const copy = {
     nFigure: "n",
     seLabel: "SE",
     seHint: "\u03c3/\u221an",
-    powerLabel: "Power",
-    betaLabel: "\u03b2",
-    curveTitle: "Power against sample size",
+    powerLabel: "Rejection probability",
+    betaLabel: "Non-rejection probability",
+    curveTitle: "Rejection probability against sample size",
     eighty: "0.80",
     curveLabel: (from: number, to: number, first: string, last: string) =>
       `Power from n = ${from} to n = ${to}, holding everything else. It starts near ${first} and reaches about ${last}.`,
@@ -173,9 +173,9 @@ const copy = {
 
   recap: {
     lessons: [
-      "\u03b1 is the probability that X\u0304 falls in the rejection region when \u03bc = \u03bc\u2080: the Type I error rate fixed before seeing anything.",
-      '\u03b2 is the probability that X\u0304 falls outside that region when \u03bc = \u03bc\u2081, and power is 1 \u2212 \u03b2. They are computed against one specific \u03bc\u2081, not against "some effect".',
-      "Moving the critical value trades \u03b1 against \u03b2. Only a smaller SE = \u03c3/\u221an improves both, which is why n is the lever that is not a compromise.",
+      "α is the probability that X̄ falls in the rejection region when μ = μ₀: the Type I error rate fixed before seeing anything.",
+      'β is the probability that X̄ falls outside that region when μ = μ₁, and power is 1 − β. They are computed against one specific μ₁, not against "some effect".',
+      "At fixed alpha, more data increases power for effects in the alternative direction. For a true mean in the opposite direction, rejection probability can decrease.",
     ],
     footer:
       "Everything here is the closed-form normal model with \u03c3 known: two sampling distributions of the sample mean, one rejection region, and the areas either side of its boundary. Real testing has to estimate \u03c3 from the sample, which is what makes a t distribution necessary, and has to worry about whether the direction was chosen before the data or after it. This lab shows the geometry those complications sit on top of.",
@@ -219,7 +219,7 @@ const copy = {
       },
       sample: {
         curves: "Both curves, and how wide they are for this many measurements.",
-        n: "Take more measurements. The tour raised n: both curves narrowed and the overlap shrank.",
+        n: "Increasing n narrows both distributions. Power increases when the true mean is in the alternative direction.",
         figures: "More data lowers β without raising α.",
       },
       challenge: {

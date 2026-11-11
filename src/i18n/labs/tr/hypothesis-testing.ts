@@ -14,16 +14,16 @@ const copy: typeof en = {
   },
 
   testType: {
-    right: "\u03bc\u2081 > \u03bc\u2080",
-    left: "\u03bc\u2081 < \u03bc\u2080",
-    two: "\u03bc\u2081 \u2260 \u03bc\u2080",
+    right: "Sağ kuyruk",
+    left: "Sol kuyruk",
+    two: "Çift kuyruk",
   },
 
   plot: {
     h0: "H\u2080",
-    h1: "H\u2081",
+    h1: "Seçili gerçek ortalama",
     alphaTag: (value: string) => `α = ${value}`,
-    betaTag: (value: string) => `β = ${value}`,
+    betaTag: (value: string) => `Ret dışı = ${value}`,
     summary: (
       mu0: string,
       mu1: string,
@@ -95,14 +95,14 @@ const copy: typeof en = {
     title: "Gerçek bir farkı kaçırma olasılığı",
     lede: "\u03b1, H\u2080 alt\u0131nda; \u03b2 ise H\u2081 alt\u0131nda hesaplan\u0131r ve ikisi ayn\u0131 reddetme b\u00f6lgesinin kar\u015f\u0131t yanlar\u0131nda durur. Kritik de\u011feri kayd\u0131r\u0131p birini k\u00fc\u00e7\u00fcltmek di\u011ferini b\u00fcy\u00fct\u00fcr; bu y\u00fczden testin hangi y\u00f6ne kuruldu\u011fu, kritik de\u011ferin nereye kondu\u011fu kadar \u00f6nemlidir [Casella & Berger, 2. bask\u0131, s. 385].",
     caption:
-      "\u03b2, bu belirli \u03bc\u2081 do\u011fruyken H\u2080'\u0131n reddedilmeme olas\u0131l\u0131\u011f\u0131d\u0131r, yani II. tip hata; g\u00fc\u00e7 ise 1 \u2212 \u03b2'd\u0131r. \u0130kisi de modelin \u00f6zellikleridir, herhangi bir \u00f6rneklemin de\u011fil. G\u00fc\u00e7 tek bir \u03bc\u2081 yerine olabilecek b\u00fct\u00fcn \u03bc de\u011ferleri boyunca hesapland\u0131\u011f\u0131nda g\u00fc\u00e7 fonksiyonu elde edilir [Casella & Berger, 2. bask\u0131, Tan\u0131m 8.3.1, s. 383].",
+      "Seçili gerçek ortalama alternatif hipotezin içindeyse reddetme olasılığı test gücü, reddetmeme olasılığı β olarak adlandırılır. Ters yöndeki veya μ₀ ile aynı ortalamada bu alanlar yalnız reddetme ve reddetmeme olasılıklarıdır.",
     testTypeLabel: "H\u2081 ne iddia ediyor",
     mu1Label: "\u03bc\u2081",
     mu1Value: (value: string) => `μ₁ = ${value}`,
-    betaLabel: "\u03b2",
-    betaHint: "H\u2081'in b\u00f6lge d\u0131\u015f\u0131ndaki alan\u0131",
-    powerLabel: "G\u00fc\u00e7",
-    powerHint: "1 \u2212 \u03b2",
+    betaLabel: "Reddetmeme olasılığı",
+    betaHint: "Alternatifteki ortalama için β",
+    powerLabel: "Reddetme olasılığı",
+    powerHint: "Alternatifteki ortalama için test gücü",
     alphaLabel: "\u03b1",
     reading: (beta: string) =>
       `β = ${beta}: H\u2081 da\u011f\u0131l\u0131m\u0131n\u0131n bu kadarl\u0131k k\u0131sm\u0131 reddetme b\u00f6lgesinin d\u0131\u015f\u0131na, yani testin H\u2080'\u0131 reddetmedi\u011fi yere d\u00fc\u015f\u00fcyor.`,
@@ -115,9 +115,9 @@ const copy: typeof en = {
   },
 
   sampleSection: {
-    kicker: "\u0130kisine birden yarayan tek kol",
+    kicker: "Örnek sayısının etkisi",
     title: "Örnek sayısı arttıkça hata olasılıkları nasıl değişir?",
-    lede: "Örnek sayısı n arttığında standart hata SE = σ/√n azalır. Dağılımlar daralır ve alfa sabitken, belirtilen alternatif için güç artar [Casella & Berger, 2. baskı, s. 217, 385].",
+    lede: "n arttıkça SE = σ/√n küçülür. α sabitken, alternatif yönündeki bir gerçek farkı bulma olasılığı artar. Gerçek ortalama μ₀ ise reddetme olasılığı α kalır; ters yönde ise azalabilir.",
     caption:
       "Sabit x ekseninde eğrilerin genişliklerini karşılaştır. Otomatik mod ekseni eğrilere göre ayarlar. SE, n’nin kareköküyle ters orantılıdır; her ek örneğin etkisi giderek azalır.",
     nLabel: "n: \u00f6rneklem b\u00fcy\u00fckl\u00fc\u011f\u00fc",
@@ -126,9 +126,9 @@ const copy: typeof en = {
     nFigure: "n",
     seLabel: "SE",
     seHint: "\u03c3/\u221an",
-    powerLabel: "G\u00fc\u00e7",
-    betaLabel: "\u03b2",
-    curveTitle: "\u00d6rneklem b\u00fcy\u00fckl\u00fc\u011f\u00fcne kar\u015f\u0131 g\u00fc\u00e7",
+    powerLabel: "Reddetme olasılığı",
+    betaLabel: "Reddetmeme olasılığı",
+    curveTitle: "Örnek sayısına göre reddetme olasılığı",
     eighty: "0,80",
     curveLabel: (from: number, to: number, first: string, last: string) =>
       `Diğer her şey sabitken n = ${from}'den n = ${to}'e güç. ${first} civarında başlıyor ve yaklaşık ${last} değerine ulaşıyor.`,
@@ -174,9 +174,9 @@ const copy: typeof en = {
 
   recap: {
     lessons: [
-      "\u03b1, \u03bc = \u03bc\u2080 iken X\u0304'in reddetme b\u00f6lgesine d\u00fc\u015fme olas\u0131l\u0131\u011f\u0131d\u0131r: hi\u00e7bir \u015fey g\u00f6rmeden \u00f6nce sabitlenen I. tip hata oran\u0131.",
-      "\u03b2, \u03bc = \u03bc\u2081 iken X\u0304'in bu b\u00f6lgenin d\u0131\u015f\u0131na d\u00fc\u015fme olas\u0131l\u0131\u011f\u0131d\u0131r; g\u00fc\u00e7 ise 1 \u2212 \u03b2'd\u0131r. \u0130kisi de \"herhangi bir etkiye\" g\u00f6re de\u011fil, belirli bir \u03bc\u2081'e g\u00f6re hesaplan\u0131r.",
-      "Kritik de\u011feri oynatmak \u03b1 ile \u03b2'y\u0131 takas eder. \u0130kisini birden iyile\u015ftiren tek \u015fey SE = \u03c3/\u221an'in k\u00fc\u00e7\u00fclmesidir; n'in taviz olmayan kol olmas\u0131n\u0131n nedeni budur.",
+      "α, μ = μ₀ iken X̄'in reddetme bölgesine düşme olasılığıdır: hiçbir şey görmeden önce sabitlenen I. tip hata oranı.",
+      "β, μ = μ₁ iken X̄'in bu bölgenin dışına düşme olasılığıdır; güç ise 1 − β'dır. İkisi de \"herhangi bir etkiye\" göre değil, belirli bir μ₁'e göre hesaplanır.",
+      "α sabitken ve gerçek ortalama alternatif yönündeyken n arttıkça güç artar. Ters yöndeki gerçek ortalamada reddetme olasılığı azalabilir.",
     ],
     footer:
       "Buradaki her \u015fey \u03c3'n\u0131n bilindi\u011fi kapal\u0131 form normal modeldir: \u00f6rneklem ortalamas\u0131n\u0131n iki \u00f6rnekleme da\u011f\u0131l\u0131m\u0131, tek bir reddetme b\u00f6lgesi ve b\u00f6lge s\u0131n\u0131r\u0131n\u0131n iki yan\u0131ndaki alanlar. Ger\u00e7ek testlerde \u03c3'n\u0131n \u00f6rneklemden kestirilmesi gerekir (t da\u011f\u0131l\u0131m\u0131n\u0131 gerekli k\u0131lan da budur) ve y\u00f6n\u00fcn veriden \u00f6nce mi sonra m\u0131 se\u00e7ildi\u011fi ayr\u0131 bir sorundur. Bu laboratuvar, o zorluklar\u0131n \u00fczerine oturdu\u011fu geometriyi g\u00f6sterir.",
@@ -220,7 +220,7 @@ const copy: typeof en = {
       },
       sample: {
         curves: "İki eğri ve bu kadar ölçümle ne kadar geniş oldukları.",
-        n: "Daha çok ölçüm alın. Tur n'yi artırdı; iki eğri de daraldı ve örtüşme küçüldü.",
+        n: "n arttığında iki dağılım daralır. Gerçek ortalama alternatif yönündeyse test gücü artar.",
         figures: "Daha çok veri, α'yı artırmadan β'yı düşürür.",
       },
       challenge: {

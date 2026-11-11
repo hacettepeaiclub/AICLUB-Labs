@@ -203,6 +203,8 @@ const copy: typeof en = {
       "cp-astar": "A*'ın Dijkstra'yla karşılaştırmalı anlatımı.",
       "reducible-astar": "Harita uygulamalarının kullandığı haliyle A* ve sezgisel tahmin.",
       "redblob-astar": "Etkileşimli ızgaralar: BFS, Dijkstra, greedy ve A* yan yana.",
+      "ods-book":
+        "Graphs bölümünde komşuluk listeleri, kuyruk ve BFS bağlantısını kur. Kod benzeri anlatım, labdaki ziyaret sırasını kendi algoritmana dönüştürmek için uygun.",
     },
   },
 };

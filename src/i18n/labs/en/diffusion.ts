@@ -44,6 +44,8 @@ const copy = {
         "Work through course notebooks to train a real diffusion model; unlike this lab, this requires a Python environment.",
       "annotated-diffusion":
         "Trace the PyTorch implementation from noise schedules through U-Net training and sampling. Best after the introductory material.",
+      "udl-book":
+        "Open the free book on the author’s site and find the diffusion models chapter. Requires mathematics; compare the lab’s analytic denoising with a trained model’s noise prediction.",
     },
   },
 };

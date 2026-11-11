@@ -295,7 +295,37 @@ Toplam 94 kaynak: 57 video, 12 üniversite dersi kaydı, 10 kitap bölümü, 9 m
 | bfloat16 üzerine bir video                     | Kabul görmüş bir kanalda bulunamadı; konu Google'ın yazısıyla kaldı.                                                                                       |
 | CLRS, CS:APP, AIMA, Goodfellow ve ark.         | Video ağırlığı için çıkarıldı. Doğrulanmış kitap bölümleri ilk planda (git geçmişinde bu belgenin önceki hali) duruyor.                                    |
 
-## 6. Açık konular
+## 6. Kitap ve video ders ekleri — 11 Kasım 2026
+
+14 rehbere 14 yeni kaynak eklendi (aynı kitap farklı lablarda farklı okuma notlarıyla
+yer alabiliyor). Kaynakların adresleri ve bölüm başlıkları yazarların, yayınevlerinin
+ve derslerin resmi sayfalarından kontrol edildi. Mevcut videolar korundu.
+
+- **Generalization:** ISL kitabı, resmi video derslerinin bulunduğu kurs sayfası ve
+  D2L'nin Generalization bölümü. Kurs sayfasında R/Python seçenekleri var; edX
+  erişimi hesap gerektirebilir. Süre, tek bir videoya ait olmadığı için yazılmadı.
+- **Backpropagation, Convolution, Gradient Descent, Multilayer Perceptrons:**
+  D2L'den doğrudan ilgili ücretsiz bölümler. Convolution bölümü labdaki gibi
+  cross-correlation kullanıyor; matematiksel evrişimden farkı notta açıklandı.
+- **Tokenization, Word Embeddings:** Jurafsky ve Martin'in ücretsiz taslak
+  kitabından Words and Tokens ile Embeddings PDF'leri. Ağustos 2026 sürümü kontrol
+  edildi; bunların yayımlanmış son baskı değil taslak olduğu başlıkta belirtiliyor.
+- **Diffusion:** Simon Prince'ın ücretsiz Understanding Deep Learning kitabı.
+  Okuma notu, labdaki analitik yöntem ile öğrenilmiş gürültü tahminini ayırıyor.
+- **Cryptographic Hashing:** Boneh ve Shoup'un ücretsiz kitabı; ileri düzey olduğu
+  ve kriptografik hash ile hash table hedeflerinin farklılığı notta belirtiliyor.
+- **Hash Tables, Sorting, Graph Search:** Open Data Structures'ın pseudocode
+  sürümü, her lab için farklı bir bölüm ve okuma amacıyla.
+- **Floating Point:** Fundamentals of Numerical Computation'ın ücretsiz Python
+  sürümü; bit gösteriminden yuvarlama hatasına geçiş için.
+- **Probability:** Pishro-Nik'in resmi konu bazlı video dersleri sayfası. Tek bir
+  video olmadığı için toplam süre uydurulmadı.
+
+Tüm yeni kaynakların Türkçe ve İngilizce okuma notları var. Ön bilgi gerektiren
+kitaplar, PDF bağlantıları ve labdan farklı örnek kullanan bölümler notlarda
+belirtiliyor. Kaynakların kendi başlıkları özgün dilinde korundu.
+
+## 7. Açık konular
 
 1. **Türkçe kaynak:** Bu ölçütlerle Türkçe kaynak aranmadı; bütün kaynaklar İngilizce ve
    pencere bunu söylüyor. Ayrı bir araştırma turuyla eklenebilir; bulunamazsa uydurulmaz.

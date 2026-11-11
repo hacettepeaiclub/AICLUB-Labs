@@ -39,7 +39,7 @@ const copy: typeof en = {
   status: {
     running: "Çalışıyor",
     converged: "Hedefe ulaştı",
-    diverged: "Iraksadı",
+    diverged: "Uzaklık sınırı aşıldı",
     exhausted: "Adımlar tükendi",
   },
 
@@ -141,7 +141,7 @@ const copy: typeof en = {
     scope:
       "Bu eşikler burada kullanılan ikinci dereceden fonksiyon için tam geçerlidir; onun eğriliği her noktada aynıdır. Eğriliğin konuma göre değiştiği yerde kullanılabilir adım boyu da onunla değişir.",
     caption:
-      "Bu yüzeyde kararlılık sınırı 2 / max(a, b) ile belirlenir. Yüzeyin eğriliği değiştiğinde kullanılabilecek adım boyu da değişir.",
+      "Bu kuadratikte bütün başlangıçlar için yakınsama, 0 < η < 2 / max(a, b) koşuluyla garanti edilir. Dik koordinatın tam sıfır olduğu özel başlangıçlar sınırın üstünde de yakınsayabilir. Yüzeyin eğriliği değiştiğinde kullanılabilecek adım boyu da değişir.",
   },
 
   golf: {
@@ -323,7 +323,7 @@ const copy: typeof en = {
         `Hedefe varıyor ama ${steps} adımda; bütçe ise ${budget}.`,
       stalled: (budget: number) => `Bu, hedefe hiç ulaşmıyor. Bütçe ${budget} adım.`,
       diverged:
-        "Çalışma yüzeyi terk etti: bu ayarlarda adım boyu buradaki kararlılık sınırında ya da üzerinde.",
+        "Yol çizim için belirlenen uzaklık sınırını aştı. Başlangıç ve adım boyunu kontrol et.",
     },
     transfer: {
       title: "Aynı sayı, daha yumuşak bir yüzeyde",
@@ -333,7 +333,7 @@ const copy: typeof en = {
         limitThere: string,
         steps: number,
       ) =>
-        `η = ${rate}, bu yüzeyin ${limitHere} olan kararlılık sınırının üzerinde; bu yüzden çalışma patlıyor. Daha yumuşak yüzeyin sınırı ${limitThere} ve tam olarak aynı η orada ${steps} adımda yerleşiyor. Değişen adım boyu değil, yüzeydi.`,
+        `η = ${rate}, bu yüzeyin ${limitHere} olan kararlılık sınırının üzerinde; bu yüzden bütün başlangıçlar için yakınsama garantisi yok. Daha yumuşak yüzeyin sınırı ${limitThere} ve tam olarak aynı η orada ${steps} adımda yerleşiyor. Değişen adım boyu değil, yüzeydi.`,
       worksOnBoth: (steps: number) =>
         `Bu η iki yüzeyde de yakınsıyor: burada ve daha yumuşak olanda ${steps} adımda. Yukarı doğru itin ve hangisinin önce pes ettiğine bak.`,
       worksOnNeither:
@@ -439,6 +439,8 @@ const copy: typeof en = {
         "Etkileşimli: en büyük kararlı adımın neden eğriliğe bağlı olduğu ve κ'nın etkisi.",
       "ng-momentum": "Gradyanların hareketli ortalaması ve zikzakın neden söndüğü.",
       "ng-adam": "Her parametreye kendi geçmişine göre ölçeklenmiş bir adım boyu.",
+      "d2l-gradient-book":
+        "Öğrenme oranının yakınsamayı nasıl etkilediğini tek ve çok değişkenli örneklerle incele. Türev ve vektör bilgisi gerektirir; labdaki adımları formüllerle takip etmek için uygun.",
     },
   },
 };

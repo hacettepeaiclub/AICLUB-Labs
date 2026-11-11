@@ -356,6 +356,8 @@ const copy: typeof en = {
       "ng-padding": "Dolgu ve lab'ın kullandığı çıktı boyutu formülü.",
       "ng-stride": "Adım ve aşağı yuvarlama.",
       "d2l-padding": "Aynı formül, çözümlü örneklerle.",
+      "d2l-convolution-book":
+        "Kayan pencereyi küçük matrislerle hesapla. Bölüm, lab gibi çekirdeği çevirmeden uygulanan cross-correlation ile başlar ve bunu matematiksel evrişimden ayırır.",
     },
   },
 };

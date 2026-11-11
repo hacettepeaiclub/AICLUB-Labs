@@ -168,6 +168,8 @@ const copy = {
       "cs224n-l1": "Stanford's first lecture: meaning from the company a word keeps.",
       "sq-pca": "PCA, the projection the lab's map uses.",
       "distill-tsne": "Another projection, the same warning: distances on the map can mislead.",
+      "slp-embeddings":
+        "Moves from co-occurrence counts to word2vec training. Evaluate cosine similarity in the original vectors; proximity on a 2D map may tell a different story. English PDF.",
     },
   },
 };
