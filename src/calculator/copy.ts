@@ -23,8 +23,10 @@ const en = {
   modelLabel: "Calculator model",
   sameKeys: (siblings: string) => `Same keys and menus as the ${siblings}.`,
   notListed:
-    "The fx-991CW is not here yet: Casio does not publish the order of its menus, and a lesson that guesses would send you to the wrong key.",
+    "On the fx-991CW, matrices, SOLVE and variables are not in the simulator yet: Casio's guides do not show every one of those menus, and a lesson that guesses would send you to the wrong key.",
   notOnModel: (name: string) => `The ${name} cannot do this: it has no key or mode for it.`,
+  notYet: (name: string) =>
+    `The ${name} can do this, but this simulator does not run it on the ${name} yet.`,
   practiseKicker: "Step 2",
   practiseTitle: "Learn it key by key",
   practiseLede:
@@ -116,8 +118,10 @@ const tr: CalculatorCopy = {
   modelLabel: "Hesap makinesi modeli",
   sameKeys: (siblings: string) => `${siblings} ile aynı tuşlar ve menüler.`,
   notListed:
-    "fx-991CW henüz yok: Casio menülerinin sırasını yayımlamıyor, tahminle yazılmış bir ders seni yanlış tuşa götürür.",
+    "fx-991CW'de matrisler, SOLVE ve değişkenler simülatörde henüz yok: Casio'nun kılavuzları bu menülerin hepsini göstermiyor, tahminle yazılmış bir ders seni yanlış tuşa götürür.",
   notOnModel: (name: string) => `${name} bunu yapamaz: bunun için bir tuşu ya da modu yok.`,
+  notYet: (name: string) =>
+    `${name} bunu yapabilir, ama bu simülatör ${name} için henüz çalıştırmıyor.`,
   practiseKicker: "Uygulama",
   practiseTitle: "Bir ders seç ve tuşları dene",
   practiseLede:

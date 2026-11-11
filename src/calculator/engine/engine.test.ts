@@ -692,3 +692,221 @@ describe("fractions that do not fit", () => {
     expect(formatNumber(32 / 7)).toBe("32⁄7");
   });
 });
+
+describe("the fx-82MS, with its own manual's examples", () => {
+  const digits = (v: number) =>
+    String(v)
+      .split("")
+      .map((c) => (c === "-" ? "neg" : c === "." ? "dot" : c)) as KeyId[];
+
+  it("is in SD after MODE 2 and in REG Lin after MODE 3 1", () => {
+    const sd = pressAll(initialState("fx82ms"), ["mode", "2"]);
+    expect([sd.mode, sd.stat.kind, display(sd).mode]).toEqual(["stat", "1var", "SD"]);
+    const reg = pressAll(initialState("fx82ms"), ["mode", "3", "1"]);
+    expect([reg.mode, reg.stat.kind, display(reg).mode]).toEqual(["stat", "lin", "REG"]);
+  });
+
+  it("reaches Deg, Rad, Gra with MODE pressed twice", () => {
+    const rad = pressAll(initialState("fx82ms"), ["mode", "mode", "2"]);
+    expect(rad.angle).toBe("rad");
+    // cos(π/3) = 0.5 in radians, as in the manual.
+    expect(run(["cos", "lp", "shift", "exp10", "divide", "3", "rp"], rad)).toBe("0.5");
+    const deg = pressAll(rad, ["mode", "mode", "1"]);
+    expect(run(["sin", "3", "0"], deg)).toBe("0.5");
+  });
+
+  it("gives the SD example: 55, 54, 51, 55, 53, 53, 54, 52", () => {
+    const data = [55, 54, 51, 55, 53, 53, 54, 52].flatMap((v) => [...digits(v), "mplus" as KeyId]);
+    const s = pressAll(initialState("fx82ms"), ["mode", "2", ...data]);
+    expect(run(["shift", "2", "3"], s)).toBe("1.407885953");
+    expect(run(["shift", "2", "2"], s)).toBe("1.316956719");
+    expect(run(["shift", "2", "1"], s)).toBe("53.375");
+    expect(run(["shift", "1", "3"], s)).toBe("8");
+    expect(run(["shift", "1", "2"], s)).toBe("427");
+    expect(run(["shift", "1", "1"], s)).toBe("22805");
+  });
+
+  it("gives the REG example: temperature and air pressure", () => {
+    const pairs: [number, number][] = [
+      [10, 1003],
+      [15, 1005],
+      [20, 1010],
+      [25, 1011],
+      [30, 1014],
+    ];
+    const data = pairs.flatMap(([x, y]) => [
+      ...digits(x),
+      "comma" as KeyId,
+      ...digits(y),
+      "mplus" as KeyId,
+    ]);
+    const s = pressAll(initialState("fx82ms"), ["mode", "3", "1", ...data]);
+    const third: KeyId[] = ["shift", "2", "right", "right"];
+    expect(run([...third, "1"], s)).toBe("997.4");
+    expect(run([...third, "2"], s)).toBe("0.56");
+    expect(run([...third, "3"], s)).toBe("0.982607368");
+    // ŷ binds tighter than (−) (the manual's priority table), so the −5 is bracketed.
+    expect(run(["lp", "neg", "5", "rp", "shift", "2", "right", "right", "right", "2"], s)).toBe(
+      "994.6",
+    );
+    expect(run(["1", "0", "0", "0", "shift", "2", "right", "right", "right", "1"], s)).toBe(
+      "4.642857143",
+    );
+  });
+
+  it("has nCr on a key of its own, and nPr above it", () => {
+    expect(run(["1", "0", "ncr", "4"], "fx82ms")).toBe("210");
+    expect(run(["7", "shift", "ncr", "4"], "fx82ms")).toBe("840");
+    // SHIFT ÷ is nothing here: it is nCr on the other models.
+    expect(pressAll(initialState("fx82ms"), ["5", "shift", "divide"]).notice).toBe("unsupported");
+  });
+
+  it("has ∛ above x³, e above ln, and no DISTR", () => {
+    expect(run(["shift", "cube", "2", "7"], "fx82ms")).toBe("3");
+    expect(run(["alpha", "ln"], "fx82ms")).toBe("2.718281828");
+    const sd = pressAll(initialState("fx82ms"), ["mode", "2", "shift", "3"]);
+    expect(sd.notice).toBe("unsupported");
+  });
+});
+
+describe("the fx-991CW, with its own manual's examples", () => {
+  const cw = () => initialState("fx991cw");
+  /** A number typed on the CW: a minus is SHIFT −. */
+  const typedCw = (v: number): KeyId[] =>
+    String(v)
+      .split("")
+      .flatMap((c): KeyId[] =>
+        c === "-" ? ["shift", "minus"] : c === "." ? ["dot"] : [c as KeyId],
+      );
+  const exe = (...values: number[]): KeyId[] =>
+    values.flatMap((v) => [...typedCw(v), "eq" as KeyId]);
+  const highlighted = (s: CalcState) => {
+    const body = display(s).body;
+    return body.kind === "menu" && body.selected !== null ? body.items[body.selected]?.label : null;
+  };
+
+  it("walks HOME's grid of apps, three to a row, from the app in use", () => {
+    expect(highlighted(pressAll(cw(), ["home"]))).toBe("Calculate");
+    expect(highlighted(pressAll(cw(), ["home", "right"]))).toBe("Statistics");
+    expect(highlighted(pressAll(cw(), ["home", "down", "right", "right"]))).toBe("Equation");
+    const stats = pressAll(cw(), ["home", "right", "ok", "ok", "home"]);
+    expect(highlighted(stats)).toBe("Statistics");
+  });
+
+  it("gives the regression example: a, b and r", () => {
+    const xs = [1.0, 1.2, 1.5, 1.6, 1.9, 2.1, 2.4, 2.5, 2.7, 3];
+    const ys = [1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 2];
+    const s = pressAll(cw(), [
+      "home",
+      "right",
+      "ok",
+      "down",
+      "ok",
+      ...exe(...xs),
+      "down",
+      "right",
+      ...exe(...ys),
+      "ok",
+      "down",
+      "ok",
+      "ok",
+    ]);
+    expect(s.screen.s).toBe("statList");
+    const body = display(s).body;
+    expect(body.kind === "list" && body.rows.map((r) => r.value)).toEqual([
+      "0.5043587805",
+      "0.4802217183",
+      "0.9952824846",
+    ]);
+  });
+
+  it("asks μ before σ, and works out Normal PD with OK", () => {
+    const s = pressAll(cw(), [
+      "home",
+      "right",
+      "right",
+      "ok",
+      "down",
+      "down",
+      "ok",
+      ...exe(36, 35, 2),
+      "ok",
+    ]);
+    expect(s.screen.s === "distResult" && formatDecimal(s.screen.value)).toBe("0.1760326634");
+  });
+
+  it("integrates ln(x) from 1 to e: ▼ to the lower limit, ▲ to the upper", () => {
+    const keys: KeyId[] = [
+      "catalog",
+      "ok",
+      "down",
+      "ok",
+      "shift",
+      "logb",
+      "x",
+      "rp",
+      "down",
+      "1",
+      "up",
+      "shift",
+      "8",
+    ];
+    expect(run(keys, "fx991cw")).toBe("1");
+  });
+
+  it("differentiates sin(x) at π/2, in radians", () => {
+    const radians = pressAll(cw(), ["settings", "ok", "down", "ok", "down", "ok", "ac"]);
+    expect(radians.angle).toBe("rad");
+    const keys: KeyId[] = [
+      "catalog",
+      "ok",
+      "ok",
+      "sin",
+      "x",
+      "rp",
+      "right",
+      "shift",
+      "7",
+      "divide",
+      "2",
+    ];
+    expect(run(keys, radians)).toBe("0");
+  });
+
+  it("solves x² + 2x − 2 = 0 in the Equation app", () => {
+    const s = pressAll(cw(), [
+      "home",
+      "down",
+      "right",
+      "right",
+      "ok",
+      "down",
+      "ok",
+      "ok",
+      ...exe(1, 2, -2),
+      "eq",
+    ]);
+    expect(s.screen.s).toBe("eqnResult");
+    const roots = s.screen.s === "eqnResult" && Array.isArray(s.screen.roots) ? s.screen.roots : [];
+    expect(roots.map((r) => r.re).sort()).toEqual([-1 - Math.sqrt(3), -1 + Math.sqrt(3)].sort());
+  });
+
+  it("finds nCr in CATALOG, Probability, the fourth item", () => {
+    const keys: KeyId[] = ["1", "0", "catalog", "down", "ok", "down", "down", "down", "ok", "4"];
+    expect(run(keys, "fx991cw")).toBe("210");
+  });
+
+  it("types variables and (−) with SHIFT, and shows a decimal with FORMAT", () => {
+    const stored = { ...cw(), vars: { ...cw().vars, A: 8 } };
+    expect(run(["shift", "4", "times", "1", "0"], stored)).toBe("80");
+    expect(run(["shift", "minus", "3", "sq"], "fx991cw")).toBe("−9");
+    const decimal = pressAll(cw(), ["1", "divide", "3", "eq", "format", "down", "ok"]);
+    expect(decimal.decimal).toBe(true);
+  });
+
+  it("does not run matrices or Solver yet, and says so", () => {
+    expect(pressAll(cw(), ["home", "down", "down", "down", "ok"]).notice).toBe("unsupported");
+    const solver = pressAll(cw(), ["home", "down", "right", "right", "ok", "down", "down", "ok"]);
+    expect(solver.notice).toBe("unsupported");
+  });
+});

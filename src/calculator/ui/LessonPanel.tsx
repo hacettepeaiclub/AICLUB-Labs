@@ -1,9 +1,9 @@
 import type { Language } from "@/app/preferences";
 import { Button } from "@/components/ui";
 import type { CalculatorCopy } from "../copy";
-import type { ModelSpec } from "../engine/models";
+import { keysOf, type ModelSpec } from "../engine/models";
 import type { KeyId } from "../engine/types";
-import { LESSONS, TOPICS, TOPIC_TITLE, offered, type Lesson } from "../lessons";
+import { LESSONS, TOPICS, TOPIC_TITLE, later, offered, type Lesson } from "../lessons";
 
 /** Where each step starts in the lesson's flat list of keys. */
 export function stepStarts(lesson: Lesson, model: ModelSpec): number[] {
@@ -21,13 +21,12 @@ const ARROWS: Partial<Record<KeyId, string>> = {
   down: "▼",
   left: "◀",
   right: "▶",
+  ok: "OK",
 };
 
 /** What a key is called on this model's keyboard. */
 export function keyName(model: ModelSpec, id: KeyId): string {
-  const def = [...model.top.flat(), ...model.functionRows.flat(), ...model.digitRows.flat()].find(
-    (key) => key.id === id,
-  );
+  const def = keysOf(model).find((key) => key.id === id);
   return def?.label ?? ARROWS[id] ?? id;
 }
 
@@ -77,6 +76,9 @@ export function LessonPanel({
 }: LessonPanelProps) {
   const steps = lesson.steps[model.id] ?? [];
   const available = steps.length > 0;
+  // Why a lesson is greyed out: the device cannot, or this simulator does not yet.
+  const unavailable = (l: Lesson) =>
+    later(l, model.id) ? copy.notYet(model.name) : copy.notOnModel(model.name);
   const starts = stepStarts(lesson, model);
   const total = steps.reduce((n, step) => n + step.keys.length, 0);
   const finished = available && progress >= total;
@@ -100,14 +102,12 @@ export function LessonPanel({
                   type="button"
                   aria-current={l.id === lesson.id ? "step" : undefined}
                   data-off={offered(l, model.id) ? undefined : true}
-                  title={offered(l, model.id) ? undefined : copy.notOnModel(model.name)}
+                  title={offered(l, model.id) ? undefined : unavailable(l)}
                   onClick={() => onPick(l.id)}
                   className="calc-lesson"
                 >
                   <span>{l.title[language]}</span>
-                  {!offered(l, model.id) && (
-                    <span className="sr-only"> ({copy.notOnModel(model.name)})</span>
-                  )}
+                  {!offered(l, model.id) && <span className="sr-only"> ({unavailable(l)})</span>}
                 </button>
               ))}
             </div>
@@ -127,7 +127,7 @@ export function LessonPanel({
         <p className="mt-1.5 text-body-sm text-fg-muted">{lesson.why[language]}</p>
         {!available && (
           <p role="status" className="mt-4 text-body-sm text-signal-amber">
-            {copy.notOnModel(model.name)}
+            {unavailable(lesson)}
           </p>
         )}
 

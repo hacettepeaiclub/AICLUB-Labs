@@ -40,6 +40,21 @@ export type KeyId =
   | "comma"
   | "sd"
   | "mplus"
+  /** nCr on its own key (fx-82MS); elsewhere it is SHIFT ÷. */
+  | "ncr"
+  | "pol"
+  // The fx-991CW's own keys.
+  | "home"
+  | "settings"
+  | "back"
+  | "ok"
+  | "pgup"
+  | "pgdn"
+  | "variable"
+  | "function"
+  | "catalog"
+  | "tools"
+  | "format"
   | "0"
   | "1"
   | "2"
@@ -61,7 +76,7 @@ export type KeyId =
   | "times"
   | "divide";
 
-export type ModelId = "fx991ex" | "fx991esplus" | "fx570ms" | "fx82esplus";
+export type ModelId = "fx991cw" | "fx991ex" | "fx991esplus" | "fx570ms" | "fx82ms" | "fx82esplus";
 
 export type CalcMode = "calc" | "stat" | "matrix" | "eqn" | "dist";
 
@@ -78,6 +93,12 @@ export type DistKind =
   | "binomialCd"
   | "poissonPd"
   | "poissonCd";
+
+/** One value a distribution asks for, and what it holds before anything is typed. */
+export interface DistField {
+  label: string;
+  initial: number;
+}
 
 /** What choosing a menu item does. Interpreted by the machine. */
 export type Action =
@@ -96,6 +117,8 @@ export type Action =
   | { do: "editMatrix"; name: MatName }
   | { do: "eqnType"; type: EqnType }
   | { do: "dist"; dist: DistKind }
+  /** FORMAT on the CW: Standard or Decimal. */
+  | { do: "decimal"; on: boolean }
   /** A real item on the device that this simulation does not model. */
   | { do: "unsupported" };
 
@@ -110,6 +133,12 @@ export interface Menu {
   title?: string;
   /** Pages, turned with the model's page keys; numbering restarts on each page. */
   pages: MenuItem[][];
+  /**
+   * Picked with the cursor keys and OK rather than a number (the CW). Its
+   * items have no number, and a menu of apps is a grid of `columns`.
+   */
+  cursor?: boolean;
+  columns?: number;
 }
 
 export interface KeyDef {

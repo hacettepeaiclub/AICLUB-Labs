@@ -91,6 +91,11 @@
 .calc-key:active {
   transform: translateY(1px);
 }
+/* The CW's word keys: SETTINGS, VARIABLE, CATALOG. */
+.calc-key[data-tone="nav"] {
+  font-size: 0.5rem;
+  letter-spacing: -0.02em;
+}
 .calc-key[data-tone="modifier"] {
   font-size: 0.625rem;
   font-weight: 600;
@@ -159,6 +164,12 @@
 }
 .calc-pad button:hover {
   background: rgb(var(--line) / 0.1);
+  color: rgb(var(--fg));
+}
+/* The CW's OK, in the middle of the pad. */
+.calc-pad [data-key="ok"] {
+  grid-area: 2 / 2;
+  font-weight: 600;
   color: rgb(var(--fg));
 }
 .calc-pad [data-key="up"] {
@@ -270,6 +281,15 @@
 }
 .calc-menu[data-columns="2"] {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+/* The CW: a cursor menu, its highlighted item inverted; HOME is three across. */
+.calc-menu[data-columns="3"] {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  text-align: center;
+}
+.calc-menu li[data-active] {
+  background: rgb(var(--accent));
+  color: rgb(var(--ink-950));
 }
 .calc-colhead,
 .calc-row {

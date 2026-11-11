@@ -30,7 +30,17 @@ import {
   poissonPd,
 } from "./probability";
 import { oneVariable, twoVariable } from "./stats";
-import type { Action, CalcMode, DistKind, EqnType, KeyId, Menu, ModelId, StatKind } from "./types";
+import type {
+  Action,
+  CalcMode,
+  DistField,
+  DistKind,
+  EqnType,
+  KeyId,
+  Menu,
+  ModelId,
+  StatKind,
+} from "./types";
 
 /**
  * The calculator as a state machine: `press(state, key)` returns the state
@@ -50,7 +60,13 @@ type ErrorKind = CalcErrorKind | "cantSolve";
 
 export type Screen =
   | { s: "calc" }
-  | { s: "menu"; menu: Menu; page: number; back: Screen }
+  | {
+      s: "menu";
+      menu: Menu;
+      page: number;
+      back: Screen;
+      /** The highlighted item, in a cursor menu. */ index: number;
+    }
   | { s: "statEditor"; row: number; col: number; entry: Tok[] }
   | { s: "statList"; list: "oneVar" | "reg"; top: number; back: Screen }
   | { s: "matrixEditor"; name: MatName; cell: number; entry: Tok[] }
@@ -134,6 +150,35 @@ const DIGITS = new Set(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]);
 
 /** What a key types onto the input line on this model, or null if it types nothing. */
 function tokensFor(key: KeyId, shift: boolean, alpha: boolean, model: ModelSpec): Tok[] | null {
+  // The CW has no ALPHA: variables, π, e and (−) are SHIFT and a key.
+  if (shift && model.shiftLetters) {
+    const letter = model.shiftLetters[key];
+    if (letter) return [{ t: "var", v: letter }];
+    switch (key) {
+      case "7":
+        return [{ t: "const", v: "pi" }];
+      case "8":
+        return [{ t: "const", v: "e" }];
+      case "minus":
+        return [{ t: "neg" }];
+      case "pow":
+        return [{ t: "post", v: "inv" }];
+      case "sq":
+        return [{ t: "fn", v: "log" }];
+      case "logb":
+        return [{ t: "fn", v: "ln" }];
+      case "rp":
+        return [{ t: "comma" }];
+      case "sqrt":
+        return [{ t: "fn", v: "cbrt" }];
+      case "sin":
+      case "cos":
+      case "tan":
+        break;
+      default:
+        return null;
+    }
+  }
   if (DIGITS.has(key)) return [{ t: "num", v: key }];
   switch (key) {
     case "dot":
@@ -142,10 +187,13 @@ function tokensFor(key: KeyId, shift: boolean, alpha: boolean, model: ModelSpec)
       return [{ t: "op", v: "+" }];
     case "minus":
       return [{ t: "op", v: "-" }];
+    // nPr and nCr are SHIFT × and SHIFT ÷, except where they have a key of their own.
     case "times":
-      return [{ t: "op", v: shift ? "P" : "*" }];
+      return shift ? (model.id === "fx82ms" ? null : [{ t: "op", v: "P" }]) : [{ t: "op", v: "*" }];
     case "divide":
-      return [{ t: "op", v: shift ? "C" : "/" }];
+      return shift ? (model.id === "fx82ms" ? null : [{ t: "op", v: "C" }]) : [{ t: "op", v: "/" }];
+    case "ncr":
+      return [{ t: "op", v: shift ? "P" : "C" }];
     case "neg":
       return [{ t: "neg" }];
     case "lp":
@@ -162,12 +210,16 @@ function tokensFor(key: KeyId, shift: boolean, alpha: boolean, model: ModelSpec)
       return [{ t: "fn", v: shift ? "acos" : "cos" }];
     case "tan":
       return [{ t: "fn", v: shift ? "atan" : "tan" }];
+    // On the fx-82MS ∛ is SHIFT x³, and nothing is printed above √ or x².
     case "sqrt":
-      return [{ t: "fn", v: shift ? "cbrt" : "sqrt" }];
+      if (shift) return model.id === "fx82ms" ? null : [{ t: "fn", v: "cbrt" }];
+      return [{ t: "fn", v: "sqrt" }];
     case "sq":
-      return [{ t: "post", v: shift ? "cube" : "sq" }];
+      if (shift) return model.id === "fx82ms" ? null : [{ t: "post", v: "cube" }];
+      return [{ t: "post", v: "sq" }];
     case "cube":
-      return shift ? null : [{ t: "post", v: "cube" }];
+      if (shift) return model.id === "fx82ms" ? [{ t: "fn", v: "cbrt" }] : null;
+      return [{ t: "post", v: "cube" }];
     case "abs":
       return [{ t: "fn", v: "abs" }];
     case "hyp":
@@ -178,6 +230,8 @@ function tokensFor(key: KeyId, shift: boolean, alpha: boolean, model: ModelSpec)
     case "pow":
       return [{ t: "pow" }];
     case "ln":
+      // e is ALPHA ln on the fx-82MS.
+      if (alpha && model.id === "fx82ms") return [{ t: "const", v: "e" }];
       return [{ t: "fn", v: shift ? "exp" : "ln" }];
     case "log":
       return [{ t: "fn", v: shift ? "tenpow" : "log" }];
@@ -187,7 +241,8 @@ function tokensFor(key: KeyId, shift: boolean, alpha: boolean, model: ModelSpec)
       return [{ t: "frac" }];
     case "exp10":
       if (shift) return [{ t: "const", v: "pi" }];
-      if (alpha) return model.id === "fx570ms" ? null : [{ t: "const", v: "e" }];
+      // e is above ×10ˣ everywhere but the MS models.
+      if (alpha) return model.statInput === "dt" ? null : [{ t: "const", v: "e" }];
       return [{ t: "e10" }];
     case "ans":
       return [{ t: "ans" }];
@@ -293,9 +348,25 @@ const fresh = (s: CalcState): CalcState => ({
   fractionInput: false,
 });
 
+/**
+ * A cursor menu opens on what is current: the HOME screen on the app in use,
+ * the angle list on the angle in use. Anything else opens on its first item.
+ */
+function startIndex(s: CalcState, menu: Menu): number {
+  if (!menu.cursor) return 0;
+  const index = menu.pages
+    .flat()
+    .findIndex(({ action }) =>
+      action.do === "mode"
+        ? action.mode === s.mode
+        : action.do === "angle" && action.unit === s.angle,
+    );
+  return Math.max(0, index);
+}
+
 const openMenu = (s: CalcState, menu: Menu, back: Screen): CalcState => ({
   ...s,
-  screen: { s: "menu", menu, page: 0, back },
+  screen: { s: "menu", menu, page: 0, back, index: startIndex(s, menu) },
 });
 
 const errorScreen = (s: CalcState, kind: ErrorKind, back: Screen): CalcState => ({
@@ -327,9 +398,15 @@ function contextMenu(
   shift: boolean,
   model: ModelSpec,
 ): Menu | null | undefined {
-  if (key === "optn" && !shift)
+  if (key === (model.optnKey ?? "optn") && !shift)
     return model.optn ? model.optn(s.mode, s.screen.s, s.stat.kind) : null;
-  if (shift && DIGITS.has(key)) {
+  // OK opens a menu only where the model has one; elsewhere it is the screen's own.
+  if (key === "ok" && model.okMenu)
+    return model.okMenu(s.mode, s.screen.s, s.stat.kind) ?? undefined;
+  if (key === "format" && model.formatMenu) {
+    return s.screen.s === "calc" && s.evaluated && s.result !== null ? model.formatMenu : null;
+  }
+  if (shift && DIGITS.has(key) && !model.shiftLetters) {
     return model.shiftMenu ? model.shiftMenu(key, s.mode, s.stat.kind) : null;
   }
   return undefined;
@@ -345,7 +422,7 @@ export const coefCount = (type: EqnType): number =>
   type.kind === "linear" ? type.n * (type.n + 1) : type.degree + 1;
 
 /** Each distribution's fields, in the order the EX asks for them, with its defaults. */
-export const DIST_FIELDS: Record<DistKind, { label: string; initial: number }[]> = {
+export const DIST_FIELDS: Record<DistKind, DistField[]> = {
   normalPd: [
     { label: "x", initial: 0 },
     { label: "σ", initial: 1 },
@@ -391,6 +468,22 @@ export const DIST_TITLE: Record<DistKind, string> = {
   poissonPd: "Poisson PD",
   poissonCd: "Poisson CD",
 };
+
+/** A distribution's fields on this model: the EX's order unless the model says otherwise. */
+export const distFields = (model: ModelSpec, kind: DistKind): DistField[] =>
+  model.distFields?.[kind] ?? DIST_FIELDS[kind];
+
+/**
+ * The values in the order `distValue` takes them, the EX's, whatever order
+ * the model asked for them in.
+ */
+function inExOrder(model: ModelSpec, kind: DistKind, values: number[]): number[] {
+  const asked = distFields(model, kind);
+  return DIST_FIELDS[kind].map((field) => {
+    const i = asked.findIndex((f) => f.label === field.label);
+    return values[i] ?? field.initial;
+  });
+}
 
 function distValue(kind: DistKind, v: number[]): number {
   const [a = 0, b = 0, c = 0, d = 0] = v;
@@ -461,9 +554,11 @@ function applyAction(s: CalcState, action: Action, back: Screen, model: ModelSpe
     case "dist":
       return {
         ...s,
-        dist: { kind: action.dist, values: DIST_FIELDS[action.dist].map((f) => f.initial) },
+        dist: { kind: action.dist, values: distFields(model, action.dist).map((f) => f.initial) },
         screen: { s: "distEditor", field: 0, entry: [] },
       };
+    case "decimal":
+      return { ...s, decimal: action.on, screen: { s: "calc" } };
     case "unsupported":
       return { ...s, screen: back, notice: "unsupported" };
   }
@@ -477,6 +572,37 @@ function onMenu(
   key: KeyId,
   model: ModelSpec,
 ): CalcState {
+  if (screen.menu.cursor) {
+    const items = screen.menu.pages.flat();
+    const columns = screen.menu.columns ?? 1;
+    const move = (to: number): CalcState => ({
+      ...s,
+      screen: { ...screen, index: Math.max(0, Math.min(items.length - 1, to)) },
+    });
+    switch (key) {
+      case "ac":
+      case "back":
+        return { ...s, screen: screen.back };
+      case "up":
+        return move(screen.index - columns);
+      case "down":
+        return move(screen.index + columns);
+      case "left":
+        return columns > 1 ? move(screen.index - 1) : s;
+      case "right":
+        return columns > 1 ? move(screen.index + 1) : s;
+      case "ok": {
+        const chosen = items[screen.index];
+        if (!chosen) return s;
+        // An option list (the angle unit) stays open with the new option on, as on the CW.
+        const { action } = chosen;
+        if (action.do === "angle") return { ...fresh(s), angle: action.unit, screen };
+        return applyAction(s, action, screen.back, model);
+      }
+      default:
+        return s;
+    }
+  }
   const pages = screen.menu.pages.length;
   const [back, forward] = model.pageKeys;
   if (key === "ac") return { ...s, screen: screen.back };
@@ -490,6 +616,20 @@ function onMenu(
     (entry) => entry.key === key || (letter !== undefined && entry.key === letter),
   );
   return chosen ? applyAction(s, chosen.action, screen.back, model) : s;
+}
+
+/** The innermost bracket still open at the end of the line is an exponent. */
+function inExponent(input: Tok[]): boolean {
+  let depth = 0;
+  for (let i = input.length - 1; i >= 0; i--) {
+    const tok = input[i]!;
+    if (tok.t === "rp") depth++;
+    else if (tok.t === "lp" || tok.t === "fn" || tok.t === "pow") {
+      if (depth === 0) return tok.t === "pow";
+      depth--;
+    }
+  }
+  return false;
 }
 
 /** The innermost bracket still open at the end of the line, if it is a template. */
@@ -699,6 +839,8 @@ function onCalc(
       if (s.evaluated)
         return { ...s, result: null, resultLabel: null, evaluated: false, cursor: 0 };
       if (model.templates && s.cursor === s.input.length) {
+        // ▶ leaves an exponent box first.
+        if (inExponent(s.input)) return insertTokens(s, [{ t: "rp" }]);
         // In a template, ▶ moves to the next box, and out of the last one.
         const open = openTemplate(s.input);
         if (open) return insertTokens(s, [open.full ? { t: "rp" } : { t: "comma" }]);
@@ -706,8 +848,14 @@ function onCalc(
       return { ...s, cursor: Math.min(s.input.length, s.cursor + 1) };
     }
     case "up":
-    case "down":
+    case "down": {
+      // On the CW, ▼ goes from ∫'s expression to its lower limit and ▲ on to the upper.
+      if (model.verticalTemplates && !s.evaluated && s.cursor === s.input.length) {
+        const open = openTemplate(s.input);
+        if (open && !open.full) return insertTokens(s, [{ t: "comma" }]);
+      }
       return s;
+    }
     case "sd":
       return s.result === null || shift ? s : { ...s, decimal: !s.decimal };
     case "eq":
@@ -743,7 +891,8 @@ function onStatEditor(
     case "up":
       return at(screen.row - 1);
     case "down":
-      return at(screen.row + 1);
+      // On the CW, ▼ from the empty row at the bottom goes back to the top.
+      return model.editorWraps && screen.row >= rows.length ? at(0) : at(screen.row + 1);
     case "left":
       return at(screen.row, screen.col - 1);
     case "right":
@@ -980,12 +1129,20 @@ function onDistEditor(
   alpha: boolean,
   model: ModelSpec,
 ): CalcState {
-  const last = DIST_FIELDS[s.dist.kind].length - 1;
+  const last = distFields(model, s.dist.kind).length - 1;
   const at = (field: number, entry: Tok[] = []): CalcState => ({
     ...s,
     screen: { s: "distEditor", field: Math.max(0, Math.min(last, field)), entry },
   });
+  const work = (): CalcState => {
+    const value = distValue(s.dist.kind, inExOrder(model, s.dist.kind, s.dist.values));
+    if (!Number.isFinite(value)) return errorScreen(s, "math", { ...screen });
+    return { ...s, ans: value, screen: { s: "distResult", value } };
+  };
   switch (key) {
+    // The CW: Execute, with OK.
+    case "ok":
+      return screen.entry.length ? s : work();
     case "ac":
       return at(screen.field);
     case "up":
@@ -997,9 +1154,7 @@ function onDistEditor(
     case "eq": {
       if (!screen.entry.length) {
         if (screen.field < last) return at(screen.field + 1);
-        const value = distValue(s.dist.kind, s.dist.values);
-        if (!Number.isFinite(value)) return errorScreen(s, "math", { ...screen });
-        return { ...s, ans: value, screen: { s: "distResult", value } };
+        return work();
       }
       let x: number;
       try {
@@ -1084,7 +1239,8 @@ function listRows(
   return STAT_LIST.map(([label, pick]) => ({ label, value: show(r ? pick(r) : NaN) }));
 }
 
-export function press(prev: CalcState, key: KeyId): CalcState {
+export function press(prev: CalcState, pressed: KeyId): CalcState {
+  let key = pressed;
   const model = MODELS[prev.model];
   let s: CalcState = { ...prev, notice: null };
   if (key === "shift") return { ...s, shift: !s.shift, alpha: false };
@@ -1093,6 +1249,17 @@ export function press(prev: CalcState, key: KeyId): CalcState {
   s = { ...s, shift: false, alpha: false };
 
   if (key === "on") return { ...fresh(s), pending: null, screen: { s: "calc" } };
+  if (key === model.settingsKey) {
+    if (!model.setupMenu) return unsupported(s);
+    const back: Screen = s.screen.s === "menu" ? { s: "calc" } : s.screen;
+    return openMenu({ ...s, pending: null }, model.setupMenu, back);
+  }
+  // BACK leaves a menu, a list or an answer, as AC does there; elsewhere it does nothing here.
+  if (key === "back") {
+    const leaves = ["menu", "statList", "eqnResult", "distResult", "error"];
+    if (!leaves.includes(s.screen.s)) return s;
+    key = "ac";
+  }
   if (key === model.menuKey) {
     const screen = s.screen;
     // The MS turns the MODE menu's pages by pressing MODE again.
@@ -1142,7 +1309,7 @@ export function press(prev: CalcState, key: KeyId): CalcState {
     case "eqnResult":
       return onEqnResult(s, screen, key);
     case "distResult":
-      return key === "ac" || key === "eq"
+      return key === "ac" || key === "eq" || key === "ok"
         ? { ...s, screen: { s: "distEditor", field: 0, entry: [] } }
         : s;
     case "solveResult":
@@ -1191,6 +1358,9 @@ export type DisplayBody =
       items: { key: string; label: string }[];
       page: number;
       pages: number;
+      /** In a cursor menu: the highlighted item among `items`, and how many across. */
+      selected: number | null;
+      columns: number;
     }
   | {
       kind: "table";
@@ -1305,7 +1475,29 @@ export function display(s: CalcState): DisplayModel {
         },
       };
     }
-    case "menu":
+    case "menu": {
+      if (screen.menu.cursor) {
+        // What fits on screen: four lines of a list, two rows of the HOME grid,
+        // scrolled as little as keeps the highlight in view.
+        const all = screen.menu.pages.flat();
+        const columns = screen.menu.columns ?? 1;
+        const rows = columns > 1 ? 2 : 4;
+        const row = Math.floor(screen.index / columns);
+        const top = Math.max(0, row - rows + 1);
+        const shown = all.slice(top * columns, (top + rows) * columns);
+        return {
+          ...head,
+          body: {
+            kind: "menu",
+            title: screen.menu.title,
+            items: shown.map(({ label }) => ({ key: "", label })),
+            page: 0,
+            pages: 1,
+            selected: screen.index - top * columns,
+            columns,
+          },
+        };
+      }
       return {
         ...head,
         body: {
@@ -1314,8 +1506,11 @@ export function display(s: CalcState): DisplayModel {
           items: (screen.menu.pages[screen.page] ?? []).map(({ key, label }) => ({ key, label })),
           page: screen.page,
           pages: screen.menu.pages.length,
+          selected: null,
+          columns: 1,
         },
       };
+    }
     case "statEditor": {
       const lin = s.stat.kind === "lin";
       const name = (c: string) => (model.lowerXY ? c : c.toUpperCase());
@@ -1444,7 +1639,7 @@ export function display(s: CalcState): DisplayModel {
       };
     }
     case "distEditor": {
-      const fields = DIST_FIELDS[s.dist.kind];
+      const fields = distFields(model, s.dist.kind);
       return {
         ...head,
         body: {

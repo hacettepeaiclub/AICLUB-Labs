@@ -54,10 +54,17 @@ function Body({ view }: { view: DisplayModel }) {
       return (
         <div className="calc-small flex h-full flex-col">
           {body.title && <p className="calc-dim mb-1 truncate">{body.title}</p>}
-          <ul className="calc-menu" data-columns={body.items.length > 4 ? 2 : 1}>
-            {body.items.map((entry) => (
-              <li key={entry.key} className="truncate">
-                <span className="calc-dim">{entry.key}:</span>
+          <ul
+            className="calc-menu"
+            data-columns={body.selected !== null ? body.columns : body.items.length > 4 ? 2 : 1}
+          >
+            {body.items.map((entry, i) => (
+              <li
+                key={entry.key + entry.label}
+                className="truncate"
+                data-active={body.selected === i || undefined}
+              >
+                {entry.key && <span className="calc-dim">{entry.key}:</span>}
                 {entry.label}
               </li>
             ))}
@@ -235,7 +242,14 @@ export function summarize(view: DisplayModel): string {
       return `${input} ${body.label ?? "="} ${result}`;
     }
     case "menu":
-      return [body.title, ...body.items.map((entry) => `${entry.key}: ${entry.label}`)]
+      return [
+        body.title,
+        ...body.items.map((entry, i) =>
+          entry.key
+            ? `${entry.key}: ${entry.label}`
+            : `${entry.label}${body.selected === i ? " (selected)" : ""}`,
+        ),
+      ]
         .filter(Boolean)
         .join(", ");
     case "table": {
