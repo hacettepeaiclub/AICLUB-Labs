@@ -4,8 +4,8 @@
  *
  * The devices do these numerically too (Gauss–Kronrod or Simpson for ∫, a
  * difference quotient for d/dx, Newton's method for SOLVE), so their answers
- * are approximations shown to ten digits. These are accurate well past that,
- * so a result here matches the device's on screen.
+ * are numerical approximations. Accuracy depends on the function, scale and
+ * interval; these algorithms do not reproduce device firmware.
  */
 
 /** f may throw (a Math ERROR inside the integrand); the caller handles it. */
@@ -14,6 +14,13 @@ type Fn = (x: number) => number;
 /** Adaptive Simpson's rule. */
 export function integrate(f: Fn, a: number, b: number): number {
   if (a === b) return 0;
+  let evaluations = 0;
+  const sample = (x: number): number => {
+    if (++evaluations > 100000) throw new RangeError("Integration did not converge");
+    const value = f(x);
+    if (!Number.isFinite(value)) throw new RangeError("Non-finite integrand");
+    return value;
+  };
   const simpson = (l: number, r: number, fl: number, fm: number, fr: number) =>
     ((r - l) / 6) * (fl + 4 * fm + fr);
   const step = (
@@ -29,29 +36,60 @@ export function integrate(f: Fn, a: number, b: number): number {
     const m = (l + r) / 2;
     const lm = (l + m) / 2;
     const rm = (m + r) / 2;
-    const flm = f(lm);
-    const frm = f(rm);
+    const flm = sample(lm);
+    const frm = sample(rm);
     const left = simpson(l, m, fl, flm, fm);
     const right = simpson(m, r, fm, frm, fr);
     const delta = left + right - whole;
-    if (depth <= 0 || Math.abs(delta) <= 15 * eps) return left + right + delta / 15;
+    if (depth <= 0) throw new RangeError("Integration did not converge");
+    if (Math.abs(delta) <= 15 * eps) return left + right + delta / 15;
     return (
       step(l, m, fl, flm, fm, left, eps / 2, depth - 1) +
       step(m, r, fm, frm, fr, right, eps / 2, depth - 1)
     );
   };
-  const fa = f(a);
-  const fb = f(b);
-  const fm = f((a + b) / 2);
-  return step(a, b, fa, fm, fb, simpson(a, b, fa, fm, fb), 1e-13, 40);
+  // Several initial panels keep a first set of coincident zero samples
+  // from being mistaken for convergence on an oscillating function.
+  const panels = 17;
+  let total = 0;
+  for (let i = 0; i < panels; i++) {
+    const l = a + ((b - a) * i) / panels;
+    const r = a + ((b - a) * (i + 1)) / panels;
+    const fl = sample(l),
+      fr = sample(r),
+      fm = sample((l + r) / 2);
+    total += step(l, r, fl, fm, fr, simpson(l, r, fl, fm, fr), 1e-12 / panels, 30);
+  }
+  return total;
 }
 
 /** f′(a) by a five-point central difference. */
 export function differentiate(f: Fn, a: number): number {
-  const h = 1e-3 * Math.max(1, Math.abs(a));
-  const d = (-f(a + 2 * h) + 8 * f(a + h) - 8 * f(a - h) + f(a - 2 * h)) / (12 * h);
-  // Rounding in f leaves noise of about 1e-13·|f|; below that, the slope is 0.
-  return Math.abs(d) < 1e-10 * Math.max(1, Math.abs(f(a))) ? 0 : d;
+  const value = f(a);
+  // A binary step helps retain differences when a large constant offsets f.
+  const scale = Math.max(1, Math.abs(a));
+  let h =
+    2 **
+    Math.ceil(Math.log2(Math.max(1e-3 * scale, 64 * Math.sqrt(Number.EPSILON * Math.abs(value)))));
+  const estimate = (step: number): number =>
+    (8 * (f(a + step) - f(a - step)) - (f(a + 2 * step) - f(a - 2 * step))) / (12 * step);
+  let previous = estimate(h);
+  let best = previous;
+  let error = Infinity;
+  for (let i = 0; i < 12; i++) {
+    h /= 2;
+    const current = estimate(h);
+    const difference = Math.abs(current - previous);
+    if (!Number.isFinite(current)) throw new RangeError("Derivative is not finite");
+    if (difference > error) break;
+    best = current;
+    error = difference;
+    if (difference <= 1e-12 * Math.max(1, Math.abs(current))) break;
+    previous = current;
+  }
+  if (error > 1e-7 * Math.max(1, Math.abs(best)))
+    throw new RangeError("Derivative did not converge");
+  return best;
 }
 
 export interface Solution {

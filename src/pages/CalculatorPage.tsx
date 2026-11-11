@@ -277,7 +277,14 @@ export function CalculatorPage() {
         topic: { en: "Practice", tr: "Alıştırma" },
         prompt: custom,
         answer: custom.answer,
-        read: screenAnswers,
+        read: (state) => {
+          if (bench.lesson === "memory" && !Object.values(state.vars).includes(5)) return [];
+          if (bench.lesson === "product")
+            return Array.isArray(state.result) && state.evaluated
+              ? [state.result[0]?.[0] ?? NaN]
+              : [];
+          return screenAnswers(state);
+        },
         abs: 0,
       };
     if (!task) return;
@@ -347,7 +354,8 @@ export function CalculatorPage() {
   };
 
   // A lesson counts once, when its last key goes in.
-  const lessonDone = inLesson && keys.length > 0 && bench.progress >= keys.length;
+  const lessonDone =
+    inLesson && keys.length > 0 && bench.progress >= keys.length && lesson.done(bench.calc);
   const wasDone = useRef(lessonDone);
   useEffect(() => {
     if (lessonDone && !wasDone.current) {
@@ -443,7 +451,7 @@ export function CalculatorPage() {
               className="mb-5 max-w-sm"
             />
 
-            {inLesson && bench.progress >= keys.length && keys.length > 0 && (
+            {lessonDone && (
               <button
                 className="mb-4 min-h-11 rounded border border-line/20 p-3 text-accent"
                 onClick={startTrial}
@@ -542,6 +550,7 @@ export function CalculatorPage() {
                   progress={bench.progress}
                   miss={bench.miss}
                   playing={bench.playing}
+                  completed={lesson.done(bench.calc)}
                   onPick={(id) => dispatch({ type: "lesson", id })}
                   onShowMe={() => dispatch({ type: "play" })}
                   onRestart={() => dispatch({ type: "restart" })}
