@@ -573,6 +573,8 @@ const copy: typeof en = {
       "mp-simpson": "Her grupta daha iyi, toplamda daha kötü; dört dakikada.",
       "3b1b-clt": "Bir Galton tahtasından başlayıp merkezi limit teoremine varır.",
       "stat110-l29": "Büyük sayılar yasası ve merkezi limit teoremi, derste.",
+      "probability-videos":
+        "Temel olasılık ve koşullu olasılık video dersleriyle başla, ardından Monty Hall deneyine dön. Videolar kısa konulara ayrılmış; tamamını sırayla izlemek gerekmiyor.",
     },
   },
 };

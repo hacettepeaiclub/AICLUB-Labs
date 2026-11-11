@@ -192,6 +192,8 @@ const copy: typeof en = {
       "mit-6006-sorting": "MIT'nin sıralama dersi, iki algoritma da dahil.",
       "tomscott-sorting": "İşi saymanın neden koddan daha önemli olduğu.",
       "algs4-sorts": "Eklemeli sıralamanın yer değiştirme sayısı ters çift sayısına eşittir.",
+      "ods-book":
+        "Sorting Algorithms bölümünde yöntemlerin maliyetini ve hangi koşullarda karşılaştırıldığını oku. Labdaki tek bir koşuyu bütün girdiler için performans garantisi sayma.",
     },
   },
 };

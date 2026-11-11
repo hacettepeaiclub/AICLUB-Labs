@@ -53,6 +53,12 @@ const copy: typeof en = {
     notes: {
       "sklearn-generalization":
         "Test verisini model seçimine sızdırmadan eğitim ve değerlendirme verilerini ayırmak.",
+      "isl-courses":
+        "Video derslerinde istatistiksel öğrenme ve yeniden örnekleme konularıyla başla. R ve Python seçenekleri var; derslere erişim için edX hesabı gerekebilir.",
+      "isl-book":
+        "Ücretsiz kitabın sınıflandırma ve yeniden örnekleme bölümlerini oku. k seçimini, doğrulama verisini ve son testin neden ayrı tutulduğunu labdaki sonuçlarla karşılaştır.",
+      "d2l-generalization":
+        "Eğitim hatası ile yeni verideki hata arasındaki farkı matematikle açıklar. Labdan sonra oku; örnekler k-en yakın komşu yerine regresyon kullanır.",
     },
   },
 };

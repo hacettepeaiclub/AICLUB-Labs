@@ -163,6 +163,8 @@ const copy: typeof en = {
         "Stanford'un ilk dersi: anlam, kelimenin birlikte kullanıldığı kelimelerden gelir.",
       "sq-pca": "Lab'daki haritanın kullandığı izdüşüm: PCA.",
       "distill-tsne": "Başka bir izdüşüm, aynı uyarı: haritadaki uzaklıklar yanıltabilir.",
+      "slp-embeddings":
+        "Birlikte görülme sayımlarından word2vec eğitimine geçer. Kosinüs benzerliğini asıl vektörlerde değerlendir; iki boyutlu haritadaki yakınlık aynı sonucu vermeyebilir. PDF, İngilizce.",
     },
   },
 };

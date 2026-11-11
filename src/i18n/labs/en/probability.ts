@@ -587,6 +587,8 @@ const copy = {
       "mp-simpson": "Better in every group, worse overall, in four minutes.",
       "3b1b-clt": "Starts from a Galton board and arrives at the central limit theorem.",
       "stat110-l29": "The law of large numbers and the central limit theorem in lecture.",
+      "probability-videos":
+        "Start with the basic and conditional probability video lectures, then return to Monty Hall. The videos are grouped into short topics; you do not need to watch the full series.",
     },
   },
 };

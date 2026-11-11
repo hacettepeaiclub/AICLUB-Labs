@@ -329,6 +329,8 @@ const copy: typeof en = {
       "tf-playground": "Tarayıcıda küçük bir ağ eğitin, katmanları kendin ekle.",
       "nielsen-universal": "Yeterli gizli nöronun neden her şekli çizebildiği.",
       "3b1b-gd": "Ağın kaybında yokuş aşağı yürüyerek nasıl öğrendiği.",
+      "d2l-mlp-book":
+        "Doğrusal katmanların arasına neden doğrusal olmayan bir aktivasyon gerektiğini açıklar. Bölümdeki denklemleri labdaki nöronlar ve ağırlıklarla eşleştir.",
     },
   },
 };

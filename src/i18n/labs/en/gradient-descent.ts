@@ -442,6 +442,8 @@ const copy = {
         "Interactive: why the largest stable step depends on curvature, and what κ does.",
       "ng-momentum": "A running average of gradients, and why the zig-zag cancels.",
       "ng-adam": "One step size per parameter, scaled by its own history.",
+      "d2l-gradient-book":
+        "Study how the learning rate affects convergence in one and multiple dimensions. Requires derivatives and vectors; useful for connecting the lab’s steps to equations.",
     },
   },
 };

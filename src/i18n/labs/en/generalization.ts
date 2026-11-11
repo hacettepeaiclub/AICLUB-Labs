@@ -50,6 +50,12 @@ const copy = {
     notes: {
       "sklearn-generalization":
         "How to split training and evaluation data without leaking the test into model selection.",
+      "isl-courses":
+        "Start with the video lectures on statistical learning and resampling. R and Python options are available; edX access may require an account.",
+      "isl-book":
+        "Read the free book’s classification and resampling chapters. Connect the choice of k and validation data to why the final test must stay separate.",
+      "d2l-generalization":
+        "A mathematical follow-up on training error versus error on new data. Read after the lab; the examples use regression rather than k-nearest neighbours.",
     },
   },
 };

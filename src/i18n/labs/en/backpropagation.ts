@@ -305,6 +305,8 @@ const copy = {
       "cs231n-backprop": "Gates, local gradients and the sum where a value is used twice.",
       "ng-vanishing": "Why a long chain of factors below or above 1 shrinks or blows up.",
       "ng-gradcheck": "Comparing backprop with nudging, as the lab's last section does.",
+      "d2l-backprop-book":
+        "Follow the forward and backward passes on one computational graph. The equations show how the lab’s local derivatives combine into weight gradients.",
     },
   },
 };
