@@ -57,6 +57,7 @@ export interface LessonPanelProps {
   /** The key the last wrong press was supposed to be. */
   miss: KeyId | null;
   playing: boolean;
+  completed: boolean;
   onPick: (id: string) => void;
   onShowMe: () => void;
   onRestart: () => void;
@@ -70,6 +71,7 @@ export function LessonPanel({
   progress,
   miss,
   playing,
+  completed,
   onPick,
   onShowMe,
   onRestart,
@@ -81,7 +83,7 @@ export function LessonPanel({
     later(l, model.id) ? copy.notYet(model.name) : copy.notOnModel(model.name);
   const starts = stepStarts(lesson, model);
   const total = steps.reduce((n, step) => n + step.keys.length, 0);
-  const finished = available && progress >= total;
+  const finished = available && progress >= total && completed;
   const current = finished
     ? steps.length
     : starts.reduce((found, start, i) => (start <= progress ? i : found), 0);
@@ -167,6 +169,13 @@ export function LessonPanel({
           })}
         </ol>
 
+        {available && progress >= total && !completed && (
+          <p role="alert" className="mt-4 text-body-sm text-signal-amber">
+            {language === "tr"
+              ? "Sonuç beklenen durumla uyuşmuyor. Dersi baştan başlatıp tekrar dene."
+              : "The result does not match the lesson. Restart and try again."}
+          </p>
+        )}
         {miss && !finished && (
           <p
             role="alert"

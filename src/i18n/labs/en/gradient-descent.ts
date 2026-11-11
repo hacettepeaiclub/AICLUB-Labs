@@ -39,7 +39,7 @@ const copy = {
   status: {
     running: "Running",
     converged: "Reached the goal",
-    diverged: "Diverged",
+    diverged: "Distance limit exceeded",
     exhausted: "Ran out of steps",
   },
 
@@ -137,12 +137,13 @@ const copy = {
       oscillating:
         "η is past 1/c on the steeper axis: it changes sign each step but still shrinks.",
       boundary: "η is exactly 2/c on the steeper axis: that coordinate neither shrinks nor grows.",
-      divergent: "η is past 2/c on the steeper axis: that coordinate grows every step.",
+      divergent:
+        "η is past 2/c on the steeper axis: a non-zero value on that coordinate grows every step. A coordinate starting exactly at zero stays zero.",
     },
     scope:
       "These thresholds are exact for the quadratic used here, whose curvature is the same at every point. Where curvature changes as you move, the usable step size changes with it.",
     caption:
-      "The stability limit is 2 ÷ the larger curvature, so it moves when the landscape does. No step size is large or small on its own: the same η that leaves this landscape entirely settles quietly on a gentler one.",
+      "For this quadratic, 0 < η < 2/max(a,b) guarantees convergence from every starting point. A steep coordinate starting exactly at zero can remain stable beyond this bound. No step size is large or small on its own: the same η that leaves this landscape entirely settles quietly on a gentler one.",
   },
 
   golf: {

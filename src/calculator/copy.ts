@@ -51,7 +51,7 @@ const en = {
   unsupported: "That key or menu item is on the real calculator but not in this simulator.",
   full: "The data table is full.",
   disclaimer:
-    "A simulation. The key sequences come from Casio's own guides for these models, but the screen is simplified: one line of input, no textbook layout, and only the menus the lessons use. When your calculator shows something different, trust your calculator.",
+    "A simulation. The key sequences come from Casio's own guides for these models, but the screen is simplified: one line of input, no textbook layout, and only the menus the lessons use. Integrals, derivatives and SOLVE use numerical approximations; difficult functions can lose accuracy or produce Math ERROR. When your calculator shows something different, trust your calculator.",
   shiftLabel: "SHIFT is on: the next key does what is printed above it, in amber.",
   dailyOverline: (n: number) => `Daily puzzle #${n}`,
   dailyTitle: "Five questions, three tries each",
@@ -146,7 +146,7 @@ const tr: CalculatorCopy = {
   unsupported: "Bu tuş ya da menü gerçek hesap makinesinde var ama bu simülatörde yok.",
   full: "Veri tablosu dolu.",
   disclaimer:
-    "Bu bir simülasyon. Tuş sıraları Casio'nun bu modeller için yayımladığı kılavuzlardan alındı, ama ekran sadeleştirildi: tek satır giriş, ders kitabı görünümü yok ve yalnızca derslerin kullandığı menüler var. Hesap makinen farklı bir şey gösterirse kendi hesap makinene güven.",
+    "Bu bir simülasyon. Tuş sıraları Casio'nun bu modeller için yayımladığı kılavuzlardan alındı, ama ekran sadeleştirildi: tek satır giriş, ders kitabı görünümü yok ve yalnızca derslerin kullandığı menüler var. İntegral, türev ve SOLVE sayısal yaklaşımlardır; zor fonksiyonlarda hassasiyet kaybı veya Math ERROR görülebilir. Hesap makinen farklı bir şey gösterirse kendi hesap makinene güven.",
   shiftLabel: "SHIFT açık: sıradaki tuş, üstünde turuncu yazan işi yapar.",
   dailyOverline: (n: number) => `Günün soruları #${n}`,
   dailyTitle: "Beş soru, her soruda üç hak",

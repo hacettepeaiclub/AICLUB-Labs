@@ -493,7 +493,24 @@ export function makePuzzle(model: ModelId, day: string): PuzzleTask[] {
     used.add(kind);
     const tpl = templateOf(kind);
     const made = tpl.make(rng);
-    return { kind, topic: tpl.topic, read: screenAnswers, abs: 0, ...made };
+    return {
+      kind,
+      topic: tpl.topic,
+      read: (state) => {
+        if (state.screen.s !== "statList") return screenAnswers(state);
+        if (kind === "slope") {
+          const result = twoVariable(state.stat.rows);
+          return state.screen.list === "reg" && result ? [result.b] : [];
+        }
+        const result = oneVariable(state.stat.rows.map((row) => row.x));
+        const field = ({ mean: "mean", sampleSd: "sampleSd", popVariance: "popVar" } as const)[
+          kind as "mean" | "sampleSd" | "popVariance"
+        ];
+        return state.screen.list !== "reg" && result && field ? [result[field]] : [];
+      },
+      abs: 0,
+      ...made,
+    };
   });
 }
 

@@ -138,15 +138,15 @@ const esMean = (stat: KeyId): LessonStep[] => [
   {
     keys: ["shift", "1", "4", "3", "eq"],
     say: t(
-      "SHIFT 1, 4, 3 (σx), =: 2. The population standard deviation, which divides by n.",
-      "SHIFT 1, 4, 3 (σx), =: 2. Bu kitle (popülasyon) standart sapması: n'e böler.",
+      "SHIFT 1, 4, 3 (σx), =: 2. The population standard deviation: square root of the sum of squared deviations divided by n.",
+      "SHIFT 1, 4, 3 (σx), =: 2. Kitle standart sapması: kareli sapmalar toplamını n'e bölüp karekökünü alır.",
     ),
   },
   {
     keys: ["shift", "1", "4", "4", "eq"],
     say: t(
-      "SHIFT 1, 4, 4 (sx), =: 2.138089935. The sample standard deviation, which divides by n − 1.",
-      "SHIFT 1, 4, 4 (sx), =: 2.138089935. Bu örneklem standart sapması: n − 1'e böler.",
+      "SHIFT 1, 4, 4 (sx), =: 2.138089935. The sample standard deviation: square root of the sum of squared deviations divided by n − 1.",
+      "SHIFT 1, 4, 4 (sx), =: 2.138089935. Örneklem standart sapması: kareli sapmalar toplamını n − 1'e bölüp karekökünü alır.",
     ),
   },
 ];
@@ -549,15 +549,15 @@ export const LESSONS: Lesson[] = [
         {
           keys: ["shift", "2", "2", "eq"],
           say: t(
-            "SHIFT 2, 2 (σx), =: 2. The population standard deviation, which divides by n.",
-            "SHIFT 2, 2 (σx), =: 2. Bu kitle (popülasyon) standart sapması: n'e böler.",
+            "SHIFT 2, 2 (σx), =: 2. The population standard deviation: square root of the sum of squared deviations divided by n.",
+            "SHIFT 2, 2 (σx), =: 2. Kitle standart sapması: kareli sapmalar toplamını n'e bölüp karekökünü alır.",
           ),
         },
         {
           keys: ["shift", "2", "3", "eq"],
           say: t(
-            "SHIFT 2, 3 (sx), =: 2.138089935. The sample standard deviation, which divides by n − 1.",
-            "SHIFT 2, 3 (sx), =: 2.138089935. Bu örneklem standart sapması: n − 1'e böler.",
+            "SHIFT 2, 3 (sx), =: 2.138089935. The sample standard deviation: square root of the sum of squared deviations divided by n − 1.",
+            "SHIFT 2, 3 (sx), =: 2.138089935. Örneklem standart sapması: kareli sapmalar toplamını n − 1'e bölüp karekökünü alır.",
           ),
         },
       ],
@@ -1637,10 +1637,10 @@ const CW: Record<string, LessonStep[]> = {
       say: t("The x column first: 1, 2, 3, 4, 5.", "Önce x sütunu: 1, 2, 3, 4, 5."),
     },
     {
-      keys: ["down", "right"],
+      keys: [...UP_FIVE, "right"],
       say: t(
-        "▼ from the empty row goes back to the top; ▶ to the y column.",
-        "Boş satırdan ▼ en üste döner; ▶ ile y sütununa geç.",
+        "Press ▲ five times to return to the first row, then ▶ to the y column.",
+        "▲ tuşuna beş kez basarak ilk satıra dön, sonra ▶ ile y sütununa geç.",
       ),
     },
     { keys: exe(...REG_Y), say: t("Then y: 2, 4, 5, 4, 5.", "Sonra y: 2, 4, 5, 4, 5.") },

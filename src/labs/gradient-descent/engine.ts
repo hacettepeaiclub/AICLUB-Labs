@@ -15,9 +15,8 @@
  *   size you are allowed to take. When curvature differs by direction, one
  *   step size cannot serve every direction at once.**
  *
- * In one dimension a gradient is only a sign, so it always points at the
- * minimum, and there is only one curvature, so "badly conditioned" has no
- * meaning. Both of those appear the moment there are two axes.
+ * The negative gradient gives the local steepest descent direction. On this
+ * convex quadratic it need not point directly toward the minimizer.
  *
  * ## The objective
  *
@@ -83,7 +82,7 @@ export const gradient = (l: Landscape, p: Point): Point => ({ x: l.a * p.x, y: l
  * The exact stability boundary for plain gradient descent.
  *
  * Each coordinate evolves independently by the factor (1 − η·c) for its own
- * curvature c, so the whole run converges iff |1 − η·c| < 1 for both, i.e.
+ * curvature c, so convergence from every starting point is guaranteed iff |1 − η·c| < 1 for both, i.e.
  * iff 0 < η < 2/max(a, b). At exactly 2/c that coordinate orbits forever
  * without shrinking; above it, it grows without bound.
  *
