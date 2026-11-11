@@ -93,6 +93,39 @@ export const TOURS: Tours = {
       },
     ],
   },
+  jepa: {
+    picture: [
+      { id: "grid", target: { part: "viewport" } },
+      {
+        id: "patch",
+        target: { part: "viewport", select: "[data-patch]", nth: 5 },
+        action: { kind: "click" },
+      },
+      { id: "another", target: { part: "primary", select: "button" }, action: { kind: "click" } },
+    ],
+    train: [
+      { id: "hidden", target: { part: "viewport" } },
+      {
+        id: "play",
+        target: { part: "primary", select: "button", nth: 0 },
+        action: { kind: "click" },
+      },
+      { id: "watch", target: { part: "figures" } },
+    ],
+    collapse: [
+      { id: "off", target: { part: "primary", select: "input[type=checkbox]" } },
+      {
+        id: "play",
+        target: { part: "primary", select: "button", nth: 0 },
+        action: { kind: "click" },
+      },
+      { id: "zero", target: { part: "figures" } },
+    ],
+    pixels: [
+      { id: "compare", target: { part: "viewport" } },
+      { id: "another", target: { part: "primary", select: "button" }, action: { kind: "click" } },
+    ],
+  },
   generalization: {
     experiment: [
       { id: "map", target: { part: "viewport" } },

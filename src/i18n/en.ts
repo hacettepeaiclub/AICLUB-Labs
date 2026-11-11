@@ -246,6 +246,13 @@ export const en = {
       figure: "Gaussian noise and a finite prior",
       description: "Explore a reverse process and the prior it depends on.",
     },
+    jepa: {
+      title: "The Missing Piece",
+      term: "Self-supervised learning",
+      figure: "a hidden patch is guessed from its neighbours, as a point on a map of meanings.",
+      description:
+        "Hide part of a picture and watch a model learn by guessing what the hidden part is, not what it looks like.",
+    },
     generalization: {
       title: "Learned or memorised?",
       term: "Generalisation",

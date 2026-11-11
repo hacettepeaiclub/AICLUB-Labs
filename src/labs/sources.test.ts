@@ -53,6 +53,9 @@ const VERIFIED: Record<SourceId, { year: number | null; doi: string | null; must
   mutex: { year: 1965, doi: "10.1145/365559.365617", mustSay: "Dijkstra" },
   concurrencyBugs: { year: 2008, doi: "10.1145/1346281.1346323", mustSay: "Lu" },
   therac: { year: 1993, doi: "10.1109/MC.1993.274940", mustSay: "Leveson" },
+  ijepa: { year: 2023, doi: "10.1109/CVPR52729.2023.01499", mustSay: "Assran" },
+  byol: { year: 2020, doi: null, mustSay: "Grill" },
+  lecunPath: { year: 2022, doi: null, mustSay: "LeCun" },
 };
 
 /** Every lab that carries the shared Sources section, and what it cites. */
@@ -73,6 +76,7 @@ const LAB_SOURCES: Record<string, readonly SourceId[]> = {
   backpropagation: ["backpropagation", "linnainmaa", "griewank", "autodiffSurvey", "vanishing"],
   "cache-locality": ["drepper", "memoryWall", "blocked", "locality"],
   "race-condition": ["ostep", "mutex", "concurrencyBugs", "therac"],
+  jepa: ["ijepa", "byol", "lecunPath"],
 };
 
 type Dict = typeof enLabs;

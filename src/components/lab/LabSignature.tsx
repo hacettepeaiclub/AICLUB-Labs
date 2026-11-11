@@ -278,6 +278,61 @@ function Shape({ slug }: { slug: string }) {
         </g>
       );
     }
+    case "jepa": {
+      /*
+       * A picture cut into patches with a 2×2 block hidden, and an arrow from
+       * the visible neighbours to a point among a cluster: the hidden part is
+       * guessed as a place on a map of meanings, not painted back in pixels.
+       */
+      const cells = Array.from({ length: 16 }, (_, i) => ({
+        x: 4 + (i % 4) * 7,
+        y: 6 + Math.floor(i / 4) * 7,
+      }));
+      const hidden = new Set([5, 6, 9, 10]);
+      return (
+        <g>
+          {cells.map((c, i) =>
+            hidden.has(i) ? null : (
+              <rect
+                key={i}
+                x={c.x}
+                y={c.y}
+                width="6"
+                height="6"
+                className={HASH_FILLS[(i * 7) % HASH_FILLS.length]}
+              />
+            ),
+          )}
+          <rect
+            x="11"
+            y="13"
+            width="13"
+            height="13"
+            fill="none"
+            className={inert}
+            strokeDasharray="2 2"
+          />
+          <path
+            d="M33 19.5H43"
+            fill="none"
+            className={`${structure} sig-draw`}
+            pathLength={1}
+            strokeWidth="1.2"
+          />
+          <path d="M41 17.5l2.5 2-2.5 2" fill="none" className={structure} strokeWidth="1.2" />
+          {[
+            [50, 12],
+            [55, 15],
+            [52, 27],
+            [57, 30],
+            [59, 22],
+          ].map(([x, y]) => (
+            <circle key={`${x}-${y}`} cx={x} cy={y} r="1.6" className="fill-fg-faint" />
+          ))}
+          <circle cx="52" cy="14" r="2.4" className="fill-data" />
+        </g>
+      );
+    }
     case "generalization": {
       return (
         <g>
