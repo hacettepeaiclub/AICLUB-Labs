@@ -4,13 +4,13 @@ import type en from "../en/reinforcement-learning";
 
 const copy: typeof en = {
   sources: {
-    title: "Sources",
+    title: "Kaynaklar",
     qLearning:
       "Tablo tabanlı Q-öğrenme güncelleme kuralını ve yakınsama koşullarını destekler. Izgara, ödüller ve ziyaretçinin ayarladığı karo laboratuvara aittir.",
   },
 
   room: {
-    title: "The room",
+    title: "Ajanın hareket alanı",
     question:
       "Ajan, ödüllere göre hareket etmeyi öğreniyor. Ödülü değiştirince çıkışa giden yol nasıl değişir?",
     sliderLabel: "İşaretli kare robot için ne kadar değerli?",
@@ -28,8 +28,8 @@ const copy: typeof en = {
   },
 
   learn: {
-    kicker: "How did it work this out?",
-    title: "It kept a number for every move it could make.",
+    kicker: "Bunu nasıl çözdü?",
+    title: "Ajan bir hamlenin değerini nasıl öğrenir?",
     lede: "Ödül ayarını değiştirdiğinde ajan yeniden eğitilir. Gösterilen Q-değerleri bu eğitimin sonucudur.",
 
     scrubber: "Ne kadar deneme yaptığı",
@@ -47,7 +47,7 @@ const copy: typeof en = {
     actions: { 0: "yukarı", 1: "aşağı", 2: "sola", 3: "sağa" },
     noAction: "hiçbir yere: burası kapı",
     bestAction: "en iyi",
-    selectedTitle: (row: number, col: number) => `Row ${row}, column ${col}`,
+    selectedTitle: (row: number, col: number) => `Satır ${row}, sütun ${col}`,
     chain: (row: number, col: number, action: string, value: string) =>
       `Satır ${row}, sütun ${col} üzerindeyken robotun yapabileceği dört hamle ve her biri için bir sayı var. En büyüğünü seçiyor (${action} giderek elde ettiği ${value}), çünkü o hamle en son denediğinde onu daha iyi bir yere götürmüştü. Bunu birkaç yüz kez tekrarlayın, sayılar değişmeyi bırakır.`,
 
@@ -57,7 +57,7 @@ const copy: typeof en = {
     propagation:
       "Kaydırıcıyı en başa çek. İlk on-on beş denemede hiçbir şeyin değeri yok: robot dolanıyor ve attığı her adım ona biraz pahalıya geliyor. Sonra kapıya tesadüfen giriyor, kapının yanındaki bir kare pozitife dönüyor ve sonraki birkaç denemede bu iyi haber odaya doğru, kare kare yayılıyor. Öğrenmenin tamamı bu yayılma.",
 
-    formulaTitle: "The rule it applies after every single move",
+    formulaTitle: "Her hamleden sonra uyguladığı kural",
     formulaNote:
       "Şöyle oku: az önce yaptığın hamlenin sayısını, gerçekte elde ettiğin ödüle ve vardığın yerden artık mümkün gördüğün en iyi değere doğru biraz kaydırın. α bu kaydırmanın büyüklüğü, γ ise ileride gelecek bir ödülün şimdikine kıyasla ne kadar değerli sayıldığı.",
 
@@ -78,7 +78,7 @@ const copy: typeof en = {
       "Ajan 27 hücreli deterministik ortamda tablo tabanlı Q-learning kullanır. Bu küçük örnek, verilen ödül ile istenen davranışın neden farklılaşabildiğini gösterir.",
   },
   world: {
-    title: "The room",
+    title: "Ajanın hareket alanı",
     question: "Ajan ne yapmalı?",
     sliderHint:
       "Dünyaya dair karar verebileceğin tek şey bu. Geri kalan her şey (duvarlar, kapı, bir hamlenin maliyeti) sabit.",
@@ -90,7 +90,7 @@ const copy: typeof en = {
     padHint: "Ya da yön tuşlarını kullan.",
     arrived: "Kapıya ulaştın. Bu, turu bitirir.",
     restart: "Başa dön",
-    ledgerTitle: "What each move paid",
+    ledgerTitle: "Her hamle ne ödedi",
     ledgerEmpty: "Bir hamle yapın. Neye mal olduğu ve nedeni burada görünecek.",
     consequence: {
       floor: "bir kare ilerledi",
@@ -111,8 +111,8 @@ const copy: typeof en = {
   },
 
   train: {
-    kicker: "Nobody showed it the way",
-    title: "It tries, and the trying is the training.",
+    kicker: "Kimse ona yolu göstermedi",
+    title: "Yeni bir hamleyi denemek ne zaman işe yarar?",
     lede: "Eğit düğmesine bas. Ajan hareket ederek ödül toplar ve Q-değerlerini günceller. Oklar, sayılar ve eğri bu çalıştırmanın sonuçlarını gösterir.",
     caption:
       "Adım'a bir basış bir hamledir: seç, hareket et, ödülü topla, bir sayıyı güncelle. Eğit aynı şeyi tur tur tekrarlar.",
@@ -121,7 +121,7 @@ const copy: typeof en = {
     speedLabel: "Saniyedeki tur",
     mapLabel: (episode: number, total: number) =>
       `${total} turun ${episode}. turunda oda. Oklar, politikanın her karede seçeceği hamledir; iz ise sürmekte olan turun rotasıdır.`,
-    curveTitle: "Reward per episode",
+    curveTitle: "Tur başına ödül",
     curveEmpty: "Bir iki tur çalıştır, eğri burada başlasın.",
     curveLabel: (episodes: number, first: string, last: string) =>
       `${episodes} turun her birinde toplanan ödül, yumuşatılmış. ${first} civarında başlıyor ve sonunda ${last} civarına geliyor.`,
@@ -142,15 +142,15 @@ const copy: typeof en = {
   },
 
   policy: {
-    kicker: "What it built while doing that",
-    title: "A number for every move, and a route that falls out of them.",
+    kicker: "Bunu yaparken ne kurdu",
+    title: "Öğrenilen değerler rotayı nasıl belirler?",
     lede: "Ajan hazır bir rota saklamaz. Her hücre ve hareket için bir Q-değeri tutar. En yüksek değerli hareketleri izlediğinde bir rota oluşur. Eğitim öncesi ve sonrasını karşılaştır.",
     caption:
       "Bir ok, Q-değeri değildir. O karedeki en büyük Q-değerine sahip hamledir; politika kelimesinin anlamı da budur. Seçildiği dört sayı aşağıda.",
-    beforeTitle: "Before training",
+    beforeTitle: "Eğitimden önce",
     beforeLabel:
       "Hiç eğitim yapılmadan önceki oda. Bütün sayılar sıfır olduğu için her kare aynı yönü gösteriyor: hiçbir şey bilmemek böyle görünür.",
-    afterTitle: (episode: number) => `After ${episode} episodes`,
+    afterTitle: (episode: number) => `${episode} tur sonra`,
     afterLabel: (episode: number) =>
       `${episode} tur sonrasında oda. Her kare, politikanın orada seçtiği hamleyi ve oradaki en iyi hamlenin ne kadar iyi olduğunu gösteriyor. Dört sayısını da görmek için bir kare seç.`,
     pickLabel: "Bir kareyi incele",
@@ -166,8 +166,8 @@ const copy: typeof en = {
   },
 
   update: {
-    kicker: "Why did it learn that?",
-    title: "One number moved. Here is the whole reason.",
+    kicker: "Bunu neden öğrendi?",
+    title: "Bir hamlenin değeri neden değişti?",
     lede: "Her hareketin ardından yalnız ilgili durum-hareket çiftinin Q-değeri güncellenir. Aşağıda son hareketin ödülünü, hedef değerini ve güncelleme sonucunu görebilirsin.",
     caption:
       "Henüz hareket yapılmadıysa güncelleme gösterilmez. Bir adım çalıştırarak hesabı incele.",
@@ -201,7 +201,7 @@ const copy: typeof en = {
       updated: "Şimdi neye inanıyor",
       updatedBody: "Eski sayı, yeni kanıta doğru yolun bir kısmını gitti.",
     },
-    formulaTitle: "The rule, once per move",
+    formulaTitle: "Kural, hamle başına bir kez",
     tableCaption: "Güncellemenin her terimi ve bu hamlede aldığı değer.",
     terms: {
       before: "Q(s,a) önce",
@@ -219,12 +219,12 @@ const copy: typeof en = {
   },
 
   rules: {
-    kicker: "Change the rules",
-    title: "Three dials, and what each one actually changes.",
+    kicker: "Kuralları değiştir",
+    title: "Üç ayarın öğrenmeye etkisi",
     lede: "Bu labda bir eğitim ayarını değiştirmek çalıştırmayı sıfırlar. Yeni ayarla yeniden eğit ve öğrenme eğrisini karşılaştır.",
     caption:
       "Bu oda küçük. Üçünü de taradığımızda ajanın neredeyse her ayarla odayı çözdüğü görüldü: bunların değiştirdiği şey, eğrinin ne kadar hızlı oturduğu, yolda ne kadar gürültülü olduğu ve oturup oturmadığı.",
-    curveTitle: "Reward per episode, this run",
+    curveTitle: "Bu koşuda tur başına ödül",
     curveEmpty: "Doldurmak için yukarıdan Eğit'e bas.",
     curveHint: "On tur üzerinden yumuşatıldı. Her nokta çalıştırılmış bir tur.",
     curveLabel: (episodes: number, last: string, settled: string) =>
@@ -258,8 +258,8 @@ const copy: typeof en = {
   },
 
   challenge: {
-    kicker: "Now you set the reward",
-    title: "Can you make it learn this?",
+    kicker: "Şimdi ödülü siz belirleyin",
+    title: "Ödülleri değiştirerek hedef davranışı öğret",
     lede: "Üç görev. Her birinde ajan istemediğin bir şey yapıyor ve değiştirebileceğin tek bir sayı var. Hiçbiri kaydırıcıyı belirli bir yere koyarak geçilemez: ajanın o şeyi gerçekten yapması gerekir.",
     puzzleLabel: "Görev",
     levers: {
@@ -273,21 +273,21 @@ const copy: typeof en = {
     },
     puzzles: {
       cross: {
-        title: "Walk over it",
+        title: "Üstünden geçsin",
         brief:
           "Kare −3 değerinde, bu yüzden ajan iki fazla hamle yapıp etrafından dolaşıyor. Bunun yerine kapıya giderken karenin üstünden geçmesini sağla, ama orada durmasına yol açmadan.",
         lesson:
           "Bir eşik değil, bir aralık var. Karenin değeri, kazandırdığı dolambaçtan fazla ve yerini alacağı kapıdan az olmalı.",
       },
       camp: {
-        title: "Make it give up on the door",
+        title: "Kapıdan vazgeçsin",
         brief:
           "Kare hiçbir şey etmiyor, bu yüzden ajan üstünden geçip yoluna devam ediyor. Kapıya hiç gitmemesini sağla. Kapıyı ya da duvarları oynatamazsın, yalnızca karenin ödediğini.",
         lesson:
           "Ona durmasını hiç söylemedin. Karenin bitirmekten daha değerli olduğunu söyledin, o da size inandı. Tek bir kaydırıcıda bütün laboratuvar.",
       },
       settle: {
-        title: "It never settles",
+        title: "Bir türlü oturmuyor",
         brief:
           "Keşif bütün koşu boyunca 0,9'a sabitlenmiş: on hamlenin dokuzu rastgele. Sondaki tablo gayet iyi ama ajan turları neredeyse hiç bitiremiyor. Kapıya güvenilir biçimde ulaşmasını sağla.",
         lesson:
@@ -363,9 +363,9 @@ const copy: typeof en = {
   // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
   study: {
     topics: {
-      reward: "Rewards, states and actions",
-      q: "Learning by trying: Q-learning",
-      gaming: "It optimises what you wrote down",
+      reward: "Ödüller, durumlar ve eylemler",
+      q: "Deneyerek öğrenmek: Q-learning",
+      gaming: "Yazdığınızı optimize eder",
     },
     notes: {
       "sq-rl": "Pekiştirmeli öğrenmenin ana fikirleri.",

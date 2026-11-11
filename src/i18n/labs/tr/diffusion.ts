@@ -24,9 +24,9 @@ const copy = {
   },
   study: {
     topics: {
-      visual: "Start visually",
-      foundations: "Mathematical foundations",
-      practice: "Build and sample",
+      visual: "Görsel başlangıç",
+      foundations: "Matematiksel temeller",
+      practice: "Kodla kur ve örnekle",
     },
     notes: {
       "hf-ddim":

@@ -192,8 +192,8 @@ export default function DiffusionLab() {
         }
       />
       <section className="rounded-lg border border-line/20 bg-ink-800 p-5">
-        <h2 lang="en" className="text-title text-fg">
-          {"What does this model know?"}
+        <h2 className="text-title text-fg">
+          {tr ? "Model tahmin yaparken hangi bilgileri kullanır?" : "What does this model know?"}
         </h2>
         <p className="mt-3 text-body-sm text-fg-muted">
           {tr

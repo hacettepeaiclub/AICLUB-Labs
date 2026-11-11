@@ -23,9 +23,7 @@ export function NotFoundPage() {
     <div className="shell grid min-h-[60vh] items-center gap-10 py-section md:grid-cols-[minmax(0,1fr)_20rem]">
       <div className="text-center md:text-left">
         <p className="font-mono text-display-lg text-fg-faint">404</p>
-        <h1 lang="en" className="mt-2 text-display-md text-fg">
-          {t.notFound.title}
-        </h1>
+        <h1 className="mt-2 text-display-md text-fg">{t.notFound.title}</h1>
         <p className="mt-3 text-body text-fg-muted">{t.notFound.body}</p>
         <Link
           to="/"

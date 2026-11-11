@@ -4,7 +4,7 @@ import type en from "../en/gradient-descent";
 
 const copy: typeof en = {
   sources: {
-    title: "Sources",
+    title: "Kaynaklar",
     momentum:
       "Laboratuvar\u0131n sundu\u011fu momentum y\u00f6ntemini ve bu y\u00f6ntemin t\u00fcredi\u011fi a\u011f\u0131r top g\u00fcncellemesini destekler.",
     adam: "Laboratuvarın sunduğu Adam optimizer’ı, motorun hesapladığı moment kestirimleri ve yanlılık düzeltmesi dahil olmak üzere destekler.",
@@ -89,15 +89,15 @@ const copy: typeof en = {
       "Topun son adımından daha fazlasını korumasını sağlamak için kadranı çevir. Başka bir yere bırakmak için haritalardan birine dokun.",
   },
   find: {
-    title: "Find the bottom",
+    title: "En düşük noktayı bul",
     question: "Ne kadar büyük bir adım atabilirsin?",
     caption:
       "Camgöbeği ok, ölçeğine uygun çizilmiş ilk adımdır. Onu uzatınca bütün adımlar onunla birlikte büyür. Sayılardan çok yolun biçimine bak.",
   },
 
   direction: {
-    kicker: "Why that direction",
-    title: "A gradient is a vector, and it is not a pointer to the answer.",
+    kicker: "Neden o yön",
+    title: "Gradyan hangi yönü gösterir?",
     lede: "Düz ok negatif gradyanı, −∇f = −(a·x, b·y), kesikli ok ise minimuma giden yönü, −(x, y), gösterir. Eğrilikler farklı olduğunda bu yönler genellikle ayrılır. Noktayı ve eğrilik oranını değiştirerek karşılaştır.",
     descent: "Adımın gittiği yön: −∇f",
     target: "Minimuma giden doğru",
@@ -121,8 +121,8 @@ const copy: typeof en = {
   },
 
   rate: {
-    kicker: "The step size",
-    title: "The ceiling belongs to the surface.",
+    kicker: "Adım boyu",
+    title: "Adım boyu ne zaman fazla gelir?",
     lede: "Aynı yüzeyde yalnız adım boyunu değiştir. Haritanın altındaki eşikler bu yüzeyin eğriliklerinden hesaplanır.",
     marks: { monotone: "aşma yok", stability: "kararlılık sınırı" },
     regimes: {
@@ -145,8 +145,8 @@ const copy: typeof en = {
   },
 
   golf: {
-    kicker: "Now play it",
-    title: "Gradient golf.",
+    kicker: "Şimdi oynayın",
+    title: "Kaç adımda hedefe ulaşabilirsin?",
     lede: "Altı farklı başlangıçta minimuma ulaşmaya çalış. Yönü negatif gradyan belirler. Seçtiğin sopa adım boyunu değiştirir.",
     caption:
       "Her vuruş, laboratuvarın geri kalanıyla aynı motorun hesapladığı tek bir sade gradient descent adımıdır. Par, her başlangıç noktası için elindeki altı sopanın aynısıyla arama yapılarak bulunur.",
@@ -238,9 +238,9 @@ const copy: typeof en = {
           "Daha da dar bir yüzey ve vuruş sayısı yine artar. Tek bir adım boyuyla sınırı dik yön koyar, bedelini yatık yön öder. Sonraki iki bölümdeki momentum ve Adam, bundan çıkmanın iki yoludur.",
       },
     },
-    scorecard: { title: "Scorecard", hole: "Delik", par: "Par", you: "Sen" },
+    scorecard: { title: "Skor kartı", hole: "Delik", par: "Par", you: "Sen" },
     intro: {
-      kicker: "The course",
+      kicker: "Saha",
       story:
         "Top parametrelerdir, delik de minimum. Nişan almazsın: her vuruş yokuş aşağı, tam −∇f doğrultusunda gider. Seçtiğin tek şey sopadır ve bir sopa, bir adım boyudur.",
       rules: [
@@ -251,7 +251,7 @@ const copy: typeof en = {
       ],
     },
     end: {
-      kicker: "The round",
+      kicker: "Tur",
       relative: "Par farkı: E eşit demektir, eksi par altıdır.",
       newBest: "Bu tarayıcıdaki yeni rekorun.",
       takeaways: [
@@ -264,7 +264,7 @@ const copy: typeof en = {
 
   momentumSection: {
     kicker: "Momentum",
-    title: "Carrying something over from the last step.",
+    title: "Momentum bir sonraki adımı nasıl etkiler?",
     lede: "Momentum, önceki gradyanların etkisini bir hız değişkeninde tutar: v ← β·v + ∇f, ardından θ ← θ − η·v. β’yı değiştir ve aynı başlangıçtan yapılan iki çalıştırmayı karşılaştır.",
     marks: { plain: "düz sınır", momentum: "momentum sınırı" },
     caption:
@@ -280,9 +280,9 @@ const copy: typeof en = {
 
   adam: {
     kicker: "Adam",
-    title: "One step size per parameter.",
+    title: "Her parametre için ayrı adım boyu",
     lede: "Adam, gradyanların ve karelerinin hareketli ortalamalarını kullanır. Başlangıç yanlılığı düzeltildikten sonra güncelleme η·m̂ / (√ŝ + ε) olarak hesaplanır. Her koordinatın adımı bu değerlerle ölçeklenir.",
-    firstStepTitle: "The first step, where the two curvatures are a million apart",
+    firstStepTitle: "İki eğriliğin bir milyon kat ayrıldığı yerde ilk adım",
     firstStepLede: (a: string, b: string) =>
       `Bir eksende eğrilik ${a}, diğerinde ${b}. Gradyanın iki bileşeni arasında yaklaşık bir milyon kat fark var. Aşağıdaki her sayı, engine tek adım çalıştırılarak ölçülüyor.`,
     tableCaption:
@@ -301,8 +301,8 @@ const copy: typeof en = {
   },
 
   challenge: {
-    kicker: "Three questions",
-    title: "The budget is counted in steps.",
+    kicker: "Üç soru",
+    title: "Aynı adım sayısıyla hangi yöntem daha ileri gider?",
     lede: "Her görevde yüzey, başlangıç noktası ve adım sınırı sabittir. Verilen adım sayısı içinde hedef toleransa ulaşan ayarları bul.",
     puzzle: "Soru",
     budget: (n: number) => `${n} adım`,
@@ -326,7 +326,7 @@ const copy: typeof en = {
         "Çalışma yüzeyi terk etti: bu ayarlarda adım boyu buradaki kararlılık sınırında ya da üzerinde.",
     },
     transfer: {
-      title: "The same number, on a gentler landscape",
+      title: "Aynı sayı, daha yumuşak bir yüzeyde",
       divergesHereConvergesThere: (
         rate: string,
         limitHere: string,
@@ -343,17 +343,17 @@ const copy: typeof en = {
     },
     items: {
       c1: {
-        title: "Sweet spot",
+        title: "Tam nokta",
         brief:
           "Tek bir yüzey, düz gradient descent ve dar bir bütçe. Oraya çabucak ulaştıran bir adım boyu var; ulaştırmayan pek çok adım boyu da var.",
       },
       c2: {
-        title: "Too big",
+        title: "Fazla büyük",
         brief:
           "Bu, kararlılık sınırının üzerinde başlıyor ve ilk Çalıştır'da patlıyor. İşe yarayan bir adım boyu bul: sonra aynı sayının daha yumuşak bir yüzeyde ne yaptığına bak.",
       },
       c3: {
-        title: "Narrow valley",
+        title: "Dar vadi",
         brief:
           "κ = 60 olan bir vadi. Hiçbir adım boyu, düz gradient descent'in bu bütçe içinde bitirmesini sağlamıyor; diğer iki optimizer'ın var olma nedeni de bu.",
       },
@@ -428,9 +428,9 @@ const copy: typeof en = {
   // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
   study: {
     topics: {
-      downhill: "Downhill, one step at a time",
-      ceiling: "The step-size ceiling and the condition number",
-      momentum: "Momentum and Adam",
+      downhill: "Adım adım yokuş aşağı",
+      ceiling: "Adım boyu tavanı ve koşul sayısı",
+      momentum: "Momentum ve Adam",
     },
     notes: {
       "3b1b-gd": "Negatif gradyanın yokuş aşağı yön olması.",

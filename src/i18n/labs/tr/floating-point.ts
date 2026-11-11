@@ -4,7 +4,7 @@ import type en from "../en/floating-point";
 
 const copy: typeof en = {
   sources: {
-    title: "Sources",
+    title: "Kaynaklar",
     ieee754:
       "Bu laboratuvarın hesap yaptığı ikili formatları (float64, float32 ve float16), özel değerlerini ve varsayılan yuvarlamayı tanımlar: en yakın değere, eşitlikte çift olana. Laboratuvarın aritmetiği bu kuralların kendi kesin uygulamasıdır ve tarayıcınınkiyle karşılaştırılarak doğrulanmıştır.",
     goldberg:
@@ -31,7 +31,7 @@ const copy: typeof en = {
 
   // 1 ----------------------------------------------------------------------
   store: {
-    title: "What is actually stored",
+    title: "Bilgisayar hangi değeri saklar?",
     question:
       "Bir sayı yaz. Saklanan değerin tam ondalık gösterimini girdiğin sayıyla karşılaştır.",
     inputLabel: "Bir sayı",
@@ -57,8 +57,8 @@ const copy: typeof en = {
 
   // 2 ----------------------------------------------------------------------
   sum: {
-    kicker: "Adding two of them",
-    title: "What is 0.1 + 0.2?",
+    kicker: "İkisini toplamak",
+    title: "0.1 + 0.2 kaç eder?",
     lede: "Önce toplamı tahmin et. Sonra iki sayıyı gir ve float işleminin ürettiği değerin tam açılımını incele.",
     question: "Tarayıcın 0.1 + 0.2 için ne buluyor?",
     options: {
@@ -113,8 +113,8 @@ const copy: typeof en = {
 
   // 3 ----------------------------------------------------------------------
   bits: {
-    kicker: "Inside the bits",
-    title: "Flip a bit and watch the number.",
+    kicker: "Bitlerin içi",
+    title: "Bir biti değiştirince sayı nasıl değişir?",
     lede: "Float32 sayıları 32 bitle saklanır. Her kare bir bittir. Bir kareye tıklayıp işaret, üs veya kesir alanındaki değişimin sayıyı nasıl etkilediğini gör.",
     hint: "Önce soldan ikinci kareyi, sonra en sondakini dene.",
     groupLabel: "Bir float32'nin 32 biti, en anlamlıdan başlayarak",
@@ -153,8 +153,8 @@ const copy: typeof en = {
 
   // 4 ----------------------------------------------------------------------
   ruler: {
-    kicker: "Every value it can write",
-    title: "The numbers are not evenly spaced.",
+    kicker: "Yazabildiği her değer",
+    title: "Komşu sayılar arasındaki mesafe",
     lede: "Bu küçük format, kayan noktalı sayıların çalışma biçimini az sayıda bitle gösterir. Temsil edilebilen değerlerin tamamını çizgi üzerinde görebilirsin.",
     exponentBits: "Üs bitleri",
     fractionBits: "Kesir bitleri",
@@ -182,8 +182,8 @@ const copy: typeof en = {
 
   // 5 ----------------------------------------------------------------------
   gap: {
-    kicker: "Zooming in",
-    title: "Bigger numbers, bigger gaps.",
+    kicker: "Yakınlaştırmak",
+    title: "Sayı büyüdükçe hassasiyet nasıl değişir?",
     lede: "Float32 sayının büyüklüğünü değiştir. Temsil edilebilen bir sonraki sayıya olan uzaklığı incele.",
     slider: "Sayının büyüklüğü",
     sliderValue: (power: string) => `yaklaşık 2 üzeri ${power}`,
@@ -215,8 +215,8 @@ const copy: typeof en = {
 
   // 6 ----------------------------------------------------------------------
   formats: {
-    kicker: "Fewer bits, for AI",
-    title: "Range or precision: pick one.",
+    kicker: "Yapay zekâ için daha az bit",
+    title: "Değer aralığı ve hassasiyet",
     lede: "Bir yapay sinir ağı milyarlarca sayı saklar ve 16 bitlik bir sayı, 32 bitlik bir sayının yarısı kadar bellek kaplar. İki 16 bitlik format bitlerini farklı harcar: float16 daha çok kesir biti tutar, bfloat16 float32'nin üssünü korur.",
     examplesLabel: "Örnek değerler",
     examples: {
@@ -251,8 +251,8 @@ const copy: typeof en = {
 
   // 7 ----------------------------------------------------------------------
   challenge: {
-    kicker: "Your turn",
-    title: "Three things arithmetic says cannot happen.",
+    kicker: "Sıra sizde",
+    title: "Yuvarlama işlem sonucunu nasıl etkiler?",
     lede: "Görevleri çözmek için sayı formatlarının sınırlarını kullan. Yanıtlar bu labın tam aritmetik hesabıyla kontrol edilir.",
     pickLabel: "Bulmaca",
     solvedLabel: "Çözülen",
@@ -363,9 +363,9 @@ const copy: typeof en = {
   // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
   study: {
     topics: {
-      stored: "What a float can and cannot store",
-      rounding: "Rounding, again and again",
-      formats: "Range or precision",
+      stored: "Bir float neyi saklayabilir, neyi saklayamaz",
+      rounding: "Tekrar tekrar yuvarlama",
+      formats: "Aralık mı, hassasiyet mi",
     },
     notes: {
       "cp-float": "0,1 + 0,2'nin neden 0,3 olmadığı, en baştan.",

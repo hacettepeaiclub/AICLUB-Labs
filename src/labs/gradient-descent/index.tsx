@@ -32,7 +32,7 @@ export default function GradientDescent() {
       {/* 1 — Behaviour first: a question, a map, a slider, a button, and no
           vocabulary at all. η is not named until section 3. */}
       <section aria-labelledby="gd-find-heading">
-        <h2 lang="en" id="gd-find-heading" className="sr-only">
+        <h2 id="gd-find-heading" className="sr-only">
           {g.find.title}
         </h2>
         <p className="mb-6 max-w-prose text-body-lg text-fg">{g.find.question}</p>

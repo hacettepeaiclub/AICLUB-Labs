@@ -113,9 +113,7 @@ export function SchedulerStage({
                 aria-label={t.memory}
                 className="rounded border border-line/15 bg-ink-900 p-3 [grid-area:mem]"
               >
-                <h3 lang="en" className="text-overline uppercase text-fg-faint">
-                  {t.memory}
-                </h3>
+                <h3 className="text-overline uppercase text-fg-faint">{t.memory}</h3>
                 <dl className="mt-2 flex flex-wrap gap-x-6 gap-y-2 md:block md:space-y-2">
                   {variables.map((v) => (
                     <div key={v}>
@@ -231,9 +229,7 @@ function ThreadCard({
       )}
     >
       {/* The thread's state is on its button: ready, waiting, done. */}
-      <h3 lang="en" className={cn("font-mono text-body-sm font-medium", style.text)}>
-        {t.thread(name)}
-      </h3>
+      <h3 className={cn("font-mono text-body-sm font-medium", style.text)}>{t.thread(name)}</h3>
 
       <ol className="my-2.5 space-y-0.5 font-mono text-[0.7rem] leading-relaxed sm:text-caption">
         {program.lines.map((line, i) => {

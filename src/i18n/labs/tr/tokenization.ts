@@ -4,7 +4,7 @@ import type en from "../en/tokenization";
 
 const copy: typeof en = {
   sources: {
-    title: "Sources",
+    title: "Kaynaklar",
     subwordBpe:
       "Bayt çifti kodlamasını bir alt sözcük parçalama yöntemi olarak destekler. Buradaki sözlük, laboratuvarın kendi küçük eğitim metnini üzerinde eğitilir; herhangi bir üretim modelinin sözlüğü değildir.",
   },
@@ -14,8 +14,8 @@ const copy: typeof en = {
   stripSummary: (label: string, count: number, list: string) => `${label}. ${count} token: ${list}`,
 
   guess: {
-    sectionLabel: "Guess the cuts",
-    heading: "Where do you think this gets cut?",
+    sectionLabel: "Kesikleri tahmin edin",
+    heading: "Sizce bu metin nerelerden ayrılıyor?",
     lede: "Cümlenin hangi parçalara ayrılacağını tahmin et. Bir parçanın başlangıcı olduğunu düşündüğün harfleri işaretle, sonra tokenizer’ın sonucunu aç.",
     stripLabel: (sentence: string) =>
       `“${sentence}” cümlesi. Nerelerden ayrıldığını düşünüyorsanız işaretle. Sol ve sağ yön tuşlarıyla hareket edin, Boşluk ile kesik koyun veya kaldırın.`,
@@ -67,8 +67,8 @@ const copy: typeof en = {
   },
 
   train: {
-    kicker: "Where the pieces come from",
-    title: "Nobody chose those pieces.",
+    kicker: "Parçalar nereden geliyor",
+    title: "BPE hangi parçaları birleştirir?",
     lede: "Bu küçük eğitim metninde en sık geçen komşu çifti bul. Birleştir düğmesi, bu çiftin bütün eşleşmelerini tek parçaya dönüştürür. Sonraki adım için çiftler yeniden sayılır.",
     corpusLabel: "Okuduğu eğitim metni",
     mergeNext: "Sıradaki çifti birleştir",
@@ -100,8 +100,8 @@ const copy: typeof en = {
   },
 
   merge: {
-    kicker: "How much has it learned?",
-    title: "“One token” is a moving target.",
+    kicker: "Ne kadar öğrendi?",
+    title: "Bir kelime kaç token eder?",
     lede: "Kaydırıcıyla kullanılan BPE birleşim sayısını değiştir. Aynı cümlenin parçalara ayrılışını karşılaştır; istersen kendi cümleni yaz.",
     sentenceLabel: "Cümleniz",
     sentenceHint:
@@ -120,8 +120,8 @@ const copy: typeof en = {
   },
 
   compare: {
-    kicker: "Trained on what?",
-    title: "It cheapens whatever it has read.",
+    kicker: "Ne üzerinde eğitildi?",
+    title: "Eğitim metni token sayısını nasıl etkiler?",
     lede: "Aynı algoritmayla, farklı metinlerde eğitilmiş iki tokenizer’ı karşılaştır. Aynı girdinin token sayıları neden farklı?",
     textLabel: "İki tokenizer'ın da aldığı metin",
     textHint:
@@ -167,8 +167,8 @@ const copy: typeof en = {
       `Spiral görevi: ${neurons} gizli nöron, ${epoch} epok sonra ${accuracy} test doğruluğu.`,
     announceSolved: (neurons: number, accuracy: string) =>
       `${neurons} gizli nöronla, ${accuracy} test doğruluğunda çözüldü.`,
-    kicker: "The challenge",
-    title: "One budget. Two ways to miss it.",
+    kicker: "Görev",
+    title: "Token sınırı metni nasıl etkiler?",
     lede: "İlk görevde tokenizer’ı değiştirmeden metnin token sayısını azalt. İkinci görevde metin sabitken eğitim ayarını değiştir.",
     budgetBadge: (budget: number) => `bütçe ${budget} token`,
     rewriteLabel: "Yeniden yaz",
@@ -187,14 +187,14 @@ const copy: typeof en = {
       "İngilizce tokenizer'ın tam olarak eğitilmiş hâli bu, bu cümlede varabileceği en iyi nokta burası. Eksik olan şey daha fazla eğitim değil.",
     puzzles: {
       "say-it-cheaper": {
-        title: "Say it cheaper",
+        title: "Daha ucuza söyleyin",
         brief:
           "Zorunlu kelimelerin hepsini koruyun ve aynı cümleyi bütçenin altına indir. Nasıl yazıldığına dair geri kalan her şeyi değiştirebilirsin.",
         lesson:
           "Anlamda hiçbir şey değişmedi. Büyük harfler tokenizer'ın hiç öğrenmediği parçalar ve çift boşluk başlı başına bir token.",
       },
       "feed-it-the-right-words": {
-        title: "Feed it the right words",
+        title: "Doğru kelimeleri okutun",
         brief:
           "Bu cümle değiştirilemez. Cümle bütçeye sığana kadar tokenizer'ın ne okuduğunu ve ne kadar eğitildiğini seç.",
         lesson:
@@ -269,8 +269,8 @@ const copy: typeof en = {
   // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
   study: {
     topics: {
-      bpe: "Pieces learned by counting",
-      quirks: "What a token is, and what it costs",
+      bpe: "Sayılarak öğrenilen parçalar",
+      quirks: "Token nedir, neye mal olur",
     },
     notes: {
       "karpathy-tokenizer": "Birleştirmeleriyle birlikte, sıfırdan kurulan bir BPE tokenizer.",

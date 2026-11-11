@@ -4,13 +4,13 @@ import type en from "../en/attention";
 
 const copy: typeof en = {
   sources: {
-    title: "Sources",
+    title: "Kaynaklar",
     transformer:
       "Bu laboratuvarın hesapladığı ölçeklenmiş nokta çarpımı dikkatini destekler. Laboratuvar tek bir attention head hesabını gösterir; makalenin tanıttığı mimarinin tamamını uygulamaz.",
   },
 
   hero: {
-    title: "Where is this word looking?",
+    title: "Seçtiğin kelime en çok hangi kelimeyle ilişkili?",
     question:
       "Bir kelime seç. Dikkat ağırlıklarının cümledeki diğer kelimelere nasıl dağıldığını incele.",
   },
@@ -34,34 +34,34 @@ const copy: typeof en = {
     "Cümlede artık iki canlı var. Model ağırlıkları ikisine yakın oranlarda dağıtıyor, ancak hangisinin yorgun olduğunu ayıramıyor.",
 
   reveal: {
-    kicker: "How did it decide?",
-    title: "One number, from beginning to end.",
+    kicker: "Nasıl karar verdi?",
+    title: "İki kelimenin eşleşme skoru nasıl hesaplanır?",
     lede: "Bu bölüm seçili kelime için yapılan hesabı gösterir. Kelimeyi veya cümleyi değiştirdiğinde bütün değerler aynı attention hesabından yeniden alınır.",
   },
 
   trace: {
     step1: "Seçtiğin kelime",
-    step1Title: (word: string) => `Start with “${word}”`,
+    step1Title: (word: string) => `“${word}” ile başla`,
     step1Note:
       "Seçili kelimenin query vektörü, diğer kelimelerin key vektörleriyle karşılaştırılır.",
 
     step2: "Ne aradığı",
-    step2Title: (word: string) => `“${word}” asks for this: its query`,
+    step2Title: (word: string) => `“${word}” için query vektörü`,
     step2Note:
       "Sağa uzanan çubuklar pozitif, sola uzananlar negatif query bileşenlerini gösterir. Özellikler bu küçük modelde elle tanımlanmıştır; eğitilmiş bir modelin bileşenlerine aynı anlamlar verilemez.",
 
     step3: "Diğer kelimenin sunduğu",
-    step3Title: (word: string) => `“${word}” offers this: its key`,
+    step3Title: (word: string) => `“${word}” için key vektörü`,
     step3Note:
       "Query ve key farklı projeksiyonlarla hesaplanır. Bu nedenle attention skoru, iki kelimenin başlangıç vektörleri arasındaki benzerlikle aynı ölçü değildir.",
 
     step4: "Eşleşme",
-    step4Title: (score: string) => `They line up to ${score}`,
+    step4Title: (score: string) => `Eşleşme skoru: ${score}`,
     step4Note: (from: string, to: string) =>
       `“${from}” kelimesinin istediğiyle “${to}” kelimesinin sunduğunu çarpın, toplayın ve eksen sayısının kareköküne bölün. Bu son adım, model genişledikçe sayıları çalışılabilir bir aralıkta tutar.`,
 
     step5: "%100'ün payı",
-    step5Title: (share: number) => `Which becomes ${share}% of the attention`,
+    step5Title: (share: number) => `Bu kelimenin aldığı pay: %${share}`,
     step5Note:
       "Softmax ağırlıklarının toplamı %100 olur. Diğer skorlar sabitken bir skoru artırmak, kalan kelimelerin ağırlıklarını azaltır.",
     tableCaption: "En güçlü birkaç kelime için eşleşme ve dikkat payı.",
@@ -70,7 +70,7 @@ const copy: typeof en = {
     colShare: "Pay",
 
     step6: "Neye dönüştüğü",
-    step6Title: (word: string) => `“${word}” now carries a blend`,
+    step6Title: (word: string) => `“${word}” için çıktı vektörü`,
     step6Note:
       "Her value vektörü kendi attention ağırlığıyla çarpılır. Bu vektörlerin toplamı seçili kelimenin çıktısını oluşturur ve sonraki katmana aktarılır.",
 
@@ -109,8 +109,8 @@ const copy: typeof en = {
   },
 
   scale: {
-    kicker: "Why divide at all?",
-    title: "Take the divisor away and the shares collapse.",
+    kicker: "Bölme neden var?",
+    title: "Skorları ölçeklemezsek ne değişir?",
     lede: "Skorların bölündüğü değeri değiştir. Aynı skorlardan hesaplanan attention ağırlıklarını, modelin √d böleniyle elde ettiği ağırlıklarla karşılaştır.",
     collapse:
       "Bölme atlanınca puanlar daha büyük kalıyor ve daha büyük sayılar üzerindeki softmax daha keskin oluyor: bütçenin neredeyse tamamı tek bir kelimeye gidiyor, geri kalanı yuvarlanıp yok oluyor. Okunacak bir dağılımı ortada bırakan şey, bu bölme.",
@@ -137,8 +137,8 @@ const copy: typeof en = {
   },
 
   softmax: {
-    kicker: "From matches to portions",
-    title: "Ten scores, one budget.",
+    kicker: "Eşleşmelerden paylara",
+    title: "Softmax ağırlıkları nasıl dağıtır?",
     lede: "Softmax, skorları toplamı %100 olan ağırlıklara dönüştürür. Bir skoru sürükleyerek değiştir ve diğer kelimelerin ağırlıklarını izle.",
     caption:
       "Her değişiklikte bütün satır için softmax yeniden hesaplanır. Modelin başlangıç değerleri karşılaştırma için işaretlenir.",
@@ -155,8 +155,8 @@ const copy: typeof en = {
   },
 
   mix: {
-    kicker: "What the shares are spent on",
-    title: "The shares are coefficients, not a verdict.",
+    kicker: "Çıktı hesabı",
+    title: "Ağırlıklardan çıktı vektörüne",
     lede: "Her kelimenin value vektörünü attention ağırlığıyla çarpıp topla. Elde edilen çıktı vektörünün bileşenleri aşağıda gösteriliyor.",
     tableCaption: "En çok katkı veren üç kelime için pay ve value vektörü.",
     outputLabel: "Çıktı vektörünün bileşenleri",
@@ -200,9 +200,9 @@ const copy: typeof en = {
   // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
   study: {
     topics: {
-      qkv: "Query, key and the match score",
-      softmax: "Softmax: one budget of 100%",
-      transformer: "Where attention sits in a model",
+      qkv: "Query, key ve eşleşme skoru",
+      softmax: "Softmax: %100'lük tek bütçe",
+      transformer: "Attention'ın modeldeki yeri",
     },
     notes: {
       "3b1b-attention":

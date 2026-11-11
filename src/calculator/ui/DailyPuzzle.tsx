@@ -1,3 +1,4 @@
+import { useLanguage } from "@/i18n";
 import { useEffect, useState } from "react";
 import { track } from "@/app/analytics";
 import type { Language } from "@/app/preferences";
@@ -105,12 +106,12 @@ export function DailyCta({
       <div className="min-w-0">
         <p className="calc-cta-overline">
           <span aria-hidden className="calc-cta-dot" />
-          <span lang="en">{copy.dailyOverline(number)}</span>
+          <span>{copy.dailyOverline(number)}</span>
           {stats.streak > 0 && (
             <span className="text-signal-amber">· {copy.dailyStreak(stats.streak)}</span>
           )}
         </p>
-        <h2 id="calc-cta-title" lang="en" className="mt-1.5 text-title text-fg">
+        <h2 id="calc-cta-title" className="mt-1.5 text-title text-fg">
           {copy.dailyTitle}
         </h2>
         <p className="mt-1.5 max-w-prose text-body-sm text-fg-muted">{copy.dailyLede(modelName)}</p>
@@ -158,7 +159,7 @@ export function DailyQuestion({
     <div className="calc-task">
       <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
         <p className="text-overline uppercase text-fg-faint">
-          {copy.dailyQuestion(index + 1, PUZZLE_LENGTH)} · <span lang="en">{task.topic.en}</span>
+          {copy.dailyQuestion(index + 1, PUZZLE_LENGTH)} · <span>{task.topic[language]}</span>
         </p>
         <p className="calc-tries" aria-label={copy.dailyTriesLeft(left)}>
           {Array.from({ length: TRIES }, (_, i) => (
@@ -249,6 +250,7 @@ export function DailyPanel({
   onOpenToday: () => void;
 }) {
   const finished = isFinished(daily.progress);
+  const { language } = useLanguage();
   const current = answered(daily.progress);
   const score = points(daily.progress);
   const countdown = useCountdown(finished);
@@ -272,16 +274,14 @@ export function DailyPanel({
   return (
     <div className="min-w-0 space-y-5">
       <div className="calc-card">
-        <h3 lang="en" className="text-title text-fg">
-          {copy.dailyBoard}
-        </h3>
+        <h3 className="text-title text-fg">{copy.dailyBoard}</h3>
         <ol className="calc-grid">
           {daily.tasks.map((task, i) => (
             <BoardRow
               key={task.kind}
               row={daily.progress[i]}
               number={i + 1}
-              topic={task.topic.en}
+              topic={task.topic[language]}
               current={!finished && i === current}
               copy={copy}
             />
@@ -369,7 +369,7 @@ function BoardRow({
   return (
     <li className="calc-grid-row" data-current={current || undefined}>
       <span className="calc-grid-label">
-        {number}. <span lang="en">{topic}</span>
+        {number}. <span>{topic}</span>
       </span>
       <span className="calc-grid-cells">
         {cells.map((cell, i) => (

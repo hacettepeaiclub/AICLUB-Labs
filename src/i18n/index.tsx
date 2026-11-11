@@ -146,7 +146,7 @@ export const isLabSlug = (slug: string): slug is LabSlug =>
  * lab without loading it and still say its name in Turkish.
  *
  * `termLang` is "en" when the active language leaves the term in English;
- * put it on whatever shows the term, as `lang`. Titles and terms are English.
+ * put it on whatever shows the term, as `lang`. Lab names stay English; subject terms follow the selected language.
  *
  * `term` is the subject's own technical name — "Floating point" under the
  * title "0.1 + 0.2". The title says what the lab is about; the term says what
@@ -164,8 +164,8 @@ export function useLabMeta(
   return {
     ...t.labMeta[slug],
     title: en.labMeta[slug].title,
-    term: en.labMeta[slug].term,
-    termLang: "en",
+    term: t.labMeta[slug].term,
+    termLang: t.englishTerms.includes(slug) ? "en" : undefined,
   };
 }
 

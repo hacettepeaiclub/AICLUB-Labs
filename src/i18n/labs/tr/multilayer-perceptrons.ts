@@ -4,7 +4,7 @@ import type en from "../en/multilayer-perceptrons";
 
 const copy: typeof en = {
   sources: {
-    title: "Sources",
+    title: "Kaynaklar",
     backpropagation:
       "Bu laboratuvarın eğitimde kullandığı geri yayılım yöntemini destekler. Buradaki ağ, makalede anlatılan ağ değil, küçük bir öğretim modelidir.",
   },
@@ -32,7 +32,7 @@ const copy: typeof en = {
     removeNeuron: (layer: string) => `${layer} katmanından nöron çıkar`,
     removeLayer: (layer: string) => `${layer} katmanını kaldır`,
   },
-  liveTraining: "Live training",
+  liveTraining: "Canlı eğitim",
 
   canvasLabel: (points: number, accuracy: number) =>
     `İki sınıfta ${points} nokta. Ağ şu anda eğitim noktalarının %${accuracy} kadarını doğru biliyor; gölgeli arka plan ise diğer her yerde tahmin ettiği sınıf.`,
@@ -55,10 +55,10 @@ const copy: typeof en = {
   },
   layersPanels: {
     flat: {
-      title: "No hidden layer",
-      subtitle: "Two inputs wired straight to the output, a single neuron.",
+      title: "Gizli katman yok",
+      subtitle: "İki girdi doğrudan çıktıya bağlı: tek bir nöron.",
     },
-    deep: { title: "One hidden layer", subtitle: "The same thing, with four neurons in between." },
+    deep: { title: "Tek gizli katman", subtitle: "Aynı yapı, ama aralarında dört nöron var." },
   },
   descentNote: {
     overshoot:
@@ -93,7 +93,7 @@ const copy: typeof en = {
     pause: "Duraklat",
     clearPoints: "Temizle",
     newSample: "Yeni örneklem",
-    insideTitle: "The network, from the inside",
+    insideTitle: "Ağın içeriden görünüşü",
     insideBody:
       "Aynı ağ, ikinci bir bakış açısıyla. Her kare, bir nöronun bütün girdi düzlemine verdiği kendi yanıtını gösterir: bir önceki katmanın kurduğu öznitelikler ve bir sonraki katmanın elinde bulunan malzeme.",
     canvasLabel: "Karar yüzeyi ve üzerine çizilmiş eğitim verisi.",
@@ -123,8 +123,8 @@ const copy: typeof en = {
       relu: "Pozitifleri geçirir, negatifleri düzler. Hızlı ve modern varsayılan.",
       sigmoid: "0…1 aralığına sıkıştırır. Tarihsel ve takılmaya yatkın.",
     },
-    kicker: "Zoom all the way in",
-    title: "A neuron is smaller than you think.",
+    kicker: "Sonuna kadar yakınlaşın",
+    title: "Tek nöron hangi noktaları ayırabilir?",
     lede: "Tek nöron, iki girdiyi ağırlıklarıyla çarpar, sabit terimi ekler ve sonucu bir aktivasyon fonksiyonundan geçirir. Aşağıda bu parametreleri değiştirebilirsin.",
     weight1: "x₁ ağırlığı",
     weight2: "x₂ ağırlığı",
@@ -168,8 +168,8 @@ const copy: typeof en = {
   layers: {
     panelLabel: (title: string, accuracy: number, epoch: number) =>
       `${title}: ${epoch} epok sonra XOR noktalarının %${accuracy} kadarı doğru sınıflandırıldı.`,
-    kicker: "Why layers",
-    title: "Four dots that broke AI for a decade.",
+    kicker: "Katmanlar neden gerekli",
+    title: "Dört nokta neden tek doğruyla ayrılamaz?",
     lede: "XOR verisinde aynı sınıftaki noktalar karşılıklı köşelerdedir. Tek bir doğru bu sınıfları ayıramaz. Gizli katman ekleyerek ağın karar sınırını nasıl değiştirdiğini karşılaştır.",
     noHidden: "Gizli katman yok",
     oneHidden: "Tek gizli katman",
@@ -183,8 +183,8 @@ const copy: typeof en = {
 
   descent: {
     slopeHint: "backprop'un her ağırlığa verdiği tek sayı",
-    kicker: "How it learns",
-    title: "Downhill, one small step at a time.",
+    kicker: "Nasıl öğreniyor",
+    title: "Ağırlıklar kaybı nasıl azaltır?",
     lede: "Ağırlıklar, kaybı azaltmak için gradyanın ters yönünde güncellenir. Adım boyunu değiştirerek yakınsama, salınım ve uzaklaşma davranışlarını karşılaştır.",
     learningRate: "Öğrenme oranı",
     roll: "Yuvarla",
@@ -199,25 +199,25 @@ const copy: typeof en = {
   },
 
   loop: {
-    kicker: "The loop",
-    title: "Four steps, repeated until it works.",
+    kicker: "Döngü",
+    title: "Bir eğitim adımında ne olur?",
     lede: "Eğitim bu dört işlemi tekrarlar: tahmin üretme, kaybı hesaplama, gradyanı bulma ve ağırlıkları güncelleme.",
     cards: {
       forward: {
-        title: "Forward pass",
+        title: "İleri geçiş",
         body: "Her nöron girdilerini ağırlıklarıyla çarpar, bir bias ekler ve sonucu ezer. Bunu katman katman tekrarlayın; içeri giren bir nokta, dışarı çıkan bir tahmine dönüşür.",
       },
       loss: {
-        title: "Loss",
+        title: "Kayıp",
         body: "Tahmini gerçek etiketle karşılaştır ve farkın karesini alın. Ortaya bütün ağ için tek bir sayı çıkar ve ağın küçültmeye çalıştığı tek şey de budur.",
       },
       backprop: {
-        title: "Backpropagation",
+        title: "Geri yayılım",
         body: "Hatayı zincir kuralıyla katmanlar boyunca geriye taşı. Her bir ağırlık, hataya ne kadar katkıda bulunduğunu öğrenir: kendi gradyanını.",
       },
       descent: {
         slopeHint: "backprop'un her ağırlığa verdiği tek sayı",
-        title: "Gradient descent",
+        title: "Gradyan inişi",
         body: "Her ağırlığı kendi gradyanının tersi yönde küçük bir adım kaydırın. Öğrenme oranı, o adımın büyüklüğüdür. Sonra bunu binlerce kez yineleyin.",
       },
     },
@@ -238,8 +238,8 @@ const copy: typeof en = {
       `Spiral görevi: ${neurons} gizli nöron, ${epoch} epok sonra ${accuracy} test doğruluğu.`,
     announceSolved: (neurons: number, accuracy: string) =>
       `${neurons} gizli nöronla, ${accuracy} test doğruluğunda çözüldü.`,
-    kicker: "The challenge",
-    title: "Beat the spiral with as few neurons as you can.",
+    kicker: "Görev",
+    title: "Spirali en az kaç nöronla ayırabilirsin?",
     lede: "Spiral verisini ayırırken gizli katmandaki nöron sayısını azalt. Görevin doğruluk koşulunu sağlayan en küçük ağı bulmaya çalış.",
     objective: "Hedef",
     objectiveBody: (accuracy: number) =>
@@ -318,9 +318,9 @@ const copy: typeof en = {
   // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
   study: {
     topics: {
-      neuron: "A neuron is a line",
-      xor: "XOR and the hidden layer",
-      learning: "Loss and learning",
+      neuron: "Bir nöron bir doğrudur",
+      xor: "XOR ve gizli katman",
+      learning: "Kayıp ve öğrenme",
     },
     notes: {
       "3b1b-nn": "Nöronlar, ağırlıklar ve bias'lar, en baştan.",

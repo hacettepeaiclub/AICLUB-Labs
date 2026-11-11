@@ -11,7 +11,7 @@ import type en from "../en/cache-locality";
  */
 const copy: typeof en = {
   sources: {
-    title: "Sources",
+    title: "Kaynaklar",
     drepper:
       "Cache bloklarına, ardışık erişimin neden ucuz, aralıklı erişimin neden pahalı olduğuna ve gerçek işlemcileri basit modelden ayıran ön getirmeye (prefetch) dayanak.",
     memoryWall:
@@ -23,7 +23,7 @@ const copy: typeof en = {
   },
 
   race: {
-    title: "The same sum, twice",
+    title: "Aynı veriyi iki farklı sırayla topla",
     question:
       "İki döngü aynı dört milyon sayıyı topluyor. Biri satır satır okuyor, öteki sütun sütun. Sıra fark eder mi?",
     rowLabel: "Satır satır",
@@ -52,8 +52,8 @@ const copy: typeof en = {
   },
 
   line: {
-    kicker: "Cache lines",
-    title: "Memory arrives a line at a time.",
+    kicker: "Önbellek blokları",
+    title: "Önbelleğe hangi veriler birlikte gelir?",
     lede: "Bu modelde bellek, 64 baytlık bloklar hâlinde okunur. Bir blok sekiz sayı içerir. İlk sayı okunduğunda aynı bloktaki diğer sayılar da cache’e gelir; onları okumak için yeniden ana belleğe gitmek gerekmez.",
     caption:
       "Her satır bir cache bloğunu gösterir. Model dört blok tutar ve yer dolduğunda en uzun süredir kullanılmayan bloğu çıkarır. • isabeti, × cache ıskasını gösterir.",
@@ -92,8 +92,8 @@ const copy: typeof en = {
   },
 
   stride: {
-    kicker: "Stride",
-    title: "The further apart, the dearer, up to a line.",
+    kicker: "Adım",
+    title: "Okumalar arasındaki mesafe arttığında ne olur?",
     lede: "Aynı sayıların hepsini oku, ancak ardışık okumalar arasındaki aralığı değiştir. Modelin cache ıskalarını cihazında ölçülen okuma süreleriyle karşılaştır.",
     run: "Bu bilgisayarda ölç",
     again: "Yeniden ölç",
@@ -131,8 +131,8 @@ const copy: typeof en = {
   },
 
   order: {
-    kicker: "Your turn",
-    title: "Three loops, six orders, one product.",
+    kicker: "Sıra sizde",
+    title: "Matris çarpımında döngü sırası",
     lede: "Matris çarpımındaki üç döngünün sırasını değiştir. Yapılan çarpma ve toplama sayısı aynı kalır; bellek erişim sırası değişir. Sonucu önce modelde, sonra cihazında ölç.",
     orderLabel: "Döngü sırası",
     secondaryLabel: "Bir döngü sırası seç",
@@ -220,8 +220,8 @@ const copy: typeof en = {
   // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
   study: {
     topics: {
-      line: "Memory arrives a line at a time",
-      order: "Stride and loop order",
+      line: "Bellek satır satır gelir",
+      order: "Adım aralığı ve döngü sırası",
     },
     notes: {
       "cp-caches-why": "İşlemcinin neden bir cache’e ihtiyaç duyduğu.",

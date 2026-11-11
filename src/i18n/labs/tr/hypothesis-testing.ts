@@ -52,7 +52,7 @@ const copy: typeof en = {
   },
 
   separation: {
-    title: "Two hypotheses",
+    title: "İki hipotezi karşılaştır",
     question: "\u0130ki hipotez birbirinden uzakla\u015ft\u0131\u011f\u0131nda ne olur?",
     caption:
       "Eğriler ham veriyi değil, iki hipotez altında örneklem ortalamasının dağılımını gösterir. Her eğri, ilgili ortalama doğru kabul edildiğinde n ölçümün ortalamasının dağılımıdır [Casella & Berger, 2. baskı, s. 213–214, 218].",
@@ -68,8 +68,8 @@ const copy: typeof en = {
   },
 
   alphaSection: {
-    kicker: "Where you draw the line",
-    title: "One rejection region, and everything inside it counts as evidence.",
+    kicker: "Reddetme b\u00f6lgesi nerede ba\u015fl\u0131yor",
+    title: "Hangi sonuçlarda sıfır hipotezini reddederiz?",
     lede: "Bir testin kurala ihtiyac\u0131 vard\u0131r: X\u0304, \u03bc\u2080'dan ne kadar uza\u011fa d\u00fc\u015ferse H\u2080 reddedilir? Reddetmeye yol a\u00e7an de\u011ferler reddetme b\u00f6lgesini olu\u015fturur (Casella ve Berger bunu kritik b\u00f6lge olarak da adland\u0131r\u0131r); kritik de\u011fer ise bu b\u00f6lgenin ba\u015flad\u0131\u011f\u0131 noktad\u0131r. Anlaml\u0131l\u0131k d\u00fczeyi \u03b1, \u03bc = \u03bc\u2080 iken X\u0304'in bu b\u00f6lgeye d\u00fc\u015fme olas\u0131l\u0131\u011f\u0131d\u0131r [Casella & Berger, 2. bask\u0131, Tan\u0131m 8.1.3, s. 374; Tan\u0131m 8.3.5-8.3.6, s. 385].",
     caption:
       "\u03b1 veriden \u00f6nce sabitlenir: \u03bc = \u03bc\u2080 iken X\u0304'in reddetme b\u00f6lgesine d\u00fc\u015fme olas\u0131l\u0131\u011f\u0131d\u0131r. Kayd\u0131r\u0131c\u0131n\u0131n e\u011friyi de\u011fil kritik de\u011feri oynatmas\u0131n\u0131n nedeni de budur. H\u2080 do\u011fruyken onu reddetmek I. tip hatad\u0131r [Casella & Berger, 2. bask\u0131, B\u00f6l\u00fcm 8.3.1, s. 382-383].",
@@ -91,8 +91,8 @@ const copy: typeof en = {
   },
 
   betaSection: {
-    kicker: "The error nobody counts",
-    title: "\u03b2 is what H\u2081 leaves outside the rejection region.",
+    kicker: "Kimsenin saymad\u0131\u011f\u0131 hata",
+    title: "Gerçek bir farkı kaçırma olasılığı",
     lede: "\u03b1, H\u2080 alt\u0131nda; \u03b2 ise H\u2081 alt\u0131nda hesaplan\u0131r ve ikisi ayn\u0131 reddetme b\u00f6lgesinin kar\u015f\u0131t yanlar\u0131nda durur. Kritik de\u011feri kayd\u0131r\u0131p birini k\u00fc\u00e7\u00fcltmek di\u011ferini b\u00fcy\u00fct\u00fcr; bu y\u00fczden testin hangi y\u00f6ne kuruldu\u011fu, kritik de\u011ferin nereye kondu\u011fu kadar \u00f6nemlidir [Casella & Berger, 2. bask\u0131, s. 385].",
     caption:
       "\u03b2, bu belirli \u03bc\u2081 do\u011fruyken H\u2080'\u0131n reddedilmeme olas\u0131l\u0131\u011f\u0131d\u0131r, yani II. tip hata; g\u00fc\u00e7 ise 1 \u2212 \u03b2'd\u0131r. \u0130kisi de modelin \u00f6zellikleridir, herhangi bir \u00f6rneklemin de\u011fil. G\u00fc\u00e7 tek bir \u03bc\u2081 yerine olabilecek b\u00fct\u00fcn \u03bc de\u011ferleri boyunca hesapland\u0131\u011f\u0131nda g\u00fc\u00e7 fonksiyonu elde edilir [Casella & Berger, 2. bask\u0131, Tan\u0131m 8.3.1, s. 383].",
@@ -115,8 +115,8 @@ const copy: typeof en = {
   },
 
   sampleSection: {
-    kicker: "The only lever that helps both",
-    title: "More data narrows everything at once.",
+    kicker: "\u0130kisine birden yarayan tek kol",
+    title: "Örnek sayısı arttıkça hata olasılıkları nasıl değişir?",
     lede: "Örnek sayısı n arttığında standart hata SE = σ/√n azalır. Dağılımlar daralır ve alfa sabitken, belirtilen alternatif için güç artar [Casella & Berger, 2. baskı, s. 217, 385].",
     caption:
       "Sabit x ekseninde eğrilerin genişliklerini karşılaştır. Otomatik mod ekseni eğrilere göre ayarlar. SE, n’nin kareköküyle ters orantılıdır; her ek örneğin etkisi giderek azalır.",
@@ -128,7 +128,7 @@ const copy: typeof en = {
     seHint: "\u03c3/\u221an",
     powerLabel: "G\u00fc\u00e7",
     betaLabel: "\u03b2",
-    curveTitle: "Power against sample size",
+    curveTitle: "\u00d6rneklem b\u00fcy\u00fckl\u00fc\u011f\u00fcne kar\u015f\u0131 g\u00fc\u00e7",
     eighty: "0,80",
     curveLabel: (from: number, to: number, first: string, last: string) =>
       `Diğer her şey sabitken n = ${from}'den n = ${to}'e güç. ${first} civarında başlıyor ve yaklaşık ${last} değerine ulaşıyor.`,
@@ -136,8 +136,8 @@ const copy: typeof en = {
   },
 
   challenge: {
-    kicker: "Now hit a number",
-    title: "Reach the power the task asks for.",
+    kicker: "\u015eimdi bir say\u0131y\u0131 tutturun",
+    title: "Hedeflenen test gücüne ulaş",
     lede: "Her görev belirli bir sonuç ister. Kontrolleri değiştirerek modelin istenen hata veya güç değerine ulaşmasını sağla.",
     puzzleLabel: "G\u00f6rev",
     reset: "Ba\u015fa d\u00f6n",
@@ -152,7 +152,7 @@ const copy: typeof en = {
     announceAttempt: (power: string, alpha: string) => `Güç ${power}, α ${alpha}.`,
     puzzles: {
       "reach-power": {
-        title: "Reach 0.80",
+        title: "0,80'e ula\u015f",
         brief: (power: string, alpha: string) =>
           `Etki gerçek ama küçük: μ₁, μ₀'ın yarım birim üzerinde ve test bunu bulduğundan daha sık kaçırıyor. α'yı ${alpha} değerinin üzerine çıkarmadan gücü ${power} değerine getirin.`,
         lesson:
@@ -161,7 +161,7 @@ const copy: typeof en = {
           `Güç ${power}, α = ${alpha}. Buraya n ve α'nın hangi karışımıyla geldiysen gelin, kritik değer SE'ye göre μ₀'a yeterince yaklaştı ve H₁ dağılımının büyük kısmı reddetme bölgesine düştü.`,
       },
       noisy: {
-        title: "Too much noise",
+        title: "Fazla g\u00fcr\u00fclt\u00fc",
         brief: (power: string, alpha: string) =>
           `σ = 3 ve test iki yönlü; yani α iki kuyruğa bölünüyor ve her iki kritik değer de epey dışarda duruyor. α en fazla ${alpha} olacak şekilde ${power} güce ulaşın.`,
         lesson:
@@ -182,7 +182,7 @@ const copy: typeof en = {
       "Buradaki her \u015fey \u03c3'n\u0131n bilindi\u011fi kapal\u0131 form normal modeldir: \u00f6rneklem ortalamas\u0131n\u0131n iki \u00f6rnekleme da\u011f\u0131l\u0131m\u0131, tek bir reddetme b\u00f6lgesi ve b\u00f6lge s\u0131n\u0131r\u0131n\u0131n iki yan\u0131ndaki alanlar. Ger\u00e7ek testlerde \u03c3'n\u0131n \u00f6rneklemden kestirilmesi gerekir (t da\u011f\u0131l\u0131m\u0131n\u0131 gerekli k\u0131lan da budur) ve y\u00f6n\u00fcn veriden \u00f6nce mi sonra m\u0131 se\u00e7ildi\u011fi ayr\u0131 bir sorundur. Bu laboratuvar, o zorluklar\u0131n \u00fczerine oturdu\u011fu geometriyi g\u00f6sterir.",
   },
   sources: {
-    title: "Sources",
+    title: "Kaynaklar",
     theoryLabel: "Kuramsal kaynak",
     theory:
       "George Casella ve Roger L. Berger, Statistical Inference, 2. bask\u0131, Duxbury Press. Hipotez testleri, hata olas\u0131l\u0131klar\u0131 ve g\u00fc\u00e7 fonksiyonu i\u00e7in 8. b\u00f6l\u00fcm (s. 373-386); \u00f6rneklem ortalamas\u0131n\u0131n \u00f6rnekleme da\u011f\u0131l\u0131m\u0131 i\u00e7in 5. b\u00f6l\u00fcm (s. 213-218).",
@@ -234,8 +234,8 @@ const copy: typeof en = {
   // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
   study: {
     topics: {
-      alpha: "Two hypotheses, α and the rejection region",
-      power: "β, power and sample size",
+      alpha: "İki hipotez, α ve ret bölgesi",
+      power: "β, güç ve örneklem büyüklüğü",
     },
     notes: {
       "sq-hyptest": "Sıfır hipotezinin ne olduğu ve onu reddetmenin anlamı.",

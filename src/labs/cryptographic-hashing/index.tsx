@@ -51,9 +51,7 @@ export default function HashPlayground() {
   if (unavailable) {
     return (
       <div role="alert" className="card-surface mx-auto max-w-prose p-6">
-        <h2 lang="en" className="text-title text-fg">
-          {t.unavailable.title}
-        </h2>
+        <h2 className="text-title text-fg">{t.unavailable.title}</h2>
         <p className="mt-2 text-body-sm text-fg-muted">
           {unavailable === "insecure-context"
             ? t.unavailable.insecureContext
@@ -72,7 +70,7 @@ export default function HashPlayground() {
       {/* 1 — Behaviour first: a question, a field, and what comes out of it.
           Nothing is named except the function doing the work. */}
       <section aria-labelledby="hash-out-heading">
-        <h2 lang="en" id="hash-out-heading" className="sr-only">
+        <h2 id="hash-out-heading" className="sr-only">
           {t.hero.title}
         </h2>
         <p className="mb-6 max-w-prose text-body-lg text-fg">{t.hero.question}</p>

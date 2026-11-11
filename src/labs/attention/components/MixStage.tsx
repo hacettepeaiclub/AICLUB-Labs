@@ -95,7 +95,7 @@ export function MixStage({ attention, words, selected, onSelect }: MixStageProps
           </div>
 
           <div className="rounded border border-line/10 bg-ink-950 p-4">
-            <p lang="en" className="mb-3 text-overline uppercase text-fg-faint">
+            <p className="mb-3 text-overline uppercase text-fg-faint">
               {markEnglish(trace.step6Title(selectedWord), selectedWord)}
             </p>
             <Bars names={axisNames} values={outValues} scale={outScale} label={a.mix.outputLabel} />

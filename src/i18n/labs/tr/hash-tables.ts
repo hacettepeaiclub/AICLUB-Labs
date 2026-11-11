@@ -4,7 +4,7 @@ import type en from "../en/hash-tables";
 
 const copy: typeof en = {
   sources: {
-    title: "Sources",
+    title: "Kaynaklar",
     peterson:
       "Kayıtları anahtarlarından hesaplanan bir adreste saklamayı ve depolama doldukça aramanın nasıl uzadığını inceleyen ilk çalışmalardan biri.",
     linearProbing:
@@ -21,7 +21,7 @@ const copy: typeof en = {
 
   // 1 ----------------------------------------------------------------------
   address: {
-    title: "A computed address",
+    title: "Anahtar hangi adrese gider?",
     question: "Bir anahtar yaz. Hash değeri hangi kovayı seçiyor?",
     inputLabel: "Bir anahtar",
     emptyWord: "Nereye düştüğünü görmek için herhangi bir kelime yaz.",
@@ -52,8 +52,8 @@ const copy: typeof en = {
 
   // 2 ----------------------------------------------------------------------
   birthday: {
-    kicker: "Collisions",
-    title: "Two keys in one bucket, sooner than you think.",
+    kicker: "Çakışmalar",
+    title: "İki anahtar ne zaman aynı kovaya düşer?",
     lede: "Her kova eşit olasılıklı, hiçbir kova dolu değil, yine de bir çakışma erkenden gelir. Önce ne kadar erken olduğuna karar ver.",
     question:
       "Bir tabloda 365 kova var ve her anahtar rastgele birine düşüyor. Kaç anahtardan sonra iki anahtarın aynı kovayı paylaşması, paylaşmamasından daha olası olur?",
@@ -69,11 +69,11 @@ const copy: typeof en = {
       "Eğri kesindir: n anahtarın hepsinin birbirini ıskalama olasılığı (1 − 1/m)(1 − 2/m)…(1 − (n−1)/m) çarpımıdır. Hızla düşer, çünkü her yeni anahtar orada olan her anahtarı ıskalamak zorundadır.",
     announce: (keys: number, chance: string) =>
       `${keys} anahtarla ortak bir kova olasılığı ${chance}.`,
-    curveTitle: (m: number) => `Chance of a shared bucket, ${m} buckets`,
+    curveTitle: (m: number) => `Ortak kova olasılığı, ${m} kova`,
     curveLabel: (m: number, half: number) =>
       `${m} kova için, en az bir ortak kova olasılığının anahtar sayısına göre eğrisi. ${half} anahtarda yarıyı geçer.`,
     axis: "anahtar",
-    gridTitle: (m: number) => `One trial, ${m} buckets`,
+    gridTitle: (m: number) => `Tek bir deneme, ${m} kova`,
     gridLabel: (n: number, m: number) =>
       `${m} kovaya ilk ortak kovaya kadar atılan anahtarlar: ${n} anahtar gerekti.`,
     gridEmpty:
@@ -96,8 +96,8 @@ const copy: typeof en = {
 
   // 3 ----------------------------------------------------------------------
   probe: {
-    kicker: "Open addressing",
-    title: "No lists: a key that finds its slot taken steps right.",
+    kicker: "Açık adresleme",
+    title: "İlk yuva doluysa sırada hangisi var?",
     lede: "Tabloda 32 yuva var. Anahtarın hesaplanan yuvası doluysa sıradaki yuva denenir. Anahtar ekleyerek boş yer bulmak için yapılan deneme sayısını izle.",
     caption:
       "Hücrelerde anahtarların başlangıç yuvaları gösterilir. Turuncu çerçeveler son eklemede denenen yuvalardır. Dolu hücreler yan yana biriktikçe arama uzayabilir.",
@@ -131,8 +131,8 @@ const copy: typeof en = {
 
   // 4 ----------------------------------------------------------------------
   compare: {
-    kicker: "Lists against steps",
-    title: "Both are fast, until the table is nearly full.",
+    kicker: "Listeye karşı adım",
+    title: "Tablo doldukça arama süresi nasıl değişir?",
     lede: "Doluluk oranı α büyüdükçe, zincirleme ve doğrusal yoklama için saklanan bir anahtarı bulmanın maliyeti. Çizgiler formüllerdir; noktalar 1.024 yuvalı gerçek tablolardır.",
     caption:
       "Zincirlemenin maliyeti 1 + α/2'dir: düz bir çizgide kötüleşir, hatta α = 1'in ötesine de geçebilir. Doğrusal yoklamanınki ½(1 + 1/(1 − α)) olur; yarı doluyken iyidir, dolmaya yakın patlar. Eklemek daha da kötüdür, ½(1 + 1/(1 − α)²), ve α = 0,8'e varmadan grafiğin dışına çıkar.",
@@ -163,8 +163,8 @@ const copy: typeof en = {
 
   // 5 ----------------------------------------------------------------------
   resize: {
-    kicker: "Staying fast",
-    title: "When it gets full, move to a table twice the size.",
+    kicker: "Hızlı kalmak",
+    title: "Tablonun kapasitesi iki katına çıkınca",
     lede: "Bu modelde tablo 16 kovayla başlar. Doluluk eşiği aşıldığında kapasite iki katına çıkar ve anahtarlar taşınır. Tek eklemenin maliyetiyle bütün eklemelerin ortalamasını karşılaştır.",
     caption:
       "Her çubuk, tek bir eklemenin yaptığı iştir: anahtar için 1, bir taşınmayı tetiklediyse kopyalanan her anahtar için de birer. Taşınmalar büyür ama aynı hızla seyrekleşir; bu yüzden ortalama 3'ün altında kalır: kopyalar toplamı her zaman anahtar sayısının iki katından azdır.",
@@ -172,7 +172,7 @@ const copy: typeof en = {
       `${capacity} kovada ${n} anahtar. Ekleme başına ortalama iş ${String(average).replace(".", ",")}.`,
     chartLabel: (n: number, resizes: number, average: string) =>
       `${n} anahtar için ekleme başına iş: çoğunlukla 1, tablonun iki katına çıktığı yerlerde ${resizes} yüksek sıçrama. Ortalama ${String(average).replace(".", ",")}.`,
-    averageTitle: "Average work per insertion so far",
+    averageTitle: "Şimdiye kadar ekleme başına ortalama iş",
     averageLabel: (average: string) =>
       `Ekleme başına işin yürüyen ortalaması, 3'teki kesikli çizginin altında kalıyor. Şu an ${String(average).replace(".", ",")}.`,
     axis: "eklenen anahtar",
@@ -195,8 +195,8 @@ const copy: typeof en = {
 
   // 6 ----------------------------------------------------------------------
   modulus: {
-    kicker: "Bad keys",
-    title: "Evenly spaced keys can use only a few buckets.",
+    kicker: "Kötü anahtarlar",
+    title: "Düzenli aralıklardaki anahtarlar nasıl dağılır?",
     lede: "Sekizer artan kimlikler, onar artan fiyatlar, 64'e hizalı adresler: anahtarlar çoğu zaman bir adımı paylaşır. Bir tablo boyutu ve bir adım seç: anahtarların kaç kovaya dağıldığı hemen sayılır.",
     caption:
       "0, s, 2s, … anahtarları, başka her şey ne olursa olsun tam olarak m / ebob(s, m) kovaya ulaşır. İkinin bir kuvveti ile çift bir adım en kötü durumdur; bir asal sayının paylaşacak çarpanı yoktur. HashMap ikinin kuvvetlerini kullanır; kova seçmeden önce hash'in yüksek bitlerini düşük bitlerine karıştırmasının nedeni budur.",
@@ -218,8 +218,8 @@ const copy: typeof en = {
 
   // 7 ----------------------------------------------------------------------
   challenge: {
-    kicker: "Your turn",
-    title: "Three things to make a hash table do.",
+    kicker: "Sıra sizde",
+    title: "Üç farklı tabloyu dene",
     lede: "Görevde istenen özelliği sağlayan anahtarları veya tablo ayarını bul. Birden fazla geçerli yanıt olabilir.",
     caption:
       "Yanıtlar bu labdaki hash fonksiyonu ve tablo işlemleri çalıştırılarak kontrol edilir.",
@@ -334,9 +334,9 @@ const copy: typeof en = {
   // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
   study: {
     topics: {
-      address: "Computing an address",
-      collisions: "Chaining and linear probing",
-      resize: "Doubling when full",
+      address: "Adresi hesaplamak",
+      collisions: "Zincirleme ve doğrusal yoklama",
+      resize: "Dolunca iki katına çıkmak",
     },
     notes: {
       "mit-6006-hashing": "MIT'nin en baştan hash tabloları dersi.",

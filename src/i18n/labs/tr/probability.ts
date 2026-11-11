@@ -11,7 +11,7 @@ const copy: typeof en = {
     repeats: "03 · Tekrar bir örüntü gösterince",
   },
   sources: {
-    title: "Sources",
+    title: "Kaynaklar",
     statisticalInference:
       "İki çocuk deneyinin arkasındaki koşullu olasılık kurallarını (koşullu olasılık, s. 20; problemin kendisi Alıştırma 1.25, s. 40), Pascal satırının arkasındaki binom katsayılarını (s. 15) ve büyük sayılar kanununu (zayıf, s. 232; güçlü, s. 235) destekler. Buradaki benzetimler bu sonuçları gösterir; onları temellendirmez.",
     simpson:
@@ -35,7 +35,7 @@ const copy: typeof en = {
   },
 
   monty: {
-    title: "Three doors",
+    title: "Üç kapıdan hangisini seçersin?",
     question: "Sunucuyu yenebilir misin?",
     setup: [
       "Üç kapı. Birinin arkasında bir araba, diğer ikisinin arkasında birer keçi.",
@@ -43,7 +43,7 @@ const copy: typeof en = {
       "Sunucu arabanın yerini bilir ve diğer ikisinden birini açar: her zaman arkasında keçi olanı.",
       "Sonra seçersin: kendi kapında kal ya da sunucunun dokunmadığı kapıyı al.",
     ],
-    coachLabel: "Questions people ask",
+    coachLabel: "Herkesin sorduğu sorular",
     coach: {
       notHalf: {
         q: "İki kapı kaldı. Neden 50/50 değil?",
@@ -85,7 +85,7 @@ const copy: typeof en = {
     announceOpened: (n: number) => `Sunucu ${n}. kapıyı açtı. Arkasından keçi çıktı.`,
     announceResult: (result: string) => `Tur bitti: ${result}.`,
     runBatch: (n: number) => `${n.toLocaleString("tr-TR")} tur çalıştır`,
-    batchTitle: "Simulated rounds",
+    batchTitle: "Simüle edilen turlar",
     batchIdle: (n: number) =>
       `Elle birkaç tur oynamak bunu çözmez. ${n.toLocaleString("tr-TR")} tur çalıştır.`,
     batchCaption: (n: number) =>
@@ -115,8 +115,8 @@ const copy: typeof en = {
   },
 
   birthday: {
-    kicker: "A smaller room than you think",
-    title: "How many people before two share a birthday?",
+    kicker: "Sandığınızdan küçük bir oda",
+    title: "İki kişinin doğum gününün aynı olma olasılığı nedir?",
     setup: [
       "İnsanlar odaya teker teker giriyor.",
       "Herkesin doğum günü 365 günden biri ve her gün eşit olasılıkta.",
@@ -125,7 +125,7 @@ const copy: typeof en = {
     addPerson: "Bir kişi ekle",
     addPersonHint: "Çift sayısına ne olduğuna bak.",
     roomFull: "Oda doldu.",
-    coachLabel: "Questions people ask",
+    coachLabel: "Herkesin sorduğu sorular",
     coach: {
       soonWhy: {
         q: (n: number) => `${n} kişi nasıl yazı tura oluyor?`,
@@ -191,15 +191,15 @@ const copy: typeof en = {
   },
 
   conditional: {
-    kicker: "The clue does the work",
-    title: "A family has two children. Are both boys?",
+    kicker: "İşi yapan şey ipucu",
+    title: "İki çocuk hakkında verilen bilgi olasılığı nasıl değiştirir?",
     setup: [
       "Bir ailenin iki çocuğu var: biri büyük, biri küçük.",
       "Her çocuk erkek ya da kız ve ikisi de eşit olasılıkta, yani eşit olasılıklı dört aile var.",
       "Biri sana bu aile hakkında doğru tek bir cümle söylüyor.",
       "Senin sorun: ikisinin de erkek olma olasılığı nedir?",
     ],
-    coachLabel: "Questions people ask",
+    coachLabel: "Herkesin sorduğu sorular",
     coach: {
       notHalf: {
         q: "Çocuklardan biri erkek, o zaman diğeri 50/50 değil mi?",
@@ -256,7 +256,7 @@ const copy: typeof en = {
     girl: "Kız",
     familyLabel: (older: string, younger: string) =>
       `Büyük çocuğu ${older}, küçük çocuğu ${younger} olan aile`,
-    familiesTitle: "The four families, all equally likely",
+    familiesTitle: "Eşit olasılıklı dört aile",
     explainWhat: "Bir çocuk hakkında bilgi almak, diğerinin ne olma ihtimalini değiştirir.",
     explainWhy:
       "“En az biri erkek” hangisi olduğunu söylemez. Yalnızca iki kızlı aileyi eler ve kalan üç aileden ikisinde bir kız vardır. Bunun yerine “büyük olan erkek” dersen bir değil iki aile elenir: aynı aile, farklı cümle, farklı cevap.",
@@ -267,8 +267,8 @@ const copy: typeof en = {
   },
 
   simpson: {
-    kicker: "Two treatments, one decision",
-    title: "Which treatment would you choose?",
+    kicker: "İki tedavi, tek bir karar",
+    title: "Hangi tedaviyi seçerdin?",
     setup: [
       "Böbrek taşı için iki tedavi, A ve B: 1986 tarihli gerçek bir çalışmadan.",
       "Hastalar ya küçük taşla ya da büyük taşla geliyor; büyük olanlar zor vakalar.",
@@ -277,7 +277,7 @@ const copy: typeof en = {
     ],
     named:
       "Baktığın şeyin bir adı var: Simpson paradoksu: gruplar toplandığında tersine dönen bir karşılaştırma.",
-    coachLabel: "Questions people ask",
+    coachLabel: "Herkesin sorduğu sorular",
     coach: {
       howBoth: {
         q: "A her iki grupta kazanıp toplamda nasıl kaybedebilir?",
@@ -334,7 +334,7 @@ const copy: typeof en = {
       a: "büyük olan ameliyat",
       b: "küçük bir kesi, açık ameliyat yok",
     },
-    stepSmallTitle: "Start with the easier cases",
+    stepSmallTitle: "Kolay vakalarla başlayalım",
     stepLargeButton: "Şimdi büyük taşları göster",
     stepOverallButton: "İki grubu topla",
     seenBoth: "Her iki grupta da kazanan aynı.",
@@ -356,8 +356,8 @@ const copy: typeof en = {
     "Önceki deneyde iki farklı modelin sonuçlarını karşılaştırdık. Şimdi modeli sabit tutup deneme sayısını artıracağız.",
 
   pascal: {
-    kicker: "Pascal's balls",
-    title: "Two models of the same board.",
+    kicker: "Pascal'ın bilyeleri",
+    title: "Aynı deneyi iki farklı modelle incele",
     setup: [
       "Bilye, çivilerden oluşan üçgenin üstünden bırakılır ve yerçekimiyle düşer.",
       "Yön değişimlerinin her biri bir çarpışmadan doğar, bir yazı turadan değil.",
@@ -414,7 +414,7 @@ const copy: typeof en = {
     emptyBoard: "Gözleri boşalt",
     announce: (dropped: number, bin: number) =>
       `${dropped} bilye benzetildi. En çok bilye ${bin} numaralı gözde.`,
-    coachLabel: "Questions people ask",
+    coachLabel: "Sık sorulanlar",
     coach: {
       twoModels: {
         q: "Neden iki dağılım var?",
@@ -433,8 +433,8 @@ const copy: typeof en = {
   },
 
   largeNumbers: {
-    kicker: "The law of large numbers",
-    title: "Repeat the decision, and the proportion settles.",
+    kicker: "Büyük sayılar yasası",
+    title: "Deneme sayısı arttıkça sonuç nasıl değişir?",
     setup: [
       "Tek bir çivi, tek bir adil karar: sol ya da sağ.",
       "Karar, bağımsız biçimde çok kez tekrarlanır.",
@@ -485,7 +485,7 @@ const copy: typeof en = {
     deviationHint: "Teorik değere uzaklık",
     trialsFigure: "Deneme",
     announce: (trials: string, observed: string) => `${trials} deneme. Gözlenen oran ${observed}.`,
-    coachLabel: "Questions people ask",
+    coachLabel: "Sık sorulanlar",
     coach: {
       notEvenly: {
         q: "İki tarafın tam olarak eşitlenmesi gerekmez mi?",
@@ -561,10 +561,10 @@ const copy: typeof en = {
   // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
   study: {
     topics: {
-      monty: "Monty Hall and conditioning",
-      birthday: "Birthdays: pairs, not people",
-      simpson: "Simpson's paradox",
-      galton: "The Galton board and the bell curve",
+      monty: "Monty Hall ve koşullu olasılık",
+      birthday: "Doğum günleri: kişiler değil, çiftler",
+      simpson: "Simpson paradoksu",
+      galton: "Galton tahtası ve çan eğrisi",
     },
     notes: {
       "np-monty": "Oyun beş dakikada.",

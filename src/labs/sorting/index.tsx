@@ -21,7 +21,7 @@ export default function SortingRace() {
       <section aria-labelledby="race-heading">
         {/* Hidden on purpose: this section names nothing until section 2, but
             the outline still needs its level-2 rung. */}
-        <h2 lang="en" id="race-heading" className="sr-only">
+        <h2 id="race-heading" className="sr-only">
           {t.theRace}
         </h2>
         <p className="mb-6 max-w-prose text-body-lg text-fg">{t.race.question}</p>

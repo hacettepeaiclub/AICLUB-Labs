@@ -47,7 +47,6 @@ export function LabSources({ title, entries }: LabSourcesProps) {
   return (
     <section aria-labelledby="lab-sources-heading" className="max-w-prose">
       <h2
-        lang="en"
         id="lab-sources-heading"
         className="font-mono text-caption uppercase tracking-wide text-fg-muted"
       >

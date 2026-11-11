@@ -4,7 +4,7 @@ import type en from "../en/backpropagation";
 
 const copy: typeof en = {
   sources: {
-    title: "Sources",
+    title: "Kaynaklar",
     backpropagation:
       "Katmanlı ağları eğitmenin bir yolu olarak geri yayılımı destekler: hatayı katmanlar boyunca geriye taşı ve her ağırlığı payına düştüğü kadar değiştir. Bu sayfadaki ağlar makaledekiler değil, küçük öğretim örnekleridir.",
     linnainmaa:
@@ -19,7 +19,7 @@ const copy: typeof en = {
 
   // 1 ----------------------------------------------------------------------
   pull: {
-    title: "Pull the output",
+    title: "Çıktı değiştiğinde hata nasıl değişir?",
     question:
       "Çıktı noktasını sürükle. Çıktının istediğin değere yaklaşması için hangi ağırlıklar değişmeli?",
     caption:
@@ -40,7 +40,7 @@ const copy: typeof en = {
     hint: "Sağdaki beyaz noktayı sürükle. Her bağlantı ne kadar değişmesi gerektiğiyle parlayacak.",
     letGo: "Bırak",
     reset: "Baştan başla",
-    tableTitle: "Every weight and its gradient",
+    tableTitle: "Her ağırlık ve gradyanı",
     columns: { weight: "Ağırlık", value: "Değer" },
     figures: {
       output: "Çıktı",
@@ -52,8 +52,8 @@ const copy: typeof en = {
 
   // 2 ----------------------------------------------------------------------
   zoom: {
-    kicker: "What the number means",
-    title: "Zoom in until the curve is a line.",
+    kicker: "Sayının anlamı",
+    title: "Bir eğrinin eğimini nasıl ölçeriz?",
     lede: "Diğer ağırlıklar sabitken bir ağırlığın kaybı nasıl değiştirdiğini incele. Grafiğe yaklaştıkça eğri ile teğet doğrusu arasındaki fark küçülür.",
     caption:
       "Kesikli doğrunun eğimi, seçili ağırlık için hesaplanan gradyandır. Bu değer, ağırlıktaki küçük bir değişimin kaybı ne kadar değiştireceğini gösterir. Grafiği sürükleyerek başka bir noktayı incele.",
@@ -76,8 +76,8 @@ const copy: typeof en = {
 
   // 3 ----------------------------------------------------------------------
   chain: {
-    kicker: "The chain rule",
-    title: "Turn the first dial. Watch the last.",
+    kicker: "Zincir kuralı",
+    title: "İlk ağırlık son çıktıyı nasıl etkiler?",
     lede: "Tek bir mile bağlı beş kadran; her biri bir öncekiyle dönüyor. Her bağlantı komşusunu kendi oranıyla çeviriyor ve oranlar çarpılıyor.",
     caption:
       "Bir bağlantının üzerindeki sayı, önceki kadran çok az döndüğünde o kadranın ne kadar döndüğüdür: yerel türevi. Son kadran hepsinin çarpımı kadar döner. Geri yayılım, bu çarpmanın uzak uçtan başlayarak yapılmasıdır.",
@@ -99,8 +99,8 @@ const copy: typeof en = {
 
   // 4 ----------------------------------------------------------------------
   ledger: {
-    kicker: "Your turn to compute",
-    title: "Be the backward pass.",
+    kicker: "Hesap sizde",
+    title: "Gradyanları geriye doğru hesapla",
     lede: "Tek nöronun karesel hatasına, ağırlığın büyüklüğünü sınırlayan bir ceza ekleniyor. İleri hesaplama hazır. Gradyanları bağımlılık sırasına göre doldur.",
     caption:
       "Bir düğümün gradyanı, onu kullanan bütün dallardan gelen katkıların toplamıdır. Bu yüzden geriye doğru hesaplama kayıptan başlar. İki dalda kullanılan w için her iki katkı da toplanır.",
@@ -131,8 +131,8 @@ const copy: typeof en = {
 
   // 5 ----------------------------------------------------------------------
   cost: {
-    kicker: "Why it won",
-    title: "One pass back, against two passes per weight.",
+    kicker: "Neden kazandı",
+    title: "Tek geçişte bütün ağırlıkların gradyanını bulmak",
     lede: "Her ağırlığı küçük miktarda değiştirip kaybı yeniden hesaplayarak da gradyan tahmin edilebilir. Bu sayısal yöntemin süresini geri yayılımla karşılaştır.",
     caption:
       "Merkezi sonlu fark yöntemi her ağırlık için iki ileri hesaplama yapar. Geri yayılım ise bir ileri ve bir geri geçiş kullanır. İki yöntemin sonuçları karşılaştırılır; süreler bu cihazda ölçülür.",
@@ -157,8 +157,8 @@ const copy: typeof en = {
 
   // 6 ----------------------------------------------------------------------
   depth: {
-    kicker: "When it breaks",
-    title: "Make the network longer and watch the signal fade.",
+    kicker: "Bozulduğu yer",
+    title: "Katman sayısı arttıkça gradyan neden küçülür?",
     lede: "Tek nöronlu katmanlardan oluşan ağı uzat. Son noktayı sağa sürükledikçe katman sayısı artar. İlk katmana ulaşan gradyanı izle.",
     caption:
       "Her katman gradyanı w ile aktivasyonunun eğiminin çarpımıyla çarpar. Sigmoid'in eğimi en fazla dörtte birdir; bu yüzden w = 1'de on katman en az altı büyüklük mertebesine mal olur ve ilk katmanlar öğrenmeyi bırakır. ReLU, sinyal pozitif kaldıkça gradyanı olduğu gibi geçirir; 1'den büyük bir ağırlık ise onu büyütür: gradyan patlar.",
@@ -183,8 +183,8 @@ const copy: typeof en = {
 
   // 7 ----------------------------------------------------------------------
   challenge: {
-    kicker: "Debugging",
-    title: "Someone's backward pass is wrong. Find where.",
+    kicker: "Hata ayıklama",
+    title: "Gradyan hesabındaki hatayı bul",
     lede: "Üç hesaplama grafiğinin her birinde geri yayılım hatası var. Sayısal gradyan kontrolünü kullanarak hatalı işlemi bul.",
     caption:
       "Bir parametreyi kontrol etmek, geri geçişin sonucunu o parametreyi oynatıp ölçmekle karşılaştırır. Hangilerinin ve nasıl tutmadığı hatanın yerini gösterir. Yanlış bir suçlama yalnızca hatanın orada olmadığını söyler.",
@@ -212,10 +212,10 @@ const copy: typeof en = {
           "Buldun. Çıkarma, ikinci girdisi olan h'nin eksisini unutmuş; bu yüzden h'nin arkasındaki her şey negatif çıktı. w'nin ceza yolu oradan geçmiyor; w'nin yanlış ama tam ters olmamasının nedeni bu.",
       },
     },
-    checkTitle: "Gradient check",
+    checkTitle: "Gradyan kontrolü",
     check: "Kontrol et",
     checkLegend: "Solda geri geçiş, sağda oynatarak ölçülen.",
-    accuseTitle: "Where is the fault?",
+    accuseTitle: "Hata nerede?",
     notYet: "Birkaç parametreyi kontrol edin, sonra düğümü seç.",
     wrong: (name: string) => `${name} değil. Onun geri adımı doğru.`,
     pickLabel: "Vaka",
@@ -290,10 +290,10 @@ const copy: typeof en = {
   // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
   study: {
     topics: {
-      slope: "A gradient is a slope; the chain rule",
-      graph: "The graph, and the order of the backward pass",
-      depth: "Vanishing and exploding gradients",
-      check: "Gradient check",
+      slope: "Gradyan bir eğimdir; zincir kuralı",
+      graph: "Hesap grafiği ve geri geçişin sırası",
+      depth: "Kaybolan ve patlayan gradyanlar",
+      check: "Gradyan kontrolü",
     },
     notes: {
       "3b1b-backprop": "Geri yayılımın ne yaptığı, önce formülsüz.",

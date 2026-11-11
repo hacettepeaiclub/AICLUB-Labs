@@ -88,9 +88,7 @@ class Boundary extends Component<ErrorBoundaryProps & { copy: ErrorCopy }, Error
         {/* `alert` so a screen reader is told the content it was about to read
             is not coming. One region, announced once. */}
         <div role="alert" className="card-surface mx-auto max-w-prose p-6 text-center">
-          <h2 lang="en" className="text-title text-fg">
-            {copy.errorTitle}
-          </h2>
+          <h2 className="text-title text-fg">{copy.errorTitle}</h2>
           <p className="mt-2 text-body-sm text-fg-muted">{copy.errorBody}</p>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
             <Button onClick={this.retry}>{copy.errorRetry}</Button>

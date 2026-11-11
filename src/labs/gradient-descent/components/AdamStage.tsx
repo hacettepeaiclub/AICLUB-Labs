@@ -108,9 +108,7 @@ export function AdamStage() {
     <div className="space-y-8">
       {/* ---------------------------------------------- the surprising bit */}
       <div className="rounded-card border border-line/10 bg-ink-800 p-5 md:p-6">
-        <h3 lang="en" className="text-body font-medium text-fg">
-          {g.adam.firstStepTitle}
-        </h3>
+        <h3 className="text-body font-medium text-fg">{g.adam.firstStepTitle}</h3>
         <p className="mt-2 max-w-prose text-body-sm text-fg-muted">
           {g.adam.firstStepLede(
             formatNumber(scale.landscape.a, 0),

@@ -69,7 +69,7 @@ export default function ProbabilityLab() {
 
       {/* 1 — a game with an answer nobody believes at first. */}
       <section id="prob-monty" aria-labelledby="prob-monty-heading" className="scroll-mt-24">
-        <h2 lang="en" id="prob-monty-heading" className="sr-only">
+        <h2 id="prob-monty-heading" className="sr-only">
           {copy.monty.title}
         </h2>
         <p className="mb-4 max-w-prose text-body-lg text-fg">{copy.monty.question}</p>

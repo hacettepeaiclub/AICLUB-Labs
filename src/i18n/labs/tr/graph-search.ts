@@ -4,7 +4,7 @@ import type en from "../en/graph-search";
 
 const copy: typeof en = {
   sources: {
-    title: "Sources",
+    title: "Kaynaklar",
     astar:
       "Laboratuvarda çalışan A* kurgusunu destekler: şimdiye kadarki maliyet ile sezgisel tahminin toplamına göre sıralanan en-iyi-önce arama ve bu sezgiselin sağlaması gereken kabul edilebilirlik koşulu.",
     dijkstra:
@@ -70,29 +70,29 @@ const copy: typeof en = {
       "Izgaraya engeller çiz ve aramayı çalıştır. Hedefe giden yolun yanında incelenen hücreleri de izle.",
   },
   bfs: {
-    kicker: "Watch it think",
-    title: "It spreads in layers, not lines.",
+    kicker: "Arama sürerken",
+    title: "Arama başlangıçtan katman katman ilerler",
     lede: "Birer adım ilerle. Halkalı hücreler sırada bekler, dolu hücrelerin uzaklığı belirlenmiştir. Hücrelerin hangi sırayla işlendiğini incele.",
     caption:
       "Hücreleri ilk giren ilk çıkar sırasıyla ele almak işin tamamı: bu, onların uzaklık sırasına göre kesinleşmesini sağlar, dolayısıyla hedefe ulaşan ilk rota en kısasıdır. Buna genişlik öncelikli arama denir.",
   },
   cost: {
-    kicker: "Distance isn't cost",
-    title: "Some ground is slower.",
+    kicker: "Uzaklık maliyet değildir",
+    title: "Her hücreden geçmenin maliyeti aynı mı?",
     lede: "Açık zemine giriş 1, çamura giriş 5 maliyetlidir. Aynı haritada BFS ve Dijkstra’yı çalıştır. Adım sayısıyla toplam maliyeti ayrı ayrı karşılaştır.",
     caption:
       "BFS hamle sayısını azaltır. Dijkstra ise birikmiş maliyeti en düşük hücreyi seçer. Bu haritada daha uzun bir rota daha ucuz olabilir.",
   },
   astar: {
-    kicker: "Give the search a hint",
-    title: "Right answer, far less looking.",
+    kicker: "Aramaya bir ipucu verin",
+    title: "Hedefe yönelmek aramayı nasıl değiştirir?",
     lede: "A*, şimdiye kadarki maliyete hedefe kalan maliyetin tahminini ekler: f = g + h. Aynı haritada Dijkstra ile karşılaştırıp hangi hücreleri incelediğine bak.",
     caption:
       "En düşük maliyet aynı olsa da seçilen rotalar farklı olabilir. Bu dört yönlü ızgarada Manhattan uzaklığı kalan maliyeti olduğundan büyük tahmin etmez. İncelenen hücre sayısını karşılaştır.",
   },
   challenge: {
-    kicker: "The challenge",
-    title: "Same answer, less work.",
+    kicker: "Görev",
+    title: "En kısa yolu bulmak için kaç hücre incelendi?",
     lede: "Her haritada hem en ucuz rotayı bul hem de incelenen hücre sınırını aşma. Arama yöntemini ve izin verilen ayarları buna göre seç.",
     mazeLabel: (
       title: string,
@@ -109,15 +109,15 @@ const copy: typeof en = {
     exploredAtMost: "en çok incelenecek",
     maps: {
       swamp: {
-        title: "The swamp",
+        title: "Bataklık",
         hint: "En hızlı geçiş, en ucuz geçiş değildir.",
       },
       "open-ground": {
-        title: "Open ground",
+        title: "Açık arazi",
         hint: "Burada hiçbir şey pahalı değil. Tasarruf edilecek tek şey emek.",
       },
       "wrong-door": {
-        title: "The wrong door",
+        title: "Yanlış kapı",
         hint: "Hedef yakın. İçeri giden yol değil.",
       },
     },
@@ -191,9 +191,9 @@ const copy: typeof en = {
   // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
   study: {
     topics: {
-      bfs: "BFS: spreading in layers",
-      dijkstra: "Dijkstra: the cheapest route",
-      astar: "A*: aiming for the goal",
+      bfs: "BFS: katman katman yayılma",
+      dijkstra: "Dijkstra: en ucuz yol",
+      astar: "A*: hedefe nişan almak",
     },
     notes: {
       "reducible-bfs": "Sınırıyla birlikte, animasyonlu genişlik öncelikli arama.",

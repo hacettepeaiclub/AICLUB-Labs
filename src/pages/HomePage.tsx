@@ -143,7 +143,7 @@ export function HomePage() {
         className="shell mt-8 scroll-mt-24 md:mt-10"
       >
         <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-3">
-          <h2 lang="en" id="labs-heading" className="font-display text-display-md text-fg">
+          <h2 id="labs-heading" className="font-display text-display-md text-fg">
             {copy.labs}
           </h2>
           <p
