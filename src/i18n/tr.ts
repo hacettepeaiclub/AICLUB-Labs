@@ -184,6 +184,14 @@ export const tr: Translation = {
       description:
         "Gürültülü görüntüden bir tahmin oluştur. Modelin kullanabildiği şekilleri değiştirerek sonuçları karşılaştır.",
     },
+    jepa: {
+      title: "The Missing Piece",
+      term: "Öz-denetimli öğrenme",
+      figure:
+        "gizli bir parça komşularından, anlamlar haritasında bir nokta olarak tahmin ediliyor.",
+      description:
+        "Bir resmin bir kısmını gizle. Modelin, gizli kısmın neye benzediğini değil ne olduğunu tahmin ederek öğrendiğini izle.",
+    },
     generalization: {
       title: "Learned or memorised?",
       term: "Genelleme",

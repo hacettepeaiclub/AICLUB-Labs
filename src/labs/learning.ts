@@ -830,6 +830,20 @@ export const RESOURCES = {
     year: 2016,
     url: "https://distill.pub/2016/misread-tsne/",
   },
+  "meta-ijepa": {
+    kind: "article",
+    title: "I-JEPA: The first AI model based on Yann LeCun’s vision for more human-like AI",
+    by: "Meta AI",
+    year: 2023,
+    url: "https://ai.meta.com/blog/yann-lecun-ai-model-i-jepa/",
+  },
+  "ijepa-paper": {
+    kind: "article",
+    title: "Self-Supervised Learning from Images with a Joint-Embedding Predictive Architecture",
+    by: "Assran et al. · CVPR 2023",
+    year: 2023,
+    url: "https://arxiv.org/abs/2301.08243",
+  },
 } satisfies Record<string, LearningResource>;
 
 export type ResourceId = keyof typeof RESOURCES;
@@ -851,6 +865,7 @@ export const GUIDES: Record<string, readonly { topic: string; items: readonly Re
       items: ["sklearn-generalization", "isl-courses", "isl-book", "d2l-generalization"],
     },
   ],
+  jepa: [{ topic: "jepa", items: ["meta-ijepa", "ijepa-paper"] }],
   attention: [
     { topic: "qkv", items: ["3b1b-attention", "sq-attention", "d2l-attention"] },
     { topic: "softmax", items: ["sq-softmax"] },

@@ -377,6 +377,34 @@ export const SOURCES = {
     doi: null,
     url: null,
   },
+  ijepa: {
+    authors:
+      "Assran, M., Duval, Q., Misra, I., Bojanowski, P., Vincent, P., Rabbat, M., LeCun, Y., & Ballas, N.",
+    title: "Self-Supervised Learning from Images with a Joint-Embedding Predictive Architecture",
+    venue:
+      "Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 15619–15629",
+    year: 2023,
+    doi: "10.1109/CVPR52729.2023.01499",
+    url: null,
+  },
+  byol: {
+    authors:
+      "Grill, J.-B., Strub, F., Altché, F., Tallec, C., Richemond, P., Buchatskaya, E., Doersch, C., Pires, B. A., Guo, Z., Azar, M. G., Piot, B., Kavukcuoglu, K., Munos, R., & Valko, M.",
+    title: "Bootstrap Your Own Latent - A New Approach to Self-Supervised Learning",
+    venue: "Advances in Neural Information Processing Systems 33",
+    year: 2020,
+    // NeurIPS proceedings carry no DOI.
+    doi: null,
+    url: "https://proceedings.neurips.cc/paper/2020/hash/f3ada80d5c4ee70142b17b8192b2958e-Abstract.html",
+  },
+  lecunPath: {
+    authors: "LeCun, Y.",
+    title: "A Path Towards Autonomous Machine Intelligence (version 0.9.2)",
+    venue: "OpenReview",
+    year: 2022,
+    doi: null,
+    url: "https://openreview.net/forum?id=BZ5a1r-kVsf",
+  },
 } as const satisfies Record<string, Source>;
 
 export type SourceId = keyof typeof SOURCES;

@@ -1,5 +1,6 @@
 import diffusion from "./diffusion";
 import generalization from "./generalization";
+import jepa from "./jepa";
 import attention from "./attention";
 import backpropagation from "./backpropagation";
 import cacheLocality from "./cache-locality";
@@ -35,6 +36,7 @@ import wordEmbeddings3D from "./word-embeddings-3d";
  * the grid needs those before any lab is chosen.
  */
 export const enLabs = {
+  jepa,
   diffusion,
   generalization,
   "word-embeddings-3d": wordEmbeddings3D,

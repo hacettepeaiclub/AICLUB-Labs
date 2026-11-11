@@ -24,6 +24,28 @@ export const journeys: Record<string, { en: Journey; tr: Journey }> = {
       "Şekli seçeneklerden çıkarıp aynı gürültülü girdiyi yeniden dene. Model tahminini kalan şekillerin olasılıklarından hesaplar; başlangıç görüntüsünü doğrudan kullanmaz.",
     ],
   },
+  jepa: {
+    en: [
+      "See how a model can learn from pictures nobody labelled, by predicting what is hidden.",
+      "Hide a block and train the model for a few seconds.",
+      "Watch the patches of one kind gather on the map while the loss falls.",
+      "A model reaches a loss of zero on this task. Has it necessarily learned something useful?",
+      "No: giving every patch the same vector also makes every guess right.",
+      "Yes: a loss of zero means every prediction is perfect, so it has learned.",
+      "Yes: the loss only reaches zero when the kinds are kept apart.",
+      "Switch the slow copy off and train. The loss reaches zero because every vector becomes the same, and nothing about the picture is left in them.",
+    ],
+    tr: [
+      "Bir modelin, kimsenin etiketlemediği resimlerden, gizli olanı tahmin ederek nasıl öğrenebildiğini gör.",
+      "Bir blok gizle ve modeli birkaç saniye eğit.",
+      "Kayıp düşerken aynı türden parçaların haritada bir araya geldiğini izle.",
+      "Bir model bu görevde sıfır kayba ulaşıyor. Bu, mutlaka işe yarar bir şey öğrendiği anlamına gelir mi?",
+      "Hayır: her parçaya aynı vektörü vermek de her tahmini doğru yapar.",
+      "Evet: sıfır kayıp her tahminin kusursuz olduğunu gösterir, yani öğrenmiştir.",
+      "Evet: kayıp ancak türler birbirinden ayrı tutulursa sıfıra iner.",
+      "Yavaş kopyayı kapatıp eğit. Kayıp sıfıra iner, çünkü bütün vektörler aynılaşır ve içlerinde resimden hiçbir şey kalmaz.",
+    ],
+  },
   generalization: {
     en: [
       "Tell memorising familiar examples apart from generalising to new ones.",
