@@ -103,14 +103,14 @@ const en = {
 export type CalculatorCopy = typeof en;
 
 const tr: CalculatorCopy = {
-  overline: en.overline,
+  overline: "Bilimsel hesap makinesi",
   badge: "Araç",
   minutes: "15 dk",
-  title: en.title,
+  title: "Hesap makineni kullanmayı öğren",
   description:
     "Hesap makinenin modelini seç ve bir ders aç. İşlem önceliği, açı birimleri, istatistik, denklemler ve matrisler için tuş sıralarını dene. Ders modunda sıradaki tuş gösterilir.",
-  pickKicker: en.pickKicker,
-  pickTitle: en.pickTitle,
+  pickKicker: "İlk adım",
+  pickTitle: "Hangi modeli kullanıyorsun?",
   pickLede:
     "Model adı ekranın hemen üstünde yazar. Burada aynısını seç; tuşlar ve menüler birebir eşleşir.",
   modelLabel: "Hesap makinesi modeli",
@@ -118,8 +118,8 @@ const tr: CalculatorCopy = {
   notListed:
     "fx-991CW henüz yok: Casio menülerinin sırasını yayımlamıyor, tahminle yazılmış bir ders seni yanlış tuşa götürür.",
   notOnModel: (name: string) => `${name} bunu yapamaz: bunun için bir tuşu ya da modu yok.`,
-  practiseKicker: en.practiseKicker,
-  practiseTitle: en.practiseTitle,
+  practiseKicker: "Uygulama",
+  practiseTitle: "Bir ders seç ve tuşları dene",
   practiseLede:
     "Bir ders seç. Sıradaki tuş ışıkla gösterilir; ona ekranda bas ya da klavyeden yaz. Sonra aynı tuşları kendi hesap makinende dene.",
   practiceLabel: "Çalışma biçimi",
@@ -144,8 +144,8 @@ const tr: CalculatorCopy = {
   disclaimer:
     "Bu bir simülasyon. Tuş sıraları Casio'nun bu modeller için yayımladığı kılavuzlardan alındı, ama ekran sadeleştirildi: tek satır giriş, ders kitabı görünümü yok ve yalnızca derslerin kullandığı menüler var. Hesap makinen farklı bir şey gösterirse kendi hesap makinene güven.",
   shiftLabel: "SHIFT açık: sıradaki tuş, üstünde turuncu yazan işi yapar.",
-  dailyOverline: en.dailyOverline,
-  dailyTitle: en.dailyTitle,
+  dailyOverline: (n: number) => `Günün soruları #${n}`,
+  dailyTitle: "Beş soru, her soruda üç hak",
   dailyLede: (model: string) =>
     `${model} için bugünün soruları. Tuş gösterilmez, yolu sınavdaki gibi sen bulursun. Aynı hesap makinesine sahip herkes aynı beş soruyu alır.`,
   dailyPlay: "Bugünün bulmacasını çöz",
@@ -164,7 +164,7 @@ const tr: CalculatorCopy = {
   dailyHigher: (left: string) => `Olmadı: cevap daha büyük. ${left}.`,
   dailyLower: (left: string) => `Olmadı: cevap daha küçük. ${left}.`,
   dailyEmpty: "Ekranda henüz bu sorunun cevabı olabilecek bir sonuç yok. Önce hesapla.",
-  dailyBoard: en.dailyBoard,
+  dailyBoard: "Bugünkü sonuçların",
   dailyCell: {
     higher: "yanlış, cevap daha büyük",
     lower: "yanlış, cevap daha küçük",

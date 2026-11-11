@@ -39,7 +39,7 @@ export default function RaceCondition() {
     <div className="space-y-20 md:space-y-28">
       {/* 1 — You are the scheduler. */}
       <section aria-labelledby="rc-game-heading">
-        <h2 lang="en" id="rc-game-heading" className="sr-only">
+        <h2 id="rc-game-heading" className="sr-only">
           {t.game.title}
         </h2>
         <p className="mb-6 max-w-prose text-body-lg text-fg">{t.game.question}</p>

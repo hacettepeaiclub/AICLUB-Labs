@@ -1,6 +1,6 @@
 import type { Translation } from "./types";
 
-/** Turkish controls and teaching prose; canonical page and section headings stay English.
+/** Turkish controls and teaching prose; only lab names and the home slogan stay English.
  * Use direct singular instructions. See docs/TURKISH.md for terminology and review rules. */
 export const tr: Translation = {
   shell: {
@@ -27,7 +27,7 @@ export const tr: Translation = {
     loadingLab: "Lab yükleniyor",
     openLab: "Labı aç →",
 
-    errorTitle: "This part of the page did not load.",
+    errorTitle: "Sayfanın bu bölümü yüklenemedi.",
     errorBody: "Bu bölüm yüklenemedi. Yeniden deneyebilir veya lab listesine dönebilirsin.",
     errorRetry: "Yeniden dene",
     errorBackToLabs: "Lab listesine dön",
@@ -51,17 +51,17 @@ export const tr: Translation = {
     title: "Play with the ideas behind computer science and artificial intelligence.",
     lede: "Algoritmaları ve yapay sinir ağlarını çalıştır. Bir ayarı değiştir, sonucu karşılaştır ve neden değiştiğini incele.",
     cta: "Deneylere başla",
-    labs: "Labs",
+    labs: "Laboratuvarlar",
     labCount: (n: number) => `${n} lab`,
-    experiments: "Experiments",
-    emptyTitle: "First experiments are brewing.",
+    experiments: "Deneyler",
+    emptyTitle: "İlk deneyler hazırlanıyor.",
     emptyBody: "Yeni lablar eklendikçe burada görünecek.",
     browse: "Labları incele",
     calculator: "Hesap makineni öğren",
     continueLab: (title: string) => `Devam et: ${title}`,
     filterLabel: "Labları konuya göre filtrele",
     allFields: "Tümü",
-    otherLabs: "Other labs",
+    otherLabs: "Diğer laboratuvarlar",
     showing: (shown: number, total: number, field: string) =>
       `${total} labdan ${shown} tanesi · ${field}`,
     visited: "Açıldı",
@@ -82,7 +82,7 @@ export const tr: Translation = {
   },
 
   notFound: {
-    title: "This lab doesn't exist. Yet.",
+    title: "Böyle bir laboratuvar henüz yok.",
     body: "Bu adreste bir lab bulunamadı. Listeden başka bir lab seçebilirsin.",
     back: "Lab listesine dön",
     figure: "Şekil 404. Buraya henüz bir şey çizilmedi.",
@@ -112,12 +112,12 @@ export const tr: Translation = {
     startOver: "Baştan başla",
     tryAgain: "Yeniden dene",
     solved: (done: number, total: number) => `${total} görevden ${done} tanesi çözüldü`,
-    recapTitle: "Today you learned",
+    recapTitle: "Bu deneyden ne öğrendin?",
     controlsLabel: "Deney kontrolleri",
     moreControls: "Ayarlar ve yardım",
     keyboardHint: "Grafik odaktayken",
-    nextLab: "Next in the collection",
-    endOfCollection: "That is the whole collection.",
+    nextLab: "Sıradaki lab",
+    endOfCollection: "Son laba geldin.",
     endOfCollectionBody: "Başka bir deney için lab listesine dönebilirsin.",
     backToCollection: "Lab listesi",
   },
@@ -132,11 +132,11 @@ export const tr: Translation = {
 
   guide: {
     howItWorks: "Nasıl çalışıyor?",
-    welcomeKicker: "First time here?",
+    welcomeKicker: "İlk kez mi deniyorsun?",
     show: "Turu başlat",
     explore: "Kendim deneyeyim",
     later: "Turu, başlığın altındaki “Nasıl çalışıyor?” düğmesiyle yeniden açabilirsin.",
-    tourLabel: "Guided tour",
+    tourLabel: "Rehberli tur",
     progress: (n: number, total: number) => `${n}/${total}`,
     next: "İleri",
     back: "Geri",
@@ -145,11 +145,11 @@ export const tr: Translation = {
   },
 
   learn: {
-    kicker: "Keep learning",
-    title: "Take this lab's ideas further",
+    kicker: "İlgili kaynaklar",
+    title: "Konuyu daha yakından incele",
     body: "Bu labın konularıyla ilgili videoları, dersleri ve yazıları burada bulabilirsin.",
     open: "Öğrenme rehberini aç",
-    dialogKicker: "Learning guide",
+    dialogKicker: "Öğrenme rehberi",
     close: "Kapat",
     kinds: {
       video: "Video",
@@ -186,33 +186,33 @@ export const tr: Translation = {
     },
     generalization: {
       title: "Learned or memorised?",
-      term: "Generalisation",
+      term: "Genelleme",
       figure: "esnek bir sınır tanıdık noktalara uyuyor, sonra yeni örneklerle karşılaşıyor.",
       description: "Modeli eğitim verisinde dene. Sonra ayrı örnekleri açıp doğruluğu karşılaştır.",
     },
     "word-embeddings-3d": {
       title: "The Map of Meaning, in 3D",
-      term: "Word embeddings, prototype",
+      term: "Word embedding, prototip",
       figure: "nokta olarak kelimeler ve bunlardan birine en yakın dördü.",
       description: "Bir deney: aynı 318 kelime, iki yerine üç PCA eksenine indirgenmiş hâliyle.",
     },
     "word-embeddings": {
       title: "The Map of Meaning",
-      term: "Word embeddings",
+      term: "Word embedding",
       figure: "bir uzayda nokta olarak kelimeler ve bunlardan birine en yakın dördü.",
       description:
         "Kelime vektörlerini haritada incele. Ekrandaki uzaklıkla asıl vektör benzerliğini karşılaştır.",
     },
     "hypothesis-testing": {
       title: "The Price of Certainty",
-      term: "Hypothesis testing",
+      term: "Hipotez testi",
       figure: "iki örneklem dağılımı, aralarında karar veren çizgi ve onun ötesindeki kuyruk.",
       description:
         "Ortalamayı, anlamlılık düzeyini ve örnek sayısını değiştir. Hata olasılıklarını ve testin gücünü karşılaştır.",
     },
     "reinforcement-learning": {
       title: "Exactly What You Asked",
-      term: "Reinforcement learning",
+      term: "Pekiştirmeli öğrenme",
       figure: "karelerden bir oda, robotun başladığı yer ve ulaşınca ödül aldığı kare.",
       description:
         "Ödülleri değiştirip ajanı yeniden eğit. Öğrendiği davranışın hedefinle uyuşup uyuşmadığını incele.",
@@ -233,28 +233,28 @@ export const tr: Translation = {
     },
     backpropagation: {
       title: "Who Is to Blame?",
-      term: "Backpropagation",
+      term: "Geri yayılım",
       figure:
         "çıkışından geriye doğru hatanın aktığı küçük bir ağ; suçun çoğu nereye gidiyorsa orası daha kalın.",
       description: "Çıktıyı değiştir ve hatanın ağırlık güncellemelerine nasıl yansıdığını incele.",
     },
     convolution: {
       title: "Nine Weights",
-      term: "Convolution",
+      term: "Evrişim",
       figure: "bir resmin üzerinde 3×3'lük bir pencere ve çıktıda yazdığı hücre.",
       description:
         "Bir filtreyi görüntü üzerinde kaydır. Çarpımların her çıktı hücresini nasıl oluşturduğunu incele.",
     },
     "floating-point": {
       title: "0.1 + 0.2",
-      term: "Floating point",
+      term: "Kayan nokta",
       figure:
         "işaret, üs ve kesir bitleri olarak bir sayı; altında bu bitlerin tutabildiği değerlerin cetveli.",
       description: "Bir sayı yaz. Bilgisayarın sakladığı değeri ve yuvarlama farkını incele.",
     },
     "cache-locality": {
       title: "The Neighbours Come Free",
-      term: "Cache locality",
+      term: "Önbellek yerelliği",
       figure:
         "sekizli satırlar halinde sayılar; birini okumak bütün bloğunu, komşularıyla birlikte getirir.",
       description:
@@ -262,7 +262,7 @@ export const tr: Translation = {
     },
     "race-condition": {
       title: "Lost Update",
-      term: "Race condition",
+      term: "Yarış durumu",
       figure:
         "iki iş parçacığının adımları iç içe; ikisi de yazmadan önce okur ve bir güncelleme kaybolur.",
       description:
@@ -270,41 +270,41 @@ export const tr: Translation = {
     },
     "hash-tables": {
       title: "Computed Address",
-      term: "Hash tables",
+      term: "Hash tabloları",
       figure: "dolu bir yuvaya düşen ve ilk boş yuvaya kadar sağa adımlayan bir anahtar.",
       description: "Anahtar ekle, çakışma oluştur ve tablo büyüdüğünde yapılan işi karşılaştır.",
     },
     "cryptographic-hashing": {
       title: "Digital Fingerprint",
-      term: "Cryptographic hashing",
+      term: "Kriptografik hash",
       figure: "farklı uzunlukta iki girdi, tek bir fonksiyon ve aynı boyda iki çıktı.",
       description:
         "Bir mesajın SHA-256 özetini hesapla. Tek karakter değişince kaç bitin değiştiğine bak.",
     },
     "multilayer-perceptrons": {
       title: "Bending the Line",
-      term: "Multilayer perceptrons",
+      term: "Çok katmanlı algılayıcılar",
       figure: "üç girdi, dört nöronlu bir gizli katman ve iki çıktı; her bağlantı çizili.",
       description:
         "Küçük bir sinir ağını eğit. Katmanları ve veriyi değiştirerek karar sınırını karşılaştır.",
     },
     "graph-search": {
       title: "The Spreading Search",
-      term: "Graph search",
+      term: "Graf araması",
       figure: "başlangıcından bir ızgaraya yayılan bir arama; parlak halka sınır.",
       description:
         "Engeller ve farklı maliyetler ekle. BFS, Dijkstra ve A* yöntemlerinin incelediği hücreleri karşılaştır.",
     },
     probability: {
       title: "Guess, Then Count",
-      term: "Probability",
+      term: "Olasılık",
       figure: "üç kapı ve sunucunun açtığı kapı.",
       description:
         "Altı deneyde önce tahmin yap. Hesaplanan olasılıkları, rastgele denemeleri ve fizik simülasyonunu karşılaştır.",
     },
     sorting: {
       title: "The Cost of Order",
-      term: "Sorting algorithms",
+      term: "Sıralama algoritmaları",
       figure: "kısadan uzuna sıralanmış çubuklar; son yerleşenler vurgulu.",
       description:
         "Aynı diziyi iki algoritmayla sırala. Karşılaştırma ve yazma sayılarını ayrı ayrı incele.",

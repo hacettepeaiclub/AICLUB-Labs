@@ -37,7 +37,7 @@ export default function HashTable() {
     <div className="space-y-20 md:space-y-28">
       {/* 1 — Behaviour first: a word becomes a bucket. */}
       <section aria-labelledby="ht-address-heading">
-        <h2 lang="en" id="ht-address-heading" className="sr-only">
+        <h2 id="ht-address-heading" className="sr-only">
           {t.address.title}
         </h2>
         <p className="mb-6 max-w-prose text-body-lg text-fg">{t.address.question}</p>

@@ -4,7 +4,7 @@ import type en from "../en/word-embeddings";
 
 const copy: typeof en = {
   sources: {
-    title: "Sources",
+    title: "Kaynaklar",
     gloveVectors:
       "Bu laboratuvarın gerçekten kullandığı vektörleri destekler: kendi gömme yöntemini uygulamaz, önceden eğitilmiş GloVe vektörlerini okur.",
   },
@@ -21,8 +21,8 @@ const copy: typeof en = {
   },
 
   explore: {
-    title: "Explore the universe",
-    neighboursTitle: "Nearest words",
+    title: "Evreni keşfet",
+    neighboursTitle: "En yakın kelimeler",
     announce: (word: string, gloss: string) => `${word} seçildi, ${gloss}.`,
     selectedLabel: "Seçili",
     nearestLabel: "En yakın, kosinüs",
@@ -52,7 +52,7 @@ const copy: typeof en = {
   },
 
   neighbours: {
-    title: (word: string) => `Nearest to ${word}`,
+    title: (word: string) => `${word} kelimesine en yakınlar`,
     rankHeader: "Sıra",
     wordHeader: "Kelime",
     scoreHeader: "Benzerlik",
@@ -61,8 +61,8 @@ const copy: typeof en = {
   },
 
   projection: {
-    kicker: "What the map is not showing",
-    title: "You are not looking at the space",
+    kicker: "Haritanın göstermedikleri",
+    title: "Uzayın kendisine bakmıyorsun",
     lede: "Harita 300 boyutlu kelime vektörlerini iki boyutta gösterir. Bu dönüşüm bazı ilişkileri kaybeder. Ekrandaki uzaklıkları, asıl vektörlerin benzerlikleriyle karşılaştır.",
     modeLabel: "Bana göster",
     modeNone: "Kendi seçimim",
@@ -117,7 +117,7 @@ const copy: typeof en = {
       "Vektörler İngilizce kelimelere aittir. Türkçe etiketler okumayı kolaylaştırmak için eklenmiştir; Bu bir Türkçe gömme uzayı değildir.",
   },
   compare: {
-    title: "Compare two words",
+    title: "İki kelimeyi karşılaştırın",
     hold: "Bu kelimeyi tut",
     holding: (word: string) => `Tutulan: ${word}`,
     release: "Bırak",
@@ -151,9 +151,9 @@ const copy: typeof en = {
   // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
   study: {
     topics: {
-      vectors: "Words as vectors",
-      usage: "Meaning from usage",
-      shadow: "A 2-D map is a shadow",
+      vectors: "Vektör olarak kelimeler",
+      usage: "Anlam kullanımdan gelir",
+      shadow: "İki boyutlu harita bir gölgedir",
     },
     notes: {
       "sq-word2vec": "word2vec'in kelimeleri nasıl sayılara çevirdiği.",

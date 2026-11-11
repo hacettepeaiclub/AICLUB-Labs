@@ -65,7 +65,7 @@ export default function AttentionPlayground() {
       {/* 1 — The sentence. Selected on load, so the lesson lands before the
           visitor has done anything, and nothing is named. */}
       <section aria-labelledby="attention-heading">
-        <h2 lang="en" id="attention-heading" className="sr-only">
+        <h2 id="attention-heading" className="sr-only">
           {a.hero.title}
         </h2>
         <p className="mb-6 max-w-prose text-body-lg text-fg">{a.hero.question}</p>

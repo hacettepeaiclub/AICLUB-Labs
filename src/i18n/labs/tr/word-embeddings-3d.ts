@@ -4,7 +4,7 @@ import type en from "../en/word-embeddings-3d";
 
 const copy: typeof en = {
   sources: {
-    title: "Sources",
+    title: "Kaynaklar",
     gloveVectors:
       "Bu laboratuvarın okuduğu vektörleri destekler. Üç boyutlu görünüm izdüşümü değiştirir, altındaki gömmeleri değil.",
   },
@@ -17,7 +17,7 @@ const copy: typeof en = {
   varianceLabel: "Açıklanan varyans",
   varianceHint: (dimensions: number) => `${dimensions} eksenin üçü`,
   selectedLabel: "Seçili",
-  recapTitle: "What this prototype shows",
+  recapTitle: "Bu prototip ne gösteriyor",
   recap: {
     lessons: [
       "Üç eksen, uzayın ikiden biraz fazlasını taşıyor, yine de neredeyse hiçbirini.",
