@@ -39,7 +39,7 @@ export default function CacheLocality() {
     <div className="space-y-20 md:space-y-28">
       {/* 1 — The claim, measured: same sum, two orders. */}
       <section aria-labelledby="cl-race-heading">
-        <h2 lang="en" id="cl-race-heading" className="sr-only">
+        <h2 id="cl-race-heading" className="sr-only">
           {t.race.title}
         </h2>
         <p className="mb-6 max-w-prose text-body-lg text-fg">{t.race.question}</p>

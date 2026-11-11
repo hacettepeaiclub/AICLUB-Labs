@@ -24,7 +24,7 @@ export default function TokenizerLab() {
     <div className="space-y-24 md:space-y-32">
       {/* 1 — Behaviour first. Nothing is named until you have been wrong. */}
       <section aria-labelledby="tokenizer-guess-heading">
-        <h2 lang="en" id="tokenizer-guess-heading" className="sr-only">
+        <h2 id="tokenizer-guess-heading" className="sr-only">
           {t.guess.sectionLabel}
         </h2>
         <p className="max-w-prose text-body-lg text-fg">{t.guess.heading}</p>

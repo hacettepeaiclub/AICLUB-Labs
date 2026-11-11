@@ -76,7 +76,7 @@ export default function RewardPlayground() {
     <div className="space-y-20 md:space-y-28">
       {/* 1 — A world, and what it pays for. No learning yet, nothing named. */}
       <section aria-labelledby="reward-world-heading">
-        <h2 lang="en" id="reward-world-heading" className="sr-only">
+        <h2 id="reward-world-heading" className="sr-only">
           {copy.world.title}
         </h2>
         <p className="mb-6 max-w-prose text-body-lg text-fg">{copy.world.question}</p>

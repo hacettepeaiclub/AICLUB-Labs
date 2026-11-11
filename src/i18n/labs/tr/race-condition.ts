@@ -15,7 +15,7 @@ const accusative = (name: string) => (name === "A" ? "A'yı" : "B'yi");
 
 const copy: typeof en = {
   sources: {
-    title: "Sources",
+    title: "Kaynaklar",
     ostep:
       "Lab'ın temel örneğini destekler: counter++ bir okuma, bir toplama ve bir yazmaya derlenir ve aralarına giren bir kesme bir güncellemeyi kaybettirir. Çare olarak kilitlerin ve atomik komutların anlatımını da destekler.",
     mutex:
@@ -28,12 +28,12 @@ const copy: typeof en = {
 
   scheduler: {
     name: (t: 0 | 1) => (t === 0 ? "A" : "B"),
-    thread: (name: string) => `Thread ${name}`,
+    thread: (name: string) => `İş parçacığı ${name}`,
     run: (name: string) => `${accusative(name)} çalıştır`,
     undo: "Geri al",
     reset: "Baştan başla",
     register: "r",
-    memory: "Shared memory",
+    memory: "Ortak bellek",
     lockFree: "boşta",
     lockHeld: (name: string) => `${name} tutuyor`,
     status: { waiting: "m'yi bekliyor", done: "bitti" },
@@ -59,7 +59,7 @@ const copy: typeof en = {
   },
 
   game: {
-    title: "Two threads, one counter",
+    title: "İki iş parçacığı aynı sayacı artırırsa",
     question:
       "İki iş parçacığı, 0'dan başlayan bir sayaca birer ekliyor. Her biri counter++ satırını tam bir kez çalıştırıyor. Sayaç 1'de bitebilir mi?",
     hint: "A veya B düğmesi ilgili iş parçacığının bir sonraki işlemini çalıştırır. İşlemlerin sırasını seçerek sayacı 1’de bitirmeyi dene.",
@@ -78,8 +78,8 @@ const copy: typeof en = {
   },
 
   orders: {
-    kicker: "Every order",
-    title: "Most orders lose.",
+    kicker: "Bütün sıralar",
+    title: "Hangi işlem sıralarında güncelleme kaybolur?",
     lede: "Üçer işlem yapan iki iş parçacığı, kendi iç sıralarını koruyarak 20 farklı biçimde çalışabilir. Her sıranın sayaçta bıraktığı sonucu karşılaştır.",
     caption:
       "Her kart, altı adımın soldan sağa A'lı B'li bir sırasıdır. Birini seçince izini görürsün: her adımdan sonra iki yazmacın ve sayacın değeri.",
@@ -105,8 +105,8 @@ const copy: typeof en = {
   },
 
   odds: {
-    kicker: "Rare, not absent",
-    title: "Why it passes the tests.",
+    kicker: "Nadir, ama var",
+    title: "Testler bu hatayı neden kaçırabilir?",
     lede: "Gerçek bir zamanlayıcı bu sıraları eşit olasılıkla seçmez. Buradaki model, ortalama kaç işlemde bir iş parçacığının değiştiğini ayarlamana izin verir. Aynı ayarla yapılan 200 çalıştırmanın sonuçlarını incele.",
     caption:
       "Her nokta tamamlanmış bir çalıştırmadır. Zamanlayıcı rastgele değiştirir; ortalama olarak yukarıda seçilen adım sayısında bir. Model bilerek basit tutuldu; önemli olan, iki iş parçacığının adımlarının ne kadar sık iç içe geçtiği.",
@@ -142,8 +142,8 @@ const copy: typeof en = {
   },
 
   fix: {
-    kicker: "Closing the gap",
-    title: "Lock it, or make it one step.",
+    kicker: "Boşluğu kapatmak",
+    title: "Kilitleme ve atomik güncelleme",
     lede: "Okuma, artırma ve yazma işlemlerinin arasına başka bir iş parçacığı girebilir. Kilit bu üç işlemi birlikte korur; atomik artırma ise tek işlemde tamamlanır. Her yöntemde kayıp güncelleme oluşturmayı dene.",
     hint: {
       none: "Koruma yok: öncekiyle aynı üç adım. Burada nasıl kaybettireceğini zaten biliyorsun.",
@@ -174,8 +174,8 @@ const copy: typeof en = {
   },
 
   atm: {
-    kicker: "Your turn",
-    title: "Make the bank pay twice.",
+    kicker: "Sıra sizde",
+    title: "Aynı ödeme iki kez nasıl yapılabilir?",
     lede: "İki ATM aynı hesaptan 100’er çekmeye çalışıyor. Başlangıç bakiyesi 100. Her işlem tek başına atomik olsa da bakiye kontrolü ile para çekme ayrı işlemler. Toplam 200 çekilebilen bir sıra bulabilir misin?",
     hint: {
       none: "Her ATM önce bakiyeye bakar, yeterliyse çeker. 200 ödeten sırayı bul.",
@@ -255,9 +255,9 @@ const copy: typeof en = {
   // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
   study: {
     topics: {
-      steps: "counter++ is three steps",
-      fix: "Locks and atomic instructions",
-      check: "Check, then act",
+      steps: "counter++ üç adımdır",
+      fix: "Kilitler ve atomik komutlar",
+      check: "Önce kontrol, sonra eylem",
     },
     notes: {
       "cp-race": "Yarış durumları insan ölçeğinde canlandırılmış.",

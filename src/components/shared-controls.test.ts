@@ -142,7 +142,7 @@ describe("LabSection", () => {
     expect(kickerLine).toMatch(/text-fg-faint/);
     // A paragraph, so a screen reader's heading list stays the section titles.
     expect(kickerLine).toMatch(/<p /);
-    expect(kickerLine).toContain('lang="en"');
+    expect(kickerLine).not.toContain('lang="en"');
     expect(kickerLine).not.toMatch(/<h[1-6]/);
   });
 

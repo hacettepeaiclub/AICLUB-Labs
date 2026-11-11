@@ -71,7 +71,7 @@ export function LabOrientation({ rootRef }: { rootRef: RefObject<HTMLElement> })
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
           <p className="text-overline uppercase text-accent">
-            <span lang="en">Your first move</span>
+            <span>{tr ? "İlk adım" : "Your first move"}</span>
           </p>
           <p className="mt-2 text-body-sm text-fg">{copy[1]}</p>
         </div>
@@ -81,7 +81,7 @@ export function LabOrientation({ rootRef }: { rootRef: RefObject<HTMLElement> })
       </div>
       <details className="mt-3 border-t border-line/15 pt-1">
         <summary className="min-h-11 cursor-pointer py-3 text-caption text-fg-muted">
-          <span lang="en">What to watch · Explore the route</span>
+          <span>{tr ? "Deneyin adımları" : "What to watch · Explore the route"}</span>
         </summary>
         <p className="text-body-sm text-fg">{copy[0]}</p>
         <p className="mt-2 text-body-sm text-fg-muted">{copy[2]}</p>
@@ -125,10 +125,10 @@ export function LabTransfer() {
   return (
     <section data-transfer-check aria-labelledby={id} className="transfer-check">
       <p className="text-overline uppercase text-accent">
-        <span lang="en">Try a new situation</span>
+        <span>{tr ? "Öğrendiğini dene" : "Try a new situation"}</span>
       </p>
-      <h2 lang="en" id={id} className="mt-3 text-title font-semibold text-fg">
-        {journeys[slug]?.en[3]}
+      <h2 id={id} className="mt-3 text-title font-semibold text-fg">
+        {copy[3]}
       </h2>
       <p className="mt-2 text-body-sm text-fg-muted">
         {tr

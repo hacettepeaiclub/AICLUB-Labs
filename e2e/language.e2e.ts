@@ -8,7 +8,7 @@ const paths = [
   ...labs.map(({ meta }) => `/labs/${meta.slug}/`),
 ];
 for (const path of paths) {
-  test(`canonical English headings with Turkish prose: ${path}`, async ({ browser, baseURL }) => {
+  test(`localized headings and shared lab names: ${path}`, async ({ browser, baseURL }) => {
     const headings: string[][] = [];
     for (const language of ["en", "tr"]) {
       const context = await browser.newContext({ reducedMotion: "reduce" });
@@ -34,15 +34,15 @@ for (const path of paths) {
       }
       const all = page.locator("h1,h2,h3,h4,h5,h6");
       headings.push((await all.allTextContents()).map((s) => s.replace(/\s+/g, " ").trim()));
-      expect(
-        await all.evaluateAll((nodes) => nodes.every((n) => n.getAttribute("lang") === "en")),
-      ).toBe(true);
       if (language === "tr") {
         expect(await page.locator("html").getAttribute("lang")).toBe("tr");
         expect(await page.locator("body").innerText()).not.toMatch(/düzen(?:ek|eğ)/iu);
       }
       await context.close();
     }
-    expect(headings[1]).toEqual(headings[0]);
+    if (path === "/" || labs.some((l) => path === `/labs/${l.meta.slug}/`))
+      expect(headings[1]![0]).toBe(headings[0]![0]);
+    else expect(headings[1]![0]).not.toBe(headings[0]![0]);
+    expect(headings[1]).not.toEqual(headings[0]);
   });
 }

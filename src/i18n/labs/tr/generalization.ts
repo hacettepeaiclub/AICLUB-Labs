@@ -25,7 +25,7 @@ const copy: typeof en = {
     "Örnek sayısını ve gürültüyü doğrulama verisini açmadan önce seç. Veriyi gizlemek daha önce gördüğün bilgiyi silmez. Bu ayarları değiştirmek için yeni veri oluştur.",
   scope:
     "Bu deney, daire biçimindeki sentetik verilerde k-en yakın komşu yöntemiyle sınıflandırma yapar. Eğitim, doğrulama ve test verileri ayrı üretilir. Etiketler seçilen olasılıkla ters çevrilir. Daha büyük k, sınırı yumuşatır; ancak doğruluğu her zaman artırmaz. Sinir ağı eğitilmez.",
-  bridgeTitle: "The same question applies to a neural network.",
+  bridgeTitle: "Aynı soru bir sinir ağı için de geçerli.",
   bridge:
     "Esnek bir sınır gürültüye de uyabilir. Buradaki model komşuları saklar; sinir ağı ağırlıklarını ayarlar. İkisi de parametrelerinin seçiminde kullanılmamış örneklerde değerlendirilmelidir.",
   link: "Sinir ağının kapasitesini keşfet",
@@ -49,7 +49,7 @@ const copy: typeof en = {
     },
   },
   study: {
-    topics: { generalisation: "Generalisation and model selection" },
+    topics: { generalisation: "Genelleme ve model seçimi" },
     notes: {
       "sklearn-generalization":
         "Test verisini model seçimine sızdırmadan eğitim ve değerlendirme verilerini ayırmak.",

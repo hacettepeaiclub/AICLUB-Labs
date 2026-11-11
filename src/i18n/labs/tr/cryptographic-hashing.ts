@@ -4,7 +4,7 @@ import type en from "../en/cryptographic-hashing";
 
 const copy: typeof en = {
   sources: {
-    title: "Sources",
+    title: "Kaynaklar",
     sha2: "Bu laboratuvarın tarayıcının Web Crypto uygulamasından istediği SHA-256 özetini tanımlar. Laboratuvar özet işlevini kendisi uygulamaz.",
   },
   inputLabel: "Mesajın",
@@ -15,7 +15,7 @@ const copy: typeof en = {
   hashCopied: "Özet kopyalandı",
 
   unavailable: {
-    title: "This lab cannot run here.",
+    title: "Bu tarayıcıda SHA-256 kullanılamıyor",
     insecureContext:
       "Bu laboratuvarın tarayıcında özet hesaplayabilmesi için güvenli bir bağlantı (HTTPS) gerekiyor. Sayfayı https:// ile açmak sorunu çözecektir.",
     unsupported:
@@ -38,7 +38,7 @@ const copy: typeof en = {
   },
 
   hero: {
-    title: "What comes out",
+    title: "Mesajın özeti",
     question: "İki farklı mesaj aynı uzunlukta çıktı üretebilir mi?",
     digestLabel: "SHA-256 özeti",
     caption:
@@ -48,8 +48,8 @@ const copy: typeof en = {
   },
 
   determinism: {
-    kicker: "Same message, same digest",
-    title: "It answers the same way every time.",
+    kicker: "Aynı mesaj, aynı özet",
+    title: "Aynı mesaj her seferinde aynı özeti mi verir?",
     lede: "Aynı mesajın özetini yeniden hesapla. Her tıklama yeni bir SHA-256 çağrısı yapar; önceki sonuç kullanılmaz.",
     hashAgain: "Yeniden hash'le",
     enough: "Bu kadar çalıştırma yeter",
@@ -64,8 +64,8 @@ const copy: typeof en = {
   },
 
   avalanche: {
-    kicker: "One tiny change",
-    title: "One keystroke rewrites everything.",
+    kicker: "Tek küçük değişiklik",
+    title: "Bir karakter değişince kaç bit değişir?",
     lede: "Mesajın tek karakterini değiştir. İki özette farklı olan karakterler işaretlenir.",
     before: "Önce",
     after: "Sonra",
@@ -86,8 +86,8 @@ const copy: typeof en = {
   },
 
   challenge: {
-    kicker: "The challenge",
-    title: "Can you make two different messages produce the same digest?",
+    kicker: "Meydan okuma",
+    title: "İki farklı mesaj aynı kısa özeti verebilir mi?",
     lede: "Önce özetin ilk karakterini eşleştirmeyi dene. Her turda bir karakter daha istenir. Rastgele bir denemenin başarı olasılığı her ek karakterde 16 kat azalır.",
     inputA: "Mesaj A",
     inputB: "Mesaj B",
@@ -112,8 +112,8 @@ const copy: typeof en = {
   },
 
   usage: {
-    kicker: "In the wild",
-    title: "Where digests turn up.",
+    kicker: "Gerçek hayatta",
+    title: "Özetler nerede kullanılır?",
     lede: "Aynı sabit boyutlu parmak izi, beş farklı biçimde kullanılıyor.",
     items: {
       git: {
@@ -182,8 +182,8 @@ const copy: typeof en = {
   // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
   study: {
     topics: {
-      digest: "Fixed length, same answer every time",
-      collision: "Collision resistance",
+      digest: "Sabit uzunluk, her seferinde aynı cevap",
+      collision: "Çakışma direnci",
     },
     notes: {
       "paar-hash": "Bir hash fonksiyonunun neyi garanti etmesi gerektiğine dair üniversite dersi.",

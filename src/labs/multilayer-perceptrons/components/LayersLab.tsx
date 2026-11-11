@@ -76,9 +76,7 @@ export function LayersLab() {
             {columns.map((column) => (
               <div key={column.key} className="min-w-0 space-y-2">
                 <div className="flex items-baseline justify-between gap-3">
-                  <h3 lang="en" className="text-body-sm font-semibold text-fg">
-                    {column.title}
-                  </h3>
+                  <h3 className="text-body-sm font-semibold text-fg">{column.title}</h3>
                   <span className="font-mono text-caption text-fg-faint">{column.sizes}</span>
                 </div>
                 <p className="text-caption text-fg-muted">{column.subtitle}</p>

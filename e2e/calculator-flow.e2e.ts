@@ -18,7 +18,7 @@ for (const width of [390, 1440])
     await page.getByText("Ders", { exact: true }).click();
     await page.getByRole("button", { name: "Göster", exact: true }).click();
     await page.getByRole("button", { name: "Tuşları görmeden dene" }).click();
-    await expect(page.getByRole("heading", { name: "Try it yourself" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Şimdi sen dene" })).toBeVisible();
     await page.getByRole("button", { name: "Günlük soruları aç" }).click();
     const prompt = await page.locator(".calc-task > p").first().textContent();
     await page.getByRole("button", { name: "Pes et", exact: true }).click();

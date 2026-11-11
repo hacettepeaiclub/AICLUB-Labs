@@ -92,7 +92,7 @@ export default function HypothesisTesting() {
 
       {/* 1 — two curves, and nothing named. */}
       <section aria-labelledby="ht-separation-heading">
-        <h2 lang="en" id="ht-separation-heading" className="sr-only">
+        <h2 id="ht-separation-heading" className="sr-only">
           {copy.separation.title}
         </h2>
         <p className="mb-6 max-w-prose text-body-lg text-fg">{copy.separation.question}</p>
@@ -145,7 +145,6 @@ export default function HypothesisTesting() {
           and the year is absent because that copy does not carry one. */}
       <section aria-labelledby="ht-sources-heading" className="max-w-prose">
         <h2
-          lang="en"
           id="ht-sources-heading"
           className="font-mono text-caption uppercase tracking-wide text-fg-muted"
         >

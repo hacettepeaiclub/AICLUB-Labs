@@ -221,7 +221,7 @@ export default function EmbeddingUniverse() {
 
       {/* 2 — the question itself. */}
       <section aria-labelledby="eu-explore-heading" className="!mb-10">
-        <h2 lang="en" id="eu-explore-heading" className="sr-only">
+        <h2 id="eu-explore-heading" className="sr-only">
           {copy.explore.title}
         </h2>
         <PredictionCard

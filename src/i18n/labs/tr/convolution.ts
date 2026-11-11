@@ -4,7 +4,7 @@ import type en from "../en/convolution";
 
 const copy: typeof en = {
   sources: {
-    title: "Sources",
+    title: "Kaynaklar",
     lecunZip:
       "Bu laboratuvarın konusu olan kısıtlı ağı tanıtır: ağırlıkları resmin her konumunda ortak kullanılan, geri yayılımla öğrenilen ve el yazısı rakamları okuyan küçük çekirdekler.",
     convArithmetic:
@@ -22,7 +22,7 @@ const copy: typeof en = {
 
   // 1 ----------------------------------------------------------------------
   slide: {
-    title: "A window that slides",
+    title: "Filtreyi görüntü üzerinde kaydır",
     question:
       "3×3 filtreyi görüntü üzerinde bir adım kaydır. Yeni çıktı hücresi nasıl hesaplanıyor?",
     input: "Resim",
@@ -51,8 +51,8 @@ const copy: typeof en = {
 
   // 2 ----------------------------------------------------------------------
   kernels: {
-    kicker: "Nine numbers",
-    title: "Change the weights, change what it sees.",
+    kicker: "Dokuz sayı",
+    title: "Filtre hangi ayrıntıları belirginleştiriyor?",
     lede: "Bir filtre seç veya ağırlıkları kendin değiştir. Görüntüye çizim ekleyerek çıktının hangi bölgelerde değiştiğini incele.",
     input: "Resim",
     output: "Çıktı",
@@ -100,8 +100,8 @@ const copy: typeof en = {
 
   // 3 ----------------------------------------------------------------------
   shift: {
-    kicker: "Anywhere in the picture",
-    title: "Move the shape. The answer moves with it.",
+    kicker: "Resmin her yerinde",
+    title: "Şekil yer değiştirince çıktı nasıl değişir?",
     lede: "Bu çekirdek, aradığı şeklin kendisi: artının olduğu yerde artı bir, çevresinde eksi bir. Artıyı taşı ve çıktının en güçlü olduğu yere bak.",
     input: "Resim",
     detector: "Çekirdek",
@@ -132,8 +132,8 @@ const copy: typeof en = {
 
   // 4 ----------------------------------------------------------------------
   size: {
-    kicker: "Counting the windows",
-    title: "How big is the output?",
+    kicker: "Pencereleri saymak",
+    title: "Çıktının boyutu nasıl belirlenir?",
     lede: "Girdi boyutunu, filtre boyutunu, dolguyu ve adımı değiştir. Çıktının boyutunu formülle hesapla, ardından işlenen pencereleri say.",
     input: "Girdi ve dolgu",
     output: "Çıktı",
@@ -160,8 +160,8 @@ const copy: typeof en = {
 
   // 5 ----------------------------------------------------------------------
   depth: {
-    kicker: "Layers on layers",
-    title: "Small windows, stacked, see far.",
+    kicker: "Katman üstüne katman",
+    title: "Üst üste gelen katmanlar görüntünün ne kadarını görür?",
     lede: "3×3 katmanlar ekle. Üst katmandaki bir hücreyi seçerek giriş görüntüsünde hangi hücrelerden etkilendiğini incele.",
     inputName: "Girdi",
     layerName: (l: number) => `Katman ${l}`,
@@ -188,8 +188,8 @@ const copy: typeof en = {
 
   // 6 ----------------------------------------------------------------------
   learn: {
-    kicker: "Nobody designs them",
-    title: "Let the weights find the kernel.",
+    kicker: "Kimse tasarlamıyor",
+    title: "Filtre ağırlıkları nasıl öğrenilir?",
     lede: "Hedef çıktı bilinmeyen bir filtreyle hesaplandı. Rastgele dokuz ağırlıktan başlayarak aynı çıktıyı üretmeye çalış. Gradient descent, iki çıktı arasındaki hatayı azaltır.",
     input: "Resim",
     goal: "Hedef",
@@ -226,8 +226,8 @@ const copy: typeof en = {
 
   // 7 ----------------------------------------------------------------------
   challenge: {
-    kicker: "Your turn",
-    title: "Three kernels to find by hand.",
+    kicker: "Sıra sizde",
+    title: "Üç hedef için filtre tasarla",
     lede: "Her görev filtrenin belirli bir davranış göstermesini ister. Koşulları sağlayan birden fazla filtre olabilir.",
     pickLabel: "Görev",
     yours: "Çıktın",
@@ -344,9 +344,9 @@ const copy: typeof en = {
   // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
   study: {
     topics: {
-      window: "A sliding window of weights",
-      sharing: "The same weights everywhere",
-      size: "Padding, stride and output size",
+      window: "Kayan bir ağırlık penceresi",
+      sharing: "Her yerde aynı ağırlıklar",
+      size: "Dolgu, adım ve çıktı boyutu",
     },
     notes: {
       "ng-edge": "3×3'lük bir kenar çekirdeğinin resim üzerinde toplam toplam kaydırılması.",

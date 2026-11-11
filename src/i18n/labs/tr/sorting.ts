@@ -3,13 +3,13 @@ import type en from "../en/sorting";
 /** Türkçe metin: sorting. Şekli `en/sorting.ts` ile birebir aynı olmak zorundadır. */
 
 const copy: typeof en = {
-  theRace: "The race",
+  theRace: "Yarış",
   algorithm: "Algoritma",
   shape: "Biçim",
   shapeAndKeys: "Biçim ve klavye",
   puzzle: "Görev",
-  sorterA: "Sorter A",
-  sorterB: "Sorter B",
+  sorterA: "Sıralayıcı A",
+  sorterB: "Sıralayıcı B",
   sort: "Sırala",
   algorithms: { selection: "Seçmeli Sıralama", insertion: "Eklemeli Sıralama" },
   shapes: {
@@ -57,22 +57,22 @@ const copy: typeof en = {
       `${title}: ${size} değerden oluşan çubuk grafik. ${state}`,
   },
   watch: {
-    kicker: "Watch them work",
-    title: "One sweeps. The other tiptoes.",
+    kicker: "Adım adım",
+    title: "Aynı diziyi iki yöntemle sırala",
     lede: "Birer adım ilerle. A’nın kalan diziyi nasıl taradığını, B’nin ise seçtiği değeri nasıl yerine taşıdığını karşılaştır.",
     caption:
       "A, selection sort; B, insertion sort uygular. Karşılaştırma ve yazma sayılarını ayrı ayrı izle.",
   },
   data: {
-    kicker: "Draw the data",
-    title: "The work is in the data.",
+    kicker: "Veriyi çizin",
+    title: "Başlangıç sırası işlem sayısını nasıl etkiler?",
     lede: "Çubukları sürükleyerek diziyi değiştir veya hazır bir dizi seç. Aynı diziyi iki algoritmayla yeniden sırala.",
     caption:
       "32 eleman için selection sort her seferinde 496 karşılaştırma yapar. Insertion sort’un karşılaştırma ve yazma sayıları ise girdinin ne kadar sıralı olduğuna bağlıdır.",
   },
   distance: {
-    kicker: "How far from home",
-    title: "It isn't how many are wrong.",
+    kicker: "Evinden ne kadar uzakta",
+    title: "Yer değiştirme sayısını ne belirler?",
     lede: "Sıralı bir dizide tek bir çubuğu uzağa taşı. Ardından birkaç çubuğu küçük miktarlarda değiştir. İki durumda gereken yazma sayısını karşılaştır.",
     caption:
       "Terslik, sırası yanlış olan bir çifttir. Bu eklemeli sıralama, kendisine verilen dizideki her terslik için tam bir kez kaydırır, yani evinden çok uzaktaki tek bir değer, birkaç küçük hatadan daha pahalıya gelebilir. Taşıma ise bu kaydırmalara, yeri değişen her değeri yerine yazan son işlemi de ekler; bu yüzden Düzensizlik'in biraz üzerinde durur.",
@@ -92,8 +92,8 @@ const copy: typeof en = {
       `Spiral görevi: ${neurons} gizli nöron, ${epoch} epok sonra ${accuracy} test doğruluğu.`,
     announceSolved: (neurons: number, accuracy: string) =>
       `${neurons} gizli nöronla, ${accuracy} test doğruluğunda çözüldü.`,
-    kicker: "The challenge",
-    title: "Cheaper depends on what you count.",
+    kicker: "Meydan okuma",
+    title: "Karşılaştırmak mı, belleğe yazmak mı daha maliyetli?",
     lede: "Her görevde sabit bir dizi ve işlem sınırı var. Karşılaştırma veya yazma bütçesine uyan ayarı bul.",
     budget: "Bütçe",
     atMost: (unit: string) => `en fazla ${unit}`,
@@ -111,15 +111,15 @@ const copy: typeof en = {
     units: { comparisons: "karşılaştırma", moves: "taşıma" },
     puzzles: {
       "which-one-cares": {
-        title: "Which one cares?",
+        title: "Hangisi umursuyor?",
         brief: "Bütçenin izin verdiğinden daha az soru sorarak sırala.",
       },
       "fewest-writes": {
-        title: "Fewest writes",
+        title: "En az yazma",
         brief: "İstediğin kadar soru sorun: yeter ki fazla veri taşımayın.",
       },
       "three-edits": {
-        title: "Three edits",
+        title: "Üç düzenleme",
         brief: "En fazla üç çubuğu yeniden biçimlendirin, sonra bütçenin altına inin.",
       },
     },
@@ -183,8 +183,8 @@ const copy: typeof en = {
   // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
   study: {
     topics: {
-      two: "Selection sort and insertion sort",
-      cost: "The work is in the data",
+      two: "Seçmeli ve eklemeli sıralama",
+      cost: "İş verinin içinde",
     },
     notes: {
       "sambol-selection": "Üç dakikadan kısa sürede seçmeli sıralama.",
