@@ -277,6 +277,8 @@ const copy: typeof en = {
       "hf-bpe": "Çözümlü örnekle BPE eğitim döngüsü.",
       "cp-glitch": "Bir tokenizer'ın öğrendiği tuhaf token'lar ve modele etkileri.",
       "petrov-unfair": "Aynı metin dillere göre çok farklı maliyet çıkarır.",
+      "slp-tokens":
+        "Ücretsiz taslak bölümde Unicode, sözcük parçaları ve BPE sırasıyla anlatılıyor. Özellikle Türkçe örneklerle token ile kelimenin neden aynı şey olmadığını incele. PDF, İngilizce.",
     },
   },
 };

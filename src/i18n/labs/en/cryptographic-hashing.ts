@@ -196,6 +196,8 @@ const copy = {
       "mit-6046-hash": "MIT's lecture on cryptographic hash functions and their properties.",
       "cp-birthday": "Why collisions come sooner than expected, and what that means for a digest.",
       "3b1b-256bit": "How large 2²⁵⁶ really is, and why searching it is out of reach.",
+      cryptobook:
+        "An advanced free textbook. Look for collision-resistant hashing and examine why fast addressing for a hash table and cryptographic security are different goals.",
     },
   },
 };

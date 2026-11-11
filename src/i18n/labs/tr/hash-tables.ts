@@ -344,6 +344,8 @@ const copy: typeof en = {
       "mit-6006-openaddr": "Açık adresleme ve doğrusal yoklama, maliyetleriyle.",
       "algs4-hash": "Lab'ın kullandığı yoklama formülleri (Önerme M).",
       "java-hashmap": "Java'nın kendi kuralı: 0,75 doluluk, sonra yaklaşık iki kat kova.",
+      "ods-book":
+        "Ücretsiz kitabın Hash Tables bölümünde chaining ve linear probing yöntemlerini karşılaştır. Labdaki yük oranı arttığında arama maliyetinin neden değiştiğini takip et.",
     },
   },
 };

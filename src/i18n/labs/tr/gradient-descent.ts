@@ -439,6 +439,8 @@ const copy: typeof en = {
         "Etkileşimli: en büyük kararlı adımın neden eğriliğe bağlı olduğu ve κ'nın etkisi.",
       "ng-momentum": "Gradyanların hareketli ortalaması ve zikzakın neden söndüğü.",
       "ng-adam": "Her parametreye kendi geçmişine göre ölçeklenmiş bir adım boyu.",
+      "d2l-gradient-book":
+        "Öğrenme oranının yakınsamayı nasıl etkilediğini tek ve çok değişkenli örneklerle incele. Türev ve vektör bilgisi gerektirir; labdaki adımları formüllerle takip etmek için uygun.",
     },
   },
 };

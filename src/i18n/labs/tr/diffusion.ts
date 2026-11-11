@@ -45,6 +45,8 @@ const copy = {
         "Python notebooklarıyla bir diffusion modeli eğitmeyi gösterir. Uygulamak için ayrı bir Python ortamı gerekir.",
       "annotated-diffusion":
         "Gürültü planından U-Net eğitimine ve örneklemeye kadar PyTorch kodunu izle. Giriş kaynaklarından sonra okunması önerilir.",
+      "udl-book":
+        "Yazarın sitesindeki ücretsiz kitapta diffusion models bölümüne geç. Matematik bilgisi gerektirir; labdaki analitik gürültü giderme ile eğitilmiş bir modelin gürültü tahmini arasındaki farkı düşün.",
     },
   },
 };

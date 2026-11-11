@@ -342,6 +342,8 @@ const copy = {
       "mit-6006-openaddr": "Open addressing and linear probing, with their costs.",
       "algs4-hash": "The probing formulas the lab uses (Proposition M).",
       "java-hashmap": "Java's own rule: load factor 0.75, then about twice the buckets.",
+      "ods-book":
+        "Compare chaining and linear probing in the free book’s Hash Tables chapter. Follow why lookup costs change as the lab’s load factor rises.",
     },
   },
 };

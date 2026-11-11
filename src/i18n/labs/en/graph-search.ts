@@ -195,6 +195,8 @@ const copy = {
       "cp-astar": "A* explained against Dijkstra.",
       "reducible-astar": "A* and heuristics as map applications use them.",
       "redblob-astar": "Interactive grids: BFS, Dijkstra, greedy and A* side by side.",
+      "ods-book":
+        "Connect adjacency lists, queues and BFS in the Graphs chapter. The pseudocode helps turn the lab’s visit order into your own implementation.",
     },
   },
 };

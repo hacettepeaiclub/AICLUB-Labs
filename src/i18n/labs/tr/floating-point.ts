@@ -374,6 +374,8 @@ const copy: typeof en = {
       "goldberg-float": "Yuvarlama hatası ve IEEE aritmetiği üzerine klasik makale.",
       "google-bfloat16":
         "bfloat16'nın neden float32'nin üssünü koruyup kesir bitlerinden vazgeçtiği.",
+      "fnc-book":
+        "Ücretsiz Python sürümündeki kayan noktalı sayılar ve yuvarlama hatası konularıyla başla. Labdaki bit gösterimini sayısal hesaplamalarda hata birikimiyle ilişkilendir.",
     },
   },
 };

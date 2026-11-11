@@ -325,6 +325,8 @@ const copy = {
       "tf-playground": "Train a small network in the browser and add layers yourself.",
       "nielsen-universal": "Why enough hidden neurons can draw any shape.",
       "3b1b-gd": "How the network learns by walking downhill on its loss.",
+      "d2l-mlp-book":
+        "Explains why linear layers need nonlinear activations between them. Match the chapter’s equations to the lab’s neurons and weights.",
     },
   },
 };

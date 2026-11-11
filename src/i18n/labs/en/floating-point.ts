@@ -368,6 +368,8 @@ const copy = {
       "cp-float-2": "How two floats are added, and where the rounding happens.",
       "goldberg-float": "The classic paper on rounding error and IEEE arithmetic.",
       "google-bfloat16": "Why bfloat16 keeps float32's exponent and drops fraction bits.",
+      "fnc-book":
+        "Start with floating-point numbers and rounding error in the free Python edition. Connect the lab’s bit representation to error accumulation in numerical calculations.",
     },
   },
 };

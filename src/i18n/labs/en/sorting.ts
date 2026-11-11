@@ -188,6 +188,8 @@ const copy = {
       "mit-6006-sorting": "MIT's lecture on sorting, both algorithms included.",
       "tomscott-sorting": "Why counting the work matters more than the code.",
       "algs4-sorts": "Insertion sort's exchanges equal the number of inversions.",
+      "ods-book":
+        "Read Sorting Algorithms for costs and the conditions behind comparisons. A single run in the lab is not a performance guarantee for every input.",
     },
   },
 };

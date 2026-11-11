@@ -353,6 +353,8 @@ const copy = {
       "ng-padding": "Padding, and the output-size formula the lab uses.",
       "ng-stride": "Stride, and the rounding down.",
       "d2l-padding": "The same formula with worked examples.",
+      "d2l-convolution-book":
+        "Calculate a sliding window on small matrices. Like the lab, the chapter starts with cross-correlation without flipping the kernel and distinguishes it from mathematical convolution.",
     },
   },
 };

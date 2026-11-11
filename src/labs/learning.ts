@@ -37,6 +37,96 @@ export interface LearningResource {
 }
 
 export const RESOURCES = {
+  "isl-book": {
+    kind: "book",
+    title: "An Introduction to Statistical Learning: with Applications in Python",
+    by: "Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani & Jonathan Taylor",
+    year: 2023,
+    url: "https://www.statlearning.com/",
+  },
+  "isl-courses": {
+    kind: "lecture",
+    title: "An Introduction to Statistical Learning — Online Courses",
+    by: "ISL authors",
+    url: "https://www.statlearning.com/online-courses",
+  },
+  "d2l-generalization": {
+    kind: "book",
+    title: "Dive into Deep Learning — Generalization",
+    by: "Aston Zhang, Zachary C. Lipton, Mu Li & Alexander J. Smola",
+    url: "https://d2l.ai/chapter_linear-regression/generalization.html",
+  },
+  "d2l-backprop-book": {
+    kind: "book",
+    title:
+      "Dive into Deep Learning — Forward Propagation, Backward Propagation, and Computational Graphs",
+    by: "Aston Zhang, Zachary C. Lipton, Mu Li & Alexander J. Smola",
+    url: "https://d2l.ai/chapter_multilayer-perceptrons/backprop.html",
+  },
+  "d2l-convolution-book": {
+    kind: "book",
+    title: "Dive into Deep Learning — Convolutions for Images",
+    by: "Aston Zhang, Zachary C. Lipton, Mu Li & Alexander J. Smola",
+    url: "https://d2l.ai/chapter_convolutional-neural-networks/conv-layer.html",
+  },
+  "d2l-gradient-book": {
+    kind: "book",
+    title: "Dive into Deep Learning — Gradient Descent",
+    by: "Aston Zhang, Zachary C. Lipton, Mu Li & Alexander J. Smola",
+    url: "https://d2l.ai/chapter_optimization/gd.html",
+  },
+  "d2l-mlp-book": {
+    kind: "book",
+    title: "Dive into Deep Learning — Multilayer Perceptrons",
+    by: "Aston Zhang, Zachary C. Lipton, Mu Li & Alexander J. Smola",
+    url: "https://d2l.ai/chapter_multilayer-perceptrons/mlp.html",
+  },
+  "slp-tokens": {
+    kind: "book",
+    title: "Speech and Language Processing — Words and Tokens (draft)",
+    by: "Daniel Jurafsky & James H. Martin",
+    year: 2026,
+    url: "https://web.stanford.edu/~jurafsky/slp3/2.pdf",
+  },
+  "slp-embeddings": {
+    kind: "book",
+    title: "Speech and Language Processing — Embeddings (draft)",
+    by: "Daniel Jurafsky & James H. Martin",
+    year: 2026,
+    url: "https://web.stanford.edu/~jurafsky/slp3/5.pdf",
+  },
+  "udl-book": {
+    kind: "book",
+    title: "Understanding Deep Learning",
+    by: "Simon J. D. Prince",
+    year: 2023,
+    url: "https://udlbook.github.io/udlbook/",
+  },
+  cryptobook: {
+    kind: "book",
+    title: "A Graduate Course in Applied Cryptography",
+    by: "Dan Boneh & Victor Shoup",
+    year: 2023,
+    url: "https://toc.cryptobook.us/",
+  },
+  "ods-book": {
+    kind: "book",
+    title: "Open Data Structures (in pseudocode)",
+    by: "Pat Morin",
+    url: "https://opendatastructures.org/ods-python/",
+  },
+  "fnc-book": {
+    kind: "book",
+    title: "Fundamentals of Numerical Computation",
+    by: "Tobin A. Driscoll & Richard J. Braun",
+    url: "https://fncbook.com/python/",
+  },
+  "probability-videos": {
+    kind: "lecture",
+    title: "Introduction to Probability — Video Lectures",
+    by: "Hossein Pishro-Nik",
+    url: "https://www.probabilitycourse.com/videos/videos.php",
+  },
   "welch-diffusion": {
     kind: "video",
     title: "But how do AI images and videos actually work? | Guest video by Welch Labs",
@@ -752,10 +842,15 @@ export type ResourceId = keyof typeof RESOURCES;
 export const GUIDES: Record<string, readonly { topic: string; items: readonly ResourceId[] }[]> = {
   diffusion: [
     { topic: "visual", items: ["welch-diffusion", "hf-diffusion-video"] },
-    { topic: "foundations", items: ["diffusion-tutorial", "ddpm-paper", "ddim-paper"] },
+    { topic: "foundations", items: ["diffusion-tutorial", "ddpm-paper", "ddim-paper", "udl-book"] },
     { topic: "practice", items: ["hf-diffusion-course", "annotated-diffusion", "hf-ddim"] },
   ],
-  generalization: [{ topic: "generalisation", items: ["sklearn-generalization"] }],
+  generalization: [
+    {
+      topic: "generalisation",
+      items: ["sklearn-generalization", "isl-courses", "isl-book", "d2l-generalization"],
+    },
+  ],
   attention: [
     { topic: "qkv", items: ["3b1b-attention", "sq-attention", "d2l-attention"] },
     { topic: "softmax", items: ["sq-softmax"] },
@@ -763,7 +858,10 @@ export const GUIDES: Record<string, readonly { topic: string; items: readonly Re
   ],
   backpropagation: [
     { topic: "slope", items: ["3b1b-backprop", "3b1b-backprop-calc", "sq-chain"] },
-    { topic: "graph", items: ["karpathy-micrograd", "sq-backprop", "cs231n-backprop"] },
+    {
+      topic: "graph",
+      items: ["karpathy-micrograd", "sq-backprop", "cs231n-backprop", "d2l-backprop-book"],
+    },
     { topic: "depth", items: ["ng-vanishing"] },
     { topic: "check", items: ["ng-gradcheck"] },
   ],
@@ -772,32 +870,32 @@ export const GUIDES: Record<string, readonly { topic: string; items: readonly Re
     { topic: "order", items: ["mit-6172-l14", "drepper-memory"] },
   ],
   convolution: [
-    { topic: "window", items: ["ng-edge", "sq-cnn"] },
+    { topic: "window", items: ["ng-edge", "sq-cnn", "d2l-convolution-book"] },
     { topic: "sharing", items: ["ng-why-conv", "cs231n-conv"] },
     { topic: "size", items: ["ng-padding", "ng-stride", "d2l-padding"] },
   ],
   "cryptographic-hashing": [
     { topic: "digest", items: ["paar-hash", "mit-6046-hash"] },
-    { topic: "collision", items: ["cp-birthday", "3b1b-256bit"] },
+    { topic: "collision", items: ["cp-birthday", "3b1b-256bit", "cryptobook"] },
   ],
   "floating-point": [
     { topic: "stored", items: ["cp-float", "cp-float-1"] },
-    { topic: "rounding", items: ["cp-float-2", "goldberg-float"] },
+    { topic: "rounding", items: ["cp-float-2", "goldberg-float", "fnc-book"] },
     { topic: "formats", items: ["google-bfloat16"] },
   ],
   "gradient-descent": [
-    { topic: "downhill", items: ["3b1b-gd", "sq-gd"] },
+    { topic: "downhill", items: ["3b1b-gd", "sq-gd", "d2l-gradient-book"] },
     { topic: "ceiling", items: ["distill-momentum"] },
     { topic: "momentum", items: ["ng-momentum", "ng-adam"] },
   ],
   "graph-search": [
-    { topic: "bfs", items: ["reducible-bfs", "mit-6006-bfs"] },
+    { topic: "bfs", items: ["reducible-bfs", "mit-6006-bfs", "ods-book"] },
     { topic: "dijkstra", items: ["cp-dijkstra", "mit-6006-dijkstra"] },
     { topic: "astar", items: ["cp-astar", "reducible-astar", "redblob-astar"] },
   ],
   "hash-tables": [
     { topic: "address", items: ["mit-6006-hashing", "cp-birthday"] },
-    { topic: "collisions", items: ["mit-6006-openaddr", "algs4-hash"] },
+    { topic: "collisions", items: ["mit-6006-openaddr", "algs4-hash", "ods-book"] },
     { topic: "resize", items: ["java-hashmap"] },
   ],
   "hypothesis-testing": [
@@ -805,12 +903,12 @@ export const GUIDES: Record<string, readonly { topic: string; items: readonly Re
     { topic: "power", items: ["sq-power", "sq-power-analysis", "khan-power", "openintro-stats"] },
   ],
   "multilayer-perceptrons": [
-    { topic: "neuron", items: ["3b1b-nn", "sq-nn"] },
+    { topic: "neuron", items: ["3b1b-nn", "sq-nn", "d2l-mlp-book"] },
     { topic: "xor", items: ["lavrenko-xor", "tf-playground", "nielsen-universal"] },
     { topic: "learning", items: ["3b1b-gd"] },
   ],
   probability: [
-    { topic: "monty", items: ["np-monty", "stat110-l6"] },
+    { topic: "monty", items: ["np-monty", "stat110-l6", "probability-videos"] },
     { topic: "birthday", items: ["stat110-l3"] },
     { topic: "simpson", items: ["mp-simpson"] },
     { topic: "galton", items: ["3b1b-clt", "stat110-l29"] },
@@ -827,15 +925,15 @@ export const GUIDES: Record<string, readonly { topic: string; items: readonly Re
   ],
   sorting: [
     { topic: "two", items: ["sambol-selection", "sambol-insertion", "mit-6006-sorting"] },
-    { topic: "cost", items: ["tomscott-sorting", "algs4-sorts"] },
+    { topic: "cost", items: ["tomscott-sorting", "algs4-sorts", "ods-book"] },
   ],
   tokenization: [
-    { topic: "bpe", items: ["karpathy-tokenizer", "hf-bpe"] },
+    { topic: "bpe", items: ["karpathy-tokenizer", "hf-bpe", "slp-tokens"] },
     { topic: "quirks", items: ["cp-glitch", "petrov-unfair"] },
   ],
   "word-embeddings": [
     { topic: "vectors", items: ["sq-word2vec", "cp-vectoring", "alammar-word2vec"] },
-    { topic: "usage", items: ["cs224n-l1"] },
+    { topic: "usage", items: ["cs224n-l1", "slp-embeddings"] },
     { topic: "shadow", items: ["sq-pca", "distill-tsne"] },
   ],
 };

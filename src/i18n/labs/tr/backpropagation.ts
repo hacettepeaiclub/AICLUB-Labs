@@ -306,6 +306,8 @@ const copy: typeof en = {
         "1'in altındaki ya da üstündeki uzun bir çarpan zincirinin neden söndüğü ya da patladığı.",
       "ng-gradcheck":
         "Lab'ın son bölümündeki gibi, geri yayılımı dürterek ölçmeyle karşılaştırmak.",
+      "d2l-backprop-book":
+        "İleri ve geri hesaplamayı aynı hesaplama grafiği üzerinde takip et. Labdaki yerel türevlerin nasıl birikerek ağırlık gradyanına dönüştüğünü denklemlerle gösterir.",
     },
   },
 };

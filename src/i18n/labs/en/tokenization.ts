@@ -283,6 +283,8 @@ const copy = {
       "hf-bpe": "The BPE training loop with a worked example.",
       "cp-glitch": "Odd tokens a tokenizer learned, and what they do to a model.",
       "petrov-unfair": "The same text costs very different amounts across languages.",
+      "slp-tokens":
+        "This free draft chapter covers Unicode, subwords and BPE. Use its Turkish examples to examine why tokens and words differ. English PDF.",
     },
   },
 };
