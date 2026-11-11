@@ -98,14 +98,18 @@ export function CalcDevice({ model, view, target, onKey, label }: CalcDeviceProp
 
       <div className="calc-top">
         <div className="calc-pair">
-          {model.top.map(([a, b]) =>
-            [a, b].map((def) => <Key key={def.id} def={def} {...keyProps} />),
+          {model.top.map(([a, b], row) =>
+            [a, b].map((def, i) =>
+              def ? <Key key={def.id} def={def} {...keyProps} /> : <span key={`gap-${row}-${i}`} />,
+            ),
           )}
         </div>
-        <CursorPad onKey={onKey} target={target} />
+        <CursorPad onKey={onKey} target={target} ok={!!model.okKey} />
         <div className="calc-pair">
-          {model.top.map(([, , c, d]) =>
-            [c, d].map((def) => <Key key={def.id} def={def} {...keyProps} />),
+          {model.top.map(([, , c, d], row) =>
+            [c, d].map((def, i) =>
+              def ? <Key key={def.id} def={def} {...keyProps} /> : <span key={`gap-${row}-${i}`} />,
+            ),
           )}
         </div>
       </div>
@@ -169,10 +173,29 @@ const PAD: { id: KeyId; label: string }[] = [
   { id: "down", label: "▼" },
 ];
 
-/** The REPLAY pad between the top rows: four arrows round a disc. */
-function CursorPad({ onKey, target }: { onKey: (key: KeyId) => void; target: KeyId | null }) {
+/** The REPLAY pad between the top rows: four arrows round a disc, and OK in the middle on the CW. */
+function CursorPad({
+  onKey,
+  target,
+  ok,
+}: {
+  onKey: (key: KeyId) => void;
+  target: KeyId | null;
+  ok: boolean;
+}) {
   return (
     <div className="calc-pad">
+      {ok && (
+        <button
+          type="button"
+          data-key="ok"
+          aria-label="OK"
+          onClick={() => onKey("ok")}
+          className={cn(target === "ok" && "calc-target")}
+        >
+          OK
+        </button>
+      )}
       {PAD.map((arrow) => (
         <button
           key={arrow.id}

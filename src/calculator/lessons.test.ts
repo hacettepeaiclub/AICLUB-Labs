@@ -1,20 +1,19 @@
 import { describe, expect, it } from "vitest";
 import { initialState, press, type CalcState } from "./engine/machine";
-import { MODEL_IDS, MODELS } from "./engine/models";
+import { MODEL_IDS, MODELS, keysOf } from "./engine/models";
 import type { ModelId } from "./engine/types";
-import { LESSONS, offered } from "./lessons";
+import { LESSONS, later, offered } from "./lessons";
 
 /** Every key a model's keyboard has, so a lesson cannot ask for one it lacks. */
 const keysOn = (id: ModelId) => {
   const model = MODELS[id];
   return new Set([
-    ...model.top.flat().map((key) => key.id),
-    ...model.functionRows.flat().map((key) => key.id),
-    ...model.digitRows.flat().map((key) => key.id),
+    ...keysOf(model).map((key) => key.id),
     "up",
     "down",
     "left",
     "right",
+    ...(model.okKey ? ["ok"] : []),
   ]);
 };
 
@@ -57,8 +56,9 @@ describe("every lesson, on every model that can do it", () => {
         LESSONS.find((l) => l.id === id)!,
         model,
       );
-    // The 82 has no equation solver, matrices, calculus, or normal distribution.
-    for (const id of [
+    // The two 82s have no equation solver, matrices, calculus, or normal distribution.
+    const small: ModelId[] = ["fx82esplus", "fx82ms"];
+    const lacking = [
       "system",
       "quadratic",
       "solve",
@@ -66,14 +66,24 @@ describe("every lesson, on every model that can do it", () => {
       "derivative",
       "normal",
       "determinant",
-    ]) {
-      expect(missing(id, "fx82esplus"), id).toBe(true);
+      "inverse",
+      "product",
+    ];
+    for (const model of small) {
+      for (const id of lacking) expect(missing(id, model), `${id} on ${model}`).toBe(true);
+      // ...and they do everything else.
+      for (const lesson of LESSONS.filter((l) => !lacking.includes(l.id))) {
+        expect(offered(lesson, model), `${lesson.id} on ${model}`).toBe(true);
+      }
     }
-    // Everything else is offered on every model.
+    // Everything is offered on every other model.
     for (const lesson of LESSONS) {
       for (const model of MODEL_IDS) {
-        if (model === "fx82esplus") continue;
-        expect(offered(lesson, model), `${lesson.id} on ${model}`).toBe(true);
+        if (small.includes(model)) continue;
+        // A lesson the simulator does not run yet on a model is said to be so.
+        expect(offered(lesson, model) || later(lesson, model), `${lesson.id} on ${model}`).toBe(
+          true,
+        );
       }
     }
   });

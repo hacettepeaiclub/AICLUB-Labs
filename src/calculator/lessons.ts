@@ -87,7 +87,7 @@ const sameMatrix = (a: unknown, b: number[][]) =>
     (row, i) => row.length === b[i]!.length && row.every((x, j) => Math.abs(x - b[i]![j]!) < 1e-9),
   );
 
-const ALL: ModelId[] = ["fx991ex", "fx991esplus", "fx570ms", "fx82esplus"];
+const ALL: ModelId[] = ["fx991ex", "fx991esplus", "fx570ms", "fx82ms", "fx82esplus"];
 const everywhere = (steps: LessonStep[]): Partial<Record<ModelId, LessonStep[]>> =>
   Object.fromEntries(ALL.map((id) => [id, steps]));
 
@@ -220,14 +220,22 @@ const esRegression = (stat: KeyId): LessonStep[] => [
   },
 ];
 
-const formulaBinomial = (cube: KeyId[]): LessonStep[] => [
-  {
-    keys: ["5", "shift", "divide", "2"],
-    say: t(
-      "There is no binomial key, so use the formula C(5, 2) · 0.5² · 0.5³. First 5 SHIFT ÷ (nCr) 2.",
-      "Binom dağılımı tuşu yok; formülle hesaplanır: C(5, 2) · 0.5² · 0.5³. Önce 5 SHIFT ÷ (nCr) 2.",
-    ),
-  },
+const formulaBinomial = (cube: KeyId[], ownKey = false): LessonStep[] => [
+  ownKey
+    ? {
+        keys: ["5", "ncr", "2"],
+        say: t(
+          "There is no binomial key, so use the formula C(5, 2) · 0.5² · 0.5³. First 5 nCr 2: nCr has a key of its own here.",
+          "Binom dağılımı tuşu yok; formülle hesaplanır: C(5, 2) · 0.5² · 0.5³. Önce 5 nCr 2: bu modelde nCr'nin kendi tuşu var.",
+        ),
+      }
+    : {
+        keys: ["5", "shift", "divide", "2"],
+        say: t(
+          "There is no binomial key, so use the formula C(5, 2) · 0.5² · 0.5³. First 5 SHIFT ÷ (nCr) 2.",
+          "Binom dağılımı tuşu yok; formülle hesaplanır: C(5, 2) · 0.5² · 0.5³. Önce 5 SHIFT ÷ (nCr) 2.",
+        ),
+      },
   { keys: ["times", "0", "dot", "5", "sq"], say: t("× 0.5².", "× 0.5².") },
   {
     keys: ["times", "0", "dot", "5", ...cube, "eq"],
@@ -846,6 +854,7 @@ export const LESSONS: Lesson[] = [
       fx991esplus: formulaBinomial(["shift", "sq"]),
       fx82esplus: formulaBinomial(["cube"]),
       fx570ms: formulaBinomial(["shift", "sq"]),
+      fx82ms: formulaBinomial(["cube"], true),
     },
     outcome: t("0.3125, or 5⁄16.", "0.3125, yani 5⁄16."),
     done: (s) =>
@@ -1404,6 +1413,380 @@ export const LESSONS: Lesson[] = [
       ]),
   },
 ];
+
+// ------------------------------------------------------------ fx-82MS --
+
+/**
+ * The fx-82MS takes the fx-570MS's keys wherever the two are the same, which
+ * is everywhere these lessons go but the MODE menu: on the 82MS its first page
+ * is COMP, SD, REG (MODE 2, MODE 3), and Deg/Rad/Gra is the second (MODE
+ * MODE), not the fourth. Each entry rewrites only the steps that differ.
+ * Lessons the 82MS cannot do (no EQN, no matrices, no ∫, d/dx, SOLVE or
+ * DISTR) are not here, so they are offered as not on this model.
+ */
+const SD_82: LessonStep = {
+  keys: ["mode", "2"],
+  say: t(
+    "MODE, 2 (SD): one list of numbers. SD appears at the top. If old data is left, clear it first with SHIFT MODE (CLR) 1 =.",
+    "MODE, 2 (SD): tek değişkenli veri. Üstte SD yazar. Eski veri kaldıysa önce SHIFT MODE (CLR) 1 = ile temizle.",
+  ),
+};
+const MS_82: Record<string, (ms: LessonStep[]) => LessonStep[]> = {
+  fraction: (ms) => ms,
+  memory: (ms) => ms,
+  angle: ([sinDeg, , sinRad]) => [
+    sinDeg!,
+    {
+      keys: ["mode", "mode", "2"],
+      say: t(
+        "Press MODE twice to reach Deg, Rad, Gra, then 2 (Rad). The D at the top turns into R.",
+        "MODE'a iki kez bas: Deg, Rad, Gra ekranı gelir. 2 (Rad). Üstteki D, R olur.",
+      ),
+    },
+    sinRad!,
+    {
+      keys: ["mode", "mode", "1"],
+      say: t("Back to degrees: MODE twice, 1 (Deg).", "Dereceye dön: MODE iki kez, 1 (Deg)."),
+    },
+  ],
+  mean: ([, ...rest]) => [SD_82, ...rest],
+  variance: ([, ...rest]) => [
+    { keys: ["mode", "2"], say: t("SD mode: MODE, 2.", "SD modu: MODE, 2.") },
+    ...rest,
+  ],
+  regression: ([, ...rest]) => [
+    {
+      keys: ["mode", "3", "1"],
+      say: t(
+        "MODE, 3 (REG), 1 (Lin): the straight line.",
+        "MODE, 3 (REG), 1 (Lin): doğrusal regresyon.",
+      ),
+    },
+    ...rest,
+  ],
+};
+for (const lesson of LESSONS) {
+  const ms = lesson.steps.fx570ms;
+  const make = MS_82[lesson.id];
+  if (ms && make) lesson.steps.fx82ms = make(ms);
+}
+
+// ----------------------------------------------------------- fx-991CW --
+
+/**
+ * The fx-991CW, from Casio's User's Guide and its UK Interactive Manual. It
+ * has no numbered menus: HOME is a grid of apps, three to a row, and every
+ * menu is walked with ▲ ▼ and OK, so the arrow counts below are the
+ * positions those manuals show. EXE is its =.
+ */
+const homeTo = (app: string, keys: KeyId[]): LessonStep => ({
+  keys: ["home", ...keys, "ok"],
+  say: t(
+    `HOME shows the apps, three to a row. Move to ${app} with the arrows and press OK.`,
+    `HOME uygulamaları gösterir, her satırda üç tane. Oklarla ${app} simgesine git ve OK'a bas.`,
+  ),
+});
+/** Numbers each followed by EXE; a minus is SHIFT − on the CW. */
+const exe = (...values: number[]): KeyId[] =>
+  values.flatMap((v) => [
+    ...String(v)
+      .split("")
+      .flatMap((c): KeyId[] =>
+        c === "-" ? ["shift", "minus"] : c === "." ? ["dot"] : [c as KeyId],
+      ),
+    "eq" as KeyId,
+  ]);
+const CW: Record<string, LessonStep[]> = {
+  order: [
+    { keys: ["2", "plus", "3", "times", "4"], say: t("Type 2 + 3 × 4.", "2 + 3 × 4 yaz.") },
+    {
+      keys: ["eq"],
+      say: t(
+        "EXE, the CW's =. It says 14, not 20: 3 × 4 is worked out before the addition.",
+        "EXE, CW'nin = tuşu. Sonuç 20 değil 14: önce 3 × 4 hesaplanır.",
+      ),
+    },
+    {
+      keys: ["divide", "2", "eq"],
+      say: t(
+        "With an answer on screen, start with ÷: the calculator puts Ans in front. Ans ÷ 2 = 7.",
+        "Sonuç ekrandayken doğrudan ÷ ile başla; başa Ans kendiliğinden gelir. Ans ÷ 2 = 7.",
+      ),
+    },
+  ],
+  negative: [
+    {
+      keys: ["shift", "minus", "3", "sq"],
+      say: t(
+        "The CW's (−) is SHIFT −, printed above the minus key. Type (−) 3 ■².",
+        "CW'de (−), eksi tuşunun üstünde yazan SHIFT −'dir. (−) 3 ■² yaz.",
+      ),
+    },
+    {
+      keys: ["eq"],
+      say: t(
+        "EXE: −9. The calculator squares 3 first and puts the minus on afterwards.",
+        "EXE: −9. Hesap makinesi önce 3'ün karesini alır, eksiyi sonra ekler.",
+      ),
+    },
+    {
+      keys: ["lp", "shift", "minus", "3", "rp", "sq", "eq"],
+      say: t(
+        "To square a negative number, bracket it: ((−)3)² = 9.",
+        "Negatif bir sayının karesi için onu paranteze al: ((−)3)² = 9.",
+      ),
+    },
+  ],
+  fraction: [
+    {
+      keys: ["1", "divide", "3", "eq"],
+      say: t(
+        "1 ÷ 3 EXE. The answer is the fraction 1⁄3.",
+        "1 ÷ 3 EXE. Sonuç 1⁄3 kesri olarak görünür.",
+      ),
+    },
+    {
+      keys: ["format", "down", "ok"],
+      say: t(
+        "FORMAT, ▼ to Decimal, OK: 0.3333333333. FORMAT, Standard brings the fraction back.",
+        "FORMAT, ▼ ile Decimal, OK: 0.3333333333. FORMAT, Standard kesre geri döndürür.",
+      ),
+    },
+  ],
+  angle: [
+    {
+      keys: ["sin", "3", "0", "rp", "eq"],
+      say: t(
+        "sin(30) = 0.5, in degrees (D at the top).",
+        "sin(30) = 0.5: derece modundasın (üstte D).",
+      ),
+    },
+    {
+      keys: ["settings", "ok", "down", "ok", "down", "ok", "ac"],
+      say: t(
+        "SETTINGS, OK (Calc Settings), ▼ to Angle Unit, OK, ▼ to Radian, OK. AC to leave. The D at the top turns into R.",
+        "SETTINGS, OK (Calc Settings), ▼ ile Angle Unit, OK, ▼ ile Radian, OK. AC ile çık. Üstteki D, R olur.",
+      ),
+    },
+    {
+      keys: ["sin", "3", "0", "rp", "eq"],
+      say: t(
+        "The same keys now give −0.9880316241: 30 is read as 30 radians. This is the most common exam mistake.",
+        "Aynı tuşlar şimdi −0.9880316241 veriyor, çünkü 30 artık radyan. Sınavda en sık yapılan hata bu.",
+      ),
+    },
+    {
+      keys: ["settings", "ok", "down", "ok", "up", "ok", "ac"],
+      say: t(
+        "Back to degrees: SETTINGS, OK, ▼ Angle Unit, OK. The list opens on Radian, so ▲ to Degree, OK, AC.",
+        "Dereceye dön: SETTINGS, OK, ▼ Angle Unit, OK. Liste Radian'da açılır; ▲ ile Degree, OK, AC.",
+      ),
+    },
+  ],
+  mean: [
+    homeTo("Statistics", ["right"]),
+    {
+      keys: ["ok"],
+      say: t(
+        "1-Variable is highlighted: OK. The data table opens.",
+        "1-Variable seçili: OK. Veri tablosu açılır.",
+      ),
+    },
+    {
+      keys: exe(2, 4, 4, 4),
+      say: t(
+        "Type each value and press EXE: 2, 4, 4, 4.",
+        "Her değeri yaz ve EXE'ye bas: 2, 4, 4, 4.",
+      ),
+    },
+    { keys: exe(5, 5, 7, 9), say: t("Then 5, 5, 7, 9.", "Sonra 5, 5, 7, 9.") },
+    {
+      keys: ["ok", "ok"],
+      say: t(
+        "OK opens a menu; 1-Var Results is first, so OK again. x̄ = 5 is the mean, σx = 2 and sx = 2.138089935 are the two standard deviations.",
+        "OK bir menü açar; ilk satır 1-Var Results, tekrar OK. x̄ = 5 ortalama, σx = 2 ve sx = 2.138089935 iki standart sapma.",
+      ),
+    },
+  ],
+  variance: [
+    homeTo("Statistics", ["right"]),
+    { keys: ["ok"], say: t("OK for 1-Variable.", "1-Variable için OK.") },
+    {
+      keys: exe(3, 5, 7, 9),
+      say: t("Enter 3, 5, 7, 9, each with EXE.", "3, 5, 7, 9 değerlerini EXE ile gir."),
+    },
+    {
+      keys: ["ok", "ok"],
+      say: t(
+        'OK, OK (1-Var Results). σ²x = 5 is the population variance; s²x = 6.666666667 is the sample variance. When a question says "sample", use s².',
+        'OK, OK (1-Var Results). σ²x = 5 kitle varyansı, s²x = 6.666666667 örneklem varyansı. Soruda "örneklem" geçiyorsa s² kullanılır.',
+      ),
+    },
+  ],
+  regression: [
+    homeTo("Statistics", ["right"]),
+    {
+      keys: ["down", "ok"],
+      say: t(
+        "▼ to 2-Variable, OK: an x and a y column.",
+        "▼ ile 2-Variable, OK: x ve y sütunları.",
+      ),
+    },
+    {
+      keys: exe(...REG_X),
+      say: t("The x column first: 1, 2, 3, 4, 5.", "Önce x sütunu: 1, 2, 3, 4, 5."),
+    },
+    {
+      keys: ["down", "right"],
+      say: t(
+        "▼ from the empty row goes back to the top; ▶ to the y column.",
+        "Boş satırdan ▼ en üste döner; ▶ ile y sütununa geç.",
+      ),
+    },
+    { keys: exe(...REG_Y), say: t("Then y: 2, 4, 5, 4, 5.", "Sonra y: 2, 4, 5, 4, 5.") },
+    {
+      keys: ["ok", "down", "ok"],
+      say: t("OK, ▼ to Reg Results, OK.", "OK, ▼ ile Reg Results, OK."),
+    },
+    {
+      keys: ["ok"],
+      say: t(
+        "y=a+bx is first: OK. a = 2.2, b = 0.6, so y = 2.2 + 0.6x; r = 0.7745966692.",
+        "İlk satır y=a+bx: OK. a = 2.2, b = 0.6, yani y = 2.2 + 0.6x; r = 0.7745966692.",
+      ),
+    },
+  ],
+  normal: [
+    homeTo("Distribution", ["right", "right"]),
+    {
+      keys: ["down", "down", "down", "ok"],
+      say: t(
+        "▼ three times to Normal CD, the probability of a range. OK.",
+        "▼ ile üç kez aşağı, Normal CD: bir aralığın olasılığı. OK.",
+      ),
+    },
+    {
+      keys: exe(160, 180),
+      say: t(
+        "Lower = 160, Upper = 180, each with EXE.",
+        "Alt sınır 160, üst sınır 180; her biri EXE ile.",
+      ),
+    },
+    {
+      keys: exe(170, 10),
+      say: t(
+        "μ = 170, then σ = 10. The CW asks for μ first, unlike the EX.",
+        "μ = 170, sonra σ = 10. CW, EX'in tersine önce μ'yü sorar.",
+      ),
+    },
+    {
+      keys: ["ok"],
+      say: t(
+        "Execute is highlighted: OK. p = 0.6826894921, about 68% within one standard deviation.",
+        "Execute seçili: OK. p = 0.6826894921; yaklaşık %68'i bir standart sapma içinde.",
+      ),
+    },
+  ],
+  binomial: [
+    homeTo("Distribution", ["right", "right"]),
+    {
+      keys: ["ok"],
+      say: t(
+        "Binomial PD is first: OK. Exactly x successes.",
+        "İlk satır Binomial PD: OK. Tam olarak x başarı.",
+      ),
+    },
+    {
+      keys: ["down", "ok"],
+      say: t("▼ to Variable (one value of x), OK.", "▼ ile Variable (tek bir x değeri), OK."),
+    },
+    { keys: exe(2, 5), say: t("x = 2 successes, N = 5 trials.", "x = 2 başarı, N = 5 deneme.") },
+    { keys: exe(0.5), say: t("p = 0.5, the chance of heads.", "p = 0.5, tura gelme olasılığı.") },
+    { keys: ["ok"], say: t("Execute: OK. p = 0.3125.", "Execute: OK. p = 0.3125.") },
+  ],
+  system: [
+    homeTo("Equation", ["down", "right", "right"]),
+    {
+      keys: ["ok", "ok"],
+      say: t(
+        "Simul Equation is first: OK; then 2 Unknowns, OK.",
+        "İlk satır Simul Equation: OK; ardından 2 Unknowns, OK.",
+      ),
+    },
+    {
+      keys: exe(2, 1, 5),
+      say: t("The first equation, 2x + y = 5: 2, 1, 5.", "İlk denklem 2x + y = 5: 2, 1, 5."),
+    },
+    {
+      keys: exe(1, -1, 1),
+      say: t(
+        "The second, x − y = 1: 1, (−)1, 1. (−) is SHIFT −.",
+        "İkinci denklem x − y = 1: 1, (−)1, 1. (−) SHIFT −'dir.",
+      ),
+    },
+    { keys: ["eq"], say: t("EXE to solve: x = 2.", "EXE ile çöz: x = 2.") },
+    { keys: ["down"], say: t("▼ for the next one: y = 1.", "▼ ile sıradaki: y = 1.") },
+  ],
+  quadratic: [
+    homeTo("Equation", ["down", "right", "right"]),
+    {
+      keys: ["down", "ok", "ok"],
+      say: t("▼ to Polynomial, OK; ax²+bx+c, OK.", "▼ ile Polynomial, OK; ax²+bx+c, OK."),
+    },
+    { keys: exe(1, -5, 6), say: t("a, b, c: 1, (−)5, 6.", "a, b, c: 1, (−)5, 6.") },
+    { keys: ["eq"], say: t("EXE to solve: x₁ = 3.", "EXE ile çöz: x₁ = 3.") },
+    { keys: ["down"], say: t("▼: x₂ = 2.", "▼: x₂ = 2.") },
+  ],
+  integral: [
+    {
+      keys: ["catalog", "ok", "down", "ok"],
+      say: t(
+        "There is no ∫ key: CATALOG, OK (Func Analysis), ▼ to Integration(∫), OK.",
+        "∫ tuşu yok: CATALOG, OK (Func Analysis), ▼ ile Integration(∫), OK.",
+      ),
+    },
+    {
+      keys: ["x", "sq", "down", "0", "up", "2"],
+      say: t(
+        "Type x², ▼ to the lower limit, 0, ▲ to the upper limit, 2.",
+        "x² yaz, ▼ ile alt sınıra in, 0; ▲ ile üst sınıra çık, 2.",
+      ),
+    },
+    { keys: ["eq"], say: t("EXE: 8⁄3, which is 2.666666667.", "EXE: 8⁄3, yani 2.666666667.") },
+  ],
+  derivative: [
+    {
+      keys: ["catalog", "ok", "ok"],
+      say: t(
+        "CATALOG, OK (Func Analysis), OK (Derivative(d/dx)): the first item.",
+        "CATALOG, OK (Func Analysis), OK (Derivative(d/dx)): ilk satır.",
+      ),
+    },
+    {
+      keys: ["x", "pow", "3", "right", "right", "2"],
+      say: t(
+        "x ^ 3, then ▶ out of the exponent and ▶ to the x= box, 2.",
+        "x ^ 3, sonra ▶ ile üsten çık ve ▶ ile x= kutusuna geç, 2.",
+      ),
+    },
+    { keys: ["eq"], say: t("EXE: 12.", "EXE: 12.") },
+  ],
+};
+for (const lesson of LESSONS) {
+  const steps = CW[lesson.id];
+  if (steps) lesson.steps.fx991cw = steps;
+}
+
+/**
+ * Lessons a model can do on the real device but that this simulator does not
+ * run yet: the CW's matrices and Solver, whose menus Casio's guides do not
+ * show in full, and its variables. These say "not here yet", not "cannot".
+ */
+const LATER: Partial<Record<ModelId, string[]>> = {
+  fx991cw: ["memory", "solve", "determinant", "inverse", "product"],
+};
+export const later = (lesson: Lesson, model: ModelId): boolean =>
+  !!LATER[model]?.includes(lesson.id);
 
 export const TOPIC_TITLE: Record<LessonTopic, Text> = {
   basics: t("Basics", "Temeller"),

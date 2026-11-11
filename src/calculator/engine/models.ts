@@ -3,6 +3,7 @@ import type {
   Action,
   CalcMode,
   DistKind,
+  DistField,
   EqnType,
   KeyDef,
   KeyId,
@@ -35,15 +36,24 @@ import type {
  *   again turns the page: COMP, then SD/REG/BASE, then EQN/MAT/VCT, then
  *   Deg/Rad/Gra. Data goes in with DT (the M+ key). SHIFT 1 S-SUM, 2 S-VAR,
  *   3 DISTR, 4 MAT, with ▶ for the next page of a menu.
+ * - **fx-82MS**: Casio's *User's Guide* (2nd edition, fx-82MS/85MS/300MS/
+ *   350MS). MODE 1 COMP, 2 SD, 3 REG; pressing MODE again reaches Deg/Rad/
+ *   Gra, then Fix/Sci/Norm, then Disp. REG: 1 Lin, 2 Log, 3 Exp, ▶ Pwr/Inv/
+ *   Quad. SHIFT 1 S-SUM and SHIFT 2 S-VAR as on the 570MS; no DISTR, no EQN,
+ *   no matrices, no ∫, d/dx or SOLVE. nCr has a key of its own (SHIFT: nPr).
  *
  * Items that exist on a device but are not simulated say so when picked
  * (`unsupported`) rather than doing something the device would not. Where a
  * source does not give an item's number, the item is left out, so a menu may
  * have a gap in its numbering.
  *
- * The fx-991CW is not here: its keyboard and its HOME screen are documented,
- * but the order of the items in its own menus is not, and its lessons would
- * be mostly arrow presses through those menus.
+ * - **fx-991CW / 570CW**: Casio's online *User's Guide* for both models, and
+ *   Casio UK's *fx-991CW Interactive Manual*, whose screenshots show each
+ *   menu in order. The CW has no ALPHA, MODE or numbered menus: HOME is a
+ *   grid of apps, and every menu is walked with the cursor keys and OK. Only
+ *   items those screenshots show are listed, in their order, so a menu here
+ *   may stop where the screenshot stopped. The order inside CATALOG's Matrix
+ *   category is not shown anywhere, so matrices (and Solver) are not run yet.
  */
 
 export interface ModelSpec {
@@ -53,8 +63,28 @@ export interface ModelSpec {
   series: string;
   /** Models with the same keys and menus for everything taught here. */
   siblings: string;
-  /** The key that opens the list of modes. */
-  menuKey: "menu" | "mode";
+  /** The key that opens the list of modes (the CW's HOME screen of apps). */
+  menuKey: "menu" | "mode" | "home";
+  /** SETUP on a key of its own (the CW's SETTINGS); elsewhere SHIFT and the menu key. */
+  settingsKey?: KeyId;
+  /** The key that opens `optn`: OPTN, or CATALOG on the CW. */
+  optnKey?: KeyId;
+  /** What OK opens in an editor: the CW's statistics menu. */
+  okMenu?: (mode: CalcMode, screen: string, stat: StatKind) => Menu | null;
+  /** The CW's FORMAT key, for an answer on screen. */
+  formatMenu?: Menu;
+  /** An OK key in the middle of the cursor pad (the CW). */
+  okKey?: boolean;
+  /** ▼ past the last row of the data table goes back to the first (the CW). */
+  editorWraps?: boolean;
+  /** ▼ and ▲ move between the boxes of ∫ (the CW); ▶ elsewhere. */
+  verticalTemplates?: boolean;
+  /** Variables typed with SHIFT and the key they are printed above (the CW). */
+  shiftLetters?: Partial<Record<KeyId, VarName>>;
+  /** A distribution's fields in this model's order, where it differs (the CW: μ before σ). */
+  distFields?: Partial<Record<DistKind, DistField[]>>;
+  /** What the device has but this simulation does not run yet; nothing here asks for it. */
+  notSimulated?: ("matrix" | "solver")[];
   /** The MS turns the MODE menu's pages by pressing MODE again. */
   modeCycles: boolean;
   /** Keys that turn a menu's pages: back, forward. */
@@ -83,7 +113,8 @@ export interface ModelSpec {
   letters: Partial<Record<KeyId, VarName>>;
   /** What this model has at all; a lesson for something it lacks is not offered. */
   has: { eqn: boolean; matrix: boolean; calculus: boolean; dist: boolean; normalP: boolean };
-  top: [KeyDef, KeyDef, KeyDef, KeyDef][];
+  /** Rows round the cursor pad: two keys left of it, two right; null leaves a gap. */
+  top: [KeyDef | null, KeyDef | null, KeyDef | null, KeyDef | null][];
   functionRows: KeyDef[][];
   digitRows: KeyDef[][];
   mainMenu: Menu;
@@ -973,11 +1004,387 @@ export const FX570MS: ModelSpec = {
   },
 };
 
+// -------------------------------------------------------------- fx-991CW ----
+
+/** A menu item picked with the cursor: no number. */
+const pick = (label: string, action: Action): MenuItem => item("", label, action);
+const notRun = (label: string): MenuItem => unsupported("", label);
+const list = (items: MenuItem[], columns?: number): Menu => ({
+  pages: [items],
+  cursor: true,
+  columns,
+});
+const open = (items: MenuItem[]): Action => ({ do: "menu", menu: list(items) });
+
+const CW_STAT_TYPES = list([
+  pick("1-Variable", { do: "statType", kind: "1var" }),
+  pick("2-Variable", { do: "statType", kind: "lin" }),
+]);
+
+/** Binomial and Poisson ask whether x is a list or one value. */
+const cwListOrVariable = (kind: DistKind): Action =>
+  open([notRun("List"), pick("Variable", dist(kind))]);
+
+const CW_DISTRIBUTIONS = list([
+  pick("Binomial PD", cwListOrVariable("binomialPd")),
+  pick("Binomial CD", cwListOrVariable("binomialCd")),
+  pick("Normal PD", dist("normalPd")),
+  pick("Normal CD", dist("normalCd")),
+  pick("Inverse Normal", dist("inverseNormal")),
+  pick("Poisson PD", cwListOrVariable("poissonPd")),
+  pick("Poisson CD", cwListOrVariable("poissonCd")),
+]);
+
+const CW_EQUATIONS = list([
+  pick(
+    "Simul Equation",
+    open([
+      pick("2 Unknowns", eqn({ kind: "linear", n: 2 })),
+      pick("3 Unknowns", eqn({ kind: "linear", n: 3 })),
+      notRun("4 Unknowns"),
+    ]),
+  ),
+  pick(
+    "Polynomial",
+    open([
+      pick("ax²+bx+c", eqn({ kind: "poly", degree: 2 })),
+      pick("ax³+bx²+cx+d", eqn({ kind: "poly", degree: 3 })),
+      notRun("ax⁴+bx³+cx²+dx+e"),
+    ]),
+  ),
+  notRun("Solver"),
+]);
+
+/** HOME: the apps, three to a row. */
+const CW_HOME = list(
+  [
+    pick("Calculate", { do: "mode", mode: "calc" }),
+    pick("Statistics", { do: "mode", mode: "stat", then: { do: "menu", menu: CW_STAT_TYPES } }),
+    pick("Distribution", {
+      do: "mode",
+      mode: "dist",
+      then: { do: "menu", menu: CW_DISTRIBUTIONS },
+    }),
+    notRun("Spreadsheet"),
+    notRun("Table"),
+    pick("Equation", { do: "mode", mode: "eqn", then: { do: "menu", menu: CW_EQUATIONS } }),
+    notRun("Inequality"),
+    notRun("Complex"),
+    notRun("Base-N"),
+    notRun("Matrix"),
+    notRun("Vector"),
+    notRun("Ratio"),
+    notRun("Math Box"),
+  ],
+  3,
+);
+
+const CW_SETTINGS = list([
+  pick(
+    "Calc Settings",
+    open([
+      notRun("Input/Output"),
+      pick(
+        "Angle Unit",
+        open([
+          pick("Degree", { do: "angle", unit: "deg" }),
+          pick("Radian", { do: "angle", unit: "rad" }),
+          notRun("Gradian"),
+        ]),
+      ),
+      notRun("Number Format"),
+      notRun("Engineer Symbol"),
+      notRun("Fraction Result"),
+      notRun("Complex Result"),
+      notRun("Decimal Mark"),
+      notRun("Digit Separator"),
+    ]),
+  ),
+  notRun("System Settings"),
+  notRun("Reset"),
+  notRun("Get Started"),
+]);
+
+/** CATALOG, in the Calculate app; the Statistics app puts its own category first. */
+const cwCatalog = (mode: CalcMode): Menu =>
+  list([
+    ...(mode === "stat"
+      ? [
+          pick(
+            "Statistics",
+            open([
+              notRun("Summation"),
+              notRun("Mean/Var/Dev…"),
+              notRun("Min/Max/Quartile"),
+              notRun("Norm Dist"),
+            ]),
+          ),
+        ]
+      : []),
+    pick(
+      "Func Analysis",
+      open([
+        pick("Derivative(d/dx)", fn("deriv")),
+        pick("Integration(∫)", fn("integral")),
+        notRun("Summation(Σ)"),
+        pick("Logarithm(logab)", fn("logb")),
+      ]),
+    ),
+    pick(
+      "Probability",
+      open([
+        notRun("%"),
+        pick("Factorial(!)", insert({ t: "post", v: "fact" })),
+        pick("Permutation(P)", insert({ t: "op", v: "P" })),
+        pick("Combination(C)", insert({ t: "op", v: "C" })),
+        notRun("Random Number"),
+        notRun("Random Integer"),
+      ]),
+    ),
+    pick("Numeric Calc", open([pick("Absolute Value", fn("abs")), notRun("Round Off")])),
+    pick(
+      "Angle/Coord/Sexa",
+      open([notRun("Degrees"), notRun("Radians"), notRun("Gradians"), notRun("Rect to Polar")]),
+    ),
+    notRun("Hyperbolic/Trig"),
+    notRun("Engineer Symbol"),
+    notRun("Sci Constants"),
+    notRun("Unit Conversions"),
+  ]);
+
+/** OK in the statistics data table. */
+const cwStatResults = (kind: StatKind): Menu =>
+  kind === "1var"
+    ? list([pick("1-Var Results", { do: "statList" }), pick("Statistics Calc", { do: "statCalc" })])
+    : list([
+        notRun("2-Var Results"),
+        pick(
+          "Reg Results",
+          open([
+            pick("y=a+bx", { do: "regList" }),
+            notRun("y=a+bx+cx²"),
+            notRun("y=a+b·ln(x)"),
+            notRun("y=a·e^(bx)"),
+          ]),
+        ),
+        pick("Statistics Calc", { do: "statCalc" }),
+      ]);
+
+const nav = (id: KeyId, label: string, extra: Partial<Omit<KeyDef, "id" | "label">> = {}) =>
+  key(id, label, { tone: "nav", ...extra });
+const cwDigit = (id: KeyId, label: string, shift?: string, tone: KeyDef["tone"] = "digit") =>
+  key(id, label, { tone, shift });
+
+export const FX991CW: ModelSpec = {
+  ...FX991EX,
+  id: "fx991cw",
+  name: "fx-991CW",
+  series: "ClassWiz",
+  siblings: "fx-570CW",
+  menuKey: "home",
+  settingsKey: "settings",
+  optnKey: "catalog",
+  okKey: true,
+  editorWraps: true,
+  verticalTemplates: true,
+  pageKeys: ["pgup", "pgdn"],
+  storeOnSto: false,
+  letters: {},
+  shiftLetters: { "4": "A", "5": "B", "6": "C", "1": "D", "2": "E", "3": "F", "0": "X", dot: "Y" },
+  distFields: {
+    normalPd: [
+      { label: "x", initial: 0 },
+      { label: "μ", initial: 0 },
+      { label: "σ", initial: 1 },
+    ],
+    normalCd: [
+      { label: "Lower", initial: 0 },
+      { label: "Upper", initial: 0 },
+      { label: "μ", initial: 0 },
+      { label: "σ", initial: 1 },
+    ],
+    inverseNormal: [
+      { label: "Area", initial: 0 },
+      { label: "μ", initial: 0 },
+      { label: "σ", initial: 1 },
+    ],
+  },
+  notSimulated: ["matrix", "solver"],
+  top: [
+    [ON, nav("home", "HOME"), null, nav("pgup", "⇑")],
+    [nav("settings", "SETTINGS"), nav("back", "BACK"), nav("function", "f(x)"), nav("pgdn", "⇓")],
+    [SHIFT, nav("variable", "VARIABLE"), nav("catalog", "CATALOG"), nav("tools", "TOOLS")],
+  ],
+  functionRows: [
+    [
+      key("x", "x", { shift: "QR" }),
+      key("frac", "■⁄□", { shift: "■■⁄□" }),
+      key("sqrt", "√■", { shift: "∛■" }),
+      key("pow", "■^■", { shift: "■⁻¹" }),
+      key("sq", "■²", { shift: "log" }),
+      key("logb", "log■□", { shift: "ln" }),
+    ],
+    [
+      key("ans", "Ans"),
+      key("sin", "sin", { shift: "sin⁻¹" }),
+      key("cos", "cos", { shift: "cos⁻¹" }),
+      key("tan", "tan", { shift: "tan⁻¹" }),
+      key("lp", "(", { shift: "=" }),
+      key("rp", ")", { shift: "," }),
+    ],
+  ],
+  digitRows: [
+    [
+      cwDigit("7", "7", "π"),
+      cwDigit("8", "8", "e"),
+      cwDigit("9", "9", "i"),
+      cwDigit("del", "⌫", "INS", "clear"),
+      cwDigit("ac", "AC", "OFF", "clear"),
+    ],
+    [
+      cwDigit("4", "4", "A"),
+      cwDigit("5", "5", "B"),
+      cwDigit("6", "6", "C"),
+      cwDigit("times", "×", undefined, "operator"),
+      cwDigit("divide", "÷", undefined, "operator"),
+    ],
+    [
+      cwDigit("1", "1", "D"),
+      cwDigit("2", "2", "E"),
+      cwDigit("3", "3", "F"),
+      cwDigit("plus", "+", "°'\"", "operator"),
+      cwDigit("minus", "−", "(−)", "operator"),
+    ],
+    [
+      cwDigit("0", "0", "x"),
+      cwDigit("dot", ".", "y"),
+      cwDigit("exp10", "×10■", "z"),
+      cwDigit("format", "FORMAT", undefined, "digit"),
+      key("eq", "EXE", { tone: "equals", shift: "≈" }),
+    ],
+  ],
+  mainMenu: CW_HOME,
+  setupMenu: CW_SETTINGS,
+  optn: (mode, screen) => (screen === "calc" ? cwCatalog(mode) : null),
+  okMenu: (mode, screen, kind) =>
+    mode === "stat" && screen === "statEditor" ? cwStatResults(kind) : null,
+  formatMenu: list([
+    pick("Standard", { do: "decimal", on: false }),
+    pick("Decimal", { do: "decimal", on: true }),
+    notRun("Improper Fraction"),
+    notRun("Mixed Fraction"),
+  ]),
+  shiftMenu: undefined,
+};
+
+/** Every key on a model's keyboard, without the gaps. */
+export const keysOf = (model: ModelSpec): KeyDef[] =>
+  [...model.top.flat(), ...model.functionRows.flat(), ...model.digitRows.flat()].filter(
+    (def): def is KeyDef => def !== null,
+  );
+
+// --------------------------------------------------------------- fx-82MS ----
+
+/** The fx-82MS: the MS keyboard without CALC, ∫ or MAT, and only SD and REG. */
+export const FX82MS: ModelSpec = {
+  ...FX570MS,
+  id: "fx82ms",
+  name: "fx-82MS",
+  siblings: "fx-85MS, fx-300MS, fx-350MS",
+  matrices: [],
+  has: { eqn: false, matrix: false, calculus: false, dist: false, normalP: false },
+  top: [
+    [SHIFT, ALPHA, key("mode", "MODE", { shift: "CLR" }), ON],
+    [
+      key("inv", "x⁻¹", { shift: "x!" }),
+      key("ncr", "nCr", { shift: "nPr" }),
+      key("pol", "Pol(", { shift: "Rec(", alpha: ":" }),
+      key("cube", "x³", { shift: "∛" }),
+    ],
+  ],
+  functionRows: [
+    [
+      key("frac", "a b/c", { shift: "d/c" }),
+      key("sqrt", "√"),
+      key("sq", "x²"),
+      key("pow", "^", { shift: "ˣ√" }),
+      key("log", "log", { shift: "10ˣ" }),
+      key("ln", "ln", { shift: "eˣ", alpha: "e" }),
+    ],
+    [
+      key("neg", "(−)", { alpha: "A" }),
+      key("dms", "°'\"", { shift: "←", alpha: "B" }),
+      key("hyp", "hyp", { alpha: "C" }),
+      ...trig(),
+    ],
+    [
+      key("rcl", "RCL", { shift: "STO" }),
+      key("eng", "ENG", { shift: "←" }),
+      key("lp", "("),
+      key("rp", ")", { alpha: "X" }),
+      key("comma", ",", { shift: ";", alpha: "Y" }),
+      key("mplus", "M+", { shift: "M−", alpha: "M" }),
+    ],
+  ],
+  digitRows: digitRows(
+    {
+      "1": "S-SUM",
+      "2": "S-VAR",
+      "0": "Rnd",
+      dot: "Ran#",
+      ans: "DRG▶",
+      del: "INS",
+      ac: "OFF",
+    },
+    key("exp10", "×10ˣ", { tone: "digit", shift: "π" }),
+    key("eq", "=", { tone: "equals", shift: "%" }),
+  ),
+  mainMenu: {
+    pages: [
+      [
+        item("1", "COMP", { do: "mode", mode: "calc" }),
+        item("2", "SD", { do: "mode", mode: "stat", then: { do: "statType", kind: "1var" } }),
+        item("3", "REG", {
+          do: "mode",
+          mode: "stat",
+          then: sub([
+            [
+              item("1", "Lin", { do: "statType", kind: "lin" }),
+              unsupported("2", "Log"),
+              unsupported("3", "Exp"),
+            ],
+            [unsupported("1", "Pwr"), unsupported("2", "Inv"), unsupported("3", "Quad")],
+          ]),
+        }),
+      ],
+      [
+        item("1", "Deg", { do: "angle", unit: "deg" }),
+        item("2", "Rad", { do: "angle", unit: "rad" }),
+        unsupported("3", "Gra"),
+      ],
+      [unsupported("1", "Fix"), unsupported("2", "Sci"), unsupported("3", "Norm")],
+      [unsupported("1", "Disp")],
+    ],
+  },
+  // S-SUM and S-VAR as on the 570MS; SHIFT 3 (DISTR) is not on this model.
+  shiftMenu: (digit, mode, kind) =>
+    mode === "stat" && digit !== "3" ? msStatMenu(digit, kind) : null,
+};
+
 export const MODELS: Record<ModelId, ModelSpec> = {
+  fx991cw: FX991CW,
   fx991ex: FX991EX,
   fx991esplus: FX991ESPLUS,
   fx570ms: FX570MS,
+  fx82ms: FX82MS,
   fx82esplus: FX82ESPLUS,
 };
 
-export const MODEL_IDS: ModelId[] = ["fx991ex", "fx991esplus", "fx570ms", "fx82esplus"];
+export const MODEL_IDS: ModelId[] = [
+  "fx991cw",
+  "fx991ex",
+  "fx991esplus",
+  "fx570ms",
+  "fx82ms",
+  "fx82esplus",
+];

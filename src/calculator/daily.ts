@@ -361,7 +361,7 @@ const TEMPLATES: Template[] = [
   {
     kind: "solve",
     topic: EQUATIONS,
-    fits: (m) => m.has.calculus,
+    fits: (m) => m.has.calculus && !m.notSimulated?.includes("solver"),
     make: (rng) => {
       const k = int(rng, 3, 30);
       return {
@@ -408,7 +408,7 @@ const TEMPLATES: Template[] = [
   {
     kind: "determinant",
     topic: MATRICES,
-    fits: (m) => m.has.matrix,
+    fits: (m) => m.has.matrix && !m.notSimulated?.includes("matrix"),
     make: (rng) => {
       let m: Matrix;
       do m = [0, 1, 2].map(() => [0, 1, 2].map(() => int(rng, -5, 9)));
@@ -426,7 +426,7 @@ const TEMPLATES: Template[] = [
   {
     kind: "inverse",
     topic: MATRICES,
-    fits: (m) => m.has.matrix,
+    fits: (m) => m.has.matrix && !m.notSimulated?.includes("matrix"),
     make: (rng) => {
       let m: Matrix;
       do m = [0, 1].map(() => [0, 1].map(() => int(rng, -5, 9)));
