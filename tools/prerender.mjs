@@ -174,7 +174,7 @@ function head(route) {
  * page's name and its sentence, which is also what a crawler that does run
  * JavaScript will find confirmed a moment later.
  */
-function noscript(route) {
+function noscript() {
   return `    <noscript>
       <p>Enable JavaScript to use the interactive experiments.</p>
       <p><a href="/">All labs</a></p>
@@ -293,7 +293,7 @@ async function main() {
         /<!-- boot:start -->[\s\S]*?<!-- boot:end -->/,
         `<main class="boot-content"><h1>${escape(route.meta.title)}</h1><p>${escape(route.meta.description)}</p><p>Loading the interactive experiments…</p><a href="/">All labs</a></main>`,
       )
-      .replace("</body>", `${noscript(route)}\n</body>`);
+      .replace("</body>", `${noscript()}\n</body>`);
 
     const file =
       route.path === "/"
