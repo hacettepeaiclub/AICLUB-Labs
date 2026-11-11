@@ -34,10 +34,10 @@ import { createRng } from "@/lib/random";
  *
  * Gradients train E and P only. Ē is never trained: after every step it moves
  * a little toward E (an exponential moving average). That asymmetry is not a
- * detail. If the target were E itself, trained by the same gradients, the
+ * detail. With gradients through both the online target and prediction, the
  * cheapest way to make every guess right would be to give every patch the
  * same vector — the loss goes to zero and nothing is learned. The lab lets
- * the visitor switch the slow copy off and watch exactly that happen.
+ * the visitor compare EMA targets, detached online targets and joint gradients.
  *
  * ## Honesty about scale
  *
@@ -200,11 +200,12 @@ const parts = (net: Net) => [net.w1, net.b1, net.w2, net.b2] as const;
 /** Every number a network learns. */
 export const parameterCount = (net: Net): number => parts(net).reduce((n, p) => n + p.length, 0);
 
-interface Pass {
+export interface NetworkTrace {
   readonly input: Float64Array;
   readonly hidden: Float64Array;
   readonly output: Float64Array;
 }
+type Pass = NetworkTrace;
 
 function forward(net: Net, input: Float64Array): Pass {
   const hidden = new Float64Array(HIDDEN);
@@ -282,11 +283,10 @@ export const SETTINGS: Settings = {
 };
 
 export interface TrainOptions {
-  /**
-   * Aim at the slow copy Ē, which gradients never touch (I-JEPA). Off: aim
-   * at E itself, with gradients flowing through both sides of the loss.
-   */
+  /** Use an EMA target. Its parameters are updated by copying, not gradients. */
   slowCopy: boolean;
+  /** Detach the online target when EMA is off. Defaults to slowCopy for compatibility. */
+  stopGradient?: boolean;
 }
 
 const BETA1 = 0.9;
@@ -344,6 +344,7 @@ export interface Guess {
   readonly guess: Float64Array;
   readonly goal: Float64Array;
   readonly error: number;
+  readonly layers: { encoder: NetworkTrace; predictor: NetworkTrace; target: NetworkTrace };
 }
 
 /**
@@ -355,14 +356,24 @@ export function guesses(model: Jepa, picture: Picture, hidden: readonly number[]
   for (const h of hidden) {
     const from = neighboursOf(h).filter((n) => !hidden.includes(n));
     if (!from.length) continue;
-    const context = average(from.map((n) => embed(model.encoder, patchOf(picture, n))));
-    const raw = forward(model.predictor, context).output;
-    const rawGoal = embed(model.target, patchOf(picture, h));
+    const contextPasses = from.map((n) => forward(model.encoder, patchOf(picture, n)));
+    const context = average(contextPasses.map((p) => p.output));
+    const predicted = forward(model.predictor, context);
+    const target = forward(model.target, patchOf(picture, h));
+    const raw = predicted.output;
+    const rawGoal = target.output;
     const guess = model.settings.normalize ? unit(raw) : raw;
     const goal = model.settings.normalize ? unit(rawGoal) : rawGoal;
     let error = 0;
     for (let d = 0; d < guess.length; d++) error += (guess[d]! - goal[d]!) ** 2;
-    out.push({ hidden: h, from, guess, goal, error });
+    out.push({
+      hidden: h,
+      from,
+      guess,
+      goal,
+      error,
+      layers: { encoder: contextPasses[0]!, predictor: predicted, target },
+    });
   }
   return out;
 }
@@ -414,8 +425,8 @@ export interface Gradients {
  * The loss on these samples and its gradient for E and P, by backpropagation.
  *
  * With the slow copy the goal comes from Ē and is a constant: no gradient
- * reaches it. Without, the goal is E's own output, and the gradient flows
- * into E from both sides — which is what lets it make every guess right by
+ * reaches it. Without EMA, the goal is E's own output. Unless stopGradient is set, gradients flow
+ * into E from both sides — which can let it make every guess right by
  * making every vector the same.
  */
 export function gradients(
@@ -456,7 +467,7 @@ export function gradients(
           gradE,
         );
       }
-      if (!options.slowCopy) {
+      if (!options.slowCopy && !options.stopGradient) {
         const dGoalOut = dGuessOut.map((x) => -x);
         backward(
           model.encoder,
@@ -680,7 +691,7 @@ export function kindNear(v: Float64Array, reference: readonly Vector[]): Texture
  * guess can do from the average of the visible neighbours' pixels, fitted by
  * least squares on many pictures (ridge-regularised, solved exactly).
  *
- * It is here to be compared, and it does what any pixel predictor must in
+ * This regularised linear baseline estimates an average, not a distribution, in
  * this world: the offset of a hidden stripe is a coin toss, so the guess
  * that is least wrong on average is the average of every offset — grey.
  */
@@ -779,16 +790,44 @@ export function kindAccuracy(
   samples: readonly Sample[],
   reference: readonly Vector[],
 ): number {
-  let asked = 0;
-  let right = 0;
+  return evaluateKinds(model, samples, reference).interior.accuracy;
+}
+
+export interface KindScore {
+  readonly right: number;
+  readonly total: number;
+  readonly accuracy: number;
+}
+
+/** Report the whole probe and its two disjoint subsets, including hard boundaries. */
+export function evaluateKinds(
+  model: Jepa,
+  samples: readonly Sample[],
+  reference: readonly Vector[],
+) {
+  const all = { right: 0, total: 0 };
+  const interior = { right: 0, total: 0 };
+  const boundary = { right: 0, total: 0 };
+  let unavailable = 0;
   for (const { picture, hidden } of samples) {
-    for (const g of guesses(model, picture, hidden)) {
-      if (g.from.some((n) => picture.textures[n] !== picture.textures[g.hidden])) continue;
-      asked++;
-      if (kindNear(g.guess, reference) === picture.textures[g.hidden]) right++;
+    const predicted = guesses(model, picture, hidden);
+    unavailable += hidden.length - predicted.length;
+    for (const g of predicted) {
+      const correct = Number(kindNear(g.guess, reference) === picture.textures[g.hidden]);
+      const group = g.from.every((n) => picture.textures[n] === picture.textures[g.hidden])
+        ? interior
+        : boundary;
+      all.total++;
+      all.right += correct;
+      group.total++;
+      group.right += correct;
     }
   }
-  return asked ? right / asked : 0;
+  const score = (s: { right: number; total: number }): KindScore => ({
+    ...s,
+    accuracy: s.total ? s.right / s.total : 0,
+  });
+  return { all: score(all), interior: score(interior), boundary: score(boundary), unavailable };
 }
 
 /** A fixed set of pictures, the same for every model, to draw and to score maps on. */

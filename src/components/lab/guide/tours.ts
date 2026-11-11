@@ -112,8 +112,13 @@ export const TOURS: Tours = {
       },
       { id: "watch", target: { part: "figures" } },
     ],
+    application: [
+      { id: "camera", target: { part: "viewport", select: "[data-query-texture]" } },
+      { id: "mask", target: { part: "viewport", select: "[data-search-mask]" } },
+      { id: "match", target: { part: "viewport", select: "[data-search-match]" } },
+    ],
     collapse: [
-      { id: "off", target: { part: "primary", select: "input[type=checkbox]" } },
+      { id: "off", target: { part: "primary", select: "[data-jepa-method]" } },
       {
         id: "play",
         target: { part: "primary", select: "button", nth: 0 },
@@ -123,7 +128,11 @@ export const TOURS: Tours = {
     ],
     pixels: [
       { id: "compare", target: { part: "viewport" } },
-      { id: "another", target: { part: "primary", select: "button" }, action: { kind: "click" } },
+      {
+        id: "another",
+        target: { part: "primary", select: "[data-jepa-next-picture]" },
+        action: { kind: "click" },
+      },
     ],
   },
   generalization: {

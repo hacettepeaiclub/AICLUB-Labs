@@ -5,6 +5,7 @@ import { useLabCopy } from "@/i18n/labs";
 import { PictureStage } from "./components/PictureStage";
 import { PixelsStage } from "./components/PixelsStage";
 import { TrainStage } from "./components/TrainStage";
+import { ApplicationStage } from "./components/ApplicationStage";
 
 /**
  * The Missing Piece: a joint-embedding predictive architecture (JEPA).
@@ -63,6 +64,14 @@ export default function Jepa() {
       </LabSection>
 
       {/* 3 — The same, with the slow copy off: zero loss, nothing learned. */}
+      <LabSection
+        kicker={t.application.kicker}
+        title={t.application.title}
+        lede={t.application.lede}
+      >
+        <ApplicationStage />
+      </LabSection>
+
       <LabSection kicker={t.collapse.kicker} title={t.collapse.title} lede={t.collapse.lede}>
         <TrainStage mode="collapse" />
       </LabSection>
