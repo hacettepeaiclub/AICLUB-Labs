@@ -7,7 +7,7 @@ import { useDocumentHead } from "@/app/useDocumentHead";
 import { homeMeta } from "@/app/siteMeta";
 import { useLabMeta, useLanguage, useT } from "@/i18n";
 import { prefetchLabCopy } from "@/i18n/labs";
-import { CATEGORY_CODE, CATEGORY_VAR, type LabCategory, type LabMeta } from "@/labs/types";
+import { CATEGORY_CODE, type LabCategory, type LabMeta } from "@/labs/types";
 import { orderedLabs, preloadLab } from "@/labs/registry";
 import { readVisits } from "@/labs/visits";
 import { CALCULATOR_PATH, labPath } from "@/lib/paths";
@@ -187,7 +187,6 @@ export function HomePage() {
                   onClick={() => pick(category)}
                   label={t.category[category]}
                   count={labs.filter((lab) => lab.meta.category === category).length}
-                  colour={CATEGORY_VAR[category]}
                 />
               ))}
             </div>
@@ -269,35 +268,20 @@ function ContinueLabel({
   );
 }
 
-/**
- * One field in the filter. Pressing it locks its frame in the field's colour,
- * with a brief brighter flash as it locks — the only emphasis on the page that
- * is not a lab's own drawing.
- */
+/** A category filter in the shared terminal palette. */
 function FieldChip({
   pressed,
   onClick,
   label,
   count,
-  colour,
 }: {
   pressed: boolean;
   onClick: () => void;
   label: string;
   count: number;
-  colour?: string;
 }) {
   return (
-    <button
-      type="button"
-      aria-pressed={pressed}
-      onClick={onClick}
-      className="field-chip"
-      style={{ "--c": colour ?? "var(--fg)" } as CSSProperties}
-    >
-      {colour && (
-        <span aria-hidden className="size-[7px] shrink-0 rounded-pill bg-[rgb(var(--c))]" />
-      )}
+    <button type="button" aria-pressed={pressed} onClick={onClick} className="field-chip">
       {label}
       <span className="field-chip-count font-mono text-caption text-fg-faint">{count}</span>
     </button>
@@ -337,7 +321,7 @@ function LabTile({ meta, lit, visited }: { meta: LabMeta; lit: boolean; visited:
       to={labPath(meta.slug)}
       state={fromState("grid")}
       className={cn("lab-card group flex-row gap-3.5 sm:flex-col sm:gap-0", lit && "is-lit")}
-      style={{ "--c": CATEGORY_VAR[meta.category] } as CSSProperties}
+      style={{ "--c": "var(--accent)" } as CSSProperties}
       onPointerEnter={warm}
       onFocus={warm}
       onTouchStart={warm}
@@ -399,10 +383,7 @@ function LabTile({ meta, lit, visited }: { meta: LabMeta; lit: boolean; visited:
             and then "difficulty · time", rather than a line that breaks
             wherever it runs out and strands a separator. */}
         <p className="mt-3 flex flex-col gap-1 text-caption text-fg-muted sm:mt-3.5 sm:flex-row sm:items-center sm:gap-2">
-          <span className="flex items-center gap-2">
-            <span aria-hidden className="size-1.5 shrink-0 rounded-pill bg-[rgb(var(--c))]" />
-            {t.category[meta.category]}
-          </span>
+          <span className="flex items-center gap-2">{t.category[meta.category]}</span>
           <span aria-hidden className="hidden text-fg-faint sm:inline">
             ·
           </span>

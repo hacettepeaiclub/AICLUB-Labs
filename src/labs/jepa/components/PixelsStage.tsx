@@ -1,12 +1,9 @@
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
-import { useRafLoop } from "@/hooks";
 import { useLabCopy } from "@/i18n/labs";
-import { createRng } from "@/lib/random";
 import {
   blockAt,
-  createJepa,
   fitPixelGuesser,
   GRID,
   guessPixels,
@@ -14,16 +11,13 @@ import {
   kindNear,
   patchOf,
   pictures,
-  trainStep,
   vectorsOf,
-  type Jepa,
 } from "../engine";
 import { MAX_STEPS, REFERENCE } from "../useJepaTrainer";
+import { useJepaModel } from "../useJepaModel";
 import { useJepaActivity } from "../useJepaActivity";
 import { kindColor } from "../view";
 import { PatchView, PictureView } from "./PictureView";
-
-const FRAME_BUDGET_MS = 4;
 
 /**
  * Section 4: the same hidden patches, guessed two ways. A pixel predictor —
@@ -37,7 +31,6 @@ export function PixelsStage() {
   const root = useRef<HTMLDivElement>(null);
   const active = useJepaActivity(root);
   const [started, setStarted] = useState(false);
-  const lastPublish = useRef(0);
   const [seed, setSeed] = useState(7);
   // Inside one region at first, so every guess has neighbours that agree;
   // moving the block onto a border shows the other case.
@@ -46,35 +39,14 @@ export function PixelsStage() {
   const hidden = blockAt(block.x, block.y);
   const guesser = useMemo(() => (started ? fitPixelGuesser(5) : null), [started]);
 
-  const modelRef = useRef<Jepa | null>(null);
-  modelRef.current ??= createJepa(1);
-  const rngRef = useRef(createRng(77));
-  const [steps, setSteps] = useState(0);
+  const model = useJepaModel(active, started);
+  const steps = model.steps;
   const ready = steps >= MAX_STEPS;
-
-  useRafLoop(
-    useCallback(() => {
-      const model = modelRef.current;
-      if (!model) return;
-      const start = performance.now();
-      while (model.steps < MAX_STEPS && performance.now() - start < FRAME_BUDGET_MS) {
-        trainStep(model, rngRef.current, { slowCopy: true });
-      }
-      const now = performance.now();
-      if (now - lastPublish.current >= 100 || model.steps >= MAX_STEPS) {
-        lastPublish.current = now;
-        setSteps(model.steps);
-      }
-    }, []),
-    started && !ready && active,
-  );
-
   const reference = useMemo(
-    () => (ready && modelRef.current ? vectorsOf(modelRef.current.target, REFERENCE) : null),
-    [ready],
+    () => (ready ? vectorsOf(model.target, REFERENCE) : null),
+    [ready, model],
   );
-  const kindGuesses =
-    reference && modelRef.current ? guesses(modelRef.current, picture, hidden) : [];
+  const kindGuesses = reference ? guesses(model, picture, hidden) : [];
 
   const moveBlock = (index: number) =>
     setBlock({

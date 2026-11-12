@@ -56,16 +56,11 @@
       }
     </style>
     <meta name="theme-color" content="#0a0a0f" />
-    <!-- The deer alone, no ground: white on a dark browser, navy on a light
-         one. The SVG does that with prefers-color-scheme; the .ico is the
-         fallback for whatever does not draw SVG, and is navy because those
-         places are mostly light. No sized PNGs on purpose — Chrome prefers an
-         exact size match over the SVG and the tab would stop following the
-         theme. All of it is made by tools/icons.mjs from the header's mark.
-         `?v=3` because browsers keep favicons in a cache of their own. -->
-    <link rel="icon" href="/favicon.ico?v=3" sizes="32x32" />
-    <link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3" />
+    <!-- Green terminal mark, with a darker green for light browser chrome.
+         Versioned URLs refresh the browser's separate favicon cache. -->
+    <link rel="icon" href="/favicon.ico?v=4" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg?v=4" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=4" />
     <link rel="manifest" href="/site.webmanifest" />
     <!-- One variable face for the whole site, including Turkish glyphs. -->
     <link

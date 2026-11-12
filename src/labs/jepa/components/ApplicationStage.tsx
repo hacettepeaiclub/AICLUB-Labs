@@ -1,9 +1,8 @@
 import { useMemo, useRef, useState } from "react";
 import { Stage } from "@/components/lab";
 import { useLabCopy } from "@/i18n/labs";
-import { useRafLoop } from "@/hooks";
-import { createRng } from "@/lib/random";
-import { createJepa, trainStep, TEXTURES, type Texture } from "../engine";
+import { createJepa, TEXTURES, type Texture } from "../engine";
+import { useJepaModel } from "../useJepaModel";
 import { coverAt, observe, search, surface } from "../surfaceSearch";
 import { useJepaActivity } from "../useJepaActivity";
 import { MAX_STEPS } from "../useJepaTrainer";
@@ -20,31 +19,15 @@ export function ApplicationStage() {
     [noise, setNoise] = useState(0),
     [size, setSize] = useState(1),
     [position, setPosition] = useState(5);
-  const [trained, setTrained] = useState(true),
-    [steps, setSteps] = useState(0);
-  const modelRef = useRef<ReturnType<typeof createJepa> | null>(null);
-  modelRef.current ??= createJepa(1);
+  const [trained, setTrained] = useState(true);
+  const model = useJepaModel(active);
+  const steps = model.steps;
   const initial = useMemo(() => createJepa(1).encoder, []);
-  const rng = useRef(createRng(77)),
-    last = useRef(0);
-  useRafLoop(
-    () => {
-      const model = modelRef.current!;
-      const start = performance.now();
-      while (model.steps < MAX_STEPS && performance.now() - start < 4)
-        trainStep(model, rng.current, { slowCopy: true, stopGradient: true });
-      if (model.steps === MAX_STEPS || performance.now() - last.current > 100) {
-        last.current = performance.now();
-        setSteps(model.steps);
-      }
-    },
-    active && steps < MAX_STEPS,
-  );
   const source = useMemo(() => surface(texture, 408), [texture]);
   const picture = useMemo(() => observe(source, light, noise), [source, light, noise]);
-  const hidden = coverAt(position, size);
+  const hidden = useMemo(() => coverAt(position, size), [position, size]);
   // steps is a publication version of the mutable network weights.
-  const result = search(trained ? modelRef.current!.encoder : initial, picture, hidden);
+  const result = search(trained ? model.encoder : initial, picture, hidden);
   return (
     <div ref={root} data-jepa-application className="space-y-5">
       <Stage
@@ -161,12 +144,13 @@ export function ApplicationStage() {
                     </div>
                   ))}
                 </div>
+                <p className="text-caption text-fg-muted">{a.similarity}</p>
                 <ol className="space-y-2">
                   {result.matches.map((match, i) => (
                     <li
                       key={match.texture}
                       data-search-match={match.texture}
-                      className={`flex items-center gap-3 rounded border p-3 ${i === 0 ? "border-accent/60 bg-accent/5" : "border-line/15"}`}
+                      className={`flex min-h-24 items-center gap-3 rounded border p-3 ${i === 0 ? "border-accent/60 bg-accent/5" : "border-line/15"}`}
                     >
                       <span className="font-mono text-caption text-fg-muted">0{i + 1}</span>
                       <div className="w-14 shrink-0">
@@ -175,7 +159,6 @@ export function ApplicationStage() {
                       <div className="min-w-0 flex-1">
                         <p className="text-body-sm text-fg">{t.kinds[match.texture]}</p>
                         <p className="text-caption text-fg-muted">
-                          {a.similarity}:{" "}
                           <strong className="font-mono text-accent">
                             {t.decimal(match.similarity, 3)}
                           </strong>

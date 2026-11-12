@@ -60,6 +60,14 @@ for (const language of ["tr", "en"] as const)
         await expect(trainer.getByRole("status").first()).not.toBeEmpty();
         await trainer.getByRole("button", { name: w.step, exact: true }).click();
         await expect(steps(trainer)).toHaveText("10");
+        const map = trainer.locator("canvas[data-jepa-map]");
+        await expect(map).toHaveAttribute("role", "img");
+        expect(
+          await map.evaluate((canvas: HTMLCanvasElement) => {
+            const expected = Math.ceil(canvas.getBoundingClientRect().width * devicePixelRatio);
+            return canvas.width >= expected && canvas.height === canvas.width;
+          }),
+        ).toBe(true);
         await trainer.getByRole("button", { name: w.before, exact: true }).click();
         await expect(steps(trainer)).toHaveText("0");
         await trainer.getByRole("button", { name: w.after, exact: true }).click();
@@ -177,6 +185,7 @@ test("JEPA direct manipulation edits pixels, scrubs training, and searches with 
   await page.keyboard.press("Home");
   await expect(steps(trainer)).toHaveText("0");
   const flow = trainer.locator("[data-jepa-flow]");
+  await expect(flow.locator("[data-jepa-layers] svg")).toHaveCount(0);
   await flow.locator("[data-jepa-layers] > summary").click();
   await expect(flow.locator("[data-jepa-layers] svg")).toBeVisible();
   await flow.locator("[data-jepa-layers] select").selectOption("predictor");
@@ -199,4 +208,46 @@ test("JEPA direct manipulation edits pixels, scrubs training, and searches with 
   }
   await application.locator("h3").first().scrollIntoViewIfNeeded();
   await page.screenshot({ path: testInfo.outputPath("visual-search.png") });
+});
+
+test("JEPA discards queued evaluation results after rewinding a running model", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await open(page, "en", "dark");
+  const trainer = page.locator('[data-jepa-trainer="train"]');
+  const seek = trainer.locator("[data-jepa-seek]");
+  await seek.focus();
+  await page.keyboard.press("End");
+  await expect.poll(async () => Number(await steps(trainer).innerText())).toBeGreaterThan(0);
+  await seek.focus();
+  await page.keyboard.press("Home");
+  await expect(steps(trainer)).toHaveText("0");
+  await page.waitForTimeout(300);
+  await expect(steps(trainer)).toHaveText("0");
+});
+
+test("JEPA retains its interactions when Web Workers are unavailable", async ({ page }) => {
+  await page.addInitScript(() =>
+    Object.defineProperty(window, "Worker", { value: undefined, configurable: true }),
+  );
+  await open(page, "en", "light");
+  const trainer = page.locator('[data-jepa-trainer="train"]');
+  await trainer.getByRole("button", { name: "Advance 10 steps", exact: true }).click();
+  await expect(steps(trainer)).toHaveText("10");
+});
+
+test("JEPA rapid scrubbing settles on the final requested step", async ({ page }) => {
+  await open(page, "en", "dark");
+  const trainer = page.locator('[data-jepa-trainer="train"]'),
+    seek = trainer.locator("[data-jepa-seek]");
+  await seek.focus();
+  for (let i = 0; i < 4; i++) {
+    await page.keyboard.press("End");
+    await page.keyboard.press("Home");
+  }
+  for (let i = 0; i < 3; i++) await page.keyboard.press("ArrowRight");
+  await expect(steps(trainer)).toHaveText("30");
+  await page.waitForTimeout(300);
+  await expect(steps(trainer)).toHaveText("30");
 });

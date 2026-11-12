@@ -8,7 +8,8 @@ import type { Config } from "tailwindcss";
  * this file. Never hardcode hex values in components.
  */
 export default {
-  content: ["./index.html", "./src/**/*.{ts,tsx}"],
+  // Test fixtures never render in production; scanning them generates unused CSS.
+  content: ["./index.html", "./src/**/*.{ts,tsx}", "!./src/**/*.test.{ts,tsx}"],
   // The theme lives on a data attribute rather than a class, so the
   // no-flash script and the CSS token blocks key off the same thing.
   darkMode: ["selector", '[data-theme="dark"]'],
@@ -62,21 +63,30 @@ export default {
       },
       // Type scale — 1.25 ratio, clamped for fluid headings
       fontSize: {
-        "display-xl": ["clamp(2.5rem, 1.5rem + 4vw, 4.5rem)", { lineHeight: "1.05", letterSpacing: "-0.02em", fontWeight: "700" }],
-        "display-lg": ["clamp(2rem, 1.25rem + 2.5vw, 3rem)", { lineHeight: "1.1", letterSpacing: "-0.02em", fontWeight: "700" }],
-        "display-md": ["1.75rem", { lineHeight: "1.2", letterSpacing: "-0.02em", fontWeight: "600" }],
-        "title": ["1.25rem", { lineHeight: "1.35", letterSpacing: "-0.015em", fontWeight: "600" }],
+        "display-xl": [
+          "clamp(2.5rem, 1.5rem + 4vw, 4.5rem)",
+          { lineHeight: "1.05", letterSpacing: "-0.02em", fontWeight: "700" },
+        ],
+        "display-lg": [
+          "clamp(2rem, 1.25rem + 2.5vw, 3rem)",
+          { lineHeight: "1.1", letterSpacing: "-0.02em", fontWeight: "700" },
+        ],
+        "display-md": [
+          "1.75rem",
+          { lineHeight: "1.2", letterSpacing: "-0.02em", fontWeight: "600" },
+        ],
+        title: ["1.25rem", { lineHeight: "1.35", letterSpacing: "-0.015em", fontWeight: "600" }],
         "body-lg": ["1.125rem", { lineHeight: "1.65" }],
-        "body": ["1rem", { lineHeight: "1.65" }],
+        body: ["1rem", { lineHeight: "1.65" }],
         "body-sm": ["0.875rem", { lineHeight: "1.6" }],
-        "caption": ["0.75rem", { lineHeight: "1.4", letterSpacing: "0.02em" }],
-        "overline": ["0.6875rem", { lineHeight: "1.3", letterSpacing: "0.12em", fontWeight: "600" }],
+        caption: ["0.75rem", { lineHeight: "1.4", letterSpacing: "0.02em" }],
+        overline: ["0.6875rem", { lineHeight: "1.3", letterSpacing: "0.12em", fontWeight: "600" }],
       },
       // Spacing is Tailwind's default 4px grid; these named steps are for
       // page-level rhythm so sections stay consistent across labs.
       spacing: {
-        "section": "clamp(4rem, 2rem + 6vw, 8rem)",
-        "prose": "65ch",
+        section: "clamp(4rem, 2rem + 6vw, 8rem)",
+        prose: "65ch",
       },
       borderRadius: {
         DEFAULT: "0.5rem",

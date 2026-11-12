@@ -1,8 +1,9 @@
-import { useRef, type PointerEvent } from "react";
+import { memo, useRef, type PointerEvent } from "react";
 import { labColor } from "@/design/tokens";
 import { usePaletteVersion } from "@/hooks";
 import { GRID, PATCH, PATCHES, SIZE, type Picture } from "../engine";
 import { grey } from "../view";
+import "./picture.css";
 
 export interface PictureViewProps {
   picture: Picture;
@@ -16,7 +17,7 @@ export interface PictureViewProps {
 }
 
 /** Native HTML hit areas keep keyboard focus in CSS pixels, outside SVG units. */
-export function PictureView({
+export const PictureView = memo(function PictureView({
   picture,
   hidden = [],
   selected = null,
@@ -122,7 +123,7 @@ export function PictureView({
       </svg>
       {onPick && (
         <div
-          className="absolute inset-[1.8%] grid grid-cols-4 grid-rows-4"
+          className="jepa-picture-grid"
           style={{ touchAction: dragSelect ? "none" : "manipulation" }}
           onPointerDown={
             dragSelect
@@ -160,15 +161,14 @@ export function PictureView({
               aria-label={patchLabel?.(i + 1) ?? String(i + 1)}
               aria-pressed={selected === i}
               onClick={() => onPick(i)}
-              className="m-0 min-h-0 min-w-0 rounded-none border-0 bg-transparent p-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:-outline-offset-2"
-              style={{ boxShadow: "none" }}
+              className="jepa-picture-cell"
             />
           ))}
         </div>
       )}
     </div>
   );
-}
+});
 
 export function PatchView({ pixels, label }: { pixels: Float64Array; label: string }) {
   return (

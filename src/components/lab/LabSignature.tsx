@@ -1,4 +1,4 @@
-import type { CSSProperties } from "react";
+import { memo, type CSSProperties } from "react";
 import { createRng } from "@/lib/random";
 
 /**
@@ -1026,10 +1026,16 @@ function Shape({ slug }: { slug: string }) {
   }
 }
 
-export function LabSignature({ slug, className }: { slug: string; className?: string }) {
+export const LabSignature = memo(function LabSignature({
+  slug,
+  className,
+}: {
+  slug: string;
+  className?: string;
+}) {
   return (
     <svg viewBox={`0 0 ${W} ${H}`} aria-hidden className={className} role="presentation">
       <Shape slug={slug} />
     </svg>
   );
-}
+});

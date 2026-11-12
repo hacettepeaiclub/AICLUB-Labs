@@ -1,3 +1,4 @@
+import { memo, useCallback, useEffect, useLayoutEffect, useRef } from "react";
 import { labColor } from "@/design/tokens";
 import { usePaletteVersion } from "@/hooks";
 import type { MapPoint } from "../engine";
@@ -21,49 +22,104 @@ const S = 100;
  * never sees. The frame fits the points, down to a floor, so a collapse
  * still shows as the cloud shrinking.
  */
-export function MapView({ points, guesses = [], label }: MapViewProps) {
-  usePaletteVersion();
-  const axis = labColor("fgFaint", 0.35);
-  const ring = labColor("fg");
-  const farthest = Math.max(
-    0,
-    ...points.map((p) => Math.max(Math.abs(p.x), Math.abs(p.y))),
-    ...guesses.flatMap(({ guess, goal }) => [guess.x, guess.y, goal.x, goal.y].map(Math.abs)),
-  );
-  const range = mapRange(farthest);
-  const at = (v: number) => ((v + range) / (2 * range)) * S;
+export const MapView = memo(function MapView({ points, guesses = [], label }: MapViewProps) {
+  const version = usePaletteVersion();
+  const canvasRef = useRef<HTMLCanvasElement>(null),
+    width = useRef(0);
+  const paint = useCallback(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const css = width.current || canvas.clientWidth;
+    if (!css) return;
+    width.current = css;
+    const size = Math.max(1, Math.ceil(css * (window.devicePixelRatio || 1)));
+    if (canvas.width !== size) canvas.width = size;
+    if (canvas.height !== size) canvas.height = size;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, size, size);
+    ctx.setTransform(size / S, 0, 0, size / S, 0, 0);
+    const farthest = Math.max(
+      0,
+      ...points.map((p) => Math.max(Math.abs(p.x), Math.abs(p.y))),
+      ...guesses.flatMap(({ guess, goal }) => [guess.x, guess.y, goal.x, goal.y].map(Math.abs)),
+    );
+    const range = mapRange(farthest),
+      at = (v: number) => ((v + range) / (2 * range)) * S;
+    ctx.strokeStyle = labColor("fgFaint", 0.35);
+    ctx.lineWidth = 0.3;
+    ctx.setLineDash([]);
+    ctx.beginPath();
+    ctx.moveTo(S / 2, 2);
+    ctx.lineTo(S / 2, S - 2);
+    ctx.moveTo(2, S / 2);
+    ctx.lineTo(S - 2, S / 2);
+    ctx.stroke();
+    // Keep the original order and separate alpha compositing for every point.
+    for (const p of points) {
+      ctx.fillStyle = kindColor(p.texture, 0.75);
+      ctx.beginPath();
+      ctx.arc(at(p.x), at(-p.y), 1.3, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    const ring = labColor("fg");
+    for (const { guess, goal } of guesses) {
+      ctx.strokeStyle = ring;
+      ctx.lineWidth = 0.4;
+      ctx.setLineDash([1, 1]);
+      ctx.beginPath();
+      ctx.moveTo(at(guess.x), at(-guess.y));
+      ctx.lineTo(at(goal.x), at(-goal.y));
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = ring;
+      ctx.beginPath();
+      ctx.arc(at(goal.x), at(-goal.y), 1.6, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.lineWidth = 0.6;
+      ctx.beginPath();
+      ctx.arc(at(guess.x), at(-guess.y), 2.4, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+  }, [points, guesses]);
+  const paintRef = useRef(paint);
+  paintRef.current = paint;
+  useLayoutEffect(() => {
+    paint();
+  }, [paint, version]);
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const observer = new ResizeObserver(([entry]) => {
+      if (entry) {
+        width.current = entry.contentRect.width;
+        paintRef.current();
+      }
+    });
+    observer.observe(canvas);
+    const resize = () => {
+      width.current = canvas.clientWidth;
+      paintRef.current();
+    };
+    window.addEventListener("resize", resize);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", resize);
+    };
+  }, []);
   return (
-    <svg viewBox={`0 0 ${S} ${S}`} role="img" aria-label={label} className="w-full">
-      <line x1={S / 2} y1={2} x2={S / 2} y2={S - 2} stroke={axis} strokeWidth="0.3" />
-      <line x1={2} y1={S / 2} x2={S - 2} y2={S / 2} stroke={axis} strokeWidth="0.3" />
-      {points.map((p, i) => (
-        <circle key={i} cx={at(p.x)} cy={at(-p.y)} r="1.3" fill={kindColor(p.texture, 0.75)} />
-      ))}
-      {guesses.map(({ guess, goal }, i) => (
-        <g key={`g${i}`}>
-          <line
-            x1={at(guess.x)}
-            y1={at(-guess.y)}
-            x2={at(goal.x)}
-            y2={at(-goal.y)}
-            stroke={ring}
-            strokeWidth="0.4"
-            strokeDasharray="1 1"
-          />
-          <circle cx={at(goal.x)} cy={at(-goal.y)} r="1.6" fill={ring} />
-          <circle
-            cx={at(guess.x)}
-            cy={at(-guess.y)}
-            r="2.4"
-            fill="none"
-            stroke={ring}
-            strokeWidth="0.6"
-          />
-        </g>
-      ))}
-    </svg>
+    <canvas
+      ref={canvasRef}
+      width={100}
+      height={100}
+      role="img"
+      aria-label={label}
+      data-jepa-map
+      className="block aspect-square w-full"
+    />
   );
-}
+});
 
 /** The kinds and their colours, under the map. */
 export function KindLegend({

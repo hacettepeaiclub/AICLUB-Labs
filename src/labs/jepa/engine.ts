@@ -673,10 +673,18 @@ export function place(v: Float64Array, axes: Axes, mean: Float64Array): { x: num
 /** The nearest kind to a direction, by the five closest of the given vectors. */
 export function kindNear(v: Float64Array, reference: readonly Vector[]): Texture {
   const u = unit(v);
-  const nearest = reference
-    .map((r) => ({ d: distance(u, r.v), texture: r.texture }))
-    .sort((a, b) => a.d - b.d)
-    .slice(0, 5);
+  // Keep only five candidates. Sorting every reference for every probe patch
+  // created thousands of short-lived objects per UI update on mobile.
+  const nearest: { d: number; texture: Texture }[] = [];
+  for (const r of reference) {
+    let d = 0;
+    for (let i = 0; i < u.length; i++) d += (u[i]! - r.v[i]!) ** 2;
+    let at = 0;
+    while (at < nearest.length && nearest[at]!.d <= d) at++;
+    if (at >= 5) continue;
+    nearest.splice(at, 0, { d, texture: r.texture });
+    if (nearest.length > 5) nearest.pop();
+  }
   const votes = new Map<Texture, number>();
   for (const n of nearest) votes.set(n.texture, (votes.get(n.texture) ?? 0) + 1);
   let best: Texture = nearest[0]?.texture ?? "flat";

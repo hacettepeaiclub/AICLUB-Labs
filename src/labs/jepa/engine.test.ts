@@ -7,6 +7,7 @@ import {
   evaluateKinds,
   fitPixelGuesser,
   gradients,
+  kindNear,
   guesses,
   guessPixels,
   kindAccuracy,
@@ -255,6 +256,29 @@ describe("meaning, not pixels", () => {
 });
 
 describe("the map", () => {
+  it("votes over exactly five nearest vectors and keeps reference order for equal distances", () => {
+    const kinds = [
+      "dots",
+      "horizontal",
+      "dots",
+      "vertical",
+      "dots",
+      "horizontal",
+      "horizontal",
+      "horizontal",
+    ] as const;
+    const reference = kinds.map((texture, i) => {
+      const x = 1 - i * 0.01;
+      return { v: new Float64Array([x, Math.sqrt(1 - x * x), 0, 0]), texture, offset: 0 };
+    });
+    expect(kindNear(new Float64Array([1, 0, 0, 0]), reference)).toBe("dots");
+    const tied = (["flat", "dots", "flat", "dots", "vertical", "dots"] as const).map((texture) => ({
+      v: new Float64Array([1, 0, 0, 0]),
+      texture,
+      offset: 0,
+    }));
+    expect(kindNear(new Float64Array([1, 0, 0, 0]), tied)).toBe("flat");
+  });
   it("lays the vectors on two perpendicular directions, and keeps them facing the same way", () => {
     const vectors = vectorsOf(trained(1, 300, SLOW).encoder, pictures(1, 10));
     const { axes } = project(vectors);
