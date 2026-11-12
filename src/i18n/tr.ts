@@ -187,10 +187,9 @@ export const tr: Translation = {
     jepa: {
       title: "The Missing Piece",
       term: "Öz-denetimli öğrenme",
-      figure:
-        "gizli bir parça komşularından, anlamlar haritasında bir nokta olarak tahmin ediliyor.",
+      figure: "gizli bir parçanın dört sayılık temsili, görünen komşularından tahmin ediliyor.",
       description:
-        "Bir resmin bir kısmını gizle. Modelin, gizli kısmın neye benzediğini değil ne olduğunu tahmin ederek öğrendiğini izle.",
+        "Görüntünün bir kısmını gizle. Modelin, görünen komşulardan gizli parçanın temsilini nasıl öğrendiğini incele.",
     },
     generalization: {
       title: "Learned or memorised?",

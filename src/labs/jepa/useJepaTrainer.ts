@@ -1,153 +1,192 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRafLoop } from "@/hooks";
-import { createRng } from "@/lib/random";
+import { blockAt, GRID, type Sample, type TrainOptions } from "./engine";
 import {
-  createJepa,
-  drawSample,
-  guesses,
-  kindAccuracy,
-  pictures,
-  place,
-  project,
-  separation,
-  spread,
-  trainStep,
-  vectorsOf,
-  type Axes,
-  type Jepa,
-  type MapPoint,
-  type Sample,
-} from "./engine";
-import type { MapGuess } from "./components/MapView";
+  MAX_STEPS,
+  SHOWN,
+  newRun,
+  snapshotOf,
+  takeTrainingStep,
+  type Run,
+} from "./trainingSnapshot";
+import type { SnapshotResponse, TrainingAction } from "./snapshotProtocol";
+export { MAX_STEPS, REFERENCE } from "./trainingSnapshot";
+export type { Snapshot } from "./trainingSnapshot";
 
-/** Twelve pictures, 192 patches: the dots on the map, the same for every model. */
-export const REFERENCE = pictures(4242, 12);
-
-const samples = (seed: number, count: number): Sample[] => {
-  const rng = createRng(seed);
-  return Array.from({ length: count }, () => drawSample(rng));
-};
-/** Hidden blocks the right-kind score is taken on. */
-const PROBE = samples(99, 30);
-/** The pictures shown beside the map, one after another as training goes. */
-const SHOWN = samples(31, 16);
-
-/** Enough for the start the lab opens on to keep every kind apart. */
-export const MAX_STEPS = 3000;
-const SHOW_EVERY = 100;
-const FRAME_BUDGET_MS = 8;
-const PUBLISH_INTERVAL_SEC = 0.1;
-const HISTORY_EVERY = 10;
-
-export interface Snapshot {
-  readonly steps: number;
-  /** The loss, smoothed over recent steps; null before the first. */
-  readonly loss: number | null;
-  readonly history: readonly number[];
-  readonly points: readonly MapPoint[];
-  readonly sample: Sample;
-  readonly guesses: readonly MapGuess[];
-  readonly separation: number;
-  readonly spread: number;
-  readonly accuracy: number;
-}
-
-interface Run {
-  model: Jepa;
-  rng: () => number;
-  smoothed: number | null;
-  history: number[];
-  axes: Axes | undefined;
-}
-
-const newRun = (seed: number): Run => ({
-  model: createJepa(seed),
-  rng: createRng(seed * 77),
-  smoothed: null,
-  history: [],
-  axes: undefined,
-});
-
-/**
- * Everything the screen shows about a run, read off the model at once. The
- * map is of the target encoder Ē — the vectors the guesses aim for — laid
- * flat on axes kept from the previous snapshot so it moves rather than flips.
- */
-function snapshotOf(run: Run): Snapshot {
-  const { model } = run;
-  const vectors = vectorsOf(model.target, REFERENCE);
-  const flat = project(vectors, run.axes);
-  run.axes = flat.axes;
-  const sample = SHOWN[Math.floor(model.steps / SHOW_EVERY) % SHOWN.length]!;
-  const shown = guesses(model, sample.picture, sample.hidden).map((g) => ({
-    guess: place(g.guess, flat.axes, flat.mean),
-    goal: place(g.goal, flat.axes, flat.mean),
-  }));
-  return {
-    steps: model.steps,
-    loss: run.smoothed,
-    history: [...run.history],
-    points: flat.points,
-    sample,
-    guesses: shown,
-    separation: separation(vectorsOf(model.encoder, REFERENCE)),
-    spread: spread(vectors),
-    accuracy: kindAccuracy(model, PROBE, vectors),
-  };
-}
-
-export interface JepaTrainer {
-  snapshot: Snapshot;
-  running: boolean;
-  setRunning: (running: boolean) => void;
-  restart: () => void;
-}
-
-/**
- * A JEPA trained in the browser while it is watched. The model lives in a
- * ref, outside React; the screen gets a snapshot every tenth of a second.
- * A new seed or a change of target (slow copy or not) is a new model.
- */
-export function useJepaTrainer(seed: number, slowCopy: boolean): JepaTrainer {
-  const runRef = useRef<Run | null>(null);
-  runRef.current ??= newRun(seed);
-  const [snapshot, setSnapshot] = useState<Snapshot>(() =>
-    snapshotOf(runRef.current ?? newRun(seed)),
-  );
-  const [running, setRunning] = useState(false);
-  const slowRef = useRef(slowCopy);
-  slowRef.current = slowCopy;
-
+/** Workers own training, evaluation and projection; the UI only displays coherent snapshots. */
+export function useJepaTrainer(seed: number, options: TrainOptions, active: boolean) {
+  const run = useRef<Run | null>(null);
+  run.current ??= newRun(seed);
+  const baseline = useRef<Run | null>(null);
+  baseline.current ??= newRun(seed);
+  const preview = useRef<Sample>({ picture: SHOWN[0]!, hidden: blockAt(1, 1) }),
+    pictureIndex = useRef(0);
+  const [snapshot, setSnapshot] = useState(() => snapshotOf(run.current!, preview.current));
+  baseline.current.evaluation ??= run.current.evaluation;
+  const [before, setBefore] = useState(snapshot),
+    [running, updateRunning] = useState(false),
+    [goal, setGoal] = useState(0),
+    [workerReady, setWorkerReady] = useState(false);
+  const workerRef = useRef<Worker | null>(null),
+    generation = useRef(0),
+    previewVersion = useRef(0);
+  const goalRef = useRef(0),
+    activeRef = useRef(active),
+    optionsRef = useRef(options),
+    since = useRef(0);
+  activeRef.current = active;
+  optionsRef.current = options;
+  const send = useCallback((action: TrainingAction, invalidate = false) => {
+    if (invalidate) generation.current++;
+    if (!workerRef.current) return false;
+    workerRef.current.postMessage({
+      ...action,
+      generation: generation.current,
+      preview: previewVersion.current,
+    });
+    return true;
+  }, []);
+  useEffect(() => {
+    if (typeof Worker === "undefined") return;
+    let worker: Worker;
+    try {
+      worker = new Worker(new URL("./snapshot.worker.ts", import.meta.url), { type: "module" });
+    } catch {
+      return;
+    }
+    workerRef.current = worker;
+    setWorkerReady(true);
+    worker.onmessage = ({ data }: MessageEvent<SnapshotResponse>) => {
+      if (
+        workerRef.current !== worker ||
+        data.kind !== "snapshot" ||
+        data.generation !== generation.current ||
+        data.preview !== previewVersion.current
+      )
+        return;
+      // Worker messages clone every object. Keep the unchanged picture/mask
+      // identity so training does not reconcile its hundreds of static pixels.
+      setSnapshot({ ...data.snapshot, sample: preview.current });
+      setGoal(data.goal);
+      goalRef.current = data.goal;
+      updateRunning(data.running);
+    };
+    worker.onerror = (event) => {
+      if (workerRef.current !== worker) return;
+      event.preventDefault();
+      worker.terminate();
+      workerRef.current = null;
+      setWorkerReady(false);
+      if (run.current) setSnapshot(snapshotOf(run.current, preview.current));
+    };
+    return () => {
+      worker.terminate();
+      workerRef.current = null;
+    };
+  }, []);
   const restart = useCallback(() => {
-    const run = newRun(seed);
-    runRef.current = run;
-    setRunning(false);
-    setSnapshot(snapshotOf(run));
-  }, [seed]);
-
-  // A different start or a different target is a different model.
-  useEffect(restart, [restart, slowCopy]);
-
-  const sinceRef = useRef(0);
-  useRafLoop(
-    useCallback((dtSec: number) => {
-      const run = runRef.current;
-      if (!run) return;
-      const start = performance.now();
-      while (run.model.steps < MAX_STEPS && performance.now() - start < FRAME_BUDGET_MS) {
-        const loss = trainStep(run.model, run.rng, { slowCopy: slowRef.current });
-        run.smoothed = run.smoothed === null ? loss : 0.95 * run.smoothed + 0.05 * loss;
-        if (run.model.steps % HISTORY_EVERY === 0) run.history.push(run.smoothed);
-      }
-      const finished = run.model.steps >= MAX_STEPS;
-      sinceRef.current += dtSec;
-      if (sinceRef.current < PUBLISH_INTERVAL_SEC && !finished) return;
-      sinceRef.current = 0;
-      setSnapshot(snapshotOf(run));
-      if (finished) setRunning(false);
-    }, []),
-    running,
+    run.current = newRun(seed);
+    baseline.current = newRun(seed);
+    goalRef.current = 0;
+    since.current = 0;
+    const initial = snapshotOf(run.current, preview.current);
+    baseline.current.evaluation = run.current.evaluation;
+    setSnapshot(initial);
+    setBefore(initial);
+    updateRunning(false);
+    setGoal(0);
+    send(
+      {
+        kind: "init",
+        seed,
+        options: optionsRef.current,
+        sample: preview.current,
+        active: activeRef.current,
+        channel: "snapshot",
+      },
+      true,
+    );
+  }, [seed, send]);
+  useEffect(restart, [restart, options.slowCopy, options.stopGradient]);
+  useEffect(() => {
+    send({ kind: "active", active });
+  }, [active, send]);
+  const setRunning = (value: boolean) => {
+    updateRunning(value);
+    if (value) {
+      goalRef.current = MAX_STEPS;
+      setGoal(MAX_STEPS);
+    }
+    send({ kind: "play", running: value }, true);
+  };
+  const advance = () => {
+    updateRunning(false);
+    if (send({ kind: "advance" }, true)) return;
+    const current = run.current!;
+    for (let i = 0; i < 10 && current.model.steps < MAX_STEPS; i++)
+      takeTrainingStep(current, optionsRef.current);
+    goalRef.current = current.model.steps;
+    setGoal(current.model.steps);
+    setSnapshot(snapshotOf(current, preview.current));
+  };
+  const seek = (steps: number) => {
+    const target = Math.max(0, Math.min(MAX_STEPS, Math.round(steps)));
+    goalRef.current = target;
+    setGoal(target);
+    updateRunning(target !== snapshot.steps);
+    if (send({ kind: "seek", target }, true)) return;
+    if (target < run.current!.model.steps) run.current = newRun(seed);
+    updateRunning(run.current!.model.steps < target);
+    setSnapshot(snapshotOf(run.current!, preview.current));
+  };
+  const updatePreview = useCallback(() => {
+    previewVersion.current++;
+    if (!send({ kind: "sample", sample: preview.current }))
+      setSnapshot(snapshotOf(run.current!, preview.current));
+    setBefore(snapshotOf(baseline.current!, preview.current));
+  }, [send]);
+  const moveBlock = useCallback(
+    (index: number) => {
+      const hidden = blockAt(
+        Math.min(GRID - 2, index % GRID),
+        Math.min(GRID - 2, Math.floor(index / GRID)),
+      );
+      if (hidden[0] === preview.current.hidden[0]) return;
+      preview.current = { ...preview.current, hidden };
+      updatePreview();
+    },
+    [updatePreview],
   );
-
-  return { snapshot, running, setRunning, restart };
+  const nextPicture = useCallback(() => {
+    pictureIndex.current = (pictureIndex.current + 1) % SHOWN.length;
+    preview.current = { ...preview.current, picture: SHOWN[pictureIndex.current]! };
+    updatePreview();
+  }, [updatePreview]);
+  useRafLoop(
+    useCallback((dt: number) => {
+      const current = run.current!;
+      const start = performance.now();
+      while (current.model.steps < goalRef.current && performance.now() - start < 4)
+        takeTrainingStep(current, optionsRef.current);
+      const done = current.model.steps >= goalRef.current;
+      since.current += dt;
+      if (since.current < 0.1 && !done) return;
+      since.current = 0;
+      setSnapshot(snapshotOf(current, preview.current));
+      if (done) updateRunning(false);
+    }, []),
+    running && active && !workerReady,
+  );
+  return {
+    snapshot,
+    before,
+    running,
+    setRunning,
+    restart,
+    advance,
+    moveBlock,
+    nextPicture,
+    goal,
+    seek,
+  };
 }

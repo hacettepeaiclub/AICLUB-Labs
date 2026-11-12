@@ -4,7 +4,6 @@ import {
   useMemo,
   useRef,
   useState,
-  type CSSProperties,
   type KeyboardEvent as ReactKeyboardEvent,
 } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -15,7 +14,7 @@ import { prefetchLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import { fromState, track } from "@/app/analytics";
 import { orderedLabs, preloadLab } from "@/labs/registry";
-import { CATEGORY_VAR, type LabMeta } from "@/labs/types";
+import { type LabMeta } from "@/labs/types";
 import { readVisits } from "@/labs/visits";
 import { search } from "./labSearch";
 import { labPath } from "@/lib/paths";
@@ -266,7 +265,6 @@ export function LabPalette({
                   onMouseMove={() => !selected && setActive(index)}
                   onClick={() => go(entry)}
                   className={cn("lab-palette-option", selected && "is-active")}
-                  style={{ "--c": CATEGORY_VAR[entry.meta.category] } as CSSProperties}
                 >
                   <span
                     aria-hidden
@@ -279,16 +277,12 @@ export function LabPalette({
                       {entry.title}
                     </span>
                     <span className="mt-0.5 flex items-center gap-1.5 text-caption text-fg-muted">
-                      <span
-                        aria-hidden
-                        className="size-1.5 shrink-0 rounded-pill bg-[rgb(var(--c))]"
-                      />
                       {entry.field}
                       {entry.term && <span className="truncate text-fg-faint">· {entry.term}</span>}
                     </span>
                   </span>
                   {here ? (
-                    <span className="shrink-0 font-mono text-caption uppercase tracking-[0.12em] text-[rgb(var(--c))]">
+                    <span className="shrink-0 font-mono text-caption uppercase tracking-[0.12em] text-accent">
                       {t.palette.current}
                     </span>
                   ) : (
