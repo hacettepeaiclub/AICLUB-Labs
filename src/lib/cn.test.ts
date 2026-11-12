@@ -1,5 +1,5 @@
-import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
+import tailwindConfig from "../../tailwind.config";
 import { FONT_SIZES, cn } from "./cn";
 
 describe("cn", () => {
@@ -44,11 +44,9 @@ describe("cn", () => {
   it("names exactly the scale the Tailwind config declares", () => {
     // The two lists are maintained by hand in two files; this is what stops
     // them drifting apart the next time the scale grows a step.
-    const config = readFileSync("tailwind.config.ts", "utf8");
-    const block = config.slice(config.indexOf("fontSize: {"));
-    const declared = [
-      ...block.slice(0, block.indexOf("\n      },")).matchAll(/^\s+"([\w-]+)":/gm),
-    ].map((match) => match[1]);
+    // Read the actual object so formatting and quoted/unquoted keys cannot
+    // change which sizes this check sees.
+    const declared = Object.keys(tailwindConfig.theme.extend.fontSize);
     expect(declared.length).toBeGreaterThan(5);
     expect([...FONT_SIZES].sort()).toEqual(declared.sort());
   });
