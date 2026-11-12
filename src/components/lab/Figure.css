@@ -1,0 +1,11 @@
+/* Only the changed digits are a composited layer, never the whole lab. */
+.figure-composite-mark {
+  will-change: opacity;
+}
+.figure-composite-mark::before {
+  content: attr(data-prefix);
+  color: transparent;
+}
+.figure-composite-mark::after {
+  content: attr(data-digits);
+}

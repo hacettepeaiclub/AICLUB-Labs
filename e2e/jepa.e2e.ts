@@ -251,3 +251,27 @@ test("JEPA rapid scrubbing settles on the final requested step", async ({ page }
   await page.waitForTimeout(300);
   await expect(steps(trainer)).toHaveText("30");
 });
+
+for (const theme of ["dark", "light"] as const)
+  for (const width of [390, 1440])
+    test(`JEPA ${theme} ${width}: compositor highlight keeps the real value readable once`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width, height: 900 });
+      await page.emulateMedia({ reducedMotion: "no-preference" });
+      await open(page, "en", theme);
+      const trainer = page.locator('[data-jepa-trainer="train"]');
+      await trainer.getByRole("button", { name: "Advance 10 steps", exact: true }).click();
+      await expect(steps(trainer)).toHaveText("10");
+      const mark = steps(trainer).locator('[aria-hidden="true"][data-digits]');
+      await expect(mark).toHaveAttribute("data-digits", "10");
+      await expect(mark).toHaveCSS("transition-property", "opacity");
+      expect(await mark.evaluate((el) => getComputedStyle(el, "::after").content)).toBe('"10"');
+      // No duplicate DOM text: copy/paste and the accessible value stay exact.
+      expect(await steps(trainer).textContent()).toBe("10");
+      expect(await steps(trainer).innerText()).toBe("10");
+      await page.emulateMedia({ reducedMotion: "reduce" });
+      await trainer.getByRole("button", { name: "Advance 10 steps", exact: true }).click();
+      await expect(steps(trainer)).toHaveText("20");
+      await expect(steps(trainer).locator("[data-digits]")).toHaveCount(0);
+    });
