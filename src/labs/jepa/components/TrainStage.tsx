@@ -1,3 +1,4 @@
+import "@/components/lab/Figure.css";
 import { useId, useRef, useState } from "react";
 import { Figure, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
@@ -202,9 +203,18 @@ export function TrainStage({ mode }: TrainStageProps) {
         }
         figures={
           <>
-            <Figure label={copy.steps} value={String(v.steps)} />
-            <Figure label={copy.loss} value={v.loss === null ? "—" : t.decimal(v.loss, 3)} />
-            <Figure label={t.collapse.spread} value={t.decimal(v.spread, 3)} tone="accent" />
+            <Figure compositeMark label={copy.steps} value={String(v.steps)} />
+            <Figure
+              compositeMark
+              label={copy.loss}
+              value={v.loss === null ? "—" : t.decimal(v.loss, 3)}
+            />
+            <Figure
+              compositeMark
+              label={t.collapse.spread}
+              value={t.decimal(v.spread, 3)}
+              tone="accent"
+            />
             <div className="w-full min-w-0 border-t border-line/15 pt-3" data-jepa-scores>
               <table className="w-full text-left text-caption text-fg-muted">
                 <caption className="mb-2 text-left text-overline uppercase">{ui.counts}</caption>

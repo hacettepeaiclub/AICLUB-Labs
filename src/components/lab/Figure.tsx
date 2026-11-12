@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { memo, useEffect, useRef, useState, type ReactNode } from "react";
 import { useReducedMotion } from "@/hooks";
 import { duration } from "@/design/motion";
 import { cn } from "@/lib/cn";
@@ -17,6 +17,8 @@ export interface FigureProps {
    * most one figure in a row, or it stops meaning anything.
    */
   tone?: FigureTone;
+  /** Preserve digit highlighting without repainting the page on every fade frame. */
+  compositeMark?: boolean;
 }
 
 const toneClass: Record<FigureTone, string> = {
@@ -134,15 +136,47 @@ function useChangeMark(value: string, reduced: boolean) {
  * Deliberately not a metrics *panel*: what a lab groups together, and what it
  * puts beside the numbers, is the lab's own business.
  */
-export function Figure({ label, value, hint, tone = "default" }: FigureProps) {
+export const Figure = /* @__PURE__ */ memo(function Figure({
+  label,
+  value,
+  hint,
+  tone = "default",
+  compositeMark = false,
+}: FigureProps) {
   const reduced = useReducedMotion() ?? false;
   const { marked, range } = useChangeMark(value, reduced);
 
   return (
     <div className="min-w-0">
       <p className="text-overline uppercase text-fg-faint">{label}</p>
-      <p className={cn("mt-1 font-mono text-title tabular-nums", toneClass[tone])}>
-        {range ? (
+      <p
+        className={cn(
+          "mt-1 font-mono text-title tabular-nums",
+          toneClass[tone],
+          compositeMark && !reduced && "relative",
+        )}
+      >
+        {compositeMark && !reduced ? (
+          <>
+            {value}
+            {range && (
+              // Keep one continuous real text node for copying and reading.
+              // The aria-hidden pseudo-elements only paint its changed digits.
+              <span
+                aria-hidden="true"
+                data-prefix={value.slice(0, range[0])}
+                data-digits={value.slice(range[0], range[1])}
+                className={cn(
+                  "figure-composite-mark pointer-events-none absolute inset-0",
+                  emphasisClass[tone],
+                  marked
+                    ? "opacity-100 transition-none"
+                    : "opacity-0 transition-opacity duration-slow",
+                )}
+              />
+            )}
+          </>
+        ) : range ? (
           <>
             {value.slice(0, range[0])}
             <span
@@ -164,7 +198,7 @@ export function Figure({ label, value, hint, tone = "default" }: FigureProps) {
       {hint && <p className="mt-0.5 text-caption text-fg-faint">{hint}</p>}
     </div>
   );
-}
+});
 
 export interface FigureRowProps {
   children: ReactNode;
