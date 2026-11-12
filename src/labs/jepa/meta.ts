@@ -4,7 +4,7 @@ export const jepaMeta: LabMeta = {
   slug: "jepa",
   title: "The Missing Piece",
   description:
-    "Hide part of a picture and watch a model learn by guessing what the hidden part is, not what it looks like.",
+    "Hide part of a picture and explore how a model learns to predict its representation from visible neighbours.",
   category: "machine-learning",
   difficulty: "intermediate",
   minutes: 9,

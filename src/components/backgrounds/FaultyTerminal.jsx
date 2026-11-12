@@ -490,12 +490,12 @@ const compile = (gl, type, source) => {
   if (!shader) return null;
   gl.shaderSource(shader, source);
   gl.compileShader(shader);
-  if (gl.getShaderParameter(shader, gl.COMPILE_STATUS)) return shader;
-  gl.deleteShader(shader);
-  return null;
+  // Link status is checked after both stages compile; avoid a synchronous GPU wait.
+  return shader;
 };
 
-const link = (gl, fragmentSource) => {
+const link = async (gl, fragmentSource, cancelled) => {
+  const parallel = gl.getExtension("KHR_parallel_shader_compile");
   const vertex = compile(gl, gl.VERTEX_SHADER, VERTEX);
   const fragment = compile(gl, gl.FRAGMENT_SHADER, fragmentSource);
   const program = gl.createProgram();
@@ -510,6 +510,15 @@ const link = (gl, fragmentSource) => {
   gl.linkProgram(program);
   gl.deleteShader(vertex);
   gl.deleteShader(fragment);
+  // Poll completion without stalling the main thread. Without the extension,
+  // yield a paint before the browser's ordinary link-status fallback.
+  do {
+    await new Promise((resolve) => setTimeout(resolve, 8));
+    if (cancelled() || gl.isContextLost()) {
+      gl.deleteProgram(program);
+      return null;
+    }
+  } while (parallel && !gl.getProgramParameter(program, parallel.COMPLETION_STATUS_KHR));
   if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
     gl.deleteProgram(program);
     return null;
@@ -620,365 +629,413 @@ export default function FaultyTerminal({
       stencil: false,
     });
     if (!container || !canvas || !gl) return undefined;
-    const cellShader = link(gl, CELL_FRAGMENT);
-    const mainShader = link(gl, MAIN_FRAGMENT);
-    if (!cellShader || !mainShader) {
-      if (cellShader) gl.deleteProgram(cellShader.program);
-      if (mainShader) gl.deleteProgram(mainShader.program);
-      return undefined;
-    }
-    canvas.style.visibility = "visible";
-    let contextLost = false;
-    const cu = cellShader.uniforms;
-    const mu = mainShader.uniforms;
-    const vao = gl.createVertexArray();
-
-    const makeTexture = () => {
-      const texture = gl.createTexture();
-      gl.bindTexture(gl.TEXTURE_2D, texture);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
-      return texture;
-    };
-    const logoTexture = makeTexture();
-    let logoReady = false;
-    let disposed = false;
-    const logoImage = new Image();
-    logoImage.onload = () => {
-      if (disposed || contextLost) return;
-      gl.activeTexture(gl.TEXTURE2);
-      gl.bindTexture(gl.TEXTURE_2D, logoTexture);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, logoImage);
-      logoReady = true;
-      wake();
-    };
-    // An unavailable mark leaves the ordinary terminal working.
-    logoImage.src = logoUrl;
-    const targets = [0, 1].map(() => {
-      const rings = makeTexture();
-      const extra = makeTexture();
-      const framebuffer = gl.createFramebuffer();
-      gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
-      gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, rings, 0);
-      gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT1, gl.TEXTURE_2D, extra, 0);
-      return { rings, extra, framebuffer };
-    });
-    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-
-    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
-    const view = { width: 1, height: 1, ratio: 1, columns: 1 };
-    const cells = { x: 0, y: 0, w: 1, h: 1, key: "" };
-    const pointer = { x: 0.5, y: 0.5, inside: false };
-    const mouse = { x: 0.5, y: 0.5 };
-    const clicks = new Float32Array(MAX_CLICKS * 4);
-    let clickIndex = 0;
-    let clock = 0;
-    let hover = 0;
-    let current = 0;
-    let fresh = true;
-    const seedOffset = settingsRef.current.variation;
-    const initialOffset = typeof seedOffset === "number" ? seedOffset * 10 : Math.random() * 100;
-    let iTime = initialOffset * settingsRef.current.timeScale;
-    let introClock = settingsRef.current.pageLoadAnimation && !reduce ? 0 : 1;
-    let raf = 0;
-    let last = 0;
-    let visible = true;
-    let quiet = 0;
-
-    const layoutCells = (s) => {
-      const reach = 1 + Math.max(0, s.curvature) * 2;
-      const uvMin = 0.5 - 0.5 * reach;
-      const uvMax = 0.5 + 0.5 * reach;
-      const margin =
-        0.06 * Math.max(1, Math.abs(s.glitchAmount)) * Math.max(1, Math.abs(s.flickerAmount)) + 0.2;
-      const gridX = s.gridX * view.columns;
-      const x0 = Math.floor((uvMin * s.scale - margin) * gridX) - 2;
-      const x1 = Math.floor((uvMax * s.scale + margin) * gridX) + 2;
-      const y0 = Math.floor((uvMin * s.scale - margin) * s.gridY) - 2;
-      const y1 = Math.floor((uvMax * s.scale + margin) * s.gridY) + 2;
-      const key = `${x0}:${x1}:${y0}:${y1}`;
-      if (key === cells.key) return;
-      cells.key = key;
-      cells.x = x0;
-      cells.y = y0;
-      cells.w = Math.max(1, Math.min(4096, x1 - x0 + 1));
-      cells.h = Math.max(1, Math.min(4096, y1 - y0 + 1));
-      for (const target of targets) {
-        for (const texture of [target.rings, target.extra]) {
-          gl.bindTexture(gl.TEXTURE_2D, texture);
-          gl.texImage2D(
-            gl.TEXTURE_2D,
-            0,
-            gl.RGBA8,
-            cells.w,
-            cells.h,
-            0,
-            gl.RGBA,
-            gl.UNSIGNED_BYTE,
-            null,
-          );
+    let cancelled = false;
+    let cleanup;
+    void Promise.all([
+      link(gl, CELL_FRAGMENT, () => cancelled),
+      link(gl, MAIN_FRAGMENT, () => cancelled),
+    ])
+      .then(([cellShader, mainShader]) => {
+        if (cancelled) {
+          if (cellShader) gl.deleteProgram(cellShader.program);
+          if (mainShader) gl.deleteProgram(mainShader.program);
+          return;
         }
-      }
-      fresh = true;
-    };
+        if (!cellShader || !mainShader) {
+          if (cellShader) gl.deleteProgram(cellShader.program);
+          if (mainShader) gl.deleteProgram(mainShader.program);
+          return undefined;
+        }
+        canvas.style.visibility = "visible";
+        let contextLost = false;
+        const cu = cellShader.uniforms;
+        const mu = mainShader.uniforms;
+        const vao = gl.createVertexArray();
 
-    const stepCells = (s, decay) => {
-      const source = targets[current];
-      const target = targets[1 - current];
-      gl.bindFramebuffer(gl.FRAMEBUFFER, target.framebuffer);
-      gl.drawBuffers([gl.COLOR_ATTACHMENT0, gl.COLOR_ATTACHMENT1]);
-      gl.viewport(0, 0, cells.w, cells.h);
-      gl.disable(gl.BLEND);
-      gl.useProgram(cellShader.program);
-      gl.activeTexture(gl.TEXTURE0);
-      gl.bindTexture(gl.TEXTURE_2D, source.rings);
-      gl.activeTexture(gl.TEXTURE1);
-      gl.bindTexture(gl.TEXTURE_2D, source.extra);
-      gl.uniform1i(cu.uPrev0, 0);
-      gl.uniform1i(cu.uPrev1, 1);
-      gl.uniform1f(cu.iTime, iTime);
-      gl.uniform2f(cu.uGridMul, (s.gridX * view.columns) / 15, s.gridY / 15);
-      gl.uniform1f(cu.uNoiseAmp, s.noiseAmp);
-      gl.uniform1f(cu.uScale, s.scale);
-      gl.uniform2f(cu.uMouse, mouse.x, mouse.y);
-      gl.uniform1f(cu.uMouseStrength, s.mouseStrength);
-      gl.uniform1f(cu.uUseMouse, s.mouseReact ? 1 : 0);
-      gl.uniform1f(cu.uPageLoadProgress, introClock);
-      gl.uniform1f(cu.uUsePageLoadAnimation, s.pageLoadAnimation ? 1 : 0);
-      gl.uniform2i(cu.uOrigin, cells.x, cells.y);
-      gl.uniform1f(cu.uDecay, decay);
-      gl.uniform1f(cu.uFresh, fresh ? 1 : 0);
-      gl.uniform1f(cu.uHover, hover);
-      gl.bindVertexArray(vao);
-      gl.drawArrays(gl.TRIANGLES, 0, 3);
-      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-      current = 1 - current;
-      fresh = false;
-    };
+        const makeTexture = () => {
+          const texture = gl.createTexture();
+          gl.bindTexture(gl.TEXTURE_2D, texture);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+          gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+          return texture;
+        };
+        const logoTexture = makeTexture();
+        let logoReady = false;
+        let disposed = false;
+        const logoImage = new Image();
+        logoImage.onload = () => {
+          if (disposed || contextLost) return;
+          gl.activeTexture(gl.TEXTURE2);
+          gl.bindTexture(gl.TEXTURE_2D, logoTexture);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+          gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, logoImage);
+          logoReady = true;
+          wake();
+        };
+        // An unavailable mark leaves the ordinary terminal working.
+        logoImage.src = logoUrl;
+        const targets = [0, 1].map(() => {
+          const rings = makeTexture();
+          const extra = makeTexture();
+          const framebuffer = gl.createFramebuffer();
+          gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+          gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, rings, 0);
+          gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT1, gl.TEXTURE_2D, extra, 0);
+          return { rings, extra, framebuffer };
+        });
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 
-    const draw = () => {
-      const s = settingsRef.current;
-      const source = targets[current];
-      gl.viewport(0, 0, canvas.width, canvas.height);
-      // The full-screen triangle overwrites every pixel, including alpha.
-      gl.useProgram(mainShader.program);
-      gl.activeTexture(gl.TEXTURE0);
-      gl.bindTexture(gl.TEXTURE_2D, source.rings);
-      gl.activeTexture(gl.TEXTURE1);
-      gl.bindTexture(gl.TEXTURE_2D, source.extra);
-      gl.activeTexture(gl.TEXTURE2);
-      gl.bindTexture(gl.TEXTURE_2D, logoTexture);
-      gl.uniform1i(mu.uLogo, 2);
-      gl.uniform1f(mu.uLogoReady, logoReady ? 1 : 0);
-      const aspect = view.width / view.height;
-      const logoHeight = Math.min(0.66, (0.82 * aspect) / (438 / 450));
-      const logoWidth = (logoHeight * (438 / 450)) / aspect;
-      const centerX = aspect > 1.1 ? 0.76 : 0.5;
-      gl.uniform4f(
-        mu.uLogoRect,
-        centerX - logoWidth / 2,
-        0.52 - logoHeight / 2,
-        logoWidth,
-        logoHeight,
-      );
-      gl.uniform1i(mu.uRings0, 0);
-      gl.uniform1i(mu.uRings1, 1);
-      gl.uniform1f(mu.iTime, iTime);
-      gl.uniform3f(mu.iResolution, canvas.width, canvas.height, canvas.width / canvas.height);
-      gl.uniform1f(mu.uScale, s.scale);
-      gl.uniform2f(mu.uGridMul, (s.gridX * view.columns) / 15, s.gridY / 15);
-      gl.uniform1f(mu.uDigitSize, s.digitSize);
-      gl.uniform1f(mu.uScanlineIntensity, s.scanlineIntensity);
-      gl.uniform1f(mu.uGlitchAmount, reduce ? 0 : s.glitchAmount);
-      gl.uniform1f(mu.uFlickerAmount, reduce ? 0 : s.flickerAmount);
-      gl.uniform1f(mu.uChromaticAberration, s.chromaticAberration);
-      gl.uniform1f(mu.uDither, s.dither);
-      gl.uniform1f(mu.uCurvature, s.curvature);
-      gl.uniform3fv(mu.uTint, hexToRgb(s.tint));
-      gl.uniform1f(mu.uBrightness, s.brightness);
-      gl.uniform1f(mu.uLightMode, s.lightMode ? 1 : 0);
-      gl.uniform2i(mu.uOrigin, cells.x, cells.y);
-      gl.uniform2i(mu.uCellCount, cells.w, cells.h);
-      gl.uniform1i(mu.uGlyphs, s.glyphs);
-      gl.uniform1f(mu.uGlow, s.glow);
-      gl.uniform1f(mu.uScramble, s.scramble);
-      gl.uniform1f(mu.uMouseGlow, s.mouseGlow);
-      gl.uniform1f(mu.uVignette, s.vignette);
-      gl.uniform4fv(mu.uClicks, clicks);
-      gl.uniform1i(mu.uClickMode, s.clickEffect);
-      gl.uniform1f(mu.uClickSeconds, s.clickSeconds);
-      gl.uniform1f(mu.uClock, clock);
-      gl.bindVertexArray(vao);
-      gl.drawArrays(gl.TRIANGLES, 0, 3);
-      gl.bindVertexArray(null);
-    };
+        const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+        const view = {
+          width: 1,
+          height: 1,
+          ratio: 1,
+          columns: 1,
+          left: 0,
+          top: 0,
+          pointerWidth: 1,
+          pointerHeight: 1,
+          dirtyBounds: false,
+        };
+        const cells = { x: 0, y: 0, w: 1, h: 1, key: "" };
+        const pointer = { x: 0.5, y: 0.5, inside: false };
+        const mouse = { x: 0.5, y: 0.5 };
+        const clicks = new Float32Array(MAX_CLICKS * 4);
+        let clickIndex = 0;
+        let clock = 0;
+        let hover = 0;
+        let current = 0;
+        let fresh = true;
+        const seedOffset = settingsRef.current.variation;
+        const initialOffset =
+          typeof seedOffset === "number" ? seedOffset * 10 : Math.random() * 100;
+        let iTime = initialOffset * settingsRef.current.timeScale;
+        let introClock = settingsRef.current.pageLoadAnimation && !reduce ? 0 : 1;
+        let raf = 0;
+        let last = 0;
+        let visible = true;
+        let quiet = 0;
 
-    const resize = () => {
-      if (contextLost || document.hidden) return;
-      const s = settingsRef.current;
-      view.width = Math.max(1, container.clientWidth);
-      view.height = Math.max(1, container.clientHeight);
-      view.ratio = Math.min(s.dpr || 1.5, window.devicePixelRatio || 1, 1.5);
-      view.columns = Math.min(1, view.width / view.height / 1.5);
-      const width = Math.max(1, Math.floor(view.width * view.ratio));
-      const height = Math.max(1, Math.floor(view.height * view.ratio));
-      // Assigning either dimension clears/reallocates the drawing buffer.
-      if (canvas.width !== width) canvas.width = width;
-      if (canvas.height !== height) canvas.height = height;
-      layoutCells(s);
-      stepCells(s, 0);
-      draw();
-      wake();
-    };
+        const layoutCells = (s) => {
+          const reach = 1 + Math.max(0, s.curvature) * 2;
+          const uvMin = 0.5 - 0.5 * reach;
+          const uvMax = 0.5 + 0.5 * reach;
+          const margin =
+            0.06 * Math.max(1, Math.abs(s.glitchAmount)) * Math.max(1, Math.abs(s.flickerAmount)) +
+            0.2;
+          const gridX = s.gridX * view.columns;
+          const x0 = Math.floor((uvMin * s.scale - margin) * gridX) - 2;
+          const x1 = Math.floor((uvMax * s.scale + margin) * gridX) + 2;
+          const y0 = Math.floor((uvMin * s.scale - margin) * s.gridY) - 2;
+          const y1 = Math.floor((uvMax * s.scale + margin) * s.gridY) + 2;
+          const key = `${x0}:${x1}:${y0}:${y1}`;
+          if (key === cells.key) return;
+          cells.key = key;
+          cells.x = x0;
+          cells.y = y0;
+          cells.w = Math.max(1, Math.min(4096, x1 - x0 + 1));
+          cells.h = Math.max(1, Math.min(4096, y1 - y0 + 1));
+          for (const target of targets) {
+            for (const texture of [target.rings, target.extra]) {
+              gl.bindTexture(gl.TEXTURE_2D, texture);
+              gl.texImage2D(
+                gl.TEXTURE_2D,
+                0,
+                gl.RGBA8,
+                cells.w,
+                cells.h,
+                0,
+                gl.RGBA,
+                gl.UNSIGNED_BYTE,
+                null,
+              );
+            }
+          }
+          fresh = true;
+        };
 
-    const frame = (now) => {
-      raf = 0;
-      if (!visible || document.hidden || contextLost) return;
-      const s = settingsRef.current;
-      if (s.pause || reduce) {
-        layoutCells(s);
-        stepCells(s, 0);
-        draw();
-        return;
-      }
-      const dt = last ? clamp((now - last) / 1000, 0.001, 1 / 20) : 1 / 60;
-      last = now;
-      clock += dt;
-      if (!s.pause && !reduce) iTime += dt * s.timeScale;
-      const targetX = pointer.inside ? pointer.x : 0.5;
-      const targetY = pointer.inside ? pointer.y : 0.5;
-      const follow = 1 - Math.exp(-dt / (pointer.inside ? 0.19988 : 0.6));
-      mouse.x += (targetX - mouse.x) * follow;
-      mouse.y += (targetY - mouse.y) * follow;
-      hover += ((pointer.inside ? 1 : 0) - hover) * (1 - Math.exp(-dt / 0.35));
-      for (let k = 0; k < MAX_CLICKS; k++) {
-        if (clicks[k * 4 + 3] > 0 && clock - clicks[k * 4 + 2] > s.clickSeconds)
-          clicks[k * 4 + 3] = 0;
-      }
-      layoutCells(s);
-      const decay = s.persistence > 0 ? Math.exp(-dt / (0.08 + s.persistence * 1.4)) : 0;
-      stepCells(s, decay);
-      draw();
-      if (introClock < 1) introClock = Math.min(1, introClock + dt / INTRO_SECONDS);
-      let busy = !(s.pause || reduce) || introClock < 1;
-      busy = busy || Math.abs(targetX - mouse.x) + Math.abs(targetY - mouse.y) > 0.0001;
-      busy = busy || Math.abs((pointer.inside ? 1 : 0) - hover) > 0.001;
-      for (let k = 0; k < MAX_CLICKS; k++) busy = busy || clicks[k * 4 + 3] > 0;
-      quiet = busy ? 0 : quiet + dt;
-      if (quiet < 2.5) raf = requestAnimationFrame(frame);
-    };
+        const stepCells = (s, decay) => {
+          const source = targets[current];
+          const target = targets[1 - current];
+          gl.bindFramebuffer(gl.FRAMEBUFFER, target.framebuffer);
+          gl.drawBuffers([gl.COLOR_ATTACHMENT0, gl.COLOR_ATTACHMENT1]);
+          gl.viewport(0, 0, cells.w, cells.h);
+          gl.disable(gl.BLEND);
+          gl.useProgram(cellShader.program);
+          gl.activeTexture(gl.TEXTURE0);
+          gl.bindTexture(gl.TEXTURE_2D, source.rings);
+          gl.activeTexture(gl.TEXTURE1);
+          gl.bindTexture(gl.TEXTURE_2D, source.extra);
+          gl.uniform1i(cu.uPrev0, 0);
+          gl.uniform1i(cu.uPrev1, 1);
+          gl.uniform1f(cu.iTime, iTime);
+          gl.uniform2f(cu.uGridMul, (s.gridX * view.columns) / 15, s.gridY / 15);
+          gl.uniform1f(cu.uNoiseAmp, s.noiseAmp);
+          gl.uniform1f(cu.uScale, s.scale);
+          gl.uniform2f(cu.uMouse, mouse.x, mouse.y);
+          gl.uniform1f(cu.uMouseStrength, s.mouseStrength);
+          gl.uniform1f(cu.uUseMouse, s.mouseReact ? 1 : 0);
+          gl.uniform1f(cu.uPageLoadProgress, introClock);
+          gl.uniform1f(cu.uUsePageLoadAnimation, s.pageLoadAnimation ? 1 : 0);
+          gl.uniform2i(cu.uOrigin, cells.x, cells.y);
+          gl.uniform1f(cu.uDecay, decay);
+          gl.uniform1f(cu.uFresh, fresh ? 1 : 0);
+          gl.uniform1f(cu.uHover, hover);
+          gl.bindVertexArray(vao);
+          gl.drawArrays(gl.TRIANGLES, 0, 3);
+          gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+          current = 1 - current;
+          fresh = false;
+        };
 
-    function wake() {
-      quiet = 0;
-      if (!raf && visible && !document.hidden && !contextLost) {
-        last = 0;
-        raf = requestAnimationFrame(frame);
-      }
-    }
+        const draw = () => {
+          const s = settingsRef.current;
+          const source = targets[current];
+          gl.viewport(0, 0, canvas.width, canvas.height);
+          // The full-screen triangle overwrites every pixel, including alpha.
+          gl.useProgram(mainShader.program);
+          gl.activeTexture(gl.TEXTURE0);
+          gl.bindTexture(gl.TEXTURE_2D, source.rings);
+          gl.activeTexture(gl.TEXTURE1);
+          gl.bindTexture(gl.TEXTURE_2D, source.extra);
+          gl.activeTexture(gl.TEXTURE2);
+          gl.bindTexture(gl.TEXTURE_2D, logoTexture);
+          gl.uniform1i(mu.uLogo, 2);
+          gl.uniform1f(mu.uLogoReady, logoReady ? 1 : 0);
+          const aspect = view.width / view.height;
+          const logoHeight = Math.min(0.66, (0.82 * aspect) / (438 / 450));
+          const logoWidth = (logoHeight * (438 / 450)) / aspect;
+          const centerX = aspect > 1.1 ? 0.76 : 0.5;
+          gl.uniform4f(
+            mu.uLogoRect,
+            centerX - logoWidth / 2,
+            0.52 - logoHeight / 2,
+            logoWidth,
+            logoHeight,
+          );
+          gl.uniform1i(mu.uRings0, 0);
+          gl.uniform1i(mu.uRings1, 1);
+          gl.uniform1f(mu.iTime, iTime);
+          gl.uniform3f(mu.iResolution, canvas.width, canvas.height, canvas.width / canvas.height);
+          gl.uniform1f(mu.uScale, s.scale);
+          gl.uniform2f(mu.uGridMul, (s.gridX * view.columns) / 15, s.gridY / 15);
+          gl.uniform1f(mu.uDigitSize, s.digitSize);
+          gl.uniform1f(mu.uScanlineIntensity, s.scanlineIntensity);
+          gl.uniform1f(mu.uGlitchAmount, reduce ? 0 : s.glitchAmount);
+          gl.uniform1f(mu.uFlickerAmount, reduce ? 0 : s.flickerAmount);
+          gl.uniform1f(mu.uChromaticAberration, s.chromaticAberration);
+          gl.uniform1f(mu.uDither, s.dither);
+          gl.uniform1f(mu.uCurvature, s.curvature);
+          gl.uniform3fv(mu.uTint, hexToRgb(s.tint));
+          gl.uniform1f(mu.uBrightness, s.brightness);
+          gl.uniform1f(mu.uLightMode, s.lightMode ? 1 : 0);
+          gl.uniform2i(mu.uOrigin, cells.x, cells.y);
+          gl.uniform2i(mu.uCellCount, cells.w, cells.h);
+          gl.uniform1i(mu.uGlyphs, s.glyphs);
+          gl.uniform1f(mu.uGlow, s.glow);
+          gl.uniform1f(mu.uScramble, s.scramble);
+          gl.uniform1f(mu.uMouseGlow, s.mouseGlow);
+          gl.uniform1f(mu.uVignette, s.vignette);
+          gl.uniform4fv(mu.uClicks, clicks);
+          gl.uniform1i(mu.uClickMode, s.clickEffect);
+          gl.uniform1f(mu.uClickSeconds, s.clickSeconds);
+          gl.uniform1f(mu.uClock, clock);
+          gl.bindVertexArray(vao);
+          gl.drawArrays(gl.TRIANGLES, 0, 3);
+          gl.bindVertexArray(null);
+        };
 
-    const locate = (event) => {
-      const rect = container.getBoundingClientRect();
-      const x = (event.clientX - rect.left) / Math.max(rect.width, 1);
-      const y = 1 - (event.clientY - rect.top) / Math.max(rect.height, 1);
-      return { x, y, inside: x >= 0 && x <= 1 && y >= 0 && y <= 1 };
-    };
+        const resize = () => {
+          if (contextLost || document.hidden) return;
+          const s = settingsRef.current;
+          const bounds = container.getBoundingClientRect();
+          view.left = bounds.left;
+          view.top = bounds.top;
+          view.pointerWidth = Math.max(1, bounds.width);
+          view.pointerHeight = Math.max(1, bounds.height);
+          view.dirtyBounds = false;
+          view.width = Math.max(1, container.clientWidth);
+          view.height = Math.max(1, container.clientHeight);
+          view.ratio = Math.min(s.dpr || 1.5, window.devicePixelRatio || 1, 1.5);
+          view.columns = Math.min(1, view.width / view.height / 1.5);
+          const width = Math.max(1, Math.floor(view.width * view.ratio));
+          const height = Math.max(1, Math.floor(view.height * view.ratio));
+          // Assigning either dimension clears/reallocates the drawing buffer.
+          if (canvas.width !== width) canvas.width = width;
+          if (canvas.height !== height) canvas.height = height;
+          layoutCells(s);
+          stepCells(s, 0);
+          draw();
+          wake();
+        };
 
-    const onPointerMove = (event) => {
-      if (!settingsRef.current.mouseReact || settingsRef.current.pause || reduce) return;
-      const { x, y, inside } = locate(event);
-      const was = pointer.inside;
-      pointer.inside = inside;
-      if (inside) {
-        pointer.x = x;
-        pointer.y = y;
-      }
-      if (inside || was) wake();
-    };
+        const frame = (now) => {
+          raf = 0;
+          if (!visible || document.hidden || contextLost) return;
+          const s = settingsRef.current;
+          if (s.pause || reduce) {
+            layoutCells(s);
+            stepCells(s, 0);
+            draw();
+            return;
+          }
+          const dt = last ? clamp((now - last) / 1000, 0.001, 1 / 20) : 1 / 60;
+          last = now;
+          clock += dt;
+          if (!s.pause && !reduce) iTime += dt * s.timeScale;
+          const targetX = pointer.inside ? pointer.x : 0.5;
+          const targetY = pointer.inside ? pointer.y : 0.5;
+          const follow = 1 - Math.exp(-dt / (pointer.inside ? 0.19988 : 0.6));
+          mouse.x += (targetX - mouse.x) * follow;
+          mouse.y += (targetY - mouse.y) * follow;
+          hover += ((pointer.inside ? 1 : 0) - hover) * (1 - Math.exp(-dt / 0.35));
+          for (let k = 0; k < MAX_CLICKS; k++) {
+            if (clicks[k * 4 + 3] > 0 && clock - clicks[k * 4 + 2] > s.clickSeconds)
+              clicks[k * 4 + 3] = 0;
+          }
+          layoutCells(s);
+          const decay = s.persistence > 0 ? Math.exp(-dt / (0.08 + s.persistence * 1.4)) : 0;
+          stepCells(s, decay);
+          draw();
+          if (introClock < 1) introClock = Math.min(1, introClock + dt / INTRO_SECONDS);
+          let busy = !(s.pause || reduce) || introClock < 1;
+          busy = busy || Math.abs(targetX - mouse.x) + Math.abs(targetY - mouse.y) > 0.0001;
+          busy = busy || Math.abs((pointer.inside ? 1 : 0) - hover) > 0.001;
+          for (let k = 0; k < MAX_CLICKS; k++) busy = busy || clicks[k * 4 + 3] > 0;
+          quiet = busy ? 0 : quiet + dt;
+          if (quiet < 2.5) raf = requestAnimationFrame(frame);
+        };
 
-    const onPointerDown = (event) => {
-      const s = settingsRef.current;
-      const { x, y, inside } = locate(event);
-      if (!inside || reduce || s.pause || !s.clickEffect) return;
-      const o = clickIndex * 4;
-      clicks[o] = x;
-      clicks[o + 1] = y;
-      clicks[o + 2] = clock;
-      clicks[o + 3] = 1;
-      clickIndex = (clickIndex + 1) % MAX_CLICKS;
-      wake();
-    };
+        function wake() {
+          quiet = 0;
+          if (!raf && visible && !document.hidden && !contextLost) {
+            last = 0;
+            raf = requestAnimationFrame(frame);
+          }
+        }
 
-    const onPointerLeave = () => {
-      pointer.inside = false;
-      if (settingsRef.current.mouseReact && !settingsRef.current.pause) wake();
-    };
+        const locate = (event) => {
+          if (view.dirtyBounds) {
+            const bounds = container.getBoundingClientRect();
+            view.left = bounds.left;
+            view.top = bounds.top;
+            view.pointerWidth = Math.max(1, bounds.width);
+            view.pointerHeight = Math.max(1, bounds.height);
+            view.dirtyBounds = false;
+          }
+          const x = (event.clientX - view.left) / view.pointerWidth;
+          const y = 1 - (event.clientY - view.top) / view.pointerHeight;
+          return { x, y, inside: x >= 0 && x <= 1 && y >= 0 && y <= 1 };
+        };
 
-    const onVisibility = () => {
-      cancelAnimationFrame(raf);
-      raf = 0;
-      last = 0;
-      if (!document.hidden) resize();
-    };
-    const onContextLost = (event) => {
-      event.preventDefault();
-      contextLost = true;
-      cancelAnimationFrame(raf);
-      raf = 0;
-      canvas.style.visibility = "hidden";
-    };
-    canvas.addEventListener("webglcontextlost", onContextLost);
+        const onPointerMove = (event) => {
+          if (!settingsRef.current.mouseReact || settingsRef.current.pause || reduce) return;
+          const { x, y, inside } = locate(event);
+          const was = pointer.inside;
+          pointer.inside = inside;
+          if (inside) {
+            pointer.x = x;
+            pointer.y = y;
+          }
+          if (inside || was) wake();
+        };
 
-    const resizeObserver = new ResizeObserver(resize);
-    resizeObserver.observe(container);
-    const intersection = new IntersectionObserver((entries) => {
-      visible = entries.some((entry) => entry.isIntersecting);
-      if (visible) wake();
-    });
-    intersection.observe(container);
-    window.addEventListener("pointermove", onPointerMove, { passive: true });
-    window.addEventListener("pointerdown", onPointerDown, { passive: true });
-    document.documentElement.addEventListener("pointerleave", onPointerLeave);
-    document.addEventListener("visibilitychange", onVisibility);
-    resize();
-    wakeRef.current = () => {
-      cancelAnimationFrame(raf);
-      raf = 0;
-      last = 0;
-      if (!settingsRef.current.mouseReact) {
-        pointer.inside = false;
-        mouse.x = mouse.y = 0.5;
-        hover = 0;
-      }
-      resize();
-    };
+        const onPointerDown = (event) => {
+          const s = settingsRef.current;
+          const { x, y, inside } = locate(event);
+          if (!inside || reduce || s.pause || !s.clickEffect) return;
+          const o = clickIndex * 4;
+          clicks[o] = x;
+          clicks[o + 1] = y;
+          clicks[o + 2] = clock;
+          clicks[o + 3] = 1;
+          clickIndex = (clickIndex + 1) % MAX_CLICKS;
+          wake();
+        };
 
+        const onPointerLeave = () => {
+          pointer.inside = false;
+          if (settingsRef.current.mouseReact && !settingsRef.current.pause) wake();
+        };
+
+        const onVisibility = () => {
+          cancelAnimationFrame(raf);
+          raf = 0;
+          last = 0;
+          if (!document.hidden) resize();
+        };
+        const onContextLost = (event) => {
+          event.preventDefault();
+          contextLost = true;
+          cancelAnimationFrame(raf);
+          raf = 0;
+          canvas.style.visibility = "hidden";
+        };
+        canvas.addEventListener("webglcontextlost", onContextLost);
+
+        const resizeObserver = new ResizeObserver(resize);
+        resizeObserver.observe(container);
+        const intersection = new IntersectionObserver((entries) => {
+          visible = entries.some((entry) => entry.isIntersecting);
+          if (visible) wake();
+        });
+        intersection.observe(container);
+        const onScroll = () => {
+          view.dirtyBounds = true;
+        };
+        window.addEventListener("scroll", onScroll, { passive: true, capture: true });
+        window.addEventListener("pointermove", onPointerMove, { passive: true });
+        window.addEventListener("pointerdown", onPointerDown, { passive: true });
+        document.documentElement.addEventListener("pointerleave", onPointerLeave);
+        document.addEventListener("visibilitychange", onVisibility);
+        resize();
+        wakeRef.current = () => {
+          cancelAnimationFrame(raf);
+          raf = 0;
+          last = 0;
+          if (!settingsRef.current.mouseReact) {
+            pointer.inside = false;
+            mouse.x = mouse.y = 0.5;
+            hover = 0;
+          }
+          resize();
+        };
+
+        cleanup = () => {
+          disposed = true;
+          logoImage.onload = null;
+          gl.deleteTexture(logoTexture);
+          cancelAnimationFrame(raf);
+          canvas.removeEventListener("webglcontextlost", onContextLost);
+          wakeRef.current = null;
+          resizeObserver.disconnect();
+          intersection.disconnect();
+          window.removeEventListener("scroll", onScroll, true);
+          window.removeEventListener("pointermove", onPointerMove);
+          window.removeEventListener("pointerdown", onPointerDown);
+          document.documentElement.removeEventListener("pointerleave", onPointerLeave);
+          document.removeEventListener("visibilitychange", onVisibility);
+          for (const target of targets) {
+            gl.deleteTexture(target.rings);
+            gl.deleteTexture(target.extra);
+            gl.deleteFramebuffer(target.framebuffer);
+          }
+          gl.deleteVertexArray(vao);
+          gl.deleteProgram(cellShader.program);
+          gl.deleteProgram(mainShader.program);
+          // StrictMode replays this effect on the same canvas; retain its context.
+        };
+      })
+      .catch(() => {
+        /* Optional WebGL decoration falls back to the fog. */
+      });
     return () => {
-      disposed = true;
-      logoImage.onload = null;
-      gl.deleteTexture(logoTexture);
-      cancelAnimationFrame(raf);
-      canvas.removeEventListener("webglcontextlost", onContextLost);
-      wakeRef.current = null;
-      resizeObserver.disconnect();
-      intersection.disconnect();
-      window.removeEventListener("pointermove", onPointerMove);
-      window.removeEventListener("pointerdown", onPointerDown);
-      document.documentElement.removeEventListener("pointerleave", onPointerLeave);
-      document.removeEventListener("visibilitychange", onVisibility);
-      for (const target of targets) {
-        gl.deleteTexture(target.rings);
-        gl.deleteTexture(target.extra);
-        gl.deleteFramebuffer(target.framebuffer);
-      }
-      gl.deleteVertexArray(vao);
-      gl.deleteProgram(cellShader.program);
-      gl.deleteProgram(mainShader.program);
-      // StrictMode replays this effect on the same canvas; retain its context.
+      cancelled = true;
+      cleanup?.();
     };
   }, []);
 

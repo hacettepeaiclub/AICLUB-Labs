@@ -4,8 +4,11 @@ import {
   blockAt,
   createJepa,
   drawSample,
+  evaluateKinds,
   fitPixelGuesser,
   gradients,
+  kindNear,
+  guesses,
   guessPixels,
   kindAccuracy,
   makePicture,
@@ -115,6 +118,21 @@ describe("backpropagation", () => {
 });
 
 describe("the slow copy", () => {
+  it("detaches the online target independently of EMA", () => {
+    const model = createJepa(7);
+    const rng = createRng(8);
+    const batch = Array.from({ length: 4 }, () => drawSample(rng));
+    // At initialization EMA and online encoders are identical. Detaching either
+    // must give the same gradient, while differentiating the target must not.
+    const detached = gradients(model, batch, { slowCopy: false, stopGradient: true });
+    const ema = gradients(model, batch, SLOW);
+    const joint = gradients(model, batch, { slowCopy: false, stopGradient: false });
+    expect(Array.from(detached.encoder.w1)).toEqual(Array.from(ema.encoder.w1));
+    expect(Array.from(detached.predictor.w1)).toEqual(Array.from(joint.predictor.w1));
+    expect(Array.from(detached.encoder.w1)).not.toEqual(Array.from(joint.encoder.w1));
+    trainStep(model, rng, { slowCopy: false, stopGradient: true });
+    expect(Array.from(model.target.w1)).toEqual(Array.from(model.encoder.w1));
+  });
   it("is never trained: after a step it is exactly 99% itself and 1% the new E", () => {
     const model = createJepa(2);
     const before = model.target.w1.slice();
@@ -175,6 +193,28 @@ describe("meaning, not pixels", () => {
     return Array.from({ length: 80 }, () => drawSample(rng));
   };
 
+  it("reports difficult boundary cases instead of dropping them from overall accuracy", () => {
+    const model = createJepa(2);
+    const probe = samples(17);
+    const reference = vectorsOf(model.target, pictures(3, 12));
+    const score = evaluateKinds(model, probe, reference);
+    const predicted = probe.reduce((n, s) => n + guesses(model, s.picture, s.hidden).length, 0);
+    expect(score.all.total).toBe(predicted);
+    expect(score.interior.total).toBeGreaterThan(0);
+    expect(score.boundary.total).toBeGreaterThan(0);
+    expect(score.all.total).toBe(score.interior.total + score.boundary.total);
+    expect(score.all.right).toBe(score.interior.right + score.boundary.right);
+    expect(score.all.accuracy).toBe(score.all.right / score.all.total);
+    expect(score.unavailable + score.all.total).toBe(probe.length * 4);
+  });
+
+  it("reports an empty probe with zero counts instead of NaN", () => {
+    const score = evaluateKinds(createJepa(1), [], []);
+    expect(score.all).toEqual({ right: 0, total: 0, accuracy: 0 });
+    expect(score.boundary).toEqual(score.all);
+    expect(score.unavailable).toBe(0);
+  });
+
   it("guesses the kind of a hidden patch from its neighbours, from the lab's start", () => {
     // Seed 1 is where the lab starts; it keeps all four kinds apart.
     const model = trained(1, 3000, SLOW);
@@ -216,6 +256,29 @@ describe("meaning, not pixels", () => {
 });
 
 describe("the map", () => {
+  it("votes over exactly five nearest vectors and keeps reference order for equal distances", () => {
+    const kinds = [
+      "dots",
+      "horizontal",
+      "dots",
+      "vertical",
+      "dots",
+      "horizontal",
+      "horizontal",
+      "horizontal",
+    ] as const;
+    const reference = kinds.map((texture, i) => {
+      const x = 1 - i * 0.01;
+      return { v: new Float64Array([x, Math.sqrt(1 - x * x), 0, 0]), texture, offset: 0 };
+    });
+    expect(kindNear(new Float64Array([1, 0, 0, 0]), reference)).toBe("dots");
+    const tied = (["flat", "dots", "flat", "dots", "vertical", "dots"] as const).map((texture) => ({
+      v: new Float64Array([1, 0, 0, 0]),
+      texture,
+      offset: 0,
+    }));
+    expect(kindNear(new Float64Array([1, 0, 0, 0]), tied)).toBe("flat");
+  });
   it("lays the vectors on two perpendicular directions, and keeps them facing the same way", () => {
     const vectors = vectorsOf(trained(1, 300, SLOW).encoder, pictures(1, 10));
     const { axes } = project(vectors);

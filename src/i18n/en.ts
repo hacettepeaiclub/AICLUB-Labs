@@ -256,9 +256,10 @@ export const en = {
     jepa: {
       title: "The Missing Piece",
       term: "Self-supervised learning",
-      figure: "a hidden patch is guessed from its neighbours, as a point on a map of meanings.",
+      figure:
+        "a hidden patch’s four-number representation is predicted from its visible neighbours.",
       description:
-        "Hide part of a picture and watch a model learn by guessing what the hidden part is, not what it looks like.",
+        "Hide part of a picture and explore how a model learns to predict its representation from visible neighbours.",
     },
     generalization: {
       title: "Learned or memorised?",

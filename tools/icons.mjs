@@ -1,58 +1,12 @@
 /**
- * Every icon the site ships, from the one logo the site draws.
+ * Generate browser and home-screen icons from the header's original mark.
+ * SVG favicons use the terminal palette: dark green on light browser chrome,
+ * phosphor green on dark chrome. The ICO fallback uses dark green for legibility.
+ * Small icons retain the merged silhouette; home-screen icons keep all strands
+ * in phosphor green on the site's near-black ground.
  *
- *     npm i -D sharp && npm run icons && npm un sharp
- *
- * ## Why this exists
- *
- * The header draws `src/assets/aiclub-mark-white.webp`. The tab, the bookmark,
- * the home-screen icon and the result in a search engine used to draw a
- * second logo: a thinner deer on a slate blue from an earlier palette. Two
- * logos is one too many; this makes the rest out of the first.
- *
- * ## The tab: the deer alone, in the colour the tab bar needs
- *
- * No badge and no ground — just the deer, the way the header draws it. The
- * catch is that the mark is white, and a white mark on a light tab bar is not
- * there at all. So the tab icon is an SVG whose fill follows
- * `prefers-color-scheme`: white on a dark browser, the club navy #003588 on a
- * light one. Chrome, Edge and Firefox draw SVG favicons and evaluate that
- * query against the browser's own theme.
- *
- * The SVG carries the deer as an embedded PNG used as a mask, not as paths:
- * the logo only exists as a raster, and tracing it would produce a second
- * drawing of it, which is the thing this file exists to prevent. A favicon is
- * rendered in a mode that blocks external files but allows `data:` URLs, so
- * the embedded image is what makes this work.
- *
- * `favicon.ico` is the fallback for everything that does not draw SVG — older
- * browsers, and most of the crawlers that put an icon beside a search result.
- * A raster cannot change colour, so it is navy: those places are light far
- * more often than not, and a search engine shows the icon on a light chip even
- * in its dark theme.
- *
- * ## Small sizes: a silhouette
- *
- * The deer is five thin strands. In a tab, at 16 and 32 pixels, a strand is
- * narrower than a pixel and the mark averages out to a pale smear of its own
- * colour and whatever is behind it. Those sizes draw the strands merged into
- * one solid shape — see `solid` — so the antlers and the V of the head read at
- * a glance. Type designers call this an optical size.
- *
- * ## The home screen is the exception
- *
- * An app icon cannot be transparent. iOS fills transparency with black, and
- * Android crops the icon to its launcher's shape and needs every pixel of the
- * square. So the Apple, Android and maskable icons are the white deer on the
- * site's own near-black, `--ink-950` — the deer as it appears on the site,
- * rather than on a coloured badge. At those sizes the strands have room and
- * are drawn as strands.
- *
- * ## Why the output is committed
- *
- * The same reason as `public/og`: a native image library on the critical path
- * of a deploy that runs `npm install` on a small server is a deploy that can
- * break, and icons change about once a year.
+ * Outputs are committed so deploys do not require a native image dependency.
+ * To regenerate: npm i -D sharp && npm run icons && npm un sharp
  */
 
 import { readFile, unlink, writeFile } from "node:fs/promises";
@@ -61,8 +15,9 @@ import path from "node:path";
 const SOURCE = path.resolve("src/assets/aiclub-mark-white.webp");
 const OUT = path.resolve("public");
 
-/** `--accent-fill`, the club's own navy: the deer on a light ground. */
-const NAVY = "#003588";
+/** Terminal accents on light and dark backgrounds. */
+const GREEN_DARK = "#276238";
+const GREEN_LIGHT = "#a7ef9e";
 /** `--ink-950`, the page itself: the ground of the home-screen icons. */
 const INK = "#0a0a0f";
 
@@ -71,7 +26,9 @@ async function main() {
   try {
     ({ default: sharp } = await import("sharp"));
   } catch {
-    console.error("sharp is not installed, on purpose:\n  npm i -D sharp && npm run icons && npm un sharp");
+    console.error(
+      "sharp is not installed, on purpose:\n  npm i -D sharp && npm run icons && npm un sharp",
+    );
     process.exit(1);
   }
 
@@ -81,7 +38,10 @@ async function main() {
   // `.png()` matters: a bare `toBuffer()` re-encodes in the input's format,
   // and for a WebP source that is *lossy* WebP — every step below would then
   // work from a degraded copy. PNG keeps each intermediate exact.
-  const mark = await sharp(await readFile(SOURCE)).trim().png().toBuffer();
+  const mark = await sharp(await readFile(SOURCE))
+    .trim()
+    .png()
+    .toBuffer();
 
   /**
    * The mark with its parallel strands merged into one solid shape.
@@ -110,17 +70,29 @@ async function main() {
   /** The deer, `fill` of a transparent square, centred. */
   const bare = async (size, source, fill) => {
     const box = Math.round(size * fill);
-    const deer = await sharp(source).resize(box, box, { fit: "inside", kernel: "lanczos3" }).toBuffer();
-    return sharp({ create: { width: size, height: size, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } } })
+    const deer = await sharp(source)
+      .resize(box, box, { fit: "inside", kernel: "lanczos3" })
+      .toBuffer();
+    return sharp({
+      create: {
+        width: size,
+        height: size,
+        channels: 4,
+        background: { r: 0, g: 0, b: 0, alpha: 0 },
+      },
+    })
       .composite([{ input: deer, gravity: "centre" }])
       .png({ compressionLevel: 9 })
       .toBuffer();
   };
 
-  /** The white deer on the page's ink, for places that refuse transparency. */
+  /** The phosphor-green deer on the page's ink, for places that refuse transparency. */
   const grounded = async (size, fill) => {
     const box = Math.round(size * fill);
-    const deer = await sharp(mark).resize(box, box, { fit: "inside", kernel: "lanczos3" }).toBuffer();
+    const deer = await sharp(mark)
+      .tint(GREEN_LIGHT)
+      .resize(box, box, { fit: "inside", kernel: "lanczos3" })
+      .toBuffer();
     return sharp({ create: { width: size, height: size, channels: 3, background: INK } })
       .composite([{ input: deer, gravity: "centre" }])
       .png({ compressionLevel: 9 })
@@ -145,7 +117,7 @@ async function main() {
   const { width: mw, height: mh } = await sharp(maskPng).metadata();
   const svg = [
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">`,
-    `<style>.deer{fill:${NAVY}}@media (prefers-color-scheme:dark){.deer{fill:#fff}}</style>`,
+    `<style>.deer{fill:${GREEN_DARK}}@media (prefers-color-scheme:dark){.deer{fill:${GREEN_LIGHT}}}</style>`,
     `<mask id="m"><image href="data:image/png;base64,${maskPng.toString("base64")}"`,
     ` x="${(128 - mw) / 2}" y="${(128 - mh) / 2}" width="${mw}" height="${mh}"/></mask>`,
     `<rect class="deer" width="128" height="128" mask="url(#m)"/>`,
@@ -153,10 +125,10 @@ async function main() {
   ].join("");
   await write("favicon.svg", Buffer.from(svg));
 
-  const navySilhouette = await silhouette(NAVY);
-  const ico16 = await bare(16, navySilhouette, 0.94);
-  const ico32 = await bare(32, navySilhouette, 0.94);
-  const ico48 = await bare(48, navySilhouette, 0.94);
+  const greenSilhouette = await silhouette(GREEN_DARK);
+  const ico16 = await bare(16, greenSilhouette, 0.94);
+  const ico32 = await bare(32, greenSilhouette, 0.94);
+  const ico48 = await bare(48, greenSilhouette, 0.94);
   await write(
     "favicon.ico",
     ico([
