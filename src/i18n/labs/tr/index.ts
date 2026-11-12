@@ -1,6 +1,7 @@
 import diffusion from "./diffusion";
 import generalization from "./generalization";
 import jepa from "./jepa";
+import pca from "./pca";
 import attention from "./attention";
 import backpropagation from "./backpropagation";
 import cacheLocality from "./cache-locality";
@@ -31,6 +32,7 @@ import type { LabsCopy } from "../types";
  */
 export const trLabs: LabsCopy = {
   jepa,
+  pca,
   diffusion,
   generalization,
   "word-embeddings-3d": wordEmbeddings3D,

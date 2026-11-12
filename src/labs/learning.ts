@@ -844,6 +844,13 @@ export const RESOURCES = {
     year: 2023,
     url: "https://arxiv.org/abs/2301.08243",
   },
+  "3b1b-eigen": {
+    kind: "video",
+    title: "Eigenvectors and eigenvalues | Chapter 14, Essence of linear algebra",
+    by: "3Blue1Brown",
+    length: "17:15",
+    url: "https://www.youtube.com/watch?v=PFDu9oVAE-g",
+  },
 } satisfies Record<string, LearningResource>;
 
 export type ResourceId = keyof typeof RESOURCES;
@@ -866,6 +873,10 @@ export const GUIDES: Record<string, readonly { topic: string; items: readonly Re
     },
   ],
   jepa: [{ topic: "jepa", items: ["meta-ijepa", "ijepa-paper"] }],
+  pca: [
+    { topic: "eigen", items: ["3b1b-eigen"] },
+    { topic: "pca", items: ["sq-pca"] },
+  ],
   attention: [
     { topic: "qkv", items: ["3b1b-attention", "sq-attention", "d2l-attention"] },
     { topic: "softmax", items: ["sq-softmax"] },

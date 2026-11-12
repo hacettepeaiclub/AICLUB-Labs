@@ -93,6 +93,31 @@ export const TOURS: Tours = {
       },
     ],
   },
+  pca: {
+    turn: [
+      { id: "plane", target: { part: "viewport" } },
+      {
+        id: "direction",
+        target: { part: "primary", select: "input[type=range]" },
+        action: { kind: "slide", to: 0.25 },
+      },
+      { id: "turned", target: { part: "figures" } },
+    ],
+    shadow: [
+      { id: "cloud", target: { part: "viewport" } },
+      {
+        id: "angle",
+        target: { part: "primary", select: "input[type=range]" },
+        action: { kind: "slide", to: 0.3 },
+      },
+      { id: "reveal", target: { part: "primary", select: "button" }, action: { kind: "click" } },
+    ],
+    reduce: [
+      { id: "line", target: { part: "viewport" } },
+      { id: "flatten", target: { part: "primary", select: "button" }, action: { kind: "click" } },
+      { id: "kept", target: { part: "figures" } },
+    ],
+  },
   jepa: {
     picture: [
       { id: "grid", target: { part: "viewport" } },

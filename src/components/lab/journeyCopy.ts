@@ -24,6 +24,28 @@ export const journeys: Record<string, { en: Journey; tr: Journey }> = {
       "Şekli seçeneklerden çıkarıp aynı gürültülü girdiyi yeniden dene. Model tahminini kalan şekillerin olasılıklarından hesaplar; başlangıç görüntüsünü doğrudan kullanmaz.",
     ],
   },
+  pca: {
+    en: [
+      "See what an eigenvector is, and why PCA is built from them.",
+      "Turn the arrow until the matrix stops turning it.",
+      "Then turn the line through the cloud until its shadow is widest, and compare it with the eigenvector.",
+      "A cloud of points is almost perfectly round. Will its first principal component keep most of the variance?",
+      "No: no direction is special, so one line keeps only about half.",
+      "Yes: the first principal component always keeps most of the variance.",
+      "Yes: PCA makes any cloud long and thin before it chooses a line.",
+      "Switch to the round cloud and keep one number. The variance kept drops to about half, because every direction spreads about as wide.",
+    ],
+    tr: [
+      "Özvektörün ne olduğunu ve PCA'nın neden onlardan kurulduğunu gör.",
+      "Oku, matris onu çevirmeyi bırakana kadar döndür.",
+      "Sonra buluttaki çizgiyi gölgesi en geniş olana kadar çevir ve özvektörle karşılaştır.",
+      "Bir nokta bulutu neredeyse tam yuvarlak. Birinci temel bileşeni varyansın çoğunu korur mu?",
+      "Hayır: hiçbir yön özel değil, bu yüzden tek çizgi ancak yarısını korur.",
+      "Evet: birinci temel bileşen her zaman varyansın çoğunu korur.",
+      "Evet: PCA bir çizgi seçmeden önce her bulutu uzun ve ince yapar.",
+      "Yuvarlak buluta geç ve tek sayı tut. Korunan varyans yarıya yakın düşer, çünkü her yön aşağı yukarı aynı genişlikte yayılır.",
+    ],
+  },
   jepa: {
     en: [
       "See how a model can learn from pictures nobody labelled, by predicting what is hidden.",

@@ -56,6 +56,8 @@ const VERIFIED: Record<SourceId, { year: number | null; doi: string | null; must
   ijepa: { year: 2023, doi: "10.1109/CVPR52729.2023.01499", mustSay: "Assran" },
   byol: { year: 2020, doi: null, mustSay: "Grill" },
   lecunPath: { year: 2022, doi: null, mustSay: "LeCun" },
+  pearson: { year: 1901, doi: "10.1080/14786440109462720", mustSay: "Pearson" },
+  hotelling: { year: 1933, doi: "10.1037/h0071325", mustSay: "Hotelling" },
 };
 
 /** Every lab that carries the shared Sources section, and what it cites. */
@@ -77,6 +79,7 @@ const LAB_SOURCES: Record<string, readonly SourceId[]> = {
   "cache-locality": ["drepper", "memoryWall", "blocked", "locality"],
   "race-condition": ["ostep", "mutex", "concurrencyBugs", "therac"],
   jepa: ["ijepa", "byol", "lecunPath"],
+  pca: ["pearson", "hotelling"],
 };
 
 type Dict = typeof enLabs;
