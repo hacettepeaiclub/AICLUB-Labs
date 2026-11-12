@@ -1,5 +1,9 @@
 import { expect, test, type Page } from "@playwright/test";
-test.use({ deviceScaleFactor: 2 });
+// Exercise the real shaders at full DPR, but bound the pixel area: CI uses
+// software WebGL and tracing reads the drawing buffer after each browser action.
+// Parallel full-screen animations otherwise stall those readbacks, not the UI.
+test.use({ deviceScaleFactor: 2, viewport: { width: 320, height: 240 } });
+test.describe.configure({ mode: "serial" });
 
 async function ready(page: Page) {
   await expect
@@ -20,7 +24,6 @@ for (const theme of ["dark", "light"])
   test(`terminal ${theme}: full resolution survives motion preference changes and context loss`, async ({
     page,
   }) => {
-    await page.setViewportSize({ width: 390, height: 844 });
     await page.emulateMedia({ reducedMotion: "no-preference" });
     await page.addInitScript((theme) => {
       localStorage.setItem("aiclub-labs-language", "en");
