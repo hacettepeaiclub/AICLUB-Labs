@@ -278,6 +278,33 @@ function Shape({ slug }: { slug: string }) {
         </g>
       );
     }
+    case "pca": {
+      /*
+       * A tilted cloud of points, the line it spreads widest along, and the
+       * one across it: the two directions a covariance matrix leaves unturned.
+       */
+      const dots = Array.from({ length: 22 }, () => {
+        const t = (rng() * 2 - 1) * 22;
+        const s = (rng() * 2 - 1) * 5;
+        return { x: 32 + t * 0.87 - s * 0.5, y: 20 - t * 0.5 - s * 0.87 };
+      });
+      return (
+        <g>
+          {dots.map((d, i) => (
+            <circle key={i} cx={d.x} cy={d.y} r="1.3" className="fill-fg-faint" />
+          ))}
+          <path
+            d="M10 32.7L54 7.3"
+            fill="none"
+            className={`${structure} sig-draw`}
+            pathLength={1}
+            strokeWidth="1.4"
+          />
+          <path d="M28 13.1L36 26.9" fill="none" className={inert} strokeDasharray="2 2" />
+          <circle cx="32" cy="20" r="2.2" className="fill-data" />
+        </g>
+      );
+    }
     case "jepa": {
       /*
        * A picture cut into patches with a 2×2 block hidden, and an arrow from

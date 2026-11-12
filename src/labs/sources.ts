@@ -405,6 +405,23 @@ export const SOURCES = {
     doi: null,
     url: "https://openreview.net/forum?id=BZ5a1r-kVsf",
   },
+  pearson: {
+    authors: "Pearson, K.",
+    title: "On lines and planes of closest fit to systems of points in space",
+    venue:
+      "The London, Edinburgh, and Dublin Philosophical Magazine and Journal of Science, 2(11), 559–572",
+    year: 1901,
+    doi: "10.1080/14786440109462720",
+    url: null,
+  },
+  hotelling: {
+    authors: "Hotelling, H.",
+    title: "Analysis of a complex of statistical variables into principal components",
+    venue: "Journal of Educational Psychology, 24(6), 417–441",
+    year: 1933,
+    doi: "10.1037/h0071325",
+    url: null,
+  },
 } as const satisfies Record<string, Source>;
 
 export type SourceId = keyof typeof SOURCES;

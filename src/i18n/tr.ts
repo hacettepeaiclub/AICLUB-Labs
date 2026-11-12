@@ -184,6 +184,13 @@ export const tr: Translation = {
       description:
         "Gürültülü görüntüden bir tahmin oluştur. Modelin kullanabildiği şekilleri değiştirerek sonuçları karşılaştır.",
     },
+    pca: {
+      title: "The Widest Shadow",
+      term: "Temel bileşen analizi",
+      figure: "bir nokta bulutu ve en geniş yayıldığı çizgi.",
+      description:
+        "Bir matrisin yalnızca uzattığı yönleri, sonra bir veri bulutunun en geniş yayıldığı çizgiyi bul.",
+    },
     jepa: {
       title: "The Missing Piece",
       term: "Öz-denetimli öğrenme",

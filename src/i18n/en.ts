@@ -246,6 +246,13 @@ export const en = {
       figure: "Gaussian noise and a finite prior",
       description: "Explore a reverse process and the prior it depends on.",
     },
+    pca: {
+      title: "The Widest Shadow",
+      term: "Principal component analysis",
+      figure: "a cloud of points and the line it spreads widest along.",
+      description:
+        "Find the directions a matrix only stretches, then the line where a cloud of data spreads widest.",
+    },
     jepa: {
       title: "The Missing Piece",
       term: "Self-supervised learning",

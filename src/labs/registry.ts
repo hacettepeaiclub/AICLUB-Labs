@@ -1,6 +1,7 @@
 import { diffusionMeta } from "./diffusion/meta";
 import { generalizationMeta } from "./generalization/meta";
 import { jepaMeta } from "./jepa/meta";
+import { pcaMeta } from "./pca/meta";
 import { lazy } from "react";
 import type { LabEntry, LabLoader, LabMeta } from "./types";
 import { attentionMeta } from "./attention/meta";
@@ -57,6 +58,7 @@ const entry = (meta: LabMeta, load: LabLoader): LabEntry => ({
 
 export const labs: LabEntry[] = [
   entry(jepaMeta, () => import("./jepa")),
+  entry(pcaMeta, () => import("./pca")),
   entry(diffusionMeta, () => import("./diffusion")),
   entry(generalizationMeta, () => import("./generalization")),
   entry(attentionMeta, () => import("./attention")),
@@ -122,6 +124,8 @@ const LAB_ORDER = [
   "convolution",
   "attention",
   "reinforcement-learning",
+  // Before the map that flattens 300 numbers onto its two widest directions.
+  "pca",
   "word-embeddings",
   // The end of the machine-learning run: the lab the ones above add up to.
   "jepa",
