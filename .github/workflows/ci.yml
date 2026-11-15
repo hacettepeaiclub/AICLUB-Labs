@@ -20,7 +20,8 @@ permissions:
 
 jobs:
   checks:
-    runs-on: ubuntu-latest
+    # Playwright 1.49 provides WebKit dependencies for Ubuntu 24.04.
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
