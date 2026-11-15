@@ -43,7 +43,7 @@ jobs:
       # on load, a tour for every stage, the learning guide opens, and no
       # serious accessibility finding (playwright.config.ts, e2e/).
       - name: Browser for end-to-end tests
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps chromium webkit
       - name: End-to-end
         run: npm run e2e
       - name: Keep the trace of a failed end-to-end test

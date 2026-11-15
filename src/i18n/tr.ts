@@ -27,10 +27,39 @@ export const tr: Translation = {
     loadingLab: "Lab yükleniyor",
     openLab: "Labı aç →",
 
-    errorTitle: "Sayfanın bu bölümü yüklenemedi.",
-    errorBody: "Bu bölüm yüklenemedi. Yeniden deneyebilir veya lab listesine dönebilirsin.",
-    errorRetry: "Yeniden dene",
-    errorBackToLabs: "Lab listesine dön",
+    errors: {
+      waiting: "bekleniyor",
+      trying: "deneniyor",
+      retry: "Yeniden dene",
+      retrying: "Deneniyor…",
+      reload: "Sayfayı yenile",
+      backToLabs: "Tüm lablara dön",
+      unreachable: "Siteye hâlâ ulaşılamıyor.",
+      offline: {
+        title: "Bağlantı yok.",
+        lab: "Bu lab henüz yüklenmedi. Bağlantın geri geldiğinde yeniden deneyeceğiz.",
+        page: "Bu sayfa henüz yüklenmedi. Bağlantın geri geldiğinde yeniden deneyeceğiz.",
+      },
+      load: {
+        lab: "Lab yüklenemedi.",
+        page: "Sayfa yüklenemedi.",
+        body: "Dosyalar indirilemedi. Yeniden deneyebilirsin.",
+        stale: "Site, bu sayfa açıkken güncellendi. Yeni sürümü yüklemek için sayfayı yenile.",
+      },
+      runtime: {
+        title: "Bir sorun oluştu.",
+        lab: "Deney beklenmeyen bir hata yüzünden durdu.",
+        page: "Sayfa beklenmeyen bir hata yüzünden durdu.",
+        restartLab: "Deneyi yeniden başlat",
+        restartPage: "Yeniden dene",
+        restartNoteLab: "Deney en baştan başlar.",
+        restartNotePage: "Sayfa baştan açılır.",
+        restartFailed: "Yine durdu. Sayfayı yenilemeyi deneyebilirsin.",
+      },
+    },
+
+    offlineNotice:
+      "Çevrimdışısın. Açık sayfa çalışmaya devam eder; yeni bir sayfa açmak için bağlantı gerekir.",
   },
 
   preferences: {
@@ -82,10 +111,9 @@ export const tr: Translation = {
   },
 
   notFound: {
-    title: "Böyle bir laboratuvar henüz yok.",
-    body: "Bu adreste bir lab bulunamadı. Listeden başka bir lab seçebilirsin.",
-    back: "Lab listesine dön",
-    figure: "Şekil 404. Buraya henüz bir şey çizilmedi.",
+    title: "Bu sayfa bulunamadı.",
+    body: "Adres yanlış yazılmış ya da sayfa kaldırılmış olabilir.",
+    back: "Tüm lablara dön",
   },
 
   category: {
@@ -149,6 +177,9 @@ export const tr: Translation = {
     title: "Konuyu daha yakından incele",
     body: "Bu labın konularıyla ilgili videoları, dersleri ve yazıları burada bulabilirsin.",
     open: "Öğrenme rehberini aç",
+    failed: "Öğrenme rehberi yüklenemedi. Yeniden deneyebilirsin.",
+    retry: "Yeniden dene",
+    retrying: "Deneniyor…",
     dialogKicker: "Öğrenme rehberi",
     close: "Kapat",
     kinds: {

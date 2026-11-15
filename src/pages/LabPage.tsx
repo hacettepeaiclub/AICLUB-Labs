@@ -62,7 +62,7 @@ export function LabPage() {
 
           It also catches the common case: a lazy chunk that fails to load
           throws out of this Suspense. */}
-      <ErrorBoundary resetKey={meta.slug}>
+      <ErrorBoundary resetKey={meta.slug} scope="lab">
         <Suspense fallback={<LabLoading />}>
           <Component />
         </Suspense>

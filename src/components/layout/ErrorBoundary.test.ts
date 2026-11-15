@@ -49,8 +49,8 @@ describe("error boundary", () => {
   it("recovers: reload on retry, and a clean slate on navigation", () => {
     // A state reset alone would not clear a cached lazy-import rejection,
     // which is the failure this boundary most often catches.
-    expect(boundary).toMatch(/window\.location\.reload\(\)/);
-    expect(boundary).toMatch(/failed: false/);
+    expect(boundary).toMatch(/reloadPage\(/);
+    expect(boundary).toMatch(/kind: null/);
     expect(boundary).toMatch(/resetKey/);
     expect(stripComments(read("src/components/layout/PageShell.tsx"))).toMatch(
       /resetKey=\{pathname\}/,
@@ -64,11 +64,82 @@ describe("error boundary", () => {
     expect(body).not.toMatch(/\{error\.message\}|\{this\.state\.error|componentStack\}/);
   });
 
-  it("is announced, and offers a way out", () => {
-    expect(boundary).toMatch(/role="alert"/);
-    expect(boundary).toMatch(/copy\.errorRetry/);
-    expect(boundary).toMatch(/copy\.errorBackToLabs/);
+  it("tells the three failures apart, and only says 'no connection' when the browser is offline", () => {
+    const body = stripComments(boundary);
+    expect(body).toMatch(/isLoadFailure\(error\) \? "load" : "runtime"/);
+    // The offline screen is chosen by the browser's own offline flag, which is
+    // reliable when false; a failed download while online is not called that.
+    expect(body).toMatch(/if \(!online\) \{[\s\S]*?copy\.offline\.title/);
+    expect(body).toMatch(/copy\.load\.lab : copy\.load\.page/);
+    expect(body).toMatch(/copy\.runtime\.title/);
+  });
+
+  it("retries on its own only after a failed download, a bounded number of times, never two at once", () => {
+    const body = stripComments(boundary);
+    // The behaviour itself is exercised in e2e/errors.e2e.ts; this pins its shape.
+    expect(body).toMatch(
+      /this\.state\.kind === "load" && previous\.online !== this\.props\.online/,
+    );
+    expect(body).toMatch(/loop !== this\.loop/);
+    expect(body).toMatch(/const AUTO_RETRY_DELAYS = \[[^\]]+\]/);
+    expect(body).toMatch(/for \(const delay of AUTO_RETRY_DELAYS\)/);
+    expect(body).toMatch(/if \(this\.attempting\) return false;/);
+  });
+
+  it("reloads only once the site has answered", () => {
+    const body = stripComments(boundary);
+    const attempt = body.slice(
+      body.indexOf("private attempt = "),
+      body.indexOf("private retry = "),
+    );
+    expect(attempt).toMatch(/await siteAnswers\(\)/);
+    expect(attempt).toMatch(/answers && current\(\) && \(await reloadPage\(current\)\)/);
+    // A failed attempt frees the button again.
+    expect(attempt).toMatch(/this\.setState\(\{ busy: false, note: "unreachable" \}\)/);
+  });
+
+  it("shows the attempt on the button and ignores clicks during it", () => {
+    const body = stripComments(boundary);
+    expect(body).toMatch(/onClick=\{busy \? undefined : this\.retry\}/);
+    expect(body).toMatch(/aria-disabled=\{busy \|\| undefined\}/);
+    expect(body).toMatch(/busy \? copy\.retrying : copy\.retry/);
+  });
+
+  it("restarts a broken experiment by remounting it, and says what that costs", () => {
+    const body = stripComments(boundary);
+    expect(body).toMatch(/<Fragment key=\{generation\}>/);
+    expect(body).toMatch(/generation: state\.generation \+ 1/);
+    expect(body).toMatch(/copy\.runtime\.restartNoteLab/);
+  });
+
+  it("is announced once per message, and offers a way out", () => {
+    const panel = stripComments(read("src/components/layout/ErrorPanel.tsx"));
+    // The title and body are the alert; the button and top bar change on
+    // every attempt and are outside it.
+    expect(panel).toMatch(/role=\{announce \? "alert" : undefined\}/);
+    expect(panel).toMatch(/role="status"/);
+    expect(stripComments(boundary)).toMatch(/copy\.backToLabs/);
     expect(boundary).toMatch(/<Link/);
+  });
+
+  it("holds the cursor still for a visitor who asked for less motion", () => {
+    const panel = stripComments(read("src/components/layout/ErrorPanel.tsx"));
+    expect(panel).toMatch(/blinking=\{waiting && !reduced\}/);
+    expect(panel).toMatch(/\{blinking && \(\s*<animate/);
+  });
+
+  it("gives the not-found page the same frame, with nothing to retry", () => {
+    const page = stripComments(read("src/pages/NotFoundPage.tsx"));
+    expect(page).toMatch(/<ErrorPanel/);
+    expect(page).toMatch(/heading="h1"/);
+    expect(page).not.toMatch(/retry|waiting|onClick/i);
+  });
+
+  it("tells the visitor they are offline before they click into a failure", () => {
+    const shell = stripComments(read("src/components/layout/PageShell.tsx"));
+    expect(shell).toMatch(/<OfflineNotice \/>/);
+    expect(shell).toMatch(/role="status"/);
+    expect(shell).toMatch(/t\.shell\.offlineNotice/);
   });
 
   it("introduces no telemetry", () => {
@@ -79,16 +150,35 @@ describe("error boundary", () => {
 
   it("has its copy in both languages, and it explains rather than codes", () => {
     for (const dict of [en, tr]) {
-      const shell = dict.shell;
-      expect(shell.errorTitle.length).toBeGreaterThan(10);
-      expect(shell.errorBody.length).toBeGreaterThan(40);
-      expect(shell.errorRetry.length).toBeGreaterThan(2);
-      expect(shell.errorBackToLabs.length).toBeGreaterThan(5);
+      const e = dict.shell.errors;
+      const all = [
+        e.offline.title,
+        e.offline.lab,
+        e.offline.page,
+        e.load.lab,
+        e.load.page,
+        e.load.body,
+        e.load.stale,
+        e.runtime.title,
+        e.runtime.lab,
+        e.runtime.page,
+        e.runtime.restartFailed,
+        e.unreachable,
+        dict.notFound.title,
+        dict.notFound.body,
+        dict.shell.offlineNotice,
+      ];
+      for (const text of all) expect(text.length).toBeGreaterThan(8);
       // No developer vocabulary in anything a visitor reads.
-      const all = `${shell.errorTitle} ${shell.errorBody}`.toLowerCase();
-      for (const banned of ["undefined", "null", "exception", "stack", "chunk"]) {
-        expect({ banned, found: all.includes(banned) }).toEqual({ banned, found: false });
+      const joined = all.join(" ").toLowerCase();
+      for (const banned of ["undefined", "null", "exception", "stack", "chunk", "import"]) {
+        expect({ banned, found: joined.includes(banned) }).toEqual({ banned, found: false });
       }
     }
+    expect(tr.shell.errors.offline.title).toBe("Bağlantı yok.");
+    expect(tr.shell.errors.load.lab).toBe("Lab yüklenemedi.");
+    expect(tr.shell.errors.runtime.title).toBe("Bir sorun oluştu.");
+    expect(tr.notFound.title).toBe("Bu sayfa bulunamadı.");
+    expect(tr.shell.errors.retrying).toBe("Deneniyor…");
   });
 });

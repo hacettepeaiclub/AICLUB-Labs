@@ -9,5 +9,6 @@ export { useDebouncedValue } from "./useDebouncedValue";
 export { useInView } from "./useInView";
 export { useRepaintFlag, type RepaintFlag } from "./useRepaintFlag";
 export { usePaletteVersion } from "./usePaletteVersion";
+export { useOnline } from "./useOnline";
 // Re-exported so labs import all motion-safety from one place.
 export { useReducedMotion } from "./useReducedMotion";
