@@ -45,18 +45,48 @@ export const en = {
     openLab: "Open lab →",
 
     /**
-     * What a visitor sees when something below the header failed to render.
-     *
-     * No stack trace and no error code: the underlying message is a developer's
-     * sentence, and a visitor can do nothing with it. What they can do is try
-     * again — a reload is the fix for the common cause, which is an old tab
-     * meeting a new deployment.
+     * The error screens (ErrorBoundary, ErrorPanel). Each says what happened
+     * once, in its title, and what the visitor can do; nothing technical.
+     * "We'll try again" is only said where the boundary really does retry on
+     * its own, which is after a failed download, once the browser is online.
      */
-    errorTitle: "This part of the page did not load.",
-    errorBody:
-      "Something went wrong while showing it. Trying again usually fixes it, especially if this page has been open for a while.",
-    errorRetry: "Try again",
-    errorBackToLabs: "Back to all labs",
+    errors: {
+      // The state in the panel's top bar while it waits for the connection.
+      waiting: "waiting",
+      trying: "trying",
+      retry: "Try again",
+      retrying: "Trying…",
+      reload: "Reload page",
+      backToLabs: "Back to all labs",
+      unreachable: "Still can't reach the site.",
+      offline: {
+        title: "No connection.",
+        lab: "This lab hasn't loaded yet. We'll try again when your connection is back.",
+        page: "This page hasn't loaded yet. We'll try again when your connection is back.",
+      },
+      load: {
+        lab: "The lab couldn't load.",
+        page: "The page couldn't load.",
+        body: "Its files couldn't be downloaded. You can try again.",
+        stale:
+          "The site was updated while this page was open. Reload the page to get the new version.",
+      },
+      runtime: {
+        title: "Something went wrong.",
+        lab: "The experiment stopped because of an unexpected error.",
+        page: "This page stopped because of an unexpected error.",
+        restartLab: "Restart the experiment",
+        restartPage: "Try again",
+        // Beside the button: what restarting costs.
+        restartNoteLab: "It starts over from the beginning.",
+        restartNotePage: "The page starts over.",
+        restartFailed: "It stopped again. You can try reloading the page.",
+      },
+    },
+
+    // The line along the bottom while the browser says it is offline (PageShell).
+    offlineNotice:
+      "You're offline. The open page keeps working; opening a new one needs a connection.",
   },
 
   preferences: {
@@ -120,11 +150,9 @@ export const en = {
   },
 
   notFound: {
-    title: "This lab doesn't exist. Yet.",
-    body: "Maybe it's still an idea on a whiteboard somewhere.",
+    title: "This page could not be found.",
+    body: "The address may be mistyped, or the page may have been removed.",
     back: "Back to all labs",
-    // Under the empty plate beside it.
-    figure: "Fig. 404. Nothing has been drawn here yet.",
   },
 
   category: {
@@ -197,6 +225,10 @@ export const en = {
     title: "Take this lab's ideas further",
     body: "Videos, university lectures and readings, grouped under the ideas you just used.",
     open: "Open the learning guide",
+    // In the guide's own section when its window could not be downloaded.
+    failed: "The learning guide couldn't load. You can try again.",
+    retry: "Try again",
+    retrying: "Trying…",
     dialogKicker: "Learning guide",
     close: "Close",
     kinds: {

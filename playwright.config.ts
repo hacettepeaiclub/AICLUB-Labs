@@ -21,7 +21,11 @@ export default defineConfig({
     contextOptions: { reducedMotion: "reduce" },
     trace: "retain-on-failure",
   },
-  projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
+  projects: [
+    { name: "chromium", use: { ...devices["Desktop Chrome"] } },
+    // Failed module preloads recover differently in WebKit; keep that path covered in CI.
+    { name: "webkit", testMatch: "errors.e2e.ts", use: { ...devices["Desktop Safari"] } },
+  ],
   webServer: {
     command: "npm run preview -- --port 4173 --strictPort",
     url: "http://localhost:4173",

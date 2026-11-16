@@ -1,7 +1,8 @@
 import { useEffect, useRef } from "react";
 import { useT } from "@/i18n";
-import { GUIDES, RESOURCES, type ResourceId } from "@/labs/learning";
+import type { LearningResource } from "@/labs/learning";
 import type { LearnCopy } from "./LabLearning";
+import type { GuideData } from "./loadGuide";
 
 /**
  * The learning guide's window: the lab's ideas as headings, and under each the
@@ -11,19 +12,18 @@ import type { LearnCopy } from "./LabLearning";
  * focus inside it and Esc closes it.
  */
 export default function LearningDialog({
-  slug,
+  guide,
   title,
   learn,
   onClose,
 }: {
-  slug: string;
+  guide: GuideData;
   title: string;
   learn: LearnCopy;
   onClose: () => void;
 }) {
   const t = useT();
   const ref = useRef<HTMLDialogElement>(null);
-  const guide = GUIDES[slug] ?? [];
 
   useEffect(() => {
     const dialog = ref.current;
@@ -61,15 +61,18 @@ export default function LearningDialog({
 
         <div className="overflow-y-auto overscroll-contain p-5 md:p-6">
           <div className="space-y-8">
-            {guide.map(({ topic, items }) => (
+            {guide.sections.map(({ topic, items }) => (
               <section key={topic} aria-labelledby={`learn-${topic}`}>
                 <h3 id={`learn-${topic}`} className="text-body-lg font-semibold text-fg">
                   {learn.topics[topic]}
                 </h3>
                 <ul className="mt-3 space-y-4">
-                  {items.map((id) => (
-                    <Item key={id} id={id} note={learn.notes[id] ?? ""} />
-                  ))}
+                  {items.map((id) => {
+                    const resource = guide.resources[id];
+                    return resource ? (
+                      <Item key={id} r={resource} note={learn.notes[id] ?? ""} />
+                    ) : null;
+                  })}
                 </ul>
               </section>
             ))}
@@ -80,9 +83,8 @@ export default function LearningDialog({
   );
 }
 
-function Item({ id, note }: { id: ResourceId; note: string }) {
+function Item({ r, note }: { r: LearningResource; note: string }) {
   const t = useT();
-  const r = RESOURCES[id];
   const length = "length" in r ? r.length : undefined;
   const year = "year" in r ? r.year : undefined;
   const meta = [r.by, length ?? year].filter(Boolean).join(" · ");

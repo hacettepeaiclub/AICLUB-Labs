@@ -87,7 +87,7 @@ for (const slug of SLUGS) {
 
 test("an address with no lab shows the not-found page", async ({ page }) => {
   await page.goto("/labs/no-such-lab/");
-  await expect(page.getByText("This lab doesn't exist. Yet.")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "This page could not be found." })).toBeVisible();
 });
 
 // Automated accessibility checks catch only part of what matters, but what

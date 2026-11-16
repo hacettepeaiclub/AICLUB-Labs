@@ -20,7 +20,8 @@ permissions:
 
 jobs:
   checks:
-    runs-on: ubuntu-latest
+    # Playwright 1.49 provides WebKit dependencies for Ubuntu 24.04.
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
@@ -43,7 +44,7 @@ jobs:
       # on load, a tour for every stage, the learning guide opens, and no
       # serious accessibility finding (playwright.config.ts, e2e/).
       - name: Browser for end-to-end tests
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps chromium webkit
       - name: End-to-end
         run: npm run e2e
       - name: Keep the trace of a failed end-to-end test

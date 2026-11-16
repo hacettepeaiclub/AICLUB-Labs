@@ -14,6 +14,7 @@ import { isPaletteShortcut } from "./paletteShortcut";
 import { track } from "@/app/analytics";
 import { SiteHeader } from "./SiteHeader";
 import { SiteFooter } from "./SiteFooter";
+import { useOnline } from "@/hooks/useOnline";
 import { useT } from "@/i18n";
 
 /**
@@ -123,10 +124,37 @@ export function PageShell({ routeKey, children }: { routeKey: string; children: 
         </ErrorBoundary>
       </main>
       <SiteFooter />
+      <OfflineNotice />
       {paletteMounted && (
         <Suspense fallback={null}>
           <LabPalette open={finding} onOpenChange={setFinding} />
         </Suspense>
+      )}
+    </div>
+  );
+}
+
+/**
+ * A line along the bottom while the browser says it is offline.
+ *
+ * Everything a lab does runs here, in the page, so the open lab keeps
+ * working; what does not is opening anything not yet downloaded. The line
+ * says so before the visitor finds out by clicking. The live region is
+ * always mounted so a screen reader hears it appear.
+ */
+function OfflineNotice() {
+  const t = useT();
+  const online = useOnline();
+  return (
+    <div role="status">
+      {!online && (
+        <p
+          className="z-40 border-t border-line/10 bg-ink-950/95 px-4 py-2 text-center font-mono
+            text-caption text-fg-muted"
+          style={{ position: "fixed", insetInline: 0, bottom: 0 }}
+        >
+          {t.shell.offlineNotice}
+        </p>
       )}
     </div>
   );
