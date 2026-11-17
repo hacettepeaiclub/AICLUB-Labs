@@ -37,9 +37,13 @@ const exercise: Record<string, (page: Page) => Promise<void>> = {
   diffusion: (page) => clickAndAdvance(button(page, "Reverse one step")),
   generalization: (page) => clickAndAdvance(button(page, "Reveal unseen examples")),
   attention: async (page) => {
-    const control = stage(page).getByRole("radio", { name: "dog", exact: true });
-    await stage(page).locator("label").filter({ hasText: /^dog$/ }).click();
-    await expect(control).toBeChecked();
+    const first = stage(page);
+    const cat = first.getByRole("option", { name: /^cat,/ });
+    const rival = first.locator("label").filter({ hasText: /^dog$/ });
+    await changes(
+      () => cat.getAttribute("aria-label"),
+      () => rival.click(),
+    );
   },
   backpropagation: async (page) => {
     const first = stage(page);
