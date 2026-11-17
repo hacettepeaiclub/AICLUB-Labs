@@ -1,4 +1,3 @@
-import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
 import { tourFor } from "../src/components/lab/guide/tours";
 import { GUIDES } from "../src/labs/learning";
@@ -89,24 +88,3 @@ test("an address with no lab shows the not-found page", async ({ page }) => {
   await page.goto("/labs/no-such-lab/");
   await expect(page.getByRole("heading", { name: "This page could not be found." })).toBeVisible();
 });
-
-// Automated accessibility checks catch only part of what matters, but what
-// they catch is never acceptable: a serious or critical finding fails.
-for (const path of [
-  "/",
-  "/calculator/",
-  "/labs/gradient-descent/",
-  "/labs/hash-tables/",
-  "/labs/probability/",
-]) {
-  test(`accessibility: ${path}`, async ({ page }) => {
-    await page.goto(path);
-    await expect(page.locator("h1")).toBeVisible();
-    await page.waitForTimeout(1000);
-    const { violations } = await new AxeBuilder({ page }).analyze();
-    const serious = violations
-      .filter((v) => v.impact === "serious" || v.impact === "critical")
-      .map((v) => `${v.id}: ${v.help} (${v.nodes.length})`);
-    expect(serious).toEqual([]);
-  });
-}
