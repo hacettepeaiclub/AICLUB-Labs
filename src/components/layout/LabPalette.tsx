@@ -168,6 +168,7 @@ export function LabPalette({
   };
 
   const onKeyDown = (event: ReactKeyboardEvent<HTMLInputElement>) => {
+    if (event.nativeEvent.isComposing || results.length === 0) return;
     const last = results.length - 1;
     if (event.key === "ArrowDown") {
       event.preventDefault();
@@ -175,12 +176,6 @@ export function LabPalette({
     } else if (event.key === "ArrowUp") {
       event.preventDefault();
       setActive((i) => (i <= 0 ? last : i - 1));
-    } else if (event.key === "Home") {
-      event.preventDefault();
-      setActive(0);
-    } else if (event.key === "End") {
-      event.preventDefault();
-      setActive(last);
     } else if (event.key === "Enter") {
       event.preventDefault();
       go(activeEntry);
@@ -220,7 +215,7 @@ export function LabPalette({
             ref={inputRef}
             type="text"
             role="combobox"
-            aria-expanded="true"
+            aria-expanded={results.length > 0}
             aria-controls={listId}
             aria-autocomplete="list"
             aria-activedescendant={activeEntry ? optionId(activeEntry.meta.slug) : undefined}
@@ -240,69 +235,72 @@ export function LabPalette({
           <Kbd>esc</Kbd>
         </div>
 
-        {results.length === 0 ? (
-          <p className="px-4 py-10 text-center text-body-sm text-fg-muted">
-            {t.palette.empty(query.trim())}
-          </p>
-        ) : (
-          <ul
-            ref={listRef}
-            id={listId}
-            role="listbox"
-            aria-label={t.palette.label}
-            className="lab-palette-list"
-          >
-            {results.map((entry, index) => {
-              const selected = entry === activeEntry;
-              const here = entry.meta.slug === current;
-              return (
-                <li
-                  key={entry.meta.slug}
-                  id={optionId(entry.meta.slug)}
-                  data-slug={entry.meta.slug}
-                  role="option"
-                  aria-selected={selected}
-                  onMouseMove={() => !selected && setActive(index)}
-                  onClick={() => go(entry)}
-                  className={cn("lab-palette-option", selected && "is-active")}
+        <p
+          role="status"
+          className={
+            results.length === 0 ? "px-4 py-10 text-center text-body-sm text-fg-muted" : "sr-only"
+          }
+        >
+          {results.length === 0 ? t.palette.empty(query.trim()) : ""}
+        </p>
+        <ul
+          ref={listRef}
+          id={listId}
+          role="listbox"
+          aria-label={t.palette.label}
+          hidden={results.length === 0}
+          className="lab-palette-list"
+        >
+          {results.map((entry, index) => {
+            const selected = entry === activeEntry;
+            const here = entry.meta.slug === current;
+            return (
+              <li
+                key={entry.meta.slug}
+                id={optionId(entry.meta.slug)}
+                data-slug={entry.meta.slug}
+                role="option"
+                aria-selected={selected}
+                onMouseMove={() => !selected && setActive(index)}
+                onClick={() => go(entry)}
+                className={cn("lab-palette-option", selected && "is-active")}
+              >
+                <span
+                  aria-hidden
+                  className="grid h-10 w-14 shrink-0 place-items-center border border-line/5 bg-ink-950"
                 >
-                  <span
-                    aria-hidden
-                    className="grid h-10 w-14 shrink-0 place-items-center border border-line/5 bg-ink-950"
-                  >
-                    <LabSignature slug={entry.meta.slug} className="h-[72%] w-[78%]" />
+                  <LabSignature slug={entry.meta.slug} className="h-[72%] w-[78%]" />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate text-body-sm font-medium text-fg">
+                    {entry.title}
                   </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block truncate text-body-sm font-medium text-fg">
-                      {entry.title}
-                    </span>
-                    <span className="mt-0.5 flex items-center gap-1.5 text-caption text-fg-muted">
-                      {entry.field}
-                      {entry.term && <span className="truncate text-fg-faint">· {entry.term}</span>}
-                    </span>
+                  <span className="mt-0.5 flex items-center gap-1.5 text-caption text-fg-muted">
+                    {entry.field}
+                    {entry.term && <span className="truncate text-fg-faint">· {entry.term}</span>}
                   </span>
-                  {here ? (
-                    <span className="shrink-0 font-mono text-caption uppercase tracking-[0.12em] text-accent">
-                      {t.palette.current}
+                </span>
+                {here ? (
+                  <span className="shrink-0 font-mono text-caption uppercase tracking-[0.12em] text-accent">
+                    {t.palette.current}
+                  </span>
+                ) : (
+                  visited.has(entry.meta.slug) && (
+                    <span className="shrink-0 font-mono text-caption uppercase tracking-[0.12em] text-fg-faint">
+                      {t.home.visited}
                     </span>
-                  ) : (
-                    visited.has(entry.meta.slug) && (
-                      <span className="shrink-0 font-mono text-caption uppercase tracking-[0.12em] text-fg-faint">
-                        {t.home.visited}
-                      </span>
-                    )
-                  )}
-                </li>
-              );
-            })}
-          </ul>
-        )}
+                  )
+                )}
+              </li>
+            );
+          })}
+        </ul>
 
         <div
           className="flex items-center justify-between gap-4 border-t border-line/10 px-4 py-2.5 text-caption
             text-fg-faint"
         >
-          <p aria-live="polite">{t.palette.results(results.length)}</p>
+          <p aria-live="polite">{results.length > 0 ? t.palette.results(results.length) : ""}</p>
           <p className="hidden items-center gap-3 sm:flex">
             <span className="inline-flex items-center gap-1.5">
               <Kbd>↑</Kbd>
