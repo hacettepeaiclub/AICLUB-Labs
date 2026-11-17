@@ -67,9 +67,49 @@ const preloadPalette = () => {
   loadPalette().catch(() => {});
 };
 
+function useRouteHeadingFocus(routeKey: string) {
+  const mainRef = useRef<HTMLElement>(null);
+  const previousRoute = useRef(routeKey);
+
+  useEffect(() => {
+    const main = mainRef.current;
+    if (!main || previousRoute.current === routeKey) return;
+    previousRoute.current = routeKey;
+
+    // A lazy route may commit its heading after the new main mounts.
+    // Give a closing dialog time to return focus before choosing a destination.
+    let frame: number | undefined;
+    const focusHeading = () => {
+      const heading = main.querySelector("h1");
+      if (!heading) return;
+      observer.disconnect();
+      frame = requestAnimationFrame(() => {
+        if (
+          !heading.isConnected ||
+          document.activeElement !== document.body ||
+          document.querySelector("dialog[open]")
+        )
+          return;
+        heading.tabIndex = -1;
+        heading.focus({ preventScroll: true });
+      });
+    };
+    const observer = new MutationObserver(focusHeading);
+    observer.observe(main, { childList: true, subtree: true });
+    focusHeading();
+    return () => {
+      observer.disconnect();
+      if (frame !== undefined) cancelAnimationFrame(frame);
+    };
+  }, [routeKey]);
+
+  return mainRef;
+}
+
 export function PageShell({ routeKey, children }: { routeKey: string; children: ReactNode }) {
   const t = useT();
   const { pathname } = useLocation();
+  const mainRef = useRouteHeadingFocus(routeKey);
   // Held here because two things open it — the header's button and the
   // shortcut — and the dialog has to agree with both.
   const [finding, setFinding] = useState(false);
@@ -116,7 +156,7 @@ export function PageShell({ routeKey, children }: { routeKey: string; children: 
         {t.shell.skipToContent}
       </a>
       <SiteHeader onFindLab={openFinder} onFindLabIntent={preloadPalette} />
-      <main key={routeKey} id="main" className="page-enter flex-1">
+      <main ref={mainRef} key={routeKey} id="main" className="page-enter flex-1">
         {/* Inside the chrome, not around it: a page that fails to render must
             still leave the visitor a header and a way somewhere else. */}
         <ErrorBoundary resetKey={pathname} showBackLink={pathname !== "/"}>
