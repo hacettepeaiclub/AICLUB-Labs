@@ -76,8 +76,8 @@ describe("the deploy", () => {
     // The web server's container mounts dist/; a renamed-in directory is one
     // the container cannot see, which took the site down on 2026-10-12.
     expect(deploy).toMatch(/'bash -s' < repo\/deploy\/install-release\.sh/);
-    expect(install).toMatch(/rsync -a dist-next\/ dist\//);
-    expect(install).toMatch(/cp -a dist-next\/\. dist\//);
+    expect(install).toMatch(/rsync -a "\$1\/" "\$2\/"/);
+    expect(install).toMatch(/cp -a "\$1\/\." "\$2\/"/);
     for (const script of [deploy, install]) {
       expect(script).not.toMatch(/mv\s+dist-next\s+dist/);
       expect(script).not.toMatch(/mv\s+dist\s/);
@@ -90,6 +90,11 @@ describe("the deploy", () => {
     // old names; deleting them answered with 404s (tools/simulate-deploy.mjs
     // checks the behaviour, this the parts that make it).
     expect(install).not.toMatch(/--delete/);
+    // Bundles before pages, so no new page names a bundle not yet there.
+    expect(install.indexOf("copy dist-next/assets dist/assets")).toBeGreaterThan(-1);
+    expect(install.indexOf("copy dist-next/assets dist/assets")).toBeLessThan(
+      install.indexOf("copy dist-next dist\n"),
+    );
     expect(install).toMatch(/KEEP_RELEASES=\$\{KEEP_RELEASES:-2\}/);
     expect(install).toMatch(/KEEP_DAYS=\$\{KEEP_DAYS:-7\}/);
     expect(install).toMatch(/grep -h '\^assets\/'/);

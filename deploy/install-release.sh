@@ -25,9 +25,9 @@
 #
 # The web server's container mounts dist/, and a mount holds the directory it
 # was given, not its name (docs/DEPLOY.md: this took the site down on
-# 2026-10-12). New files are copied in first and stale ones removed only after
-# everything new has arrived, so a page never points at a bundle that is not
-# there yet. `set -e` stops at the first failure with the old version live.
+# 2026-10-12). The new bundles are copied in first, then the pages, and stale
+# files are removed only after everything new has arrived, so a page never
+# points at a bundle that is not there yet. `set -e` stops at the first failure with the old version live.
 #
 # ## rsync or cp
 #
@@ -68,14 +68,23 @@ id=$NOW
 while [ -e "releases/$id.list" ]; do id=$((id + 1)); done
 list_files dist-next > "releases/$id.list.partial"
 
-case "$DEPLOY_COPY" in
-  rsync) rsync -a dist-next/ dist/ ;;
-  cp) cp -a dist-next/. dist/ ;;
-  auto)
-    if command -v rsync >/dev/null 2>&1; then rsync -a dist-next/ dist/; else cp -a dist-next/. dist/; fi
-    ;;
-  *) echo "install-release: DEPLOY_COPY must be rsync, cp or auto" >&2; exit 1 ;;
-esac
+if [ "$DEPLOY_COPY" = auto ]; then
+  if command -v rsync >/dev/null 2>&1; then DEPLOY_COPY=rsync; else DEPLOY_COPY=cp; fi
+fi
+# Bundles first, then pages: a new page is never served before every bundle
+# it names is in place. Neither tool promises an order within one pass.
+copy() {
+  case "$DEPLOY_COPY" in
+    rsync) rsync -a "$1/" "$2/" ;;
+    cp) cp -a "$1/." "$2/" ;;
+    *) echo "install-release: DEPLOY_COPY must be rsync, cp or auto" >&2; exit 1 ;;
+  esac
+}
+if [ -d dist-next/assets ]; then
+  mkdir -p dist/assets
+  copy dist-next/assets dist/assets
+fi
+copy dist-next dist
 # Recorded only once every file of it is in place.
 mv "releases/$id.list.partial" "releases/$id.list"
 
