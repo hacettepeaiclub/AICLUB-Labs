@@ -26,8 +26,8 @@
  * Each event and each property on it counts against the plan's monthly
  * allowance, and every one is something someone has to read. Each answers a
  * question about the product: which labs are opened, from where, and how many
- * people reach the end of one; whether the game is played; what visitors look
- * for that the collection does not have.
+ * people reach the end of one; whether the game is played; how often finder
+ * searches yield no matches.
  */
 
 type EventMap = {
@@ -37,8 +37,8 @@ type EventMap = {
   lab_end: { lab: string };
   /** The lab finder opened. */
   finder_open: { via: "key" | "button" };
-  /** A search in the finder that matched nothing: something people want. */
-  finder_empty: { query: string };
+  /** A finder search that matched nothing. */
+  finder_empty: Record<string, never>;
   /** A field picked in the home page filter. */
   filter: { field: string };
   /** The game in the hero's mark. */

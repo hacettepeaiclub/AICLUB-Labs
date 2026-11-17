@@ -154,7 +154,7 @@ export function LabPalette({
     if (wanted.length < 3 || results.length > 0 || reported.current.has(wanted)) return;
     const id = window.setTimeout(() => {
       reported.current.add(wanted);
-      track("finder_empty", { query: wanted.slice(0, 40) });
+      track("finder_empty");
     }, 1200);
     return () => window.clearTimeout(id);
   }, [open, query, results.length]);
