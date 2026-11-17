@@ -8,10 +8,13 @@ import { describe, expect, it } from "vitest";
  */
 
 const nginx = readFileSync("deploy/labs-nginx.conf", "utf8").replace(/#[^\n]*/g, "");
-const deploy = readFileSync(".github/workflows/deploy.yml", "utf8")
-  .split("\n")
-  .filter((line) => !line.trim().startsWith("#"))
-  .join("\n");
+const withoutComments = (file: string) =>
+  readFileSync(file, "utf8")
+    .split("\n")
+    .filter((line) => !line.trim().startsWith("#"))
+    .join("\n");
+const deploy = withoutComments(".github/workflows/deploy.yml");
+const install = withoutComments("deploy/install-release.sh");
 
 describe("the nginx that serves the site", () => {
   it("keeps https when it adds a trailing slash", () => {
@@ -72,10 +75,25 @@ describe("the deploy", () => {
   it("writes into dist/ and never replaces it", () => {
     // The web server's container mounts dist/; a renamed-in directory is one
     // the container cannot see, which took the site down on 2026-10-12.
-    expect(deploy).toMatch(/rsync -a --delete-after dist-next\/ dist\//);
-    expect(deploy).not.toMatch(/mv\s+dist-next\s+dist/);
-    expect(deploy).not.toMatch(/mv\s+dist\s/);
-    expect(deploy).not.toMatch(/rm -rf dist(\s|$)/m);
+    expect(deploy).toMatch(/'bash -s' < repo\/deploy\/install-release\.sh/);
+    expect(install).toMatch(/rsync -a dist-next\/ dist\//);
+    expect(install).toMatch(/cp -a dist-next\/\. dist\//);
+    for (const script of [deploy, install]) {
+      expect(script).not.toMatch(/mv\s+dist-next\s+dist/);
+      expect(script).not.toMatch(/mv\s+dist\s/);
+      expect(script).not.toMatch(/rm -rf dist(\s|$)/m);
+    }
+  });
+
+  it("keeps the previous release's bundles, whichever copy runs", () => {
+    // A page loaded before the deploy still asks for its lazy chunks by their
+    // old names; deleting them answered with 404s (tools/simulate-deploy.mjs
+    // checks the behaviour, this the parts that make it).
+    expect(install).not.toMatch(/--delete/);
+    expect(install).toMatch(/KEEP_RELEASES=\$\{KEEP_RELEASES:-2\}/);
+    expect(install).toMatch(/KEEP_DAYS=\$\{KEEP_DAYS:-7\}/);
+    expect(install).toMatch(/grep -h '\^assets\/'/);
+    expect(install).toMatch(/set -euo pipefail/);
   });
 
   it("ships the build CI checked, and builds nothing on the server", () => {
@@ -84,6 +102,7 @@ describe("the deploy", () => {
     expect(deploy).not.toMatch(/npm (ci|install|run)/);
     expect(deploy).not.toMatch(/git pull/);
     expect(deploy).toMatch(/set -e/);
+    expect(deploy).toMatch(/sparse-checkout: deploy/);
   });
 
   it("refuses an unknown host key", () => {
