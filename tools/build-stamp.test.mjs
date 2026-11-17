@@ -2,7 +2,14 @@ import { mkdtemp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { manifestFiles, readFreshStamp, sourceFingerprint, writeStamp } from "./build-stamp.mjs";
+import {
+  manifestFiles,
+  readFreshStamp,
+  recordBuildStart,
+  sourceFingerprint,
+  sourceIfUnchanged,
+  writeStamp,
+} from "./build-stamp.mjs";
 
 /**
  * The size budget measures the last build only while this says it is still
@@ -90,6 +97,28 @@ describe("the build stamp", () => {
 });
 
 describe("the source fingerprint", () => {
+  it("is vouched for only if unchanged since the build started, and only once", async () => {
+    await recordBuildStart("dist");
+    expect(await sourceIfUnchanged("dist")).toBe(sourceFingerprint());
+    expect(await sourceIfUnchanged("dist")).toBeNull();
+  });
+
+  it("is not vouched for after a build into another folder", async () => {
+    await recordBuildStart(outDir);
+    expect(await sourceIfUnchanged("dist")).toBeNull();
+  });
+
+  it("is not vouched for when the source changed mid-build", async () => {
+    await recordBuildStart("dist");
+    const edit = path.join("tools", `.mid-build-edit-${process.pid}.txt`);
+    await writeFile(edit, "edited while building");
+    try {
+      expect(await sourceIfUnchanged("dist")).toBeNull();
+    } finally {
+      await rm(edit, { force: true });
+    }
+  });
+
   it("is stable while nothing changes", () => {
     const first = sourceFingerprint();
     expect(first).toMatch(/^[0-9a-f]{64}$/);

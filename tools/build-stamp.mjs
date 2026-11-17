@@ -29,11 +29,14 @@
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { existsSync } from "node:fs";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 /** Where the stamp lives: outside `dist/`, ignored by git. */
 export const STAMP_PATH = path.resolve(process.env.BUILD_STAMP ?? ".build/stamp.json");
+
+/** The source fingerprint as a build started, written by the Vite plugin in vite.config.ts. */
+const START_PATH = path.join(path.dirname(STAMP_PATH), "build-start.json");
 
 const sha256 = (data) => createHash("sha256").update(data).digest("hex");
 
@@ -65,6 +68,41 @@ export function sourceFingerprint() {
   } catch {
     return null;
   }
+}
+
+/**
+ * Note the source as a build starts (vite.config.ts calls this at
+ * `buildStart`). A file edited while the build runs may or may not be in the
+ * output, so the source is only vouched for if it is the same at both ends.
+ */
+export async function recordBuildStart(outDir) {
+  await mkdir(path.dirname(START_PATH), { recursive: true });
+  await writeFile(
+    START_PATH,
+    JSON.stringify({ outDir: path.resolve(outDir), source: sourceFingerprint() }),
+    "utf8",
+  );
+}
+
+/**
+ * The source fingerprint if it has not changed since the build into `outDir`
+ * started, else null — and a stamp with a null source is never fresh. The
+ * start record is used once.
+ */
+export async function sourceIfUnchanged(outDir) {
+  let start = null;
+  try {
+    start = JSON.parse(await readFile(START_PATH, "utf8"));
+  } catch {
+    return null;
+  } finally {
+    await rm(START_PATH, { force: true });
+  }
+  const now = sourceFingerprint();
+  if (!start || start.outDir !== path.resolve(outDir) || !start.source || start.source !== now) {
+    return null;
+  }
+  return now;
 }
 
 /** Every file a Vite manifest names: chunks, their stylesheets and assets. */
