@@ -76,8 +76,12 @@ describe("the deploy", () => {
     // The web server's container mounts dist/; a renamed-in directory is one
     // the container cannot see, which took the site down on 2026-10-12.
     expect(deploy).toMatch(/'bash -s' < repo\/deploy\/install-release\.sh/);
-    expect(install).toMatch(/rsync -a "\$1\/" "\$2\/"/);
-    expect(install).toMatch(/cp -a "\$1\/\." "\$2\/"/);
+    expect(install).toMatch(/rsync -a --checksum/);
+    expect(install).not.toMatch(/--inplace/);
+    // cp has no temporary-file-and-rename of its own: each file is written
+    // beside its target and renamed over it, so nothing is read half-written.
+    expect(install).toMatch(/cp -p "\$from\/\$file" "\$target\.install-tmp"/);
+    expect(install).toMatch(/mv -f "\$target\.install-tmp" "\$target"/);
     for (const script of [deploy, install]) {
       expect(script).not.toMatch(/mv\s+dist-next\s+dist/);
       expect(script).not.toMatch(/mv\s+dist\s/);
@@ -91,10 +95,9 @@ describe("the deploy", () => {
     // checks the behaviour, this the parts that make it).
     expect(install).not.toMatch(/--delete/);
     // Bundles before pages, so no new page names a bundle not yet there.
-    expect(install.indexOf("copy dist-next/assets dist/assets")).toBeGreaterThan(-1);
-    expect(install.indexOf("copy dist-next/assets dist/assets")).toBeLessThan(
-      install.indexOf("copy dist-next dist\n"),
-    );
+    const assets = install.indexOf("publish dist-next/assets dist/assets");
+    expect(assets).toBeGreaterThan(-1);
+    expect(assets).toBeLessThan(install.indexOf("publish dist-next dist assets"));
     expect(install).toMatch(/KEEP_RELEASES=\$\{KEEP_RELEASES:-2\}/);
     expect(install).toMatch(/KEEP_DAYS=\$\{KEEP_DAYS:-7\}/);
     expect(install).toMatch(/grep -h '\^assets\/'/);

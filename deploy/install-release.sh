@@ -71,20 +71,43 @@ list_files dist-next > "releases/$id.list.partial"
 if [ "$DEPLOY_COPY" = auto ]; then
   if command -v rsync >/dev/null 2>&1; then DEPLOY_COPY=rsync; else DEPLOY_COPY=cp; fi
 fi
-# Bundles first, then pages: a new page is never served before every bundle
-# it names is in place. Neither tool promises an order within one pass.
-copy() {
+
+# Copy the files of $1 into $2 so that a reader never sees a half-written one:
+# each changed file is written beside its target and renamed over it, and a
+# file whose bytes are already there is left alone. rsync does exactly that by
+# default (a temporary file, then a rename; no --inplace); the cp branch does
+# it by hand. $3, if given, is a top-level directory to leave out.
+publish() {
+  local from=$1 to=$2 skip=${3:-}
   case "$DEPLOY_COPY" in
-    rsync) rsync -a "$1/" "$2/" ;;
-    cp) cp -a "$1/." "$2/" ;;
+    rsync)
+      if [ -n "$skip" ]; then
+        rsync -a --checksum --exclude="/$skip/" "$from/" "$to/"
+      else
+        rsync -a --checksum "$from/" "$to/"
+      fi
+      ;;
+    cp)
+      local file target
+      while IFS= read -r file; do
+        if [ -n "$skip" ] && [ "${file%%/*}" = "$skip" ]; then continue; fi
+        target="$to/$file"
+        if [ -f "$target" ] && cmp -s "$from/$file" "$target"; then continue; fi
+        mkdir -p "$(dirname "$target")"
+        cp -p "$from/$file" "$target.install-tmp"
+        mv -f "$target.install-tmp" "$target"
+      done < <(list_files "$from")
+      ;;
     *) echo "install-release: DEPLOY_COPY must be rsync, cp or auto" >&2; exit 1 ;;
   esac
 }
-if [ -d dist-next/assets ]; then
-  mkdir -p dist/assets
-  copy dist-next/assets dist/assets
-fi
-copy dist-next dist
+
+# Bundles first, then everything else without them: a new page is never
+# served before every bundle it names is in place, and no bundle is written
+# twice.
+mkdir -p dist/assets
+if [ -d dist-next/assets ]; then publish dist-next/assets dist/assets; fi
+publish dist-next dist assets
 # Recorded only once every file of it is in place.
 mv "releases/$id.list.partial" "releases/$id.list"
 
