@@ -47,7 +47,11 @@ export default defineConfig({
       use: { ...devices["iPhone 13"] },
     },
     // Failed module preloads recover differently in WebKit; keep that path covered in CI.
-    { name: "webkit", testMatch: "errors.e2e.ts", use: { ...devices["Desktop Safari"] } },
+    {
+      name: "webkit",
+      testMatch: ["errors.e2e.ts", "prefetch.e2e.ts"],
+      use: { ...devices["Desktop Safari"] },
+    },
   ],
   webServer: {
     command: "npm run preview -- --port 4173 --strictPort",
