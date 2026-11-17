@@ -3,7 +3,9 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useLayoutEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -17,11 +19,25 @@ import {
 import { en } from "./en";
 import type { Translation } from "./types";
 
+/**
+ * Something the page needs in a language before it can be shown in it.
+ *
+ * The shell dictionary is always one. A lab on screen adds its teaching copy
+ * (see `useLanguageDependency`), so a switch inside a lab waits for that too
+ * instead of committing the language and then suspending the lab behind its
+ * spinner while its copy downloads.
+ */
+type Dependency = (language: Language) => Promise<unknown>;
+
 interface LanguageContextValue {
   language: Language;
   setLanguage: (language: Language) => void;
+  /** The language a switch to failed, until it is dismissed or retried. */
+  failed: Language | null;
+  dismissFailure: () => void;
   /** The whole dictionary for the active language. */
   t: Translation;
+  register: (dependency: Dependency) => () => void;
 }
 
 const LanguageContext = createContext<LanguageContextValue | null>(null);
@@ -36,9 +52,7 @@ const loaded = new Map<Language, Translation>([["en", en]]);
  * Fetch a dictionary, loading it if this is the first time.
  *
  * Shipping both to everyone means every English visitor downloads a Turkish
- * copy they will never read, so the non-default one is a separate chunk. The
- * switch is imperceptible on any real connection, and the language simply
- * stays as it was until the file lands.
+ * copy they will never read, so the non-default one is a separate chunk.
  *
  * This is the *shell* dictionary only — chrome, the home page, category names
  * and the lab titles the grid prints. The teaching copy travels separately and
@@ -56,17 +70,22 @@ async function load(language: Language): Promise<Translation> {
  * Load the visitor's dictionary before the app first renders.
  *
  * Without it a returning Turkish visitor saw the page in English for as long
- * as the Turkish chunk took to arrive, with the document already marked
- * `lang="tr"`, so uppercase English labels came out with a dotted İ
- * ("İNSTRUMENTS"). `main.tsx` waits on this, and the page has usually started
- * fetching the chunk already (see `index.html`), so the wait is short. A
- * failure to load is not fatal: the app renders in English, as before.
+ * as the Turkish chunk took to arrive. `main.tsx` waits on this, and the page
+ * has usually started fetching the chunk already (see `index.html`), so the
+ * wait is short. A failure to load is not fatal: the app renders in English
+ * and tries again once mounted (see `LanguageProvider`).
  */
 export function preloadLanguage(language: Language): Promise<void> {
   return load(language).then(
     () => undefined,
     () => undefined,
   );
+}
+
+/** A language together with its dictionary: the two only ever change as one. */
+interface Active {
+  language: Language;
+  t: Translation;
 }
 
 /**
@@ -77,39 +96,83 @@ export function preloadLanguage(language: Language): Promise<void> {
  * or misspelt key is a compile error rather than a string that renders as its
  * own name, and every interpolated value keeps its type — a count is a number
  * on both sides of the translation.
+ *
+ * ## A switch is atomic
+ *
+ * The language and its dictionary are one piece of state, and a switch
+ * commits it only once everything the page needs in the new language has
+ * arrived: the shell dictionary and the copy of any lab on screen. Until then
+ * the page stays, whole, in the old language. `<html lang>` follows the
+ * *committed* language in a layout effect, so it is never written ahead of the
+ * dictionary — the order that used to give "İNSTRUMENTS": Turkish uppercase
+ * rules applied to English labels. (`startTransition` would not have helped:
+ * it defers React's render, not a direct DOM write made before it.)
+ *
+ * A switch that cannot load leaves everything as it was and sets `failed`,
+ * which the switcher reports. Only the most recent request counts: switching
+ * back while a download is under way cancels it.
  */
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguageState] = useState<Language>(() =>
-    typeof document === "undefined" ? "en" : readLanguage(),
-  );
-  const [dictionary, setDictionary] = useState<Translation>(() => loaded.get(language) ?? en);
+  const [active, setActive] = useState<Active>(() => {
+    const wanted: Language = typeof document === "undefined" ? "en" : readLanguage();
+    const t = loaded.get(wanted);
+    // A stored language whose dictionary did not load before the first render
+    // starts in English, and the effect below switches once it arrives.
+    return t ? { language: wanted, t } : { language: "en", t: en };
+  });
+  const [failed, setFailed] = useState<Language | null>(null);
+  const dependencies = useRef(new Set<Dependency>());
+  const request = useRef(0);
+  const current = useRef(active.language);
+  current.current = active.language;
 
-  // Covers the first paint for a returning Turkish visitor: the preference is
-  // read synchronously, the dictionary cannot be, so it arrives a tick later.
-  useEffect(() => {
-    let cancelled = false;
-    const cached = loaded.get(language);
-    if (cached) {
-      setDictionary(cached);
+  useLayoutEffect(() => {
+    applyLanguage(active.language);
+  }, [active.language]);
+
+  const switchTo = useCallback((next: Language, remember: boolean) => {
+    const id = ++request.current;
+    if (next === current.current) {
+      setFailed(null);
       return;
     }
-    void load(language).then((next) => {
-      if (!cancelled) setDictionary(next);
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, [language]);
+    const needs = [...dependencies.current].map((dependency) => dependency(next));
+    Promise.all([load(next), ...needs]).then(
+      ([t]) => {
+        if (id !== request.current) return;
+        if (remember) writePreference(LANGUAGE_KEY, next);
+        setFailed(null);
+        setActive({ language: next, t });
+      },
+      (error: unknown) => {
+        if (id !== request.current) return;
+        console.error(`Could not switch the language to "${next}":`, error);
+        setFailed(next);
+      },
+    );
+  }, []);
 
-  const setLanguage = useCallback((next: Language) => {
-    applyLanguage(next);
-    writePreference(LANGUAGE_KEY, next);
-    setLanguageState(next);
+  const setLanguage = useCallback((next: Language) => switchTo(next, true), [switchTo]);
+
+  // A returning visitor whose dictionary was not ready for the first render
+  // (see above): finish the switch now. The preference is already stored.
+  useEffect(() => {
+    const wanted = readLanguage();
+    if (wanted !== current.current) switchTo(wanted, false);
+  }, [switchTo]);
+
+  const dismissFailure = useCallback(() => setFailed(null), []);
+
+  const register = useCallback((dependency: Dependency) => {
+    dependencies.current.add(dependency);
+    return () => {
+      dependencies.current.delete(dependency);
+    };
   }, []);
 
   const value = useMemo(
-    () => ({ language, setLanguage, t: dictionary }),
-    [language, setLanguage, dictionary],
+    () => ({ ...active, setLanguage, failed, dismissFailure, register }),
+    [active, setLanguage, failed, dismissFailure, register],
   );
 
   return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
@@ -121,15 +184,31 @@ function useLanguageContext(): LanguageContextValue {
   return context;
 }
 
-/** The active language and the setter. For the switcher, mostly. */
-export function useLanguage(): Omit<LanguageContextValue, "t"> {
-  const { language, setLanguage } = useLanguageContext();
-  return { language, setLanguage };
+/** The active language, the setter, and how the last switch went. For the switcher, mostly. */
+export function useLanguage(): Pick<
+  LanguageContextValue,
+  "language" | "setLanguage" | "failed" | "dismissFailure"
+> {
+  const { language, setLanguage, failed, dismissFailure } = useLanguageContext();
+  return { language, setLanguage, failed, dismissFailure };
 }
 
 /** The dictionary. What almost every component wants. */
 export function useT(): Translation {
   return useLanguageContext().t;
+}
+
+/**
+ * Make a language switch wait for `dependency` while this component is mounted.
+ *
+ * The switch commits only once it resolves, and is abandoned if it rejects. It
+ * is read through a ref, so passing a new function every render is fine.
+ */
+export function useLanguageDependency(dependency: Dependency): void {
+  const { register } = useLanguageContext();
+  const latest = useRef(dependency);
+  latest.current = dependency;
+  useEffect(() => register((language) => latest.current(language)), [register]);
 }
 
 /** The slugs the grid can name — every registered lab. */

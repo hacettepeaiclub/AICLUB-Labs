@@ -1,4 +1,4 @@
-import { useLanguage } from "@/i18n";
+import { useLanguage, useLanguageDependency } from "@/i18n";
 import type { Language } from "@/app/preferences";
 import type { LabsCopy, LabSlug } from "./types";
 
@@ -90,12 +90,24 @@ function load(slug: LabSlug, language: Language): Promise<LabsCopy[LabSlug]> {
  */
 export function useLabCopy<S extends LabSlug>(slug: S): LabsCopy[S] {
   const { language } = useLanguage();
+  // A language switch waits for this lab's copy in the new language, so the
+  // lab changes language in one step instead of suspending behind its spinner.
+  // Its failure cancels the switch; it is not recorded in `failed`, because
+  // the lab is still showing, whole, in the language it already has.
+  useLanguageDependency((next) => copyFor(slug, next));
   const key = `${language}/${slug}`;
   const copy = cache.get(key);
   if (copy) return copy as LabsCopy[S];
   // What `React.lazy` does with a chunk that would not load.
   if (failed.has(key)) throw failed.get(key);
   throw load(slug, language);
+}
+
+/** One lab's copy, for a language switch to wait on; a lab without prose has nothing to wait for. */
+function copyFor(slug: LabSlug, language: Language): Promise<unknown> {
+  if (!loaders[language][`./${language}/${slug}.ts`]) return Promise.resolve();
+  const cached = cache.get(`${language}/${slug}`);
+  return cached ? Promise.resolve(cached) : load(slug, language);
 }
 
 /**
