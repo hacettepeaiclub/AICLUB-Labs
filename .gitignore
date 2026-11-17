@@ -10,3 +10,6 @@ dist-old
 # Playwright
 test-results/
 playwright-report/
+
+# The last build's manifest, kept for the size budget (tools/build-stamp.mjs)
+.build/
