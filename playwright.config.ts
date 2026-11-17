@@ -22,7 +22,30 @@ export default defineConfig({
     trace: "retain-on-failure",
   },
   projects: [
-    { name: "chromium", use: { ...devices["Desktop Chrome"] } },
+    {
+      name: "chromium",
+      testIgnore: ["motion.e2e.ts", "mobile.e2e.ts"],
+      use: { ...devices["Desktop Chrome"] },
+    },
+    {
+      name: "chromium-motion",
+      testMatch: "motion.e2e.ts",
+      use: {
+        ...devices["Desktop Chrome"],
+        viewport: { width: 960, height: 720 },
+        contextOptions: { reducedMotion: "no-preference" },
+      },
+    },
+    {
+      name: "chromium-mobile",
+      testMatch: "mobile.e2e.ts",
+      use: { ...devices["Pixel 7"] },
+    },
+    {
+      name: "webkit-mobile",
+      testMatch: "mobile.e2e.ts",
+      use: { ...devices["iPhone 13"] },
+    },
     // Failed module preloads recover differently in WebKit; keep that path covered in CI.
     { name: "webkit", testMatch: "errors.e2e.ts", use: { ...devices["Desktop Safari"] } },
   ],
