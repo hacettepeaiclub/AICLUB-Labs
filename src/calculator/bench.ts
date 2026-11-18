@@ -183,15 +183,21 @@ export function reduceBench(bench: Bench, action: BenchAction): Bench {
 /**
  * A fresh bench on the model this browser chose last, or the default one.
  * Storage that is blocked or holds something else leaves the default.
+ *
+ * `storage` is the browser's own unless given; `null` means none. The
+ * browser's is looked up inside the guard, because reading
+ * `window.localStorage` itself throws where storage is blocked.
  */
-export function initialBench(
-  storage: Pick<Storage, "getItem"> | null = typeof window === "undefined"
-    ? null
-    : window.localStorage,
-): Bench {
+export function initialBench(storage?: Pick<Storage, "getItem"> | null): Bench {
   let model = DEFAULT_MODEL;
   try {
-    const stored = storage?.getItem(MODEL_STORAGE_KEY);
+    const store =
+      storage === undefined
+        ? typeof window === "undefined"
+          ? null
+          : window.localStorage
+        : storage;
+    const stored = store?.getItem(MODEL_STORAGE_KEY);
     if (isModelId(stored)) model = stored;
   } catch {
     // Storage blocked: the default model stands.

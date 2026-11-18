@@ -71,6 +71,38 @@ describe("initialBench", () => {
       },
     };
     expect(initialBench(blocked).model).toBe(DEFAULT_MODEL);
+  });
+
+  it("falls back when reading window.localStorage itself throws", () => {
+    const previous = Object.getOwnPropertyDescriptor(globalThis, "window");
+    const throwing = {};
+    Object.defineProperty(throwing, "localStorage", {
+      get() {
+        throw new DOMException("The operation is insecure.", "SecurityError");
+      },
+    });
+    Object.defineProperty(globalThis, "window", { value: throwing, configurable: true });
+    try {
+      expect(initialBench().model).toBe(DEFAULT_MODEL);
+    } finally {
+      if (previous) Object.defineProperty(globalThis, "window", previous);
+      else delete (globalThis as { window?: unknown }).window;
+    }
+  });
+
+  it("reads the browser's storage when none is given", () => {
+    const other = MODEL_IDS.find((id) => id !== DEFAULT_MODEL)!;
+    const previous = Object.getOwnPropertyDescriptor(globalThis, "window");
+    Object.defineProperty(globalThis, "window", {
+      value: { localStorage: storage(other) },
+      configurable: true,
+    });
+    try {
+      expect(initialBench().model).toBe(other);
+    } finally {
+      if (previous) Object.defineProperty(globalThis, "window", previous);
+      else delete (globalThis as { window?: unknown }).window;
+    }
     expect(MODEL_STORAGE_KEY).toBe("aiclub-labs-calculator-model");
   });
 });
