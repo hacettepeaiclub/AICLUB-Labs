@@ -4,8 +4,28 @@
 `.github/workflows/deploy.yml` runs the same checks a pull request runs
 (`ci.yml`: typecheck, lint, tests, the build, the end-to-end tests, the bundle
 budget) and ships the build those checks passed. The server builds nothing: it
-receives the files, unpacks them into `dist-next/` and copies them into
-`dist/` with `rsync`, so a visitor never meets a half-built site.
+receives the files and [`deploy/install-release.sh`](../deploy/install-release.sh)
+unpacks them into `dist-next/` and copies them into `dist/`, so a visitor never
+meets a half-built site.
+
+### Old bundles stay for a while
+
+A visitor who opened a page before a deploy keeps running that release's
+JavaScript, and asks for its lazy chunks (a lab, a language, the finder) by
+their hashed names afterwards. So the install deletes nothing under
+`dist/assets/` that the last two releases, or any release installed in the
+past seven days, shipped; everything outside `assets/` is exactly the new
+release. Each release's file list is kept in `~/labs/releases/`. The first
+deploy with this script records whatever is live as the release before it.
+
+`rsync` and `cp` only ever add files and the pruning is one shared step, so
+the server behaves the same with or without `rsync`. To rehearse an install
+locally, with three real builds served over HTTP and nothing sent to the
+server:
+
+```bash
+node tools/simulate-deploy.mjs
+```
 
 Until 2026-10-16 the server pulled the repository and ran `npm ci` and the
 build itself, so the whole toolchain ran on the production machine on every

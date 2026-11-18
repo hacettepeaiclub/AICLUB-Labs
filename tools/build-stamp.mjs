@@ -28,12 +28,15 @@
 
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { existsSync } from "node:fs";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 /** Where the stamp lives: outside `dist/`, ignored by git. */
 export const STAMP_PATH = path.resolve(process.env.BUILD_STAMP ?? ".build/stamp.json");
+
+/** The source fingerprint as a build started, written by the Vite plugin in vite.config.ts. */
+const START_PATH = path.join(path.dirname(STAMP_PATH), "build-start.json");
 
 const sha256 = (data) => createHash("sha256").update(data).digest("hex");
 
@@ -41,13 +44,50 @@ const git = (args) =>
   execFileSync("git", args, { encoding: "buffer", stdio: ["ignore", "pipe", "ignore"] });
 
 /**
- * The commit plus every change not in it, or null outside a git checkout.
+ * Everything a production build reads besides the tracked source: the
+ * environment Vite and the build tools use, and every `.env*` file beside
+ * the project (Vite loads `.env`, `.env.local`, `.env.production`… and git
+ * ignores the local ones). The same commit built with another
+ * `VITE_SITE_URL` is another build.
+ */
+const BUILD_ENV = /^(VITE_|OUT_DIR$)/;
+
+/**
+ * NODE_ENV as this process was started with. Vite writes `production` into
+ * `process.env.NODE_ENV` while it builds (and `development` for the dev server
+ * prerender starts), so the live value says what Vite did, not what was asked
+ * for. Read once, as this module loads: before prerender or the size budget
+ * start Vite, and in vite.config.ts after Vite has set only its default.
+ */
+const NODE_ENV_AT_START = process.env.NODE_ENV;
+
+function buildInputs(hash, env, root) {
+  // Unset builds for production, the same as asking for it; anything else,
+  // `development` above all, makes different React and a different build.
+  const nodeEnv = env === process.env ? NODE_ENV_AT_START : env.NODE_ENV;
+  hash.update(`\0env\0NODE_ENV=${nodeEnv || "production"}`);
+  for (const key of Object.keys(env)
+    .filter((k) => BUILD_ENV.test(k))
+    .sort()) {
+    hash.update(`\0env\0${key}=${env[key]}`);
+  }
+  for (const file of readdirSync(root)
+    .filter((f) => f.startsWith(".env"))
+    .sort()) {
+    hash.update(`\0dotenv\0${file}\0`);
+    hash.update(readFileSync(path.join(root, file)));
+  }
+}
+
+/**
+ * The commit plus every change not in it, and the build's environment
+ * (above); null outside a git checkout.
  *
  * Untracked files count by content (a new lab is a new file); ignored ones do
  * not (`dist/`, `node_modules/`, test output), so building or testing does not
  * change the fingerprint of the source it built.
  */
-export function sourceFingerprint() {
+export function sourceFingerprint(env = process.env, root = ".") {
   try {
     const hash = createHash("sha256");
     hash.update(git(["rev-parse", "HEAD"]));
@@ -61,10 +101,46 @@ export function sourceFingerprint() {
       hash.update(`\0${file}\0`);
       if (existsSync(file)) hash.update(git(["hash-object", "--", file]));
     }
+    buildInputs(hash, env, root);
     return hash.digest("hex");
   } catch {
     return null;
   }
+}
+
+/**
+ * Note the source as a build starts (vite.config.ts calls this at
+ * `buildStart`). A file edited while the build runs may or may not be in the
+ * output, so the source is only vouched for if it is the same at both ends.
+ */
+export async function recordBuildStart(outDir) {
+  await mkdir(path.dirname(START_PATH), { recursive: true });
+  await writeFile(
+    START_PATH,
+    JSON.stringify({ outDir: path.resolve(outDir), source: sourceFingerprint() }),
+    "utf8",
+  );
+}
+
+/**
+ * The source fingerprint if it has not changed since the build into `outDir`
+ * started, else null — and a stamp with a null source is never fresh. The
+ * start record is used once.
+ */
+export async function sourceIfUnchanged(outDir) {
+  let start = null;
+  try {
+    start = JSON.parse(await readFile(START_PATH, "utf8"));
+  } catch {
+    return null;
+  } finally {
+    await rm(START_PATH, { force: true });
+  }
+  const now = sourceFingerprint();
+  if (!start || start.outDir !== path.resolve(outDir) || !start.source || start.source !== now) {
+    return null;
+  }
+  return now;
 }
 
 /** Every file a Vite manifest names: chunks, their stylesheets and assets. */
@@ -117,21 +193,36 @@ export async function readFreshStamp({
   } catch {
     return { stamp: null, reason: "unreadable build stamp" };
   }
-  if (!stamp || typeof stamp !== "object" || !stamp.manifest || !stamp.files || !stamp.outDir) {
+  const isObject = (value) => !!value && typeof value === "object" && !Array.isArray(value);
+  if (
+    !isObject(stamp) ||
+    !isObject(stamp.manifest) ||
+    !isObject(stamp.files) ||
+    typeof stamp.outDir !== "string"
+  ) {
     return { stamp: null, reason: "malformed build stamp" };
   }
   if (source === null || stamp.source !== source) {
     return { stamp: null, reason: "the source has changed since that build" };
   }
-  const files = manifestFiles(stamp.manifest);
-  if (files.join("\n") !== Object.keys(stamp.files).sort().join("\n")) {
-    return { stamp: null, reason: "malformed build stamp" };
-  }
-  for (const file of files) {
-    const full = path.join(stamp.outDir, file);
-    if (!existsSync(full) || sha256(await readFile(full)) !== stamp.files[file]) {
-      return { stamp: null, reason: `${path.relative(".", full)} is not the file that build made` };
+  // Anything odd inside a stamp that parsed (an entry that is not a chunk, a
+  // file name that is not a string) means it was not written by this tool.
+  try {
+    const files = manifestFiles(stamp.manifest);
+    if (files.join("\n") !== Object.keys(stamp.files).sort().join("\n")) {
+      return { stamp: null, reason: "malformed build stamp" };
     }
+    for (const file of files) {
+      const full = path.join(stamp.outDir, file);
+      if (!existsSync(full) || sha256(await readFile(full)) !== stamp.files[file]) {
+        return {
+          stamp: null,
+          reason: `${path.relative(".", full)} is not the file that build made`,
+        };
+      }
+    }
+  } catch {
+    return { stamp: null, reason: "malformed build stamp" };
   }
   return { stamp, reason: null };
 }

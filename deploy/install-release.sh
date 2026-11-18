@@ -25,9 +25,9 @@
 #
 # The web server's container mounts dist/, and a mount holds the directory it
 # was given, not its name (docs/DEPLOY.md: this took the site down on
-# 2026-10-12). New files are copied in first and stale ones removed only after
-# everything new has arrived, so a page never points at a bundle that is not
-# there yet. `set -e` stops at the first failure with the old version live.
+# 2026-10-12). The new bundles are copied in first, then the pages, and stale
+# files are removed only after everything new has arrived, so a page never
+# points at a bundle that is not there yet. `set -e` stops at the first failure with the old version live.
 #
 # ## rsync or cp
 #
@@ -68,14 +68,46 @@ id=$NOW
 while [ -e "releases/$id.list" ]; do id=$((id + 1)); done
 list_files dist-next > "releases/$id.list.partial"
 
-case "$DEPLOY_COPY" in
-  rsync) rsync -a dist-next/ dist/ ;;
-  cp) cp -a dist-next/. dist/ ;;
-  auto)
-    if command -v rsync >/dev/null 2>&1; then rsync -a dist-next/ dist/; else cp -a dist-next/. dist/; fi
-    ;;
-  *) echo "install-release: DEPLOY_COPY must be rsync, cp or auto" >&2; exit 1 ;;
-esac
+if [ "$DEPLOY_COPY" = auto ]; then
+  if command -v rsync >/dev/null 2>&1; then DEPLOY_COPY=rsync; else DEPLOY_COPY=cp; fi
+fi
+
+# Copy the files of $1 into $2 so that a reader never sees a half-written one:
+# each changed file is written beside its target and renamed over it, and a
+# file whose bytes are already there is left alone. rsync does exactly that by
+# default (a temporary file, then a rename; no --inplace); the cp branch does
+# it by hand. $3, if given, is a top-level directory to leave out.
+publish() {
+  local from=$1 to=$2 skip=${3:-}
+  case "$DEPLOY_COPY" in
+    rsync)
+      if [ -n "$skip" ]; then
+        rsync -a --checksum --exclude="/$skip/" "$from/" "$to/"
+      else
+        rsync -a --checksum "$from/" "$to/"
+      fi
+      ;;
+    cp)
+      local file target
+      while IFS= read -r file; do
+        if [ -n "$skip" ] && [ "${file%%/*}" = "$skip" ]; then continue; fi
+        target="$to/$file"
+        if [ -f "$target" ] && cmp -s "$from/$file" "$target"; then continue; fi
+        mkdir -p "$(dirname "$target")"
+        cp -p "$from/$file" "$target.install-tmp"
+        mv -f "$target.install-tmp" "$target"
+      done < <(list_files "$from")
+      ;;
+    *) echo "install-release: DEPLOY_COPY must be rsync, cp or auto" >&2; exit 1 ;;
+  esac
+}
+
+# Bundles first, then everything else without them: a new page is never
+# served before every bundle it names is in place, and no bundle is written
+# twice.
+mkdir -p dist/assets
+if [ -d dist-next/assets ]; then publish dist-next/assets dist/assets; fi
+publish dist-next dist assets
 # Recorded only once every file of it is in place.
 mv "releases/$id.list.partial" "releases/$id.list"
 

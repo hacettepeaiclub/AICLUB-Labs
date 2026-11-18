@@ -38,7 +38,7 @@ import { createHash } from "node:crypto";
 import { existsSync } from "node:fs";
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { writeStamp } from "./build-stamp.mjs";
+import { sourceIfUnchanged, writeStamp } from "./build-stamp.mjs";
 
 // The same folder Vite just built into: `OUT_DIR` when the deploy builds
 // beside the live site, `dist` otherwise.
@@ -343,7 +343,10 @@ async function main() {
   // map. The size budget still wants it, so it moves out of the shipped
   // folder into the build stamp (tools/build-stamp.mjs) rather than being
   // thrown away.
-  if (existsSync(manifestPath)) await writeStamp({ outDir: DIST, manifest });
+  // An edit made while the build ran leaves a stamp that is never fresh.
+  if (existsSync(manifestPath)) {
+    await writeStamp({ outDir: DIST, manifest, source: await sourceIfUnchanged(DIST) });
+  }
   await rm(path.join(DIST, ".vite"), { recursive: true, force: true });
   await writeFile(path.join(DIST, "robots.txt"), robots(siteUrl), "utf8");
 

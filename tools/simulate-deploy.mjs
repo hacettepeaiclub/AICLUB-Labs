@@ -60,7 +60,8 @@ async function listFiles(dir, prefix = "") {
 /** A folder's files and their hashes: two folders with equal trees are the same. */
 async function tree(dir) {
   const lines = [];
-  for (const file of await listFiles(dir)) lines.push(`${file} ${sha(await readFile(path.join(dir, file)))}`);
+  for (const file of await listFiles(dir))
+    lines.push(`${file} ${sha(await readFile(path.join(dir, file)))}`);
   return lines.join("\n");
 }
 
@@ -136,13 +137,33 @@ async function timeline([A, B, C], { gap, copy }) {
 
     const T = 1_800_000_000;
     await install(labs, B, { now: T, copy });
-    expectNone(`B installed: every file of B is served`, await failures(server.origin, (await listFiles(B)).map((f) => `/${f}`), B));
-    expectNone(`B installed: every chunk of A is still served`, await failures(server.origin, await assetUrls(A), A));
+    expectNone(
+      `B installed: every file of B is served`,
+      await failures(
+        server.origin,
+        (await listFiles(B)).map((f) => `/${f}`),
+        B,
+      ),
+    );
+    expectNone(
+      `B installed: every chunk of A is still served`,
+      await failures(server.origin, await assetUrls(A), A),
+    );
 
     await install(labs, C, { now: T + gap, copy });
     const cFiles = await listFiles(C);
-    expectNone(`C installed: every file of C is served`, await failures(server.origin, cFiles.map((f) => `/${f}`), C));
-    expectNone(`C installed: every chunk of B is still served`, await failures(server.origin, await assetUrls(B), B));
+    expectNone(
+      `C installed: every file of C is served`,
+      await failures(
+        server.origin,
+        cFiles.map((f) => `/${f}`),
+        C,
+      ),
+    );
+    expectNone(
+      `C installed: every chunk of B is still served`,
+      await failures(server.origin, await assetUrls(B), B),
+    );
 
     const outside = (await listFiles(dist)).filter((f) => !f.startsWith("assets/"));
     const cOutside = cFiles.filter((f) => !f.startsWith("assets/"));
@@ -153,18 +174,29 @@ async function timeline([A, B, C], { gap, copy }) {
 
     const newer = new Set([...(await assetUrls(B)), ...(await assetUrls(C))]);
     const onlyA = (await assetUrls(A)).filter((url) => !newer.has(url));
-    if (onlyA.length === 0) throw new Error("A shares every bundle with B and C; the releases do not differ.");
+    if (onlyA.length === 0)
+      throw new Error("A shares every bundle with B and C; the releases do not differ.");
     if (gap < 7 * DAY) {
-      expectNone(`C installed ${gap / 3600} h after B: A's ${onlyA.length} own chunks still served`, await failures(server.origin, onlyA, A));
+      expectNone(
+        `C installed ${gap / 3600} h after B: A's ${onlyA.length} own chunks still served`,
+        await failures(server.origin, onlyA, A),
+      );
     } else {
       const kept = [];
-      for (const url of onlyA) if ((await fetch(server.origin + url)).status !== 404) kept.push(url);
-      expectNone(`C installed ${gap / DAY} days after B: A's ${onlyA.length} own chunks pruned`, kept);
+      for (const url of onlyA)
+        if ((await fetch(server.origin + url)).status !== 404) kept.push(url);
+      expectNone(
+        `C installed ${gap / DAY} days after B: A's ${onlyA.length} own chunks pruned`,
+        kept,
+      );
     }
     for (const leftover of ["dist-next", "site.tgz"]) {
       expectNone(`${leftover} cleaned up`, existsSync(path.join(labs, leftover)) ? [leftover] : []);
     }
-    return { dist: await tree(dist), releases: (await readdir(path.join(labs, "releases"))).sort().join(",") };
+    return {
+      dist: await tree(dist),
+      releases: (await readdir(path.join(labs, "releases"))).sort().join(","),
+    };
   } finally {
     server.close();
     await rm(labs, { recursive: true, force: true });
@@ -176,17 +208,20 @@ async function buildReleases() {
   const work = await mkdtemp(path.join(tmpdir(), "labs-releases-"));
   const edits = [
     [],
-    [["src/labs/sorting/index.tsx", "\nexport const __release = \"B\";\n"]],
+    [["src/labs/sorting/index.tsx", '\nexport const __release = "B";\n']],
     [
-      ["src/labs/sorting/index.tsx", "\nexport const __release = \"C\";\n"],
-      ["src/main.tsx", "\nconsole.debug(\"release C\");\n"],
+      ["src/labs/sorting/index.tsx", '\nexport const __release = "C";\n'],
+      ["src/main.tsx", '\nconsole.debug("release C");\n'],
     ],
   ];
   const dists = [];
   for (const [i, changes] of edits.entries()) {
     const dir = path.join(work, String.fromCharCode(65 + i));
     await mkdir(dir);
-    execFileSync("bash", ["-c", `git -C "${ROOT}" archive HEAD | tar -x -C "${dir}"`]);
+    const archive = execFileSync("git", ["-C", ROOT, "archive", "--format=tar", "HEAD"], {
+      maxBuffer: 1 << 30,
+    });
+    execFileSync("tar", ["-x", "-C", dir], { input: archive });
     await symlink(path.join(ROOT, "node_modules"), path.join(dir, "node_modules"));
     for (const [file, text] of changes) {
       await writeFile(path.join(dir, file), (await readFile(path.join(dir, file), "utf8")) + text);
@@ -200,7 +235,8 @@ async function buildReleases() {
 
 async function main() {
   const args = process.argv.slice(2);
-  if (args.length !== 0 && args.length !== 3) throw new Error("Give three dist/ folders, oldest first, or none.");
+  if (args.length !== 0 && args.length !== 3)
+    throw new Error("Give three dist/ folders, oldest first, or none.");
   const { dists, cleanup } =
     args.length === 3
       ? { dists: args.map((a) => path.resolve(a)), cleanup: async () => {} }
@@ -209,7 +245,9 @@ async function main() {
     for (const gap of [3600, 8 * DAY]) {
       const results = {};
       for (const copy of ["rsync", "cp"]) {
-        console.log(`\nTimeline: C ${gap < DAY ? "an hour" : "eight days"} after B, copying with ${copy}`);
+        console.log(
+          `\nTimeline: C ${gap < DAY ? "an hour" : "eight days"} after B, copying with ${copy}`,
+        );
         results[copy] = await timeline(dists, { gap, copy });
       }
       expectNone(
