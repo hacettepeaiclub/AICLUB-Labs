@@ -246,6 +246,7 @@ export const en = {
   palette: {
     open: "Find a lab",
     label: "Find a lab",
+    unavailable: "Finder unavailable.",
     placeholder: "Search by name or field",
     results: (n: number) => (n === 1 ? "1 lab" : `${n} labs`),
     empty: (query: string) => `No lab matches “${query}”.`,
