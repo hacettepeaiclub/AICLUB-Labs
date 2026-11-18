@@ -119,4 +119,30 @@ describe("useCanvas2D: a running canvas", () => {
       Object.defineProperty(window, "devicePixelRatio", { configurable: true, value: original });
     }
   });
+
+  it("keeps one frame chain across repaint requests while running (R14)", () => {
+    const { canvas, draw, view } = mount(true, 0);
+    act(() => observers.resize(canvas, 200, 100));
+    const requested = frames.requested();
+    // markDirty while running: the chain is neither cancelled nor restarted.
+    view.rerender(<Surface draw={draw} running repaintKey={1} />);
+    view.rerender(<Surface draw={draw} running repaintKey={2} />);
+    expect(frames.requested()).toBe(requested);
+    expect(frames.pending()).toBe(1);
+    // And no extra still-style paint either: the next frame paints.
+    expect(draw).not.toHaveBeenCalled();
+    act(() => frames.frame());
+    expect(draw).toHaveBeenCalledTimes(1);
+    expect(frames.requested()).toBe(requested + 1);
+  });
+
+  it("does not reset its clock on a repaint request while running", () => {
+    const { canvas, draw, view } = mount(true, 0);
+    act(() => observers.resize(canvas, 200, 100));
+    act(() => frames.frame(2000));
+    view.rerender(<Surface draw={draw} running repaintKey={1} />);
+    act(() => frames.frame(3000));
+    const [first, second] = draw.mock.calls.map(([args]) => args.elapsedSec);
+    expect(second! - first!).toBeCloseTo(1, 5);
+  });
 });
