@@ -174,8 +174,8 @@ export function PageShell({ routeKey, children }: { routeKey: string; children: 
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  // Warm the palette once the page has settled, where a keyboard makes ⌘K
-  // likely. A phone never shows the button and has no shortcut to press.
+  // Warm the palette once the page has settled on devices where a keyboard
+  // shortcut is likely. Touch devices fetch when the finder is requested.
   useEffect(() => {
     if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
     if ("requestIdleCallback" in window) {

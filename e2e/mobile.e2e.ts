@@ -76,11 +76,16 @@ test("touch opens a native learning dialog and closing it restores focus", async
 
 test("touch opens and dismisses the native finder from a lab", async ({ page }) => {
   await page.goto("/labs/pca/");
-  await page.locator('summary[aria-label="Navigation"]').tap();
-  await page.getByRole("button", { name: "Find a lab", exact: true }).tap();
+  const trigger = page.getByRole("button", { name: "Find a lab", exact: true });
+  await expect(trigger).toBeVisible();
+  const target = await trigger.boundingBox();
+  expect(target?.width).toBeGreaterThanOrEqual(44);
+  expect(target?.height).toBeGreaterThanOrEqual(44);
+  await trigger.tap();
   const finder = page.getByRole("dialog", { name: "Find a lab" });
   await expect(finder.getByRole("combobox")).toBeFocused();
   expect(await finder.evaluate((dialog) => dialog.matches(":modal"))).toBe(true);
   await page.keyboard.press("Escape");
   await expect(finder).toBeHidden();
+  await expect(trigger).toBeFocused();
 });
