@@ -236,5 +236,28 @@ describe("useLabCopy", () => {
         expect(attempts).toBe(2);
       });
     }
+
+    // A file that downloads but is not copy must reach the boundary like a
+    // failed download, never leave a settled promise behind to suspend on.
+    for (const joined of [false, true]) {
+      it(`reports a module that is not copy${joined ? ", joined mid-prefetch" : ""}`, async () => {
+        let attempts = 0;
+        vi.doMock(COPY_MODULE, () => {
+          attempts++;
+          return { default: "not copy" };
+        });
+        const { mount, prefetchLabCopy } = await fresh();
+        prefetchLabCopy(SLUG, "en");
+        if (!joined) {
+          await vi.waitFor(() => expect(attempts).toBe(1));
+          await new Promise((resolve) => setTimeout(resolve, 0));
+        }
+        mount();
+        expect(await screen.findByRole("alert")).toBeTruthy();
+        expect(screen.queryByRole("status")).toBeNull();
+        // The prefetch, then the read's own request: bounded.
+        expect(attempts).toBeLessThanOrEqual(2);
+      });
+    }
   });
 });
