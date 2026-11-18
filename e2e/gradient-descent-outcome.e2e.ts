@@ -34,34 +34,37 @@ for (const [language, words] of [
     },
   ],
 ] as const) {
-  test(`outcome reads Ready, then Paused after a step, Running while it plays (${language})`, async ({
-    page,
-  }) => {
-    await page.emulateMedia({ reducedMotion: "no-preference" });
-    await page.addInitScript((language) => {
-      localStorage.setItem("aiclub-labs-language", language);
-    }, language);
-    await page.goto("/labs/gradient-descent/");
-    const stage = page.locator(".lab-content [data-stage]").first();
-    const outcome = (word: string) => stage.getByText(word, { exact: true }).first();
+  for (const viewport of [
+    { width: 390, height: 844 },
+    { width: 1280, height: 800 },
+  ]) {
+    test(`outcome reads Ready, then Paused after a step, Running while it plays (${language}, ${viewport.width}px)`, async ({
+      page,
+    }) => {
+      await page.setViewportSize(viewport);
+      await page.emulateMedia({ reducedMotion: "no-preference" });
+      await page.addInitScript((language) => {
+        localStorage.setItem("aiclub-labs-language", language);
+      }, language);
+      await page.goto("/labs/gradient-descent/");
+      const stage = page.locator(".lab-content [data-stage]").first();
+      const outcome = (word: string) => stage.getByText(word, { exact: true }).first();
 
-    await expect(outcome(words.ready)).toBeVisible();
-    await expect(stage.getByText(words.running, { exact: true })).toHaveCount(0);
+      await expect(outcome(words.ready)).toBeVisible();
+      await expect(stage.getByText(words.running, { exact: true })).toHaveCount(0);
 
-    // Step and Run live in the stage's collapsed "more controls" section.
-    // With motion on the stage never settles for a pointer click; keyboard
-    // activation is what a keyboard visitor does anyway.
-    await stage.locator("summary").filter({ hasText: words.more }).press("Enter");
-    // Step and Run live in the stage's collapsed "more controls" section.
-    // With motion on the stage never settles for a pointer click; keyboard
-    // activation is what a keyboard visitor does anyway.
-    await stage.locator("summary").filter({ hasText: words.more }).press("Enter");
-    await stage.getByRole("button", { name: words.step, exact: true }).click();
-    await expect(outcome(words.paused)).toBeVisible();
+      // On a narrow screen Step and Run sit in the stage's collapsed "more
+      // controls" section; from lg up that section is hidden and the same
+      // controls are in the side rail.
+      const more = stage.locator("summary").filter({ hasText: words.more });
+      if (await more.isVisible()) await more.click();
+      await stage.getByRole("button", { name: words.step, exact: true }).click();
+      await expect(outcome(words.paused)).toBeVisible();
 
-    await stage.getByRole("button", { name: words.run, exact: true }).click();
-    await expect(outcome(words.running)).toBeVisible();
-    await stage.getByRole("button", { name: words.pause, exact: true }).click();
-    await expect(outcome(words.paused)).toBeVisible();
-  });
+      await stage.getByRole("button", { name: words.run, exact: true }).click();
+      await expect(outcome(words.running)).toBeVisible();
+      await stage.getByRole("button", { name: words.pause, exact: true }).click();
+      await expect(outcome(words.paused)).toBeVisible();
+    });
+  }
 }
