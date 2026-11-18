@@ -16,17 +16,18 @@ for (const width of [390, 1280]) {
       await route.continue();
     });
 
+    const status = page.locator('[role="status"][aria-label="Find a lab"]');
     try {
       await page.goto("/");
+      await expect(status).toBeEmpty();
       await page.getByRole("button", { name: "Find a lab" }).click();
-      await expect(
-        page.getByRole("status").filter({ hasText: "Opening lab finder…" }),
-      ).toBeVisible();
+      await expect(status).toHaveText("Opening lab finder…");
+      await expect(status).toBeVisible();
     } finally {
       releaseChunk();
     }
 
     await expect(page.getByRole("dialog", { name: "Find a lab" })).toBeVisible();
-    await expect(page.getByText("Opening lab finder…")).toBeHidden();
+    await expect(status).toBeEmpty();
   });
 }
