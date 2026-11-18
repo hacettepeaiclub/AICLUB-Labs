@@ -105,13 +105,15 @@ const median = (values) => {
 };
 
 function observe() {
-  const state = { lcp: 0, cls: 0, longTasks: [], events: [] };
+  // shifts: every layout shift not caused by input, for the session windows.
+  const state = { lcp: 0, shifts: [], longTasks: [], events: [] };
   window.__perf = state;
   new PerformanceObserver((list) => {
     for (const entry of list.getEntries()) state.lcp = entry.startTime;
   }).observe({ type: "largest-contentful-paint", buffered: true });
   new PerformanceObserver((list) => {
-    for (const entry of list.getEntries()) if (!entry.hadRecentInput) state.cls += entry.value;
+    for (const entry of list.getEntries())
+      if (!entry.hadRecentInput) state.shifts.push({ start: entry.startTime, value: entry.value });
   }).observe({ type: "layout-shift", buffered: true });
   new PerformanceObserver((list) => {
     for (const entry of list.getEntries())
@@ -121,6 +123,38 @@ function observe() {
     for (const entry of list.getEntries())
       state.events.push({ name: entry.name, start: entry.startTime, duration: entry.duration });
   }).observe({ type: "event", buffered: true, durationThreshold: 16 });
+}
+
+/**
+ * CLS as web-vitals defines it: shifts are grouped into sessions (each less
+ * than 1 s after the previous, the whole at most 5 s long) and the largest
+ * session's sum is the score. clsSum, every shift added up, is reported too.
+ */
+function largestSessionWindow(shifts) {
+  let best = 0;
+  let current = 0;
+  let first = -Infinity;
+  let previous = -Infinity;
+  for (const shift of shifts) {
+    if (shift.start - previous < 1000 && shift.start - first < 5000) {
+      current += shift.value;
+    } else {
+      current = shift.value;
+      first = shift.start;
+    }
+    previous = shift.start;
+    best = Math.max(best, current);
+  }
+  return best;
+}
+
+/** Wait until a control can be pressed: not disabled, not aria-disabled. */
+async function expectEnabled(control) {
+  const deadline = Date.now() + 60_000;
+  while (!(await control.isEnabled())) {
+    if (Date.now() > deadline) throw new Error("the control never became enabled");
+    await new Promise((resolve) => setTimeout(resolve, 50));
+  }
 }
 
 const tbt = (tasks) => tasks.reduce((sum, t) => sum + Math.max(0, t.duration - 50), 0);
@@ -167,7 +201,9 @@ async function measure(browser, origin, route, profile, { ambient = true } = {})
   await page.goto(origin + route.path, { waitUntil: "load" });
   const control = route.ready(page);
   await control.waitFor({ state: "visible", timeout: 60_000 });
-  // Enabled, and then a quiet main thread: what a click needs to be answered.
+  await expectEnabled(control);
+  // The page's own clock when the control was first usable.
+  const usableAt = await page.evaluate(() => performance.now());
   // Then a quiet main thread: what a click needs to be answered. Polled from
   // here, since the site's CSP (rightly) refuses the eval waitForFunction uses.
   const deadline = Date.now() + 60_000;
@@ -181,14 +217,13 @@ async function measure(browser, origin, route, profile, { ambient = true } = {})
     if (Date.now() > deadline) throw new Error(`${route.path}: never quiet for ${QUIET_MS} ms`);
     await page.waitForTimeout(100);
   }
-  // Interactive: the control is usable and the last long task before the
-  // quiet spell has ended (or, with none, the document is parsed).
-  const interactiveAt = await page.evaluate(() => {
+  // Interactive: the later of the moment the control was visible and
+  // enabled, and the end of the last long task before the quiet spell.
+  const interactiveAt = await page.evaluate((usable) => {
     const tasks = window.__perf.longTasks;
     const last = tasks.length ? tasks[tasks.length - 1] : null;
-    const parsed = performance.getEntriesByType("navigation")[0]?.domContentLoadedEventEnd ?? 0;
-    return Math.max(parsed, last ? last.start + last.duration : 0);
-  });
+    return Math.max(usable, last ? last.start + last.duration : 0);
+  }, usableAt);
   const interactiveWall = Date.now();
   const atLoad = await page.evaluate(() => JSON.parse(JSON.stringify(window.__perf)));
 
@@ -220,7 +255,8 @@ async function measure(browser, origin, route, profile, { ambient = true } = {})
   const jsAll = scripts.reduce((n, s) => n + s.gzip, 0);
   return {
     lcp: atLoad.lcp,
-    cls: final.cls,
+    cls: largestSessionWindow(final.shifts),
+    clsSum: final.shifts.reduce((sum, s) => sum + s.value, 0),
     interactive: interactiveAt,
     wallToInteractive: interactiveWall - started,
     loadLongTasks: loadTasks.length,
@@ -236,7 +272,8 @@ async function measure(browser, origin, route, profile, { ambient = true } = {})
 
 const METRICS = [
   ["lcp", "LCP ms"],
-  ["cls", "CLS"],
+  ["cls", "CLS (largest session)"],
+  ["clsSum", "CLS (all shifts)"],
   ["interactive", "interactive ms"],
   ["loadBlockingMs", "load TBT ms"],
   ["longestLoadTask", "longest load task ms"],
@@ -279,7 +316,7 @@ async function main() {
           const value = summary[key];
           if (value === null) continue;
           console.log(
-            `  ${label.padEnd(30)} ${key === "cls" ? value.toFixed(3) : value.toFixed(0)}`,
+            `  ${label.padEnd(30)} ${key.startsWith("cls") ? value.toFixed(3) : value.toFixed(0)}`,
           );
         }
         const errors = raw.flatMap((r) => r.errors);

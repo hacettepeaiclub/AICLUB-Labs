@@ -27,6 +27,10 @@ async function main() {
   const width = option("--width", 1280);
   const cpu = option("--cpu", 1);
   const top = option("--top", 25);
+  // --click <name>: profile the 5 s after clicking the first button with this
+  // accessible name, instead of the load.
+  const clickAt = args.indexOf("--click");
+  const click = clickAt >= 0 ? args[clickAt + 1] : null;
 
   let server = null;
   let browser = null;
@@ -52,9 +56,20 @@ async function main() {
     if (cpu > 1) await cdp.send("Emulation.setCPUThrottlingRate", { rate: cpu });
     await cdp.send("Profiler.enable");
     await cdp.send("Profiler.setSamplingInterval", { interval: 200 });
-    await cdp.send("Profiler.start");
-    await page.goto(origin + route, { waitUntil: "load" });
-    await page.waitForTimeout(4000);
+    if (click) {
+      await page.goto(origin + route, { waitUntil: "load" });
+      const button = page.getByRole("button", { name: click, exact: true }).first();
+      await button.waitFor({ state: "visible", timeout: 60_000 });
+      await button.scrollIntoViewIfNeeded();
+      await page.waitForTimeout(1500);
+      await cdp.send("Profiler.start");
+      await button.click();
+      await page.waitForTimeout(5000);
+    } else {
+      await cdp.send("Profiler.start");
+      await page.goto(origin + route, { waitUntil: "load" });
+      await page.waitForTimeout(4000);
+    }
     const { profile } = await cdp.send("Profiler.stop");
 
     const byId = new Map(profile.nodes.map((n) => [n.id, n]));
@@ -84,7 +99,7 @@ async function main() {
         )
         .join("\n");
     console.log(
-      `\n${route} at ${width}px, CPU ×${cpu}: ${total.toFixed(0)} ms of script self time\n`,
+      `\n${route}${click ? ` after clicking "${click}"` : ""} at ${width}px, CPU ×${cpu}: ${total.toFixed(0)} ms of script self time\n`,
     );
     console.log(`Functions:\n${show(fns, top)}\n\nFiles:\n${show(files, 15)}`);
   } finally {
