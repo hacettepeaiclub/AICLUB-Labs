@@ -33,8 +33,15 @@ test("a failed hover prefetch allows opening the lab after the connection return
   await card.click();
   await expect(page).toHaveURL("/labs/pca/");
   const experiment = page.getByRole("slider", { name: "v, around" });
-  const reload = page.getByRole("button", { name: "Reload page" });
-  // WebKit may retain the failed module and expose the reload fallback.
-  await expect(browserName === "webkit" ? experiment.or(reload) : experiment).toBeVisible();
-  if (browserName === "chromium") await expect(reload).toHaveCount(0);
+  const loadFailure = page.getByRole("heading", { name: "The lab couldn't load." });
+  if (browserName === "webkit") {
+    // A retained failure may show Try again for a reachable file. Both
+    // recovery labels reload the document and clear WebKit's module state.
+    await expect(experiment.or(loadFailure)).toBeVisible();
+    if (await loadFailure.isVisible()) {
+      await page.getByRole("button", { name: /^(Try again|Reload page)$/ }).click();
+    }
+  }
+  await expect(experiment).toBeVisible();
+  await expect(loadFailure).toHaveCount(0);
 });
