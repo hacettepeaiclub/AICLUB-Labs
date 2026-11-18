@@ -100,6 +100,23 @@ const en = {
   dailyNewDay: "A new puzzle is ready.",
   dailyOpenNew: "Open it",
   dailyLocal: "Your progress and streak are kept in this browser only.",
+  trialStart: "Try without key hints",
+  trialTitle: "Try it yourself",
+  trialCheck: "Check my answer",
+  trialRight: "Correct. Try the daily puzzle next.",
+  trialWrong: "Check your result, or return to the lesson.",
+  trialBack: "Return to lesson",
+  trialDaily: "Open daily puzzle",
+  practiceTopic: "Practice",
+  /** Practice questions for lessons with no daily-puzzle kind of their own. */
+  practiceQuestions: {
+    fraction: { prompt: "Express 3/4 as a decimal.", answer: 0.75 },
+    memory: { prompt: "Store 5 in a variable, then multiply it by 3.", answer: 15 },
+    product: {
+      prompt: "Multiply [[1,2],[3,4]] by [[5,6],[7,8]]. Find the top-left entry.",
+      answer: 19,
+    },
+  } as Record<string, { prompt: string; answer: number }>,
 };
 
 export type CalculatorCopy = typeof en;
@@ -195,6 +212,22 @@ const tr: CalculatorCopy = {
   dailyNewDay: "Yeni bulmaca hazır.",
   dailyOpenNew: "Aç",
   dailyLocal: "İlerlemen ve serin yalnızca bu tarayıcıda tutulur.",
+  trialStart: "Tuşları görmeden dene",
+  trialTitle: "Şimdi sen dene",
+  trialCheck: "Cevabımı kontrol et",
+  trialRight: "Doğru. Şimdi günlük soruları deneyebilirsin.",
+  trialWrong: "Sonucu kontrol et. Gerekirse derse dönüp tekrar dene.",
+  trialBack: "Derse dön",
+  trialDaily: "Günlük soruları aç",
+  practiceTopic: "Alıştırma",
+  practiceQuestions: {
+    fraction: { prompt: "3/4 kesrini ondalık biçimde göster.", answer: 0.75 },
+    memory: { prompt: "Bir değişkene 5 kaydet, sonra bu değişkeni 3 ile çarp.", answer: 15 },
+    product: {
+      prompt: "[[1,2],[3,4]] ile [[5,6],[7,8]] matrislerini bu sırayla çarp. Sol üst elemanı bul.",
+      answer: 19,
+    },
+  },
 };
 
 export const CALCULATOR_COPY: Record<Language, CalculatorCopy> = { en, tr };
