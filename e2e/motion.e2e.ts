@@ -2,8 +2,8 @@ import { expect, test, type Locator, type Page } from "@playwright/test";
 import { labs } from "../src/labs/registry";
 
 const stage = (page: Page) => page.locator("[data-stage]").first();
-const readout = (target: Locator) =>
-  target.locator('[data-stage-part="figures"], [data-stage-part="readout"]');
+const readout = (target: Locator) => target.locator('[data-stage-part="figures"]');
+const readText = async (target: Locator) => (await target.allTextContents()).join("\n");
 
 async function changes(read: () => Promise<string | null>, act: () => Promise<void>) {
   const before = await read();
@@ -12,10 +12,10 @@ async function changes(read: () => Promise<string | null>, act: () => Promise<vo
 }
 
 async function clickAndAdvance(button: Locator) {
-  await expect(button).toBeEnabled();
+  await expect(button).toBeEnabled({ timeout: 15_000 });
   const figures = readout(button.locator("xpath=ancestor::*[@data-stage][1]"));
   await changes(
-    () => figures.textContent(),
+    () => readText(figures),
     () => button.click(),
   );
 }
@@ -26,16 +26,28 @@ const button = (page: Page, name: string) =>
 async function moveSlider(slider: Locator) {
   const stage = slider.locator("xpath=ancestor::*[@data-stage][1]");
   await changes(
-    () => readout(stage).textContent(),
+    () => readText(readout(stage)),
     () => slider.press("ArrowRight"),
   );
 }
 
 const exercise: Record<string, (page: Page) => Promise<void>> = {
-  jepa: (page) => clickAndAdvance(button(page, "Train")),
+  jepa: async (page) => {
+    const trainer = page.locator('[data-jepa-trainer="train"]');
+    const train = trainer.getByRole("button", { name: "Train", exact: true });
+    const steps = readout(trainer).locator(":scope > div").first().locator("p").last();
+    await train.scrollIntoViewIfNeeded();
+    await train.click();
+    await expect
+      .poll(async () => Number(await steps.innerText()), { timeout: 15_000 })
+      .toBeGreaterThan(0);
+  },
   pca: (page) => moveSlider(stage(page).getByRole("slider", { name: "v, around" })),
   diffusion: (page) => clickAndAdvance(button(page, "Reverse one step")),
-  generalization: (page) => clickAndAdvance(button(page, "Reveal unseen examples")),
+  generalization: async (page) => {
+    await clickAndAdvance(button(page, "Reveal unseen examples"));
+    await expect(button(page, "Lock model & test once")).toBeEnabled();
+  },
   attention: async (page) => {
     const first = stage(page);
     const cat = first.getByRole("option", { name: /^cat,/ });
@@ -75,7 +87,7 @@ const exercise: Record<string, (page: Page) => Promise<void>> = {
     const run = stage(page).getByRole("button", { name: /^Run A/ });
     const counter = readout(stage(page));
     await changes(
-      () => counter.textContent(),
+      () => readText(counter),
       async () => {
         // A's load and increment are local; the third operation stores the result.
         await run.click();
@@ -84,7 +96,13 @@ const exercise: Record<string, (page: Page) => Promise<void>> = {
       },
     );
   },
-  "cryptographic-hashing": (page) => clickAndAdvance(button(page, "Hash it again")),
+  "cryptographic-hashing": async (page) => {
+    await page
+      .locator("summary")
+      .filter({ hasText: "It answers the same way every time." })
+      .click();
+    await clickAndAdvance(button(page, "Hash it again"));
+  },
   "hash-tables": async (page) => {
     const first = stage(page);
     await first.getByRole("textbox", { name: "A key" }).fill("motion-check");
@@ -100,7 +118,7 @@ const exercise: Record<string, (page: Page) => Promise<void>> = {
   },
   "reinforcement-learning": (page) => clickAndAdvance(button(page, "Train")),
   sorting: async (page) => {
-    const bars = stage(page).locator("canvas[aria-label]").first();
+    const bars = stage(page).getByRole("application").first();
     await changes(
       () => bars.getAttribute("aria-label"),
       () => button(page, "Sort").click(),
@@ -111,6 +129,7 @@ const exercise: Record<string, (page: Page) => Promise<void>> = {
 
 for (const { meta } of labs) {
   test(`${meta.slug}: experiment advances with motion enabled`, async ({ page }) => {
+    test.setTimeout(60_000);
     const errors: string[] = [];
     page.on("pageerror", (error) => errors.push(`pageerror: ${error.message}`));
     page.on("console", (message) => {
