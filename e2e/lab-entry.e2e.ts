@@ -38,20 +38,42 @@ for (const { name, viewport } of sizes) {
           if ((await tryIt.count()) === 0) continue;
           await expect(tryIt).toBeEnabled();
           await tryIt.click();
-          // Reduced motion (the suite's default) scrolls instantly; let layout settle.
-          await page.waitForTimeout(100);
-          const { top, header } = await page.evaluate(() => {
-            const target = document.activeElement as HTMLElement;
-            const bar = [...document.querySelectorAll("header")].find(
-              (h) => getComputedStyle(h).position === "sticky",
+          // The button must hand focus to the lab's own entry point — the
+          // first stage, or word embeddings' prediction — not keep it.
+          const target = await page.evaluate(() => {
+            const active = document.activeElement as HTMLElement | null;
+            const expected = document.querySelector(
+              ".lab-content [data-tour=predict], .lab-content [data-stage]",
             );
-            return {
-              top: target.getBoundingClientRect().top,
-              header: bar ? bar.getBoundingClientRect().bottom : 0,
-            };
+            return active !== null && active === expected;
           });
+          if (!target) {
+            missed.push(`${meta.slug}: focus is not on the lab's first stage`);
+            continue;
+          }
+          // Reduced motion (the suite's default) scrolls instantly; poll until
+          // layout settles rather than waiting a fixed time.
+          let top = 0;
+          let header = 0;
+          await expect
+            .poll(async () => {
+              ({ top, header } = await page.evaluate(() => {
+                const focused = document.activeElement as HTMLElement;
+                const bar = [...document.querySelectorAll("header")].find(
+                  (h) => getComputedStyle(h).position === "sticky",
+                );
+                return {
+                  top: focused.getBoundingClientRect().top,
+                  header: bar ? bar.getBoundingClientRect().bottom : 0,
+                };
+              }));
+              return top >= header + 8 && top < viewport.height;
+            })
+            .toBe(true)
+            .catch(() => undefined);
           checked++;
-          if (top < header + 8) missed.push(`${meta.slug}: top ${top} vs header ${header}`);
+          if (top < header + 8 || top >= viewport.height)
+            missed.push(`${meta.slug}: top ${top} vs header ${header}`);
         }
         expect(checked).toBeGreaterThan(15);
         expect(missed).toEqual([]);
