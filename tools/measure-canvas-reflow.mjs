@@ -125,34 +125,41 @@ const canvases = (page) =>
  * whose 2D context they ask for. Installed in every context before any page
  * loads, so every check sees the same tags.
  */
-async function instrument(context) {
-  await context.addInitScript((files) => {
-    const reads = Object.fromEntries(files.map((f) => [f, 0]));
-    const original = Element.prototype.getBoundingClientRect;
-    Element.prototype.getBoundingClientRect = function (...args) {
-      const stack = new Error().stack ?? "";
-      const file = files.find((name) => stack.includes(name));
-      if (file && this instanceof HTMLCanvasElement) reads[file]++;
-      return original.apply(this, args);
-    };
-    // Mark the canvases whose context the measured code asks for, so the
-    // checks below judge those and nothing else on the page.
-    const getContext = HTMLCanvasElement.prototype.getContext;
-    HTMLCanvasElement.prototype.getContext = function (...args) {
-      const stack = new Error().stack ?? "";
-      if (files.some((name) => stack.includes(name))) this.dataset.measuredSizing = "1";
-      return getContext.apply(this, args);
-    };
-    Object.defineProperty(window, "__canvasReads", { value: reads });
-  }, FILES);
+async function instrument(context, { countReads = true } = {}) {
+  await context.addInitScript(
+    ([files, countReads]) => {
+      const reads = Object.fromEntries(files.map((f) => [f, 0]));
+      const original = Element.prototype.getBoundingClientRect;
+      // Off for the traced pass: the tracer records only the frame that asked
+      // for layout, and a wrapper here would be that frame instead of the code.
+      if (countReads)
+        Element.prototype.getBoundingClientRect = function (...args) {
+          const stack = new Error().stack ?? "";
+          const file = files.find((name) => stack.includes(name));
+          if (file && this instanceof HTMLCanvasElement) reads[file]++;
+          return original.apply(this, args);
+        };
+      // Mark the canvases whose context the measured code asks for, so the
+      // checks below judge those and nothing else on the page.
+      const getContext = HTMLCanvasElement.prototype.getContext;
+      HTMLCanvasElement.prototype.getContext = function (...args) {
+        const stack = new Error().stack ?? "";
+        if (files.some((name) => stack.includes(name))) this.dataset.measuredSizing = "1";
+        return getContext.apply(this, args);
+      };
+      Object.defineProperty(window, "__canvasReads", { value: reads });
+    },
+    [FILES, countReads],
+  );
 }
 
-async function measureLab(browser, origin, slug) {
+/** Open a lab in a fresh context and walk it through the resize sequence. */
+async function resizeRun(browser, origin, slug, { traced }) {
   const context = await browser.newContext({
     viewport: { width: WIDTHS[0], height: 900 },
     reducedMotion: "reduce",
   });
-  await instrument(context);
+  await instrument(context, { countReads: !traced });
   const page = await context.newPage();
   const errors = [];
   page.on("pageerror", (error) => errors.push(error.message));
@@ -160,18 +167,37 @@ async function measureLab(browser, origin, slug) {
   await page.locator("main canvas").first().waitFor();
   await settle(page);
   const readsAtLoad = await page.evaluate(() => ({ ...window.__canvasReads }));
-
-  await browser.startTracing(page, {
-    categories: ["devtools.timeline", "disabled-by-default-devtools.timeline.stack"],
-  });
+  if (traced) {
+    await browser.startTracing(page, {
+      categories: ["devtools.timeline", "disabled-by-default-devtools.timeline.stack"],
+    });
+  }
   for (const width of WIDTHS.slice(1)) {
     await page.setViewportSize({ width, height: 900 });
     await settle(page);
   }
-  const trace = JSON.parse((await browser.stopTracing()).toString("utf8"));
+  const trace = traced ? JSON.parse((await browser.stopTracing()).toString("utf8")) : null;
   const readsAfter = await page.evaluate(() => ({ ...window.__canvasReads }));
+  return { context, page, errors, trace, readsAtLoad, readsAfter };
+}
+
+async function measureLab(browser, origin, slug) {
+  // Pass 1, traced: which JavaScript forces layout while the window resizes.
+  const tracedRun = await resizeRun(browser, origin, slug, { traced: true });
+  const { trace } = tracedRun;
+  await tracedRun.context.close();
+  // Pass 2, counted: canvas layout reads from the measured files, then the
+  // still-canvas checks on the same page.
+  const { context, page, errors, readsAtLoad, readsAfter } = await resizeRun(
+    browser,
+    origin,
+    slug,
+    { traced: false },
+  );
+  errors.push(...tracedRun.errors);
 
   const forced = { total: 0 };
+  const frames = {};
   for (const name of FILES) forced[name] = 0;
   for (const event of trace.traceEvents ?? []) {
     if (event.name !== "Layout") continue;
@@ -180,6 +206,12 @@ async function measureLab(browser, origin, slug) {
     forced.total++;
     const file = fromFiles(stack.map((frame) => frame.url ?? "").join("\n"));
     if (file) forced[file]++;
+    // The JavaScript that asked for the layout, for --frames.
+    const top = stack.find((frame) => frame.url) ?? stack[0];
+    const where = `${top.functionName || "(anonymous)"} ${String(top.url ?? "")
+      .replace(/^.*\/(src|node_modules)\//, "$1/")
+      .replace(/\?.*$/, "")}:${top.lineNumber}`;
+    frames[where] = (frames[where] ?? 0) + 1;
   }
   const resizeReads = {};
   for (const name of FILES) resizeReads[name] = readsAfter[name] - readsAtLoad[name];
@@ -202,6 +234,7 @@ async function measureLab(browser, origin, slug) {
     errors,
     forced,
     reads: { load: readsAtLoad, resize: resizeReads },
+    frames,
     sampled: afterResize.length > 0 && afterTheme.length === afterResize.length,
     inkAfterResize: afterResize.length > 0 && afterResize.every((c) => c.ink),
     repaintedOnTheme:
@@ -277,6 +310,11 @@ async function main() {
         `  ${r.canvases} canvases; ink after resize: ${r.inkAfterResize}; repainted on theme change: ${r.repaintedOnTheme}`,
       );
       if (r.errors.length) console.log(`  page errors: ${r.errors.join(" | ")}`);
+      if (args.includes("--frames")) {
+        for (const [where, n] of Object.entries(r.frames).sort((a, b) => b[1] - a[1])) {
+          console.log(`    ${String(n).padStart(3)}  ${where}`);
+        }
+      }
     }
     console.log(`\n${JSON.stringify({ source: label, results })}`);
     const unsampled = results.filter((r) => !r.sampled || r.sharpness.some((s) => s.sampled === 0));
