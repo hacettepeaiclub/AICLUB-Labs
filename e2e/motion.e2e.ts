@@ -52,9 +52,13 @@ const exercise: Record<string, (page: Page) => Promise<void>> = {
   },
   convolution: (page) => clickAndAdvance(button(page, "Slide one step")),
   "word-embeddings": async (page) => {
-    const predict = page.locator("[data-tour=predict]").getByRole("button").first();
-    await predict.click();
-    await expect(stage(page)).toBeVisible({ timeout: 15_000 });
+    const prediction = page.locator("[data-tour=predict]");
+    const choice = prediction.getByRole("button").first();
+    const result = prediction.getByText(/^You picked /);
+    const word = await choice.innerText();
+    await expect(result).toHaveCount(0);
+    await choice.click();
+    await expect(result).toContainText(`You picked ${word}:`);
   },
   "word-embeddings-3d": async (page) => {
     const map = page.getByRole("listbox");
