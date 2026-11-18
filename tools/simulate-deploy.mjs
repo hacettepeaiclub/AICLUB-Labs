@@ -218,7 +218,10 @@ async function buildReleases() {
   for (const [i, changes] of edits.entries()) {
     const dir = path.join(work, String.fromCharCode(65 + i));
     await mkdir(dir);
-    execFileSync("bash", ["-c", `git -C "${ROOT}" archive HEAD | tar -x -C "${dir}"`]);
+    const archive = execFileSync("git", ["-C", ROOT, "archive", "--format=tar", "HEAD"], {
+      maxBuffer: 1 << 30,
+    });
+    execFileSync("tar", ["-x", "-C", dir], { input: archive });
     await symlink(path.join(ROOT, "node_modules"), path.join(dir, "node_modules"));
     for (const [file, text] of changes) {
       await writeFile(path.join(dir, file), (await readFile(path.join(dir, file), "utf8")) + text);
