@@ -120,11 +120,12 @@ const canvases = (page) =>
       }),
   );
 
-async function measureLab(browser, origin, slug) {
-  const context = await browser.newContext({
-    viewport: { width: WIDTHS[0], height: 900 },
-    reducedMotion: "reduce",
-  });
+/**
+ * Count canvas layout reads from the measured files, and tag the canvases
+ * whose 2D context they ask for. Installed in every context before any page
+ * loads, so every check sees the same tags.
+ */
+async function instrument(context) {
   await context.addInitScript((files) => {
     const reads = Object.fromEntries(files.map((f) => [f, 0]));
     const original = Element.prototype.getBoundingClientRect;
@@ -144,6 +145,14 @@ async function measureLab(browser, origin, slug) {
     };
     Object.defineProperty(window, "__canvasReads", { value: reads });
   }, FILES);
+}
+
+async function measureLab(browser, origin, slug) {
+  const context = await browser.newContext({
+    viewport: { width: WIDTHS[0], height: 900 },
+    reducedMotion: "reduce",
+  });
+  await instrument(context);
   const page = await context.newPage();
   const errors = [];
   page.on("pageerror", (error) => errors.push(error.message));
@@ -210,6 +219,7 @@ async function sharpness(browser, origin, slug) {
       deviceScaleFactor: dpr,
       reducedMotion: "reduce",
     });
+    await instrument(context);
     const page = await context.newPage();
     await page.goto(`${origin}/labs/${slug}/`);
     await page.locator("main canvas").first().waitFor();
