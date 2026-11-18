@@ -102,4 +102,72 @@ describe("useLabCopy", () => {
     reloaded.mount();
     expect(await screen.findByText("copy loaded")).toBeTruthy();
   });
+
+  describe("after a failed prefetch", () => {
+    /** The copy file, unreachable until `restore()` — the network coming back. */
+    function flakyCopy() {
+      const state = { down: true, attempts: 0 };
+      vi.doMock(COPY_MODULE, async () => {
+        state.attempts++;
+        if (state.down) throw new TypeError("Failed to fetch dynamically imported module");
+        return vi.importActual(COPY_MODULE);
+      });
+      return state;
+    }
+
+    it("opens the lab normally once the copy can be fetched (R3)", async () => {
+      const network = flakyCopy();
+      const { mount, prefetchLabCopy } = await fresh();
+      prefetchLabCopy(SLUG, "en");
+      await vi.waitFor(() => expect(network.attempts).toBe(1));
+      // Let the rejection settle before the visitor clicks.
+      await new Promise((resolve) => setTimeout(resolve, 0));
+
+      network.down = false;
+      mount();
+      expect(await screen.findByText("copy loaded")).toBeTruthy();
+      expect(screen.queryByRole("alert")).toBeNull();
+      expect(network.attempts).toBe(2);
+    });
+
+    it("still reports the failure when the read's own request fails", async () => {
+      const network = flakyCopy();
+      const { mount, prefetchLabCopy } = await fresh();
+      prefetchLabCopy(SLUG, "en");
+      await vi.waitFor(() => expect(network.attempts).toBe(1));
+      await new Promise((resolve) => setTimeout(resolve, 0));
+
+      mount();
+      expect(await screen.findByRole("alert")).toBeTruthy();
+      expect(network.attempts).toBe(2);
+    });
+
+    it("asks once more, as itself, when it joined a prefetch that then failed", async () => {
+      const network = flakyCopy();
+      const { mount, prefetchLabCopy } = await fresh();
+      // The read starts while the prefetch is still under way.
+      prefetchLabCopy(SLUG, "en");
+      mount();
+      expect(await screen.findByRole("alert")).toBeTruthy();
+      // One request for the prefetch, one for the read: bounded, no loop.
+      expect(network.attempts).toBe(2);
+    });
+
+    it("prefetching again after a failure is allowed, and its success is used", async () => {
+      const network = flakyCopy();
+      const { mount, prefetchLabCopy } = await fresh();
+      prefetchLabCopy(SLUG, "en");
+      await vi.waitFor(() => expect(network.attempts).toBe(1));
+      await new Promise((resolve) => setTimeout(resolve, 0));
+
+      network.down = false;
+      prefetchLabCopy(SLUG, "en");
+      await vi.waitFor(() => expect(network.attempts).toBe(2));
+      await new Promise((resolve) => setTimeout(resolve, 0));
+      mount();
+      // Cached by the second prefetch: no spinner, no third request.
+      expect(screen.getByText("copy loaded")).toBeTruthy();
+      expect(network.attempts).toBe(2);
+    });
+  });
 });
