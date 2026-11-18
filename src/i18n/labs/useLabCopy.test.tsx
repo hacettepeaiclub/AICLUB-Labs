@@ -192,5 +192,49 @@ describe("useLabCopy", () => {
       expect(screen.queryByRole("alert")).toBeNull();
       expect(attempts).toBe(1);
     });
+
+    // When the failure gives no trustworthy module address, the read asks the
+    // original loader again (the WebKit path) and reports what it gets: here
+    // the address stays down, so the lab's boundary takes over.
+    for (const [name, error] of [
+      ["names no file (WebKit)", () => new TypeError("Importing a module script failed.")],
+      [
+        "is not a module download failure",
+        () => new Error(`boom at ${window.location.origin}${COPY_MODULE}`),
+      ],
+      [
+        "names a stylesheet, not a module",
+        () => new Error(`Unable to preload CSS for ${window.location.origin}/assets/pca.css`),
+      ],
+      [
+        "names another lab's copy file",
+        () =>
+          new TypeError(
+            `Failed to fetch dynamically imported module: ${window.location.origin}/src/i18n/labs/en/pca.ts`,
+          ),
+      ],
+      [
+        "names another host",
+        () =>
+          new TypeError("Failed to fetch dynamically imported module: https://example.com/x.js"),
+      ],
+    ] as const) {
+      it(`does not ask at a fresh address when the failure ${name}`, async () => {
+        let attempts = 0;
+        vi.doMock(COPY_MODULE, () => {
+          attempts++;
+          throw error();
+        });
+        const { mount, prefetchLabCopy } = await fresh();
+        prefetchLabCopy(SLUG, "en");
+        await vi.waitFor(() => expect(attempts).toBe(1));
+        await new Promise((resolve) => setTimeout(resolve, 0));
+
+        mount();
+        expect(await screen.findByRole("alert")).toBeTruthy();
+        // The second request went to the original loader, not a fresh address.
+        expect(attempts).toBe(2);
+      });
+    }
   });
 });

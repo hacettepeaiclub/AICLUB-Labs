@@ -1,6 +1,6 @@
 import { useLanguage, useLanguageDependency } from "@/i18n";
 import type { Language } from "@/app/preferences";
-import { failedFile } from "@/components/layout/loadFailure";
+import { failedFile, isLoadFailure } from "@/components/layout/loadFailure";
 import type { LabsCopy, LabSlug } from "./types";
 
 /**
@@ -64,17 +64,39 @@ let retries = 0;
  * Chromium and Firefox include; WebKit's does not name it, and there the read
  * fails and the lab's boundary offers the reload, which recovers everywhere.
  */
-function freshAddress(error: unknown): string | null {
+function freshAddress(error: unknown, slug: LabSlug): string | null {
   // A wrapper (a bundler's preload helper, a test runner) may keep the
   // browser's own error as its `cause`.
   const cause = error instanceof Error ? error.cause : undefined;
-  const file =
-    failedFile(error, window.location.origin) ?? failedFile(cause, window.location.origin);
-  if (!file) return null;
-  const url = new URL(file);
-  url.searchParams.set("retry", String(++retries));
-  return url.pathname + url.search;
+  const origin = window.location.origin;
+  for (const candidate of [error, cause]) {
+    // Only a module that could not be downloaded is worth asking for again;
+    // nothing else thrown while loading may choose what gets imported.
+    if (!isLoadFailure(candidate)) continue;
+    const file = failedFile(candidate, origin);
+    if (!file) continue;
+    const url = new URL(file);
+    // This lab's own copy file — `pca-<hash>.js` built, `pca.ts` in source —
+    // and not some other module a preload helper happened to name, nor a
+    // sibling lab whose slug starts the same (`word-embeddings-3d`).
+    const name = url.pathname.slice(url.pathname.lastIndexOf("/") + 1);
+    if (!copyFileName(slug).test(name)) continue;
+    url.searchParams.set("retry", String(++retries));
+    // Root-relative, so test runners that cannot import `http:` resolve it
+    // too; and checked to resolve back to this origin, so a path that starts
+    // with `//` cannot turn into another host.
+    const address = url.pathname + url.search;
+    if (address.startsWith("//") || new URL(address, origin).origin !== origin) continue;
+    return address;
+  }
+  return null;
 }
+
+/** A lab's copy file: a built chunk (Vite's 8-character hash) or its source module. */
+const copyFileName = (slug: LabSlug): RegExp => {
+  const name = slug.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return new RegExp(`^${name}(?:-[\\w-]{8}\\.m?js|\\.ts)$`);
+};
 
 function load(slug: LabSlug, language: Language): Promise<LabsCopy[LabSlug]> {
   const key = `${language}/${slug}`;
@@ -84,13 +106,17 @@ function load(slug: LabSlug, language: Language): Promise<LabsCopy[LabSlug]> {
   const loader = loaders[language][`./${language}/${slug}.ts`];
   if (!loader) return Promise.reject(new Error(`No ${language} copy for the "${slug}" lab`));
 
-  const previous = lastFailure.has(key) ? freshAddress(lastFailure.get(key)) : null;
+  const previous = lastFailure.has(key) ? freshAddress(lastFailure.get(key), slug) : null;
   const request: Promise<LabModule> = previous
     ? (import(/* @vite-ignore */ previous) as Promise<LabModule>)
     : loader();
 
   const promise = request.then(
     (module) => {
+      // What came back must be copy: an object, as every copy file exports.
+      if (typeof module?.default !== "object" || module.default === null) {
+        throw new TypeError(`The ${language} copy for "${slug}" did not load as copy`);
+      }
       cache.set(key, module.default);
       lastFailure.delete(key);
       inFlight.delete(key);
