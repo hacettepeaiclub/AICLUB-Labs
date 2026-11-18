@@ -6,6 +6,26 @@ import { Button } from "@/components/ui";
 import { journeys } from "./journeyCopy";
 import { useJourneySlug } from "./journeyContext";
 
+/** Space left between the sticky header and what "Try it" scrolls to. */
+const REVEAL_GAP = 16;
+
+/**
+ * How much of the top of the window the sticky site header covers.
+ *
+ * Measured, not assumed: on a phone the header wraps to two rows (103px at
+ * 390px wide) and a fixed `scroll-margin-top` of 6rem left each stage's first
+ * line — the question telling a newcomer what to do — underneath it.
+ */
+export function coveredByHeader(): number {
+  for (const header of document.querySelectorAll<HTMLElement>("header")) {
+    const position = getComputedStyle(header).position;
+    if (position === "sticky" || position === "fixed") {
+      return Math.max(0, header.getBoundingClientRect().bottom);
+    }
+  }
+  return 0;
+}
+
 function reveal(element: HTMLElement, reduced: boolean) {
   let ancestor: HTMLElement | null = element.parentElement;
   while (ancestor) {
@@ -14,7 +34,8 @@ function reveal(element: HTMLElement, reduced: boolean) {
   }
   element.tabIndex = -1;
   element.focus({ preventScroll: true });
-  element.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
+  const top = element.getBoundingClientRect().top + window.scrollY - coveredByHeader() - REVEAL_GAP;
+  window.scrollTo({ top: Math.max(0, top), behavior: reduced ? "auto" : "smooth" });
 }
 
 export function LabOrientation({ rootRef }: { rootRef: RefObject<HTMLElement> }) {
