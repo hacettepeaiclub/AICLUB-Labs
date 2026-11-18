@@ -205,15 +205,16 @@ export function SiteHeader({
       </div>
       {/* A switch that could not download its language leaves the page as it
           was; this says so, in the language the page is still in. The live
-          region is always in the tree so the message is announced when it
-          appears, and the button sits outside it so it is not read twice. */}
+          region is always in the accessibility tree — hidden visually while
+          empty, never with display:none — so the message is announced when it
+          appears. The button sits outside it so it is not read twice. */}
       <div
         className={cn(
-          "mx-auto w-full max-w-shell items-center justify-end gap-3 px-4 pb-2 sm:px-6 md:px-10",
-          failed ? "flex" : "hidden",
+          "mx-auto w-full max-w-shell items-center justify-end gap-3 px-4 sm:px-6 md:px-10",
+          failed && "flex pb-2",
         )}
       >
-        <p role="status" className="text-body-sm text-fg-muted">
+        <p role="status" className={failed ? "text-body-sm text-fg-muted" : "sr-only"}>
           {failed &&
             t.preferences.languageFailed(
               failed === "tr" ? t.preferences.turkishFull : t.preferences.englishFull,

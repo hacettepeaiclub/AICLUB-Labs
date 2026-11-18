@@ -17,6 +17,19 @@ import { installLocalStorage, installMatchMedia, restoreDom } from "@/test/dom";
 const SLUG = "sorting";
 const TR_SHELL = "/src/i18n/tr.ts";
 const TR_COPY = `/src/i18n/labs/tr/${SLUG}.ts`;
+const OTHER = "pca";
+const TR_OTHER = `/src/i18n/labs/tr/${OTHER}.ts`;
+
+/** A promise the test settles by hand. */
+function gate() {
+  let open!: () => void;
+  let fail!: () => void;
+  const promise = new Promise<void>((resolve, reject) => {
+    open = resolve;
+    fail = () => reject(new TypeError("Failed to fetch dynamically imported module"));
+  });
+  return { promise, open, fail };
+}
 const unreachable = () => {
   throw new TypeError("Failed to fetch dynamically imported module");
 };
@@ -65,9 +78,13 @@ async function fresh() {
     );
   }
 
-  function Lab() {
-    const copy = labs.useLabCopy(SLUG);
-    return <p data-testid="lab">{Object.keys(copy).length > 0 ? "lab ready" : "empty"}</p>;
+  function Lab({ slug = SLUG }: { slug?: typeof SLUG | typeof OTHER }) {
+    const copy = labs.useLabCopy(slug);
+    return (
+      <p data-testid={slug === SLUG ? "lab" : "other-lab"}>
+        {Object.keys(copy).length > 0 ? "lab ready" : "empty"}
+      </p>
+    );
   }
 
   function Fallback() {
@@ -87,7 +104,19 @@ async function fresh() {
       </i18n.LanguageProvider>,
     );
 
-  return { mount, mismatches, fallbacks: () => fallbacks };
+  /** Some labs on screen, each in its own boundary; rerender to open or leave one. */
+  const page = (slugs: (typeof SLUG | typeof OTHER)[]) => (
+    <i18n.LanguageProvider>
+      <Probe />
+      {slugs.map((slug) => (
+        <Suspense key={slug} fallback={<Fallback />}>
+          <Lab slug={slug} />
+        </Suspense>
+      ))}
+    </i18n.LanguageProvider>
+  );
+
+  return { mount, page, mismatches, fallbacks: () => fallbacks };
 }
 
 const label = () => screen.getByTestId("label").textContent;
@@ -108,6 +137,7 @@ afterEach(() => {
   restoreDom();
   vi.doUnmock(TR_SHELL);
   vi.doUnmock(TR_COPY);
+  vi.doUnmock(TR_OTHER);
   vi.restoreAllMocks();
 });
 
@@ -200,6 +230,56 @@ describe("LanguageProvider", () => {
     expect([lang(), label()]).toEqual(["en", "Language"]);
     expect(screen.getByTestId("lab")).toBeTruthy();
     expect(fallbacks()).toBe(before);
+    expect(mismatches).toEqual([]);
+  });
+
+  it("waits for a lab opened while the switch was downloading", async () => {
+    // Lab A's Turkish copy is slow; lab B opens, in English, while it loads.
+    const slow = gate();
+    vi.doMock(TR_COPY, async () => {
+      await slow.promise;
+      return vi.importActual(TR_COPY);
+    });
+    const { page, mismatches, fallbacks } = await fresh();
+    const view = render(page([SLUG]));
+    await screen.findByTestId("lab");
+
+    fireEvent.click(screen.getByRole("button", { name: "tr" }));
+    view.rerender(page([SLUG, OTHER]));
+    await screen.findByTestId("other-lab");
+    const before = fallbacks();
+
+    await act(async () => slow.open());
+    await waitFor(() => expect(label()).toBe("Dil"));
+    // B's Turkish copy was waited for too, so neither lab suspended.
+    expect(fallbacks()).toBe(before);
+    expect(screen.getByTestId("lab")).toBeTruthy();
+    expect(screen.getByTestId("other-lab")).toBeTruthy();
+    expect(mismatches).toEqual([]);
+    expectWritesConsistent();
+  });
+
+  it("is not cancelled by a lab the visitor left while its copy was failing", async () => {
+    const doomed = gate();
+    vi.doMock(TR_COPY, async () => {
+      await doomed.promise;
+      return vi.importActual(TR_COPY);
+    });
+    const { page, mismatches } = await fresh();
+    const view = render(page([SLUG, OTHER]));
+    await screen.findByTestId("lab");
+    await screen.findByTestId("other-lab");
+
+    fireEvent.click(screen.getByRole("button", { name: "tr" }));
+    // The visitor leaves lab A; then its download fails.
+    view.rerender(page([OTHER]));
+    await act(async () => {
+      doomed.fail();
+      await doomed.promise.catch(() => {});
+    });
+
+    await waitFor(() => expect(label()).toBe("Dil"));
+    expect(screen.getByTestId("failed").textContent).toBe("");
     expect(mismatches).toEqual([]);
   });
 

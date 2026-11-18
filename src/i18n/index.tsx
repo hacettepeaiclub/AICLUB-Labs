@@ -136,20 +136,41 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       setFailed(null);
       return;
     }
-    const needs = [...dependencies.current].map((dependency) => dependency(next));
-    Promise.all([load(next), ...needs]).then(
-      ([t]) => {
+    // Waits for the dictionary and every dependency registered so far, then
+    // looks again: a lab opened while this was downloading registered after
+    // the first look, and committing without its copy would suspend it. The
+    // last look and the commit happen in the same tick, so nothing can
+    // register in between. A dependency still registered that fails cancels
+    // the switch.
+    const attempt = async (): Promise<void> => {
+      const t = await load(next);
+      const waited = new Set<Dependency>();
+      for (;;) {
         if (id !== request.current) return;
-        if (remember) writePreference(LANGUAGE_KEY, next);
-        setFailed(null);
-        setActive({ language: next, t });
-      },
-      (error: unknown) => {
-        if (id !== request.current) return;
-        console.error(`Could not switch the language to "${next}":`, error);
-        setFailed(next);
-      },
-    );
+        const pending = [...dependencies.current].filter((dependency) => !waited.has(dependency));
+        if (pending.length === 0) {
+          // In the same continuation as the last look, with no await between.
+          if (remember) writePreference(LANGUAGE_KEY, next);
+          setFailed(null);
+          setActive({ language: next, t });
+          return;
+        }
+        for (const dependency of pending) waited.add(dependency);
+        const results = await Promise.allSettled(pending.map((dependency) => dependency(next)));
+        // A dependency that unregistered while it was loading belongs to a
+        // page the visitor has left; its failure is not this switch's.
+        const failure = results.find(
+          (result, index) =>
+            result.status === "rejected" && dependencies.current.has(pending[index]!),
+        );
+        if (failure?.status === "rejected") throw failure.reason;
+      }
+    };
+    attempt().catch((error: unknown) => {
+      if (id !== request.current) return;
+      console.error(`Could not switch the language to "${next}":`, error);
+      setFailed(next);
+    });
   }, []);
 
   const setLanguage = useCallback((next: Language) => switchTo(next, true), [switchTo]);
