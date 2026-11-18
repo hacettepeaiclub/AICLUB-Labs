@@ -169,5 +169,28 @@ describe("useLabCopy", () => {
       expect(screen.getByText("copy loaded")).toBeTruthy();
       expect(network.attempts).toBe(2);
     });
+
+    it("asks at a fresh address when the browser keeps the failed module (R3)", async () => {
+      // Chromium's module map remembers a failed import: asking for the same
+      // address again rejects at once, so this mock stays down for good. The
+      // failure names the file, as Chromium's message does.
+      let attempts = 0;
+      vi.doMock(COPY_MODULE, () => {
+        attempts++;
+        throw new TypeError(
+          `Failed to fetch dynamically imported module: ${window.location.origin}${COPY_MODULE}`,
+        );
+      });
+      const { mount, prefetchLabCopy } = await fresh();
+      prefetchLabCopy(SLUG, "en");
+      await vi.waitFor(() => expect(attempts).toBe(1));
+      await new Promise((resolve) => setTimeout(resolve, 0));
+
+      mount();
+      // The read went to `${COPY_MODULE}?retry=…`, which the map has never seen.
+      expect(await screen.findByText("copy loaded")).toBeTruthy();
+      expect(screen.queryByRole("alert")).toBeNull();
+      expect(attempts).toBe(1);
+    });
   });
 });
