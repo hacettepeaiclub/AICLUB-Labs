@@ -85,7 +85,11 @@ test("touch opens and dismisses the native finder from a lab", async ({ page }) 
   const finder = page.getByRole("dialog", { name: "Find a lab" });
   await expect(finder.getByRole("combobox")).toBeFocused();
   expect(await finder.evaluate((dialog) => dialog.matches(":modal"))).toBe(true);
-  await page.keyboard.press("Escape");
+  const close = finder.getByRole("button", { name: "close" });
+  const closeTarget = await close.boundingBox();
+  expect(closeTarget?.width).toBeGreaterThanOrEqual(44);
+  expect(closeTarget?.height).toBeGreaterThanOrEqual(44);
+  await close.tap();
   await expect(finder).toBeHidden();
   await expect(trigger).toBeFocused();
 });

@@ -20,6 +20,13 @@ test("finder keeps editing keys native and opens the highlighted lab", async ({ 
   await input.press("Escape");
   await expect(trigger).toBeFocused();
   await trigger.press("Enter");
+  await expect(input).toBeFocused();
+  await input.press("Tab");
+  const close = page.getByRole("dialog").getByRole("button", { name: "close" });
+  await expect(close).toBeFocused();
+  await close.press("Enter");
+  await expect(trigger).toBeFocused();
+  await trigger.press("Enter");
   const list = page.getByRole("listbox");
   const firstId = await list.getByRole("option").first().getAttribute("id");
   const last = list.getByRole("option").last();
