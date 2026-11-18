@@ -54,9 +54,29 @@ export interface RunView {
   /** Whether this run has run out of trajectory at the shared index. */
   finished: boolean;
   status: RunStatus;
+  /** What the figures say: `status`, told apart before and between steps. */
+  outcome: Outcome;
   position: Point;
   objective: number;
   gradientNorm: number;
+}
+
+/** The verdict on screen: a run's own status, plus the two states before it has one. */
+export type Outcome = RunStatus | "ready" | "paused";
+
+/**
+ * What to call a run at the step on screen.
+ *
+ * `status` is "running" until the last step is shown, so at step 0 — before
+ * the visitor has done anything — the figures used to say "Running", and
+ * newcomers waited for something to happen. Now: nothing shown yet is Ready,
+ * a run part-way through is Running only while it plays, and Paused after a
+ * single step or a pause. A finished run keeps its own verdict.
+ */
+export function outcomeOf(status: RunStatus, shown: number, playing: boolean): Outcome {
+  if (status !== "running") return status;
+  if (shown === 0 && !playing) return "ready";
+  return playing ? "running" : "paused";
 }
 
 export interface DescentRuns {
@@ -210,6 +230,7 @@ export function useDescentRuns({
       finished: index >= run.length - 1,
       // The run's own verdict only applies once its last step is on screen.
       status: index >= run.length - 1 ? run.status : "running",
+      outcome: outcomeOf(index >= run.length - 1 ? run.status : "running", shown, playing),
       position,
       objective: series[shown] ?? 0,
       gradientNorm: Math.hypot(g.x, g.y),
