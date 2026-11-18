@@ -163,23 +163,38 @@ export function SiteHeader({
 
           <details className="relative sm:hidden">
             <summary
-              className="cursor-pointer rounded border border-line/20 p-2"
+              className="grid min-h-11 min-w-11 cursor-pointer list-none place-items-center rounded border
+                border-line/20 text-fg-muted hover:text-fg [&::-webkit-details-marker]:hidden"
               aria-label={language === "tr" ? "Gezinme" : "Navigation"}
             >
-              ☰
+              <svg
+                viewBox="0 0 16 16"
+                width="16"
+                height="16"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                aria-hidden
+              >
+                <path d="M2 4h12M2 8h12M2 12h12" />
+              </svg>
             </summary>
             <nav
+              aria-label={t.shell.primaryNav}
               onClick={(event) => {
                 const menu = event.currentTarget.closest("details");
                 if (menu) menu.open = false;
               }}
-              style={{ top: "100%", minWidth: "12rem", right: 0, zIndex: 50 }}
-              className="absolute grid gap-2 rounded border border-line/20 bg-ink-950 p-3"
+              className="absolute start-0 top-full z-50 grid min-w-48 gap-2 rounded border border-line/20 bg-ink-950 p-3"
             >
-              <Link className="p-2" to="/">
+              <Link className="flex min-h-11 items-center rounded px-2 hover:bg-line/5" to="/">
                 {t.shell.allLabs}
               </Link>
-              <Link className="p-2" to={CALCULATOR_PATH}>
+              <Link
+                className="flex min-h-11 items-center rounded px-2 hover:bg-line/5"
+                to={CALCULATOR_PATH}
+              >
                 {t.shell.calculator}
               </Link>
             </nav>

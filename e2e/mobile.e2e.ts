@@ -93,3 +93,31 @@ test("touch opens and dismisses the native finder from a lab", async ({ page }) 
   await expect(finder).toBeHidden();
   await expect(trigger).toBeFocused();
 });
+
+test("the mobile navigation fits on screen with full-sized link targets", async ({ page }) => {
+  const width = 390;
+  await page.setViewportSize({ width, height: 850 });
+  await page.goto("/");
+  const menu = page.locator('summary[aria-label="Navigation"]');
+  const menuTarget = await menu.boundingBox();
+  expect(menuTarget?.width).toBeGreaterThanOrEqual(44);
+  expect(menuTarget?.height).toBeGreaterThanOrEqual(44);
+  await menu.tap();
+
+  const navigation = page.getByRole("navigation", { name: "Primary" });
+  const bounds = await navigation.boundingBox();
+  if (!bounds) throw new Error("Mobile navigation is off screen");
+  expect(bounds.x).toBeGreaterThanOrEqual(0);
+  expect(bounds.x + bounds.width).toBeLessThanOrEqual(width);
+  const links = navigation.getByRole("link");
+  await expect(links).toHaveCount(2);
+  for (const link of await links.all()) {
+    const target = await link.boundingBox();
+    expect(target?.width).toBeGreaterThanOrEqual(44);
+    expect(target?.height).toBeGreaterThanOrEqual(44);
+  }
+
+  await navigation.getByRole("link", { name: "Calculator" }).tap();
+  await expect(page).toHaveURL("/calculator/");
+  await expect(navigation).toBeHidden();
+});
