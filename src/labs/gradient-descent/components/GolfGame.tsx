@@ -54,7 +54,7 @@ const AUTO_MS = 140;
 const signedPar = (d: number): string => (d > 0 ? `+${d}` : d < 0 ? `−${-d}` : "E");
 
 /** A stored best round: strokes over or under par, a whole number. */
-export const isRoundScore = (value: unknown): value is number => Number.isInteger(value);
+export const isRoundScore = (value: unknown): value is number => Number.isSafeInteger(value);
 
 /**
  * Section 4, between the step-size section and momentum: gradient golf.

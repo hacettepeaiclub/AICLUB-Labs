@@ -95,6 +95,9 @@ describe("the labs' stored bests", () => {
       { neurons: 6, accuracy: -0.1, epoch: 10 },
       { neurons: 6, accuracy: 0.9, epoch: -1 },
       { neurons: 6, accuracy: 0.9 },
+      // A whole number too large to be a real one would beat every honest attempt.
+      { neurons: 1e100, accuracy: 0.9, epoch: 10 },
+      { neurons: 6, accuracy: 0.9, epoch: 1e100 },
     ]) {
       expect(isAttempt(bad), JSON.stringify(bad)).toBe(false);
     }
@@ -102,7 +105,7 @@ describe("the labs' stored bests", () => {
 
   it("golf: accepts a whole-number score over or under par and nothing else", () => {
     for (const ok of [-3, 0, 4]) expect(isRoundScore(ok)).toBe(true);
-    for (const bad of ["-3", 1.5, Number.NaN, Number.POSITIVE_INFINITY, null, {}]) {
+    for (const bad of ["-3", 1.5, Number.NaN, Number.POSITIVE_INFINITY, -1e100, null, {}]) {
       expect(isRoundScore(bad), String(bad)).toBe(false);
     }
   });

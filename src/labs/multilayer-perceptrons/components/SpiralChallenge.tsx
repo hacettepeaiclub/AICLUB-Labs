@@ -26,12 +26,12 @@ export const isAttempt = (value: unknown): value is Attempt => {
   if (typeof value !== "object" || value === null) return false;
   const { neurons, accuracy, epoch } = value as Record<string, unknown>;
   return (
-    Number.isInteger(neurons) &&
+    Number.isSafeInteger(neurons) &&
     (neurons as number) > 0 &&
     isFiniteNumber(accuracy) &&
     accuracy >= 0 &&
     accuracy <= 1 &&
-    Number.isInteger(epoch) &&
+    Number.isSafeInteger(epoch) &&
     (epoch as number) >= 0
   );
 };
