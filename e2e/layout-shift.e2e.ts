@@ -13,16 +13,22 @@ import { expect, test, type Page } from "@playwright/test";
 
 const ROUTES = ["/", "/calculator/", "/labs/probability/", "/labs/gradient-descent/"];
 
-async function cumulativeShift(page: Page, path: string) {
+/**
+ * CLS as web-vitals defines it: shifts not caused by input, grouped into
+ * sessions (each less than 1 s after the previous, at most 5 s in all); the
+ * largest session's sum. The same definition as tools/perf-audit.mjs.
+ */
+async function layoutShiftScore(page: Page, path: string) {
   await page.addInitScript(() => {
     localStorage.setItem("aiclub-labs-language", "en");
-    (window as unknown as { __cls: number }).__cls = 0;
+    const shifts: { start: number; value: number }[] = [];
+    (window as unknown as { __shifts: typeof shifts }).__shifts = shifts;
     new PerformanceObserver((list) => {
       for (const entry of list.getEntries() as (PerformanceEntry & {
         value: number;
         hadRecentInput: boolean;
       })[]) {
-        if (!entry.hadRecentInput) (window as unknown as { __cls: number }).__cls += entry.value;
+        if (!entry.hadRecentInput) shifts.push({ start: entry.startTime, value: entry.value });
       }
     }).observe({ type: "layout-shift", buffered: true });
   });
@@ -33,7 +39,23 @@ async function cumulativeShift(page: Page, path: string) {
   await page.goto(path);
   await expect(page.locator("main h1")).toBeVisible();
   await page.waitForTimeout(2000);
-  return page.evaluate(() => (window as unknown as { __cls: number }).__cls);
+  const shifts = await page.evaluate(
+    () => (window as unknown as { __shifts: { start: number; value: number }[] }).__shifts,
+  );
+  let best = 0;
+  let current = 0;
+  let first = -Infinity;
+  let previous = -Infinity;
+  for (const shift of shifts) {
+    if (shift.start - previous < 1000 && shift.start - first < 5000) current += shift.value;
+    else {
+      current = shift.value;
+      first = shift.start;
+    }
+    previous = shift.start;
+    best = Math.max(best, current);
+  }
+  return best;
 }
 
 for (const viewport of [
@@ -44,7 +66,7 @@ for (const viewport of [
     test.use({ viewport: { width: viewport.width, height: viewport.height } });
     for (const path of ROUTES) {
       test(`layout shift on ${path} stays below 0.1`, async ({ page }) => {
-        expect(await cumulativeShift(page, path)).toBeLessThan(0.1);
+        expect(await layoutShiftScore(page, path)).toBeLessThan(0.1);
       });
     }
   });
