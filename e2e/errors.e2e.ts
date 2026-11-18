@@ -36,8 +36,12 @@ test.beforeEach(async ({ page, browserName }) => {
  * (`assets/guide.worker-*.js`) and on the dev server (`guide.worker.ts`).
  */
 const GUIDE_WORKER = /\/guide\.worker[^/]*\.(js|ts)(\?.*)?$/;
-/** The PCA lab's English words, its own chunk. */
-const PCA_COPY = /\/assets\/pca-[^/?]+\.js$/;
+/**
+ * The PCA lab's English words, its own chunk. The lab-copy loader asks again
+ * at `?retry=N` after a failure, and a blocked file must stay blocked there
+ * too; other queries (`?real` below) are not it.
+ */
+const PCA_COPY = /\/assets\/pca-[^/?]+\.js(?:\?retry=\d+)?$/;
 /** The home page, its own chunk: blocked, the whole page fails, not one lab. */
 const HOME_CHUNK = /\/assets\/HomePage-[^/?]+\.js(\?.*)?$/;
 

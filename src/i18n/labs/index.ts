@@ -111,27 +111,32 @@ function load(slug: LabSlug, language: Language): Promise<LabsCopy[LabSlug]> {
     ? (import(/* @vite-ignore */ previous) as Promise<LabModule>)
     : loader();
 
-  const promise = request.then(
-    (module) => {
+  const promise = request
+    .then((module) => {
       // What came back must be copy: an object, as every copy file exports.
+      // Thrown here, it settles the same way as a failed download below.
       if (typeof module?.default !== "object" || module.default === null) {
         throw new TypeError(`The ${language} copy for "${slug}" did not load as copy`);
       }
-      cache.set(key, module.default);
-      lastFailure.delete(key);
-      inFlight.delete(key);
       return module.default;
-    },
-    (error: unknown) => {
-      // Not recorded in `failed`: whether a failure is final depends on who
-      // asked. Only a read records it (see `read`); a prefetch or a language
-      // switch that fails leaves the next read free to ask again — at a fresh
-      // address (see `freshAddress`).
-      lastFailure.set(key, error);
-      inFlight.delete(key);
-      throw error;
-    },
-  );
+    })
+    .then(
+      (copy) => {
+        cache.set(key, copy);
+        lastFailure.delete(key);
+        inFlight.delete(key);
+        return copy;
+      },
+      (error: unknown) => {
+        // Not recorded in `failed`: whether a failure is final depends on who
+        // asked. Only a read records it (see `read`); a prefetch or a language
+        // switch that fails leaves the next read free to ask again — at a
+        // fresh address (see `freshAddress`).
+        lastFailure.set(key, error);
+        inFlight.delete(key);
+        throw error;
+      },
+    );
 
   inFlight.set(key, promise);
   return promise;
