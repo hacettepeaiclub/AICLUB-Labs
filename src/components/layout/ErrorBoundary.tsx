@@ -80,11 +80,11 @@ const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
  *
  * A lab is `React.lazy(load)`, and React keeps a rejected `lazy` for good, as
  * does the lab-copy cache in `i18n/labs` once a *read* of the copy has failed
- * (a failed prefetch is not kept; the read asks again). Rendering again would
- * only throw the same rejection. Chromium does fetch a failed module again on
- * a new `import()`, but nothing here would call it, and WebKit may keep the
- * failure for the life of the page. A full reload starts all of them over in
- * every browser and also picks up a new deployment. It loses nothing: the part
+ * (a failed prefetch is not kept; the read asks again, at a fresh address).
+ * Rendering again would only throw the same rejection, and a new `import()` of
+ * the same address would not help either: browsers keep a failed module in
+ * their module map for the life of the document. A full reload starts all of
+ * them over in every browser and also picks up a new deployment. It loses nothing: the part
  * that failed never ran. And it happens only after `siteAnswers()` has heard
  * from the server, so an attempt can never land the visitor on the browser's
  * own offline page. `reloadPage()` first asks again for any preload that

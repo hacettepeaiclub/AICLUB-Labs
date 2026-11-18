@@ -1,5 +1,6 @@
 import { useLanguage, useLanguageDependency } from "@/i18n";
 import type { Language } from "@/app/preferences";
+import { failedFile } from "@/components/layout/loadFailure";
 import type { LabsCopy, LabSlug } from "./types";
 
 /**
@@ -49,6 +50,31 @@ const loaders: Record<Language, Record<string, Loader>> = {
 const cache = new Map<string, LabsCopy[LabSlug]>();
 const inFlight = new Map<string, Promise<LabsCopy[LabSlug]>>();
 const failed = new Map<string, unknown>();
+/** The last failed attempt per copy file, whoever made it; cleared on success. */
+const lastFailure = new Map<string, unknown>();
+let retries = 0;
+
+/**
+ * Where to ask again for a file whose import already failed in this document.
+ *
+ * Browsers keep a failed module in their module map: a second `import()` of
+ * the same address rejects at once without a request (seen in Chromium, and
+ * WebKit keeps failures too). So a retry asks for the same file under a query the
+ * map has never seen. The address comes from the failure's own message, which
+ * Chromium and Firefox include; WebKit's does not name it, and there the read
+ * fails and the lab's boundary offers the reload, which recovers everywhere.
+ */
+function freshAddress(error: unknown): string | null {
+  // A wrapper (a bundler's preload helper, a test runner) may keep the
+  // browser's own error as its `cause`.
+  const cause = error instanceof Error ? error.cause : undefined;
+  const file =
+    failedFile(error, window.location.origin) ?? failedFile(cause, window.location.origin);
+  if (!file) return null;
+  const url = new URL(file);
+  url.searchParams.set("retry", String(++retries));
+  return url.pathname + url.search;
+}
 
 function load(slug: LabSlug, language: Language): Promise<LabsCopy[LabSlug]> {
   const key = `${language}/${slug}`;
@@ -58,16 +84,24 @@ function load(slug: LabSlug, language: Language): Promise<LabsCopy[LabSlug]> {
   const loader = loaders[language][`./${language}/${slug}.ts`];
   if (!loader) return Promise.reject(new Error(`No ${language} copy for the "${slug}" lab`));
 
-  const promise = loader().then(
+  const previous = lastFailure.has(key) ? freshAddress(lastFailure.get(key)) : null;
+  const request: Promise<LabModule> = previous
+    ? (import(/* @vite-ignore */ previous) as Promise<LabModule>)
+    : loader();
+
+  const promise = request.then(
     (module) => {
       cache.set(key, module.default);
+      lastFailure.delete(key);
       inFlight.delete(key);
       return module.default;
     },
     (error: unknown) => {
-      // Not recorded here: whether a failure is final depends on who asked.
-      // Only a read records it (see `read`); a prefetch or a language switch
-      // that fails leaves the next read free to ask again.
+      // Not recorded in `failed`: whether a failure is final depends on who
+      // asked. Only a read records it (see `read`); a prefetch or a language
+      // switch that fails leaves the next read free to ask again — at a fresh
+      // address (see `freshAddress`).
+      lastFailure.set(key, error);
       inFlight.delete(key);
       throw error;
     },
@@ -111,12 +145,11 @@ export function useLabCopy<S extends LabSlug>(slug: S): LabsCopy[S] {
  * A read that finds a download already under way — started by a prefetch
  * (a card pointed at while offline, say) or by a language switch — waits for
  * it, but does not adopt its failure. When it fails, the read asks once more,
- * this time as itself. That second request is what lets a lab open normally
- * after a prefetch failed and the connection came back: Chromium fetches a
- * module again on a new `import()` after a failed one. WebKit can keep the
- * failure for the life of the page; then the second request fails too, it is
- * recorded, and the boundary offers its reload, which is the dependable
- * recovery everywhere (see `ErrorBoundary`).
+ * this time as itself and at a fresh address (see `freshAddress`). That second
+ * request is what lets a lab open normally after a prefetch failed and the
+ * connection came back. Where the failure did not name its file (WebKit), the
+ * second request fails too, it is recorded, and the boundary offers its
+ * reload, which is the dependable recovery everywhere (see `ErrorBoundary`).
  */
 function read(slug: LabSlug, language: Language): Promise<void> {
   const key = `${language}/${slug}`;
