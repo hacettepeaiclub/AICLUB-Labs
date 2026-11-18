@@ -154,7 +154,7 @@ export function LabPalette({
     if (wanted.length < 3 || results.length > 0 || reported.current.has(wanted)) return;
     const id = window.setTimeout(() => {
       reported.current.add(wanted);
-      track("finder_empty", { query: wanted.slice(0, 40) });
+      track("finder_empty");
     }, 1200);
     return () => window.clearTimeout(id);
   }, [open, query, results.length]);
@@ -235,14 +235,11 @@ export function LabPalette({
           <Kbd>esc</Kbd>
         </div>
 
-        <p
-          role="status"
-          className={
-            results.length === 0 ? "px-4 py-10 text-center text-body-sm text-fg-muted" : "sr-only"
-          }
-        >
-          {results.length === 0 ? t.palette.empty(query.trim()) : ""}
-        </p>
+        {results.length === 0 && (
+          <p aria-hidden="true" className="px-4 py-10 text-center text-body-sm text-fg-muted">
+            {t.palette.empty(query.trim())}
+          </p>
+        )}
         <ul
           ref={listRef}
           id={listId}
@@ -300,7 +297,13 @@ export function LabPalette({
           className="flex items-center justify-between gap-4 border-t border-line/10 px-4 py-2.5 text-caption
             text-fg-faint"
         >
-          <p aria-live="polite">{results.length > 0 ? t.palette.results(results.length) : ""}</p>
+          <p role="status">
+            {results.length === 0 ? (
+              <span className="sr-only">{t.palette.empty(query.trim())}</span>
+            ) : (
+              t.palette.results(results.length)
+            )}
+          </p>
           <p className="hidden items-center gap-3 sm:flex">
             <span className="inline-flex items-center gap-1.5">
               <Kbd>↑</Kbd>

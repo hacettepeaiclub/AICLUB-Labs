@@ -8,8 +8,10 @@ import {
   type ComponentType,
   type ReactNode,
 } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { ErrorBoundary } from "./ErrorBoundary";
+import { reloadPage } from "./loadFailure";
+import { Button } from "@/components/ui";
 import { isPaletteShortcut } from "./paletteShortcut";
 import { track } from "@/app/analytics";
 import { SiteHeader } from "./SiteHeader";
@@ -54,22 +56,96 @@ const LabPalette = lazy<ComponentType<{ open: boolean; onOpenChange: (open: bool
   () =>
     loadPalette().then(
       (module) => ({ default: module.LabPalette }),
-      // A chunk that will not load — usually a deploy that renamed it under an
-      // open tab — leaves the finder closed rather than taking the page down
-      // with it: there is no error boundary out here, and the grid is still one
-      // link away.
-      () => ({ default: () => null }),
+      () => ({ default: FinderUnavailable }),
     ),
 );
 
-/** A prefetch that fails must not surface; the real open will try again. */
+/** Keep speculative failures quiet until someone asks to open the finder. */
 const preloadPalette = () => {
   loadPalette().catch(() => {});
 };
 
+function FinderUnavailable({
+  open,
+  onOpenChange,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
+  const t = useT();
+  if (!open) return null;
+
+  return (
+    <div className="shell mt-4">
+      <div className="card-surface flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3">
+        <p role="alert" className="text-body-sm font-medium text-fg">
+          {t.palette.unavailable}
+        </p>
+        <Button
+          variant="ghost"
+          onClick={(event) => {
+            const button = event.currentTarget;
+            void reloadPage(() => button.isConnected);
+          }}
+        >
+          {t.shell.errors.reload}
+        </Button>
+        <Link
+          to="/"
+          onClick={() => onOpenChange(false)}
+          className="text-body-sm text-fg-muted underline decoration-line/30 underline-offset-2
+            transition-colors duration-fast hover:text-fg"
+        >
+          {t.shell.errors.backToLabs}
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+function useRouteHeadingFocus(routeKey: string) {
+  const mainRef = useRef<HTMLElement>(null);
+  const previousRoute = useRef(routeKey);
+
+  useEffect(() => {
+    const main = mainRef.current;
+    if (!main || previousRoute.current === routeKey) return;
+    previousRoute.current = routeKey;
+
+    // A lazy route may commit its heading after the new main mounts.
+    // Give a closing dialog time to return focus before choosing a destination.
+    let frame: number | undefined;
+    const focusHeading = () => {
+      const heading = main.querySelector("h1");
+      if (!heading) return;
+      observer.disconnect();
+      frame = requestAnimationFrame(() => {
+        if (
+          !heading.isConnected ||
+          document.activeElement !== document.body ||
+          document.querySelector("dialog[open]")
+        )
+          return;
+        heading.tabIndex = -1;
+        heading.focus({ preventScroll: true });
+      });
+    };
+    const observer = new MutationObserver(focusHeading);
+    observer.observe(main, { childList: true, subtree: true });
+    focusHeading();
+    return () => {
+      observer.disconnect();
+      if (frame !== undefined) cancelAnimationFrame(frame);
+    };
+  }, [routeKey]);
+
+  return mainRef;
+}
+
 export function PageShell({ routeKey, children }: { routeKey: string; children: ReactNode }) {
   const t = useT();
   const { pathname } = useLocation();
+  const mainRef = useRouteHeadingFocus(routeKey);
   // Held here because two things open it — the header's button and the
   // shortcut — and the dialog has to agree with both.
   const [finding, setFinding] = useState(false);
@@ -116,7 +192,12 @@ export function PageShell({ routeKey, children }: { routeKey: string; children: 
         {t.shell.skipToContent}
       </a>
       <SiteHeader onFindLab={openFinder} onFindLabIntent={preloadPalette} />
-      <main key={routeKey} id="main" className="page-enter flex-1">
+      {paletteMounted && (
+        <Suspense fallback={null}>
+          <LabPalette open={finding} onOpenChange={setFinding} />
+        </Suspense>
+      )}
+      <main ref={mainRef} key={routeKey} id="main" className="page-enter flex-1">
         {/* Inside the chrome, not around it: a page that fails to render must
             still leave the visitor a header and a way somewhere else. */}
         <ErrorBoundary resetKey={pathname} showBackLink={pathname !== "/"}>
@@ -125,11 +206,6 @@ export function PageShell({ routeKey, children }: { routeKey: string; children: 
       </main>
       <SiteFooter />
       <OfflineNotice />
-      {paletteMounted && (
-        <Suspense fallback={null}>
-          <LabPalette open={finding} onOpenChange={setFinding} />
-        </Suspense>
-      )}
     </div>
   );
 }
