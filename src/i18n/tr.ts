@@ -200,6 +200,7 @@ export const tr: Translation = {
   palette: {
     open: "Lab ara",
     label: "Lab ara",
+    loading: "Lab arama açılıyor…",
     unavailable: "Lab arama şu anda kullanılamıyor.",
     placeholder: "Ada veya konuya göre ara",
     results: (n: number) => `${n} lab`,

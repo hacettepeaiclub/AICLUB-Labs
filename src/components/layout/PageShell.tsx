@@ -193,7 +193,17 @@ export function PageShell({ routeKey, children }: { routeKey: string; children: 
       </a>
       <SiteHeader onFindLab={openFinder} onFindLabIntent={preloadPalette} />
       {paletteMounted && (
-        <Suspense fallback={null}>
+        <Suspense
+          fallback={
+            finding && (
+              <div className="shell pointer-events-none fixed inset-x-0 bottom-16 z-40 flex justify-center">
+                <p role="status" className="card-surface px-4 py-3 text-body-sm text-fg">
+                  {t.palette.loading}
+                </p>
+              </div>
+            )
+          }
+        >
           <LabPalette open={finding} onOpenChange={setFinding} />
         </Suspense>
       )}
