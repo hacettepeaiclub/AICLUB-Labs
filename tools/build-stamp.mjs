@@ -28,7 +28,7 @@
 
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { existsSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 
@@ -44,13 +44,37 @@ const git = (args) =>
   execFileSync("git", args, { encoding: "buffer", stdio: ["ignore", "pipe", "ignore"] });
 
 /**
- * The commit plus every change not in it, or null outside a git checkout.
+ * Everything a production build reads besides the tracked source: the
+ * environment Vite and the build tools use, and every `.env*` file beside
+ * the project (Vite loads `.env`, `.env.local`, `.env.production`… and git
+ * ignores the local ones). The same commit built with another
+ * `VITE_SITE_URL` is another build.
+ */
+const BUILD_ENV = /^(VITE_|OUT_DIR$)/;
+
+function buildInputs(hash, env, root) {
+  for (const key of Object.keys(env)
+    .filter((k) => BUILD_ENV.test(k))
+    .sort()) {
+    hash.update(`\0env\0${key}=${env[key]}`);
+  }
+  for (const file of readdirSync(root)
+    .filter((f) => f.startsWith(".env"))
+    .sort()) {
+    hash.update(`\0dotenv\0${file}\0`);
+    hash.update(readFileSync(path.join(root, file)));
+  }
+}
+
+/**
+ * The commit plus every change not in it, and the build's environment
+ * (above); null outside a git checkout.
  *
  * Untracked files count by content (a new lab is a new file); ignored ones do
  * not (`dist/`, `node_modules/`, test output), so building or testing does not
  * change the fingerprint of the source it built.
  */
-export function sourceFingerprint() {
+export function sourceFingerprint(env = process.env, root = ".") {
   try {
     const hash = createHash("sha256");
     hash.update(git(["rev-parse", "HEAD"]));
@@ -64,6 +88,7 @@ export function sourceFingerprint() {
       hash.update(`\0${file}\0`);
       if (existsSync(file)) hash.update(git(["hash-object", "--", file]));
     }
+    buildInputs(hash, env, root);
     return hash.digest("hex");
   } catch {
     return null;
@@ -155,21 +180,36 @@ export async function readFreshStamp({
   } catch {
     return { stamp: null, reason: "unreadable build stamp" };
   }
-  if (!stamp || typeof stamp !== "object" || !stamp.manifest || !stamp.files || !stamp.outDir) {
+  const isObject = (value) => !!value && typeof value === "object" && !Array.isArray(value);
+  if (
+    !isObject(stamp) ||
+    !isObject(stamp.manifest) ||
+    !isObject(stamp.files) ||
+    typeof stamp.outDir !== "string"
+  ) {
     return { stamp: null, reason: "malformed build stamp" };
   }
   if (source === null || stamp.source !== source) {
     return { stamp: null, reason: "the source has changed since that build" };
   }
-  const files = manifestFiles(stamp.manifest);
-  if (files.join("\n") !== Object.keys(stamp.files).sort().join("\n")) {
-    return { stamp: null, reason: "malformed build stamp" };
-  }
-  for (const file of files) {
-    const full = path.join(stamp.outDir, file);
-    if (!existsSync(full) || sha256(await readFile(full)) !== stamp.files[file]) {
-      return { stamp: null, reason: `${path.relative(".", full)} is not the file that build made` };
+  // Anything odd inside a stamp that parsed (an entry that is not a chunk, a
+  // file name that is not a string) means it was not written by this tool.
+  try {
+    const files = manifestFiles(stamp.manifest);
+    if (files.join("\n") !== Object.keys(stamp.files).sort().join("\n")) {
+      return { stamp: null, reason: "malformed build stamp" };
     }
+    for (const file of files) {
+      const full = path.join(stamp.outDir, file);
+      if (!existsSync(full) || sha256(await readFile(full)) !== stamp.files[file]) {
+        return {
+          stamp: null,
+          reason: `${path.relative(".", full)} is not the file that build made`,
+        };
+      }
+    }
+  } catch {
+    return { stamp: null, reason: "malformed build stamp" };
   }
   return { stamp, reason: null };
 }

@@ -96,7 +96,40 @@ describe("the build stamp", () => {
   });
 });
 
+describe("a parseable but malformed stamp", () => {
+  it("falls back instead of throwing", async () => {
+    await mkdir(path.dirname(stampPath), { recursive: true });
+    for (const stamp of [
+      { source: "s1", outDir: 42, manifest: {}, files: {} },
+      { source: "s1", outDir, manifest: { a: null }, files: {} },
+      { source: "s1", outDir, manifest: { a: { file: 7 } }, files: { 7: "x" } },
+      { source: "s1", outDir, manifest: [], files: {} },
+    ]) {
+      await writeFile(stampPath, JSON.stringify(stamp));
+      const result = await readFreshStamp({ source: "s1", stampPath });
+      expect(result.stamp, JSON.stringify(stamp)).toBeNull();
+      expect(result.reason).toBe("malformed build stamp");
+    }
+  });
+});
+
 describe("the source fingerprint", () => {
+  it("changes with the build's environment and .env files", async () => {
+    const env = { VITE_SITE_URL: "https://a.example", PATH: "/bin" };
+    const base = sourceFingerprint(env, dir);
+    expect(sourceFingerprint({ ...env, PATH: "/usr/bin" }, dir)).toBe(base);
+    // Vite sets NODE_ENV itself during a build, so it must not count.
+    expect(sourceFingerprint({ ...env, NODE_ENV: "production" }, dir)).toBe(base);
+    expect(sourceFingerprint({ ...env, VITE_SITE_URL: "https://b.example" }, dir)).not.toBe(base);
+    expect(sourceFingerprint({ ...env, OUT_DIR: "dist-next" }, dir)).not.toBe(base);
+
+    await writeFile(path.join(dir, ".env.production.local"), "VITE_SITE_URL=https://c.example\n");
+    const withDotenv = sourceFingerprint(env, dir);
+    expect(withDotenv).not.toBe(base);
+    await writeFile(path.join(dir, ".env.production.local"), "VITE_SITE_URL=https://d.example\n");
+    expect(sourceFingerprint(env, dir)).not.toBe(withDotenv);
+  });
+
   it("is vouched for only if unchanged since the build started, and only once", async () => {
     await recordBuildStart("dist");
     expect(await sourceIfUnchanged("dist")).toBe(sourceFingerprint());
