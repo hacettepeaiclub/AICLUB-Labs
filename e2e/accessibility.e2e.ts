@@ -23,6 +23,10 @@ for (const path of [
   "/missing/",
 ]) {
   test(`initial accessibility: ${path}`, async ({ page }) => {
+    test.slow(
+      path === "/labs/convolution/",
+      "The large stage tree takes longer to scan in parallel.",
+    );
     await page.goto(path);
     await expect(page.locator("main h1")).toBeVisible();
     if (path.startsWith("/labs/")) {
