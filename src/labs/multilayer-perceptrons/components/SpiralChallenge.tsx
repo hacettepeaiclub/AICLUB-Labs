@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui";
 import { Figure, LabSlider, Stage, Transport } from "@/components/lab";
 import { useLabCopy } from "@/i18n/labs";
 import { useInView, useLocalStorage } from "@/hooks";
+import { isFiniteNumber, orNull } from "@/hooks/useLocalStorage";
 import { formatPercent } from "@/lib/format";
 import { generateDataset, splitDataset } from "../datasets";
 import { useTrainer } from "../useTrainer";
@@ -19,6 +20,21 @@ interface Attempt {
   accuracy: number;
   epoch: number;
 }
+
+/** A best attempt read back from storage: whole neuron and epoch counts, accuracy as a fraction. */
+export const isAttempt = (value: unknown): value is Attempt => {
+  if (typeof value !== "object" || value === null) return false;
+  const { neurons, accuracy, epoch } = value as Record<string, unknown>;
+  return (
+    Number.isSafeInteger(neurons) &&
+    (neurons as number) > 0 &&
+    isFiniteNumber(accuracy) &&
+    accuracy >= 0 &&
+    accuracy <= 1 &&
+    Number.isSafeInteger(epoch) &&
+    (epoch as number) >= 0
+  );
+};
 
 /** Fewer neurons wins; ties go to whoever got there in fewer epochs. */
 const beats = (candidate: Attempt, best: Attempt | null): boolean =>
@@ -43,6 +59,7 @@ export function SpiralChallenge() {
   const [best, setBest] = useLocalStorage<Attempt | null>(
     "acl:multilayer-perceptrons:best-spiral",
     null,
+    orNull(isAttempt),
   );
 
   const points = useMemo(() => generateDataset("spiral", 220, 0.06, 21), []);

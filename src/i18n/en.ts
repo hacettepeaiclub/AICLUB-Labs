@@ -98,6 +98,11 @@ export const en = {
     themeLabel: "Theme",
     light: "Light",
     dark: "Dark",
+    // Beside the language switch when the other language could not be
+    // downloaded. Said in the language the page is still in.
+    languageFailed: (language: string) =>
+      `Couldn't switch to ${language}. Check your connection and try again.`,
+    dismiss: "Dismiss",
   },
 
   home: {

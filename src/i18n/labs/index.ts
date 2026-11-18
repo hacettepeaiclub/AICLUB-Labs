@@ -1,4 +1,4 @@
-import { useLanguage } from "@/i18n";
+import { useLanguage, useLanguageDependency } from "@/i18n";
 import type { Language } from "@/app/preferences";
 import type { LabsCopy, LabSlug } from "./types";
 
@@ -65,14 +65,9 @@ function load(slug: LabSlug, language: Language): Promise<LabsCopy[LabSlug]> {
       return module.default;
     },
     (error: unknown) => {
-      // Kept, so the next read throws it rather than suspending again. A
-      // rejected promise thrown to `<Suspense>` is not an error to React, only
-      // a reason to try again: it would re-render, ask again, and leave the
-      // spinner up for good instead of handing the failure to the lab's error
-      // boundary. Retrying in place would not help anyway — browsers remember
-      // a module that failed to load — which is why that boundary's retry
-      // reloads the page, and a reload clears this too.
-      failed.set(key, error);
+      // Not recorded here: whether a failure is final depends on who asked.
+      // Only a read records it (see `read`); a prefetch or a language switch
+      // that fails leaves the next read free to ask again.
       inFlight.delete(key);
       throw error;
     },
@@ -90,12 +85,55 @@ function load(slug: LabSlug, language: Language): Promise<LabsCopy[LabSlug]> {
  */
 export function useLabCopy<S extends LabSlug>(slug: S): LabsCopy[S] {
   const { language } = useLanguage();
+  // A language switch waits for this lab's copy in the new language, so the
+  // lab changes language in one step instead of suspending behind its spinner.
+  // Its failure cancels the switch; it is not recorded in `failed`, because
+  // the lab is still showing, whole, in the language it already has.
+  useLanguageDependency((next) => copyFor(slug, next));
   const key = `${language}/${slug}`;
   const copy = cache.get(key);
   if (copy) return copy as LabsCopy[S];
   // What `React.lazy` does with a chunk that would not load.
   if (failed.has(key)) throw failed.get(key);
-  throw load(slug, language);
+  throw read(slug, language);
+}
+
+/**
+ * What a reading component suspends on.
+ *
+ * A read's own failure is recorded in `failed`, so the next render throws it
+ * to the lab's error boundary. Throwing the rejected promise to `<Suspense>`
+ * instead would not hand it over: to React a thrown promise is only a reason
+ * to render again, so it would ask again and keep the spinner up for good.
+ * The promise given to Suspense therefore never rejects; it settles, and the
+ * render that follows finds either the copy or the recorded failure.
+ *
+ * A read that finds a download already under way — started by a prefetch
+ * (a card pointed at while offline, say) or by a language switch — waits for
+ * it, but does not adopt its failure. When it fails, the read asks once more,
+ * this time as itself. That second request is what lets a lab open normally
+ * after a prefetch failed and the connection came back: Chromium fetches a
+ * module again on a new `import()` after a failed one. WebKit can keep the
+ * failure for the life of the page; then the second request fails too, it is
+ * recorded, and the boundary offers its reload, which is the dependable
+ * recovery everywhere (see `ErrorBoundary`).
+ */
+function read(slug: LabSlug, language: Language): Promise<void> {
+  const key = `${language}/${slug}`;
+  const pending = inFlight.get(key);
+  if (pending) return pending.then(settled, settled);
+  return load(slug, language).then(settled, (error: unknown) => {
+    failed.set(key, error);
+  });
+}
+
+const settled = (): void => undefined;
+
+/** One lab's copy, for a language switch to wait on; a lab without prose has nothing to wait for. */
+function copyFor(slug: LabSlug, language: Language): Promise<unknown> {
+  if (!loaders[language][`./${language}/${slug}.ts`]) return Promise.resolve();
+  const cached = cache.get(`${language}/${slug}`);
+  return cached ? Promise.resolve(cached) : load(slug, language);
 }
 
 /**
@@ -104,14 +142,18 @@ export function useLabCopy<S extends LabSlug>(slug: S): LabsCopy[S] {
  * Called wherever the lab's code is preloaded — a card pointed at, a palette
  * row highlighted, the "next" link scrolled into view — and by `LabPage` as it
  * renders, so the copy is in flight beside the lab's chunk rather than after
- * it. A failed prefetch is swallowed: it must never surface as an error on a
- * page that is working; the read that needs the copy reports it.
+ * it. A failed prefetch is swallowed and forgotten: it must never surface as
+ * an error on a page that is working, and it must not poison the cache for
+ * the read that comes later, which makes its own request and reports its own
+ * failure.
  */
 export const prefetchLabCopy = (slug: string, language: Language): void => {
   // Not every lab has prose: a slug without a file has nothing to fetch.
   if (!loaders[language][`./${language}/${slug}.ts`]) return;
   const key = `${language}/${slug}`;
-  if (cache.has(key) || failed.has(key)) return;
+  if (cache.has(key) || failed.has(key) || inFlight.has(key)) return;
+  // Swallowed and not recorded: a prefetch that fails must not decide what
+  // the read that needs the copy will get. That read asks again.
   load(slug as LabSlug, language).catch(() => {});
 };
 

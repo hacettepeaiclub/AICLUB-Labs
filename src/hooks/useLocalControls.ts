@@ -4,9 +4,9 @@ import { useLocalStorage } from "./useLocalStorage";
 /**
  * Keep a stored value only if it still looks like the default it replaces.
  *
- * `useLocalStorage` already survives malformed JSON — it catches the parse and
- * falls back. What it cannot see is JSON that parses perfectly well and is
- * still wrong: `{"w1": "abc"}` where a number belongs. That used to be spread
+ * `useLocalStorage` already survives malformed JSON and rejects anything that
+ * is not a bag at all (see `isBag`). What a whole-value guard cannot do is
+ * keep the good parts of a bag that is partly wrong: `{"w1": "abc"}` where a number belongs. That used to be spread
  * straight over the defaults, and the lab rendered `output = nope(NaN·x₁ …)`
  * with a figure reading `NaN`.
  *
@@ -30,6 +30,14 @@ const keeps = (stored: unknown, fallback: unknown): boolean => {
 };
 
 /**
+ * Anything shaped like a bag of controls; each value in it is then checked on
+ * its own against its default (see `keeps`), so one bad value does not cost
+ * the visitor the rest.
+ */
+const isBag = <T extends object>(value: unknown): value is Partial<T> =>
+  typeof value === "object" && value !== null && !Array.isArray(value);
+
+/**
  * A small bag of control values that survives a reload.
  *
  * Settings someone dialled in are state they created, so they are worth
@@ -45,7 +53,7 @@ export function useLocalControls<T extends object>(
   storageKey: string,
   defaults: T,
 ): [T, (patch: Partial<T>) => void] {
-  const [stored, setStored] = useLocalStorage<Partial<T>>(storageKey, {});
+  const [stored, setStored] = useLocalStorage<Partial<T>>(storageKey, {}, isBag);
   // Captured once. `defaults` is an object literal at every call site, so a
   // fresh identity arrives on every render; depending on it would rebuild the
   // merged object every time and defeat the memo. The values never change, so

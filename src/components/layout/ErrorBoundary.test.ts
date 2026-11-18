@@ -10,20 +10,15 @@ const stripComments = (text: string) =>
 /**
  * The boundary, checked at the source.
  *
- * The suite runs in node with no DOM, so rendering a throwing child and
- * asserting on the fallback is not available here — that part is covered by
- * the browser QA run. What can be pinned here is everything a later edit could
- * quietly undo: that the boundary exists, that it wraps the routed content
- * *inside* the chrome rather than around it, that it resets, and that it never
- * puts the underlying error on screen.
+ * What it shows for each failure, that it hides the error, restarts and
+ * resets is rendered and asserted in ErrorBoundary.behaviour.test.tsx. What
+ * stays here is placement and shape that a render of the boundary alone cannot
+ * see: that it wraps the routed content *inside* the chrome rather than around
+ * it, that the auto-retry loop keeps its bounds, that it adds no telemetry,
+ * and that its copy exists in both languages.
  */
 describe("error boundary", () => {
   const boundary = read("src/components/layout/ErrorBoundary.tsx");
-
-  it("is a real boundary", () => {
-    expect(boundary).toMatch(/static getDerivedStateFromError/);
-    expect(boundary).toMatch(/componentDidCatch/);
-  });
 
   it("sits inside the page chrome, so the header and footer survive", () => {
     // The whole point: wrapping PageShell instead of its children would have
@@ -46,32 +41,14 @@ describe("error boundary", () => {
     expect(page).toMatch(/<LabShell[\s\S]*<ErrorBoundary/);
   });
 
-  it("recovers: reload on retry, and a clean slate on navigation", () => {
+  it("recovers: reload on retry, and the page shell resets it per route", () => {
     // A state reset alone would not clear a cached lazy-import rejection,
-    // which is the failure this boundary most often catches.
+    // which is the failure this boundary most often catches. That a new
+    // resetKey clears the screen is exercised in ErrorBoundary.behaviour.test.tsx.
     expect(boundary).toMatch(/reloadPage\(/);
-    expect(boundary).toMatch(/kind: null/);
-    expect(boundary).toMatch(/resetKey/);
     expect(stripComments(read("src/components/layout/PageShell.tsx"))).toMatch(
       /resetKey=\{pathname\}/,
     );
-  });
-
-  it("shows the visitor no stack trace and no error text", () => {
-    const body = stripComments(boundary);
-    // The caught error is logged and never rendered.
-    expect(body).toMatch(/console\.error/);
-    expect(body).not.toMatch(/\{error\.message\}|\{this\.state\.error|componentStack\}/);
-  });
-
-  it("tells the three failures apart, and only says 'no connection' when the browser is offline", () => {
-    const body = stripComments(boundary);
-    expect(body).toMatch(/isLoadFailure\(error\) \? "load" : "runtime"/);
-    // The offline screen is chosen by the browser's own offline flag, which is
-    // reliable when false; a failed download while online is not called that.
-    expect(body).toMatch(/if \(!online\) \{[\s\S]*?copy\.offline\.title/);
-    expect(body).toMatch(/copy\.load\.lab : copy\.load\.page/);
-    expect(body).toMatch(/copy\.runtime\.title/);
   });
 
   it("retries on its own only after a failed download, a bounded number of times, never two at once", () => {
@@ -103,13 +80,6 @@ describe("error boundary", () => {
     expect(body).toMatch(/onClick=\{busy \? undefined : this\.retry\}/);
     expect(body).toMatch(/aria-disabled=\{busy \|\| undefined\}/);
     expect(body).toMatch(/busy \? copy\.retrying : copy\.retry/);
-  });
-
-  it("restarts a broken experiment by remounting it, and says what that costs", () => {
-    const body = stripComments(boundary);
-    expect(body).toMatch(/<Fragment key=\{generation\}>/);
-    expect(body).toMatch(/generation: state\.generation \+ 1/);
-    expect(body).toMatch(/copy\.runtime\.restartNoteLab/);
   });
 
   it("is announced once per message, and offers a way out", () => {

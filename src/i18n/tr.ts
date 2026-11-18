@@ -71,6 +71,9 @@ export const tr: Translation = {
     themeLabel: "Tema",
     light: "Açık",
     dark: "Koyu",
+    languageFailed: (language: string) =>
+      `Dil değiştirilemedi (${language}). Bağlantını kontrol edip yeniden dene.`,
+    dismiss: "Kapat",
   },
 
   home: {
