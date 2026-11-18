@@ -17,7 +17,11 @@ test.beforeEach(async ({ page, browserName }) => {
   await page.addInitScript(() => localStorage.setItem("aiclub-labs-language", "en"));
 });
 
-test("a drag rotates the PCA picture at a mobile viewport", async ({ page }) => {
+test("a drag rotates the PCA picture at a mobile viewport", async ({
+  page,
+  context,
+  browserName,
+}) => {
   await page.goto("/labs/pca/");
   const picture = page.locator("[data-stage]").first().locator("svg[role=img]");
   await picture.scrollIntoViewIfNeeded();
@@ -27,12 +31,32 @@ test("a drag rotates the PCA picture at a mobile viewport", async ({ page }) => 
   if (!bounds) throw new Error("PCA picture has no bounding box");
   const x = bounds.x + bounds.width / 2;
   const y = bounds.y + bounds.height / 2;
-  // Playwright's cross-browser touch API only exposes taps. Use its pointer
-  // through the mobile layout to exercise the drag hooks in both engines.
-  await page.mouse.move(x, y);
-  await page.mouse.down();
-  await page.mouse.move(x + bounds.width / 4, y, { steps: 4 });
-  await page.mouse.up();
+  const distance = bounds.width / 4;
+
+  if (browserName === "chromium") {
+    const input = await context.newCDPSession(page);
+    try {
+      await input.send("Input.dispatchTouchEvent", {
+        type: "touchStart",
+        touchPoints: [{ x, y }],
+      });
+      for (const step of [1, 2, 3, 4]) {
+        await input.send("Input.dispatchTouchEvent", {
+          type: "touchMove",
+          touchPoints: [{ x: x + (distance * step) / 4, y }],
+        });
+      }
+      await input.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+    } finally {
+      await input.detach();
+    }
+  } else {
+    // WebKit exposes touch taps but has no Playwright touch drag API.
+    await page.mouse.move(x, y);
+    await page.mouse.down();
+    await page.mouse.move(x + distance, y, { steps: 4 });
+    await page.mouse.up();
+  }
   await expect(axis).not.toHaveAttribute("x1", before ?? "");
 });
 
