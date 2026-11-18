@@ -26,7 +26,9 @@ for (const path of [
     await page.goto(path);
     await expect(page.locator("main h1")).toBeVisible();
     if (path.startsWith("/labs/")) {
-      await expect(page.locator(".lab-content h2").first()).toBeAttached();
+      const content = page.locator(".lab-content");
+      await expect(content.locator("h2").first()).toBeAttached();
+      await expect(content.locator('[role="alert"] h2')).toHaveCount(0);
     }
     await scan(page);
   });
@@ -45,7 +47,7 @@ test("experiment accessibility: hash table after inserting a key", async ({ page
   const stage = page.locator("[data-stage]").first();
   await stage.getByRole("textbox", { name: "A key" }).fill("axe-scan");
   await stage.getByRole("button", { name: "Put it in" }).click();
-  await expect(stage.locator("ol li").getByText("axe-scan", { exact: true })).toBeVisible();
+  await expect(stage.locator("ol ul").getByText("axe-scan", { exact: true })).toBeVisible();
   await scan(page);
 });
 
@@ -59,7 +61,7 @@ test("experiment accessibility: probability after picking a door", async ({ page
 
 test("finder accessibility while open", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Find a lab", exact: true }).click();
+  await page.getByRole("button", { name: /^Find a lab/ }).click();
   await expect(page.getByRole("dialog", { name: "Find a lab" })).toBeVisible();
   await scan(page);
 });
