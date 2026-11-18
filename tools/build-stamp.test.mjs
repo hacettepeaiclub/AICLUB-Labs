@@ -118,8 +118,9 @@ describe("the source fingerprint", () => {
     const env = { VITE_SITE_URL: "https://a.example", PATH: "/bin" };
     const base = sourceFingerprint(env, dir);
     expect(sourceFingerprint({ ...env, PATH: "/usr/bin" }, dir)).toBe(base);
-    // Vite sets NODE_ENV itself during a build, so it must not count.
+    // Unset is a production build, as Vite makes it; development is not.
     expect(sourceFingerprint({ ...env, NODE_ENV: "production" }, dir)).toBe(base);
+    expect(sourceFingerprint({ ...env, NODE_ENV: "development" }, dir)).not.toBe(base);
     expect(sourceFingerprint({ ...env, VITE_SITE_URL: "https://b.example" }, dir)).not.toBe(base);
     expect(sourceFingerprint({ ...env, OUT_DIR: "dist-next" }, dir)).not.toBe(base);
 

@@ -52,7 +52,20 @@ const git = (args) =>
  */
 const BUILD_ENV = /^(VITE_|OUT_DIR$)/;
 
+/**
+ * NODE_ENV as this process was started with. Vite writes `production` into
+ * `process.env.NODE_ENV` while it builds (and `development` for the dev server
+ * prerender starts), so the live value says what Vite did, not what was asked
+ * for. Read once, as this module loads: before prerender or the size budget
+ * start Vite, and in vite.config.ts after Vite has set only its default.
+ */
+const NODE_ENV_AT_START = process.env.NODE_ENV;
+
 function buildInputs(hash, env, root) {
+  // Unset builds for production, the same as asking for it; anything else,
+  // `development` above all, makes different React and a different build.
+  const nodeEnv = env === process.env ? NODE_ENV_AT_START : env.NODE_ENV;
+  hash.update(`\0env\0NODE_ENV=${nodeEnv || "production"}`);
   for (const key of Object.keys(env)
     .filter((k) => BUILD_ENV.test(k))
     .sort()) {
