@@ -482,10 +482,6 @@
 }
 
 /* ------------------------------------------------------- daily puzzle -- */
-.calc-section {
-  scroll-margin-top: 5rem;
-}
-
 /* The card at the top of the page: the first thing a returning student sees. */
 .calc-cta {
   position: relative;

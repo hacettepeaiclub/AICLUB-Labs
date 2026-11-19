@@ -75,6 +75,7 @@ export function CalculatorPage() {
   const copy = CALCULATOR_COPY[language];
   useDocumentHead(calculatorMeta(copy.title, copy.description));
   const reduced = useReducedMotion();
+  const practiceRef = useRef<HTMLDivElement>(null);
   const [bench, dispatch] = useReducer(reduceBench, undefined, () => initialBench());
 
   const [trial, setTrial] = useState<PuzzleTask | null>(null);
@@ -147,9 +148,15 @@ export function CalculatorPage() {
     if (!inDaily || daily?.day !== today) {
       dispatch({ type: "dailyOpen", day: today, progress: store.load(today, bench.model) });
     }
-    document
-      .getElementById("calc-practice")
-      ?.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
+    const practice = practiceRef.current;
+    if (!practice) return;
+    const headerBottom =
+      document.querySelector("header.sticky")?.getBoundingClientRect().bottom ?? 0;
+    practice.focus({ preventScroll: true });
+    window.scrollBy({
+      top: practice.getBoundingClientRect().top - headerBottom - 16,
+      behavior: reduced ? "auto" : "smooth",
+    });
   };
 
   // A lesson counts once, when its last key goes in.
@@ -232,7 +239,14 @@ export function CalculatorPage() {
         <p className="mt-1 max-w-prose text-caption text-fg-faint">{copy.notListed}</p>
       </LabSection>
 
-      <div id="calc-practice" className="calc-section">
+      <div
+        ref={practiceRef}
+        id="calc-practice"
+        className="calc-section"
+        role="region"
+        aria-label={copy.practiseTitle}
+        tabIndex={-1}
+      >
         <LabSection
           kicker={copy.practiseKicker}
           title={copy.practiseTitle}
