@@ -62,3 +62,39 @@ describe("XOR by hand", () => {
     expect(oneLineAccuracy(points, a)).toBeLessThan(0.8);
   });
 });
+
+describe("bestOneLine", () => {
+  /** The direct count it replaced: every grid line against every point. */
+  const direct = (points: Parameters<typeof bestOneLine>[0], angles: number, offsets: number) => {
+    let best = 0;
+    for (let i = 0; i < angles; i++) {
+      const t = (i / angles) * Math.PI;
+      for (let j = 0; j < offsets; j++) {
+        const b = -1.5 + (3 * j) / (offsets - 1);
+        best = Math.max(best, oneLineAccuracy(points, { w1: Math.cos(t), w2: Math.sin(t), b }));
+      }
+    }
+    return best;
+  };
+
+  it("gives exactly the direct count's answer, on every dataset and seed", () => {
+    for (const kind of ["xor", "circle", "gauss", "spiral"] as const) {
+      for (const seed of [1, 3, 7, 21]) {
+        const points = generateDataset(kind, 120, 0.08, seed);
+        expect(bestOneLine(points, 90, 61), `${kind}/${seed}`).toBe(direct(points, 90, 61));
+      }
+    }
+    const xor = generateDataset("xor", 160, 0.06, 3);
+    expect(bestOneLine(xor)).toBe(direct(xor, 360, 241));
+  });
+
+  it("handles no points, and points exactly on a grid line", () => {
+    expect(bestOneLine([])).toBe(0);
+    // On the line x = 0 (offset 0 of the vertical direction): not on the positive side.
+    const onLine = [
+      { x: 0, y: 0.5, label: 1 as const },
+      { x: 0.5, y: 0, label: -1 as const },
+    ];
+    expect(bestOneLine(onLine, 4, 3)).toBe(direct(onLine, 4, 3));
+  });
+});

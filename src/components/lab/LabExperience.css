@@ -25,10 +25,14 @@
   background: rgb(var(--accent-soft));
   color: rgb(var(--fg));
 }
+/* For in-page links and the browser's own scrolling. "Try it" and the chapter
+   links measure the sticky header instead (see reveal() in LabExperience.tsx),
+   because on a phone it wraps taller than this. */
 .lab-content [data-stage],
+.lab-content [data-tour="predict"],
 .lab-content .lab-section,
 .lab-content h2 {
-  scroll-margin-top: 6rem;
+  scroll-margin-top: 7.5rem;
 }
 .lab-content > div > .lab-section {
   margin-top: 3.5rem;

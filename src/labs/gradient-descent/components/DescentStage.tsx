@@ -178,7 +178,7 @@ export function DescentStage({
     run.index,
     formatNumber(view.objective, 4),
     formatNumber(view.gradientNorm, 3),
-    g.status[view.status],
+    g.status[view.outcome],
   );
 
   const marks: Mark[] = [
@@ -307,7 +307,7 @@ export function DescentStage({
             hint={g.figures.objectiveHint}
           />
           <Figure label={g.figures.gradientNorm} value={formatNumber(view.gradientNorm, 3)} />
-          <Figure label={g.figures.status} value={g.status[view.status]} />
+          <Figure label={g.figures.status} value={g.status[view.outcome]} />
         </>
       }
       secondaryLabel={g.drop.moreLabel}
