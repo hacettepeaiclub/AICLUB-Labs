@@ -14,7 +14,11 @@ test.beforeEach(async ({ page, browserName }) => {
       },
     );
   }
-  await page.addInitScript(() => localStorage.setItem("aiclub-labs-language", "en"));
+  await page.addInitScript(() => {
+    if (!localStorage.getItem("aiclub-labs-language")) {
+      localStorage.setItem("aiclub-labs-language", "en");
+    }
+  });
 });
 
 test("a drag rotates the PCA picture at a mobile viewport", async ({
@@ -76,11 +80,75 @@ test("touch opens a native learning dialog and closing it restores focus", async
 
 test("touch opens and dismisses the native finder from a lab", async ({ page }) => {
   await page.goto("/labs/pca/");
-  await page.locator('summary[aria-label="Navigation"]').tap();
-  await page.getByRole("button", { name: "Find a lab", exact: true }).tap();
+  const trigger = page.getByRole("button", { name: "Find a lab", exact: true });
+  await expect(trigger).toBeVisible();
+  const target = await trigger.boundingBox();
+  expect(target?.width).toBeGreaterThanOrEqual(44);
+  expect(target?.height).toBeGreaterThanOrEqual(44);
+  await trigger.tap();
   const finder = page.getByRole("dialog", { name: "Find a lab" });
   await expect(finder.getByRole("combobox")).toBeFocused();
   expect(await finder.evaluate((dialog) => dialog.matches(":modal"))).toBe(true);
-  await page.keyboard.press("Escape");
+  const close = finder.getByRole("button", { name: "close" });
+  const closeTarget = await close.boundingBox();
+  expect(closeTarget?.width).toBeGreaterThanOrEqual(44);
+  expect(closeTarget?.height).toBeGreaterThanOrEqual(44);
+  await close.tap();
   await expect(finder).toBeHidden();
+  await expect(trigger).toBeFocused();
 });
+
+test("the mobile navigation fits on screen with full-sized link targets", async ({ page }) => {
+  const width = 390;
+  await page.setViewportSize({ width, height: 850 });
+  await page.goto("/");
+  const menu = page.locator('summary[aria-label="Navigation"]');
+  const menuTarget = await menu.boundingBox();
+  expect(menuTarget?.width).toBeGreaterThanOrEqual(44);
+  expect(menuTarget?.height).toBeGreaterThanOrEqual(44);
+  await menu.tap();
+
+  const navigation = page.getByRole("navigation", { name: "Primary" });
+  const bounds = await navigation.boundingBox();
+  if (!bounds) throw new Error("Mobile navigation is off screen");
+  expect(bounds.x).toBeGreaterThanOrEqual(0);
+  expect(bounds.x + bounds.width).toBeLessThanOrEqual(width);
+  const links = navigation.getByRole("link");
+  await expect(links).toHaveCount(2);
+  for (const link of await links.all()) {
+    const target = await link.boundingBox();
+    expect(target?.width).toBeGreaterThanOrEqual(44);
+    expect(target?.height).toBeGreaterThanOrEqual(44);
+  }
+
+  await navigation.getByRole("link", { name: "Calculator" }).tap();
+  await expect(page).toHaveURL("/calculator/");
+  await expect(navigation).toBeHidden();
+});
+
+for (const language of ["en", "tr"] as const) {
+  test(`home field filters stay usable at 320px (${language})`, async ({ page }) => {
+    await page.setViewportSize({ width: 320, height: 850 });
+    await page.addInitScript((language) => {
+      localStorage.setItem("aiclub-labs-language", language);
+    }, language);
+    await page.goto("/");
+    const filters = page.getByRole("group", {
+      name: language === "en" ? "Filter labs by field" : "Labları konuya göre filtrele",
+    });
+    await expect(filters).toBeVisible();
+    const pageWidth = () =>
+      page.evaluate(() => ({
+        document: document.documentElement.scrollWidth,
+        viewport: document.documentElement.clientWidth,
+      }));
+    await expect.poll(pageWidth).toEqual({ document: 320, viewport: 320 });
+
+    const lastFilter = filters.getByRole("button").last();
+    await lastFilter.scrollIntoViewIfNeeded();
+    await expect.poll(() => filters.evaluate((strip) => strip.scrollLeft)).toBeGreaterThan(0);
+    await lastFilter.tap();
+    await expect(lastFilter).toHaveAttribute("aria-pressed", "true");
+    await expect.poll(pageWidth).toEqual({ document: 320, viewport: 320 });
+  });
+}

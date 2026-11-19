@@ -52,12 +52,17 @@ import { useT } from "@/i18n";
  * the page painting a beat later for everyone.
  */
 const loadPalette = () => import("./LabPalette");
-const LabPalette = lazy<ComponentType<{ open: boolean; onOpenChange: (open: boolean) => void }>>(
-  () =>
-    loadPalette().then(
-      (module) => ({ default: module.LabPalette }),
-      () => ({ default: FinderUnavailable }),
-    ),
+type FinderProps = {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onDismissUnavailable: () => void;
+};
+
+const LabPalette = lazy<ComponentType<FinderProps>>(() =>
+  loadPalette().then(
+    (module) => ({ default: module.LabPalette }),
+    () => ({ default: FinderUnavailable }),
+  ),
 );
 
 /** Keep speculative failures quiet until someone asks to open the finder. */
@@ -65,19 +70,21 @@ const preloadPalette = () => {
   loadPalette().catch(() => {});
 };
 
-function FinderUnavailable({
-  open,
-  onOpenChange,
-}: {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-}) {
+function FinderPending({ onPendingChange }: { onPendingChange: (pending: boolean) => void }) {
+  useEffect(() => {
+    onPendingChange(true);
+    return () => onPendingChange(false);
+  }, [onPendingChange]);
+  return null;
+}
+
+function FinderUnavailable({ open, onOpenChange, onDismissUnavailable }: FinderProps) {
   const t = useT();
   if (!open) return null;
 
   return (
-    <div className="shell mt-4">
-      <div className="card-surface flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3">
+    <div className="shell pointer-events-none fixed inset-x-0 bottom-16 z-40 flex justify-center">
+      <div className="card-surface pointer-events-auto flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3">
         <p role="alert" className="text-body-sm font-medium text-fg">
           {t.palette.unavailable}
         </p>
@@ -93,11 +100,14 @@ function FinderUnavailable({
         <Link
           to="/"
           onClick={() => onOpenChange(false)}
-          className="text-body-sm text-fg-muted underline decoration-line/30 underline-offset-2
-            transition-colors duration-fast hover:text-fg"
+          className="inline-flex min-h-11 items-center text-body-sm text-fg-muted underline decoration-line/30
+            underline-offset-2 transition-colors duration-fast hover:text-fg"
         >
           {t.shell.errors.backToLabs}
         </Link>
+        <Button variant="ghost" onClick={onDismissUnavailable}>
+          {t.preferences.dismiss}
+        </Button>
       </div>
     </div>
   );
@@ -149,14 +159,27 @@ export function PageShell({ routeKey, children }: { routeKey: string; children: 
   // Held here because two things open it — the header's button and the
   // shortcut — and the dialog has to agree with both.
   const [finding, setFinding] = useState(false);
+  const [finderPending, setFinderPending] = useState(false);
   // Mounted on first use and kept, so closing it does not throw its chunk's
   // work away and the second open is instant.
   const [paletteMounted, setPaletteMounted] = useState(false);
-  const openFinder = useCallback(() => {
-    track("finder_open", { via: "button" });
+  const finderOpener = useRef<HTMLElement | null>(null);
+  const openFinder = useCallback((via: "button" | "key") => {
+    const focused = document.activeElement;
+    finderOpener.current = focused instanceof HTMLElement ? focused : null;
+    track("finder_open", { via });
     setPaletteMounted(true);
     setFinding(true);
   }, []);
+
+  useEffect(() => {
+    setFinding(false);
+  }, [pathname]);
+
+  const dismissUnavailable = () => {
+    setFinding(false);
+    finderOpener.current?.focus({ preventScroll: true });
+  };
 
   // The shortcut toggles, and only an opening is counted; the listener is
   // bound once, so it reads whether the finder is open from here.
@@ -166,16 +189,15 @@ export function PageShell({ routeKey, children }: { routeKey: string; children: 
     const onKey = (event: KeyboardEvent) => {
       if (!isPaletteShortcut(event)) return;
       event.preventDefault();
-      if (!findingRef.current) track("finder_open", { via: "key" });
-      setPaletteMounted(true);
-      setFinding((open) => !open);
+      if (findingRef.current) setFinding(false);
+      else openFinder("key");
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, []);
+  }, [openFinder]);
 
-  // Warm the palette once the page has settled, where a keyboard makes ⌘K
-  // likely. A phone never shows the button and has no shortcut to press.
+  // Warm the palette once the page has settled on devices where a keyboard
+  // shortcut is likely. Touch devices fetch when the finder is requested.
   useEffect(() => {
     if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
     if ("requestIdleCallback" in window) {
@@ -191,10 +213,24 @@ export function PageShell({ routeKey, children }: { routeKey: string; children: 
       <a href="#main" className="skip-link">
         {t.shell.skipToContent}
       </a>
-      <SiteHeader onFindLab={openFinder} onFindLabIntent={preloadPalette} />
+      <SiteHeader onFindLab={() => openFinder("button")} onFindLabIntent={preloadPalette} />
+      {/* Keep the live region mounted before Suspense supplies its text. */}
+      <div
+        role="status"
+        aria-label={t.palette.label}
+        className="shell pointer-events-none fixed inset-x-0 bottom-16 z-40 flex justify-center"
+      >
+        {finding && finderPending && (
+          <p className="card-surface px-4 py-3 text-body-sm text-fg">{t.palette.loading}</p>
+        )}
+      </div>
       {paletteMounted && (
-        <Suspense fallback={null}>
-          <LabPalette open={finding} onOpenChange={setFinding} />
+        <Suspense fallback={finding && <FinderPending onPendingChange={setFinderPending} />}>
+          <LabPalette
+            open={finding}
+            onOpenChange={setFinding}
+            onDismissUnavailable={dismissUnavailable}
+          />
         </Suspense>
       )}
       <main ref={mainRef} key={routeKey} id="main" className="page-enter flex-1">

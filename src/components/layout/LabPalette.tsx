@@ -232,7 +232,26 @@ export function LabPalette({
             className="h-14 min-w-0 flex-1 bg-transparent text-body text-fg outline-none placeholder:text-fg-faint
               focus-visible:ring-0 focus-visible:ring-offset-0"
           />
-          <Kbd>esc</Kbd>
+          <button
+            type="button"
+            aria-label={t.palette.dismiss}
+            onClick={() => onOpenChange(false)}
+            className="grid min-h-11 min-w-11 shrink-0 place-items-center rounded border border-line/20
+              text-fg-muted transition-colors duration-fast hover:bg-line/5 hover:text-fg"
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              aria-hidden
+            >
+              <path d="m4 4 8 8m0-8-8 8" />
+            </svg>
+          </button>
         </div>
 
         {results.length === 0 && (
