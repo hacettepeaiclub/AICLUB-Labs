@@ -1,33 +1,28 @@
 import { useEffect, useMemo, useReducer, useRef, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
-import { isModelId, MODEL_STORAGE_KEY } from "@/calculator/storage";
+import { MODEL_STORAGE_KEY } from "@/calculator/storage";
 import { track } from "@/app/analytics";
 import { calculatorMeta } from "@/app/siteMeta";
 import { useDocumentHead } from "@/app/useDocumentHead";
 import { CALCULATOR_COPY } from "@/calculator/copy";
-import { display, initialState, press, type CalcState } from "@/calculator/engine/machine";
+import { display } from "@/calculator/engine/machine";
+import { initialBench, keysOf, lessonById, practiceTask, reduceBench } from "@/calculator/bench";
 import { MODEL_IDS, MODELS } from "@/calculator/engine/models";
-import type { KeyId, ModelId } from "@/calculator/engine/types";
+import type { ModelId } from "@/calculator/engine/types";
 import { LESSONS, type Lesson } from "@/calculator/lessons";
 import {
-  afterAnswer,
-  answered,
   dailyStore,
   dayKey,
   isFinished,
   points,
   judge,
-  makePuzzle,
   puzzleNumber,
-  TRIES,
-  screenAnswers,
   type PuzzleTask,
-  type Progress,
 } from "@/calculator/daily";
 import { CalcDevice } from "@/calculator/ui/CalcDevice";
 import { summarize } from "@/calculator/ui/CalcScreen";
 import { KeyChip, LessonPanel } from "@/calculator/ui/LessonPanel";
-import { DailyCta, DailyPanel, DailyQuestion, type Daily } from "@/calculator/ui/DailyPuzzle";
+import { DailyCta, DailyPanel, DailyQuestion } from "@/calculator/ui/DailyPuzzle";
 import { LabSection } from "@/components/lab/LabSection";
 import { Badge, Segmented } from "@/components/ui";
 import { useReducedMotion } from "@/hooks";
@@ -68,167 +63,8 @@ import { cn } from "@/lib/cn";
  * and is cleared before each question; "This is my answer" reads the screen.
  */
 
-interface Bench {
-  model: ModelId;
-  lesson: string;
-  practice: "lesson" | "free" | "daily";
-  calc: CalcState;
-  progress: number;
-  miss: KeyId | null;
-  playing: boolean;
-  daily: Daily | null;
-}
-
-type BenchAction =
-  | { type: "key"; key: KeyId }
-  | { type: "advance" }
-  | { type: "finish" }
-  | { type: "play" }
-  | { type: "model"; model: ModelId }
-  | { type: "lesson"; id: string }
-  | { type: "practice"; practice: Bench["practice"] }
-  | { type: "restart" }
-  | { type: "dailyOpen"; day: string; progress: Progress }
-  | { type: "dailyNext" }
-  | { type: "dailyAnswer" }
-  | { type: "dailyGiveUp" };
-
-const lessonById = (id: string): Lesson => LESSONS.find((l) => l.id === id) ?? LESSONS[0]!;
-
-const keysOf = (bench: Pick<Bench, "lesson" | "model">): KeyId[] =>
-  (lessonById(bench.lesson).steps[bench.model] ?? []).flatMap((step) => step.keys);
-
-function restart(bench: Bench, changes: Partial<Bench> = {}): Bench {
-  const next = { ...bench, ...changes };
-  return {
-    ...next,
-    calc: initialState(next.model),
-    progress: 0,
-    miss: null,
-    playing: false,
-    daily: null,
-  };
-}
-
-/** The puzzle after an answer or giving up; a finished question clears the calculator. */
-function answer(bench: Bench, gaveUp: boolean): Bench {
-  const daily = bench.practice === "daily" ? bench.daily : null;
-  if (
-    !daily ||
-    daily.verdict?.kind === "right" ||
-    daily.verdict?.kind === "missed" ||
-    isFinished(daily.progress)
-  )
-    return bench;
-  const index = answered(daily.progress);
-  const task = daily.tasks[index]!;
-  const judgement = gaveUp ? null : judge(task, bench.calc);
-  if (judgement?.kind === "empty") return { ...bench, daily: { ...daily, verdict: judgement } };
-  const progress = afterAnswer(daily.progress, judgement);
-  const row = progress[index]!;
-  if (row.done) {
-    const kind = row.done === "solved" ? "right" : "missed";
-    return {
-      ...bench,
-      calc: bench.calc,
-      daily: { ...daily, progress, verdict: { kind, answer: task.answer } },
-    };
-  }
-  const hint = judgement?.kind === "wrong" ? judgement.hint : "higher";
-  const left = TRIES - row.misses.length;
-  return { ...bench, daily: { ...daily, progress, verdict: { kind: "wrong", hint, left } } };
-}
-
-function reduce(bench: Bench, action: BenchAction): Bench {
-  switch (action.type) {
-    case "key": {
-      if (bench.daily?.verdict?.kind === "right" || bench.daily?.verdict?.kind === "missed")
-        return bench;
-      const keys = keysOf(bench);
-      const playing = false;
-      if (bench.practice !== "lesson" || bench.progress >= keys.length) {
-        const daily = bench.daily?.verdict ? { ...bench.daily, verdict: null } : bench.daily;
-        return { ...bench, calc: press(bench.calc, action.key), miss: null, playing, daily };
-      }
-      const expected = keys[bench.progress]!;
-      if (action.key !== expected) return { ...bench, miss: expected, playing };
-      return {
-        ...bench,
-        calc: press(bench.calc, expected),
-        progress: bench.progress + 1,
-        miss: null,
-        playing,
-      };
-    }
-    case "advance": {
-      const expected = keysOf(bench)[bench.progress];
-      if (!expected) return { ...bench, playing: false };
-      return {
-        ...bench,
-        calc: press(bench.calc, expected),
-        progress: bench.progress + 1,
-        miss: null,
-      };
-    }
-    case "finish": {
-      const keys = keysOf(bench);
-      const calc = keys.slice(bench.progress).reduce(press, bench.calc);
-      return { ...bench, calc, progress: keys.length, miss: null, playing: false };
-    }
-    case "play":
-      return { ...bench, playing: true, miss: null };
-    case "model":
-      return restart(bench, { model: action.model });
-    case "lesson":
-      return restart(bench, { lesson: action.id, practice: "lesson" });
-    case "practice":
-      return restart(bench, { practice: action.practice });
-    case "restart":
-      return restart(bench);
-    case "dailyOpen":
-      return {
-        ...restart(bench, { practice: "daily" }),
-        daily: {
-          day: action.day,
-          model: bench.model,
-          number: puzzleNumber(action.day),
-          tasks: makePuzzle(bench.model, action.day),
-          progress: action.progress,
-          verdict: null,
-        },
-      };
-    case "dailyNext":
-      return {
-        ...bench,
-        calc: initialState(bench.model),
-        daily: bench.daily ? { ...bench.daily, verdict: null } : null,
-      };
-    case "dailyAnswer":
-      return answer(bench, false);
-    case "dailyGiveUp":
-      return answer(bench, true);
-  }
-}
-
-function initialBench(): Bench {
-  let model: ModelId = "fx991ex";
-  try {
-    const stored = window.localStorage.getItem(MODEL_STORAGE_KEY);
-    if (isModelId(stored)) model = stored;
-  } catch {
-    // Storage blocked: the default model stands.
-  }
-  return {
-    model,
-    lesson: LESSONS[0]!.id,
-    practice: "lesson",
-    calc: initialState(model),
-    progress: 0,
-    miss: null,
-    playing: false,
-    daily: null,
-  };
-}
+// The page's state and every transition of it live in
+// src/calculator/bench.ts, where they are tested without a browser.
 
 /** A beat between keys when the lesson plays itself. */
 const PLAY_MS = 350;
@@ -239,54 +75,12 @@ export function CalculatorPage() {
   const copy = CALCULATOR_COPY[language];
   useDocumentHead(calculatorMeta(copy.title, copy.description));
   const reduced = useReducedMotion();
-  const [bench, dispatch] = useReducer(reduce, undefined, initialBench);
+  const [bench, dispatch] = useReducer(reduceBench, undefined, () => initialBench());
 
   const [trial, setTrial] = useState<PuzzleTask | null>(null);
   const [trialResult, setTrialResult] = useState<string>("");
   const startTrial = () => {
-    const aliases: Record<string, string> = {
-      angle: "trigDegrees",
-      variance: "popVariance",
-      regression: "slope",
-    };
-    const kind = aliases[bench.lesson] ?? bench.lesson;
-    let task: PuzzleTask | undefined;
-    for (let n = 0; n < 100 && !task; n++)
-      task = makePuzzle(bench.model, `practice-${bench.lesson}-${n}`).find((t) => t.kind === kind);
-    const extra: Record<string, { en: string; tr: string; answer: number }> = {
-      fraction: {
-        en: "Express 3/4 as a decimal.",
-        tr: "3/4 kesrini ondalık biçimde göster.",
-        answer: 0.75,
-      },
-      memory: {
-        en: "Store 5 in a variable, then multiply it by 3.",
-        tr: "Bir değişkene 5 kaydet, sonra bu değişkeni 3 ile çarp.",
-        answer: 15,
-      },
-      product: {
-        en: "Multiply [[1,2],[3,4]] by [[5,6],[7,8]]. Find the top-left entry.",
-        tr: "[[1,2],[3,4]] ile [[5,6],[7,8]] matrislerini bu sırayla çarp. Sol üst elemanı bul.",
-        answer: 19,
-      },
-    };
-    const custom = extra[bench.lesson];
-    if (custom)
-      task = {
-        kind: bench.lesson,
-        topic: { en: "Practice", tr: "Alıştırma" },
-        prompt: custom,
-        answer: custom.answer,
-        read: (state) => {
-          if (bench.lesson === "memory" && !Object.values(state.vars).includes(5)) return [];
-          if (bench.lesson === "product")
-            return Array.isArray(state.result) && state.evaluated
-              ? [state.result[0]?.[0] ?? NaN]
-              : [];
-          return screenAnswers(state);
-        },
-        abs: 0,
-      };
+    const task = practiceTask(bench.lesson, bench.model);
     if (!task) return;
     setTrial(task);
     setTrialResult("");
@@ -338,10 +132,15 @@ export function CalculatorPage() {
     // Only a new answer is worth saving, not a key press that cleared a verdict.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [saving?.day, saving?.model, saving?.progress, store]);
-  const todays =
-    daily && daily.day === today && daily.model === bench.model
-      ? daily.progress
-      : store.load(today, bench.model);
+  // Read from storage only when the day, the model or the open puzzle changes,
+  // not on every key press.
+  const todays = useMemo(
+    () =>
+      daily && daily.day === today && daily.model === bench.model
+        ? daily.progress
+        : store.load(today, bench.model),
+    [daily, today, bench.model, store],
+  );
   const openDaily = () => {
     setTrial(null);
     setTrialResult("");
@@ -456,31 +255,21 @@ export function CalculatorPage() {
                 className="mb-4 min-h-11 rounded border border-line/20 p-3 text-accent"
                 onClick={startTrial}
               >
-                {language === "tr" ? "Tuşları görmeden dene" : "Try without key hints"}
+                {copy.trialStart}
               </button>
             )}
             {trial && !inLesson && !inDaily && (
               <section className="calc-card mb-5">
-                <h3 className="text-title">
-                  {language === "tr" ? "Şimdi sen dene" : "Try it yourself"}
-                </h3>
+                <h3 className="text-title">{copy.trialTitle}</h3>
                 <p className="my-3">{trial.prompt[language]}</p>
                 <button
                   className="min-h-11 rounded border border-line/30 p-2"
                   onClick={() => {
                     const result = judge(trial, bench.calc);
-                    setTrialResult(
-                      result.kind === "right"
-                        ? language === "tr"
-                          ? "Doğru. Şimdi günlük soruları deneyebilirsin."
-                          : "Correct. Try the daily puzzle next."
-                        : language === "tr"
-                          ? "Sonucu kontrol et. Gerekirse derse dönüp tekrar dene."
-                          : "Check your result, or return to the lesson.",
-                    );
+                    setTrialResult(result.kind === "right" ? copy.trialRight : copy.trialWrong);
                   }}
                 >
-                  {language === "tr" ? "Cevabımı kontrol et" : "Check my answer"}
+                  {copy.trialCheck}
                 </button>
                 <p role="status" className="my-3">
                   {trialResult}
@@ -493,10 +282,10 @@ export function CalculatorPage() {
                       dispatch({ type: "lesson", id: bench.lesson });
                     }}
                   >
-                    {language === "tr" ? "Derse dön" : "Return to lesson"}
+                    {copy.trialBack}
                   </button>
                   <button className="min-h-11 p-2 underline" onClick={openDaily}>
-                    {language === "tr" ? "Günlük soruları aç" : "Open daily puzzle"}
+                    {copy.trialDaily}
                   </button>
                 </div>
               </section>

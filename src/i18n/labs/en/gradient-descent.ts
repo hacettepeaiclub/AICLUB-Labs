@@ -37,6 +37,8 @@ const copy = {
   },
 
   status: {
+    ready: "Ready",
+    paused: "Paused",
     running: "Running",
     converged: "Reached the goal",
     diverged: "Distance limit exceeded",

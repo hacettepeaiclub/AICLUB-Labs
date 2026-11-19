@@ -71,6 +71,9 @@ export const tr: Translation = {
     themeLabel: "Tema",
     light: "Açık",
     dark: "Koyu",
+    languageFailed: (language: string) =>
+      `Dil değiştirilemedi (${language}). Bağlantını kontrol edip yeniden dene.`,
+    dismiss: "Kapat",
   },
 
   home: {
@@ -197,6 +200,8 @@ export const tr: Translation = {
   palette: {
     open: "Lab ara",
     label: "Lab ara",
+    loading: "Lab arama açılıyor…",
+    unavailable: "Lab arama şu anda kullanılamıyor.",
     placeholder: "Ada veya konuya göre ara",
     results: (n: number) => `${n} lab`,
     empty: (query: string) => `“${query}” için lab bulunamadı.`,

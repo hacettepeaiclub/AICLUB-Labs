@@ -19,6 +19,19 @@ const CalculatorPage = lazy(() =>
   import("@/pages/CalculatorPage").then((m) => ({ default: m.CalculatorPage })),
 );
 
+/**
+ * What a lazy page stands in while its chunk arrives: an empty box one screen
+ * tall.
+ *
+ * With nothing there (`fallback={null}`) the empty main collapsed and the
+ * footer stood at the bottom of the screen until the page arrived and pushed
+ * it out of view. That jump was most of the home page's layout shift, CLS
+ * 0.26 on a laptop and 0.31 on a phone (tools/perf-shifts.mjs). Holding
+ * the footer below the fold means nothing visible moves when the page
+ * arrives.
+ */
+const pageFallback = <div aria-hidden className="min-h-dvh" />;
+
 function ScrollToTop() {
   const { pathname } = useLocation();
   // Block body on purpose: `scrollTo` returns a Promise in current Chrome, and
@@ -46,7 +59,7 @@ function AnimatedRoutes() {
         <Route
           path="/"
           element={
-            <Suspense fallback={null}>
+            <Suspense fallback={pageFallback}>
               <HomePage />
             </Suspense>
           }
@@ -55,7 +68,7 @@ function AnimatedRoutes() {
         <Route
           path="/calculator"
           element={
-            <Suspense fallback={null}>
+            <Suspense fallback={pageFallback}>
               <CalculatorPage />
             </Suspense>
           }

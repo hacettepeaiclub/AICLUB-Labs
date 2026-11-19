@@ -7,6 +7,7 @@ import {
   type PointerEvent,
 } from "react";
 import { usePaletteVersion } from "@/hooks";
+import { useCanvasBacking } from "@/hooks/useCanvasBacking";
 import { cn } from "@/lib/cn";
 import {
   adjustValue,
@@ -90,32 +91,13 @@ export function BarCanvas({
     });
   }, [valuesRef, sortRef]);
 
-  // Context, device-pixel sizing and resize handling. No frame loop here.
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+  // Context and device-pixel sizing (src/hooks/useCanvasBacking.ts); every
+  // resize repaints, since resizing clears the bitmap. No frame loop here.
+  useCanvasBacking(canvasRef, ({ ctx, width, height }) => {
     ctxRef.current = ctx;
-
-    const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      const rect = canvas.getBoundingClientRect();
-      sizeRef.current = { width: rect.width, height: rect.height };
-      canvas.width = Math.round(rect.width * dpr);
-      canvas.height = Math.round(rect.height * dpr);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      draw();
-    };
-
-    const observer = new ResizeObserver(resize);
-    observer.observe(canvas);
-    resize();
-    return () => {
-      observer.disconnect();
-      ctxRef.current = null;
-    };
-  }, [draw]);
+    sizeRef.current = { width, height };
+    draw();
+  });
 
   // Repaint on demand when idle — including when the theme changes, which
   // swaps every colour the paint module resolves.

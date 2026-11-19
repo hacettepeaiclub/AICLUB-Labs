@@ -1,5 +1,5 @@
 import { readFileSync } from "node:fs";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, expectTypeOf, it, vi } from "vitest";
 import { labSource, track } from "./analytics";
 
 const global = globalThis as unknown as { window?: unknown };
@@ -16,6 +16,16 @@ describe("track", () => {
     track("game_start");
     expect(umami.track).toHaveBeenNthCalledWith(1, "lab_open", { lab: "sorting", from: "grid" });
     expect(umami.track).toHaveBeenNthCalledWith(2, "game_start", undefined);
+  });
+
+  it("counts empty finder searches without sending search text", () => {
+    const umami = { track: vi.fn() };
+    global.window = { umami };
+    track("finder_empty");
+    expect(umami.track.mock.calls).toEqual([["finder_empty", undefined]]);
+    expectTypeOf<Parameters<typeof track<"finder_empty">>>().toEqualTypeOf<
+      [event: "finder_empty"]
+    >();
   });
 
   it("does nothing when the script never loaded (blocked, offline, a dev server)", () => {

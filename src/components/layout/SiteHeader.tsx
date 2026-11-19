@@ -59,7 +59,7 @@ export function SiteHeader({
   onFindLabIntent: () => void;
 }) {
   const t = useT();
-  const { language, setLanguage } = useLanguage();
+  const { language, setLanguage, failed, dismissFailure } = useLanguage();
   const { theme, setTheme } = useTheme();
 
   const languages: readonly ToggleOption<Language>[] = [
@@ -100,7 +100,7 @@ export function SiteHeader({
           </span>
         </Link>
 
-        <div className="flex items-center gap-1.5 sm:gap-3">
+        <div className="flex max-w-full flex-wrap items-center gap-1.5 sm:gap-3">
           <nav aria-label={t.shell.primaryNav} className="hidden sm:flex">
             <NavLink
               to="/"
@@ -126,20 +126,22 @@ export function SiteHeader({
             </NavLink>
           </nav>
 
-          {/* The finder's visible door. A shortcut nobody can see is a
-              shortcut nobody uses, and it says the keys on its face so the
-              second visit does not need the button. From `sm` up only: on a
-              phone there is no keyboard to teach, the grid is one tap away,
-              and the header has no width to spare — at 360px it already
-              holds the wordmark and both toggles with nothing left over. */}
           <button
             type="button"
-            onClick={onFindLab}
+            onClick={(event) => {
+              // Some touch browsers do not focus a button on tap. Give the
+              // native dialog a stable focus target to restore on close.
+              event.currentTarget.focus({ preventScroll: true });
+              onFindLab();
+            }}
             onPointerEnter={onFindLabIntent}
             onFocus={onFindLabIntent}
+            aria-label={t.palette.open}
+            aria-haspopup="dialog"
             aria-keyshortcuts={PALETTE_SHORTCUT === "⌘K" ? "Meta+K" : "Control+K"}
-            className="hidden min-h-11 items-center gap-2.5 rounded border border-line/10 bg-ink-800/50 pl-3 pr-2
-              text-body-sm text-fg-muted transition-colors duration-fast hover:border-line/25 hover:text-fg sm:inline-flex"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center gap-2.5 rounded border border-line/20
+              bg-ink-800/50 text-body-sm text-fg-muted transition-colors duration-fast
+              hover:border-line/30 hover:text-fg sm:pl-3 sm:pr-2"
           >
             <svg
               width="14"
@@ -153,34 +155,48 @@ export function SiteHeader({
               <circle cx="7" cy="7" r="4.5" />
               <path d="M10.5 10.5L14 14" />
             </svg>
-            {t.palette.open}
-            <Kbd>{PALETTE_SHORTCUT}</Kbd>
+            <span className="hidden sm:inline">{t.palette.open}</span>
+            <span className="hidden sm:inline">
+              <Kbd>{PALETTE_SHORTCUT}</Kbd>
+            </span>
           </button>
 
           <details className="relative sm:hidden">
             <summary
-              className="cursor-pointer rounded border border-line/20 p-2"
+              className="grid min-h-11 min-w-11 cursor-pointer list-none place-items-center rounded border
+                border-line/20 text-fg-muted hover:text-fg [&::-webkit-details-marker]:hidden"
               aria-label={language === "tr" ? "Gezinme" : "Navigation"}
             >
-              ☰
+              <svg
+                viewBox="0 0 16 16"
+                width="16"
+                height="16"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                aria-hidden
+              >
+                <path d="M2 4h12M2 8h12M2 12h12" />
+              </svg>
             </summary>
             <nav
+              aria-label={t.shell.primaryNav}
               onClick={(event) => {
                 const menu = event.currentTarget.closest("details");
                 if (menu) menu.open = false;
               }}
-              style={{ top: "100%", minWidth: "12rem", right: 0, zIndex: 50 }}
-              className="absolute grid gap-2 rounded border border-line/20 bg-ink-950 p-3"
+              className="absolute start-0 top-full z-50 grid min-w-48 gap-2 rounded border border-line/20 bg-ink-950 p-3"
             >
-              <Link className="p-2" to="/">
+              <Link className="flex min-h-11 items-center rounded px-2 hover:bg-line/5" to="/">
                 {t.shell.allLabs}
               </Link>
-              <Link className="p-2" to={CALCULATOR_PATH}>
+              <Link
+                className="flex min-h-11 items-center rounded px-2 hover:bg-line/5"
+                to={CALCULATOR_PATH}
+              >
                 {t.shell.calculator}
               </Link>
-              <button className="p-2 text-left" onClick={onFindLab}>
-                {t.palette.open}
-              </button>
             </nav>
           </details>
           <PreferenceToggle
@@ -202,6 +218,33 @@ export function SiteHeader({
             }}
           />
         </div>
+      </div>
+      {/* A switch that could not download its language leaves the page as it
+          was; this says so, in the language the page is still in. The live
+          region is always in the accessibility tree — hidden visually while
+          empty, never with display:none — so the message is announced when it
+          appears. The button sits outside it so it is not read twice. */}
+      <div
+        className={cn(
+          "mx-auto w-full max-w-shell items-center justify-end gap-3 px-4 sm:px-6 md:px-10",
+          failed && "flex pb-2",
+        )}
+      >
+        <p role="status" className={failed ? "text-body-sm text-fg-muted" : "sr-only"}>
+          {failed &&
+            t.preferences.languageFailed(
+              failed === "tr" ? t.preferences.turkishFull : t.preferences.englishFull,
+            )}
+        </p>
+        {failed && (
+          <button
+            type="button"
+            onClick={dismissFailure}
+            className="rounded px-2 py-1 text-body-sm text-fg underline decoration-line/30 underline-offset-2"
+          >
+            {t.preferences.dismiss}
+          </button>
+        )}
       </div>
     </header>
   );
