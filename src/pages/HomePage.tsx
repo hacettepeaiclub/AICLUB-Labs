@@ -193,7 +193,7 @@ export function HomePage() {
 
             <ul
               ref={gridRef}
-              className="mt-5 grid scroll-mt-40 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+              className="mt-5 grid scroll-mt-40 grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
             >
               {matching.map((lab) => tile(lab.meta, field !== null))}
               {others.length > 0 && (
@@ -326,7 +326,7 @@ function LabTile({ meta, lit, visited }: { meta: LabMeta; lit: boolean; visited:
       onFocus={warm}
       onTouchStart={warm}
     >
-      <div className="relative grid min-h-24 w-24 shrink-0 place-items-center overflow-hidden border border-line/5 bg-ink-950 sm:h-36 sm:w-auto">
+      <div className="relative grid min-h-24 w-16 shrink-0 place-items-center overflow-hidden border border-line/5 bg-ink-950 min-[360px]:w-24 sm:h-36 sm:w-auto">
         <span className="absolute left-2.5 top-2.5 border border-line/10 bg-ink-950/80 px-1.5 py-1 font-mono text-caption uppercase tracking-[0.12em] text-[rgb(var(--c))]">
           {CATEGORY_CODE[meta.category]}
         </span>
@@ -353,7 +353,7 @@ function LabTile({ meta, lit, visited }: { meta: LabMeta; lit: boolean; visited:
         />
       </div>
 
-      <div className="flex min-w-0 flex-1 flex-col pb-0.5 sm:px-1 sm:pt-4">
+      <div className="flex min-w-0 flex-1 flex-col break-words pb-0.5 sm:px-1 sm:pt-4">
         {copy?.term && (
           <p lang={copy.termLang} className="mb-1 text-overline uppercase text-fg-faint">
             {copy.term}

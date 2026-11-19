@@ -14,7 +14,11 @@ test.beforeEach(async ({ page, browserName }) => {
       },
     );
   }
-  await page.addInitScript(() => localStorage.setItem("aiclub-labs-language", "en"));
+  await page.addInitScript(() => {
+    if (!localStorage.getItem("aiclub-labs-language")) {
+      localStorage.setItem("aiclub-labs-language", "en");
+    }
+  });
 });
 
 test("a drag rotates the PCA picture at a mobile viewport", async ({
@@ -121,3 +125,30 @@ test("the mobile navigation fits on screen with full-sized link targets", async 
   await expect(page).toHaveURL("/calculator/");
   await expect(navigation).toBeHidden();
 });
+
+for (const language of ["en", "tr"] as const) {
+  test(`home field filters stay usable at 320px (${language})`, async ({ page }) => {
+    await page.setViewportSize({ width: 320, height: 850 });
+    await page.addInitScript((language) => {
+      localStorage.setItem("aiclub-labs-language", language);
+    }, language);
+    await page.goto("/");
+    const filters = page.getByRole("group", {
+      name: language === "en" ? "Filter labs by field" : "Labları konuya göre filtrele",
+    });
+    await expect(filters).toBeVisible();
+    const pageWidth = () =>
+      page.evaluate(() => ({
+        document: document.documentElement.scrollWidth,
+        viewport: document.documentElement.clientWidth,
+      }));
+    await expect.poll(pageWidth).toEqual({ document: 320, viewport: 320 });
+
+    const lastFilter = filters.getByRole("button").last();
+    await lastFilter.scrollIntoViewIfNeeded();
+    await expect.poll(() => filters.evaluate((strip) => strip.scrollLeft)).toBeGreaterThan(0);
+    await lastFilter.tap();
+    await expect(lastFilter).toHaveAttribute("aria-pressed", "true");
+    await expect.poll(pageWidth).toEqual({ document: 320, viewport: 320 });
+  });
+}
