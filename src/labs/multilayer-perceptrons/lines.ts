@@ -112,15 +112,52 @@ export function twoLineAccuracy(points: readonly Point[], a: Line, b: Line): num
   return Math.max(agree, points.length - agree) / points.length;
 }
 
-/** The best any single line can do on these points, by search. */
+/**
+ * The best any single line can do on these points, by search over the same
+ * grid of directions and offsets as before: `angles` normals over a half
+ * turn, `offsets` biases evenly across [−1.5, 1.5].
+ *
+ * It used to score every grid line against every point — 360 × 241 × 160
+ * ≈ 14 million side tests when the stage mounted, about a fifth of the idle
+ * page's script time on a throttled phone. For one direction, though, the
+ * offsets only move a threshold along the points' projections: sorted once,
+ * the offsets can be swept in order with a single pointer, so each direction
+ * costs a sort plus one pass. Same grid, same strict `> 0` rule, same answer
+ * (lines.test.ts checks it against the direct count).
+ */
 export function bestOneLine(points: readonly Point[], angles = 360, offsets = 241): number {
+  const n = points.length;
+  if (!n) return 0;
+  let ones = 0;
+  for (const p of points) if (p.label === 1) ones++;
+  const order = points.map((_, i) => i);
+  const projected = new Float64Array(n);
   let best = 0;
   for (let i = 0; i < angles; i++) {
     const t = (i / angles) * Math.PI;
-    const l = { w1: Math.cos(t), w2: Math.sin(t) };
+    const w1 = Math.cos(t);
+    const w2 = Math.sin(t);
+    for (let k = 0; k < n; k++) {
+      const p = points[k]!;
+      projected[k] = w1 * p.x + w2 * p.y;
+    }
+    // Highest projection first: as the bias grows, points join the positive
+    // side in this order.
+    order.sort((a, c) => projected[c]! - projected[a]!);
+    let above = 0;
+    let onesAbove = 0;
     for (let j = 0; j < offsets; j++) {
       const b = -1.5 + (3 * j) / (offsets - 1);
-      best = Math.max(best, oneLineAccuracy(points, { ...l, b }));
+      while (above < n) {
+        const k = order[above]!;
+        if (!(projected[k]! + b > 0)) break;
+        if (points[k]!.label === 1) onesAbove++;
+        above++;
+      }
+      // Right: ones on the positive side, and zeros on the other.
+      const agree = onesAbove + (n - ones) - (above - onesAbove);
+      const accuracy = Math.max(agree, n - agree) / n;
+      if (accuracy > best) best = accuracy;
     }
   }
   return best;
