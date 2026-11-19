@@ -75,9 +75,19 @@ export function Universe3D({
   const baseId = useId();
   const svgRef = useRef<SVGSVGElement>(null);
   // `travel` is the total distance the pointer has moved since it went down.
-  const drag = useRef<{ x: number; y: number; travel: number } | null>(null);
+  // Only the pointer that started a gesture moves, ends or cancels it: a second
+  // finger landing mid-turn must not reset the first one's travel.
+  const drag = useRef<{ id: number; x: number; y: number; travel: number } | null>(null);
   const [camera, setCamera] = useState({ yaw: 0.6, pitch: -0.3 });
   const [active, setActive] = useState<number>(selected);
+  // The selection can change from outside (the neighbour list). The keyboard
+  // cursor follows it, or Enter after tabbing back would re-select the word
+  // the visitor had just moved away from.
+  const [followed, setFollowed] = useState(selected);
+  if (followed !== selected) {
+    setFollowed(selected);
+    setActive(selected);
+  }
   const [showRing, setShowRing] = useState(false);
 
   const rotated = useMemo(
@@ -217,15 +227,17 @@ export function Universe3D({
           className="h-full w-full cursor-grab touch-none active:cursor-grabbing"
           role="presentation"
           onPointerDown={(e) => {
-            drag.current = { x: e.clientX, y: e.clientY, travel: 0 };
+            if (drag.current) return;
+            drag.current = { id: e.pointerId, x: e.clientX, y: e.clientY, travel: 0 };
             (e.target as Element).setPointerCapture?.(e.pointerId);
           }}
           onPointerMove={(e) => {
             const current = drag.current;
-            if (!current) return;
+            if (!current || current.id !== e.pointerId) return;
             const dx = e.clientX - current.x;
             const dy = e.clientY - current.y;
             drag.current = {
+              ...current,
               x: e.clientX,
               y: e.clientY,
               travel: current.travel + Math.hypot(dx, dy),
@@ -237,22 +249,23 @@ export function Universe3D({
           }}
           onPointerUp={(e) => {
             const gesture = drag.current;
+            if (!gesture || gesture.id !== e.pointerId) return;
             drag.current = null;
             // Only a tap selects. A drag that happens to end over a star was
             // turning the view, not choosing a word.
-            if (!gesture || gesture.travel > TAP_SLOP) return;
+            if (gesture.travel > TAP_SLOP) return;
             const index = pick(e.clientX, e.clientY);
             if (index !== null) {
               onSelect(index);
               setActive(index);
             }
           }}
-          onPointerCancel={() => {
+          onPointerCancel={(e) => {
             // The browser took the gesture (a scroll, a system swipe): no tap.
-            drag.current = null;
+            if (drag.current?.id === e.pointerId) drag.current = null;
           }}
-          onPointerLeave={() => {
-            drag.current = null;
+          onPointerLeave={(e) => {
+            if (drag.current?.id === e.pointerId) drag.current = null;
           }}
         >
           <defs>

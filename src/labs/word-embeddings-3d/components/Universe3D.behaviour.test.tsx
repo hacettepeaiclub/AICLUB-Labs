@@ -93,10 +93,62 @@ describe("Universe3D pointer gestures", () => {
     expect(onSelect).toHaveBeenCalledTimes(1);
   });
 
+  it("ignores a second finger: it neither resets nor ends the first gesture", () => {
+    const { svg, onSelect } = setup();
+    fireEvent.pointerDown(svg, at(CENTRE, CENTRE));
+    fireEvent.pointerMove(svg, at(CENTRE + TAP_SLOP * 4, CENTRE));
+    // A second finger lands and lifts on the star mid-drag.
+    fireEvent.pointerDown(svg, { ...at(CENTRE, CENTRE), pointerId: 2 });
+    fireEvent.pointerUp(svg, { ...at(CENTRE, CENTRE), pointerId: 2 });
+    fireEvent.pointerMove(svg, at(CENTRE, CENTRE));
+    fireEvent.pointerUp(svg, at(CENTRE, CENTRE));
+    expect(onSelect).not.toHaveBeenCalled();
+  });
+
   it("is the lab's stage and stays in the tab order", () => {
     const { view } = setup();
     const map = view.getByRole("listbox");
     expect(map.hasAttribute("data-stage")).toBe(true);
     expect(map.tabIndex).toBe(0);
+  });
+});
+
+describe("Universe3D keyboard after a selection made elsewhere", () => {
+  // Three stars so each word has an option element to point at.
+  const three = [
+    { x: 0, y: 0, z: 0 },
+    { x: 20, y: 0, z: 0 },
+    { x: -20, y: 0, z: 0 },
+  ];
+  const props = (selected: number, onSelect: (i: number) => void) => ({
+    points: three,
+    vocabulary: VOCABULARY,
+    selected,
+    neighbours: [
+      { index: (selected + 1) % 3, similarity: 0.9 },
+      { index: (selected + 2) % 3, similarity: 0.8 },
+    ],
+    formatScore: (v: number) => v.toFixed(2),
+    onSelect,
+    copy: copy.map,
+  });
+
+  it("moves the cursor to the new word, so Enter does not re-select the old one", () => {
+    const onSelect = vi.fn();
+    const view = render(<Universe3D {...props(0, onSelect)} />);
+    const map = view.getByRole("listbox");
+    // The visitor arrows to a neighbour, leaves the map, and picks word 2
+    // from the neighbour list instead.
+    fireEvent.focus(map);
+    fireEvent.keyDown(map, { key: "ArrowRight" });
+    fireEvent.blur(map);
+    view.rerender(<Universe3D {...props(2, onSelect)} />);
+
+    fireEvent.focus(map);
+    const activeId = map.getAttribute("aria-activedescendant");
+    const option = activeId ? view.container.querySelector(`[id="${activeId}"]`) : null;
+    expect(option?.getAttribute("aria-selected")).toBe("true");
+    fireEvent.keyDown(map, { key: "Enter" });
+    expect(onSelect).not.toHaveBeenCalled();
   });
 });
