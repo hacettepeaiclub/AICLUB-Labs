@@ -18,6 +18,9 @@ export interface DecisionCanvasProps {
   className?: string;
 }
 
+/** A fresh field may cost at most 1/FIELD_SHARE of the time since the last. */
+const FIELD_SHARE = 4;
+
 /** Ignore drag samples closer together than this (model units). */
 const PAINT_SPACING = 0.05;
 
@@ -45,13 +48,29 @@ export function DecisionCanvas({
 
   useEffect(markDirty, [points, revision, running, markDirty]);
 
+  // When the field was last sampled, and what that cost, while running.
+  const fieldRef = useRef({ at: -Infinity, cost: 0 });
+
   const canvasRef = useCanvas2D(
     useCallback(
-      ({ ctx, width, height }) => {
+      ({ ctx, width, height, dtSec }) => {
         painterRef.current ??= createScalarFieldPainter();
+        const painter = painterRef.current;
 
         const net = netRef.current;
-        painterRef.current.draw(ctx, width, height, (x, y) => forward(net, x, y));
+        // Sampling the field is 4,096 forward passes. On a laptop that is a
+        // millisecond and happens every frame; on a slow phone it was most of
+        // each frame while training, and taps waited half a second. So while
+        // training, a fresh field may take at most a quarter of the time since
+        // the last one, and the frames in between show that one again. A
+        // still canvas (dtSec 0) always samples afresh.
+        const now = performance.now();
+        const field = fieldRef.current;
+        const fresh = dtSec === 0 || now - field.at >= field.cost * FIELD_SHARE;
+        if (fresh || !painter.redraw(ctx, width, height)) {
+          painter.draw(ctx, width, height, (x, y) => forward(net, x, y));
+          fieldRef.current = { at: now, cost: performance.now() - now };
+        }
         drawAxes(ctx, width, height);
         drawPoints(ctx, pointsRef.current, net, width, height);
       },

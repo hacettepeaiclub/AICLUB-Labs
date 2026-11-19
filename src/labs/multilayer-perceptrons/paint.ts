@@ -72,7 +72,27 @@ export interface ScalarFieldPainter {
     height: number,
     sample: (x: number, y: number) => number,
   ): void;
+  /**
+   * Paint the field the last `draw` computed again, without sampling: for
+   * the frames in between when sampling every frame costs too much.
+   * Returns false when there is nothing computed yet.
+   */
+  redraw(ctx: CanvasRenderingContext2D, width: number, height: number): boolean;
 }
+
+/**
+ * The tint strength for |value| in 0…1: the curve `pow(v, 0.65) × 0.62`,
+ * looked up instead of computed for every pixel of every frame. 4,096 steps
+ * keep it within one 8-bit level of the exact curve everywhere, including
+ * near zero where the curve is steepest (paint.test.ts).
+ */
+const STEPS = 4095;
+const STRENGTH = Float32Array.from(
+  { length: STEPS + 1 },
+  (_, i) => Math.pow(i / STEPS, 0.65) * 0.62,
+);
+export const tintStrength = (value: number): number =>
+  STRENGTH[Math.round(clamp(Math.abs(value), 0, 1) * STEPS)]!;
 
 /**
  * The heatmap behind everything in this lab.
@@ -87,8 +107,20 @@ export function createScalarFieldPainter(res = 64): ScalarFieldPainter {
   buffer.height = res;
   const bufferCtx = buffer.getContext("2d");
   const image = bufferCtx?.createImageData(res, res);
+  let computed = false;
+
+  const blit = (ctx: CanvasRenderingContext2D, width: number, height: number) => {
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
+    ctx.drawImage(buffer, 0, 0, res, res, 0, 0, width, height);
+  };
 
   return {
+    redraw(ctx, width, height) {
+      if (!computed) return false;
+      blit(ctx, width, height);
+      return true;
+    },
     draw(ctx, width, height, sample) {
       if (!bufferCtx || !image) return;
       const C = inks();
@@ -103,7 +135,7 @@ export function createScalarFieldPainter(res = 64): ScalarFieldPainter {
           const hue = value >= 0 ? C.positive : C.negative;
           // Gamma < 1 lifts the faint early-training signal into view without
           // lying about which side of zero a cell is on.
-          const strength = Math.pow(clamp(Math.abs(value), 0, 1), 0.65) * 0.62;
+          const strength = tintStrength(value);
           const o = (row * res + col) * 4;
           pixels[o] = C.surface[0] + (hue[0] - C.surface[0]) * strength;
           pixels[o + 1] = C.surface[1] + (hue[1] - C.surface[1]) * strength;
@@ -113,9 +145,8 @@ export function createScalarFieldPainter(res = 64): ScalarFieldPainter {
       }
 
       bufferCtx.putImageData(image, 0, 0);
-      ctx.imageSmoothingEnabled = true;
-      ctx.imageSmoothingQuality = "high";
-      ctx.drawImage(buffer, 0, 0, res, res, 0, 0, width, height);
+      computed = true;
+      blit(ctx, width, height);
     },
   };
 }
