@@ -6,6 +6,11 @@ import { expect, test } from "@playwright/test";
  */
 test.beforeEach(async ({ page }) => {
   await page.route("**/cloud.umami.is/**", (route) => route.abort());
+  // The decorative WebGL background (motion on, software GL in CI) can hold
+  // the main thread for seconds on a loaded host, which delayed the first
+  // figures past the assertion window. It is not under test here; the lab
+  // keeps motion on. Same guard as e2e/layout-shift.e2e.ts.
+  await page.route(/\/assets\/FaultyTerminal-[^/]+\.js/, (route) => route.abort());
 });
 
 for (const [language, words] of [
