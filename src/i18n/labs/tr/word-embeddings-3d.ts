@@ -17,6 +17,16 @@ const copy: typeof en = {
   varianceLabel: "Açıklanan varyans",
   varianceHint: (dimensions: number) => `${dimensions} eksenin üçü`,
   selectedLabel: "Seçili",
+  neighbours: {
+    title: (word: string) => `${word} kelimesine 300 boyutun tamamında en yakınlar`,
+    rankHeader: "Sıra",
+    wordHeader: "Kelime",
+    scoreHeader: "Benzerlik",
+    rowLabel: (word: string, gloss: string, rank: number, score: string) =>
+      `${word}, ${gloss}. ${rank}. en yakın, benzerlik ${score}. Bulutu buraya taşımak için seç.`,
+  },
+  neighboursNote:
+    "Bu puanlar tam vektörlerden hesaplanır; kelimeler ne kadar yakın ya da uzak görünürse görünsün, bulutu döndürmek onları değiştirmez.",
   recapTitle: "Bu prototip ne gösteriyor",
   recap: {
     lessons: [
@@ -28,7 +38,7 @@ const copy: typeof en = {
   map: {
     mapLabel:
       "Üç boyutta kelime bulutu. Döndürmek için sürükle. Ok tuşları en yakın kelimeler arasında gezinir, Shift ve ok tuşları görüşü çevirir, Enter seçer.",
-    hint: "Döndürmek için sürükle · Shift + ok tuşları",
+    hint: "Seçmek için bir kelimeye dokun · döndürmek için sürükle · Shift + ok tuşlarıyla çevir",
     pointLabel: (word: string, gloss: string) => `${word}, ${gloss}`,
     neighbourLabel: (word: string, gloss: string, rank: number, score: string) =>
       `${word}, ${gloss}. ${rank}. en yakın, benzerlik ${score}`,
