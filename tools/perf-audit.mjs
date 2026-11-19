@@ -269,7 +269,7 @@ async function measure(browser, origin, route, profile, { ambient = true } = {})
     clsSum: final.shifts.reduce((sum, s) => sum + s.value, 0),
     interactive: interactiveAt,
     neverQuiet,
-    wallToInteractive: interactiveWall - started,
+    wallToInteractive: neverQuiet ? null : interactiveWall - started,
     loadLongTasks: loadTasks.length,
     loadBlockingMs: tbt(loadTasks),
     longestLoadTask: loadTasks.reduce((m, t) => Math.max(m, t.duration), 0),

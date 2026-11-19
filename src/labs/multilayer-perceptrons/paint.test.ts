@@ -13,6 +13,13 @@ describe("tintStrength", () => {
     }
   });
 
+  it("holds that bound where the curve is steepest, just above zero", () => {
+    for (let i = 0; i <= 2000; i++) {
+      const v = i / 1e6;
+      expect(Math.abs(tintStrength(v) - Math.pow(v, 0.65) * 0.62)).toBeLessThan(1 / 255);
+    }
+  });
+
   it("clamps beyond ±1 and keeps zero at zero", () => {
     expect(tintStrength(0)).toBe(0);
     expect(tintStrength(5)).toBeCloseTo(0.62, 6);

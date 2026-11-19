@@ -63,7 +63,10 @@ export function DecisionCanvas({
         // each frame while training, and taps waited half a second. So while
         // training, a fresh field may take at most a quarter of the time since
         // the last one, and the frames in between show that one again. A
-        // still canvas (dtSec 0) always samples afresh.
+        // still canvas (dtSec 0) always samples afresh. In between, the dots
+        // (drawn from the live net) can be a fraction of a second ahead of
+        // the field, and a theme switch reaches the field on its next sample;
+        // both settle by themselves and are not bugs.
         const now = performance.now();
         const field = fieldRef.current;
         const fresh = dtSec === 0 || now - field.at >= field.cost * FIELD_SHARE;
