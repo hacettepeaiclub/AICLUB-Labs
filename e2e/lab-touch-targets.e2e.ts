@@ -95,7 +95,12 @@ async function overlappingSteppers(page: Page) {
         const a = rects[i]!;
         const b = rects[j]!;
         if (a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom)
-          overlaps.push(`MLP steppers ${i}/${j} overlap`);
+          overlaps.push(
+            `MLP steppers ${i}/${j} overlap: ` +
+              [a, b].map((r) => `[${r.left},${r.right}]×[${r.top},${r.bottom}]`).join(" ") +
+              ` in ${els[0]!.parentElement!.getBoundingClientRect().width}px, ` +
+              els[0]!.getAttribute("data-layer-stepper"),
+          );
       }
     return {
       count: els.length,
@@ -267,10 +272,14 @@ for (const width of [320, 360, 390, 1280]) {
         const steppers = page.locator(".lab-content [data-layer-stepper]");
         await expect(steppers).toHaveCount(3);
 
-        const { placements, overlaps } = await overlappingSteppers(page);
+        // Measured once the layout settles: the diagram re-measures its width
+        // after a layer is added, and a frame can fall between. A lasting
+        // overlap still fails, with the boxes, the width and the placement.
+        await expect.poll(async () => (await overlappingSteppers(page)).overlaps).toEqual([]);
+        const { placements } = await overlappingSteppers(page);
+        test.info().annotations.push({ type: "stepper placement", description: placements.join() });
         // QA measured 35px columns here: only the row under the diagram fits.
         if (width === 320) expect(placements).toEqual(["listed"]);
-        expect(overlaps).toEqual([]);
         for (const { w, h } of await boxes(page, ".lab-content [data-layer-stepper] > button")) {
           expect(w).toBeGreaterThanOrEqual(44);
           expect(h).toBeGreaterThanOrEqual(44);
@@ -301,18 +310,21 @@ for (const width of [320, 360, 390, 1280]) {
  * circles on a phone, and the foot's had covered the tip's dot.
  */
 for (const width of [390, 1280]) {
-  test(`${width}px: close handles each keep their own dot`, async ({ page }) => {
-    await page.setViewportSize({ width, height: 844 });
-    await page.route("**/cloud.umami.is/**", (route) => route.abort());
-    await page.addInitScript(() => {
-      localStorage.setItem(
-        "acl:multilayer-perceptrons:neuron",
-        JSON.stringify({ w1: 0.4, w2: 0, bias: 0 }),
-      );
+  // 0.1 brings the dots so close that they touch; 0.4 only the hit circles.
+  for (const w1 of [0.4, 0.1]) {
+    test(`${width}px: close handles each keep their own dot (w = ${w1}, 0)`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 844 });
+      await page.route("**/cloud.umami.is/**", (route) => route.abort());
+      await page.addInitScript((w1) => {
+        localStorage.setItem(
+          "acl:multilayer-perceptrons:neuron",
+          JSON.stringify({ w1, w2: 0, bias: 0 }),
+        );
+      }, w1);
+      await open(page, "multilayer-perceptrons");
+      const { found, missed } = await missedHandles(page, ".lab-content svg g[role=slider]");
+      expect(found).toBeGreaterThanOrEqual(2);
+      expect(missed.filter((m) => m.endsWith(" at 0,0"))).toEqual([]);
     });
-    await open(page, "multilayer-perceptrons");
-    const { found, missed } = await missedHandles(page, ".lab-content svg g[role=slider]");
-    expect(found).toBeGreaterThanOrEqual(2);
-    expect(missed.filter((m) => m.endsWith(" at 0,0"))).toEqual([]);
-  });
+  }
 }
