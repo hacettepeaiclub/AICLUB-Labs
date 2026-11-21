@@ -1,7 +1,7 @@
 import { useRef, type KeyboardEvent, type RefObject } from "react";
 import { useDrag, useTouchRadius } from "@/hooks";
 import { cn } from "@/lib/cn";
-import { clip, foot, fromTip, through, tip, type Line, type Xy } from "../lines";
+import { clip, foot, fromTip, hitArea, through, tip, type Line, type Xy } from "../lines";
 
 export interface LineOverlayProps {
   lines: readonly Line[];
@@ -16,6 +16,9 @@ export interface LineOverlayProps {
 
 /** Below this the handles stop being drawn: the line's foot is off the square. */
 const VISIBLE = 0.97;
+/** The drawn dots of the two handles, in model units. */
+const TIP_DOT = 0.045;
+const FOOT_DOT = 0.04;
 
 /**
  * A neuron's boundary, held in the hand.
@@ -186,11 +189,12 @@ function LineGlyph({
             {...turn}
             className="cursor-grab outline-none [&:focus-visible>circle:last-child]:stroke-accent"
           >
-            <circle cx={t.x} cy={t.y} r={hitRadius} className="fill-transparent" />
+            {/* Cut where it meets the foot's, so each dot keeps its own taps. */}
+            <path d={hitArea(t, f, hitRadius)} className="fill-transparent" />
             <circle
               cx={t.x}
               cy={t.y}
-              r={0.045}
+              r={TIP_DOT}
               className="fill-data stroke-ink-950"
               strokeWidth={2}
               vectorEffect="non-scaling-stroke"
@@ -206,11 +210,11 @@ function LineGlyph({
             {...slide}
             className="cursor-move outline-none [&:focus-visible>circle:last-child]:stroke-accent"
           >
-            <circle cx={f.x} cy={f.y} r={hitRadius} className="fill-transparent" />
+            <path d={hitArea(f, t, hitRadius)} className="fill-transparent" />
             <circle
               cx={f.x}
               cy={f.y}
-              r={0.04}
+              r={FOOT_DOT}
               className="fill-ink-950 stroke-fg"
               strokeWidth={2}
               vectorEffect="non-scaling-stroke"

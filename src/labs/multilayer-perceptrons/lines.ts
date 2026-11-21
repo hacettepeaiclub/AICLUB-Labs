@@ -63,6 +63,37 @@ export function fromTip(l: Line, t: Xy): Line {
 }
 
 /**
+ * The outline of a handle's hit area: a circle of `radius` round `at`, cut
+ * along the perpendicular bisector to `other` where the two would overlap.
+ *
+ * Two handles grown for touch can come closer than one hit radius apart, and
+ * the one drawn later would then take taps on the other's dot. Cut this way,
+ * each keeps its full reach in every direction but the other's, and a tap
+ * between them goes to the nearer. As an SVG path, in the same units.
+ */
+export function hitArea(at: Xy, other: Xy, radius: number): string {
+  const dx = other.x - at.x;
+  const dy = other.y - at.y;
+  const half = Math.hypot(dx, dy) / 2;
+  const r = radius;
+  if (half >= r || half === 0) {
+    // The whole circle, as two half arcs.
+    return `M${at.x - r} ${at.y}a${r} ${r} 0 1 0 ${2 * r} 0a${r} ${r} 0 1 0 ${-2 * r} 0Z`;
+  }
+  // n points at the other handle; p is n turned a quarter, counterclockwise.
+  const nx = dx / (2 * half);
+  const ny = dy / (2 * half);
+  const chord = Math.sqrt(r * r - half * half);
+  const mx = at.x + nx * half;
+  const my = at.y + ny * half;
+  const [ax, ay] = [mx - ny * chord, my + nx * chord];
+  const [bx, by] = [mx + ny * chord, my - nx * chord];
+  // From a, the long way round, away from the other handle, to b; then back
+  // along the chord.
+  return `M${ax} ${ay}A${r} ${r} 0 1 1 ${bx} ${by}Z`;
+}
+
+/**
  * The part of the line inside the input square [−1, 1]², as two points, or
  * null when the line misses the square.
  */
