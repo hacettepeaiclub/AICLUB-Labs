@@ -189,13 +189,14 @@ function LineGlyph({
             {...turn}
             className="cursor-grab outline-none [&:focus-visible>circle:last-child]:stroke-accent"
           >
-            {/* Cut where it meets the foot's, so each dot keeps its own taps. */}
+            {/* Cut where it meets the foot's, so each dot keeps its own taps; the
+                painted dots take none, or the later one would bypass the cut. */}
             <path d={hitArea(t, f, hitRadius)} className="fill-transparent" />
             <circle
               cx={t.x}
               cy={t.y}
               r={TIP_DOT}
-              className="fill-data stroke-ink-950"
+              className="pointer-events-none fill-data stroke-ink-950"
               strokeWidth={2}
               vectorEffect="non-scaling-stroke"
             />
@@ -215,7 +216,7 @@ function LineGlyph({
               cx={f.x}
               cy={f.y}
               r={FOOT_DOT}
-              className="fill-ink-950 stroke-fg"
+              className="pointer-events-none fill-ink-950 stroke-fg"
               strokeWidth={2}
               vectorEffect="non-scaling-stroke"
             />
