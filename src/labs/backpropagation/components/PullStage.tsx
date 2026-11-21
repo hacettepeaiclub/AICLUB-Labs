@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import { Figure, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
-import { useReducedMotion } from "@/hooks";
+import { useReducedMotion, useTouchRadius } from "@/hooks";
 import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import { aimStep, evaluate, gradient, network, NETWORK_PARAMS, type NetworkParam } from "../engine";
@@ -91,6 +91,7 @@ export function PullStage() {
   const [landed, setLanded] = useState<{ aimed: number; landed: number } | null>(null);
   const dragging = useRef(false);
   const svgRef = useRef<SVGSVGElement>(null);
+  const hitRadius = useTouchRadius(svgRef, { width: W, height: H }, 22);
   const anim = useRef(0);
 
   const out = evaluate(NET.graph, params);
@@ -362,7 +363,12 @@ export function PullStage() {
               }}
               className="cursor-grab outline-none focus-visible:[&>circle]:stroke-accent"
             >
-              <circle cx={TRACK_X} cy={yOf(target ?? out)} r={22} className="fill-transparent" />
+              <circle
+                cx={TRACK_X}
+                cy={yOf(target ?? out)}
+                r={hitRadius}
+                className="fill-transparent"
+              />
               <circle
                 cx={TRACK_X}
                 cy={yOf(target ?? out)}
@@ -375,7 +381,8 @@ export function PullStage() {
               x={TRACK_X}
               y={18}
               textAnchor="middle"
-              className="fill-fg-faint font-mono"
+              // Over the handle at the top of its track: let a tap through.
+              className="pointer-events-none fill-fg-faint font-mono"
               fontSize={14}
             >
               ŷ
