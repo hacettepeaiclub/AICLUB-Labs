@@ -48,7 +48,8 @@ async function open(page: Page, slug: string) {
 }
 
 /**
- * Handles whose taps miss 21px from their centre, up, down, left or right.
+ * Handles whose taps miss at their centre, or 21px from it up, down, left or
+ * right.
  * Points outside the SVG are skipped: a handle at a chart's edge cannot be
  * reached past it, and nothing else is there to steal the tap.
  */
@@ -66,6 +67,7 @@ async function missedHandles(page: Page, selector: string) {
       const cx = r.left + r.width / 2;
       const cy = r.top + r.height / 2;
       for (const [dx, dy] of [
+        [0, 0],
         [-21, 0],
         [21, 0],
         [0, -21],
@@ -80,6 +82,26 @@ async function missedHandles(page: Page, selector: string) {
       }
     }
     return { found, missed };
+  });
+}
+
+/** Pairs of layer steppers whose boxes intersect, and how they are placed. */
+async function overlappingSteppers(page: Page) {
+  return page.locator(".lab-content [data-layer-stepper]").evaluateAll((els) => {
+    const rects = els.map((el) => el.getBoundingClientRect());
+    const overlaps: string[] = [];
+    for (let i = 0; i < rects.length; i++)
+      for (let j = i + 1; j < rects.length; j++) {
+        const a = rects[i]!;
+        const b = rects[j]!;
+        if (a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom)
+          overlaps.push(`MLP steppers ${i}/${j} overlap`);
+      }
+    return {
+      count: els.length,
+      placements: [...new Set(els.map((el) => el.getAttribute("data-layer-stepper")))],
+      overlaps,
+    };
   });
 }
 
@@ -163,22 +185,15 @@ for (const viewport of sizes) {
         await expect
           .poll(() => overflowOf(page), { message: "multilayer-perceptrons overflows" })
           .toBeLessThanOrEqual(0);
-        const steppers = ".lab-content div.absolute[role=group] > button";
-        check("MLP neuron stepper", await boxes(page, steppers));
+        check(
+          "MLP neuron stepper",
+          await boxes(page, ".lab-content [data-layer-stepper] > button"),
+        );
         check(
           "MLP add layer",
           await boxes(page, `.lab-content button:text-is("${addLayer[language]}")`),
         );
-        // The bigger steppers sit side by side, or stacked when columns are
-        // narrow; neighbouring layers' pairs must never overlap.
-        const groups = await page
-          .locator(".lab-content div.absolute[role=group]")
-          .evaluateAll((els) =>
-            els.map((el) => el.getBoundingClientRect()).map((r) => [r.left, r.right]),
-          );
-        for (let i = 1; i < groups.length; i++)
-          if (groups[i]![0]! < groups[i - 1]![1]!)
-            tooSmall.push(`MLP steppers ${i - 1}/${i} overlap`);
+        tooSmall.push(...(await overlappingSteppers(page)).overlaps);
 
         const lines = await missedHandles(page, ".lab-content svg g[role=slider]");
         expect(lines.found, "MLP line handles").toBeGreaterThanOrEqual(2);
@@ -228,5 +243,76 @@ for (const viewport of sizes) {
         await expect.poll(() => overflowOf(page)).toBeLessThanOrEqual(0);
       });
     }
+  });
+}
+
+/**
+ * The perceptron at its largest, three hidden layers: on a 320px phone each
+ * of the five columns is 35px, too narrow for even a stacked pair of 44px
+ * steppers, which then move to a row of their own under the diagram.
+ */
+for (const width of [320, 360, 390, 1280]) {
+  test.describe(`${width}px, the largest network`, () => {
+    test.use({ viewport: { width, height: 844 }, hasTouch: true });
+
+    for (const language of ["en", "tr"] as const) {
+      test(`layer steppers stay apart and full size (${language})`, async ({ page }) => {
+        await page.route("**/cloud.umami.is/**", (route) => route.abort());
+        await page.addInitScript((language) => {
+          localStorage.setItem("aiclub-labs-language", language);
+        }, language);
+        await open(page, "multilayer-perceptrons");
+        const add = page.locator(`.lab-content button:text-is("${addLayer[language]}")`);
+        while (await add.isEnabled()) await add.click();
+        const steppers = page.locator(".lab-content [data-layer-stepper]");
+        await expect(steppers).toHaveCount(3);
+
+        const { placements, overlaps } = await overlappingSteppers(page);
+        // QA measured 35px columns here: only the row under the diagram fits.
+        if (width === 320) expect(placements).toEqual(["listed"]);
+        expect(overlaps).toEqual([]);
+        for (const { w, h } of await boxes(page, ".lab-content [data-layer-stepper] > button")) {
+          expect(w).toBeGreaterThanOrEqual(44);
+          expect(h).toBeGreaterThanOrEqual(44);
+        }
+        await expect.poll(() => overflowOf(page)).toBeLessThanOrEqual(0);
+
+        // The steppers still edit the layer they name: + on the last hidden
+        // layer grows it by one neuron.
+        const diagram = page.locator(".lab-content svg[role=group][aria-label*='→']").first();
+        const shape = async () =>
+          (await diagram.getAttribute("aria-label"))!
+            .match(/\d+(?: → \d+)+/)![0]
+            .split(" → ")
+            .map(Number);
+        const before = await shape();
+        await steppers.last().locator("button").last().click();
+        await expect
+          .poll(shape)
+          .toEqual(before.map((n, i) => (i === before.length - 2 ? n + 1 : n)));
+      });
+    }
+  });
+}
+
+/**
+ * Grown for touch, a line's two handles must not take each other's taps:
+ * with w = (0.4, 0) the tip sits 0.4 from the foot, closer than two 44px hit
+ * circles on a phone, and the foot's had covered the tip's dot.
+ */
+for (const width of [390, 1280]) {
+  test(`${width}px: close handles each keep their own dot`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 844 });
+    await page.route("**/cloud.umami.is/**", (route) => route.abort());
+    await page.addInitScript(() => {
+      localStorage.setItem(
+        "acl:multilayer-perceptrons:neuron",
+        JSON.stringify({ w1: 0.4, w2: 0, bias: 0 }),
+      );
+    });
+    await open(page, "multilayer-perceptrons");
+    const { found, missed } = await missedHandles(page, ".lab-content svg g[role=slider]");
+    expect(found).toBeGreaterThanOrEqual(2);
+    expect(missed.filter((m) => m.endsWith(" at 0,0"))).toEqual([]);
   });
 }
