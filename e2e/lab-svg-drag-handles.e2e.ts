@@ -50,6 +50,7 @@ const labels = [
     layers: "Number of layers",
     depthTitle: "Make the network longer and watch the signal fade.",
     line: "The line's position. Arrow keys slide it along its arrow.",
+    tip: /^The arrow's tip:/,
   },
   {
     language: "tr",
@@ -57,6 +58,7 @@ const labels = [
     layers: "Katman sayısı",
     depthTitle: "Katman sayısı arttıkça gradyan neden küçülür?",
     line: "Çizginin konumu. Ok tuşları onu okunun yönünde kaydırır.",
+    tip: /^Okun ucu:/,
   },
 ];
 
@@ -124,6 +126,32 @@ for (const { profile, touch } of [
           await drag(page, start, { x: start.x - 30, y: start.y }, touch);
           await expect(line).not.toHaveAttribute("aria-valuetext", "b 0.0");
         });
+
+        for (const weight of [0.4, 0.1]) {
+          test(`the visible arrow tip changes the weights when w₁ is ${weight}`, async ({
+            page,
+          }) => {
+            if (touch) await page.setViewportSize({ width: 390, height: viewport.height });
+            await page.addInitScript((w1) => {
+              localStorage.setItem(
+                "acl:multilayer-perceptrons:neuron",
+                JSON.stringify({ w1, w2: 0, bias: 0 }),
+              );
+            }, weight);
+            await page.goto("/labs/multilayer-perceptrons/");
+            await expect(page.locator("html")).toHaveAttribute("lang", copy.language);
+
+            const tip = page.getByRole("slider", { name: copy.tip });
+            const slide = page.getByRole("slider", { name: copy.line, exact: true });
+            const initialWeights = `w₁ ${weight}, w₂ 0.0`;
+            await expect(tip).toHaveAttribute("aria-valuetext", initialWeights);
+            const center = await handleCenter(tip);
+            await expectHandleHit(tip, center);
+            await drag(page, center, { x: center.x + 30, y: center.y - 25 }, touch);
+            await expect(tip).not.toHaveAttribute("aria-valuetext", initialWeights);
+            await expect(slide).toHaveAttribute("aria-valuetext", "b 0.0");
+          });
+        }
       });
     }
   });
