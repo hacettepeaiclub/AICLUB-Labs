@@ -78,10 +78,8 @@ export const tr: Translation = {
 
   home: {
     kicker: "AI Club Labs",
-    // İlk sürümdeki başlık geri alındı: hem bilgisayar bilimini hem yapay
-    // zekâyı adıyla söylüyor ve yine bir eylemle başlıyor.
-    title: "Play with the ideas behind computer science and artificial intelligence.",
-    lede: "Algoritmaları ve yapay sinir ağlarını çalıştır. Bir ayarı değiştir, sonucu karşılaştır ve neden değiştiğini incele.",
+    title: "Bilgisayar bilimini ve yapay zekâyı deneyerek öğren.",
+    lede: "Algoritmaları ve yapay sinir ağlarını çalıştır. Bir ayarı değiştirip sonucu gör.",
     cta: "Deneylere başla",
     labs: "Laboratuvarlar",
     labCount: (n: number) => `${n} lab`,
