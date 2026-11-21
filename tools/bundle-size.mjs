@@ -59,8 +59,15 @@ import { readFreshStamp } from "./build-stamp.mjs";
 
 /** Kilobytes, gzipped. Current sizes are in the report this prints. */
 const BUDGET = {
-  /** The entry chunk alone: the shell, the home page and the lab registry. */
-  entry: 36,
+  /**
+   * The entry chunk alone: the shell, the home page and the lab registry.
+   * Raised from 36: the shell now carries the retry of a failed lab download
+   * at a fresh address, offline and terminal-error recovery, the mobile
+   * finder with its loading and dismissible-error states, and keyboard-safe
+   * mobile navigation (34.2 → 36.6 KB). All of it must work before any lab
+   * chunk has loaded, so none of it can be deferred.
+   */
+  entry: 38,
   /** Everything the home page's JavaScript waits for: entry and its static imports. */
   firstLoadJs: 90,
   /** The one stylesheet. */
