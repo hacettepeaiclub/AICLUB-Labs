@@ -123,7 +123,8 @@
   /* Categorical signals at their 700 weights */
   --signal-cyan: 14 116 144;
   --signal-green: 4 120 87;
-  --signal-amber: 180 83 9;
+  /* Amber also labels small calculator keys on the raised surface. */
+  --signal-amber: 160 70 8;
   --signal-rose: 190 18 60;
   --signal-blue: 29 78 216;
 
