@@ -37,11 +37,18 @@ export interface NetworkDiagramProps {
   };
 }
 
-/** Room under the neurons for the − and + of each layer: side by side, or stacked when the columns are narrow. */
-const EDIT_SPACE = 44;
-const EDIT_SPACE_STACKED = 80;
+/**
+ * Room under the neurons for the − and + of each layer: side by side, or
+ * stacked when the columns are narrow. Each button is 44px square, the touch
+ * minimum; they were 32px, the smallest controls in the lab. The space is a
+ * 6px offset plus one button (side by side) or two and a 4px gap (stacked),
+ * with 4px to spare.
+ */
+const STEPPER = 44;
+const EDIT_SPACE = 6 + STEPPER + 4;
+const EDIT_SPACE_STACKED = 6 + STEPPER * 2 + 4 + 4;
 /** Below this column width, − and + stack rather than sit side by side. */
-const STEPPER_COLUMN = 76;
+const STEPPER_COLUMN = STEPPER * 2 + 4 + 4;
 
 const NODE_SIZE = 44;
 const ROW_GAP = 16;
@@ -338,7 +345,7 @@ export function NetworkDiagram({
                   aria-label={
                     count === 1 ? d.removeLayer(column.label) : d.removeNeuron(column.label)
                   }
-                  className="flex size-8 items-center justify-center rounded border border-line/20 text-body-sm text-fg-muted hover:border-line/40 hover:text-fg"
+                  className="flex size-11 items-center justify-center rounded border border-line/20 text-body-sm text-fg-muted hover:border-line/40 hover:text-fg"
                 >
                   −
                 </button>
@@ -347,7 +354,7 @@ export function NetworkDiagram({
                   onClick={() => change(1)}
                   disabled={count >= editing.maxNeurons}
                   aria-label={d.addNeuron(column.label)}
-                  className="flex size-8 items-center justify-center rounded border border-line/20 text-body-sm text-fg-muted hover:border-line/40 hover:text-fg disabled:opacity-40"
+                  className="flex size-11 items-center justify-center rounded border border-line/20 text-body-sm text-fg-muted hover:border-line/40 hover:text-fg disabled:opacity-40"
                 >
                   +
                 </button>
@@ -386,7 +393,7 @@ export function NetworkDiagram({
             type="button"
             onClick={() => editing.onChange([...editing.hidden, 2])}
             disabled={editing.hidden.length >= editing.maxLayers}
-            className="min-h-10 rounded border border-dashed border-line/30 px-3 text-body-sm text-fg-muted hover:border-line/50 hover:text-fg disabled:opacity-40"
+            className="min-h-11 rounded border border-dashed border-line/30 px-3 text-body-sm text-fg-muted hover:border-line/50 hover:text-fg disabled:opacity-40"
           >
             {d.addLayer}
           </button>

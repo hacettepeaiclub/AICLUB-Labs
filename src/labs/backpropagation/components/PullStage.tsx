@@ -426,7 +426,7 @@ export function PullStage() {
       }
       readout={
         <details className="rounded border border-line/10 px-3 py-2 text-caption text-fg-muted">
-          <summary className="cursor-pointer select-none">{t.tableTitle}</summary>
+          <summary className="min-h-11 cursor-pointer select-none py-3">{t.tableTitle}</summary>
           <table className="mt-2 w-full font-mono tabular-nums">
             <thead>
               <tr className="text-left text-fg-faint">

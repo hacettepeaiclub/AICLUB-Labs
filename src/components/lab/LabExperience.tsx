@@ -98,7 +98,7 @@ export function LabOrientation({ rootRef }: { rootRef: RefObject<HTMLElement> })
           </p>
           <p className="mt-2 text-body-sm text-fg">{copy[1]}</p>
         </div>
-        <Button size="sm" disabled={!start} onClick={() => start && reveal(start, reduced)}>
+        <Button disabled={!start} onClick={() => start && reveal(start, reduced)}>
           {tr ? "Deneyi aç" : "Try it"} <span aria-hidden>↓</span>
         </Button>
       </div>

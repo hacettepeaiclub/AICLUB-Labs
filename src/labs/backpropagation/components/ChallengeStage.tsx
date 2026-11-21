@@ -89,7 +89,7 @@ export function ChallengeStage() {
                           variant="ghost"
                           size="sm"
                           onClick={() => setChecked((s) => ({ ...s, [id]: [...s[id], name] }))}
-                          className="min-h-9"
+                          className="min-h-11"
                         >
                           {t.check}
                         </Button>
@@ -110,7 +110,7 @@ export function ChallengeStage() {
                     variant={accused[id] === i ? "primary" : "secondary"}
                     aria-pressed={accused[id] === i}
                     onClick={() => setAccused((s) => ({ ...s, [id]: i }))}
-                    className="min-h-[44px] font-mono"
+                    className="min-h-[44px] min-w-11 font-mono"
                   >
                     {nodeName(i)}
                   </Button>
