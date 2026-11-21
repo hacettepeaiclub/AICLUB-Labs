@@ -33,9 +33,14 @@
     <meta name="twitter:image" content="https://labs.hacettepeaiclub.com/og/home.jpg" />
     <!-- static-sharing:end -->
     <style>
+      /* Offset rather than margin: a top margin here collapses into the body's,
+         so the whole body sat 12vh down and jumped up when the app replaced
+         this, a layout shift of 0.074 on every first visit. */
       .boot-content {
         max-width: 42rem;
-        margin: 12vh auto;
+        margin: 0 auto;
+        position: relative;
+        top: 12vh;
         padding: 1.5rem;
         font:
           1rem/1.6 system-ui,

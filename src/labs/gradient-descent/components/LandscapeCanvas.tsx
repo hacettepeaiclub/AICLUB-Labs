@@ -7,6 +7,7 @@ import {
   type RefObject,
 } from "react";
 import { useDrag, usePaletteVersion } from "@/hooks";
+import { useCanvasBacking } from "@/hooks/useCanvasBacking";
 import { cn } from "@/lib/cn";
 import { clamp } from "@/lib/math";
 import type { Landscape, Point } from "../engine";
@@ -125,37 +126,14 @@ export function LandscapeCanvas({
     drawLandscape(ctx, width, height, sceneRef.current);
   }, []);
 
-  // Context, device-pixel sizing and resize handling. No frame loop.
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+  // Context and device-pixel sizing (src/hooks/useCanvasBacking.ts); every
+  // resize repaints, since resizing clears the bitmap. No frame loop.
+  useCanvasBacking(canvasRef, ({ ctx, width, height }) => {
     ctxRef.current = ctx;
-
-    const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      const rect = canvas.getBoundingClientRect();
-      sizeRef.current = { width: rect.width, height: rect.height };
-      setBox((b) =>
-        b.width === rect.width && b.height === rect.height
-          ? b
-          : { width: rect.width, height: rect.height },
-      );
-      canvas.width = Math.round(rect.width * dpr);
-      canvas.height = Math.round(rect.height * dpr);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      draw();
-    };
-
-    const observer = new ResizeObserver(resize);
-    observer.observe(canvas);
-    resize();
-    return () => {
-      observer.disconnect();
-      ctxRef.current = null;
-    };
-  }, [draw]);
+    sizeRef.current = { width, height };
+    setBox((b) => (b.width === width && b.height === height ? b : { width, height }));
+    draw();
+  });
 
   // Repaint after every render — a new step, a new landscape, a new theme. The
   // whole picture is eight ellipses and a polyline, so this is cheaper than
@@ -343,31 +321,13 @@ export function ObjectiveChart({
     drawObjectiveChart(ctx, width, height, a.series, a.count, a.tolerance, a.cursor);
   }, []);
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+  // Context and device-pixel sizing (src/hooks/useCanvasBacking.ts); every
+  // resize repaints, since resizing clears the bitmap. No frame loop here.
+  useCanvasBacking(canvasRef, ({ ctx, width, height }) => {
     ctxRef.current = ctx;
-
-    const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      const rect = canvas.getBoundingClientRect();
-      sizeRef.current = { width: rect.width, height: rect.height };
-      canvas.width = Math.round(rect.width * dpr);
-      canvas.height = Math.round(rect.height * dpr);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      draw();
-    };
-
-    const observer = new ResizeObserver(resize);
-    observer.observe(canvas);
-    resize();
-    return () => {
-      observer.disconnect();
-      ctxRef.current = null;
-    };
-  }, [draw]);
+    sizeRef.current = { width, height };
+    draw();
+  });
 
   const palette = usePaletteVersion();
   useEffect(draw, [draw, palette, series, count, cursor, tolerance]);

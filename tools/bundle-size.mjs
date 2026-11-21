@@ -25,11 +25,23 @@
  * Which file belongs to what is read from Vite's manifest rather than guessed
  * from file names, so a renamed or split chunk cannot slip past.
  *
- * ## Why it builds on its own
+ * ## Which build it measures
  *
- * It runs its own production build, with the manifest switched on, into a
- * temporary folder. The deployed `dist/` stays exactly what `npm run build`
- * makes, and the check cannot be fooled by a stale `dist/` left on disk.
+ * The one `npm run build` just made, when that is still the build of the code
+ * on disk. Its manifest is moved out of `dist/` into a build stamp
+ * (`tools/build-stamp.mjs`) together with a fingerprint of the source and a
+ * hash of every file it names; a stamp is used only while both still match,
+ * so a stale `dist/` left on disk cannot pass for the current code.
+ *
+ *     npm run size                     the last build if fresh, else its own
+ *     npm run size -- --reuse-build    the last build, or fail
+ *
+ * CI runs the second form straight after its build: the same commit is never
+ * built twice, and a stamp that somehow went stale fails the check rather
+ * than quietly costing a second build. Without a fresh stamp — no build yet,
+ * an edit since — this makes its own production build, manifest on, into a
+ * temporary folder, and the deployed `dist/` stays exactly what
+ * `npm run build` makes.
  *
  * ## Changing a budget
  *
@@ -43,11 +55,19 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { gzipSync } from "node:zlib";
 import { build } from "vite";
+import { readFreshStamp } from "./build-stamp.mjs";
 
 /** Kilobytes, gzipped. Current sizes are in the report this prints. */
 const BUDGET = {
-  /** The entry chunk alone: the shell, the home page and the lab registry. */
-  entry: 36,
+  /**
+   * The entry chunk alone: the shell, the home page and the lab registry.
+   * Raised from 36: the shell now carries the retry of a failed lab download
+   * at a fresh address, offline and terminal-error recovery, the mobile
+   * finder with its loading and dismissible-error states, and keyboard-safe
+   * mobile navigation (34.2 → 36.6 KB). All of it must work before any lab
+   * chunk has loaded, so none of it can be deferred.
+   */
+  entry: 38,
   /** Everything the home page's JavaScript waits for: entry and its static imports. */
   firstLoadJs: 90,
   /** The one stylesheet. */
@@ -59,18 +79,50 @@ const BUDGET = {
 const kb = (bytes) => bytes / 1024;
 const fmt = (bytes) => `${kb(bytes).toFixed(1)} KB`;
 
-async function main() {
+/**
+ * The build to measure: `{ outDir, manifest, cleanup }`. The last build when
+ * its stamp is fresh; otherwise, unless `requireReuse`, a build of its own.
+ */
+async function buildToMeasure({ requireReuse }) {
+  const { stamp, reason } = await readFreshStamp();
+  if (stamp) {
+    console.log(`Measuring the build in ${path.relative(".", stamp.outDir) || "."}.`);
+    return { outDir: stamp.outDir, manifest: stamp.manifest, cleanup: async () => {} };
+  }
+  if (requireReuse) {
+    throw new Error(
+      `--reuse-build: no fresh build to measure (${reason}). Run npm run build first.`,
+    );
+  }
+  console.log(`Building to measure (${reason}).`);
   const outDir = await mkdtemp(path.join(tmpdir(), "aiclub-size-"));
+  const cleanup = () => rm(outDir, { recursive: true, force: true });
   try {
     await build({
       logLevel: "warn",
       build: { outDir, emptyOutDir: true, manifest: true },
     });
     const manifest = JSON.parse(await readFile(path.join(outDir, ".vite/manifest.json"), "utf8"));
+    return { outDir, manifest, cleanup };
+  } catch (error) {
+    await cleanup();
+    throw error;
+  }
+}
 
+async function main() {
+  const args = process.argv.slice(2);
+  const unknown = args.filter((arg) => arg !== "--reuse-build");
+  if (unknown.length > 0) throw new Error(`Unknown argument: ${unknown.join(" ")}`);
+
+  const { outDir, manifest, cleanup } = await buildToMeasure({
+    requireReuse: args.includes("--reuse-build"),
+  });
+  try {
     const sizes = new Map();
     const gz = async (file) => {
-      if (!sizes.has(file)) sizes.set(file, gzipSync(await readFile(path.join(outDir, file)), { level: 9 }).length);
+      if (!sizes.has(file))
+        sizes.set(file, gzipSync(await readFile(path.join(outDir, file)), { level: 9 }).length);
       return sizes.get(file);
     };
 
@@ -155,7 +207,7 @@ async function main() {
       console.log("Within budget.");
     }
   } finally {
-    await rm(outDir, { recursive: true, force: true });
+    await cleanup();
   }
 }
 

@@ -1,9 +1,27 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "node:path";
+import { recordBuildStart } from "./tools/build-stamp.mjs";
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    // The source as the build starts, so the size budget's stamp is only
+    // trusted when nothing was edited mid-build (tools/build-stamp.mjs).
+    (() => {
+      let outDir = "";
+      return {
+        name: "build-stamp-start",
+        apply: "build" as const,
+        configResolved(config: { root: string; build: { outDir: string } }) {
+          outDir = path.resolve(config.root, config.build.outDir);
+        },
+        async buildStart() {
+          await recordBuildStart(outDir);
+        },
+      };
+    })(),
+  ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),

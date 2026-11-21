@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Figure, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
 import { useLocalStorage, useReducedMotion } from "@/hooks";
+import { orNull } from "@/hooks/useLocalStorage";
 import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import { gradient } from "../engine";
@@ -52,6 +53,9 @@ const AUTO_MS = 140;
 
 const signedPar = (d: number): string => (d > 0 ? `+${d}` : d < 0 ? `−${-d}` : "E");
 
+/** A stored best round: strokes over or under par, a whole number. */
+export const isRoundScore = (value: unknown): value is number => Number.isSafeInteger(value);
+
 /**
  * Section 4, between the step-size section and momentum: gradient golf.
  *
@@ -78,7 +82,11 @@ export function GolfGame() {
   const [cards, setCards] = useState<Card[]>([]);
   const [phase, setPhase] = useState<Phase>({ kind: "intro" });
   const [club, setClub] = useState<ClubId>("iron9");
-  const [best, setBest] = useLocalStorage<number | null>("acl:gradient-descent:golf-best", null);
+  const [best, setBest] = useLocalStorage<number | null>(
+    "acl:gradient-descent:golf-best",
+    null,
+    orNull(isRoundScore),
+  );
   const [announcement, setAnnouncement] = useState("");
 
   const plan = phase.kind === "hole" ? round[phase.index] : undefined;

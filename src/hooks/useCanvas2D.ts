@@ -19,7 +19,8 @@ export interface CanvasDrawArgs {
  * `running` is not a hint, it is the difference between a frame loop and no
  * frame loop. A still canvas gets its context and its `ResizeObserver` as
  * usual, is painted once, and is repainted whenever `repaintKey` changes or the
- * element is resized — and schedules nothing in between.
+ * element is resized — and schedules nothing in between. A running canvas keeps
+ * exactly one frame chain, started and stopped by `running` alone.
  *
  * That distinction used to be advisory: the loop always spun and the *draw*
  * was skipped, which cost about a thousand animation-frame callbacks a second
@@ -95,13 +96,20 @@ export function useCanvas2D(
     };
   }, []);
 
-  // Paint: once when still, every frame when running. Until the observer has
-  // measured, there is nothing to paint into; its first report paints.
+  // Still: paint once, and again each time `repaintKey` changes. Only while
+  // still — a running canvas paints its next frame anyway, so a repaint
+  // request there is already satisfied. Until the observer has measured
+  // there is nothing to paint into; its first report paints.
   useEffect(() => {
-    if (!running) {
-      paintOnce();
-      return;
-    }
+    if (!running) paintOnce();
+  }, [running, repaintKey]);
+
+  // Running: one frame chain for as long as `running` holds. It depends on
+  // nothing else, so a repaint request (`markDirty`) while running neither
+  // restarts the chain nor resets the clock that `dtSec` and `elapsedSec`
+  // are measured on.
+  useEffect(() => {
+    if (!running) return;
 
     let frameId = 0;
     let last = performance.now();
@@ -124,7 +132,7 @@ export function useCanvas2D(
 
     frameId = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frameId);
-  }, [running, repaintKey]);
+  }, [running]);
 
   return canvasRef;
 }

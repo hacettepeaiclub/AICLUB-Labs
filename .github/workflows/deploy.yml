@@ -24,20 +24,27 @@ jobs:
           name: site
           path: dist
 
+      # Only the script that installs a release on the server; nothing is
+      # built here.
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: deploy
+          sparse-checkout-cone-mode: false
+          path: repo
+
       # The server used to pull the repository and build there: `npm ci` and
       # the whole toolchain ran on the production machine, as the deploy user,
       # on every merge. Now it only receives finished files.
       #
-      # The next version is unpacked beside the live one, then copied into the
-      # live dist/ in place. The directory itself must never be replaced: the
-      # web server runs in a container that mounts dist/, and a mount holds the
-      # directory it was given, not its name. Renaming a new dist/ into place
-      # (as one version of this script did) left the container serving the
-      # deleted old directory, empty, until it was restarted. rsync writes into
-      # the same directory: new files first, stale ones deleted only after
-      # everything new has arrived, so a page never points at a bundle that is
-      # not there yet. `set -e` stops at the first failure with the old version
-      # still live.
+      # deploy/install-release.sh unpacks them beside the live site and copies
+      # them into the live dist/ in place: the directory itself is never
+      # replaced, because the web server's container mounts it (docs/DEPLOY.md).
+      # Old hashed bundles under assets/ stay for the last two releases and
+      # anything installed in the past seven days, so a visitor still running
+      # the previous release can load its lazy chunks; everything else is
+      # exactly the new release. rsync and cp only add files; the pruning is
+      # one step after either, so both give the same dist/. `set -e` stops at
+      # the first failure with the old version still live.
       #
       # The server's host key comes from the SSH_KNOWN_HOSTS secret when it is
       # set (see docs/DEPLOY.md), which is what stops a deploy from handing the
@@ -63,19 +70,4 @@ jobs:
 
           tar -C dist -czf site.tgz .
           scp "${ssh_opts[@]}" site.tgz "$SSH_USER@$SSH_HOST:labs/site.tgz"
-          ssh "${ssh_opts[@]}" "$SSH_USER@$SSH_HOST" 'bash -s' <<'REMOTE'
-          set -e
-          cd ~/labs
-          rm -rf dist-next
-          mkdir dist-next
-          tar -xzf site.tgz -C dist-next
-          mkdir -p dist
-          if command -v rsync >/dev/null 2>&1; then
-            rsync -a --delete-after dist-next/ dist/
-          else
-            # No rsync: overwrite in place and leave stale hashed bundles,
-            # which nothing links to, rather than empty the directory first.
-            cp -a dist-next/. dist/
-          fi
-          rm -rf dist-next site.tgz
-          REMOTE
+          ssh "${ssh_opts[@]}" "$SSH_USER@$SSH_HOST" 'bash -s' < repo/deploy/install-release.sh

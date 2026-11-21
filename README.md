@@ -50,7 +50,7 @@ That's it — routing (`/labs/<slug>`), the home grid, and code-splitting all de
 Visits are counted with [Umami](https://cloud.umami.is): no cookies and no
 personal data. Only `labs.hacettepeaiclub.com` is counted, so dev servers,
 previews and forks are not, and browsers that send Do Not Track are skipped.
-Beyond page views, the site sends a few named events
+Finder search text stays in the browser. Beyond page views, the site sends a few named events
 ([`src/app/analytics.ts`](src/app/analytics.ts)):
 
 | Event                                    | Properties                 | What it answers                                        |
@@ -58,7 +58,7 @@ Beyond page views, the site sends a few named events
 | `lab_open`                               | `lab`, `from`              | Which labs are opened, and from where                  |
 | `lab_end`                                | `lab`                      | How many people read a lab to the end                  |
 | `finder_open`                            | `via`                      | Whether the ⌘K finder is used, by key or button        |
-| `finder_empty`                           | `query`                    | What visitors search for that the collection lacks     |
+| `finder_empty`                           | None                       | How often a finder search yields no matches            |
 | `filter`                                 | `field`                    | Which fields people browse                             |
 | `game_start`, `game_stop`, `game_finish` | `seconds`, `best` (finish) | Whether the game in the mark is played and finished    |
 | `calc_lesson_done`                       | `lesson`, `model`          | Which calculator lessons are finished, on which model  |

@@ -37,6 +37,8 @@ const copy: typeof en = {
   },
 
   status: {
+    ready: "Hazır",
+    paused: "Duraklatıldı",
     running: "Çalışıyor",
     converged: "Hedefe ulaştı",
     diverged: "Uzaklık sınırı aşıldı",

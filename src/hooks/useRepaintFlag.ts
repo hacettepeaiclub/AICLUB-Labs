@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { usePaletteVersion } from "./usePaletteVersion";
 
 export interface RepaintFlag {
@@ -23,6 +23,12 @@ export interface RepaintFlag {
  * page nobody was touching. Now the counter drives `useCanvas2D`'s effect
  * directly, so a still canvas schedules nothing at all and no draw callback has
  * to guard itself.
+ *
+ * It does not listen for window resizes. It used to, and every resize event
+ * re-rendered the component that owned the flag, for nothing: `useCanvas2D`'s
+ * `ResizeObserver` already repaints a still canvas whenever its own size
+ * changes — which is the only resize that matters to its pixels, and one a
+ * window `resize` event misses anyway when only the layout around it moved.
  */
 export function useRepaintFlag(): RepaintFlag {
   const [version, setVersion] = useState(0);
@@ -33,11 +39,6 @@ export function useRepaintFlag(): RepaintFlag {
   const markDirty = useCallback(() => {
     setVersion((n) => n + 1);
   }, []);
-
-  useEffect(() => {
-    window.addEventListener("resize", markDirty);
-    return () => window.removeEventListener("resize", markDirty);
-  }, [markDirty]);
 
   return { markDirty, version: version + theme };
 }

@@ -17,6 +17,19 @@ const LabOrientation = lazy(() =>
 );
 
 /**
+ * The room the orientation card ("Your first move") takes, held while its
+ * chunk loads.
+ *
+ * With nothing there, the card arrived about 150 ms after the lab and pushed
+ * the experiment 190–240 px down; under reduced motion, where no fade hides
+ * it, that was a layout shift of 0.13 on a phone. The box is the card's
+ * smallest measured height, top margin included, across all 22 labs in both
+ * languages (192 px at 390 wide, 148 px from md up), so the real card can only
+ * grow by a line or two (tools/perf-shifts.mjs).
+ */
+const orientationFallback = <div aria-hidden className="mt-5 min-h-[172px] md:min-h-[128px]" />;
+
+/**
  * Frame that every experiment renders inside. Gives all 100+ labs the same
  * header anatomy (breadcrumb, title, description, metadata) so the product
  * feels like one system. The lab itself renders as `children`.
@@ -78,7 +91,7 @@ export function LabShell({ meta, children }: { meta: LabMeta; children: ReactNod
                 {title}
               </h1>
               <p className="mt-4 text-body text-fg-muted">{description}</p>
-              <Suspense fallback={null}>
+              <Suspense fallback={orientationFallback}>
                 <LabOrientation rootRef={rootRef} />
               </Suspense>
               <GuideButton className="mt-2" />

@@ -178,7 +178,7 @@ export function AdamStage() {
                 run.index,
                 formatNumber(view.objective, 4),
                 formatNumber(view.gradientNorm, 3),
-                g.status[view.status],
+                g.status[view.outcome],
               )}
             />
             {/* Secondary read, capped on a phone so the map keeps its square. */}
@@ -232,7 +232,7 @@ export function AdamStage() {
               value={formatNumber(view.objective, 4)}
               tone="accent"
             />
-            <Figure label={g.figures.status} value={g.status[view.status]} />
+            <Figure label={g.figures.status} value={g.status[view.outcome]} />
             {/* Held back until the run has actually been watched to the end.
                 Showing it at step 0 would answer the question before it is
                 asked. */}

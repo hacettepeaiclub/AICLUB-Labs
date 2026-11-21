@@ -264,7 +264,7 @@ function ComparePanel({
           view.shown,
           formatNumber(view.objective, 4),
           formatNumber(view.gradientNorm, 3),
-          g.status[view.status],
+          g.status[view.outcome],
         )}
       />
       <div className="flex flex-wrap items-start gap-x-8 gap-y-2">
@@ -273,7 +273,7 @@ function ComparePanel({
           value={formatNumber(view.objective, 4)}
           tone={highlight ? "accent" : "default"}
         />
-        <Figure label={g.figures.status} value={g.status[view.status]} />
+        <Figure label={g.figures.status} value={g.status[view.outcome]} />
       </div>
     </div>
   );
