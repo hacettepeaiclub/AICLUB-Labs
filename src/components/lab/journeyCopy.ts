@@ -288,6 +288,30 @@ export const journeys: Record<string, { en: Journey; tr: Journey }> = {
       "İki boyutlu izdüşüm bilgi kaybeder. Bozulma örneklerini aç ve karşılaştırmak için bir kelimeyi sabitle. Vektörler önceden eğitilmiş İngilizce GloVe vektörleri; Türkçe etiketler okuma desteğidir.",
     ],
   },
+  // A draft prototype, but routable: without a first move its page opened on a
+  // dark square with no hint that words can be tapped.
+  "word-embeddings-3d": {
+    en: [
+      "Judge whether one more axis makes the word map more truthful, or only more convincing.",
+      "Tap a word to light up its nearest neighbours, then drag to turn the cloud.",
+      "Turn until a neighbour looks far away. Its similarity score has not changed.",
+      "Two words sit side by side from one angle and far apart from another. Which view shows their real distance?",
+      "Neither: the score measured in 300 dimensions does.",
+      "The view where they look closest.",
+      "The view where they look farthest apart.",
+      "Every view is three PCA axes of a 300-dimensional space, so apparent distance changes as you turn. The neighbour scores are computed on the full vectors and stay the same from every angle.",
+    ],
+    tr: [
+      "Fazladan bir eksenin kelime haritasını daha doğru mu, yoksa yalnızca daha ikna edici mi yaptığını değerlendir.",
+      "Bir kelimeye dokun ve en yakın komşularını gör; sonra bulutu sürükleyerek döndür.",
+      "Bir komşu uzakta görünene kadar döndür. Benzerlik puanı değişmez.",
+      "İki kelime bir açıdan yan yana, başka bir açıdan birbirinden uzak görünüyor. Gerçek uzaklıklarını hangi görünüm gösterir?",
+      "Hiçbiri; 300 boyutta ölçülen benzerlik puanı gösterir.",
+      "En yakın göründükleri açı.",
+      "En uzak göründükleri açı.",
+      "Her görünüm, 300 boyutlu uzayın yalnızca üç PCA eksenidir; döndürdükçe görünen uzaklık değişir. Komşu puanları ise tam vektörlerden hesaplanır ve her açıdan aynı kalır.",
+    ],
+  },
   probability: {
     en: [
       "Find the hidden rule behind a surprising probability.",

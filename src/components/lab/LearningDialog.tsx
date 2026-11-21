@@ -52,7 +52,7 @@ export default function LearningDialog({
             type="button"
             onClick={() => ref.current?.close()}
             aria-label={t.learn.close}
-            className="-mr-2 grid size-10 shrink-0 place-items-center rounded text-fg-muted
+            className="-mr-2.5 grid size-11 shrink-0 place-items-center rounded text-fg-muted
               transition-colors duration-fast hover:bg-line/10 hover:text-fg"
           >
             <span aria-hidden>×</span>

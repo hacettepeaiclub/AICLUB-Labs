@@ -101,9 +101,11 @@ export function GuideButton({
   const guide = useGuide();
   if (!guide) return null;
   return (
+    // Full touch height under stages too: at "sm" (32px) the one button that
+    // explains each experiment was the smallest target on most lab pages.
     <Button
       variant="ghost"
-      size={stageRef ? "sm" : "md"}
+      size="md"
       onClick={() => guide.start(stageRef?.current ?? null)}
       className={className}
     >

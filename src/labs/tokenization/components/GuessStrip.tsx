@@ -144,7 +144,7 @@ export function GuessStrip() {
                 );
 
                 const shared = cn(
-                  "relative flex h-11 min-w-[1.15rem] items-center justify-center border-l-2 px-px",
+                  "relative flex h-11 min-w-6 items-center justify-center border-l-2 px-px",
                   borderClass,
                 );
 

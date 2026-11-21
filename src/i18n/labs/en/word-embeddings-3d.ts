@@ -15,6 +15,16 @@ const copy = {
   varianceLabel: "Variance explained",
   varianceHint: (dimensions: number) => `three axes of ${dimensions}`,
   selectedLabel: "Selected",
+  neighbours: {
+    title: (word: string) => `Nearest to ${word}, in all 300 dimensions`,
+    rankHeader: "Rank",
+    wordHeader: "Word",
+    scoreHeader: "Similarity",
+    rowLabel: (word: string, gloss: string, rank: number, score: string) =>
+      `${word}, ${gloss}. Number ${rank} nearest, similarity ${score}. Select to centre the cloud here.`,
+  },
+  neighboursNote:
+    "These scores come from the full vectors, so turning the cloud never changes them, however near or far the words look.",
   recapTitle: "What this prototype shows",
   recap: {
     lessons: [
@@ -26,7 +36,7 @@ const copy = {
   map: {
     mapLabel:
       "Word cloud in three dimensions. Drag to turn it. Arrow keys move through the nearest words, Shift with arrow keys turns the view, Enter selects.",
-    hint: "Drag to turn · Shift + arrows to orbit",
+    hint: "Tap a word to select it · drag to turn · Shift + arrows to orbit",
     pointLabel: (word: string, gloss: string) => `${word}, ${gloss}`,
     neighbourLabel: (word: string, gloss: string, rank: number, score: string) =>
       `${word}, ${gloss}. Number ${rank} nearest, similarity ${score}`,

@@ -210,7 +210,7 @@ function ScoreTrack({
       onPointerMove={(event) => {
         if (event.currentTarget.hasPointerCapture(event.pointerId)) fromPointer(event);
       }}
-      className="relative flex h-9 cursor-ew-resize touch-pan-y select-none items-center"
+      className="relative flex h-11 cursor-ew-resize touch-pan-y select-none items-center"
     >
       <span aria-hidden className="absolute inset-x-0 h-2 rounded-pill bg-line/10" />
       <span aria-hidden className="absolute h-4 w-px bg-line/40" style={{ left: `${zero}%` }} />

@@ -291,7 +291,7 @@ export default function TourRunner({ slug, root, stage, texts, onClose }: TourRu
             type="button"
             onClick={onClose}
             aria-label={t.guide.close}
-            className="-mr-2 grid size-9 place-items-center rounded text-fg-muted transition-colors
+            className="-mr-3 grid size-11 place-items-center rounded text-fg-muted transition-colors
               duration-fast hover:bg-line/10 hover:text-fg"
           >
             <span aria-hidden>×</span>
@@ -311,15 +311,11 @@ export default function TourRunner({ slug, root, stage, texts, onClose }: TourRu
           </div>
           <div className="flex gap-2">
             {index > 0 && (
-              <Button variant="ghost" size="sm" onClick={() => setIndex((i) => i - 1)}>
+              <Button variant="ghost" onClick={() => setIndex((i) => i - 1)}>
                 {t.guide.back}
               </Button>
             )}
-            <Button
-              ref={nextRef}
-              size="sm"
-              onClick={() => (last ? onClose() : setIndex((i) => i + 1))}
-            >
+            <Button ref={nextRef} onClick={() => (last ? onClose() : setIndex((i) => i + 1))}>
               {last ? t.guide.done : t.guide.next}
             </Button>
           </div>

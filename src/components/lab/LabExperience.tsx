@@ -32,7 +32,9 @@ function reveal(element: HTMLElement, reduced: boolean) {
     if (ancestor instanceof HTMLDetailsElement) ancestor.open = true;
     ancestor = ancestor.parentElement;
   }
-  element.tabIndex = -1;
+  // Focusable on demand, without taking a target that is already in the tab
+  // order (the 3-D word map) out of it.
+  if (!element.hasAttribute("tabindex")) element.tabIndex = -1;
   element.focus({ preventScroll: true });
   const top = element.getBoundingClientRect().top + window.scrollY - coveredByHeader() - REVEAL_GAP;
   window.scrollTo({ top: Math.max(0, top), behavior: reduced ? "auto" : "smooth" });
@@ -96,7 +98,7 @@ export function LabOrientation({ rootRef }: { rootRef: RefObject<HTMLElement> })
           </p>
           <p className="mt-2 text-body-sm text-fg">{copy[1]}</p>
         </div>
-        <Button size="sm" disabled={!start} onClick={() => start && reveal(start, reduced)}>
+        <Button disabled={!start} onClick={() => start && reveal(start, reduced)}>
           {tr ? "Deneyi aç" : "Try it"} <span aria-hidden>↓</span>
         </Button>
       </div>

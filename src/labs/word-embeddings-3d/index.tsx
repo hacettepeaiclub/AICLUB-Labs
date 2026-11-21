@@ -7,6 +7,7 @@ import { VOCABULARY } from "../word-embeddings/vocabulary";
 import { NEIGHBOUR_COUNT, PREDICTION } from "../word-embeddings/view";
 import { useSpace } from "./useSpace";
 import { Universe3D } from "./components/Universe3D";
+import { NeighbourList } from "../word-embeddings/components/NeighbourList";
 
 /**
  * Embedding Universe — 3D prototype.
@@ -76,6 +77,22 @@ export default function EmbeddingUniverse3D() {
           />
           <Figure label={copy.selectedLabel} value={current?.en ?? "—"} hint={current?.tr ?? ""} />
         </FigureRow>
+        {/* The numbers the picture cannot carry. Turning the cloud moves words
+            nearer and further on screen; these stay put, which is the lesson.
+            The rows are also the touch-sized way to move between words. */}
+        {current && neighbours.length > 0 && (
+          <div className="space-y-2">
+            <NeighbourList
+              anchor={current}
+              neighbours={neighbours}
+              vocabulary={VOCABULARY}
+              formatScore={score}
+              onSelect={setSelected}
+              copy={copy.neighbours}
+            />
+            <p className="text-caption text-fg-faint">{copy.neighboursNote}</p>
+          </div>
+        )}
         <p className="text-body-sm text-fg-muted">{copy.compare}</p>
       </div>
 

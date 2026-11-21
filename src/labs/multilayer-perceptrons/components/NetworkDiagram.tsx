@@ -37,11 +37,31 @@ export interface NetworkDiagramProps {
   };
 }
 
-/** Room under the neurons for the − and + of each layer: side by side, or stacked when the columns are narrow. */
-const EDIT_SPACE = 44;
-const EDIT_SPACE_STACKED = 80;
+/**
+ * Room under the neurons for the − and + of each layer: side by side, or
+ * stacked when the columns are narrow. Each button is 44px square, the touch
+ * minimum; they were 32px, the smallest controls in the lab. The space is a
+ * 6px offset plus one button (side by side) or two and a 4px gap (stacked),
+ * with 4px to spare.
+ */
+const STEPPER = 44;
+const EDIT_SPACE = 6 + STEPPER + 4;
+const EDIT_SPACE_STACKED = 6 + STEPPER * 2 + 4 + 4;
 /** Below this column width, − and + stack rather than sit side by side. */
-const STEPPER_COLUMN = 76;
+const STEPPER_COLUMN = STEPPER * 2 + 4 + 4;
+/**
+ * Below this, even a stacked pair is wider than its column (five layers on a
+ * 320px phone leave 35px each), so the pairs leave the diagram for a row of
+ * their own under it, each named after its layer.
+ */
+const STEPPER_STACK_COLUMN = STEPPER + 4;
+
+type StepperPlacement = "side" | "stacked" | "listed";
+
+function stepperPlacement(columnWidth: number): StepperPlacement {
+  if (columnWidth >= STEPPER_COLUMN) return "side";
+  return columnWidth >= STEPPER_STACK_COLUMN ? "stacked" : "listed";
+}
 
 const NODE_SIZE = 44;
 const ROW_GAP = 16;
@@ -141,7 +161,7 @@ export function NetworkDiagram({
     () => computeLayout(sizes, width || 640, d.layers),
     [sizes, width, d.layers],
   );
-  const stacked = (width || 640) / sizes.length < STEPPER_COLUMN;
+  const placement = stepperPlacement((width || 640) / sizes.length);
   const [hovered, setHovered] = useState<LayoutNode | null>(null);
   const [readout, setReadout] = useState<number | null>(null);
 
@@ -243,6 +263,57 @@ export function NetworkDiagram({
     return () => window.clearInterval(id);
   }, [hovered, running, netRef]);
 
+  const steppers =
+    editing &&
+    layout.columns.slice(1, -1).map((column, i) => {
+      const count = editing.hidden[i] ?? 0;
+      const change = (delta: number) => {
+        const next = editing.hidden.slice();
+        const value = count + delta;
+        if (value <= 0) next.splice(i, 1);
+        else next[i] = Math.min(editing.maxNeurons, value);
+        editing.onChange(next);
+      };
+      const listed = placement === "listed";
+      return (
+        <div
+          key={column.label}
+          role="group"
+          aria-label={column.label}
+          data-layer-stepper={placement}
+          className={cn(
+            "flex items-center gap-1",
+            !listed && "absolute -translate-x-1/2",
+            placement === "stacked" && "flex-col-reverse",
+          )}
+          style={listed ? undefined : { left: column.x, top: layout.height + 6 }}
+        >
+          {listed && (
+            <span aria-hidden className="mr-1 font-mono text-caption text-fg-faint">
+              {column.label}
+            </span>
+          )}
+          <button
+            type="button"
+            onClick={() => change(-1)}
+            aria-label={count === 1 ? d.removeLayer(column.label) : d.removeNeuron(column.label)}
+            className="flex size-11 items-center justify-center rounded border border-line/20 text-body-sm text-fg-muted hover:border-line/40 hover:text-fg"
+          >
+            −
+          </button>
+          <button
+            type="button"
+            onClick={() => change(1)}
+            disabled={count >= editing.maxNeurons}
+            aria-label={d.addNeuron(column.label)}
+            className="flex size-11 items-center justify-center rounded border border-line/20 text-body-sm text-fg-muted hover:border-line/40 hover:text-fg disabled:opacity-40"
+          >
+            +
+          </button>
+        </div>
+      );
+    });
+
   const isFocused = (node: LayoutNode) =>
     hovered?.layer === node.layer && hovered.index === node.index;
 
@@ -252,7 +323,13 @@ export function NetworkDiagram({
         ref={containerRef}
         className="relative w-full"
         style={{
-          height: layout.height + (editing ? (stacked ? EDIT_SPACE_STACKED : EDIT_SPACE) : 0),
+          height:
+            layout.height +
+            (!editing || placement === "listed"
+              ? 0
+              : placement === "stacked"
+                ? EDIT_SPACE_STACKED
+                : EDIT_SPACE),
         }}
       >
         <canvas ref={canvasRef} className="absolute inset-0 size-full" aria-hidden />
@@ -311,49 +388,7 @@ export function NetworkDiagram({
         </svg>
 
         {/* The architecture, edited where it is drawn. */}
-        {editing &&
-          layout.columns.slice(1, -1).map((column, i) => {
-            const count = editing.hidden[i] ?? 0;
-            const change = (delta: number) => {
-              const next = editing.hidden.slice();
-              const value = count + delta;
-              if (value <= 0) next.splice(i, 1);
-              else next[i] = Math.min(editing.maxNeurons, value);
-              editing.onChange(next);
-            };
-            return (
-              <div
-                key={column.label}
-                role="group"
-                aria-label={column.label}
-                className={cn(
-                  "absolute flex -translate-x-1/2 items-center gap-1",
-                  stacked && "flex-col-reverse",
-                )}
-                style={{ left: column.x, top: layout.height + 6 }}
-              >
-                <button
-                  type="button"
-                  onClick={() => change(-1)}
-                  aria-label={
-                    count === 1 ? d.removeLayer(column.label) : d.removeNeuron(column.label)
-                  }
-                  className="flex size-8 items-center justify-center rounded border border-line/20 text-body-sm text-fg-muted hover:border-line/40 hover:text-fg"
-                >
-                  −
-                </button>
-                <button
-                  type="button"
-                  onClick={() => change(1)}
-                  disabled={count >= editing.maxNeurons}
-                  aria-label={d.addNeuron(column.label)}
-                  className="flex size-8 items-center justify-center rounded border border-line/20 text-body-sm text-fg-muted hover:border-line/40 hover:text-fg disabled:opacity-40"
-                >
-                  +
-                </button>
-              </div>
-            );
-          })}
+        {editing && placement !== "listed" && steppers}
 
         {hovered && (
           <span
@@ -379,6 +414,10 @@ export function NetworkDiagram({
         )}
       </div>
 
+      {editing && placement === "listed" && (
+        <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">{steppers}</div>
+      )}
+
       {editing && (
         <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
           <p className="text-caption text-fg-muted">{d.editHint}</p>
@@ -386,7 +425,7 @@ export function NetworkDiagram({
             type="button"
             onClick={() => editing.onChange([...editing.hidden, 2])}
             disabled={editing.hidden.length >= editing.maxLayers}
-            className="min-h-10 rounded border border-dashed border-line/30 px-3 text-body-sm text-fg-muted hover:border-line/50 hover:text-fg disabled:opacity-40"
+            className="min-h-11 rounded border border-dashed border-line/30 px-3 text-body-sm text-fg-muted hover:border-line/50 hover:text-fg disabled:opacity-40"
           >
             {d.addLayer}
           </button>
