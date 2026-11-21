@@ -1,2 +1,1 @@
-export const isEnglishHeading = (key: string): boolean =>
-  key === "home.title" || /^labMeta\.[^.]+\.title$/.test(key);
+export const isEnglishHeading = (key: string): boolean => /^labMeta\.[^.]+\.title$/.test(key);

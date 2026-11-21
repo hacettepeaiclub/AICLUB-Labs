@@ -142,6 +142,11 @@
   background: rgb(var(--signal-rose) / 0.2);
 }
 
+:root[data-theme="light"]
+  .calc-key:is([data-key="shift"], [data-key="alpha"])[aria-pressed="true"] {
+  color: rgb(var(--fg));
+}
+
 /* The REPLAY pad: four arrows round a disc. */
 .calc-pad {
   display: grid;
@@ -482,10 +487,6 @@
 }
 
 /* ------------------------------------------------------- daily puzzle -- */
-.calc-section {
-  scroll-margin-top: 5rem;
-}
-
 /* The card at the top of the page: the first thing a returning student sees. */
 .calc-cta {
   position: relative;

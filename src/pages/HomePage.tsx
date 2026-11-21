@@ -77,7 +77,7 @@ export function HomePage() {
     <div>
       {/* ---------------------------------------------------------- hero -- */}
       <section aria-labelledby="home-title" className="terminal-hero relative">
-        <div className="shell relative flex min-h-[65vh] items-center py-16 md:min-h-[72vh] md:py-24">
+        <div className="shell relative flex items-center py-8 md:min-h-[72vh] md:py-24">
           <div className="terminal-hero-copy max-w-4xl">
             <p className="font-mono text-caption uppercase tracking-[0.14em] text-fg-muted">
               <span className="font-semibold text-accent">{copy.labCount(labs.length)}</span>
@@ -85,7 +85,6 @@ export function HomePage() {
               {t.shell.parentOrg}
             </p>
             <h1
-              lang="en"
               id="home-title"
               className="mt-6 max-w-[21ch] font-mono text-[clamp(2rem,4.5vw,4rem)] font-semibold leading-[1.12] tracking-[-0.02em] text-fg"
             >
@@ -95,9 +94,9 @@ export function HomePage() {
             <div className="mt-7 flex flex-wrap items-center gap-x-4 gap-y-2">
               <a
                 href="#labs"
-                className="inline-flex min-h-11 items-center gap-2.5 rounded border border-line/15 bg-ink-800/60 px-4
-                  font-mono text-caption uppercase tracking-[0.16em] text-fg transition-[border-color,box-shadow]
-                  duration-base hover:border-data/70 hover:shadow-[0_0_22px_-8px_rgb(var(--data)/0.7)]"
+                className="inline-flex min-h-11 items-center gap-2.5 rounded border border-accent/50 bg-accent-fill px-4
+                  font-mono text-caption font-semibold uppercase tracking-[0.16em] text-accent-fg
+                  transition-colors duration-base hover:bg-accent-fill/85"
               >
                 {copy.browse}
                 <svg
@@ -140,7 +139,7 @@ export function HomePage() {
       <section
         aria-labelledby="labs-heading"
         id="labs"
-        className="shell mt-8 scroll-mt-24 md:mt-10"
+        className="shell mt-8 scroll-mt-44 min-[375px]:scroll-mt-28 md:mt-10 lg:scroll-mt-24"
       >
         <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-3">
           <h2 id="labs-heading" className="font-display text-display-md text-fg">

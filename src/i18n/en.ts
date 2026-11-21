@@ -107,15 +107,8 @@ export const en = {
 
   home: {
     kicker: "AI Club Labs",
-    // Restored from the original landing page. "Learn computer science by
-    // making it move" was shorter but named only half of what is here, and
-    // dropped the word visitors are actually looking for. This one says both
-    // fields out loud and still leads with the verb.
-    title: "Play with the ideas behind computer science and artificial intelligence.",
-    // Also the original copy, tightened: it now states the size of the
-    // collection, because the labs start one screen below and the count is
-    // the fastest way to say what this place is.
-    lede: "Explore algorithms, neural networks and the machinery of computation. Make a prediction, change something, and discover why the result moves.",
+    title: "Learn computer science and AI by experimenting.",
+    lede: "Run algorithms and neural networks. Change a setting and see what happens.",
     cta: "Start experimenting",
     labs: "Labs",
     labCount: (n: number) => `${n} instruments`,

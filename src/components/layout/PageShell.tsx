@@ -214,6 +214,7 @@ export function PageShell({ routeKey, children }: { routeKey: string; children: 
         {t.shell.skipToContent}
       </a>
       <SiteHeader onFindLab={() => openFinder("button")} onFindLabIntent={preloadPalette} />
+      <OfflineNotice />
       {/* Keep the live region mounted before Suspense supplies its text. */}
       <div
         role="status"
@@ -241,13 +242,12 @@ export function PageShell({ routeKey, children }: { routeKey: string; children: 
         </ErrorBoundary>
       </main>
       <SiteFooter />
-      <OfflineNotice />
     </div>
   );
 }
 
 /**
- * A line along the bottom while the browser says it is offline.
+ * A notice below the header while the browser says it is offline.
  *
  * Everything a lab does runs here, in the page, so the open lab keeps
  * working; what does not is opening anything not yet downloaded. The line
@@ -261,9 +261,8 @@ function OfflineNotice() {
     <div role="status">
       {!online && (
         <p
-          className="z-40 border-t border-line/10 bg-ink-950/95 px-4 py-2 text-center font-mono
+          className="border-b border-line/10 bg-ink-900 px-4 py-2 text-center font-mono
             text-caption text-fg-muted"
-          style={{ position: "fixed", insetInline: 0, bottom: 0 }}
         >
           {t.shell.offlineNotice}
         </p>
