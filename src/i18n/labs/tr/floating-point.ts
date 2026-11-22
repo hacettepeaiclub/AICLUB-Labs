@@ -6,7 +6,7 @@ const copy: typeof en = {
   sources: {
     title: "Kaynaklar",
     ieee754:
-      "Bu laboratuvarın hesap yaptığı ikili biçimleri (float64, float32 ve float16), özel değerlerini ve varsayılan yuvarlamayı tanımlar: en yakın değere, eşitlikte çift olana. Laboratuvarın aritmetiği bu kuralların kendi kesin uygulamasıdır ve tarayıcınınkiyle karşılaştırılarak doğrulanmıştır.",
+      "Bu lab'ın hesap yaptığı ikili biçimleri (float64, float32 ve float16), özel değerlerini ve varsayılan yuvarlamayı tanımlar: en yakın değere, eşitlikte çift olana. Lab'ın aritmetiği bu kuralların kendi kesin uygulamasıdır ve tarayıcınınkiyle karşılaştırılarak doğrulanmıştır.",
     goldberg:
       "Çoğu ondalık sayının neden kesin bir ikili karşılığı olmadığını, kayan noktalı bir sayının hatasının neden büyüklüğüne oranla ölçüldüğünü ve kayan nokta toplamasının neden birleşme özelliği taşımadığını anlatan klasik çalışma.",
     ecma262:
@@ -17,7 +17,7 @@ const copy: typeof en = {
       "Ağırlıkları, aktivasyonları ve gradyanları float16 olarak saklayıp belleği neredeyse yarıya indirerek ağ eğitir; float16'nın dar aralığında kaybolan küçük gradyan değerlerini geri kazanmak için kaybı ölçeklendirir.",
   },
 
-  invalid: "0,1, -2,5e-8 veya 1/3 gibi bir sayı gir.",
+  invalid: "0,1 veya -2,5e-8 ya da 1/3 gibi bir sayı gir.",
   showAll: (count: number) => `${count} basamağın hepsini göster`,
   showLess: "Daha az basamak göster",
   storedExactly: "Değer tam olarak temsil ediliyor.",
@@ -76,8 +76,8 @@ const copy: typeof en = {
     aLabel: "a",
     bLabel: "b",
     rows: {
-      a: "a, saklandığı haliyle",
-      b: "b, saklandığı haliyle",
+      a: "a, saklandığı hâliyle",
+      b: "b, saklandığı hâliyle",
       exact: "ikisinin kesin toplamı",
       sum: "a + b, float64'e yuvarlanmış",
       target: "gerçek sonuç, doğrudan saklanmış",
@@ -98,7 +98,7 @@ const copy: typeof en = {
     steps: (n: string) => (n === "1" ? "Bir adım" : `${n} adım`),
     reset: "0,1 + 0,2'ye dön",
     caption:
-      "Bir adım, iki komşu float64 değeri arasındaki boşluktur. Her girdi saklanırken bir kez yuvarlandı, toplam ise bir kez daha yuvarlanıyor.",
+      "Bir adım, iki komşu float64 değeri arasındaki uzaklıktır. Her girdi saklanırken bir kez yuvarlandı, toplam ise bir kez daha yuvarlanıyor.",
     figures: {
       sum: "a + b",
       equals: "a + b == sonuç",
@@ -132,7 +132,7 @@ const copy: typeof en = {
       fraction: "kesrin ikili basamaklarını tutar",
     },
     named:
-      "Üs, değeri ikinin bir kuvvetiyle ölçekler. Kesir alanı ikili ayırıcının sağındaki bitleri tutar. float64 biçiminde üse 11, kesre 52 bit ayrılır.",
+      "Üs, değeri ikinin bir kuvvetiyle ölçekler. Kesir alanı noktanın sağındaki ikili basamakları tutar. float64 biçiminde üse 11, kesre 52 bit ayrılır.",
     formula: "Okunuşu",
     setLabel: "Bitleri bir sayıdan ayarla",
     specials: {
@@ -140,7 +140,7 @@ const copy: typeof en = {
       nan: "Üs bitlerinin hepsi 1, kesir sıfır değil: bu desen NaN, yani sayı değil demek.",
       zero: "İşaretten sonraki her şey sıfır: bu sıfır. İşaret biti 1 ise −0 olur ve 0'a eşit sayılır.",
       subnormal:
-        "Üs bitlerinin hepsi 0: gizli 1 ortadan kalkar ve sayı 0.kesir × 2⁻¹²⁶ olur. Bu alt normal değerler, sıfır ile en küçük normal sayı arasındaki boşluğu doldurur.",
+        "Üs bitlerinin hepsi 0: gizli 1 ortadan kalkar ve sayı 0.kesir × 2⁻¹²⁶ olur. Bu alt normal değerler, sıfır ile en küçük normal sayı arasında eşit aralıklıdır.",
     },
     caption: "Bir bit odaktayken ok tuşları satırda gezdirir, Boşluk tuşu biti çevirir.",
     figures: {
@@ -171,22 +171,22 @@ const copy: typeof en = {
       picked: "seçilen değer",
     },
     caption:
-      "Birbirini izleyen iki kuvvet arasındaki normal değerleri karşılaştır. Değer sayısı aynı kalır, komşular arasındaki uzaklık iki katına çıkar. Kesir biti eklemek aralıkları sıklaştırır. Üs biti eklemek değer aralığını genişletir.",
+      "İkinin birbirini izleyen iki kuvveti arasındaki normal değerleri karşılaştır. Değer sayısı aynı kalır, komşular arasındaki uzaklık iki katına çıkar. Kesir biti eklemek komşu değerler arasındaki uzaklığı azaltır. Üs biti eklemek değer aralığını genişletir.",
     figures: {
       values: "Değer sayısı",
       largest: "En büyük",
       gap: "Bir sonraki değere uzaklık",
       top: "yok: en büyüğü bu",
-      perDoubling: "İki kata çıkışta",
+      perDoubling: "İkinin ardışık kuvvetleri arasında",
     },
-    announce: (value: string, gap: string) => `${value}, sonraki değer ${gap} yukarıda.`,
+    announce: (value: string, gap: string) => `Değer ${value}. Sonraki değere uzaklık ${gap}.`,
   },
 
   // 5 ----------------------------------------------------------------------
   gap: {
     kicker: "float32 aralıkları",
     title: "Sayı büyüdükçe komşular arasındaki uzaklık nasıl değişir?",
-    lede: "Float32 sayının büyüklüğünü değiştir. Temsil edilebilen bir sonraki sayıya olan uzaklığı incele.",
+    lede: "Bir float32 sayısının büyüklüğünü değiştir. Temsil edilebilen bir sonraki sayıya olan uzaklığı incele.",
     slider: "Sayının büyüklüğü",
     sliderValue: (power: string) => `yaklaşık 2 üzeri ${power}`,
     inputLabel: "Sayı gir",
@@ -196,30 +196,30 @@ const copy: typeof en = {
     lost: "aynı sayı: + 1 kayboldu",
     kept: "farklı bir sayı",
     chartLabel: (gap: string) =>
-      `Sonraki float32'ye olan boşluk ile sayının büyüklüğü, ikisi de logaritmik ölçekte: her ikinin kuvvetinde ikiye katlanan bir merdiven. Şu anki boşluk ${gap}.`,
+      `Grafik logaritmik eksenlerde sayının büyüklüğünü ve sonraki float32 değerine uzaklığı gösterir. Bu uzaklık ikinin ardışık kuvvetleri arasında iki katına çıkar. Seçili uzaklık ${gap}.`,
     axes: {
       size: "sayının büyüklüğü",
-      gap: "sonrakine boşluk",
+      gap: "sonraki değere uzaklık",
     },
     wholeNumbers:
       "2²⁴ ile 2²⁵ arasında ardışık float32 değerleri 2 birim aralıklıdır. Tek tam sayılar bu aralıkta temsil edilemez.",
     caption:
       "Pozitif normal float32 sayılarında üs büyüdükçe komşu değerler uzaklaşır. Komşuya uzaklığın sayıya oranı dar bir aralıkta kalır. Bu aralık, yaklaşık 7 anlamlı ondalık basamağa karşılık gelir.",
     figures: {
-      gap: "Boşluk",
-      relative: "Boşluk ÷ sayı",
+      gap: "Uzaklık",
+      relative: "Uzaklık ÷ sayı",
       relativeHint: "her normal float32 için 2⁻²⁴ ile 2⁻²³ arasında",
       plusOne: "x + 1",
       lost: "kayboldu",
       kept: "korundu",
     },
-    announce: (value: string, gap: string) => `${value}, sonrakine boşluk ${gap}.`,
+    announce: (value: string, gap: string) => `${value}, sonraki değere uzaklık ${gap}.`,
   },
 
   // 6 ----------------------------------------------------------------------
   formats: {
     kicker: "16 ve 32 bitlik biçimler",
-    title: "Değer aralığı ve hassasiyet",
+    title: "Değer aralığı ve duyarlık",
     lede: "Ağırlık ve gradyanları 16 bitle saklamak, sayı başına 32 bitin yarısı kadar bellek gerektirir. float16 daha çok kesir biti ayırır. bfloat16, float32 gibi 8 üs biti kullanır. Aynı girdiyi üç biçimde karşılaştır.",
     examplesLabel: "Örnek değerler",
     examples: {
@@ -239,7 +239,7 @@ const copy: typeof en = {
     layout: (exponent: number, fraction: number) =>
       `1 işaret, ${exponent} üs ve ${fraction} kesir biti`,
     table: {
-      caption: "Biçimlerin değer aralığı ve hassasiyeti",
+      caption: "Biçimlerin değer aralığı ve duyarlıki",
       format: "Biçim",
       bits: "Bit",
       largest: "En büyük",
@@ -249,28 +249,28 @@ const copy: typeof en = {
     bfloatNote:
       "bfloat16, IEEE 754'te yer almaz. float32 ile aynı yerleşime sahiptir, yalnızca kesir 23 bitten 7 bite kısaltılmıştır; laboratuvar ona da diğerleri gibi yuvarlar: en yakın değere, eşitlikte çift olana.",
     caption:
-      "Yaklaşık 2 × 10⁻⁸ büyüklüğündeki değer bfloat16’da sıfırdan farklı kalır, float16’da ise sıfıra yuvarlanır. Float16 eğitiminde küçük gradyanların kaybolmasını azaltmak için loss scaling kullanılabilir.",
+      "Yaklaşık 2 × 10⁻⁸ büyüklüğündeki değer bfloat16'da sıfırdan farklı kalır, float16'da ise sıfıra yuvarlanır. float16 ile eğitimde küçük gradyanların kaybolmasını azaltmak için kayıp ölçekleme (loss scaling) kullanılabilir.",
   },
 
   // 7 ----------------------------------------------------------------------
   challenge: {
-    kicker: "Görevler",
+    kicker: "Bulmacalar",
     title: "Yuvarlama işlem sonucunu nasıl etkiler?",
-    lede: "Görevleri çözmek için sayı biçimlerinin sınırlarını kullan. Yanıtlar bu lab'ın tam aritmetik hesabıyla kontrol edilir.",
+    lede: "Bulmacaları çözmek için sayı biçimlerinin sınırlarını kullan. Yanıtlar bu lab'ın tam aritmetik hesabıyla kontrol edilir.",
     pickLabel: "Bulmaca",
     solvedLabel: "Çözülen",
     reset: "Baştan başla",
     plusOne: {
       tab: "x + 1 = x",
       task: "float32'de x + 1'in x'e eşit olduğu bir x sayısı bul.",
-      hint: "Boşluğun 2'ye ulaştığı yere geri bak.",
+      hint: "Sonraki float32 değerine uzaklığın 2 olduğu bölgeye bak.",
       xLabel: "x",
       stored: "float32'de x",
       result: "float32'de x + 1",
       solved: "Çözüldü: 1 eklemek hiçbir şeyi değiştirmedi.",
       notYet: "Henüz değil: x + 1 farklı bir sayı.",
       infinite:
-        "Infinity + 1 yine Infinity, ama bu boşluklar hakkında bir şey söylemez. Sonlu bir x bul.",
+        "Infinity + 1 yine Infinity, ama bu örnekte sonlu komşuların arasındaki uzaklık inceleniyor. Sonlu bir x bul.",
       best: (value: string) => `Bulduğun en küçük: ${value}`,
     },
     associative: {
@@ -308,7 +308,7 @@ const copy: typeof en = {
     lessons: [
       "En yakına yuvarlamada girdi, biçimin temsil edebildiği en yakın değere çevrilir. Örneğin 0,1 sonlu sayıda ikili basamakla tam yazılamaz.",
       "Her toplamanın sonucu biçime yeniden yuvarlanır. Birden çok toplama varsa parantezlerin yeri sonucu değiştirebilir.",
-      "Üs büyüklüğü, kesir kesrin ikili basamaklarını tutar; bu yüzden komşular arasındaki boşluk sayıyla büyürken oransal hata hemen hemen aynı kalır",
+      "Normal sayılarda üs büyüdükçe komşu değerler arasındaki uzaklık artar. Bu uzaklığın sayıya oranı dar bir aralıkta kalır.",
       "float16 daha çok kesir biti ayırır. bfloat16 daha çok üs biti ayırdığı için daha geniş bir değer aralığı sağlar.",
     ],
     footer:
@@ -348,15 +348,15 @@ const copy: typeof en = {
       gap: {
         chart: "Yine float32: bir sayıdan saklanabilen bir sonraki sayıya olan uzaklık.",
         size: "Kaydırıcıyı sağa götür. Seçili sayı büyüdüğünde bir sonraki float32 değerine uzaklığı karşılaştır.",
-        gap: "Aralık sayıyla birlikte büyüdü ama aralık ÷ sayı neredeyse aynı kaldı: her yerde yaklaşık 7 anlamlı basamak.",
+        gap: "Normal sayı büyüdükçe komşuya uzaklık artar. Uzaklık ÷ sayı kutusundaki oranın nasıl değiştiğine bak.",
       },
       formats: {
-        type: "Bir sayı yaz; float32, float16 ve bfloat16'daki hali görünür. Tur çok küçük bir gradyan yazdı.",
-        rows: "bfloat16 onu korur, float16 ise 0'a çevirir: aynı 16 bit, farklı harcanmış.",
+        type: "Bir sayı yaz; float32, float16 ve bfloat16'daki hâli görünür. Tur çok küçük bir gradyan yazdı.",
+        rows: "bfloat16 onu korur, float16 ise 0'a çevirir: iki biçim 16 biti farklı alanlara ayırır.",
         examples: "Diğer örnekleri buradan dene.",
       },
       challenge: {
-        pick: "Yuvarlamanın sonucunu değiştirebildiği üç örnekten birini seç.",
+        pick: "Yuvarlamanın sonucunu değiştirebildiği üç bulmacadan birini seç.",
         work: "Bunu gerçekleştiren bir sayı bul. Sayfa, kesin aritmetikle kontrol eder.",
         solved: "Çözülen bulmacalar bu tarayıcıda hatırlanır.",
       },
@@ -368,7 +368,7 @@ const copy: typeof en = {
     topics: {
       stored: "Bir float neyi saklayabilir, neyi saklayamaz",
       rounding: "Tekrar tekrar yuvarlama",
-      formats: "Aralık mı, hassasiyet mi",
+      formats: "Aralık mı, duyarlık mi",
     },
     notes: {
       "cp-float": "0,1 + 0,2'nin neden 0,3 olmadığı, en baştan.",

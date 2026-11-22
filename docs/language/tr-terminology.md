@@ -349,7 +349,7 @@ yukarıdaki biçimde yeniden yazılacak.
 
 - **Tanım:** Kayan noktalı gösterim, değeri işaret, üs ve kesir alanlarıyla
   kodlar. Üs, normal değerlerde ikinin hangi kuvvetiyle ölçeklendiğini
-  belirler. Kesir alanı, anlamlı kısmın ikili ayırıcının sağındaki bitlerini
+  belirler. Kesir alanı, anlamlı kısmın ikili noktanın sağındaki bitlerini
   tutar. Alt normal sayılarda baştaki örtük bit sıfırdır.
 - **Tercih:** kayan nokta, işaret biti, üs alanı, kesir alanı. float32,
   float64 ve bfloat16 biçim adlarıdır.
@@ -367,6 +367,21 @@ yukarıdaki biçimde yeniden yazılacak.
   basamakları yerelleştirilir. JavaScript çıktısı olduğu belirtilen
   örnekler, konsolda göründükleri biçimde yazılır.
 - **Kaynak:** Deneydeki IEEE 754 yuvarlama uygulaması ve BİL220, soru 2.
+
+### Alt normal sayı ve duyarlık
+
+- **Tanım:** Üs alanı sıfır ve kesir alanı sıfırdan farklıysa değer alt
+  normaldir. Bu değerler sıfır ile mutlak değerce en küçük normal sayı
+  arasını doldurur. Duyarlık, anlamlı basamakların sayısıyla ilgilidir.
+- **Tercih:** alt normal sayı, duyarlık. Grafiklerde iki komşu değer
+  arasındaki uzaklık, biçimin değer aralığından ayrı bir büyüklüktür.
+- **Alternatifler:** BİL220 notu “normalize olmayan” der. İngilizce
+  subnormal ve denormal aynı sınıfı anlatır. Gündelik dilde hassasiyet
+  denebilir, bu lab'da duyarlık kullanılır.
+- **Kaynak:** [IBM Türkçe sayı türleri başvurusu](https://www.ibm.com/docs/tr/db2/11.5.x?topic=list-numbers)
+  kayan nokta için “duyarlık”, ondalık kayan nokta için “alt normal”
+  terimlerini kullanır. [Hacettepe Üniversitesi BİL220, soru 2](https://web.cs.hacettepe.edu.tr/~bil220/mt1sol.pdf)
+  ikili alanların sıfır olup olmamasına göre aynı sınıfı gösterir.
 
 ## hash-tables
 
