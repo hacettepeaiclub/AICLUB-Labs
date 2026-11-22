@@ -15,9 +15,9 @@ const copy: typeof en = {
   },
   lede: "Aynı kelimeler, aynı vektörler, bir eksen daha. Bulutu döndürmek için sürükle.",
   honesty:
-    "Embedding uzayı böyle görünmez. Uzay 300 boyutludur; döndürdüğün şey, onun üç PCA eksenine indirilmiş bir görünümüdür. Bu, düz haritadan bir eksen fazladır ve yine de 300 eksenin neredeyse hiçbiri değildir.",
+    "Embedding uzayı böyle görünmez. Uzay 300 boyutludur; döndürdüğün şey, vektörlerin ilk üç temel bileşen (PCA) koordinatlarının perspektifle çizilmiş bir görünümüdür. İlk iki eksen düz haritadakilerle aynıdır; üçüncü eksen açıklanan varyansı artırır (göstergeye bak), ama döndürme ve perspektif ekranda gördüğün uzaklıkları yine değiştirir.",
   compare:
-    "Bu bir prototip ve dersten bilerek ayrı tutuldu. Derinlik bulutu bir yer gibi hissettirir, ama izdüşümü daha doğru yapmaz. Bu ödünleşimin öğretmeye değip değmediğini değerlendirmek, prototipi yapmanın amacıdır.",
+    "Bu bir prototip ve dersten bilerek ayrı tutuldu. Derinlik bulutu bir yer gibi hissettirir; üçüncü eksen daha çok varyans açıklasa da ekrandaki uzaklıklar hâlâ bakış açısına bağlıdır. Bu ödünleşimin öğretmeye değip değmediğini değerlendirmek, prototipi yapmanın amacıdır.",
   error: "Kelime vektörleri yüklenemedi.",
   varianceLabel: "Açıklanan varyans",
   varianceHint: (dimensions: number) => `${dimensions} eksenin üçü`,
@@ -28,14 +28,14 @@ const copy: typeof en = {
     wordHeader: "Kelime",
     scoreHeader: "Benzerlik",
     rowLabel: (word: string, gloss: string, rank: number, score: string) =>
-      `${word}, ${gloss}. En yakın ${rank}. kelime, benzerlik ${score}. Bulutu bu kelimeye ortalamak için seç.`,
+      `${word}, ${gloss}. En yakın ${rank}. kelime, benzerlik ${score}. Bulutu bu kelimenin etrafında ortalamak için seç.`,
   },
   neighboursNote:
     "Bu kosinüs benzerlikleri tam vektörlerden hesaplanır; kelimeler ne kadar yakın ya da uzak görünürse görünsün, bulutu döndürmek onları değiştirmez.",
   recapTitle: "Bu prototip ne gösteriyor",
   recap: {
     lessons: [
-      "Üç eksen, uzaydaki varyansın iki eksenden biraz fazlasını taşır; yine de neredeyse hiçbirini.",
+      "Üçüncü eksen açıklanan varyansı artırır; ne kadar arttığını “Açıklanan varyans” göstergesinde gör. Yine de bu, 300 boyutun yalnızca üçüdür.",
       "Derinlik bulutu bir yer gibi hissettirir; bu his, bilgi verse de vermese de ikna edicidir.",
       "Kelimeler, vektörler ve en yakın kelimeler düz haritadakiyle aynıdır; değişen yalnızca görünüm.",
     ],
