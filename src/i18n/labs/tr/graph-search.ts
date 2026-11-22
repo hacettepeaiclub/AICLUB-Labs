@@ -37,7 +37,7 @@ const copy: typeof en = {
   gridLabel: (walls: number, mud: number, state: string) =>
     `Düzenlenebilir ızgara. Engel: ${walls}. Çamurlu hücre: ${mud}. ${state}`,
   gridHelp:
-    "Çizmek için ızgaranın üzerinde sürükle. Izgara odaktayken yön tuşları hareket ettirir, Boşluk boyar.",
+    "Çizmek için ızgaranın üzerinde sürükle. Izgara odaktayken yön tuşları imleci hareket ettirir, Boşluk boyar.",
   gridHelpFull: {
     drag: "Çizmek veya silmek için ızgarada sürükle.",
     or: "veya",
@@ -92,12 +92,12 @@ const copy: typeof en = {
     title: "Hedefe yönelmek aramayı nasıl değiştirir?",
     lede: "A*, birikmiş maliyet g ile kalan maliyet tahmini h değerini toplayarak sıradaki hücreyi seçer. Dijkstra ve A*'ı aynı haritada çalıştır. İki aramanın işlediği hücrelerin dağılımına bak.",
     caption:
-      "Bu dört yönlü ızgarada Manhattan uzaklığı, yatay ve düşey adım farklarının toplamıdır. En düşük maliyetli geçiş 1 birim olduğu için bu tahmin kalan yol maliyetini aşmaz. İki arama aynı en düşük maliyetli farklı yollar bulabilir.",
+      "Bu dört yönlü ızgarada Manhattan uzaklığı, yatay ve düşey adım farklarının toplamıdır. En düşük maliyetli geçiş 1 birim olduğu için bu tahmin kalan yol maliyetini aşmaz. İki arama farklı yollar bulabilir. Her iki yol da aynı en düşük maliyete sahiptir.",
   },
   challenge: {
     kicker: "Görev",
     title: "En düşük maliyetli yolu kaç hücre işleyerek bulabilirsin?",
-    lede: "Her haritada en düşük maliyetli bir yol bul. İşlenen hücre sayısını belirtilen sınırda tutacak algoritmayı seç.",
+    lede: "Her haritada en düşük maliyetli bir yol bul. İşlenen hücre sınırını aşmayacak algoritmayı seç.",
     mazeLabel: (
       title: string,
       cols: number,
@@ -122,7 +122,7 @@ const copy: typeof en = {
       },
       "wrong-door": {
         title: "Yanlış kapı",
-        hint: "Hedefe olan Manhattan uzaklığını duvarların izin verdiği yolla karşılaştır.",
+        hint: "Hedefe olan Manhattan uzaklığını engellerin izin verdiği yolla karşılaştır.",
       },
     },
     budget: (cost: number, budget: number) =>
@@ -161,7 +161,7 @@ const copy: typeof en = {
         run: "Çalıştır düğmesine bas. Halkalı hücreler sırada bekler. Dolu renkle gösterilen hücreler işlenmiştir.",
         explored: "İşlenen hücre ve Yol uzunluğu kutularına bak.",
         walls:
-          "Şimdi ızgarada sürükleyerek duvar çiz ya da S ile G'yi taşı, sonra yeniden çalıştır.",
+          "Şimdi ızgarada sürükleyerek engel çiz ya da S ile G'yi taşı, sonra yeniden çalıştır.",
       },
       bfs: {
         grid: "Adımla düğmesiyle aramanın engelin çevresinden nasıl ilerlediğine bak.",
@@ -199,7 +199,7 @@ const copy: typeof en = {
     },
     notes: {
       "reducible-bfs": "Bekleyen hücreleri kuyrukta gösteren genişlik öncelikli arama animasyonu.",
-      "mit-6006-bfs": "MIT dersi: ilk giren ilk çıkar düzeninin neden en az hamleyi bulduğu.",
+      "mit-6006-bfs": "MIT dersi: ilk giren ilk çıkar düzeninin neden en az adımlı yolu bulduğu.",
       "cp-dijkstra": "Dijkstra algoritması küçük bir harita üzerinde, elle.",
       "mit-6006-dijkstra": "Ders: doğruluğu ve maliyetlerin neden negatif olmaması gerektiği.",
       "cp-astar": "A*'ın Dijkstra'yla karşılaştırmalı anlatımı.",

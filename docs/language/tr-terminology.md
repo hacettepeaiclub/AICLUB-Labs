@@ -442,6 +442,11 @@ yukarıdaki biçimde yeniden yazılacak.
 - **Kaynak:** Savaş Öztürk, Marmara Üniversitesi,
   [Uzman Sistem Tabanlı Müzayede ile Çoklu Robot Görev Paylaşımı, s. 58–60](https://katalog.marmara.edu.tr/veriler/yordambt/cokluortam/3D/60F9D9CF-170F-0445-A56D-84D1D45B42C5.pdf).
 
+- **Sırada bekleyen hücre:** Aramaya eklenen ve henüz işlenmemiş hücre.
+  BFS bunları ilk giren ilk çıkar kuyruğunda, Dijkstra ve A* ise öncelik
+  kuyruğunda tutar. [Sakarya Üniversitesi tezi, bölüm 4.2.2](https://acikerisim.sakarya.edu.tr/bitstream/20.500.12619/80982/1/T04049.pdf)
+  A* için “açık liste” terimini kullanır.
+
 ### A* ve Manhattan uzaklığı
 
 - **Tanım:** A*, birikmiş maliyete hedefe kalan maliyetin tahminini ekler.

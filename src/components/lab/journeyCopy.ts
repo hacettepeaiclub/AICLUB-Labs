@@ -131,7 +131,7 @@ export const journeys: Record<string, { en: Journey; tr: Journey }> = {
       "Her yolun geçiş maliyetlerini toplarım.",
       "Yalnızca adım sayısına bakarım.",
       "Animasyonun bitiş süresine bakarım.",
-      "BFS en az adımlı yolu bulur. Geçiş maliyetleri farklıysa toplam maliyete bak. Dijkstra ve A*, aynı en düşük maliyette farklı yollar bulabilir.",
+      "BFS en az adımlı yolu bulur. Geçiş maliyetleri farklıysa toplam maliyete bak. Dijkstra ve A* farklı yollar bulabilir. İki yolun maliyeti de en düşük değerdedir.",
     ],
   },
   tokenization: {
