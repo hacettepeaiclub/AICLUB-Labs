@@ -13,7 +13,7 @@ const copy: typeof en = {
   recap: {
     lessons: [
       "Ters süreç şu anki örneği ve önsel dağılımı kullanır; gizlenen özgün görüntüyü kullanmaz.",
-      "Önsel dağılımı değiştirmek, aynı gürültülü girdi için yeniden kurulan görüntüyü değiştirebilir.",
+      "Önsel dağılımı değiştirmek, aynı başlangıç noktasından (aynı şekil ve tohumla t = 35) yeniden kurulan görüntüyü değiştirebilir.",
       "Bu sonlu analitik model gürültü gidermeyi gösterir; yapay sinir ağı eğitmez.",
     ],
   },
@@ -22,12 +22,13 @@ const copy: typeof en = {
     stages: {
       experiment: {
         compare:
-          "Soldaki panel şu anki gürültülü örnek. Sağdaki panel, izin verilen şekillerden hesaplanan temiz örnek tahmini.",
+          "Soldaki panel şu anki örnek. Sağdaki panel, izin verilen şekillerden hesaplanan temiz örnek tahmini.",
         noise: "Gürültüyü artır. Bu, ileri deneyi seçilen adımda baştan başlatır.",
         step: "Gerçek bir ters adım at. Özgün görüntü ve özgün gürültü bu hesaba verilmez.",
         prior:
-          "Kaynak şekli önsel dağılımdan çıkar ve tekrarla. Daha çok adım, önsel dağılımda olmayan bilgiyi geri getirmez.",
-        finish: "Kalan ters adımları hesapla ve izin verilen şekillerden hangisinin kaldığına bak.",
+          "Kaynak şekli önsel dağılımdan çıkar; deney aynı şekil ve tohumla t = 35'ten yeniden başlar. Sonra tekrarla. Daha çok adım, önsel dağılımda olmayan bilgiyi geri getirmez.",
+        finish:
+          "Kalan ters adımları hesapla; tahmin edilen görüntüyü ve sonsal olasılık çubuklarını karşılaştır.",
       },
     },
   },

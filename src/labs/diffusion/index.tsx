@@ -183,7 +183,7 @@ export default function DiffusionLab() {
               values={TEMPLATES[shape]!}
               label={
                 tr
-                  ? "İleri sürecin kaynağı (ters sürece verilmez)"
+                  ? "İleri sürecin kaynağı (pikselleri ters sürece verilmez)"
                   : "Forward source (not passed to reverse process)"
               }
             />
@@ -191,7 +191,7 @@ export default function DiffusionLab() {
         }
         caption={
           tr
-            ? "İleri süreç: xₜ = √ᾱ x₀ + √(1−ᾱ) ε. Ters süreç: şu anki örnekten temiz örneği tahmin eder, sonra deterministik bir DDIM adımı uygular. Ters adıma ne kaynak şekil ne de özgün gürültü verilir."
+            ? "İleri süreç: xₜ = √ᾱ x₀ + √(1−ᾱ) ε. Ters süreç: şu anki örnekten temiz örneği tahmin eder, sonra deterministik bir DDIM adımı uygular. Ters adıma kaynak şeklin pikselleri (x₀) ve özgün gürültü verilmez; yalnızca kutu işaretliyken izin verilen şekiller listesi kaynak şekle göre belirlenir."
             : "Forward: xₜ = √ᾱ x₀ + √(1−ᾱ) ε. Reverse: estimate a clean sample from the current sample, then apply a deterministic DDIM step. The reverse step receives neither the source shape nor its original noise."
         }
       />
@@ -201,7 +201,7 @@ export default function DiffusionLab() {
         </h2>
         <p className="mt-3 text-body-sm text-fg-muted">
           {tr
-            ? "Bu taslakta hiçbir yapay sinir ağı eğitilmez. Model, dört sabit şekil üzerinde düzgün (eşit olasılıklı) bir önsel dağılım ve Gauss gürültüsü varsayımı altında tam sonsal ortalamayı hesaplar. Gerçek diffusion modelleri gürültü gidericiyi veriden öğrenir. Bu model yeni nesneler, metinden görüntü ya da fotoğraf üretemez; tanımlanan önsel dağılıma bağlıdır. Yalnızca gürültüden başlamak, son adımdaki dağılıma yaklaşık bir başlangıç verir."
+            ? "Bu taslakta hiçbir yapay sinir ağı eğitilmez. Model, izin verilen şekiller üzerinde (varsayılan olarak dördü; kaynak şekil çıkarılırsa üçü) düzgün (eşit olasılıklı) bir önsel dağılım ve Gauss gürültüsü varsayımı altında tam sonsal ortalamayı hesaplar. Gerçek diffusion modelleri gürültü gidericiyi veriden öğrenir. Bu model yeni nesneler, metinden görüntü ya da fotoğraf üretemez; tanımlanan önsel dağılıma bağlıdır. Yalnızca gürültüden başlamak, ileri sürecin sonundaki (t = 60) dağılımı yaklaşık olarak temsil eder. Son ters adımdaki örnek, şekillerin sonsal ağırlıklı bir ortalamasıdır; tek bir şekle eşit olmak zorunda değildir."
             : "No neural network is trained in this draft. It computes the exact posterior mean under a uniform prior over four fixed shapes and Gaussian corruption. Real diffusion models learn a denoiser from data. This model cannot generate new objects, text prompts or photos; it depends on its specified prior. Starting from noise approximates the terminal distribution."}
         </p>
         <a

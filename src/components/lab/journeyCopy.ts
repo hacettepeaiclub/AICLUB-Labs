@@ -21,7 +21,7 @@ export const journeys: Record<string, { en: Journey; tr: Journey }> = {
       "Hayır: ters süreç izin verilen şekillere bağlıdır.",
       "Evet: yeterince adım özgün görüntüyü tam olarak geri getirir.",
       "Evet: rastgele tohum (seed) özgün görüntüyü saklar.",
-      "Kaynak şekli önsel dağılımdan çıkar ve aynı gürültülü girdiyi karşılaştır. Bu model tahminini sonlu önsel dağılımından yapar; özgün görüntüyü gizlice okumaz.",
+      "Kaynak şekli önsel dağılımdan çıkar; deney aynı şekil ve tohumla t = 35'ten yeniden başlar, böylece aynı gürültülü girdiyi karşılaştırırsın. Bu model tahminini sonlu önsel dağılımından yapar; özgün görüntüyü gizlice okumaz.",
     ],
   },
   pca: {

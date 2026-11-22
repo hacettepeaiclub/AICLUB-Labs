@@ -691,7 +691,7 @@ Hafta XI, Ders 1: Sonsal Dağılım ve Beklenen Sonsal Kayıp*, Ankara
 ### Önsel dağılım, sonsal olasılık, sonsal ortalama
 
 - **Tanım:** Önsel dağılım, gözlemden önce şekillere verilen olasılıklar
-  (lab'da dört şekil üzerinde düzgün dağılım). Sonsal olasılık, gürültülü
+  (lab'da izin verilen şekiller üzerinde düzgün dağılım: varsayılan dört, kaynak şekil çıkarılırsa üç). Sonsal olasılık, gürültülü
   örnek görüldükten sonra Bayes kuralıyla güncellenen olasılık. Sonsal
   ortalama E[x₀|xₜ], temiz örnek tahminidir (engine.ts `estimate`).
 - **Tercih:** önsel dağılım; sonsal olasılık (posterior); sonsal ortalama.
