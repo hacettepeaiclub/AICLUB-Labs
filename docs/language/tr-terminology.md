@@ -567,3 +567,48 @@ Kaynaklar: DLT ve D2L-TR sözlükleri (bkz. ilk tablo); D2L-TR-BÖLÜM (bkz.
 
 - **Tercih:** kenar dedektörü ("kenar bulucu", "kenar filtresi" kullanma).
 - **Kaynak:** Proje kararı.
+
+---
+
+## attention
+
+Kaynak: D2L-TR dikkat bölümleri (okundu): *Dikkat İşaretleri*, *Dikkat
+Puanlama Fonksiyonları*, *Özdikkat ve Konumsal Kodlama*, *Çoklu-Kafalı
+Dikkat* ([chapter_attention-mechanisms](https://github.com/d2l-ai/d2l-tr/tree/master/chapter_attention-mechanisms)).
+Aşağıda D2L-TR-DİKKAT diye anılır.
+
+### Attention
+
+- **Tercih:** attention (tr-style.md "Zorla Türkçeleştirme" kuralındaki örnek).
+  "attention payı" bir kelimenin softmax sonrası ağırlığıdır.
+- **Bağlama bağlı alternatifler:** dikkat, dikkat mekanizması, dikkat
+  ağırlıkları (D2L-TR-DİKKAT). Kaynakta yerleşik olduğu için açık karar.
+- **Kaynak:** tr-style.md; D2L-TR-DİKKAT
+
+### Sorgu, anahtar, değer (query, key, value)
+
+- **Tercih:** sorgu (query), anahtar (key), değer (value); ilk geçtiği yerde
+  İngilizcesi parantezde. Vektörler: sorgu vektörü, anahtar vektörü, değer vektörü.
+- **Karıştırılmaması gereken:** "değer" sözcüğünün sayısal değer anlamı;
+  karışabilecek yerde "değer vektörü" yaz.
+- **Kaynak:** D2L-TR-DİKKAT ("Sorgular, Anahtarlar ve Değerler"); DLT ("query: sorgu")
+
+### Eşleşme, puan, pay
+
+- **Tanım:** Eşleşme, sorgu ile anahtarın nokta çarpımı (ham). Puan, √d'ye
+  bölünmüş eşleşme. Pay, softmax sonrası ağırlık (toplamı %100).
+- **Tercih:** eşleşme; puan ("skor" kullanma); pay.
+- **Kaynak:** D2L-TR-DİKKAT ("dikkat puanlama fonksiyonu"). Ayrım proje kararıdır.
+
+### Ölçeklenmiş nokta çarpımı, softmax, kafa, self-attention
+
+- **Tercih:** ölçeklenmiş nokta çarpımı attention'ı; softmax (özgün adıyla);
+  attention kafası (head); self-attention; Transformer.
+- **Bağlama bağlı alternatifler:** ölçeklendirilmiş nokta çarpımı dikkati,
+  softmaks, özdikkat, kafa (D2L-TR-DİKKAT). "attention" İngilizce kaldığı için
+  "self-attention" da İngilizce kalır; açık karar.
+- **Kaynak:** D2L-TR-DİKKAT
+
+### İzdüşüm matrisi
+
+- **Tercih:** izdüşüm (projection); bkz. ## pca.

@@ -1,7 +1,7 @@
 import { Figure, Stage } from "@/components/lab";
 import { markEnglish } from "@/i18n";
 import { useLabCopy } from "@/i18n/labs";
-import { formatNumber } from "@/lib/format";
+import { useFormat } from "@/lib/useFormat";
 import { outputOf, ranked, valueOf, type Attention } from "../engine";
 import { percent } from "../view";
 import { Bars } from "./Bars";
@@ -28,6 +28,7 @@ export interface MixStageProps {
  * somewhere else entirely.
  */
 export function MixStage({ attention, words, selected, onSelect }: MixStageProps) {
+  const { formatNumber } = useFormat();
   const a = useLabCopy("attention");
   const trace = a.trace;
 

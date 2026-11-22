@@ -271,8 +271,7 @@ export const tr: Translation = {
       title: "Where the Model Looks",
       term: "Attention",
       figure: "cümlesinin geri kalanına bakan bir kelime; en kalın yay, en çok baktığı yer.",
-      description:
-        "Bir kelimeyi değiştir. Seçili kelimenin attention ağırlıkları ve çıktı vektörü nasıl değişiyor?",
+      description: "Bir kelime seç ve modelin cümlenin hangi kısmına dayandığına bak.",
     },
     "gradient-descent": {
       title: "The Size of a Step",
