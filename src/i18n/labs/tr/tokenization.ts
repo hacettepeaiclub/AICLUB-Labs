@@ -73,7 +73,7 @@ const copy: typeof en = {
   train: {
     kicker: "Parçalar nereden geliyor",
     title: "Bu parçaları kimse seçmedi.",
-    lede: "Sayılarak bulundular. İşte izlenebilecek kadar küçük bir derlem: “Sıradaki çifti birleştir” düğmesine bastığında derlemde en sık yan yana gelen çift, geçtiği her yerde tek parçaya dönüşür. Sonra sayım baştan yapılır.",
+    lede: "Sayılarak bulundular. İşte izlenebilecek kadar küçük bir derlem: “Sıradaki çifti birleştir” düğmesine bastığında, derlemde en sık yan yana gelen çift tek parçaya dönüşür. Birleştirme her kelime parçasının (ön-token) içinde, örtüşmeyen geçişlerde, soldan sağa yapılır. Sonra sayım baştan yapılır.",
     corpusLabel: "Okuduğu derlem",
     mergeNext: "Sıradaki çifti birleştir",
     trainAll: "Sonuna kadar eğit",
@@ -119,25 +119,25 @@ const copy: typeof en = {
       `Tokenizer eğitiliyor… ${total} birleştirmenin ${done} tanesi tamam.`,
     ready: "Tokenizer'ın eğitimi bitti. Birleştirme kaydırıcısını sürükle.",
     explain:
-      "Sıfır birleştirmede her karakter ayrı bir tokendir, çünkü tokenizer harflerden başka bir şey bilmez. Kaydırıcıyı sağa sürükle ve “·ev · ler · imiz · den” dizisinin önce “·ev · lerimiz · den”, sonra “·evlerimiz · den” hâline gelişine bak. Bu parçalar Türkçe eklerdir, ama algoritmada ekin ne olduğunu bilen hiçbir şey yoktur: bunlar yalnızca sürekli yan yana çıkan komşulardır.",
+      "Sıfır birleştirmede her karakter ayrı bir tokendir, çünkü tokenizer harflerden başka bir şey bilmez. Kaydırıcıyı sağa sürükle ve “·ev · ler · imiz · den” dizisinin önce “·ev · lerimiz · den”, sonra “·evlerimiz · den” hâline gelişine bak. “ev” kökten sonraki parçalar Türkçe eklerle örtüşür, ama algoritmada ekin ne olduğunu bilen hiçbir şey yoktur: bunlar yalnızca bu derlemde sürekli yan yana çıkan komşulardır.",
     jumpTo: "Şuraya atla",
   },
 
   compare: {
     kicker: "Ne okuyarak eğitildi?",
-    title: "Okuduğu dili ucuzlatır.",
+    title: "Okuduğu dilde daha az token tutar.",
     lede: "Aynı algoritma, aynı miktarda eğitim, farklı okuma. İki tokenizer'a aynı metni ver ve token sayılarının nasıl ayrıldığına bak; sonra aradaki farkı kapatan bir metin yazmayı dene.",
     textLabel: "İki tokenizer'ın da aldığı metin",
     textHint:
-      "Metni istediğin gibi değiştir. Bir tokenizer'ı hiç okumadığı bir dilde ucuz yapan bir cümle bulamazsın.",
+      "Metni istediğin gibi değiştir ve iki token sayısını karşılaştır. Bu iki küçük tokenizer'da, okunmamış dildeki metin genellikle daha çok token tutar.",
     trainedOnEnglish: "İngilizce metinle eğitildi",
     trainedOnTurkish: "Türkçe metinle eğitildi",
     englishCorpus: "birkaç kilobaytlık İngilizce düzyazı",
     turkishCorpus: "birkaç kilobaytlık Türkçe düzyazı",
     tokens: "token",
-    cheaper: "Burada daha ucuz: bu, okuduğu bir dil.",
+    cheaper: "Burada daha az token tutuyor: bu, okuduğu dil.",
     ratio: (ratio: string) =>
-      `Aynı karakterler, aynı algoritma, aynı sayıda birleştirme; yine de biri diğerinin ${String(ratio).replace(".", ",")} katı token tutuyor. Fark tamamen her birine ne okutulduğundan geliyor.`,
+      `Aynı karakterler, aynı algoritma, aynı sayıda birleştirme; yine de biri diğerinin ${String(ratio).replace(".", ",")} katı token tutuyor. Aradaki tek fark, iki tokenizer'ın okuduğu derlem.`,
     sampleLoaded: (label: string, words: number, characters: number) =>
       `${label} örneği yüklendi: ${words} kelime, ${characters} karakter.`,
     samples: {
@@ -177,7 +177,7 @@ const copy: typeof en = {
     budgetBadge: (budget: number) => `bütçe: ${budget} token`,
     rewriteLabel: "Yeniden yaz",
     rewriteHint:
-      "Büyük harfleri, boşlukları, noktalamayı ve dolgu sözcüklerini değiştirebilirsin. Listelenen kelimeler metinde kalmalı.",
+      "Büyük harfleri, boşlukları, noktalamayı ve dolgu sözcüklerini değiştirebilirsin. Değerlendirme yalnızca iki şeye bakar: listelenen kelimelerin metinde geçmesi (büyük-küçük harf fark etmez) ve token sayısının bütçe içinde olması.",
     rewriteStrip: "Yeniden yazdığın metin, tokenlere ayrılmış hâliyle",
     fixedLabel: "Cümle (değiştirilemez)",
     fixedStrip: "Cümle, tokenlere ayrılmış hâliyle",
@@ -193,23 +193,23 @@ const copy: typeof en = {
       "say-it-cheaper": {
         title: "Daha ucuza söyle",
         brief:
-          "Zorunlu kelimelerin hepsini koru ve aynı cümleyi bütçenin altına indir. Nasıl yazıldığıyla ilgili geri kalan her şeyi değiştirebilirsin.",
+          "Zorunlu kelimelerin hepsini koru ve cümleyi bütçenin altına indir. Cümlenin anlamını korumaya çalış; değerlendirme sıra, dil bilgisi ya da anlam denetlemez, yalnızca zorunlu kelimelere ve token sayısına bakar.",
         lesson:
-          "Anlam hiç değişmedi. Büyük harfler tokenizer'ın hiç öğrenmediği parçalardır ve çift boşluk başlı başına bir tokendir.",
+          "Bu cümlede büyük harfler, tokenizer'ın öğrenmediği parçalara düşer ve çift boşluk ayrı bir token tutar; anlamı değiştirmeden token sayısı düşebilir.",
       },
       "feed-it-the-right-words": {
         title: "Doğru metni okut",
         brief:
           "Bu cümle değiştirilemez. Cümle bütçeye sığana kadar tokenizer'ın hangi metni okuduğunu ve ne kadar eğitildiğini seç.",
         lesson:
-          "İngilizce tokenizer'ı ne kadar eğitirsen eğit oraya ulaşmadı. Mesele çaba değil: bir tokenizer yalnızca gerçekten okuduğu bir dilde ucuz olabilir.",
+          "Bu cümlede İngilizce tokenizer'ı tam eğitmek bile bütçeye yetmedi; Türkçe metinle eğitilen tokenizer yetti. Bu örnekte farkı eğitim süresi değil, okunan derlem yarattı.",
       },
     },
     verdict: {
       untouched: (tokens: number, budget: number) =>
         `Şu hâliyle ${tokens} token tutuyor. Bütçe: ${budget} token.`,
       missingWords: (words: readonly string[]) =>
-        `Şunlar hâlâ eksik: ${words.map((w) => `“${w}”`).join(", ")}. Cümlenin tamamı korunmalı.`,
+        `Şunlar hâlâ eksik: ${words.map((w) => `“${w}”`).join(", ")}. Listelenen kelimelerin hepsi metinde geçmeli.`,
       overBudget: (tokens: number, budget: number) =>
         `${tokens} token: ${budget} tokenlik bütçeyi ${tokens - budget} token aşıyor.`,
       passed: (tokens: number, budget: number) =>
@@ -228,10 +228,10 @@ const copy: typeof en = {
       "Kaç birleştirme öğrenildiği neyin tek token sayılacağını belirler; kazancın çoğu ilk birleştirmelerde gelir",
       "Baştaki boşluk kendisinden sonraki kelimeye aittir; bu yüzden boşlukların ve büyük harflerin bir bedeli vardır",
       "Aynı cümle, tokenizer'ın hangi metinle eğitildiğine göre çok farklı sayıda token tutar",
-      "Türkçe ekler yalnızca gerçekten Türkçe okumuş bir tokenizer için tek token olur",
+      "Bu lab'daki tokenizer'larda Türkçe ekler, Türkçe metinle eğitilen tokenizer'da tek token hâline geldi; İngilizce metinle eğitilende gelmedi",
     ],
     footer:
-      "Gerçek modellerin tokenizer'ları da böyle eğitilir, ama çok daha fazla metinle ve karakterler yerine ham baytlar üzerinde. Eğitim verisinde az bulunan bir dilin, model o dili konuşmayı öğrendikten çok sonra bile pahalı kalmasının nedeni budur.",
+      "Bayt düzeyinde BPE kullanan gerçek modellerin tokenizer'ları da böyle eğitilir, ama çok daha fazla metinle ve karakterler yerine ham baytlar üzerinde. Eğitim verisinde az bulunan bir dilin, model o dili kullanmayı öğrendikten sonra bile çok token tutmaya devam edebilmesinin nedeni budur.",
   },
 
   tour: {
@@ -245,7 +245,8 @@ const copy: typeof en = {
       },
       train: {
         corpus: "Okunabilecek kadar küçük bir derlem. Şu anda her parça tek bir karakter.",
-        merge: "Birleştir: en sık yan yana gelen çift, geçtiği her yerde tek bir parçaya dönüşür.",
+        merge:
+          "Birleştir: en sık yan yana gelen çift tek bir parçaya dönüşür; her kelime parçasının içinde, örtüşmeyen geçişlerde.",
         figures:
           "Şimdiye kadarki birleştirmeler, sözlüğün büyüklüğü ve derlemin kaç token tuttuğu.",
         all: "Ya da eğitimi tek seferde sonuna kadar götür.",
@@ -259,7 +260,7 @@ const copy: typeof en = {
       compare: {
         text: "Biri İngilizce, biri Türkçe metinle eğitilmiş iki tokenizer. İkisine aynı metni ver; tur bir kelime ekledi.",
         samples: "Ya da buradan bir örnek seç.",
-        bill: "Aynı metnin her birinde kaç token tuttuğu. Her biri okuduğu dilde ucuzdur.",
+        bill: "Aynı metnin her birinde kaç token tuttuğu. Bu örneklerde her biri okuduğu dilde daha az token tutuyor.",
       },
       challenge: {
         puzzle: "İki bulmaca, tek bütçe. Bulmacayı yukarıdan seç.",
