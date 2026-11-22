@@ -220,10 +220,10 @@ export const tr: Translation = {
     },
     pca: {
       title: "The Widest Shadow",
-      term: "Temel bileşen analizi",
-      figure: "bir nokta bulutu ve en geniş yayıldığı çizgi.",
+      term: "Temel bileşenler analizi",
+      figure: "bir nokta bulutu ve bulutun en geniş yayıldığı doğru.",
       description:
-        "Bir matrisin yalnızca uzattığı yönleri, sonra bir veri bulutunun en geniş yayıldığı çizgiyi bul.",
+        "Önce bir matrisin doğrultusunu değiştirmediği yönleri, sonra bir veri bulutunun en geniş yayıldığı doğruyu bul.",
     },
     jepa: {
       title: "The Missing Piece",

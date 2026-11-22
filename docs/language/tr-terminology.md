@@ -241,3 +241,78 @@ yukarıdaki biçimde yeniden yazılacak.
 | reinforcement learning | pekiştirmeli öğrenme | |
 | attention, word embedding | attention, word embedding | |
 | corpus, epoch | derlem, epok | "korpus" kullanma (testle korunur) |
+
+---
+
+## pca
+
+Kaynaklar (bu bölümde kısaltmalarıyla anılır):
+
+| Kısaltma | Kaynak | Not |
+| --- | --- | --- |
+| MAT114 | Prof. Dr. F. Nejat Ekmekci, Prof. Dr. Yusuf Yaylı, Doç. Dr. İsmail Gök, *MAT114 Lineer Cebir, Hafta 13: Özdeğerler ve Özvektörler*, Ankara Üniversitesi, 2017-2018. [Açık ders](https://acikders.ankara.edu.tr/mod/resource/view.php?id=62128) | "özdeğer (karakteristik değer)", "özvektör"; "karakteristik vektör bir lineer dönüşüm altında doğrultusu değişmeyen vektör demektir" |
+| SIRMATEL | Dr. Öğr. Üyesi Işık İlber Sırmatel, *Özdeğerler ve Özvektörler* ders notu, Trakya Üniversitesi Elektrik-Elektronik Müh. [PDF](https://sirmatel.github.io/assets/files/linear_algebra/ozdegerler-ve-ozvektorler.pdf) | "A gerçel olsa da özdeğerleri ve özvektörleri karmaşık olabilir", köşegenleştirme |
+| VİKİ-KOV | Vikipedi, *Kovaryans matrisi*. [Sayfa](https://tr.wikipedia.org/wiki/Kovaryans_matrisi) | "kovaryans matrisi (veya varyans-kovaryans matrisi)", "temel bileşenler analizi" |
+| DLT | Yukarıdaki tabloda. | projection: izdüşüm; eigenvector: özyöney; variance: değişinti; covariance: eşdeğişinti |
+
+İncelenemeyenler: Ankara Üniversitesi açık ders "Temel Bileşenler Analizi"
+notu (resource id=51326; PDF açıldı ama metni okunamadı, yazı tipi
+gömülü), OMÜ AVYS çok değişkenli istatistik notları (alan adı çözülemedi),
+Vikipedi "Temel bileşenler analizi" ve "Özdeğer ve özvektör" sayfaları (404).
+
+### Temel bileşenler analizi (PCA)
+
+- **Tanım:** Verinin kovaryans matrisinin özvektörlerini özdeğere göre büyükten
+  küçüğe sıralayıp veriyi bu yönler boyunca yeniden yazan yöntem.
+- **Tercih:** temel bileşenler analizi; metinde kısaltma olarak **PCA**.
+  İlk geçtiği yerde "temel bileşenler analizi (PCA)".
+- **Bağlama bağlı alternatifler:** "temel bileşen analizi" de yaygındır;
+  istatistik kaynakları çoğul biçimi kullanır (VİKİ-KOV). "TBA" kısaltmasını
+  kullanma: ML okurunun aradığı ad PCA'dır.
+- **Karıştırılmaması gereken:** temel bileşen (tek bir yön/eksen) ile analizin kendisi.
+- **Örnek:** "Bulut ve birinci temel bileşen."
+- **Kaynak:** VİKİ-KOV. Ankara Üniversitesi notunun metni okunamadığı için
+  kaynak gösterilmiyor.
+
+### Özvektör, özdeğer
+
+- **Tanım:** Au = λu eşitliğini sağlayan sıfırdan farklı u bir özvektördür:
+  matris onun doğrultusunu değiştirmez, yalnızca λ katına uzatır (ya da
+  kısaltır). λ özdeğerdir.
+- **Tercih:** özvektör; özdeğer. Sezgisel tanımda "doğrultusu değişmeyen yön".
+- **Bağlama bağlı alternatifler:** karakteristik vektör/değer (MAT114, eşdeğer
+  ad); özyöney (DLT). Projede kullanma.
+- **Karıştırılmaması gereken:** yön ile doğrultu: λ negatifse u'nun yönü
+  döner ama doğrultusu aynı kalır; bu yüzden tanımda "doğrultu" kullan.
+- **Örnek:** "Bu yön bir özvektördür, 1,62 de onun özdeğeridir."
+- **Kaynak:** MAT114, SIRMATEL
+
+### İzdüşüm
+
+- **Tanım:** Bir noktanın bir doğruya dik olarak düşürülmesiyle doğru üzerinde
+  elde edilen nokta. Lab'daki "gölge".
+- **Tercih:** izdüşüm (dik izdüşüm). Lab "gölge" benzetmesini başlıkta
+  kullanır; metinde ilk geçtiği yerde "izdüşüm, noktanın doğru üzerindeki
+  gölgesidir" diye bağlanır, sonra "izdüşüm" kullanılır.
+- **Karıştırılmaması gereken:** "çizgi" (gündelik); geometrik nesne **doğru**dur.
+- **Kaynak:** DLT ("projection: izdüşüm")
+
+### Kovaryans matrisi, varyans
+
+- **Tanım:** Değişkenlerin varyanslarını köşegende, kovaryanslarını köşegen
+  dışında tutan simetrik matris.
+- **Tercih:** kovaryans matrisi; varyans; kısaltmalar Var(·), Kov.
+- **Bağlama bağlı alternatifler:** varyans-kovaryans matrisi (VİKİ-KOV, istatistik
+  derslerinde yaygın). değişinti / eşdeğişinti (DLT, D2L-TR): projede kullanma,
+  istatistik derslerinde yerleşik değil.
+- **Örnek:** "İzdüşümlerin varyansı", "Korunan varyans"
+- **Kaynak:** VİKİ-KOV
+
+### Kayma matrisi (shear)
+
+- **Tanım:** Bir ekseni sabit tutup diğer koordinatları ona orantılı kaydıran
+  dönüşümün matrisi (engine.ts `shear`).
+- **Tercih:** kayma (düğmede "Kayma"; metinde "kayma matrisi")
+- **Bağlama bağlı alternatifler:** kesme dönüşümü. İkisi için de okunabilen
+  bir Türkçe ders kaynağı bulunamadı; açık karar.
+- **Kaynak:** İncelenen kaynak yok. Proje önerisi.
