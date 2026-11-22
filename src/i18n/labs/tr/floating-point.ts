@@ -239,7 +239,7 @@ const copy: typeof en = {
     layout: (exponent: number, fraction: number) =>
       `1 işaret, ${exponent} üs ve ${fraction} kesir biti`,
     table: {
-      caption: "Biçimlerin değer aralığı ve duyarlıki",
+      caption: "Biçimlerin değer aralığı ve duyarlığı",
       format: "Biçim",
       bits: "Bit",
       largest: "En büyük",
@@ -247,7 +247,7 @@ const copy: typeof en = {
       digits: "Ondalık basamak",
     },
     bfloatNote:
-      "bfloat16, IEEE 754'te yer almaz. float32 ile aynı yerleşime sahiptir, yalnızca kesir 23 bitten 7 bite kısaltılmıştır; laboratuvar ona da diğerleri gibi yuvarlar: en yakın değere, eşitlikte çift olana.",
+      "bfloat16, IEEE 754'te yer almaz. float32 ile aynı yerleşime sahiptir, yalnızca kesir 23 bitten 7 bite kısaltılmıştır; lab bu biçimde de diğerleri gibi yuvarlar: en yakın değere, eşitlikte çift olana.",
     caption:
       "Yaklaşık 2 × 10⁻⁸ büyüklüğündeki değer bfloat16'da sıfırdan farklı kalır, float16'da ise sıfıra yuvarlanır. float16 ile eğitimde küçük gradyanların kaybolmasını azaltmak için kayıp ölçekleme (loss scaling) kullanılabilir.",
   },
@@ -368,7 +368,7 @@ const copy: typeof en = {
     topics: {
       stored: "Bir float neyi saklayabilir, neyi saklayamaz",
       rounding: "Tekrar tekrar yuvarlama",
-      formats: "Aralık mı, duyarlık mi",
+      formats: "Aralık mı, duyarlık mı",
     },
     notes: {
       "cp-float": "0,1 + 0,2'nin neden 0,3 olmadığı, en baştan.",
