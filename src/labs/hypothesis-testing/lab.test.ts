@@ -22,6 +22,7 @@ import {
   curvePath,
   domainOf,
   judge,
+  labelAt,
   regionsOf,
   samples,
   scaleOf,
@@ -401,5 +402,24 @@ describe("the challenge", () => {
         expect(puzzle.lesson.length).toBeGreaterThan(40);
       }
     }
+  });
+});
+
+// ======================================================= words on the plot ===
+
+describe("plot labels", () => {
+  it("are not drawn as SVG text, which the stretched plot would distort", () => {
+    for (const file of ["components/DistributionPlot.tsx", "components/SampleSizeStage.tsx"]) {
+      expect(stripComments(read(file))).not.toMatch(/<text[\s>]/);
+    }
+  });
+
+  it("stay inside their span: flush at its ends, centred in its middle", () => {
+    expect(labelAt(0, 0).shift).toBe("0%");
+    expect(labelAt(PLOT.width, 0).shift).toBe("-100%");
+    expect(labelAt(PLOT.width / 2, 0).shift).toBe("-50%");
+    const half = labelAt(PLOT.width / 2, 0, PLOT.width / 2, PLOT.width);
+    expect(half.shift).toBe("0%");
+    expect(half.maxWidth).toBe("50%");
   });
 });
