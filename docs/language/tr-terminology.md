@@ -483,3 +483,31 @@ yukarıdaki biçimde yeniden yazılacak.
 - **Kaynak:** Bu lab'da gösterilen davranış, Web Crypto ile hesaplanan
   özetler üzerinden ölçülür. [NIST FIPS 180-4](https://csrc.nist.gov/pubs/fips/180-4/upd1/final)
   SHA-256 hesabını tanımlar.
+
+## cache-locality
+
+### Önbellek bloğu, isabet ve ıska
+
+- **Tanım:** Önbellek bloğu, birlikte getirilen komşu adresler grubudur.
+  Modelde bir blok 64 bayt ve sekiz sayı içerir. Aranan adresin bloğu
+  önbellekteyse isabet olur. Blok önbellekte yoksa ıska olur ve blok
+  bellekten getirilir. Kapasite doluysa en uzun süredir kullanılmayan
+  blok çıkarılır.
+- **Tercih:** önbellek, önbellek bloğu, isabet, ıska. Bazı kaynaklar
+  “önbellek satırı” der. Bu deneyde satır, matris satırını gösterir.
+- **Kaynak:** Davut Akçiçek, Çanakkale Onsekiz Mart Üniversitesi,
+  *Ölü Bloklara Dayalı Veri Önbelleği Güvenirliğinin Arttırılması*,
+  YÖK tez no. 177847, s. 12–13. Önbellek bloğu, isabet ve ıska
+  kullanımlarını içerir.
+
+### Uzlamsal ve zamansal yerellik
+
+- **Tanım:** Uzlamsal yerellikte birbirine yakın adreslere erişilir.
+  Zamansal yerellikte kısa süre önce kullanılan adrese tekrar erişilir.
+  Satır boyunca ardışık okuma, aynı bloktaki komşu sayıları kullanır.
+- **Tercih:** uzlamsal yerellik, zamansal yerellik. Okuma başına ıska,
+  modelin hesapladığı orandır. Okuma başına süre cihazda ölçülür.
+- **Kaynak:** Hacettepe Üniversitesi BİL220,
+  [Final çözümleri, soru 4](https://web.cs.hacettepe.edu.tr/~bil220/finalsol.pdf).
+  İnönü Üniversitesi [Bilgisayar Sistemlerine Giriş](https://akademi.inonu.edu.tr/mucahit/menu/65/bilgisayar-sistemlerine-giris)
+  “önbellek yerelliği” terimini kullanır.

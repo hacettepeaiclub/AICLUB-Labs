@@ -305,10 +305,9 @@ export const tr: Translation = {
     "cache-locality": {
       title: "The Neighbours Come Free",
       term: "Önbellek yerelliği",
-      figure:
-        "sekizli satırlar halinde sayılar; birini okumak bütün bloğunu, komşularıyla birlikte getirir.",
+      figure: "sekiz sayılık önbellek blokları ve her erişimdeki isabet ya da ıska.",
       description:
-        "Aynı veriyi farklı sıralarla oku. Ölçülen süreleri cache modeliyle karşılaştır.",
+        "Aynı sayıları satır ve sütun sırasıyla oku. Cihazında ölçülen süreleri önbellek modeliyle karşılaştır.",
     },
     "race-condition": {
       title: "Lost Update",

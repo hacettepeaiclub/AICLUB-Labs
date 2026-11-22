@@ -13,37 +13,36 @@ const copy: typeof en = {
   sources: {
     title: "Kaynaklar",
     drepper:
-      "Cache bloklarına, ardışık erişimin neden ucuz, aralıklı erişimin neden pahalı olduğuna ve gerçek işlemcileri basit modelden ayıran ön getirmeye (prefetch) dayanak.",
-    memoryWall:
-      "Bunun neden her yıl daha önemli olduğuna dayanak: işlemciler, onları besleyen bellekten çok daha hızlı hızlandı.",
+      "Önbellek bloklarını, ardışık ve aralıklı erişimi, ayrıca gerçek işlemcilerin önceden veri getirmesini (prefetch) açıklar.",
+    memoryWall: "İşlemci hızı ile ana bellek erişim hızı arasındaki farkın artmasını inceler.",
     blocked:
-      "4. bölümdeki matris çarpımına dayanak: döngü sırası ve adım, cache’in ne sıklıkla ıskalandığını belirler; döngüleri yeniden sıralamak bilinen bir çaredir.",
+      "Matris çarpımında döngü sırasının bellek erişimlerine etkisini ve erişim yerelliğini artıran yöntemleri inceler.",
     locality:
-      "Laboratuvara adını veren ilkeye dayanak: programlar az önce kullandıklarını ve onların yakınındakileri yeniden kullanma eğilimindedir; önbellekler zaten bu yüzden işe yarar.",
+      "Yakın zamanda erişilen adreslere tekrar erişilmesi ile komşu adreslere erişilmesi arasındaki ayrımı açıklar.",
   },
 
   race: {
     title: "Aynı veriyi iki farklı sırayla topla",
     question:
-      "İki döngü aynı dört milyon sayıyı topluyor. Biri satır satır okuyor, öteki sütun sütun. Sıra fark eder mi?",
+      "İki döngü aynı sayıları toplar. Biri satır satır, diğeri sütun sütun okur. İki sıranın ölçülen sürelerini karşılaştır.",
     rowLabel: "Satır satır",
     columnLabel: "Sütun sütun",
-    rowHow: "Her sayı, okunan bir öncekinin hemen yanında.",
-    columnHow: "Her sayı, okunan bir öncekinden bütün bir satır, 16 KB uzakta.",
+    rowHow: "Aynı satırda ardışık bellek adresleri okunur.",
+    columnHow: "Aynı sütunda her sonraki sayı bellekte bir satır, yani 16 KiB ileridedir.",
     ms: (value: string) => `${value} ms`,
     run: "İkisini bu bilgisayarda ölç",
     again: "Yeniden ölç",
     running: "Ölçülüyor…",
     gridNote: (n: string) =>
-      `${n} × ${n} sayılık bir tablo, 32 MB, işlemcinde ölçülüyor. Her sıra beş kez çalışıyor; en hızlısı sayılıyor.`,
+      `${n} × ${n} sayılık bir tablo, 32 MiB bellek kullanır. Her sıra için beş ölçüm yapılır ve en kısa süre gösterilir.`,
     caption: (count: string) =>
       `İki döngü de aynı ${count} sayıyı topluyor ve aynı sonuca varıyor. Değişen yalnızca okuma sırası.`,
     announce: (row: string, column: string, ratio: string) =>
-      `Satır satır ${row} milisaniye, sütun sütun ${column} milisaniye sürdü: aynı toplam için ${ratio} daha yavaş.`,
+      `Satır sırası ${row} milisaniye, sütun sırası ${column} milisaniye sürdü. Sütun süresinin satır süresine oranı ${ratio}.`,
     error: "Ölçüm bu tarayıcıda çalışamadı. Sayfayı yenilemeyi dene.",
     figures: {
       ratio: "Sütunlar",
-      ratioHint: "satırların süresi kadar sürdü, bu bilgisayarda",
+      ratioHint: "sütun süresi ÷ satır süresi",
       sum: "Toplam",
       sumHint: "iki sırada da aynı",
       sumSame: "iki sırada da birebir aynı",
@@ -54,30 +53,30 @@ const copy: typeof en = {
   line: {
     kicker: "Önbellek blokları",
     title: "Önbelleğe hangi veriler birlikte gelir?",
-    lede: "Bu modelde bellek, 64 baytlık bloklar hâlinde okunur. Bir blok sekiz sayı içerir. İlk sayı okunduğunda aynı bloktaki diğer sayılar da cache’e gelir; onları okumak için yeniden ana belleğe gitmek gerekmez.",
+    lede: "Modelde bir önbellek bloğu 64 bayttır ve sekiz sayı içerir. Önbellekte bulunmayan bir sayı okununca bloğu getirilir. Aynı blok önbellekte kaldığı sürece diğer yedi sayı da bellekten yeniden getirilmeden okunabilir.",
     caption:
-      "Her satır bir cache bloğunu gösterir. Model dört blok tutar ve yer dolduğunda en uzun süredir kullanılmayan bloğu çıkarır. • isabeti, × cache ıskasını gösterir.",
+      "Tabloda her satır bir önbellek bloğuna karşılık gelir. Başlangıçta önbellek dört blok alır. Dolduğunda, en uzun süredir kullanılmayan blok çıkarılır. • isabeti, × ıskayı gösterir.",
     orderLabel: "Tabloyu oku",
-    orders: { rows: "Satır satır", columns: "Sütun sütun", own: "Kendi sıranız" },
-    sizeLabel: "Cache boyutu",
+    orders: { rows: "Satır satır", columns: "Sütun sütun", own: "Kendi sıran" },
+    sizeLabel: "Önbellek kapasitesi",
     size: (lines: number) => `${lines} blok`,
-    secondaryLabel: "Sıra ve cache boyutu",
+    secondaryLabel: "Okuma sırası ve önbellek kapasitesi",
     scrub: "Okunan",
     replay: "Yeniden",
-    clear: "Temizle, baştan başla",
+    clear: "Önbelleği boşalt",
     lineChip: (line: number) => `blok ${line}`,
     emptySlot: "boş",
-    cacheLabel: (lines: number) => `Cache’te (${lines} blok, en yenisi başta):`,
+    cacheLabel: (lines: number) => `Önbellek. En son kullanılan blok başta. Toplam ${lines} yer.`,
     startHint: "Tabloyu sayı sayı okumak için Çalıştır'a bas ya da kaydırıcıyı sürükle.",
     ownHint: "Sayılara istediğin sırayla tıkla. Her tıklama bir okuma.",
     hitLine: (row: number, col: number, line: number) =>
-      `Satır ${row}, sütun ${col}: isabet. Blok ${line} zaten önbellekteydi.`,
+      `Satır ${row}, sütun ${col}. İsabet. ${line} numaralı blok önbellekteydi.`,
     missLine: (row: number, col: number, line: number, evicted: number | null) =>
       evicted === null
-        ? `Satır ${row}, sütun ${col}: ıska. Blok ${line} getiriliyor, sekiz sayısının hepsiyle.`
-        : `Satır ${row}, sütun ${col}: ıska. Blok ${line} getiriliyor, yer açmak için blok ${evicted} dışarı atılıyor.`,
+        ? `Satır ${row}, sütun ${col}. Iska. ${line} numaralı blok sekiz sayısıyla birlikte bellekteki yerinden getirildi.`
+        : `Satır ${row}, sütun ${col}. Iska. ${line} numaralı blok getirildi. Yer açmak için ${evicted} numaralı blok çıkarıldı.`,
     gridLabel: (reads: number, misses: number, hits: number, held: number) =>
-      `8'e 8 sayılık bir tablo. Şimdiye kadar ${reads} okuma: ${misses} ıska, ${hits} isabet. Cache’te ${held} blok.`,
+      `8'e 8 sayılık bir tablo. Okuma sayısı ${reads}, ıska sayısı ${misses}, isabet sayısı ${hits}. Önbellekte ${held} blok.`,
     cellButton: (row: number, col: number, seen: boolean | undefined) =>
       `Satır ${row}, sütun ${col} okunsun${seen === undefined ? "" : seen ? ", son okuma isabetti" : ", son okuma ıskaydı"}`,
     announce: (reads: number, misses: number, hits: number) =>
@@ -87,14 +86,14 @@ const copy: typeof en = {
       misses: "Iska",
       missesHint: "bellekten getirilen blok",
       hits: "İsabet",
-      hitsHint: "zaten cache’te",
+      hitsHint: "blok önbellekte",
     },
   },
 
   stride: {
     kicker: "Adım",
     title: "Okumalar arasındaki mesafe arttığında ne olur?",
-    lede: "Aynı sayıların hepsini oku, ancak ardışık okumalar arasındaki aralığı değiştir. Modelin cache ıskalarını cihazında ölçülen okuma süreleriyle karşılaştır.",
+    lede: "İki okuma arasında kaç eleman ilerleyeceğini seç. Her sayı bir kez okunur. Modeldeki ıska oranını cihazında ölçülen okuma süreleriyle karşılaştır.",
     run: "Bu bilgisayarda ölç",
     again: "Yeniden ölç",
     running: "Ölçülüyor…",
@@ -108,10 +107,10 @@ const copy: typeof en = {
     everyRead: "her okumada",
     oneIn: (n: number) => `${n} okumada 1`,
     axisNote:
-      "Çubuklar okuma başına ölçülen nanosaniyeyi gösterir. Altlarındaki değerler modelde okuma başına cache ıskasıdır. Gerçek işlemcilerin önceden veri getirme gibi özellikleri, sürelerin modelden farklı değişmesine yol açabilir.",
+      "Çubuklar okuma başına ölçülen nanosaniyeyi gösterir. Altlarındaki değerler modelde okuma başına önbellek ıskasıdır. Gerçek işlemcilerin önceden veri getirme gibi özellikleri, sürelerin modelden farklı değişmesine yol açabilir.",
     ns: (value: string) => `${value} ns`,
     caption: (length: string) =>
-      `${length} sayı, 32 MB, her adımda her biri tam bir kez okunuyor. Değişen yalnızca art arda iki okuma arasındaki uzaklık.`,
+      `${length} sayı, toplam 32 MiB yer kaplar. Her erişim adımı için bütün sayılar birer kez okunur.`,
     announce: (first: string, dearest: number, dearestNs: string) =>
       `Adım 1 iken okuma başına ${first} nanosaniye. Bu bilgisayarda en pahalı adım ${dearest}, okuma başına ${dearestNs} nanosaniye.`,
     error: "Ölçüm bu tarayıcıda çalışamadı. Sayfayı yenilemeyi dene.",
@@ -131,13 +130,13 @@ const copy: typeof en = {
   },
 
   order: {
-    kicker: "Sıra sizde",
+    kicker: "Döngü sırası deneyi",
     title: "Matris çarpımında döngü sırası",
-    lede: "Matris çarpımındaki üç döngünün sırasını değiştir. Yapılan çarpma ve toplama sayısı aynı kalır; bellek erişim sırası değişir. Sonucu önce modelde, sonra cihazında ölç.",
+    lede: "Matris çarpımındaki üç döngünün sırasını değiştir. Her sırada aynı sayıda çarpma ve toplama yapılır. Bellek erişimleri değiştiğinde modeldeki ıska sayısına ve cihazında ölçülen süreye bak.",
     orderLabel: "Döngü sırası",
     secondaryLabel: "Bir döngü sırası seç",
-    walkLabel: "En içteki döngünün her matriste yürüyüşü",
-    walk: { row: "satır boyunca", column: "sütun aşağı", still: "yerinde" },
+    walkLabel: "En içteki döngünün matrislerdeki erişim yönü",
+    walk: { row: "satır boyunca", column: "sütun boyunca", still: "yerinde" },
     legendModel: "model: adım başına ıska",
     legendMeasured: "bu bilgisayarda ölçülen",
     measure: (order: string) => `${order} sırasını ölç`,
@@ -147,9 +146,9 @@ const copy: typeof en = {
     rowLabel: (order: string, model: string, ms: string | null) =>
       `${order}: model adım başına ${model} ıska${ms === null ? ", henüz ölçülmedi" : `, ölçülen ${ms} milisaniye`}`,
     chartNote:
-      "Model 16 × 16'lık bir çarpımı sekiz bloklu bir cache’ten geçiriyor. Kronometre ise 512 × 512'lik bir çarpımı, matris başına 2 MB, işlemcinde çalıştırıyor. Altısını ölçmek telefonda bir dakika sürebilir.",
+      "Model, 16 × 16 boyutlu matrisleri sekiz blokluk önbellekle çarpar. Cihazındaki ölçüm 512 × 512 boyutlu matrisleri kullanır. Her matris 2 MiB yer kaplar.",
     caption: (n: string) =>
-      `Her sıra aynı ${n} × ${n} × ${n} çarpma ve toplamayı yapar. Sütun aşağı yürüyüş her adımda bütün bir satır öteye atlar; satır boyunca yürüyüş komşuları okur.`,
+      `Her sıra aynı ${n} × ${n} × ${n} çarpma ve toplamayı yapar. Sütun boyunca erişimde adres bir satır kadar artar. Satır boyunca erişimde sıradaki komşu okunur.`,
     announceOne: (order: string, ms: string) => `${order} bu bilgisayarda ${ms} milisaniye sürdü.`,
     announceAgree:
       "Altısı da ölçüldü. Bilgisayarın üç çifti modelle aynı sıralıyor: en içte j en hızlı, sonra k, sonra i.",
@@ -159,7 +158,7 @@ const copy: typeof en = {
     figures: {
       model: "Model",
       modelHint: "adım başına ıska, bu sıra",
-      fastest: "En hızlın",
+      fastest: "Ölçülen en kısa süre",
       fastestHint: (ms: string) => `bu bilgisayarda ${ms} ms`,
       fastestEmpty: "başlamak için bir sıra ölç",
       verdict: "Modele göre",
@@ -173,13 +172,13 @@ const copy: typeof en = {
   recap: {
     lessons: [
       "Aynı sayıları başka bir sırayla toplamak, aritmetik birebir aynıyken birkaç kat uzun sürebilir.",
-      "Bellek işlemciye blok blok ulaşır, 64 bayt; bir sayının komşuları onunla birlikte gelir.",
-      "Komşuları art arda okumak okumaların çoğunu isabet yapar; uzağa atlamak her okumayı yeni bir ıska yapar.",
-      "Cache, yeniden kullandığın şey sığdığı sürece işe yarar: her bloğa yer verin, yavaş sıra da yetişir.",
-      "Döngüleri yeniden sıralayabiliyorsanız, satır boyunca yürüyeni en içe koyun.",
+      "Modelde bellekten 64 baytlık bloklar getirilir. Aynı bloktaki komşular bir okumayla birlikte önbelleğe gelir.",
+      "Ardışık okumalar aynı önbellek bloğunu yeniden kullanabilir. Erişim adımı blok kadar büyüdüğünde tek geçişte her okuma yeni bir bloğa gidebilir.",
+      "Gerekli bloklar önbelleğe sığdığında sütun sırasındaki okumalar da daha önce getirilen blokları kullanabilir.",
+      "Matris çarpımında en iç döngüyü değiştir. Satır boyunca erişimin ıska sayısına etkisine bak.",
     ],
     footer:
-      "Süreler bu cihazda ölçüldü. Modelin tek seviyeli cache’i gerçek işlemcinin bütün özelliklerini içermez. Sonuçları birkaç kez ölçerek karşılaştır; modeli sürelerin kesin tahmini olarak kullanma.",
+      "Süreler bu cihazda ölçülür. Model tek seviyeli ve en uzun süredir kullanılmayan bloğu çıkaran bir önbellek kullanır. Ölçümde işlemcinin önceden veri getirmesi ve diğer bellek düzeyleri de sonucu etkileyebilir.",
   },
 
   // The guided tours, one per experiment (components/lab/guide/tours.ts).
@@ -191,28 +190,29 @@ const copy: typeof en = {
         lanes:
           "Üstteki döngü sayıları satır satır, alttaki sütun sütun okur. Sayılar da toplam da aynı.",
         run: "Bu düğme ikisini de işlemcinde ölçer. Birkaç saniye sürer.",
-        ratio: "Sütun sırasının kaç kat uzun sürdüğü. Değişen tek şey okuma sırası.",
+        ratio:
+          "Sütunlar kutusundaki süre oranına bak. Yeniden ölç düğmesiyle süreleri karşılaştır.",
       },
       line: {
-        grid: "Bu ızgaranın her satırı sekiz sayılık bir cache satırı. Yanındaki cache dört satır tutar.",
-        run: "Okumaları tek tek çalıştır: • isabet, × ise bütün bir satırı getiren ıska.",
+        grid: "Izgaranın her satırı sekiz sayılık bir önbellek bloğudur. Başlangıçta önbellek dört blok alır.",
+        run: "Okumaları tek tek çalıştır. • blok önbellekte bulunduğunda, × blok bellekten getirildiğinde görünür.",
         score:
-          "Şimdiye kadarki ıska ve isabetler. Satır sırası her satırda bir kez ıskalar, sütun sırası neredeyse her okumada.",
+          "Iska ve İsabet kutularına bak. Dört blokla satır sırası her blokta bir kez ıskalar. Sütun sırası her okumada ıskalar.",
         options:
-          "Buradan sütun sırasına, daha büyük bir cache’e ya da sayılara kendin tıkladığın kendi sıranıza geçin.",
+          "Sütun sütun seçeneğini dene. Ardından önbellek kapasitesini artır veya Kendi sıran seçeneğiyle sayıları istediğin sırada oku.",
       },
       stride: {
         chart:
-          "Altta her adım aralığında okuma başına ıska modeli, üstte işlemcinin her okuma için ödettiği süre.",
+          "Çubuklar okuma başına ölçülen süreyi gösterir. Altlarındaki değerler, modelin okuma başına ıskasıdır.",
         measure:
-          "Bu bilgisayarda ölç. Maliyet aralıkla birlikte artar, ta ki her satırdan tek okumaya kadar.",
+          "Bu bilgisayarda ölç düğmesine bas. Adım sayısı değiştikçe ölçülen süreyle modeldeki ıska oranını karşılaştır.",
         show: "Buradan bir adım aralığı seç; önce hangi sayıları okuduğunu görürsün.",
       },
       order: {
         orders:
           "Matris çarpımının üç döngüsünü iç içe koymanın altı yolu ve en içteki döngünün her matriste nasıl yürüdüğü.",
         time: "Seçili sırayı bu bilgisayarda ölç ve modelle karşılaştır.",
-        all: "Ya da altısını birden ölçüp hangi sıranın kazandığını görün.",
+        all: "Altısını da ölç düğmesine bas ve en kısa süreyi veren sıraya bak.",
       },
     },
   },
@@ -220,14 +220,15 @@ const copy: typeof en = {
   // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
   study: {
     topics: {
-      line: "Bellek satır satır gelir",
+      line: "Önbellek bloğu ve yerellik",
       order: "Adım aralığı ve döngü sırası",
     },
     notes: {
-      "cp-caches-why": "İşlemcinin neden bir cache’e ihtiyaç duyduğu.",
-      "cp-caches-how": "Cache, satırlar ve isabetler, ayrıntılı olarak.",
-      "mit-6172-l14": "Cache dostu kod üzerine tam bir ders; döşemeli matris çarpımı dahil.",
-      "drepper-memory": "Bellek ve cache’in gerçekte nasıl davrandığına dair uzun başvuru metni.",
+      "cp-caches-why": "İşlemcilerin önbellek kullanma nedeni.",
+      "cp-caches-how": "Önbellek bloklarının ve isabetlerin açıklaması.",
+      "mit-6172-l14":
+        "Önbelleği verimli kullanan kod üzerine tam bir ders; döşemeli matris çarpımı dahil.",
+      "drepper-memory": "Bellek ve önbelleğin gerçekte nasıl davrandığına dair uzun başvuru metni.",
     },
   },
 };
