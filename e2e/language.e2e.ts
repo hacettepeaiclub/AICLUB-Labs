@@ -40,7 +40,9 @@ for (const path of paths) {
       }
       await context.close();
     }
-    if (path === "/" || labs.some((l) => path === `/labs/${l.meta.slug}/`))
+    // Lab titles are shared English names; every other page, home included,
+    // has a heading in its own language.
+    if (labs.some((l) => path === `/labs/${l.meta.slug}/`))
       expect(headings[1]![0]).toBe(headings[0]![0]);
     else expect(headings[1]![0]).not.toBe(headings[0]![0]);
     expect(headings[1]).not.toEqual(headings[0]);
