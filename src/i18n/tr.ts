@@ -328,9 +328,9 @@ export const tr: Translation = {
     "cryptographic-hashing": {
       title: "Digital Fingerprint",
       term: "Kriptografik hash",
-      figure: "farklı uzunlukta iki girdi, tek bir fonksiyon ve aynı boyda iki çıktı.",
+      figure: "iki farklı mesajın 256 bitlik SHA-256 özetleri.",
       description:
-        "Bir mesajın SHA-256 özetini hesapla. Tek karakter değişince kaç bitin değiştiğine bak.",
+        "Bir mesaj yazıp bir harfini değiştir. SHA-256 özetinde değişen bitleri say ve iki özetin ortak ön ekini karşılaştır.",
     },
     "multilayer-perceptrons": {
       title: "Bending the Line",

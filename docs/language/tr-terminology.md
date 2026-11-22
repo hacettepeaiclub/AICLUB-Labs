@@ -451,3 +451,30 @@ yukarıdaki biçimde yeniden yazılacak.
 - **Tercih:** A*, Manhattan uzaklığı, kalan maliyet tahmini.
 - **Kaynak:** Sakarya Üniversitesi,
   [Manhattan uzaklığı, bölüm 4.2.2.3](https://acikerisim.sakarya.edu.tr/bitstream/20.500.12619/80982/1/T04049.pdf).
+
+## cryptographic-hashing
+
+### Kriptografik hash, özet ve çakışma
+
+- **Tanım:** SHA-256 bir bayt dizisinden 256 bitlik özet hesaplar. Bu lab
+  özeti 64 onaltılık basamakla gösterir. Farklı girdilerin bütün özetleri
+  eşleşirse çakışma olur. Ortak ön ek yalnızca baştan itibaren eşleşen
+  basamakları sayar.
+- **Tercih:** kriptografik hash fonksiyonu, özet, çakışma, ortak ön ek.
+  Hash, fonksiyonun adında, özet ise çıktıyı adlandırmak için kullanılır.
+  Eşit özet uzunluğu çakışma ölçütü değildir.
+- **Kaynak:** Atatürk Üniversitesi,
+  [Lojistik Bilgi Sistemleri, 11. hafta ders notu](https://adm.atauni.edu.tr/pluginfile.php/4606/mod_resource/content/1/Lojistik%20Bilgi%20Sistemleri%2011.%20Hafta%20Ders%20Notu.pdf).
+  Atılım Üniversitesi [Kriptografik Algoritmalar ders planı, 5. hafta](https://www.atilim.edu.tr/tr/ects/site-courses/222/10621/detail)
+  “kriptografik özet fonksiyonları” ve “çakışma direnci” terimlerini kullanır.
+
+### Çığ etkisi
+
+- **Tanım:** Girdideki küçük bir değişiklik, özetin birçok bitini
+  değiştirebilir. Tek bir karşılaştırmada tam 128 bit değişmesi gerekmez.
+  Ekrandaki sayaç iki gerçek özette farklı olan bitleri sayar.
+- **Tercih:** çığ etkisi, değişen bit sayısı. Bir onaltılık basamak
+  dört biti gösterdiği için değişen basamak ve bit sayıları ayrıdır.
+- **Kaynak:** Bu lab'da gösterilen davranış, Web Crypto ile hesaplanan
+  özetler üzerinden ölçülür. [NIST FIPS 180-4](https://csrc.nist.gov/pubs/fips/180-4/upd1/final)
+  SHA-256 hesabını tanımlar.
