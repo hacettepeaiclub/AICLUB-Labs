@@ -317,7 +317,8 @@ Vikipedi "Temel bileşenler analizi" ve "Özdeğer ve özvektör" sayfaları (40
 ### Kayma matrisi (shear)
 
 - **Tanım:** Bir ekseni sabit tutup diğer koordinatları ona orantılı kaydıran
-  dönüşümün matrisi (engine.ts `shear`).
+  dönüşümün matrisi. Lab'daki "Kayma" hazır ayarı x yönündeki kaymayı z
+  boyunca 1,5 kat ölçeklemeyle birleştirir (engine.ts `shear`).
 - **Tercih:** kayma (düğmede "Kayma"; metinde "kayma matrisi")
 - **Bağlama bağlı alternatifler:** kesme dönüşümü. İkisi için de okunabilen
   bir Türkçe ders kaynağı bulunamadı; açık karar.

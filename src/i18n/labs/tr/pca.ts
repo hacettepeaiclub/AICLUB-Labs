@@ -35,7 +35,7 @@ const copy: typeof en = {
     found: "Bulunan yönler",
     foundCount: (found: number, total: number) => `${total} yönün ${found} tanesi`,
     announceFound: (stretch: string) =>
-      `Bir tane buldun: bu yönde Av, v ile aynı doğru üzerinde; matris v'yi yalnızca ${stretch} ile çarpmış. Bu yön bir özvektördür, ${stretch} de onun özdeğeridir.`,
+      `Bir tane buldun: v artık bir özvektörün doğrultusuna çok yakın. O özvektör boyunca Av, v ile aynı doğru üzerindedir ve matris vektörü yalnızca ${stretch} ile çarpar; ${stretch} bu özvektörün özdeğeridir.`,
     allFound: "Bu matrisin doğrultusunu değiştirmediği bütün yönleri buldun.",
     rotateNote:
       "Döndürme matrisi, ekseni dışındaki her yönü çevirir. Ekseni yerinde bırakır ve 1 ile çarpar, yani uzunluğunu da değiştirmez. Diğer iki özdeğeri karmaşık sayıdır; uzayda bunları gösteren bir yön yoktur.",
@@ -120,7 +120,8 @@ const copy: typeof en = {
         plane:
           "Mavi ok v, turuncu ok Av: matrisin v'yi dönüştürdüğü ok. Görüntüyü döndürmek için sürükle.",
         direction: "v'nin yönünü değiştir. Çoğu yönde Av, v'den sapar.",
-        turned: "Doğrultular arasındaki açıyı 0°'ye yaklaştır: o yön bir özvektördür.",
+        turned:
+          "Doğrultular arasındaki açıyı 0°'ye yaklaştır: açı 0°'ye yakınken lab, yakındaki özvektörü işaretler. Tam eşitlik, Au = λu olduğunda sağlanır.",
       },
       shadow: {
         cloud: "Her nokta bir kişi; her noktanın doğru üzerinde bir izdüşümü var.",
