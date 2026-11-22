@@ -516,3 +516,53 @@ Algılayıcılar*), DLT.
 ### Epok
 
 - **Tercih:** epok (sözlük tablosu). D2L-TR "dönem" der; projede kullanma.
+
+---
+
+## convolution
+
+Kaynaklar: DLT ve D2L-TR sözlükleri (bkz. ilk tablo); D2L-TR-BÖLÜM (bkz.
+## backpropagation). D2L-TR'nin evrişim bölümü bu çalışmada okunmadı.
+
+### Evrişim, çekirdek
+
+- **Tanım:** Küçük bir ağırlık penceresinin (çekirdek) girdi üzerinde
+  kaydırılması; her çıktı, pencerenin altındaki piksellerin ağırlıklı toplamıdır.
+- **Tercih:** evrişim; çekirdek. "Filtre" ve "kernel" kullanma: aynı kavrama
+  üç ad olur. Hazır çekirdekler "Bulanıklaştır", "Keskinleştir", "Dikey
+  kenarlar", "Dış hat" gibi işlevleriyle adlandırılır.
+- **Bağlama bağlı alternatifler:** süzgeç (DLT "filter"). Projede kullanma.
+- **Kaynak:** DLT ("convolution: evrişim", "kernel: çekirdek"), D2L-TR ("kernel: çekirdek"); sözlük tablosu.
+
+### Çapraz korelasyon
+
+- **Tanım:** Çekirdeği ters çevirmeden uygulanan kayan toplam; evrişim
+  katmanlarının gerçekte yaptığı işlem. Matematikteki evrişim çekirdeği çevirir.
+- **Tercih:** çapraz korelasyon
+- **Kaynak:** Proje kararı (sinyal işleme derslerindeki yaygın ad; incelenmiş
+  bir kaynak yok). Açık karar.
+
+### Dolgu, adım kaydırma (stride)
+
+- **Tanım:** Dolgu, girdinin çevresine eklenen sıfır hücreler (p). Adım
+  kaydırma, pencerenin her seferinde kaç hücre sıçradığı (s).
+- **Tercih:** dolgu; adım kaydırma, ilk geçtiği yerde "adım kaydırma (stride)".
+  Kaydırıcı etiketi "Adım kaydırma s".
+- **Bağlama bağlı alternatifler:** dolgulama (DLT); uzun adım (D2L-TR).
+  Yalın "adım" kullanma: aynı lab'daki öğrenme bölümünde "adım" bir gradient
+  descent adımıdır.
+- **Kaynak:** DLT ("stride: adım kaydırma", "padding: dolgulama"), D2L-TR ("padding: dolgu", "stride: uzun adım")
+
+### Alıcı alan
+
+- **Tanım:** Üstteki bir hücrenin değerini etkileyen girdi hücrelerinin bölgesi.
+- **Tercih:** alıcı alan
+- **Bağlama bağlı alternatifler:** alım alanı (D2L-TR). Fizyolojideki
+  (Hubel ve Wiesel) "receptive field" karşılığı olarak "alıcı alan"
+  tercih edildi; açık karar.
+- **Kaynak:** D2L-TR ("receptive field: alım alanı")
+
+### Kenar dedektörü
+
+- **Tercih:** kenar dedektörü ("kenar bulucu", "kenar filtresi" kullanma).
+- **Kaynak:** Proje kararı.

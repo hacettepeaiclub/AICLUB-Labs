@@ -292,9 +292,9 @@ export const tr: Translation = {
     convolution: {
       title: "Nine Weights",
       term: "Evrişim",
-      figure: "bir resmin üzerinde 3×3'lük bir pencere ve çıktıda yazdığı hücre.",
+      figure: "bir resmin üzerinde 3×3'lük bir pencere ve çıktıda hesapladığı hücre.",
       description:
-        "Bir filtreyi görüntü üzerinde kaydır. Çarpımların her çıktı hücresini nasıl oluşturduğunu incele.",
+        "Dokuz ağırlıklık bir çekirdeği resim üzerinde kaydır ve her çıktı hücresinin dokuz çarpımın toplamı olarak nasıl hesaplandığına bak.",
     },
     "floating-point": {
       title: "0.1 + 0.2",
