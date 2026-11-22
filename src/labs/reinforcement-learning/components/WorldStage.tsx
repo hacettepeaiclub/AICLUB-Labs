@@ -3,7 +3,7 @@ import { Figure, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
 import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
-import { formatNumber } from "@/lib/format";
+import { useNumberFormat } from "./useNumberFormat";
 import { ACTIONS, GOAL, START, nextState, reward, type Action } from "../world";
 import { rewardParts, type RewardPart } from "../view";
 import { RoomGrid } from "./RoomGrid";
@@ -45,6 +45,7 @@ export interface WorldStageProps {
  */
 export function WorldStage({ tileReward }: WorldStageProps) {
   const copy = useLabCopy("reinforcement-learning");
+  const { formatNumber } = useNumberFormat();
   const world = copy.world;
 
   const [at, setAt] = useState(START);

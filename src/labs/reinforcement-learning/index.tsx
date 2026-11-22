@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { LabRecap, LabSection, LabSlider, LabSources } from "@/components/lab";
 import { useLabCopy } from "@/i18n/labs";
-import { formatNumber } from "@/lib/format";
+import { useNumberFormat } from "./components/useNumberFormat";
 import { ALPHA, EPSILON_MIN, EPSILON_START, GAMMA } from "./engine";
 import { DEFAULT_SLIDER, SLIDER_MAX, SLIDER_MIN, sliderToReward } from "./view";
 import { WATCHABLE_EPISODES, useTrainingRun, type RunSettings } from "./useTrainingRun";
@@ -40,6 +40,7 @@ import { WorldStage } from "./components/WorldStage";
  */
 export default function RewardPlayground() {
   const copy = useLabCopy("reinforcement-learning");
+  const { formatNumber } = useNumberFormat();
 
   const [slider, setSlider] = useState(DEFAULT_SLIDER);
   const tileReward = sliderToReward(slider);

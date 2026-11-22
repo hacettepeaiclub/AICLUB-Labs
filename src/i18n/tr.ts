@@ -262,9 +262,9 @@ export const tr: Translation = {
     "reinforcement-learning": {
       title: "Exactly What You Asked",
       term: "Pekiştirmeli öğrenme",
-      figure: "karelerden bir oda, robotun başladığı yer ve ulaşınca ödül aldığı kare.",
+      figure: "başlangıç noktası, ödül veren kare ve çıkış kapısı olan bir oda.",
       description:
-        "Ödülleri değiştirip ajanı yeniden eğit. Öğrendiği davranışın hedefinle uyuşup uyuşmadığını incele.",
+        "İşaretli karenin ödülünü değiştir ve ajanı yeniden eğit. Rotanın kapıya mı gittiğine, kareye mi döndüğüne bak.",
     },
     attention: {
       title: "Where the Model Looks",

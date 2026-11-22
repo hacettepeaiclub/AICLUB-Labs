@@ -312,3 +312,20 @@ yukarıdaki biçimde yeniden yazılacak.
   η için öğrenme oranı da kullanılır. Deneydeki kontrolde adım boyu yazılır.
 - **Kaynak:** Afyon Kocatepe Üniversitesi,
   [Görüntü Sınıflandırma İçin Derin Öğrenme, s. 18–19](https://acikerisim.aku.edu.tr/server/api/core/bitstreams/e975eb1d-13e9-45f8-a16c-23fb196f63e2/content).
+
+## reinforcement-learning
+
+### Pekiştirmeli öğrenme, ödül ve Q-değeri
+
+- **Tanım:** Ajan bir hamle seçer, yeni duruma geçer ve o hamlenin ödülünü
+  alır. Q tablosu, her durum ve hamle çifti için indirgenmiş getiriye
+  ilişkin bir tahmin tutar. Bu deneyde politika, her karede en yüksek
+  Q-değerine sahip hamleyi seçer.
+- **Tercih:** pekiştirmeli öğrenme, hamle, ödül, Q-değeri ve politika.
+  Hareketin gerçekleşmediği duvar denemeleri de birer hamledir. Ödül tek
+  hamlede alınır, getiri ise birden çok ödülü hesaba katar.
+- **Kaynak:** İstanbul Teknik Üniversitesi,
+  [Pekiştirmeli Öğrenme ders notu, s. 9–10](https://web.itu.edu.tr/ayhant/dersler/ysa/dn/ysa_ders12.pdf),
+  politika için “yaklaşım”, hamle için “davranış” kullanır.
+  [Çukurova Üniversitesi, Pekiştirmeli Öğrenme ders planı](https://eobs.cu.edu.tr/Ders/GenelBilgi/694126)
+  “politika” ve “Q-learning” terimlerini kullanır.

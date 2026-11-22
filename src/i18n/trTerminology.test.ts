@@ -43,7 +43,12 @@ describe("approved Turkish terminology", () => {
 describe("register in labs already moved to 'sen'", () => {
   // Labs rewritten under docs/language/tr-style.md. Add a slug here when its
   // copy has been moved over; the rest of the site still mixes registers.
-  const migrated = ["hypothesis-testing", "probability", "gradient-descent"] as const;
+  const migrated = [
+    "hypothesis-testing",
+    "probability",
+    "gradient-descent",
+    "reinforcement-learning",
+  ] as const;
 
   // Second-person plural endings: "-ınız/-iniz" (sizin, …siniz). Plural
   // imperatives ("-in") are left to review: the same ending is a genitive.

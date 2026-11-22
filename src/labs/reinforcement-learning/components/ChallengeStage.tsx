@@ -4,7 +4,7 @@ import { Badge, Segmented } from "@/components/ui";
 import { useT } from "@/i18n";
 import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
-import { formatNumber } from "@/lib/format";
+import { useNumberFormat } from "./useNumberFormat";
 import { greedyPolicy } from "../engine";
 import {
   CHALLENGES,
@@ -35,6 +35,7 @@ const TRACK: Record<string, number> = { tileReward: 10, epsilon: 100 };
 export function ChallengeStage() {
   const t = useT();
   const challenge = useLabCopy("reinforcement-learning").challenge;
+  const { formatNumber } = useNumberFormat();
 
   const [id, setId] = useState<ChallengeId>("cross");
   const [beaten, setBeaten] = useState<Partial<Record<ChallengeId, boolean>>>({});
