@@ -356,9 +356,9 @@ export const tr: Translation = {
     sorting: {
       title: "The Cost of Order",
       term: "Sıralama algoritmaları",
-      figure: "kısadan uzuna sıralanmış çubuklar; son yerleşenler vurgulu.",
+      figure: "değerleri gösteren çubuklar ve sıralı bölümü belirten vurgu.",
       description:
-        "Aynı diziyi iki algoritmayla sırala. Karşılaştırma ve yazma sayılarını ayrı ayrı incele.",
+        "Aynı diziyi seçmeli ve eklemeli sıralamayla sırala. Karşılaştırma ve taşıma sayaçlarını incele.",
     },
     tokenization: {
       title: "Cheap Words",

@@ -408,3 +408,21 @@ yukarıdaki biçimde yeniden yazılacak.
 - **Kaynak:** İstanbul Medipol Üniversitesi,
   [Algoritma Analizi, 13. hafta](https://sens.medipol.edu.tr/tr/subjects/IND3233890).
   Ders planı amortize analiz ile dinamik tabloları birlikte işler.
+
+## sorting
+
+### Seçmeli sıralama, eklemeli sıralama ve terslik
+
+- **Tanım:** Seçmeli sıralama her turda sıralanmamış bölümün en küçük
+  elemanını seçer. Eklemeli sıralama sıradaki elemanı sıralı bölümdeki
+  yerine ekler. Başta daha büyük olan eleman daha küçük olandan önceyse
+  bu ikili bir tersliktir. Eşit değerler terslik oluşturmaz.
+- **Tercih:** seçmeli sıralama, eklemeli sıralama, terslik. Bu deneyde bir
+  yer değiştirme bir taşıma sayılır. Eklemeli sıralamada sağa kaydırma
+  bir taşıma, eldeki değer başka yere yazılırsa son yazma da bir taşıma
+  sayılır. Sayaç doğrudan bellek yazma sayısını ölçmez.
+- **Kaynak:** İstanbul Okan Üniversitesi,
+  [Veri Yapıları ve Algoritmalar, 11. hafta](https://ois.okan.edu.tr/bilgipaketi/eobsakts/ders/ders_id/1917/program_kodu/0202002/s/3/st/M/ln/tr/print/1/pdf/1).
+  Çukurova Üniversitesi [Veri Yapıları ders içeriği](https://eobs.cu.edu.tr/Ders/GenelBilgi/624729)
+  “araya eklemeli sıralama” der. Sayaç ve terslik tanımları deneyin
+  sıralama motorunda belirtilir.

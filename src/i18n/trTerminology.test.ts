@@ -50,6 +50,7 @@ describe("register in labs already moved to 'sen'", () => {
     "reinforcement-learning",
     "floating-point",
     "hash-tables",
+    "sorting",
   ] as const;
 
   // Second-person plural endings: "-ınız/-iniz" (sizin, …siniz). Plural
