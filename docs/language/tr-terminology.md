@@ -647,3 +647,27 @@ Aşağıda D2L-TR-DİKKAT diye anılır.
 - **Tanım:** Tokenizer'ın metni ayırdığı yer (lab'daki "cut").
 - **Tercih:** kesim ("kesik", "sınır" kullanma).
 - **Kaynak:** Proje kararı.
+
+---
+
+## word-embeddings
+
+### Embedding, word embedding
+
+- **Tercih:** embedding / word embedding (sözlük tablosu; özgün adıyla).
+  "embedding uzayı". Kelime vektörü de kullanılabilir.
+- **Bağlama bağlı alternatifler:** gömme, kelime gömme (DLT). Projede kullanma; açık karar.
+- **Kaynak:** sözlük tablosu; DLT ("embedding: gömme")
+
+### Kosinüs benzerliği
+
+- **Tanım:** İki vektör arasındaki açının kosinüsü; lab'da vektörler birim
+  uzunlukta olduğu için nokta çarpımına eşittir.
+- **Tercih:** kosinüs benzerliği; tablo ve göstergelerde kısaca "benzerlik".
+- **Kaynak:** Proje kararı.
+
+### İzdüşüm, açıklanan varyans, uzaklık uyumu
+
+- **Tercih:** izdüşüm (bkz. ## pca; "projeksiyon" kullanma); açıklanan varyans;
+  uzaklık uyumu (Spearman sıra korelasyonu; "mesafe" yerine "uzaklık").
+- **Kaynak:** bkz. ## pca.

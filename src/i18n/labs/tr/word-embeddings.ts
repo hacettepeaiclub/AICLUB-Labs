@@ -1,42 +1,48 @@
 import type en from "../en/word-embeddings";
 
-/** Türkçe metin: word-embeddings. Şekli `en/word-embeddings.ts` ile birebir aynı olmak zorundadır. */
+/**
+ * Türkçe metin: word-embeddings. Şekli `en/word-embeddings.ts` ile birebir aynı olmak zorundadır.
+ *
+ * Terimler docs/language/tr-terminology.md (## word-embeddings), anlatım kuralları
+ * docs/language/tr-style.md dosyasındadır. Vektörler İngilizce kelimelere aittir;
+ * kelimeler özgün hâliyle anılır.
+ */
 
 const copy: typeof en = {
   sources: {
     title: "Kaynaklar",
     gloveVectors:
-      "Bu laboratuvarın gerçekten kullandığı vektörleri destekler: kendi gömme yöntemini uygulamaz, önceden eğitilmiş GloVe vektörlerini okur.",
+      "Bu lab'ın gerçekten kullandığı vektörlerin kaynağıdır: lab kendi embedding yöntemini uygulamaz, önceden eğitilmiş GloVe vektörlerini okur.",
   },
 
   predict: {
     question: (word: string) => `${word} kelimesine en yakın hangisi?`,
-    hint: "Üçü de ilgili. hangisini beklerdin?",
+    hint: "Üçü de ilgili. Hangisini beklediğini seç.",
     loading: "Kelime vektörleri yükleniyor…",
     chose: (word: string, rank: number, total: number, score: string) =>
-      `${word} dedin: ${total} kelime içinde ${rank}. sırada, ${score} benzerlikle.`,
-    nearest: (word: string, score: string) => `En yakını ${word}, ${score} benzerlikle.`,
+      `${word} seçtin: ${total} kelime içinde en yakın ${rank}. kelime, kosinüs benzerliği ${score}.`,
+    nearest: (word: string, score: string) => `En yakını ${word}, kosinüs benzerliği ${score}.`,
     because:
-      "Bu vektörler kelimelerin ne anlama geldiğinden değil, nasıl kullanıldığından öğrenildi. Haber ve ansiklopedi metinlerinde apple, meyvelerden çok software ile yan yana geçiyor.",
+      "Bu vektörler kelimelerin ne anlama geldiğinden değil, nasıl kullanıldığından öğrenildi. Haber ve ansiklopedi metinlerinde apple, meyvelerle olduğundan çok daha sık software ile birlikte geçer.",
   },
 
   explore: {
-    title: "Evreni keşfet",
+    title: "Kelime haritası",
     neighboursTitle: "En yakın kelimeler",
     announce: (word: string, gloss: string) => `${word} seçildi, ${gloss}.`,
     selectedLabel: "Seçili",
-    nearestLabel: "En yakın, kosinüs",
+    nearestLabel: "En yakın (kosinüs benzerliği)",
   },
 
   map: {
     mapLabel: "Kelime haritası. Ok tuşları en yakın kelimeler arasında gezinir, Enter seçer.",
     pointLabel: (word: string, gloss: string) => `${word}, ${gloss}`,
     neighbourLabel: (word: string, gloss: string, rank: number, score: string) =>
-      `${word}, ${gloss}. ${rank}. en yakın, benzerlik ${score}`,
+      `${word}, ${gloss}. En yakın ${rank}. kelime, benzerlik ${score}`,
     selectedLabel: (word: string, gloss: string) => `${word}, ${gloss}. Seçili`,
     pending: "Kelimelerin nereye düştüğü hesaplanıyor…",
     linksNote:
-      "Çizgiler seçili kelimeyi listelenen sekiz komşusuna bağlar. Bu çizgiler yalnız görünümü açıklar; vektör verisinin parçası değildir.",
+      "Çizgiler seçili kelimeyi yanda listelenen sekiz kelimeye bağlar. Yalnızca okumayı kolaylaştırır, modelin parçası değildir: embedding uzayında bağlantı yoktur, yalnızca uzaklıklar vardır.",
     pinnedLabel: (word: string, gloss: string) =>
       `${word} (${gloss}), karşılaştırma için tutuluyor`,
     compareLabel: (a: string, b: string, score: string) =>
@@ -57,18 +63,18 @@ const copy: typeof en = {
     wordHeader: "Kelime",
     scoreHeader: "Benzerlik",
     rowLabel: (word: string, gloss: string, rank: number, score: string) =>
-      `${word}, ${gloss}. ${rank}. en yakın, benzerlik ${score}. Haritayı buraya taşımak için seç.`,
+      `${word}, ${gloss}. En yakın ${rank}. kelime, benzerlik ${score}. Haritayı bu kelimeye ortalamak için seç.`,
   },
 
   projection: {
     kicker: "Haritanın göstermedikleri",
     title: "Uzayın kendisine bakmıyorsun",
-    lede: "Harita 300 boyutlu kelime vektörlerini iki boyutta gösterir. Bu dönüşüm bazı ilişkileri kaybeder. Ekrandaki uzaklıkları, asıl vektörlerin benzerlikleriyle karşılaştır.",
-    modeLabel: "Bana göster",
+    lede: "Yukarıdaki kelimeler gerçek. Konumları ise 300 sayının 2 sayıya indirilmesiyle bulundu ve böyle bir indirgeme bir şey kaybetmek zorunda. Neyin kaybolduğunu tam olarak burada görürsün.",
+    modeLabel: "Göster",
     modeNone: "Kendi seçimim",
-    modeHidden: "Yakın, uzağa çizilmiş",
-    modeFalse: "Uzak, yakına çizilmiş",
-    idle: "Yukarıdaki ikisinden birini seç; o kelimelerin haritadaki yeri belirsin.",
+    modeHidden: "Yakın ama uzak çizilmiş",
+    modeFalse: "Uzak ama yakın çizilmiş",
+    idle: "Yukarıdaki iki seçenekten birini seç ve o kelimelerin haritada nerede durduğuna bak.",
     // Türkçe sıra sayıları düzenli: sayının ardından nokta yeter.
     ordinal: (n: number) => `${n}.`,
     hiddenBody: (
@@ -79,7 +85,7 @@ const copy: typeof en = {
       score: string,
       percent: string,
     ) =>
-      `${a} ile ${b}, ${total} çift içinde ${rank} en yakın çift, ${score} benzerlikle. Projeksiyon onları haritanın ${percent} kadarı uzağına koydu: resme bakarak ilişkili olduklarını asla tahmin edemezdin.`,
+      `${a} ile ${b}, ${total} çift içinde en yakın ${rank} çift; kosinüs benzerliği ${score}. İzdüşüm onları birbirinden haritanın genişliğinin ${percent} kadarı uzağa koydu: resme bakarak ilişkili olduklarını tahmin edemezdin.`,
     falseBody: (
       a: string,
       b: string,
@@ -88,14 +94,14 @@ const copy: typeof en = {
       total: number,
       score: string,
     ) =>
-      `${a} ile ${b} ekranda ${screenRank} en yakın, neredeyse bitişik duruyor. Gerçek uzayda ise ${total} içinde ${trueRank} sıradalar, ${score} benzerlikle. Bu yakınlığı resim uydurdu.`,
+      `${a} ile ${b} ekranda en yakın ${screenRank} çift, neredeyse bitişik. Gerçek uzayda ise ${total} çift içinde ${trueRank} sıradalar; kosinüs benzerliği ${score}. Bu yakınlık yalnızca resimde var.`,
     varianceLabel: "Açıklanan varyans",
     varianceHint: (first: string, second: string) => `PC1 ${first} + PC2 ${second}`,
     varianceBody: (percent: string, remaining: number) =>
-      `Bu iki eksen, bu veri kümesindeki varyansın ${percent} kadarını açıklıyor. Geri kalan değişim hiçbir yere gitmedi: düz bir ekranda yeri olmayan diğer ${remaining} yönde duruyor.`,
-    correlationLabel: "Mesafe uyumu",
-    correlationHint: "−1.00 olsaydı harita hiçbir şey kaybetmemiş olurdu",
-    pending: "Projeksiyon hesaplanıyor…",
+      `Bu iki eksen (iki temel bileşen), bu veri kümesindeki varyansın ${percent} kadarını açıklıyor. Geri kalan varyans kaybolmadı: düz bir ekranda yeri olmayan diğer ${remaining} yön boyunca duruyor.`,
+    correlationLabel: "Uzaklık uyumu (Spearman)",
+    correlationHint: "−1,00: ekran uzaklıklarının sırası benzerlik sırasıyla tam uyuşurdu",
+    pending: "İzdüşüm hesaplanıyor…",
   },
 
   data: {
@@ -104,7 +110,7 @@ const copy: typeof en = {
 
   recap: {
     lessons: [
-      "Gömme, bir öğeyi vektöre çevirir; böylece öğeler arasındaki ilişkiler mesafeye dönüşür.",
+      "Bir embedding, bir öğeyi vektöre çevirir; böylece öğeler arasındaki ilişkiler uzaklığa dönüşür.",
       "Bu ilişkiler kelimelerin anlamından değil, birlikte nasıl kullanıldıklarından gelir.",
       "300 boyutlu bir uzayın 2 boyutlu haritası bir gölgedir: gösterdiğinin bir kısmı orada yoktur, orada olanın bir kısmı da gösterilmez.",
     ],
@@ -112,28 +118,28 @@ const copy: typeof en = {
 
   honesty: {
     source:
-      "Vektörler, Wikipedia 2014 ve Gigaword 5 üzerinde eğitilen Stanford NLP GloVe 6B 300d verisinden alınır. Her vektör birim uzunluğa normalize edilir. Bu labda model eğitilmez veya ince ayar yapılmaz.",
+      "Vektörler GloVe 6B 300d: Stanford NLP tarafından Wikipedia 2014 ve Gigaword 5 üzerinde önceden eğitildi. Bu lab her kelimeyi yayımlanmış tabloda bulur ve birim uzunluğa normalleştirir; burada hiçbir şey eğitilmez, ince ayar yapılmaz ya da üretilmez.",
     turkish:
-      "Vektörler İngilizce kelimelere aittir. Türkçe etiketler okumayı kolaylaştırmak için eklenmiştir; Bu bir Türkçe gömme uzayı değildir.",
+      "Embedding uzayı İngilizcedir. Burada görünen Türkçe kelimeler okumayı kolaylaştırmak için eklediğimiz etiketlerdir: vektörleri yoktur ve bu bir Türkçe embedding uzayı değildir.",
   },
   compare: {
-    title: "İki kelimeyi karşılaştırın",
+    title: "İki kelimeyi karşılaştır",
     hold: "Bu kelimeyi tut",
-    holding: (word: string) => `Tutulan: ${word}`,
+    holding: (word: string) => `Tutulan kelime: ${word}`,
     release: "Bırak",
-    idle: "Bir kelimeyi tut, sonra haritadan bir başkasını seç. Aralarındaki kosinüs bir yerden bakılmıyor, ölçülüyor.",
+    idle: "Bir kelimeyi tut, sonra haritadan bir başkasını seç. Aralarındaki kosinüs benzerliği bir tablodan alınmaz, o anda hesaplanır.",
     samePoint: "Tuttuğun kelime bu. Başka birini seç.",
     scoreLabel: "Benzerlik",
     rankLabel: "Sıra",
-    rankValue: (rank: number, total: number) => `${total} içinde ${rank}.`,
+    rankValue: (rank: number, total: number) => `${total} kelimede ${rank}.`,
     sentence: (a: string, b: string, score: string, rank: number, total: number) =>
-      `${a} ile ${b} arasındaki kosinüs ${score}. Diğer ${total} kelime arasında ${b}, ${a} kelimesine en yakın ${rank}. kelime.`,
+      `${a} ile ${b} arasındaki kosinüs benzerliği ${score}. Diğer ${total} kelime içinde ${b}, ${a} kelimesine en yakın ${rank}. kelime.`,
   },
 
   // The guided tours, one per experiment (components/lab/guide/tours.ts).
   tour: {
     intro:
-      "En yakın kelimeyi tahmin et. Haritadaki konumlarla 300 boyuttaki kosinüs benzerliklerini karşılaştır.",
+      "Her kelimenin bir anlam haritasında bir yeri var. Hangi kelimelerin birbirine yakın durduğunu tahmin et, sonra haritada dolaş.",
     stages: {
       intro: {
         guess: "Bir kelime ve üç aday. Haritada hangisi ona en yakın?",
@@ -141,7 +147,7 @@ const copy: typeof en = {
       },
       map: {
         map: "Her kelimenin bir yeri var. Haritanın yanındaki liste, seçili kelimenin en yakın komşuları.",
-        search: "Seçmek için bir kelime arayın. Tur dog yazdı.",
+        search: "Seçmek için bir kelime ara. Tur dog yazdı.",
         enter: "Enter onu seçer ve harita oraya gider.",
         compare: "Buradan iki kelimeyi karşılaştırıp gerçekte ne kadar uzak olduklarına bak.",
       },
@@ -157,7 +163,7 @@ const copy: typeof en = {
     },
     notes: {
       "sq-word2vec": "word2vec'in kelimeleri nasıl sayılara çevirdiği.",
-      "cp-vectoring": "Kelime vektörleri ve ünlü kral − erkek + kadın.",
+      "cp-vectoring": "Kelime vektörleri ve ünlü king − man + woman örneği.",
       "alammar-word2vec": "Çizimlerle word2vec.",
       "cs224n-l1":
         "Stanford'un ilk dersi: anlam, kelimenin birlikte kullanıldığı kelimelerden gelir.",

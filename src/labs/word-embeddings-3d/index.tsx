@@ -1,7 +1,8 @@
 import { useMemo, useState } from "react";
 import { Figure, FigureRow, LabRecap, LabSources } from "@/components/lab";
 import { useLabCopy } from "@/i18n/labs";
-import { formatPercent } from "@/lib/format";
+import { useLanguage } from "@/i18n";
+import { useFormat } from "@/lib/useFormat";
 import { nearestNeighbours } from "../word-embeddings/engine";
 import { VOCABULARY } from "../word-embeddings/vocabulary";
 import { NEIGHBOUR_COUNT, PREDICTION } from "../word-embeddings/view";
@@ -24,6 +25,8 @@ import { NeighbourList } from "../word-embeddings/components/NeighbourList";
  * direction visible — not a different fit that happens to look nicer.
  */
 export default function EmbeddingUniverse3D() {
+  const { formatPercent } = useFormat();
+  const { language } = useLanguage();
   const copy = useLabCopy("word-embeddings-3d");
   const { space, set, status, error, dimensions } = useSpace();
 
@@ -36,7 +39,8 @@ export default function EmbeddingUniverse3D() {
   }, [set, selected]);
 
   const current = VOCABULARY[selected];
-  const score = (value: number) => value.toFixed(2);
+  const score = (value: number) =>
+    language === "tr" ? value.toFixed(2).replace(".", ",") : value.toFixed(2);
 
   if (status === "error") {
     return (

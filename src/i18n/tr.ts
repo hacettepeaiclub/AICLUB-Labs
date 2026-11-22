@@ -248,9 +248,9 @@ export const tr: Translation = {
     "word-embeddings": {
       title: "The Map of Meaning",
       term: "Word embedding",
-      figure: "bir uzayda nokta olarak kelimeler ve bunlardan birine en yakın dördü.",
+      figure: "bir uzayda nokta olarak kelimeler ve bunlardan birine en yakın dört kelime.",
       description:
-        "Kelime vektörlerini haritada incele. Ekrandaki uzaklıkla asıl vektör benzerliğini karşılaştır.",
+        "Kelimeleri bir haritada gez ve ekrandaki uzaklığı, 300 boyutlu vektörlerin kosinüs benzerliğiyle karşılaştır.",
     },
     "hypothesis-testing": {
       title: "The Price of Certainty",
