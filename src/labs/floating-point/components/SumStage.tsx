@@ -1,3 +1,4 @@
+import { useNumberFormat } from "./useNumberFormat";
 import { useMemo, useState } from "react";
 import { Figure, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
@@ -62,6 +63,7 @@ function position(v: Rational, lo: Rational, hi: Rational): number {
  */
 export function SumStage() {
   const lab = useLabCopy("floating-point");
+  const { decimal } = useNumberFormat();
   const t = lab.sum;
   const [guess, setGuess] = useState<Choice | null>(null);
   const [a, setA] = useState("0.1");
@@ -147,7 +149,7 @@ export function SumStage() {
           width="full"
           controls="stack"
           caption={t.caption}
-          announcement={view ? t.announce(shortest(view.S), equal) : ""}
+          announcement={view ? t.announce(decimal(shortest(view.S)), equal) : ""}
           viewport={
             <div className="space-y-4">
               <div className="grid gap-3 sm:grid-cols-2">
@@ -228,13 +230,20 @@ export function SumStage() {
           }
           figures={
             <>
-              <Figure label={t.figures.sum} value={view ? shortest(view.S) : "—"} tone="accent" />
+              <Figure
+                label={t.figures.sum}
+                value={view ? decimal(shortest(view.S)) : "—"}
+                tone="accent"
+              />
               <Figure
                 label={t.figures.equals}
                 value={view ? (equal ? t.figures.yes : t.figures.no) : "—"}
               />
               <Figure label={t.figures.apart} value={view ? t.figures.stepUnit(steps) : "—"} />
-              <Figure label={t.figures.stepSize} value={view?.step ? readable(view.step) : "—"} />
+              <Figure
+                label={t.figures.stepSize}
+                value={view?.step ? decimal(readable(view.step)) : "—"}
+              />
             </>
           }
         />

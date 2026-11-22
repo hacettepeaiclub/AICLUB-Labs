@@ -1,3 +1,4 @@
+import { useNumberFormat } from "./useNumberFormat";
 import { useMemo, useState } from "react";
 import { Stage } from "@/components/lab";
 import { Segmented } from "@/components/ui";
@@ -50,6 +51,7 @@ const ORDER = [FORMATS.float64, FORMATS.float32, FORMATS.float16, FORMATS.bfloat
  */
 export function FormatsStage() {
   const lab = useLabCopy("floating-point");
+  const { decimal } = useNumberFormat();
   const t = lab.formats;
   const [preset, setPreset] = useState<Preset>("gradient");
   const [text, setText] = useState(PRESETS.gradient);
@@ -76,7 +78,8 @@ export function FormatsStage() {
         tone = "lost";
       } else {
         const error = sub(value!, typed);
-        status = error.num === 0n ? t.status.exact : t.status.rounded(readable(absR(error)));
+        status =
+          error.num === 0n ? t.status.exact : t.status.rounded(decimal(readable(absR(error))));
         tone = error.num === 0n ? "exact" : "rounded";
       }
       const digits = typed && value && kind !== "zero" ? divergence(typed, value) : null;
@@ -180,9 +183,9 @@ export function FormatsStage() {
                       {format.id}
                     </th>
                     <td className="py-1.5 pr-4">{totalBits(format)}</td>
-                    <td className="py-1.5 pr-4">{readable(largestFinite(format))}</td>
-                    <td className="py-1.5 pr-4">{readable(smallestSubnormal(format))}</td>
-                    <td className="py-1.5">≈ {decimalDigits(format).toFixed(1)}</td>
+                    <td className="py-1.5 pr-4">{decimal(readable(largestFinite(format)))}</td>
+                    <td className="py-1.5 pr-4">{decimal(readable(smallestSubnormal(format)))}</td>
+                    <td className="py-1.5">≈ {decimal(decimalDigits(format).toFixed(1))}</td>
                   </tr>
                 ))}
               </tbody>

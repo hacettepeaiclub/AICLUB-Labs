@@ -342,3 +342,28 @@ yukarıdaki biçimde yeniden yazılacak.
   [5. Türkiye Robotbilim Konferansı Bildirileri, s. 86](https://tork2019.ozyegin.edu.tr/sites/default/files/tork2019_r1.pdf)
   γ için “indirim oranı” der ve keşif ile deneyimden yararlanmayı ayırır.
   Deneyde γ için katsayı denir çünkü sonraki değeri doğrudan çarpar.
+
+## floating-point
+
+### Kayan nokta, işaret, üs ve kesir
+
+- **Tanım:** Kayan noktalı gösterim, değeri işaret, üs ve kesir alanlarıyla
+  kodlar. Üs, normal değerlerde ikinin hangi kuvvetiyle ölçeklendiğini
+  belirler. Kesir alanı, anlamlı kısmın ikili ayırıcının sağındaki bitlerini
+  tutar. Alt normal sayılarda baştaki örtük bit sıfırdır.
+- **Tercih:** kayan nokta, işaret biti, üs alanı, kesir alanı. float32,
+  float64 ve bfloat16 biçim adlarıdır.
+- **Kaynak:** Hacettepe Üniversitesi, BİL220,
+  [Ara Sınav 1 çözümleri, soru 2](https://web.cs.hacettepe.edu.tr/~bil220/mt1sol.pdf).
+  Aynı işaret, üs ve kesir ayrımını 8 bitlik bir örnekte kullanır.
+
+### Temsil, yuvarlama ve komşu değer
+
+- **Tanım:** Girilen sayı biçimde tam olarak temsil edilemiyorsa en yakın
+  temsil edilebilir değer kullanılır. Tam ortada düşük anlamlı biti 0 olan
+  komşu seçilir. Sayı doğrusu, deneydeki küçük biçimin sonlu pozitif
+  değerlerini ve sıfırı gösterir.
+- **Tercih:** temsil edilebilir değer, yuvarlama, komşu değer. Sayı
+  basamakları yerelleştirilir. JavaScript çıktısı olduğu belirtilen
+  örnekler, konsolda göründükleri biçimde yazılır.
+- **Kaynak:** Deneydeki IEEE 754 yuvarlama uygulaması ve BİL220, soru 2.

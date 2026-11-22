@@ -298,8 +298,9 @@ export const tr: Translation = {
       title: "0.1 + 0.2",
       term: "Kayan nokta",
       figure:
-        "işaret, üs ve kesir bitleri olarak bir sayı; altında bu bitlerin tutabildiği değerlerin cetveli.",
-      description: "Bir sayı yaz. Bilgisayarın sakladığı değeri ve yuvarlama farkını incele.",
+        "bir sayının işaret, üs ve kesir bitleri ile temsil edilebilen değerlerin sayı doğrusu.",
+      description:
+        "Bir ondalık sayı yaz. Girdiyle saklanan değer arasındaki farkı incele ve float32 ile float16 gösterimlerini karşılaştır.",
     },
     "cache-locality": {
       title: "The Neighbours Come Free",

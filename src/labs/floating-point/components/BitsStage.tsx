@@ -1,3 +1,4 @@
+import { useNumberFormat } from "./useNumberFormat";
 import { useMemo, useRef, useState, type KeyboardEvent } from "react";
 import { Figure, Stage } from "@/components/lab";
 import { useDebouncedValue } from "@/hooks";
@@ -60,6 +61,7 @@ const EMPTY: Record<Field, string> = {
  */
 export function BitsStage() {
   const lab = useLabCopy("floating-point");
+  const { decimal } = useNumberFormat();
   const t = lab.bits;
   const [bits, setBits] = useState(() => toBits(round(rational(1n, 10n), F32)));
   const [named, setNamed] = useState(false);
@@ -120,7 +122,7 @@ export function BitsStage() {
       // rail would fold the 23 fraction bits onto three lines.
       controls="stack"
       caption={t.caption}
-      announcement={settled ? t.announce(printed, lab.kinds[kind]) : ""}
+      announcement={settled ? t.announce(decimal(printed), lab.kinds[kind]) : ""}
       viewport={
         <div className="space-y-5">
           <div
@@ -254,7 +256,7 @@ export function BitsStage() {
       }
       figures={
         <>
-          <Figure label={t.figures.value} value={printed} tone="accent" />
+          <Figure label={t.figures.value} value={decimal(printed)} tone="accent" />
           <Figure
             label={t.figures.power}
             value={kind === "normal" || kind === "subnormal" ? powerOfTwo(scale) : "—"}

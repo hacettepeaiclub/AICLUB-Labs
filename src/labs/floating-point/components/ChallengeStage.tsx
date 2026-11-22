@@ -1,3 +1,4 @@
+import { useNumberFormat } from "./useNumberFormat";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { Figure, Stage } from "@/components/lab";
 import { Button, Segmented } from "@/components/ui";
@@ -41,6 +42,7 @@ const HALF = rational(1n, 2n);
  */
 export function ChallengeStage() {
   const lab = useLabCopy("floating-point");
+  const { decimal } = useNumberFormat();
   const t = lab.challenge;
   const [progress, save] = useLocalControls("acl:floating-point:challenge", {
     solved: [] as string[],
@@ -143,13 +145,15 @@ export function ChallengeStage() {
               {plusOne && (
                 <Rows
                   rows={[
-                    [t.plusOne.stored, shortest(plusOne.X)],
-                    [t.plusOne.result, shortest(plusOne.R)],
+                    [t.plusOne.stored, decimal(shortest(plusOne.X))],
+                    [t.plusOne.result, decimal(shortest(plusOne.R))],
                   ]}
                 />
               )}
               {progress.smallest && (
-                <p className="text-caption text-fg-muted">{t.plusOne.best(progress.smallest)}</p>
+                <p className="text-caption text-fg-muted">
+                  {t.plusOne.best(decimal(progress.smallest))}
+                </p>
               )}
             </PuzzleBody>
           )}
@@ -182,8 +186,8 @@ export function ChallengeStage() {
               {assoc && (
                 <Rows
                   rows={[
-                    [t.associative.left, shortest(assoc.left)],
-                    [t.associative.right, shortest(assoc.right)],
+                    [t.associative.left, decimal(shortest(assoc.left))],
+                    [t.associative.right, decimal(shortest(assoc.right))],
                   ]}
                 />
               )}

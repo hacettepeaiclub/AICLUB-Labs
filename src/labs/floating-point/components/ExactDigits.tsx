@@ -1,3 +1,4 @@
+import { useNumberFormat } from "./useNumberFormat";
 import { useState } from "react";
 import { cn } from "@/lib/cn";
 
@@ -27,6 +28,7 @@ const TAIL = 24;
  * agrees with you, the tail is where it ends, and both are the point.
  */
 export function ExactDigits({ text, from, showAll, showLess, className }: ExactDigitsProps) {
+  const { decimal } = useNumberFormat();
   const [open, setOpen] = useState(false);
   const folded = !open && text.length > LIMIT;
   const head = folded ? text.slice(0, LIMIT - TAIL) : text;
@@ -46,11 +48,11 @@ export function ExactDigits({ text, from, showAll, showLess, className }: ExactD
     runs(part, offset).map((run, i) =>
       run.marked ? (
         <span key={i} className="text-data underline decoration-data/60 underline-offset-[3px]">
-          {run.s}
+          {decimal(run.s)}
         </span>
       ) : (
         <span key={i} className="text-fg">
-          {run.s}
+          {decimal(run.s)}
         </span>
       ),
     );
