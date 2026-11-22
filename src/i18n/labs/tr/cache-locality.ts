@@ -39,7 +39,7 @@ const copy: typeof en = {
       `İki döngü de aynı ${count} sayıyı topluyor ve aynı sonuca varıyor. Değişen yalnızca okuma sırası.`,
     announce: (row: string, column: string, ratio: string) =>
       `Satır sırası ${row} milisaniye, sütun sırası ${column} milisaniye sürdü. Sütun süresinin satır süresine oranı ${ratio}.`,
-    error: "Ölçüm bu tarayıcıda çalışamadı. Sayfayı yenilemeyi dene.",
+    error: "Ölçüm tamamlanamadı. Sayfayı yenileyip yeniden dene.",
     figures: {
       ratio: "Sütunlar",
       ratioHint: "sütun süresi ÷ satır süresi",
@@ -66,7 +66,8 @@ const copy: typeof en = {
     clear: "Önbelleği boşalt",
     lineChip: (line: number) => `blok ${line}`,
     emptySlot: "boş",
-    cacheLabel: (lines: number) => `Önbellek. En son kullanılan blok başta. Toplam ${lines} yer.`,
+    cacheLabel: (lines: number) =>
+      `Önbellek kapasitesi ${lines} blok. En son kullanılan blok başta.`,
     startHint: "Tabloyu sayı sayı okumak için Çalıştır'a bas ya da kaydırıcıyı sürükle.",
     ownHint: "Sayılara istediğin sırayla tıkla. Her tıklama bir okuma.",
     hitLine: (row: number, col: number, line: number) =>
@@ -113,7 +114,7 @@ const copy: typeof en = {
       `${length} sayı, toplam 32 MiB yer kaplar. Her erişim adımı için bütün sayılar birer kez okunur.`,
     announce: (first: string, dearest: number, dearestNs: string) =>
       `Adım 1 iken okuma başına ${first} nanosaniye. Bu bilgisayarda en pahalı adım ${dearest}, okuma başına ${dearestNs} nanosaniye.`,
-    error: "Ölçüm bu tarayıcıda çalışamadı. Sayfayı yenilemeyi dene.",
+    error: "Ölçüm tamamlanamadı. Sayfayı yenileyip yeniden dene.",
     tableCaption: "Her adımda okuma başına maliyet",
     strideHeader: "Adım",
     nsHeader: "Okuma başına nanosaniye, ölçülen",
@@ -151,14 +152,14 @@ const copy: typeof en = {
       `Her sıra aynı ${n} × ${n} × ${n} çarpma ve toplamayı yapar. Sütun boyunca erişimde adres bir satır kadar artar. Satır boyunca erişimde sıradaki komşu okunur.`,
     announceOne: (order: string, ms: string) => `${order} bu bilgisayarda ${ms} milisaniye sürdü.`,
     announceAgree:
-      "Altısı da ölçüldü. Bilgisayarın üç çifti modelle aynı sıralıyor: en içte j en hızlı, sonra k, sonra i.",
+      "Altı sıra da ölçüldü. En içteki değişkene göre ikili ortalamaların sırası modelle aynı. En kısa süre j, sonra k, sonra i.",
     announceDisagree:
-      "Altısı da ölçüldü. Bilgisayarın çiftleri modelle tam olarak aynı sıralamıyor.",
-    error: "Ölçüm bu tarayıcıda çalışamadı. Sayfayı yenilemeyi dene.",
+      "Altı sıra da ölçüldü. En içteki değişkene göre ikili ortalamaların sırası modelden farklı.",
+    error: "Ölçüm tamamlanamadı. Sayfayı yenileyip yeniden dene.",
     figures: {
       model: "Model",
       modelHint: "adım başına ıska, bu sıra",
-      fastest: "Ölçülen en kısa süre",
+      fastest: "En kısa süren sıra",
       fastestHint: (ms: string) => `bu bilgisayarda ${ms} ms`,
       fastestEmpty: "başlamak için bir sıra ölç",
       verdict: "Modele göre",
@@ -206,11 +207,11 @@ const copy: typeof en = {
           "Çubuklar okuma başına ölçülen süreyi gösterir. Altlarındaki değerler, modelin okuma başına ıskasıdır.",
         measure:
           "Bu bilgisayarda ölç düğmesine bas. Adım sayısı değiştikçe ölçülen süreyle modeldeki ıska oranını karşılaştır.",
-        show: "Buradan bir adım aralığı seç; önce hangi sayıları okuduğunu görürsün.",
+        show: "Bir erişim adımı seç. Şeritte işaretlenen sayılar, ilk geçişte okunanları gösterir.",
       },
       order: {
         orders:
-          "Matris çarpımının üç döngüsünü iç içe koymanın altı yolu ve en içteki döngünün her matriste nasıl yürüdüğü.",
+          "Döngü sırasını seç. En içteki döngünün A, B ve C matrislerinde hangi yönde ilerlediğine bak.",
         time: "Seçili sırayı bu bilgisayarda ölç ve modelle karşılaştır.",
         all: "Altısını da ölç düğmesine bas ve en kısa süreyi veren sıraya bak.",
       },
