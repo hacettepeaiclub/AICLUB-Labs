@@ -161,7 +161,7 @@ const copy: typeof en = {
     pictureLabel:
       "Gizli bloğu taşımak için bir parçaya dokun. Bu inceleme örneği eğitim ve puanlama verilerinden ayrıdır.",
     mapLabel:
-      "Dört boyutlu hedef vektörlerin PCA ile iki boyuta izdüşümü. Renkler yalnızca değerlendirme için kullanılan doku etiketleridir. Halkalar tahmini, çizgilerin uçları hedefi gösterir. İki boyutlu yakınlık yanıltabilir.",
+      "Dört boyutlu hedef vektörlerin PCA ile iki boyuta izdüşümü. Renkler yalnızca değerlendirme için kullanılan doku etiketleridir. Halkalar tahminleri, dolu noktalar hedefleri gösterir; kesikli çizgiler her tahmini kendi hedefine bağlar. İki boyutlu yakınlık yanıltabilir.",
     legendGuess: "Tahmin",
     legendGoal: "Hedef",
     lossLabel: "Eğitim boyunca kayıp",
@@ -174,7 +174,7 @@ const copy: typeof en = {
     startLabel: "Başlangıç noktası ve gösterdiği",
     steps: "Adım",
     loss: "Kayıp",
-    separation: "Doku türleri arası / kaymalar arası uzaklık",
+    separation: "Dokular arası / doku içi ortalama uzaklık",
     kindGuess: "Tüm değerlendirilen parçalar",
     times: (x: number) => `×${x.toFixed(1).replace(".", ",")}`,
     announceDone: (percent: number) =>
@@ -219,7 +219,7 @@ const copy: typeof en = {
       convolution: "Resim sayılardır ve küçük pencereler onu parça parça okur.",
       "word-embeddings": "Bir yer olarak anlam: birbirine benzeyenler haritada yakın düşer.",
       "multilayer-perceptrons": "Kodlayıcı ve tahminci, bunlar gibi küçük ağlardır.",
-      backpropagation: "Her ağırlığın gradyanının nasıl hesaplandığı.",
+      backpropagation: "Kaybın her ağırlığa göre kısmi türevinin nasıl hesaplandığı.",
       "gradient-descent": "Ne büyüklükte adım atılacağı ve Adam'ın onu neden uyarladığı.",
       generalization: "Düşük kayıp, öğrenmiş olmakla aynı şey değildir.",
       attention:
