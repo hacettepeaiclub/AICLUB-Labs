@@ -85,7 +85,7 @@ export function FormatsStage() {
       const digits = typed && value && kind !== "zero" ? divergence(typed, value) : null;
       return { format, kind, digits, status, tone };
     });
-  }, [text, t]);
+  }, [decimal, text, t]);
 
   const summary = rows ? rows.map((r) => `${r.format.id}: ${r.status}`).join("; ") : "";
   const settled = useDebouncedValue(summary);

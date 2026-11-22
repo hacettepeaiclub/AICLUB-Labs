@@ -1,9 +1,13 @@
+import { useCallback } from "react";
 import { useLanguage } from "@/i18n";
 import { formatNumber } from "@/lib/format";
 
 export function useNumberFormat() {
   const { language } = useLanguage();
-  const decimal = (text: string) => (language === "tr" ? text.replace(".", ",") : text);
+  const decimal = useCallback(
+    (text: string) => (language === "tr" ? text.replace(".", ",") : text),
+    [language],
+  );
 
   return {
     decimal,
