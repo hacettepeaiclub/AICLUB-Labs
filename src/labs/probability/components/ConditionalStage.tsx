@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Figure, Stage } from "@/components/lab";
 import { Segmented } from "@/components/ui";
+import { useLanguage } from "@/i18n";
 import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import { OUTCOMES, analyse, isBothBoys, satisfies, type ClueId } from "../engine/conditional";
-import { percent, ratio } from "../view";
+import { percent as formatPercent, ratio } from "../view";
 import { Coach, Explain } from "./Framing";
 import { Prediction } from "./Prediction";
 
@@ -29,6 +30,8 @@ import { Prediction } from "./Prediction";
  * leaving the impression that these two exhaust the question.
  */
 export function ConditionalStage() {
+  const { language } = useLanguage();
+  const percent = (value: number) => formatPercent(value, language);
   const copy = useLabCopy("probability");
   const c = copy.conditional;
 

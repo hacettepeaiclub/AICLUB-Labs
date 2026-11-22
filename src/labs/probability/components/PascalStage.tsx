@@ -2,6 +2,7 @@ import { useCallback, useMemo, useRef, useState } from "react";
 import { useReducedMotion } from "@/hooks";
 import { Figure, LabSlider, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
+import { useLanguage } from "@/i18n";
 import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import {
@@ -13,7 +14,7 @@ import {
   totalPaths,
 } from "../engine/pascal";
 import type { GaltonWorld } from "../engine/galtonPhysics";
-import { percent } from "../view";
+import { percent as formatPercent } from "../view";
 import { Coach, Explain } from "./Framing";
 import { GaltonCanvas } from "./GaltonCanvas";
 import { Prediction } from "./Prediction";
@@ -45,6 +46,8 @@ const SEED = 8675309;
  * hundred rather than pretending about five hundred.
  */
 export function PascalStage() {
+  const { language } = useLanguage();
+  const percent = (value: number) => formatPercent(value, language);
   const copy = useLabCopy("probability");
   const p = copy.pascal;
   const reduced = useReducedMotion() ?? false;

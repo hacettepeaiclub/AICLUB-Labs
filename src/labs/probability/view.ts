@@ -8,8 +8,16 @@
  * decides how many digits each gets.
  */
 
+export function decimal(value: number, digits: number, language: string): string {
+  const text = value.toFixed(digits);
+  return language === "tr" ? text.replace(".", ",") : text;
+}
+
 /** Probabilities as whole-tenth percentages: enough to see 50.7 cross 50. */
-export const percent = (value: number): string => `${(value * 100).toFixed(1)}%`;
+export function percent(value: number, language = "en"): string {
+  const text = decimal(value * 100, 1, language);
+  return language === "tr" ? `%${text}` : `${text}%`;
+}
 
 /**
  * A count with its thousands grouped, using the separator the dictionary

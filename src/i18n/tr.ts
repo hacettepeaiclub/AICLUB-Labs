@@ -347,9 +347,9 @@ export const tr: Translation = {
     probability: {
       title: "Guess, Then Count",
       term: "Olasılık",
-      figure: "üç kapı ve sunucunun açtığı kapı.",
+      figure: "Üç kapıdan birini sunucu açmış.",
       description:
-        "Altı deneyde önce tahmin yap. Hesaplanan olasılıkları, rastgele denemeleri ve fizik simülasyonunu karşılaştır.",
+        "Kapı seç, odaya kişi ekle, Galton tahtasına bilye bırak. Altı deneyde tahminlerini hesaplarla ve simülasyonla karşılaştır.",
     },
     sorting: {
       title: "The Cost of Order",

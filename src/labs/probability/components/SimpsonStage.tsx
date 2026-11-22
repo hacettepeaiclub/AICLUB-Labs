@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Figure, LabSlider, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
+import { useLanguage } from "@/i18n";
 import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import {
@@ -12,7 +13,7 @@ import {
   cellOf,
   type TreatmentId,
 } from "../engine/simpson";
-import { percent, ratio } from "../view";
+import { percent as formatPercent, ratio } from "../view";
 import { Coach, Explain } from "./Framing";
 import { Prediction } from "./Prediction";
 
@@ -36,6 +37,8 @@ import { Prediction } from "./Prediction";
  * them, so the picture cannot say something the numbers do not.
  */
 export function SimpsonStage() {
+  const { language } = useLanguage();
+  const percent = (value: number) => formatPercent(value, language);
   const copy = useLabCopy("probability");
   const s = copy.simpson;
 
