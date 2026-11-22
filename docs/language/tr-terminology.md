@@ -277,13 +277,19 @@ Vikipedi "Temel bileşenler analizi" ve "Özdeğer ve özvektör" sayfaları (40
 ### Özvektör, özdeğer
 
 - **Tanım:** Au = λu eşitliğini sağlayan sıfırdan farklı u bir özvektördür:
-  matris onun doğrultusunu değiştirmez, yalnızca λ katına uzatır (ya da
-  kısaltır). λ özdeğerdir.
-- **Tercih:** özvektör; özdeğer. Sezgisel tanımda "doğrultusu değişmeyen yön".
+  matris u'yu yalnızca λ sayısıyla çarpar. λ > 1 ise uzatır, 0 < λ < 1 ise
+  kısaltır, λ < 0 ise yönünü ters çevirir; λ = 0 ise u'yu sıfır vektörüne
+  götürür. λ özdeğerdir. Sezgisel tanımda "uzatır" yazma; "bir sayıyla
+  çarpar" ya da "doğrultusunu değiştirmez" de.
+- **Tercih:** özvektör; özdeğer. Sezgisel tanımda "doğrultusu değişmeyen vektör".
 - **Bağlama bağlı alternatifler:** karakteristik vektör/değer (MAT114, eşdeğer
   ad); özyöney (DLT). Projede kullanma.
 - **Karıştırılmaması gereken:** yön ile doğrultu: λ negatifse u'nun yönü
   döner ama doğrultusu aynı kalır; bu yüzden tanımda "doğrultu" kullan.
+  Lab'daki açı göstergesi de iki doğrultu arasındaki dar açıyı (0° ile 90°)
+  ölçer (engine.ts `between3`). Simetrik bir matrisin birbirine dik
+  özvektörleri her zaman seçilebilir; tekrarlı özdeğerde her özvektör çifti
+  dik olmak zorunda değildir.
 - **Örnek:** "Bu yön bir özvektördür, 1,62 de onun özdeğeridir."
 - **Kaynak:** MAT114, SIRMATEL
 

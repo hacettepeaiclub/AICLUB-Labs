@@ -37,7 +37,7 @@ export const journeys: Record<string, { en: Journey; tr: Journey }> = {
     ],
     tr: [
       "Özvektörün ne olduğunu ve temel bileşenler analizinin (PCA) neden özvektörlerle kurulduğunu gör.",
-      "v'nin yönünü, v ile Av arasındaki açı sıfır olana kadar değiştir.",
+      "v'nin yönünü, v ile Av'nin doğrultuları arasındaki açı 0°'ye yaklaşana kadar değiştir.",
       "Sonra buluttaki doğruyu, izdüşümlerin varyansı en büyük olana kadar döndür ve bulduğun doğruyu özvektörle karşılaştır.",
       "Bir nokta bulutu neredeyse tam yuvarlak. Birinci temel bileşen varyansın çoğunu korur mu?",
       "Hayır: hiçbir yön öne çıkmaz, bu yüzden tek doğru varyansın ancak yarısına yakınını korur.",
