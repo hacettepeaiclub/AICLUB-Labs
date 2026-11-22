@@ -12,8 +12,44 @@
 
 import { normalPdf, type Criticals, type Result, type TestType } from "./engine";
 
-/** The drawing box. Coordinates are in these units and scale with the SVG. */
-export const PLOT = { width: 100, height: 46, padTop: 3, padBottom: 7 } as const;
+/**
+ * The drawing box. Coordinates are in these units and scale with the SVG.
+ *
+ * The SVG stretches to its container (`preserveAspectRatio="none"`), so it
+ * carries no text: a glyph drawn in these units would be stretched with it,
+ * three times wider than tall on a desktop. Labels are HTML laid over the
+ * plot at the positions `labelAt` gives. `padTop` is the room they need above
+ * the peaks: a row for the critical values, and the curve names above that.
+ * `valueRow` is where the critical-value row ends, and the boundary line
+ * starts.
+ */
+export const PLOT = { width: 100, height: 46, padTop: 11, padBottom: 7, valueRow: 4.5 } as const;
+
+/**
+ * Where a label goes on the stretched plot, in CSS percentages of the box.
+ *
+ * The label stays inside the span `from`–`to` (plot units; the whole width
+ * by default) and is never wider than it. `shift` slides it left by the same
+ * fraction of its own width as its anchor is across that span: centred in the
+ * middle, flush left at the start, flush right at the end. So a label never
+ * leaves its span, whatever its length in either language, and still sits
+ * over its point. Two labels given spans that do not overlap cannot collide.
+ */
+export function labelAt(
+  x: number,
+  y: number,
+  from = 0,
+  to: number = PLOT.width,
+): { left: string; top: string; shift: string; maxWidth: string } {
+  const span = to - from || 1;
+  const along = Math.min(1, Math.max(0, (x - from) / span));
+  return {
+    left: `${(x / PLOT.width) * 100}%`,
+    top: `${(y / PLOT.height) * 100}%`,
+    shift: `${-along * 100}%`,
+    maxWidth: `${(Math.abs(span) / PLOT.width) * 100}%`,
+  };
+}
 
 /**
  * Points per curve.

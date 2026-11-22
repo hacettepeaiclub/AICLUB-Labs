@@ -84,47 +84,49 @@ export function SampleSizeStage({ result, onChange }: SampleSizeStageProps) {
           <DistributionPlot result={result} domain={fixed ? fixedDomain : undefined} />
           <div className="rounded-lg border border-line/20 bg-ink-900 p-3">
             <p className="text-overline uppercase text-fg-faint">{s.curveTitle}</p>
-            <svg
-              viewBox={`0 0 ${PLOT.width} 34`}
-              preserveAspectRatio="none"
-              role="img"
-              aria-label={s.curveLabel(
-                BOUNDS.n.min,
-                BOUNDS.n.max,
-                prob(curve[0]?.power ?? 0),
-                prob(curve[curve.length - 1]?.power ?? 0),
-              )}
-              className="mt-2 h-20 w-full"
-            >
-              {/* 0.80 is a convention, not a law, so it is a quiet rule with
+            <div className="relative mt-2 h-20">
+              <svg
+                viewBox={`0 0 ${PLOT.width} 34`}
+                preserveAspectRatio="none"
+                role="img"
+                aria-label={s.curveLabel(
+                  BOUNDS.n.min,
+                  BOUNDS.n.max,
+                  prob(curve[0]?.power ?? 0),
+                  prob(curve[curve.length - 1]?.power ?? 0),
+                )}
+                className="absolute inset-0 h-full w-full"
+              >
+                {/* 0.80 is a convention, not a law, so it is a quiet rule with
                   its own printed label rather than a highlighted threshold. */}
-              <line
-                x1="0"
-                y1={30 - 0.8 * 26}
-                x2={PLOT.width}
-                y2={30 - 0.8 * 26}
-                className="stroke-line/40"
-                strokeWidth="0.25"
-                strokeDasharray="1.5 1.5"
-              />
-              <text
-                x="0.5"
-                y={30 - 0.8 * 26 - 1}
-                className="fill-fg-faint font-mono"
-                style={{ fontSize: 2.6 }}
+                <line
+                  x1="0"
+                  y1={30 - 0.8 * 26}
+                  x2={PLOT.width}
+                  y2={30 - 0.8 * 26}
+                  className="stroke-line/40"
+                  strokeWidth="0.25"
+                  strokeDasharray="1.5 1.5"
+                />
+                <path d={path} fill="none" className="stroke-data" strokeWidth="0.6" />
+                <line
+                  x1={markerX}
+                  y1="1"
+                  x2={markerX}
+                  y2="30"
+                  className="stroke-accent"
+                  strokeWidth="0.4"
+                />
+              </svg>
+              {/* HTML, not SVG text: the SVG stretches, and its glyphs would too. */}
+              <span
+                aria-hidden
+                className="absolute left-0.5 -translate-y-full rounded-sm bg-ink-900 px-0.5 font-mono text-caption leading-none text-fg-faint"
+                style={{ top: `${((30 - 0.8 * 26 - 0.5) / 34) * 100}%` }}
               >
                 {s.eighty}
-              </text>
-              <path d={path} fill="none" className="stroke-data" strokeWidth="0.6" />
-              <line
-                x1={markerX}
-                y1="1"
-                x2={markerX}
-                y2="30"
-                className="stroke-accent"
-                strokeWidth="0.4"
-              />
-            </svg>
+              </span>
+            </div>
           </div>
         </div>
       }
