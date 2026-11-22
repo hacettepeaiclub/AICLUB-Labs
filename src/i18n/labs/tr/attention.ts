@@ -182,7 +182,7 @@ const copy: typeof en = {
         swap: "Şimdi cümlenin bir kelimesini değiştir. Seçtiğin kelimeye dokunmadığın hâlde onun payları da değişir.",
       },
       compare: {
-        bars: "Solda seçili kelimenin aradığı, yani sorgusu. Sağda en iyi eşleştiği kelimenin sunduğu, yani anahtarı. Yalnızca adlandırılmış üç bileşen gösterilir; hesaba bütün bileşenler girer.",
+        bars: "Solda seçili kelimenin sorgusu, sağda en iyi eşleştiği kelimenin anahtarı. Yalnızca üç bileşen çizili; hesaba bütün bileşenler girer.",
         pick: "Buradan başka bir kelime seç; iki taraf da onun için yeniden hesaplanır.",
         match:
           "İki vektörü bütün bileşenleriyle çarpıp topla: ham eşleşme budur (yalnızca üç bileşen çizili). √d'ye bölündüğünde puan olur.",
