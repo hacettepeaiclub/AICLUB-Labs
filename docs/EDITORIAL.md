@@ -6,10 +6,17 @@ How the Turkish copy is written, the terms it uses, and the changes made in the
 
 ## Register
 
-- **"Siz", everywhere the site speaks to the visitor.** Button labels are the
-  exception and stay in the short imperative Turkish interfaces use
-  ("Baştan başla", "Çalıştır"). A character inside an experiment may speak in
-  its own voice: the Monty Hall host says "sen", on purpose.
+> Superseded. The site now addresses the reader as **"sen"**, and the
+> standard lives in [docs/language/tr-style.md](language/tr-style.md) and
+> [docs/language/tr-terminology.md](language/tr-terminology.md). Labs move
+> over one at a time; `src/i18n/trTerminology.test.ts` lists the ones that
+> have. The "siz" rule below, and the "Kaldığınız yerden devam edin" and
+> "düzenekler" rows in the change log, describe the 2026-10-15 pass and are
+> not to be copied.
+
+- ~~**"Siz", everywhere the site speaks to the visitor.**~~ Button labels stay
+  in the short imperative Turkish interfaces use ("Baştan başla",
+  "Çalıştır"). A character inside an experiment may speak in its own voice.
 - **Say what happens, not that the visitor should look.** A sentence ending
   in "…izleyin" or "…görün" usually has its real content in the clause before
   it. "Anahtar ekleyin ve yürüyüşlerin uzamasını izleyin" says more as

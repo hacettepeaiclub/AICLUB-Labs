@@ -254,9 +254,10 @@ export const tr: Translation = {
     "hypothesis-testing": {
       title: "The Price of Certainty",
       term: "Hipotez testi",
-      figure: "iki örneklem dağılımı, aralarında karar veren çizgi ve onun ötesindeki kuyruk.",
+      figure:
+        "iki örnekleme dağılımı, kritik değeri gösteren çizgi ve onun ötesindeki ret bölgesi.",
       description:
-        "Ortalamayı, anlamlılık düzeyini ve örnek sayısını değiştir. Hata olasılıklarını ve testin gücünü karşılaştır.",
+        "Ortalamayı, anlamlılık düzeyini ve örneklem büyüklüğünü değiştir. Hata olasılıklarını ve testin gücünü karşılaştır.",
     },
     "reinforcement-learning": {
       title: "Exactly What You Asked",

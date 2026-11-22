@@ -1,29 +1,33 @@
 import type en from "../en/hypothesis-testing";
 
-/** Türkçe metin: hypothesis-testing. Şekli `en/hypothesis-testing.ts` ile birebir aynı olmak zorundadır. */
+/**
+ * Türkçe metin: hypothesis-testing. Şekli `en/hypothesis-testing.ts` ile birebir aynı olmak zorundadır.
+ *
+ * Terimler docs/language/tr-terminology.md, anlatım kuralları docs/language/tr-style.md
+ * dosyasındadır. Bu lab o belgelerin pilotudur.
+ */
 
 const copy: typeof en = {
   scope:
-    "Bu kuramsal modeldir: her iki hipotez altında örneklem ortalaması X̄'in örnekleme dağılımı; ikisi de σ/√n standart hatasıyla normal ve σ bilinen kabul ediliyor [Casella & Berger, 2. baskı, Teorem 5.3.1, s. 218]. Bu kurguda test istatistiği örneklem ortalaması X̄'tir; reddetme bölgesi de standartlaştırılmış biçimde değil, doğrudan X̄ biriminde yazılır [s. 374]. Kritik değeri t değil z yapan da budur. Bu laboratuvarda hiçbir yerde örneklem çekilmez: her sayı, gösterilen denklemlerin kapalı form değeridir; yani okuduğun şey bir dene tek bir koşusu değil, modelin kendisidir.",
+    "Bu lab kuramsal modeli gösterir: her iki hipotez altında örneklem ortalaması X̄'in örnekleme dağılımı. İki dağılım da σ/√n standart hatalı normal dağılımdır ve σ bilinen kabul edilir [Casella & Berger, 2. baskı, Teorem 5.3.1, s. 218]. Test istatistiği X̄'tir; ret bölgesi standartlaştırılmış biçimde değil, doğrudan X̄ biriminde yazılır [s. 374]. Kritik değerin t ile değil z ile bulunmasının nedeni budur. Lab hiçbir yerde örneklem çekmez: gördüğün her sayı, gösterilen denklemlerin kapalı biçimli değeridir. Yani okuduğun şey bir deneyin tek bir koşusu değil, modelin kendisidir.",
   credit: {
-    inspiration:
-      "Ar\u015f. G\u00f6r. Dolunay Ezgi Seyhan'\u0131n \u00e7al\u0131\u015fmas\u0131ndan esinlenilmi\u015ftir.",
+    inspiration: "Arş. Gör. Dolunay Ezgi Seyhan'ın çalışmasından esinlenilmiştir.",
     adaptation:
-      "Bu interaktif laboratuvar, hocan\u0131n \u00f6zg\u00fcn hipotez testleri projesinden esinlenerek e\u011fitim amac\u0131yla geli\u015ftirilmi\u015ftir.",
-    profile: "Akademik profili g\u00f6r\u00fcnt\u00fcle →",
+      "Bu etkileşimli lab, hocanın özgün hipotez testleri projesinden esinlenerek eğitim amacıyla geliştirilmiştir.",
+    profile: "Akademik profili görüntüle →",
   },
 
   testType: {
-    right: "Sağ kuyruk",
-    left: "Sol kuyruk",
-    two: "Çift kuyruk",
+    right: "μ > μ₀ (sağ kuyruk)",
+    left: "μ < μ₀ (sol kuyruk)",
+    two: "μ ≠ μ₀ (iki kuyruk)",
   },
 
   plot: {
-    h0: "H\u2080",
-    h1: "Seçili gerçek ortalama",
+    h0: "H₀",
+    h1: "μ₁ (gerçek ortalama)",
     alphaTag: (value: string) => `α = ${value}`,
-    betaTag: (value: string) => `Ret dışı = ${value}`,
+    betaTag: (value: string) => `Ret bölgesi dışı = ${value}`,
     summary: (
       mu0: string,
       mu1: string,
@@ -33,200 +37,198 @@ const copy: typeof en = {
       beta: string,
       power: string,
     ) =>
-      `Örneklem ortalamasının iki örnekleme dağılımı. H₀ altında ${mu0}, H₁ altında ${mu1} merkezli; ikisinin de standart hatası ${se}. Reddetme bölgesi ${criticals} noktasında başlıyor. H₀ altında reddetme bölgesine düşen alan α = ${alpha}; H₁ altında bu bölgenin dışında kalan alan β = ${beta}. Güç ${power}.`,
+      `Örneklem ortalamasının iki örnekleme dağılımı. H₀ altındaki dağılımın merkezi ${mu0}, gerçek ortalama μ₁ altındakinin merkezi ${mu1}; ikisinin de standart hatası ${se}. Ret bölgesi ${criticals} noktasında başlıyor. H₀ eğrisinin ret bölgesinde kalan alanı α = ${alpha}; μ₁ eğrisinin ret bölgesi dışında kalan alanı β = ${beta}. Testin gücü ${power}.`,
   },
 
   controls: {
-    moreLabel: "Di\u011fer ayarlar",
-    note: "Her ayar aynı kuramsal modeli yeniden hesaplar. Rastgele örneklem üretilmez.",
-    mu0: "\u03bc\u2080: s\u0131f\u0131r hipotezi ortalamas\u0131",
+    moreLabel: "Diğer ayarlar",
+    note: "Her ayar aynı kuramsal modeli yeniden hesaplar. Rastgele örneklem çekilmez.",
+    mu0: "μ₀: sıfır hipotezindeki ortalama",
     mu0Value: (value: string) => `μ₀ = ${value}`,
-    mu1: "\u03bc\u2081: alternatif ortalama",
+    mu1: "μ₁: gerçek ortalama",
     mu1Value: (value: string) => `μ₁ = ${value}`,
-    sigma: "\u03c3: anak\u00fctle standart sapmas\u0131",
+    sigma: "σ: evren standart sapması",
     sigmaValue: (value: string) => `σ = ${value}`,
-    alpha: "\u03b1",
+    alpha: "α: anlamlılık düzeyi",
     alphaValue: (value: string) => `α = ${value}`,
-    n: "n: \u00f6rneklem b\u00fcy\u00fckl\u00fc\u011f\u00fc",
+    n: "n: örneklem büyüklüğü",
     nValue: (value: number) => `n = ${value}`,
   },
 
   separation: {
     title: "İki hipotezi karşılaştır",
-    question: "\u0130ki hipotez birbirinden uzakla\u015ft\u0131\u011f\u0131nda ne olur?",
+    question: "μ₁, μ₀'dan uzaklaştıkça eğrilere ne olur?",
     caption:
-      "Eğriler ham veriyi değil, iki hipotez altında örneklem ortalamasının dağılımını gösterir. Her eğri, ilgili ortalama doğru kabul edildiğinde n ölçümün ortalamasının dağılımıdır [Casella & Berger, 2. baskı, s. 213–214, 218].",
-    mu1Label: "\u03bc\u2081: alternatifi hareket ettirin",
+      "Eğriler ham veriyi göstermez. Her eğri, ilgili ortalama (μ₀ ya da μ₁) gerçek ortalama olsaydı n gözlemin ortalamasının nasıl dağılacağını gösterir; yani X̄'in örnekleme dağılımıdır [Casella & Berger, 2. baskı, s. 213–214, 218].",
+    mu1Label: "μ₁: gerçek ortalamayı değiştir",
     mu1Value: (value: string) => `μ₁ = ${value}`,
-    mu1Hint: "μ₀ üzerinden geçirip diğer tarafa taşı.",
-    mu0Label: "\u03bc\u2080",
-    mu1Figure: "\u03bc\u2081",
-    gapLabel: "Aral\u0131k",
+    mu1Hint: "Kaydırıcıyı μ₀'ın üzerinden geçirip öbür tarafa taşı. Eğrilerin örtüşmesine bak.",
+    mu0Label: "μ₀",
+    mu1Figure: "μ₁",
+    gapLabel: "Uzaklık",
     gapHint: "standart hata cinsinden",
     announce: (mu1: string, gap: string) =>
-      `μ₁ = ${mu1}. İki ortalama arasında ${gap} standart hata var.`,
+      `μ₁ = ${mu1}. İki ortalama arasındaki uzaklık ${gap} standart hata.`,
   },
 
   alphaSection: {
-    kicker: "Reddetme b\u00f6lgesi nerede ba\u015fl\u0131yor",
+    kicker: "Ret bölgesi nerede başlıyor",
     title: "Hangi sonuçlarda sıfır hipotezini reddederiz?",
-    lede: "Bir testin kurala ihtiyac\u0131 vard\u0131r: X\u0304, \u03bc\u2080'dan ne kadar uza\u011fa d\u00fc\u015ferse H\u2080 reddedilir? Reddetmeye yol a\u00e7an de\u011ferler reddetme b\u00f6lgesini olu\u015fturur (Casella ve Berger bunu kritik b\u00f6lge olarak da adland\u0131r\u0131r); kritik de\u011fer ise bu b\u00f6lgenin ba\u015flad\u0131\u011f\u0131 noktad\u0131r. Anlaml\u0131l\u0131k d\u00fczeyi \u03b1, \u03bc = \u03bc\u2080 iken X\u0304'in bu b\u00f6lgeye d\u00fc\u015fme olas\u0131l\u0131\u011f\u0131d\u0131r [Casella & Berger, 2. bask\u0131, Tan\u0131m 8.1.3, s. 374; Tan\u0131m 8.3.5-8.3.6, s. 385].",
+    lede: "Testin bir karar kuralı vardır: X̄, μ₀'dan ne kadar uzağa düşerse H₀ reddedilir? H₀'ın reddedilmesine yol açan X̄ değerleri ret bölgesini oluşturur; Casella ve Berger bu bölgeye kritik bölge de der. Kritik değer, ret bölgesinin başladığı noktadır. Anlamlılık düzeyi α, μ = μ₀ iken X̄'in ret bölgesine düşme olasılığıdır [Casella & Berger, 2. baskı, Tanım 8.1.3, s. 374; Tanım 8.3.5–8.3.6, s. 385].",
     caption:
-      "\u03b1 veriden \u00f6nce sabitlenir: \u03bc = \u03bc\u2080 iken X\u0304'in reddetme b\u00f6lgesine d\u00fc\u015fme olas\u0131l\u0131\u011f\u0131d\u0131r. Kayd\u0131r\u0131c\u0131n\u0131n e\u011friyi de\u011fil kritik de\u011feri oynatmas\u0131n\u0131n nedeni de budur. H\u2080 do\u011fruyken onu reddetmek I. tip hatad\u0131r [Casella & Berger, 2. bask\u0131, B\u00f6l\u00fcm 8.3.1, s. 382-383].",
-    alphaLabel: "α: kabul ettiğin I. tip hata oranı",
+      "α veriden önce seçilir; bu yüzden α kaydırıcısı eğriyi değil kritik değeri taşır. H₀ doğruyken onu reddetmek I. tip hatadır; α bu hatanın olasılığıdır [Casella & Berger, 2. baskı, Bölüm 8.3.1, s. 382–383].",
+    alphaLabel: "α: anlamlılık düzeyi",
     alphaValue: (value: string) => `α = ${value}`,
-    alphaHint: "Reddetme b\u00f6lgesindeki taral\u0131 alan tam olarak bu say\u0131d\u0131r.",
-    alphaFigure: "\u03b1",
-    criticalLabel: "Kritik de\u011fer",
-    criticalHint: "\u03bc\u2080 \u00b1 z\u00b7SE",
-    criticalLeft: "Alt s\u0131n\u0131r",
-    criticalRight: "\u00dcst s\u0131n\u0131r",
+    alphaHint: "H₀ eğrisinin ret bölgesindeki taralı alanı tam olarak bu sayıdır.",
+    alphaFigure: "α",
+    criticalLabel: "Kritik değer",
+    criticalHint: "μ₀ ± z·SE",
+    criticalLeft: "Alt sınır",
+    criticalRight: "Üst sınır",
     seLabel: "SE",
-    seHint: "\u03c3/\u221an",
+    seHint: "standart hata, σ/√n",
     oneSided: (value: string) =>
-      `α'nın tamamı tek kuyrukta: H₀ dağılımının ${value} kadarı reddetme bölgesinde kalıyor.`,
+      `α'nın tamamı tek kuyrukta: H₀ dağılımının ${value} kadarı ret bölgesinde.`,
     twoSided: (half: string) =>
-      `α iki kuyruğa bölünür: her uçta ${half}. B\u00f6ylece her kritik de\u011fer, tek y\u00f6nl\u00fc bir testin koyaca\u011f\u0131ndan daha d\u0131\u015farda durur.`,
-    announce: (alpha: string, criticals: string) => `α = ${alpha}. Sınır ${criticals} konumunda.`,
+      `α iki kuyruğa bölünür: her kuyrukta ${half}. Bu yüzden iki yönlü testin kritik değerleri, tek yönlü testinkinden μ₀'a daha uzaktadır.`,
+    announce: (alpha: string, criticals: string) => `α = ${alpha}. Kritik değer: ${criticals}.`,
   },
 
   betaSection: {
-    kicker: "Kimsenin saymad\u0131\u011f\u0131 hata",
+    kicker: "II. tip hata",
     title: "Gerçek bir farkı kaçırma olasılığı",
-    lede: "\u03b1, H\u2080 alt\u0131nda; \u03b2 ise H\u2081 alt\u0131nda hesaplan\u0131r ve ikisi ayn\u0131 reddetme b\u00f6lgesinin kar\u015f\u0131t yanlar\u0131nda durur. Kritik de\u011feri kayd\u0131r\u0131p birini k\u00fc\u00e7\u00fcltmek di\u011ferini b\u00fcy\u00fct\u00fcr; bu y\u00fczden testin hangi y\u00f6ne kuruldu\u011fu, kritik de\u011ferin nereye kondu\u011fu kadar \u00f6nemlidir [Casella & Berger, 2. bask\u0131, s. 385].",
+    lede: "α, H₀ doğruyken; β ise gerçek ortalama μ₁ iken hesaplanır. İkisi aynı kritik değerin iki yanındaki alanlardır: kritik değeri kaydırıp birini küçültürsen öbürü büyür. Bu yüzden testin yönü, kritik değerin yeri kadar önemlidir [Casella & Berger, 2. baskı, s. 385].",
     caption:
-      "Seçili gerçek ortalama alternatif hipotezin içindeyse reddetme olasılığı test gücü, reddetmeme olasılığı β olarak adlandırılır. Ters yöndeki veya μ₀ ile aynı ortalamada bu alanlar yalnız reddetme ve reddetmeme olasılıklarıdır.",
-    testTypeLabel: "H\u2081 ne iddia ediyor",
-    mu1Label: "\u03bc\u2081",
+      "μ₁ alternatif hipotezin gösterdiği yöndeyse H₀'ı reddetme olasılığı testin gücüdür; reddetmeme olasılığı ise II. tip hata olasılığı β'dır. μ₁ ters yöndeyse ya da μ₀'a eşitse bu iki sayı yalnızca reddetme ve reddetmeme olasılıklarıdır.",
+    testTypeLabel: "H₁ ne iddia ediyor?",
+    mu1Label: "μ₁",
     mu1Value: (value: string) => `μ₁ = ${value}`,
-    betaLabel: "Reddetmeme olasılığı",
-    betaHint: "Alternatifteki ortalama için β",
-    powerLabel: "Reddetme olasılığı",
-    powerHint: "Alternatifteki ortalama için test gücü",
-    alphaLabel: "\u03b1",
+    betaLabel: "H₀'ı reddetmeme olasılığı",
+    betaHint: "μ₁ alternatif yöndeyse β",
+    powerLabel: "H₀'ı reddetme olasılığı",
+    powerHint: "μ₁ alternatif yöndeyse testin gücü",
+    alphaLabel: "α",
     reading: (beta: string) =>
-      `β = ${beta}: H\u2081 da\u011f\u0131l\u0131m\u0131n\u0131n bu kadarl\u0131k k\u0131sm\u0131 reddetme b\u00f6lgesinin d\u0131\u015f\u0131na, yani testin H\u2080'\u0131 reddetmedi\u011fi yere d\u00fc\u015f\u00fcyor.`,
+      `β = ${beta}: μ₁ eğrisinin bu kadarı ret bölgesinin dışında kalıyor. X̄ buraya düşerse H₀ reddedilemez.`,
     warning: {
-      left: "Test \u03bc\u2081 < \u03bc\u2080 ar\u0131yor, ancak \u03bc\u2081 \u03bc\u2080'\u0131n alt\u0131nda de\u011fil. Alternatif da\u011f\u0131l\u0131m reddetme b\u00f6lgesinden uzakta duruyor, dolay\u0131s\u0131yla neredeyse hi\u00e7 yakalanm\u0131yor: \u03b2 1'e, g\u00fc\u00e7 0'a yak\u0131n.",
+      left: "Test μ < μ₀ durumunu arıyor, ama μ₁, μ₀'ın altında değil. μ₁ eğrisi ret bölgesinden uzakta kaldığı için X̄ neredeyse hiç ret bölgesine düşmüyor: β 1'e, güç 0'a yakın.",
       right:
-        "Test \u03bc\u2081 > \u03bc\u2080 ar\u0131yor, ancak \u03bc\u2081 \u03bc\u2080'\u0131n \u00fczerinde de\u011fil. Alternatif da\u011f\u0131l\u0131m reddetme b\u00f6lgesinden uzakta duruyor, dolay\u0131s\u0131yla neredeyse hi\u00e7 yakalanm\u0131yor: \u03b2 1'e, g\u00fc\u00e7 0'a yak\u0131n.",
+        "Test μ > μ₀ durumunu arıyor, ama μ₁, μ₀'ın üstünde değil. μ₁ eğrisi ret bölgesinden uzakta kaldığı için X̄ neredeyse hiç ret bölgesine düşmüyor: β 1'e, güç 0'a yakın.",
     },
     announce: (beta: string, power: string) => `β = ${beta}. Güç = ${power}.`,
   },
 
   sampleSection: {
-    kicker: "Örnek sayısının etkisi",
-    title: "Örnek sayısı arttıkça hata olasılıkları nasıl değişir?",
-    lede: "n arttıkça SE = σ/√n küçülür. α sabitken, alternatif yönündeki bir gerçek farkı bulma olasılığı artar. Gerçek ortalama μ₀ ise reddetme olasılığı α kalır; ters yönde ise azalabilir.",
+    kicker: "Örneklem büyüklüğünün etkisi",
+    title: "Örneklem büyüdükçe hata olasılıkları nasıl değişir?",
+    lede: "n arttıkça standart hata SE = σ/√n küçülür. α sabitken, μ₁ alternatif yöndeyse testin gücü artar. Gerçek ortalama μ₀'a eşitse reddetme olasılığı α'da kalır; μ₁ ters yöndeyse azalabilir.",
     caption:
-      "Sabit x ekseninde eğrilerin genişliklerini karşılaştır. Otomatik mod ekseni eğrilere göre ayarlar. SE, n’nin kareköküyle ters orantılıdır; her ek örneğin etkisi giderek azalır.",
-    nLabel: "n: \u00f6rneklem b\u00fcy\u00fckl\u00fc\u011f\u00fc",
+      "X eksenini sabit tutup n'yi artır: iki eğri de daralır. Otomatik modda eksen eğrilere göre yeniden ölçeklenir. SE, n'nin kareköküyle ters orantılıdır; bu yüzden her ek gözlem SE'yi bir öncekinden daha az küçültür.",
+    nLabel: "n: örneklem büyüklüğü",
     nValue: (value: number) => `n = ${value}`,
     formula: (se: string) => `SE = σ/√n = ${se}`,
     nFigure: "n",
     seLabel: "SE",
-    seHint: "\u03c3/\u221an",
-    powerLabel: "Reddetme olasılığı",
-    betaLabel: "Reddetmeme olasılığı",
-    curveTitle: "Örnek sayısına göre reddetme olasılığı",
+    seHint: "standart hata, σ/√n",
+    powerLabel: "H₀'ı reddetme olasılığı",
+    betaLabel: "H₀'ı reddetmeme olasılığı",
+    curveTitle: "Örneklem büyüklüğüne göre H₀'ı reddetme olasılığı",
     eighty: "0,80",
     curveLabel: (from: number, to: number, first: string, last: string) =>
-      `Diğer her şey sabitken n = ${from}'den n = ${to}'e güç. ${first} civarında başlıyor ve yaklaşık ${last} değerine ulaşıyor.`,
+      `Diğer ayarlar sabitken n = ${from} ile n = ${to} arasında testin gücü. Yaklaşık ${first} değerinden başlıyor ve yaklaşık ${last} değerine ulaşıyor.`,
     announce: (n: number, se: string, power: string) => `n = ${n}. SE = ${se}. Güç = ${power}.`,
   },
 
   challenge: {
-    kicker: "\u015eimdi bir say\u0131y\u0131 tutturun",
+    kicker: "Görevler",
     title: "Hedeflenen test gücüne ulaş",
-    lede: "Her görev belirli bir sonuç ister. Kontrolleri değiştirerek modelin istenen hata veya güç değerine ulaşmasını sağla.",
-    puzzleLabel: "G\u00f6rev",
-    reset: "Ba\u015fa d\u00f6n",
-    powerLabel: "G\u00fc\u00e7",
-    alphaLabel: "\u03b1",
+    lede: "İki görev var. Her biri bir kaydırıcının konumunu değil, ulaşılacak bir sonucu ister: ayarları değiştirerek testin gücünü hedef değere getir, α'yı görevin sınırının üstüne çıkarma.",
+    puzzleLabel: "Görev",
+    reset: "Başa dön",
+    powerLabel: "Güç",
+    alphaLabel: "α",
     seLabel: "SE",
     target: (value: string) => `hedef ${value}`,
-    notYet: (power: string, target: string) =>
-      `Güç ${power}. ${target} değerine ulaşması gerekiyor.`,
-    alphaTooHigh: (max: string) => `α bu görevin sınırının üzerinde: en fazla ${max} olabilir.`,
+    notYet: (power: string, target: string) => `Güç ${power}. Hedef: ${target}.`,
+    alphaTooHigh: (max: string) => `α bu görevin sınırını aşıyor: en fazla ${max} olabilir.`,
     announceSolved: (power: string) => `Çözüldü. Güç = ${power}.`,
-    announceAttempt: (power: string, alpha: string) => `Güç ${power}, α ${alpha}.`,
+    announceAttempt: (power: string, alpha: string) => `Güç = ${power}, α = ${alpha}.`,
     puzzles: {
       "reach-power": {
-        title: "0,80'e ula\u015f",
+        title: "0,80'e ulaş",
         brief: (power: string, alpha: string) =>
-          `Etki gerçek ama küçük: μ₁, μ₀'ın yarım birim üzerinde ve test bunu bulduğundan daha sık kaçırıyor. α'yı ${alpha} değerinin üzerine çıkarmadan gücü ${power} değerine getirin.`,
+          `Etki gerçek ama küçük: μ₁, μ₀'ın yarım birim üstünde ve test bu farkı bulduğundan daha sık kaçırıyor. α'yı ${alpha} değerinin üstüne çıkarmadan testin gücünü ${power} değerine getir.`,
         lesson:
-          "\u0130ki kol da g\u00fcc\u00fc art\u0131r\u0131r ama ayn\u0131 bi\u00e7imde de\u011fil. \u03b1'y\u0131 b\u00fcy\u00fctmek reddetme b\u00f6lgesini geni\u015fletir ve daha y\u00fcksek bir I. tip hata oran\u0131n\u0131 kabul etmek demektir; n'yi b\u00fcy\u00fctmek ise SE'yi daraltarak \u03b1'y\u0131 de\u011fi\u015ftirmeden \u03b2'y\u0131 d\u00fc\u015f\u00fcr\u00fcr [Casella & Berger, 2. bask\u0131, s. 385].",
+          "İki ayar da gücü artırır ama farklı bedellerle. α'yı büyütmek ret bölgesini genişletir; yani I. tip hata olasılığının artmasını kabul etmektir. n'yi büyütmek SE'yi küçültür ve α değişmeden β'yı düşürür [Casella & Berger, 2. baskı, s. 385].",
         solved: (power: string, alpha: string) =>
-          `Güç ${power}, α = ${alpha}. Buraya n ve α'nın hangi karışımıyla geldiysen gelin, kritik değer SE'ye göre μ₀'a yeterince yaklaştı ve H₁ dağılımının büyük kısmı reddetme bölgesine düştü.`,
+          `Güç ${power}, α = ${alpha}. n ve α'yı hangi birleşimle ayarlamış olursan ol, kritik değer SE'ye göre μ₀'a yeterince yaklaştı ve μ₁ eğrisinin büyük kısmı ret bölgesine düştü.`,
       },
       noisy: {
-        title: "Fazla g\u00fcr\u00fclt\u00fc",
+        title: "Büyük standart sapma",
         brief: (power: string, alpha: string) =>
-          `σ = 3 ve test iki yönlü; yani α iki kuyruğa bölünüyor ve her iki kritik değer de epey dışarda duruyor. α en fazla ${alpha} olacak şekilde ${power} güce ulaşın.`,
+          `σ = 3 ve test iki yönlü: α iki kuyruğa bölünüyor ve iki kritik değer de μ₀'dan epey uzakta. α en fazla ${alpha} olacak biçimde testin gücünü ${power} değerine getir.`,
         lesson:
-          "\u0130ki y\u00f6nl\u00fc test \u03b1'y\u0131 iki kuyru\u011fa b\u00f6l\u00fc\u015ft\u00fcr\u00fcr; bu y\u00fczden her kritik de\u011fer, tek y\u00f6nl\u00fc testin koyaca\u011f\u0131ndan daha d\u0131\u015farda durur. Tek y\u00f6nl\u00fc test \u03b1'n\u0131n tamam\u0131n\u0131 tek bir kuyrukta toplar: \u03bc\u2081 o y\u00f6ndeyse g\u00fc\u00e7 artar, de\u011filse azal\u0131r [Casella & Berger, 2. bask\u0131, s. 386].",
+          "İki yönlü test α'yı iki kuyruğa böler; bu yüzden her kritik değer, tek yönlü testinkinden μ₀'a daha uzaktadır. Tek yönlü test α'nın tamamını tek kuyruğa koyar: μ₁ o yöndeyse güç artar, değilse azalır [Casella & Berger, 2. baskı, s. 386].",
         solved: (power: string, alpha: string) =>
-          `Güç ${power}, α = ${alpha}. \u03c3'y\u0131 k\u00fc\u00e7\u00fcltmek ya da n'yi b\u00fcy\u00fctmek SE'yi daralt\u0131r; tek y\u00f6nl\u00fc test ise \u03b1'n\u0131n tamam\u0131n\u0131 \u03bc\u2081'in ger\u00e7ekten bulundu\u011fu kuyru\u011fa koyar.`,
+          `Güç ${power}, α = ${alpha}. σ'yı küçültmek ya da n'yi büyütmek SE'yi küçültür; tek yönlü test ise α'nın tamamını μ₁'in bulunduğu kuyruğa koyar.`,
       },
     },
   },
 
   recap: {
     lessons: [
-      "α, μ = μ₀ iken X̄'in reddetme bölgesine düşme olasılığıdır: hiçbir şey görmeden önce sabitlenen I. tip hata oranı.",
-      "β, μ = μ₁ iken X̄'in bu bölgenin dışına düşme olasılığıdır; güç ise 1 − β'dır. İkisi de \"herhangi bir etkiye\" göre değil, belirli bir μ₁'e göre hesaplanır.",
-      "α sabitken ve gerçek ortalama alternatif yönündeyken n arttıkça güç artar. Ters yöndeki gerçek ortalamada reddetme olasılığı azalabilir.",
+      "α, μ = μ₀ iken X̄'in ret bölgesine düşme olasılığıdır: veriden önce seçilen I. tip hata olasılığı.",
+      "β, μ = μ₁ iken X̄'in ret bölgesi dışına düşme olasılığıdır; testin gücü 1 − β'dır. İkisi de genel olarak \"bir etkiye\" göre değil, belirli bir μ₁ değerine göre hesaplanır.",
+      "α sabitken ve μ₁ alternatif yöndeyken n arttıkça testin gücü artar. μ₁ ters yöndeyse reddetme olasılığı azalabilir.",
     ],
     footer:
-      "Buradaki her \u015fey \u03c3'n\u0131n bilindi\u011fi kapal\u0131 form normal modeldir: \u00f6rneklem ortalamas\u0131n\u0131n iki \u00f6rnekleme da\u011f\u0131l\u0131m\u0131, tek bir reddetme b\u00f6lgesi ve b\u00f6lge s\u0131n\u0131r\u0131n\u0131n iki yan\u0131ndaki alanlar. Ger\u00e7ek testlerde \u03c3'n\u0131n \u00f6rneklemden kestirilmesi gerekir (t da\u011f\u0131l\u0131m\u0131n\u0131 gerekli k\u0131lan da budur) ve y\u00f6n\u00fcn veriden \u00f6nce mi sonra m\u0131 se\u00e7ildi\u011fi ayr\u0131 bir sorundur. Bu laboratuvar, o zorluklar\u0131n \u00fczerine oturdu\u011fu geometriyi g\u00f6sterir.",
+      "Buradaki her şey σ'nın bilindiği kapalı biçimli normal modeldir: örneklem ortalamasının iki örnekleme dağılımı, tek bir ret bölgesi ve bu bölgenin sınırının iki yanındaki alanlar. Gerçek testlerde σ örneklemden tahmin edilir; t dağılımı bu yüzden gerekir. Test yönünün veriden önce mi sonra mı seçildiği de ayrı bir sorundur. Bu lab, bu ayrıntıların dayandığı geometriyi gösterir.",
   },
   sources: {
     title: "Kaynaklar",
     theoryLabel: "Kuramsal kaynak",
     theory:
-      "George Casella ve Roger L. Berger, Statistical Inference, 2. bask\u0131, Duxbury Press. Hipotez testleri, hata olas\u0131l\u0131klar\u0131 ve g\u00fc\u00e7 fonksiyonu i\u00e7in 8. b\u00f6l\u00fcm (s. 373-386); \u00f6rneklem ortalamas\u0131n\u0131n \u00f6rnekleme da\u011f\u0131l\u0131m\u0131 i\u00e7in 5. b\u00f6l\u00fcm (s. 213-218).",
-    implementationLabel: "Uygulama ve esin kayna\u011f\u0131",
+      "George Casella ve Roger L. Berger, Statistical Inference, 2. baskı, Duxbury Press. Hipotez testleri, hata olasılıkları ve güç fonksiyonu için 8. bölüm (s. 373-386); örneklem ortalamasının örnekleme dağılımı için 5. bölüm (s. 213-218).",
+    implementationLabel: "Uygulama ve esin kaynağı",
     implementation:
-      "Say\u0131sal model, Ar\u015f. G\u00f6r. Dolunay Ezgi Seyhan'\u0131n \u00f6zg\u00fcn hipotez testleri projesinden aktar\u0131lm\u0131\u015ft\u0131r. Bu interaktif uyarlama, metinleri ve g\u00f6rsel tasar\u0131m\u0131 AI CLUB LABS'a aittir.",
+      "Sayısal model, Arş. Gör. Dolunay Ezgi Seyhan'ın özgün hipotez testleri projesinden aktarılmıştır. Bu etkileşimli uyarlamanın metinleri ve görsel tasarımı AI CLUB LABS'a aittir.",
     notation:
-      "G\u00f6sterim: bu laboratuvar \u03b2'y\u0131 II. tip hata olas\u0131l\u0131\u011f\u0131, g\u00fcc\u00fc ise 1 \u2212 \u03b2 olarak yazar; uygulamada yayg\u0131n olan g\u00f6sterim budur. Casella ve Berger ise \u03b2(\u03b8) ile do\u011frudan g\u00fc\u00e7 fonksiyonunu g\u00f6sterir, dolay\u0131s\u0131yla onlar\u0131n \u03b2(\u03b8) de\u011feri buradaki 1 \u2212 \u03b2 de\u011ferine kar\u015f\u0131l\u0131k gelir (Tan\u0131m 8.3.1, s. 383).",
+      "Gösterim: bu lab β'yı II. tip hata olasılığı, testin gücünü ise 1 − β olarak yazar; uygulamada yaygın gösterim budur. Casella ve Berger ise β(θ) ile doğrudan güç fonksiyonunu gösterir; yani onların β(θ) değeri buradaki 1 − β'ya karşılık gelir (Tanım 8.3.1, s. 383).",
     pages:
-      "Sayfa numaralar\u0131, bu revizyonda kullan\u0131lan ikinci bask\u0131n\u0131n bas\u0131l\u0131 sayfalar\u0131na aittir. Yay\u0131n y\u0131l\u0131, incelenen n\u00fcshadan do\u011frulanamad\u0131\u011f\u0131 i\u00e7in verilmemi\u015ftir.",
+      "Sayfa numaraları, bu revizyonda kullanılan ikinci baskının basılı sayfalarına aittir. Yayın yılı, incelenen nüshadan doğrulanamadığı için verilmemiştir.",
   },
 
   // The guided tours, one per experiment (components/lab/guide/tours.ts).
   tour: {
     intro:
-      "İki eğri aynı anakütle ortalaması için farklı hipotezleri gösterir. Alternatif ortalamayı değiştirerek dağılımların örtüşmesini incele.",
+      "İki eğri, aynı evren ortalaması hakkındaki iki iddiayı gösterir. μ₁'i değiştir ve iki eğrinin ne zaman birbirinden ayırt edilebildiğine bak.",
     stages: {
       separation: {
         curves:
-          "Her eğri, o iddia (μ₀ ya da μ₁) doğruysa n ölçümün ortalamasının nasıl dağılacağını gösterir.",
-        move: "Bu kaydırıcı μ₁'i taşır. Onu μ₀'ın içinden geçirip öbür tarafa çıkar.",
-        gap: "İkisi arasındaki fark, standart hata cinsinden. Fark küçüldükçe eğriler üst üste biner.",
+          "Her eğri, o iddia (μ₀ ya da μ₁) doğruysa n gözlemin ortalamasının nasıl dağılacağını gösterir.",
+        move: "Bu kaydırıcı μ₁'i taşır. Onu μ₀'ın üzerinden geçirip öbür tarafa çıkar.",
+        gap: "İki ortalama arasındaki uzaklık, standart hata cinsinden. Uzaklık küçüldükçe eğriler üst üste biner.",
       },
       alpha: {
-        region: "Gölgeli kuyruk ret bölgesi: ortalama oraya düşerse H₀ aleyhine kanıt sayılır.",
+        region: "Taralı kuyruk ret bölgesidir: X̄ buraya düşerse H₀ reddedilir.",
         alpha:
-          "Bu kaydırıcı α'yı, yani H₀ doğruyken onu reddetme riskini belirler. Tur onu yükseltti.",
-        critical: "α büyüdükçe kritik değer içeri kayar ve bölge genişler.",
+          "Bu kaydırıcı α'yı, yani H₀ doğruyken onu reddetme olasılığını belirler. Tur α'yı yükseltti.",
+        critical: "α büyüdükçe kritik değer μ₀'a yaklaşır ve ret bölgesi genişler.",
       },
       beta: {
-        curves:
-          "β, H₁ eğrisinin ret bölgesi dışında kalan kısmı: testin kaçırdığı gerçek bir etki.",
-        type: "Testi öbür yöne çevir. Tur yönü değiştirdi; β'ya ne olduğuna bak.",
-        power: "β, güç (1 − β) ve α yan yana.",
+        curves: "β, μ₁ eğrisinin ret bölgesi dışında kalan kısmıdır: testin kaçırdığı gerçek fark.",
+        type: "Test yönünü değiştir. Tur yönü çevirdi; β'nın nasıl değiştiğine bak.",
+        power: "β, testin gücü (1 − β) ve α yan yana.",
       },
       sample: {
-        curves: "İki eğri ve bu kadar ölçümle ne kadar geniş oldukları.",
-        n: "n arttığında iki dağılım daralır. Gerçek ortalama alternatif yönündeyse test gücü artar.",
-        figures: "Daha çok veri, α'yı artırmadan β'yı düşürür.",
+        curves: "İki eğri ve bu örneklem büyüklüğünde ne kadar geniş oldukları.",
+        n: "n arttıkça iki eğri de daralır. μ₁ alternatif yöndeyse testin gücü artar.",
+        figures: "Daha büyük örneklem, α'yı artırmadan β'yı düşürür.",
       },
       challenge: {
-        task: "Her görev bir sonuç ister: ulaşılması gereken bir güç. Görevi yukarıdan seç.",
-        controls: "Test yönü, n, α ve σ'yı ayarlarsın.",
-        power: "Modelin şu anki gücü. Geçmek için hedefe ulaşın.",
+        task: "Her görev bir sonuç ister: ulaşılacak bir güç değeri. Görevi yukarıdan seç.",
+        controls: "Test yönünü, n'yi, α'yı ve σ'yı sen ayarlarsın.",
+        power: "Testin şu anki gücü. Görevi geçmek için hedefe ulaş.",
       },
     },
   },
@@ -235,15 +237,15 @@ const copy: typeof en = {
   study: {
     topics: {
       alpha: "İki hipotez, α ve ret bölgesi",
-      power: "β, güç ve örneklem büyüklüğü",
+      power: "β, testin gücü ve örneklem büyüklüğü",
     },
     notes: {
-      "sq-hyptest": "Sıfır hipotezinin ne olduğu ve onu reddetmenin anlamı.",
+      "sq-hyptest": "Sıfır hipotezinin ne olduğu ve onu reddetmenin ne anlama geldiği.",
       "sq-althyp": "Alternatif hipotez: lab'daki öbür eğri.",
-      "sq-power": "Gücün, gerçek bir farkı yakalama olasılığı olması.",
-      "sq-power-analysis": "Belirli bir güç için kaç ölçüm gerektiği.",
-      "khan-power": "Güç, α ve β birlikte.",
-      "openintro-stats": "Test ve güç üzerine ücretsiz bir ders kitabı bölümü.",
+      "sq-power": "Testin gücü: gerçek bir farkı yakalama olasılığı.",
+      "sq-power-analysis": "Belirli bir güç için kaç gözlem gerektiği.",
+      "khan-power": "Güç, α ve β'nın birlikte anlatımı.",
+      "openintro-stats": "Hipotez testi ve güç üzerine ücretsiz bir ders kitabı bölümü.",
     },
   },
 };

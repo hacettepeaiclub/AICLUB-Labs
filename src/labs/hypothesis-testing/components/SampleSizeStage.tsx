@@ -2,9 +2,10 @@ import { Figure, LabSlider, Stage } from "@/components/lab";
 import { useState } from "react";
 import { useLanguage } from "@/i18n";
 import { domainOf } from "../view";
+import { useNumberFormat } from "./useNumberFormat";
 import { useLabCopy } from "@/i18n/labs";
 import { BOUNDS, evaluate, type Params, type Result } from "../engine";
-import { PLOT, coord, prob } from "../view";
+import { PLOT } from "../view";
 import { DistributionPlot } from "./DistributionPlot";
 import { SecondaryControls } from "./SecondaryControls";
 
@@ -30,6 +31,7 @@ const CURVE_N = Array.from({ length: BOUNDS.n.max - BOUNDS.n.min + 1 }, (_, i) =
  * not drawn in; it is what the equation does.
  */
 export function SampleSizeStage({ result, onChange }: SampleSizeStageProps) {
+  const { coord, prob } = useNumberFormat();
   const copy = useLabCopy("hypothesis-testing");
   const s = copy.sampleSection;
   const { n } = result.params;
@@ -77,7 +79,7 @@ export function SampleSizeStage({ result, onChange }: SampleSizeStageProps) {
             </button>
             <p className="text-caption text-fg-muted">
               {language === "tr"
-                ? "Sabit ölçekte n arttıkça eğrinin yatayda daralmasını izle. Yükseklik otomatik ölçeklenir."
+                ? "X ekseni sabitken n'yi artır ve iki eğrinin yatayda daralmasına bak. Yükseklik kendiliğinden ölçeklenir."
                 : "On a fixed horizontal scale, watch the curves narrow as n grows. Height is scaled automatically."}
             </p>
           </div>

@@ -1,5 +1,7 @@
 # Turkish product copy
 
+The current standard is [docs/language/tr-style.md](language/tr-style.md) (register, instructions, numbers) and [docs/language/tr-terminology.md](language/tr-terminology.md) (concepts and terms). Where this page and those differ, those win.
+
 Keep lab names and the home page slogan in English. Write section headings, questions, lessons, navigation and teaching prose in natural Turkish. Keep established technical terms where a translation would obscure their meaning.
 
 The content policy syncs only home.title and labMeta.<slug>.title. Section and lesson headings come from the selected language.

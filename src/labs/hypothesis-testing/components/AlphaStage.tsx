@@ -1,7 +1,8 @@
 import { Figure, LabSlider, Stage } from "@/components/lab";
 import { useLabCopy } from "@/i18n/labs";
 import { BOUNDS, type Params, type Result } from "../engine";
-import { coord, criticalList, prob } from "../view";
+import { criticalList } from "../view";
+import { useNumberFormat } from "./useNumberFormat";
 import { DistributionPlot } from "./DistributionPlot";
 import { SecondaryControls } from "./SecondaryControls";
 
@@ -24,6 +25,7 @@ export interface AlphaStageProps {
  * does on its own.
  */
 export function AlphaStage({ result, onChange }: AlphaStageProps) {
+  const { coord, prob } = useNumberFormat();
   const copy = useLabCopy("hypothesis-testing");
   const a = copy.alphaSection;
   const criticals = criticalList(result.criticals);
@@ -43,8 +45,8 @@ export function AlphaStage({ result, onChange }: AlphaStageProps) {
             min={Math.round(BOUNDS.alpha.min * 100)}
             max={Math.round(BOUNDS.alpha.max * 100)}
             onChange={(value) => onChange({ alpha: value / 100 })}
-            format={() => alpha.toFixed(2)}
-            valueText={() => a.alphaValue(alpha.toFixed(2))}
+            format={() => coord(alpha)}
+            valueText={() => a.alphaValue(coord(alpha))}
           />
           <p className="text-caption text-fg-muted">{a.alphaHint}</p>
         </div>

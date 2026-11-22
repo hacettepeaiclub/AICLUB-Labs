@@ -3,6 +3,27 @@ import { useReducedMotion } from "@/hooks";
 import { duration } from "@/design/motion";
 import { cn } from "@/lib/cn";
 
+/**
+ * Greek letters in a label, kept in their own case.
+ *
+ * Figure labels are set in capitals by CSS, and capitals change what a Greek
+ * symbol means: α becomes Α, which reads as a Latin A, and μ₀ becomes Μ₀,
+ * which reads as M₀. The symbols are wrapped so the transform skips them.
+ */
+function keepSymbolCase(label: string): ReactNode {
+  const parts = label.split(/([\u0370-\u03ff]+)/u);
+  if (parts.length === 1) return label;
+  return parts.map((part, i) =>
+    i % 2 === 1 ? (
+      <span key={i} className="normal-case">
+        {part}
+      </span>
+    ) : (
+      part
+    ),
+  );
+}
+
 export type FigureTone = "default" | "accent" | "muted";
 
 export interface FigureProps {
@@ -148,7 +169,7 @@ export const Figure = /* @__PURE__ */ memo(function Figure({
 
   return (
     <div className="min-w-0">
-      <p className="text-overline uppercase text-fg-faint">{label}</p>
+      <p className="text-overline uppercase text-fg-faint">{keepSymbolCase(label)}</p>
       <p
         className={cn(
           "mt-1 font-mono text-title tabular-nums",
