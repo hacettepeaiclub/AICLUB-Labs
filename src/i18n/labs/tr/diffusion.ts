@@ -1,24 +1,33 @@
-const copy = {
+import type en from "../en/diffusion";
+
+/**
+ * Türkçe metin: diffusion. Şekli `en/diffusion.ts` ile birebir aynı olmak zorundadır.
+ * Deneyin geri kalan Türkçe metni src/labs/diffusion/index.tsx içindedir.
+ *
+ * Terimler docs/language/tr-terminology.md (## diffusion), anlatım kuralları
+ * docs/language/tr-style.md dosyasındadır.
+ */
+
+const copy: typeof en = {
   draft: true,
   recap: {
     lessons: [
-      "Ters süreç, mevcut görüntüyü ve modele tanımlanan olasılıkları kullanır. Başlangıç görüntüsünü doğrudan okumaz.",
-      "Kullanılabilen şekilleri değiştirmek, aynı gürültülü girdiden farklı bir sonuç üretebilir.",
-      "Bu sonlu analitik model denoising fikrini gösterir; sinir ağı eğitmez.",
+      "Ters süreç şu anki örneği ve önsel dağılımı kullanır; gizlenen özgün görüntüyü kullanmaz.",
+      "Önsel dağılımı değiştirmek, aynı gürültülü girdi için yeniden kurulan görüntüyü değiştirebilir.",
+      "Bu sonlu analitik model gürültü gidermeyi gösterir; yapay sinir ağı eğitmez.",
     ],
   },
   tour: {
-    intro:
-      "Gürültü düzeyini artır, ardından bir ters adım çalıştır. Sonucun kullanılabilen şekillere nasıl bağlı olduğunu karşılaştır.",
+    intro: "Gürültü ekle, sonra önsel dağılımın ters adımları nasıl yönlendirdiğine bak.",
     stages: {
       experiment: {
         compare:
-          "Solda mevcut gürültülü görüntü var. Sağda, modelin kullanabildiği şekillere göre hesaplanan temiz görüntü tahmini gösteriliyor.",
-        noise: "Gürültüyü artır. Bu kontrol ileri deneyi seçtiğin adımda yeniden başlatır.",
-        step: "Bir ters adım çalıştır. Bu hesap başlangıç görüntüsünü veya gürültüyü üreten seed’i kullanmaz.",
+          "Soldaki panel şu anki gürültülü örnek. Sağdaki panel, izin verilen şekillerden hesaplanan temiz örnek tahmini.",
+        noise: "Gürültüyü artır. Bu, ileri deneyi seçilen adımda baştan başlatır.",
+        step: "Gerçek bir ters adım at. Özgün görüntü ve özgün gürültü bu hesaba verilmez.",
         prior:
-          "Başlangıçtaki şekli seçeneklerden çıkar ve deneyi tekrarla. Ters süreç, modelde olmayan şekli geri getirmek zorunda değildir.",
-        finish: "Kalan ters adımları hesapla ve izin verilen hangi şeklin kaldığına bak.",
+          "Kaynak şekli önsel dağılımdan çıkar ve tekrarla. Daha çok adım, önsel dağılımda olmayan bilgiyi geri getirmez.",
+        finish: "Kalan ters adımları hesapla ve izin verilen şekillerden hangisinin kaldığına bak.",
       },
     },
   },
@@ -26,27 +35,27 @@ const copy = {
     topics: {
       visual: "Görsel başlangıç",
       foundations: "Matematiksel temeller",
-      practice: "Kodla kur ve örnekle",
+      practice: "Kur ve örnek üret",
     },
     notes: {
       "hf-ddim":
-        "DDIM’in ters adımları nasıl hesapladığını açıklar. Bu lab, eğitilmiş ağ yerine dört şekle dayanan analitik bir tahmin kullanır.",
+        "DDIM'in örnekleri gürültü giderme tahminlerinden nasıl güncellediğini anlatır; bu lab eğitilmiş bir ağ yerine dört şekilli analitik bir sonsal dağılım kullanır.",
       "welch-diffusion":
-        "Görüntü üretimini görsel bir anlatımla keşfet. Videodaki metin/video modelleri bu labın dört şekilli önbilgisinden daha kapsamlıdır.",
+        "Görüntü üretiminin görsel bir anlatımıyla başla. Videodaki metin ve video modelleri bu lab'ın dört şekilli önsel dağılımının çok ötesine geçer.",
       "hf-diffusion-video":
-        "Hugging Face kursunun önerdiği notebook anlatımını izle. Labdaki gürültü ve ters adım kontrollerini eğitilmiş denoiser ile ilişkilendir.",
+        "Hugging Face kursunun bağlantı verdiği notebook anlatımını izle. Lab'daki gürültü ve ters adım kontrollerini eğitilmiş bir gürültü gidericiyle ilişkilendir.",
       "diffusion-tutorial":
-        "İleri ve ters sürecin denklemlerini adım adım açıklar. Matematiksel ayrıntılar için bu kaynakla devam edebilirsin.",
+        "İleri bozulmadan ters örneklemeye kadar denklemleri izle; lab'dan sonra daha derin bir matematiksel adım.",
       "ddpm-paper":
-        "Sabit ileri süreç ile öğrenilen ters süreci ayırmak için özgün DDPM formülasyonunu oku.",
+        "Sabit ileri süreci öğrenilen ters süreçten ayırmak için özgün DDPM formülasyonunu oku.",
       "ddim-paper":
-        "Labın ters güncellemesinin dayandığı deterministik örnekleme yaklaşımını oku; buradaki denoiser eğitilmiş ağ değil analitik modeldir.",
+        "Bu lab'ın ters güncellemesinin dayandığı deterministik örnekleme yapısını oku; buradaki gürültü giderici eğitilmiş bir ağ değil, analitiktir.",
       "hf-diffusion-course":
-        "Python notebooklarıyla bir diffusion modeli eğitmeyi gösterir. Uygulamak için ayrı bir Python ortamı gerekir.",
+        "Gerçek bir diffusion modeli eğitmek için kurs notebook'larını izle; bu lab'dan farklı olarak bir Python ortamı gerektirir.",
       "annotated-diffusion":
-        "Gürültü planından U-Net eğitimine ve örneklemeye kadar PyTorch kodunu izle. Giriş kaynaklarından sonra okunması önerilir.",
+        "PyTorch uygulamasını gürültü planından U-Net eğitimine ve örneklemeye kadar izle. Giriş kaynaklarından sonra okunması önerilir.",
       "udl-book":
-        "Yazarın sitesindeki ücretsiz kitapta diffusion models bölümüne geç. Matematik bilgisi gerektirir; labdaki analitik gürültü giderme ile eğitilmiş bir modelin gürültü tahmini arasındaki farkı düşün.",
+        "Yazarın sitesindeki ücretsiz kitabı aç ve diffusion modelleri bölümünü bul. Matematik gerektirir; lab'ın analitik gürültü gidermesini eğitilmiş bir modelin gürültü tahminiyle karşılaştır.",
     },
   },
 };

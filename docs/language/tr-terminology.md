@@ -678,3 +678,35 @@ Aşağıda D2L-TR-DİKKAT diye anılır.
 
 Yeni kavram yok; terimler ## word-embeddings ve ## pca bölümlerindedir.
 "Ödünleşim" (trade-off) proje önerisidir; incelenmiş bir kaynak yok.
+
+---
+
+## diffusion
+
+Kaynak: İhsan Karabulut, *IST304 İstatistik Karar Kuramı ve Yöntemleri,
+Hafta XI, Ders 1: Sonsal Dağılım ve Beklenen Sonsal Kayıp*, Ankara
+Üniversitesi. [Açık ders](https://acikders.ankara.edu.tr/mod/resource/view.php?id=118936)
+(okundu: "sonsal (posterior) dağılım", "önsel dağılım"). Aşağıda IST304.
+
+### Önsel dağılım, sonsal olasılık, sonsal ortalama
+
+- **Tanım:** Önsel dağılım, gözlemden önce şekillere verilen olasılıklar
+  (lab'da dört şekil üzerinde düzgün dağılım). Sonsal olasılık, gürültülü
+  örnek görüldükten sonra Bayes kuralıyla güncellenen olasılık. Sonsal
+  ortalama E[x₀|xₜ], temiz örnek tahminidir (engine.ts `estimate`).
+- **Tercih:** önsel dağılım; sonsal olasılık (posterior); sonsal ortalama.
+  İlk geçtiği yerde İngilizcesi parantezde.
+- **Kullanma:** "önbilgi", "başlangıç olasılığı", "seçenekler" (aynı kavrama başka adlar).
+- **Kaynak:** IST304
+
+### İleri süreç, ters süreç, gürültü giderme
+
+- **Tercih:** ileri süreç; ters süreç; ters adım; gürültü giderme (denoising);
+  gürültü giderici (denoiser). "diffusion modeli" özgün adıyla kalır.
+- **Bağlama bağlı alternatifler:** gürültü arındırma (D2L-TR). Açık karar.
+- **Kaynak:** D2L-TR ("denoising: gürültü arındırma"); proje kararı.
+
+### Tohum (seed), sinyal payı ᾱ
+
+- **Tercih:** rastgele tohum, düğmede "Yeni tohum (seed)"; ᾱ için "sinyal payı".
+- **Kaynak:** Proje kararı.

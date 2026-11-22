@@ -214,9 +214,9 @@ export const tr: Translation = {
     diffusion: {
       title: "From noise to a guess",
       term: "Diffusion",
-      figure: "Gauss gürültüsü ve sonlu önbilgi",
+      figure: "Gauss gürültüsü ve sonlu bir önsel dağılım",
       description:
-        "Gürültülü görüntüden bir tahmin oluştur. Modelin kullanabildiği şekilleri değiştirerek sonuçları karşılaştır.",
+        "Gürültülü bir görüntüden ters süreçle bir tahmin üret ve sonucun önsel dağılıma nasıl bağlı olduğuna bak.",
     },
     pca: {
       title: "The Widest Shadow",
