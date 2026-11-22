@@ -23,7 +23,7 @@ const copy: typeof en = {
       `${word} seçtin: ${total} kelime içinde en yakın ${rank}. kelime, kosinüs benzerliği ${score}.`,
     nearest: (word: string, score: string) => `En yakını ${word}, kosinüs benzerliği ${score}.`,
     because:
-      "Bu vektörler kelimelerin ne anlama geldiğinden değil, nasıl kullanıldığından öğrenildi. Haber ve ansiklopedi metinlerinde apple, meyvelerle olduğundan çok daha sık software ile birlikte geçer.",
+      "Bu vektörler kelimelerin ne anlama geldiğinden değil, metinlerde hangi kelimelerle birlikte geçtiğinden (eş-geçim sayımlarından) öğrenildi. apple'ın software'e yakın durması, eğitim metinlerinde benzer bağlamlarda geçtiklerini gösterir; apple bir şirket adı olarak da kullanılır.",
   },
 
   explore: {
@@ -85,7 +85,7 @@ const copy: typeof en = {
       score: string,
       percent: string,
     ) =>
-      `${a} ile ${b}, ${total} çift içinde en yakın ${rank} çift; kosinüs benzerliği ${score}. İzdüşüm onları birbirinden haritanın genişliğinin ${percent} kadarı uzağa koydu: resme bakarak ilişkili olduklarını tahmin edemezdin.`,
+      `${b}, ${a} kelimesine en yakın ${rank} kelime (${total} kelime içinde); kosinüs benzerliği ${score}. İzdüşüm onları birbirinden harita köşegeninin ${percent} kadarı uzağa koydu: resme bakarak ilişkili olduklarını tahmin edemezdin.`,
     falseBody: (
       a: string,
       b: string,
@@ -94,13 +94,14 @@ const copy: typeof en = {
       total: number,
       score: string,
     ) =>
-      `${a} ile ${b} ekranda en yakın ${screenRank} çift, neredeyse bitişik. Gerçek uzayda ise ${total} çift içinde ${trueRank} sıradalar; kosinüs benzerliği ${score}. Bu yakınlık yalnızca resimde var.`,
+      `Ekranda ${b}, ${a} kelimesine en yakın ${screenRank} kelime; neredeyse bitişikler. 300 boyutlu uzayda ise ${total} kelime içinde ${a} kelimesine en yakın ${trueRank} kelime; kosinüs benzerliği ${score}. Bu yakınlık yalnızca resimde var.`,
     varianceLabel: "Açıklanan varyans",
     varianceHint: (first: string, second: string) => `PC1 ${first} + PC2 ${second}`,
     varianceBody: (percent: string, remaining: number) =>
-      `Bu iki eksen (iki temel bileşen), bu veri kümesindeki varyansın ${percent} kadarını açıklıyor. Geri kalan varyans kaybolmadı: düz bir ekranda yeri olmayan diğer ${remaining} yön boyunca duruyor.`,
+      `Bu iki eksen (iki temel bileşen), bu veri kümesindeki varyansın ${percent} kadarını açıklıyor. Geri kalan varyans kaybolmadı: diğer ${remaining} temel bileşende kalıyor.`,
     correlationLabel: "Uzaklık uyumu (Spearman)",
-    correlationHint: "−1,00: ekran uzaklıklarının sırası benzerlik sırasıyla tam uyuşurdu",
+    correlationHint:
+      "−1,00: kosinüs benzerliği arttıkça ekran uzaklığının sırası tam ters yönde ilerlerdi",
     pending: "İzdüşüm hesaplanıyor…",
   },
 
@@ -142,14 +143,17 @@ const copy: typeof en = {
       "Her kelimenin bir anlam haritasında bir yeri var. Hangi kelimelerin birbirine yakın durduğunu tahmin et, sonra haritada dolaş.",
     stages: {
       intro: {
-        guess: "Bir kelime ve üç aday. Haritada hangisi ona en yakın?",
-        choose: "Birini seç. Harita açılır ve kelimelerin gerçekte nerede durduğunu gösterir.",
+        guess:
+          "Bir kelime ve üç aday. 300 boyutlu uzayda (kosinüs benzerliğiyle) hangisi ona en yakın?",
+        choose:
+          "Birini seç. Harita açılır ve kelimelerin iki boyutlu izdüşümde nerede durduğunu gösterir.",
       },
       map: {
         map: "Her kelimenin bir yeri var. Haritanın yanındaki liste, seçili kelimenin en yakın komşuları.",
         search: "Seçmek için bir kelime ara. Tur dog yazdı.",
         enter: "Enter onu seçer ve harita oraya gider.",
-        compare: "Buradan iki kelimeyi karşılaştırıp gerçekte ne kadar uzak olduklarına bak.",
+        compare:
+          "Buradan iki kelimeyi karşılaştır: kosinüs benzerliği 300 boyutta ölçülür, haritadaki uzaklıktan farklı olabilir.",
       },
     },
   },
