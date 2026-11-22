@@ -54,7 +54,7 @@ const copy: typeof en = {
     step2: "Ne aradığı",
     step2Title: (word: string) => `“${word}” bunu arıyor: sorgusu (query)`,
     step2Note:
-      "Sağa uzanan çubuk, kelimenin aradığı bir özelliktir; sola uzanan, özellikle aramadığı bir özellik. Bu modelde özellikler okunabilsin diye elle adlandırıldı; gerçek bir modelin sorgu bileşenleri böyle okunamaz.",
+      "Sağa uzanan çubuk, kelimenin aradığı bir özelliktir; sola uzanan, özellikle aramadığı bir özellik. Bu modelde özellikler okunabilsin diye elle adlandırıldı; gerçek bir modelin sorgu bileşenleri böyle okunamaz. Burada yalnızca adlandırılmış üç bileşen gösterilir; eşleşme hesabına bütün bileşenler girer.",
 
     step3: "Diğer kelimenin sunduğu",
     step3Title: (word: string) => `“${word}” bunu sunuyor: anahtarı (key)`,
@@ -64,15 +64,16 @@ const copy: typeof en = {
     step4: "Eşleşme",
     step4Title: (score: string) => `Puan: ${score}`,
     step4Note: (from: string, to: string) =>
-      `“${from}” kelimesinin sorgusunu “${to}” kelimesinin anahtarıyla bileşen bileşen çarp, topla ve eksen sayısının kareköküne böl. Bu son adım, model genişledikçe sayıların yönetilebilir bir aralıkta kalmasını sağlar.`,
+      `“${from}” kelimesinin sorgusunu “${to}” kelimesinin anahtarıyla bileşen bileşen çarp, topla ve sorgu ile anahtar vektörlerinin boyutunun (d) kareköküne böl. Bu son adım, model genişledikçe sayıların yönetilebilir bir aralıkta kalmasını sağlar.`,
 
     step5: "%100'den payı",
     step5Title: (share: number) => `Bu da attention'ın %${share} kadarı demek`,
     step5Note:
       "Payların toplamı her zaman %100'dür; bu yüzden paylar puan değil, bölüşümdür. Yeni bir rakibin, izlediğin kelimeler dahil diğer bütün payları küçültmesinin nedeni budur.",
-    tableCaption: "En büyük paylı birkaç kelime için eşleşme ve attention payı.",
+    tableCaption:
+      "En büyük paylı birkaç kelime için puan (√d'ye bölünmüş eşleşme) ve attention payı.",
     colToken: "Kelime",
-    colScore: "Eşleşme",
+    colScore: "Puan",
     colShare: "Pay",
 
     step6: "Neye dönüştüğü",
@@ -108,7 +109,7 @@ const copy: typeof en = {
     biggestShare: "En büyük pay",
     sharesTotal: "Payların toplamı",
     matchedWith: "En çok baktığı",
-    rawMatch: "Eşleşme",
+    rawMatch: "Ham eşleşme",
     score: "Bölündükten sonra",
     divisor: "Bölen",
     peakWith: "En büyük pay",
@@ -117,12 +118,12 @@ const copy: typeof en = {
   scale: {
     kicker: "Neden bölüyoruz?",
     title: "Böleni kaldır, paylar tek kelimede toplansın.",
-    lede: "Eksen sayısının kareköküne bölmek, etkisini sonuçta göremediğin tek adımdır: sen değiştirene kadar sonuç her iki durumda da makul görünür. Bu yüzden bölen senin elinde: kaydırıcıyla bölmeyi tamamen kaldır ya da modelin kullandığı değerin ötesine çıkar ve aynı eşleşmelerin payları nasıl farklı bölüştüğüne bak.",
+    lede: "Sorgu ve anahtar vektörlerinin boyutunun karekökü √d'ye bölmek, etkisini sonuçta göremediğin tek adımdır: sen değiştirene kadar sonuç her iki durumda da makul görünür. Bu yüzden bölen senin elinde: kaydırıcıyla bölmeyi tamamen kaldır ya da modelin kullandığı değerin ötesine çıkar ve aynı eşleşmelerin payları nasıl farklı bölüştüğüne bak.",
     collapse:
       "Bölmeyi atlamak puanları büyük bırakır ve büyük sayılar üzerindeki softmax daha keskindir: payın neredeyse tamamı tek bir kelimeye gider, geri kalanlar yuvarlanınca sıfıra iner. Okunabilir bir dağılım bırakan bu bölmedir.",
     note: "Buradaki her çubuk, aynı eşleşmeler üzerinde aynı softmax ile yeniden hesaplanır; her çubuktaki çentik, modelin gerçekte kullandığı paydır. Sayfanın geri kalanında yalnızca o kullanılır.",
     legend: "Çubuk: seçtiğin bölendeki pay. Çentik: modelin ÷√d ile verdiği pay.",
-    divisorLabel: "Eşleşmeleri şuna böl",
+    divisorLabel: "Ham eşleşmeleri şuna böl",
     divisorValue: (value: string) => `÷${value}`,
     noneMark: "÷1, bölme yok",
     modelMark: (root: string) => `÷${root}, modelinki`,
@@ -137,25 +138,25 @@ const copy: typeof en = {
     announce: (divisor: string, peak: string) => `${divisor} ile bölününce en büyük pay ${peak}.`,
     tableCaption:
       "En büyük paylı birkaç kelime için: eşleşme, modelin verdiği pay ve seçtiğin bölendeki pay.",
-    colRaw: "Eşleşme",
+    colRaw: "Ham eşleşme",
     colWith: "Modelin payı",
     colNow: "Seçtiğin bölende",
   },
 
   softmax: {
-    kicker: "Eşleşmelerden paylara",
+    kicker: "Puanlardan paylara",
     title: "On puan, tek bir %100.",
-    lede: "Softmax, eşleşmelerden oluşan satırı toplamı %100 olan bir pay satırına çevirir. Hiçbir şey atılmaz, hiçbir kelime seçilmez: her kelime bir pay alır ve paylar ancak birbirinden alınarak büyüyebilir. Eşleşmeler artık senin elinde: herhangi birini sürükle.",
+    lede: "Softmax, puanlardan (√d'ye bölünmüş eşleşmelerden) oluşan satırı toplamı %100 olan bir pay satırına çevirir. Hiçbir şey atılmaz, hiçbir kelime seçilmez: her kelime bir pay alır ve paylar ancak birbirinden alınarak büyüyebilir. Puanlar artık senin elinde: herhangi birini sürükle.",
     caption:
       "Her hareketinde bütün paylar, satırın tamamından, modelin kullandığı softmax ile yeniden hesaplanır. Sürüklediğin puanlar varsayımsaldır; modelin kendi değerleri işaretli kalır.",
     dragHint:
-      "Herhangi bir kelimenin eşleşmesini sürükle. Birini yükselt ve dokunmadıkların dahil diğer bütün payların düştüğüne bak.",
-    reset: "Modelin eşleşmelerine dön",
-    legend: "Çentikler modelin kendi eşleşmesini ve payını gösterir.",
+      "Herhangi bir kelimenin puanını sürükle. Birini yükselt ve dokunmadıkların dahil diğer bütün payların düştüğüne bak.",
+    reset: "Modelin puanlarına dön",
+    legend: "Çentikler modelin kendi puanını ve payını gösterir.",
     pickAnother: "Başka bir kelime için sor",
-    scoreHandle: (word: string) => `“${word}” için eşleşme`,
-    scoreValue: (value: string) => `eşleşme ${value}`,
-    touchedLabel: "Değiştirdiğin eşleşme",
+    scoreHandle: (word: string) => `“${word}” için puan`,
+    scoreValue: (value: string) => `puan ${value}`,
+    touchedLabel: "Değiştirdiğin puan",
     touchedHint: "senin elinle",
     announce: (word: string, share: string) =>
       `En büyük pay artık “${word}” kelimesinde: ${share}.`,
@@ -165,8 +166,9 @@ const copy: typeof en = {
     kicker: "Paylar neye harcanır",
     title: "Paylar bir hüküm değil, katsayıdır.",
     lede: "Bakılan her kelime, kendi değer (value) vektörünü payı oranında katar. Bunları topladığında seçili kelimenin neye dönüştüğünü bulursun; gerçek bir modelde sonraki katmana giden budur.",
-    tableCaption: "En çok katkı veren üç kelime için pay ve değer vektörü.",
-    outputLabel: "Karışımın sonucu, eksen eksen",
+    tableCaption:
+      "En büyük paylı üç kelime için pay ve değer vektörü. Toplama bütün kelimeler katılır; tabloda yalnızca bu üçü gösterilir.",
+    outputLabel: "Karışımın sonucu: bütün kelimelerin katkısıyla hesaplanır, gösterilen üç eksende",
   },
 
   tour: {
@@ -180,17 +182,19 @@ const copy: typeof en = {
         swap: "Şimdi cümlenin bir kelimesini değiştir. Seçtiğin kelimeye dokunmadığın hâlde onun payları da değişir.",
       },
       compare: {
-        bars: "Solda seçili kelimenin aradığı, yani sorgusu. Sağda en iyi eşleştiği kelimenin sunduğu, yani anahtarı.",
+        bars: "Solda seçili kelimenin aradığı, yani sorgusu. Sağda en iyi eşleştiği kelimenin sunduğu, yani anahtarı. Yalnızca adlandırılmış üç bileşen gösterilir; hesaba bütün bileşenler girer.",
         pick: "Buradan başka bir kelime seç; iki taraf da onun için yeniden hesaplanır.",
-        match: "İkisini çubuk çubuk çarpıp topla: ham eşleşme budur. Bölündüğünde puan olur.",
+        match:
+          "İki vektörü bütün bileşenleriyle çarpıp topla: ham eşleşme budur (yalnızca üç bileşen çizili). √d'ye bölündüğünde puan olur.",
       },
       scale: {
-        shares: "Aynı eşleşmeler, aşağıdaki bölenle paylara çevrilmiş hâlde.",
+        shares: "Aynı ham eşleşmeler, aşağıdaki bölenle paylara çevrilmiş hâlde.",
         divisor: "Tur böleni kaldırdı. Bölen olmayınca en büyük eşleşme neredeyse bütün payı alır.",
-        model: "Bu, modelin kullandığı böleni geri koyar: eksen sayısının karekökü.",
+        model:
+          "Bu, modelin kullandığı böleni geri koyar: sorgu ve anahtar vektörlerinin boyutunun karekökü, √d.",
       },
       softmax: {
-        rows: "Her satır bir kelimenin eşleşme puanı ve payı. Payların toplamı her zaman %100.",
+        rows: "Her satır bir kelimenin puanı ve payı. Payların toplamı her zaman %100.",
         drag: "Bir puanı sürükle ya da seçip ok tuşlarını kullan. Tur ilkini yükseltti; diğer bütün paylar düştü.",
         reset: "Bu düğme modelin kendi puanlarını geri getirir.",
       },
@@ -205,7 +209,7 @@ const copy: typeof en = {
 
   study: {
     topics: {
-      qkv: "Sorgu, anahtar ve eşleşme puanı",
+      qkv: "Sorgu, anahtar ve puan",
       softmax: "Softmax: tek bir %100",
       transformer: "Attention'ın modeldeki yeri",
     },
