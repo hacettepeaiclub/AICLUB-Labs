@@ -671,3 +671,10 @@ Aşağıda D2L-TR-DİKKAT diye anılır.
 - **Tercih:** izdüşüm (bkz. ## pca; "projeksiyon" kullanma); açıklanan varyans;
   uzaklık uyumu (Spearman sıra korelasyonu; "mesafe" yerine "uzaklık").
 - **Kaynak:** bkz. ## pca.
+
+---
+
+## word-embeddings-3d
+
+Yeni kavram yok; terimler ## word-embeddings ve ## pca bölümlerindedir.
+"Ödünleşim" (trade-off) proje önerisidir; incelenmiş bir kaynak yok.

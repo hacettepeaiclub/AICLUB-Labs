@@ -303,13 +303,13 @@ export const journeys: Record<string, { en: Journey; tr: Journey }> = {
     ],
     tr: [
       "Fazladan bir eksenin kelime haritasını daha doğru mu, yoksa yalnızca daha ikna edici mi yaptığını değerlendir.",
-      "Bir kelimeye dokun ve en yakın komşularını gör; sonra bulutu sürükleyerek döndür.",
-      "Bir komşu uzakta görünene kadar döndür. Benzerlik puanı değişmez.",
+      "En yakın kelimelerini görmek için bir kelimeye dokun; sonra bulutu sürükleyerek döndür.",
+      "En yakın kelimelerden biri uzakta görünene kadar döndür ve benzerliğinin değişmediğine bak.",
       "İki kelime bir açıdan yan yana, başka bir açıdan birbirinden uzak görünüyor. Gerçek uzaklıklarını hangi görünüm gösterir?",
-      "Hiçbiri; 300 boyutta ölçülen benzerlik puanı gösterir.",
+      "Hiçbiri: 300 boyutta ölçülen kosinüs benzerliği gösterir.",
       "En yakın göründükleri açı.",
       "En uzak göründükleri açı.",
-      "Her görünüm, 300 boyutlu uzayın yalnızca üç PCA eksenidir; döndürdükçe görünen uzaklık değişir. Komşu puanları ise tam vektörlerden hesaplanır ve her açıdan aynı kalır.",
+      "Her görünüm, 300 boyutlu uzayın yalnızca üç PCA eksenidir; döndürdükçe görünen uzaklık değişir. En yakın kelimelerin benzerlikleri ise tam vektörlerden hesaplanır ve her açıdan aynı kalır.",
     ],
   },
   probability: {

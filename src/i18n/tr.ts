@@ -242,8 +242,8 @@ export const tr: Translation = {
     "word-embeddings-3d": {
       title: "The Map of Meaning, in 3D",
       term: "Word embedding, prototip",
-      figure: "nokta olarak kelimeler ve bunlardan birine en yakın dördü.",
-      description: "Bir deney: aynı 318 kelime, iki yerine üç PCA eksenine indirgenmiş hâliyle.",
+      figure: "nokta olarak kelimeler ve bunlardan birine en yakın dört kelime.",
+      description: "Bir prototip: aynı 318 kelime, iki yerine üç PCA eksenine indirgenmiş hâliyle.",
     },
     "word-embeddings": {
       title: "The Map of Meaning",
