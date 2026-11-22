@@ -323,3 +323,71 @@ Vikipedi "Temel bileşenler analizi" ve "Özdeğer ve özvektör" sayfaları (40
 - **Bağlama bağlı alternatifler:** kesme dönüşümü. İkisi için de okunabilen
   bir Türkçe ders kaynağı bulunamadı; açık karar.
 - **Kaynak:** İncelenen kaynak yok. Proje önerisi.
+
+---
+
+## generalization
+
+Bu bölümdeki terimler için okunabilen Türkçe ders notu bulunamadı: İTÜ
+"Veri Madenciliği" slaytları (web.itu.edu.tr/~sgunduz, d4.pdf) ve Ankara
+Üniversitesi açık ders Python ile makine öğrenmesi sunumu (resource
+id=174038) indirildi ama metinleri çıkarılamadı. Aşağıdaki seçimler DLT ve
+D2L-TR sözlüklerine (bkz. ilk tablo) ve sitenin önceki kullanımına dayanır.
+
+### Genelleme
+
+- **Tanım:** Modelin eğitimde görmediği örneklerde de doğru tahmin yapması.
+- **Tercih:** genelleme
+- **Karıştırılmaması gereken:** ezberleme (eğitim örneklerine tam uyum).
+- **Örnek:** "Tanıdık örnekleri ezberlemeyi yeni örneklere genellemeden ayırt et."
+- **Kaynak:** DLT ("generalization: genelleme")
+
+### Eğitim, doğrulama ve test kümesi
+
+- **Tanım:** Eğitim kümesi modelin parametrelerini belirler (k-NN'de
+  ezberlenen noktalar). Doğrulama kümesi model seçiminde (k) kullanılır.
+  Test kümesi yalnızca son değerlendirmede, bir kez kullanılır.
+- **Tercih:** eğitim kümesi; doğrulama kümesi; test kümesi. Gösterge
+  etiketlerinde "Eğitim doğruluğu", "Doğrulama doğruluğu", "Son test doğruluğu".
+- **Bağlama bağlı alternatifler:** geçerleme kümesi (D2L-TR), doğrulama seti
+  (DLT), sınama kümesi (DLT "test: sınama"). Projede "doğrulama" ve "test"
+  kullanılır; "set" yerine "küme".
+- **Karıştırılmaması gereken:** doğrulama (validation) ile doğruluk (accuracy).
+- **Kaynak:** DLT, D2L-TR
+
+### Doğruluk (accuracy)
+
+- **Tanım:** Doğru sınıflandırılan örneklerin oranı (engine.ts `accuracy`).
+- **Tercih:** doğruluk. "Skor" kullanma; ölçülen nicelik doğruluktur.
+- **Kaynak:** Proje kararı.
+
+### k-en yakın komşu (k-NN)
+
+- **Tanım:** Bir noktayı, ona en yakın k eğitim noktasının çoğunluk oyuyla
+  sınıflandıran yöntem.
+- **Tercih:** k-en yakın komşu (k-NN); "oy veren komşu sayısı (k)".
+- **Kaynak:** Türkçe ders kaynağı okunamadı; ad, Türkçe arama sonuçlarındaki
+  yaygın kullanımdır. Açık karar.
+
+### Karar sınırı, karar bölgesi
+
+- **Tanım:** Sınıflandırıcının tahmininin bir sınıftan diğerine geçtiği
+  sınır; bölgeler bu sınırın ayırdığı alanlardır.
+- **Tercih:** karar sınırı; karar bölgesi
+- **Kaynak:** Proje kararı.
+
+### Etiket gürültüsü
+
+- **Tanım:** Etiketlerin seçilen olasılıkla ters çevrilmesi (engine.ts
+  `dataset`, `noise`).
+- **Tercih:** etiket gürültüsü; kontrol etiketi "Etiketin ters çevrilme olasılığı".
+- **Karıştırılmaması gereken:** standart sapma (bkz. "Standart sapma, gürültü").
+- **Kaynak:** DLT ("noise: gürültü")
+
+### Kapasite
+
+- **Tanım:** Modelin uyabileceği fonksiyonların esnekliği.
+- **Tercih:** kapasite
+- **Bağlama bağlı alternatifler:** sığım (DLT). Projede kullanma; ML
+  derslerinde "kapasite" daha anlaşılırdır. Açık karar.
+- **Kaynak:** DLT ("capacity: sığım")

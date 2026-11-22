@@ -235,8 +235,9 @@ export const tr: Translation = {
     generalization: {
       title: "Learned or memorised?",
       term: "Genelleme",
-      figure: "esnek bir sınır tanıdık noktalara uyuyor, sonra yeni örneklerle karşılaşıyor.",
-      description: "Modeli eğitim verisinde dene. Sonra ayrı örnekleri açıp doğruluğu karşılaştır.",
+      figure: "eğitim noktalarına tam uyan esnek bir karar sınırı ve yeni örnekler.",
+      description:
+        "k'yı değiştir, sonra ayrı örnekleri göster ve eğitim doğruluğunu doğrulama doğruluğuyla karşılaştır.",
     },
     "word-embeddings-3d": {
       title: "The Map of Meaning, in 3D",
