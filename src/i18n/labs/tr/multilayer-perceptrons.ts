@@ -133,7 +133,7 @@ const copy: typeof en = {
     },
     kicker: "Sonuna kadar yaklaş",
     title: "Bir nöron sandığından basittir.",
-    lede: "Ne belleği ne mantığı var. Üç sayı ve bir sıkıştırma: alanın bütünü bu birim üzerine kurulur. Nöron iki girdiyi ağırlıklarıyla çarpar, bias'ı ekler ve sonucu bir aktivasyon fonksiyonundan geçirir.",
+    lede: "Ne belleği ne mantığı var. Üç sayı ve bir aktivasyon fonksiyonu: alanın bütünü bu birim üzerine kurulur. Nöron iki girdiyi ağırlıklarıyla çarpar, bias'ı ekler ve sonucu bir aktivasyon fonksiyonundan geçirir.",
     weight1: "x₁ ağırlığı",
     weight2: "x₂ ağırlığı",
     bias: "Bias",
@@ -191,7 +191,7 @@ const copy: typeof en = {
   },
 
   descent: {
-    slopeHint: "geri yayılımın her ağırlık için verdiği tek sayı",
+    slopeHint: "kayıp eğrisinin bu noktadaki türevi",
     kicker: "Nasıl öğrenir",
     title: "Yokuş aşağı, her seferinde küçük bir adım.",
     lede: "Öğrenme bir kavrayış değildir. Eğimli bir yüzeyde, gradyanın tersi yönünde ilerleyen bir top gibidir ve adımlarının büyüklüğü sonucu büyük ölçüde belirler. Öğrenme oranını değiştir ve topun yakınsamasını, salınmasını ya da uzaklaşmasını karşılaştır.",
@@ -201,7 +201,7 @@ const copy: typeof en = {
     weight: "ağırlık",
     loss: "kayıp",
     slope: "eğim",
-    nextStep: "sonraki adım",
+    nextStep: "sonraki ağırlık",
     steps: "adım",
     curveLabel: (w: string, l: string, s: string) =>
       `Kayıp eğrisi; top ${w} ağırlığında, kayıp ${l}, eğim ${s}.`,
@@ -222,12 +222,12 @@ const copy: typeof en = {
       },
       backprop: {
         title: "Geri yayılım",
-        body: "Zincir kuralıyla, kayıptan başlayarak katmanlar boyunca geriye doğru ilerlenir. Her ağırlık için kaybın o ağırlığa göre türevi, yani gradyanı bulunur.",
+        body: "Zincir kuralıyla, kayıptan başlayarak katmanlar boyunca geriye doğru ilerlenir. Her ağırlık için kaybın o ağırlığa göre kısmi türevi bulunur; bu kısmi türevlerin hepsi birlikte gradyanı oluşturur.",
       },
       descent: {
-        slopeHint: "geri yayılımın her ağırlık için verdiği tek sayı",
+        slopeHint: "geri yayılımın her ağırlık için bulduğu kısmi türev",
         title: "Gradient descent",
-        body: "Her ağırlık, kendi gradyanının tersi yönünde küçük bir adım kaydırılır. Öğrenme oranı gradyanı ölçekleyerek bu adımın büyüklüğünü etkiler; bu lab ağırlıkları küçük tutan bir L2 terimi de ekler. Sonra bu binlerce kez tekrarlanır.",
+        body: "Her ağırlık, kendi gradyanının tersi yönünde küçük bir adım kaydırılır. Öğrenme oranı gradyanı ölçekleyerek bu adımın büyüklüğünü etkiler. Motor isteğe bağlı bir L2 terimini de destekler; bu lab'daki eğitimlerde o terim sıfırdır. Sonra bu binlerce kez tekrarlanır.",
       },
     },
   },
@@ -238,7 +238,7 @@ const copy: typeof en = {
     testAccuracy: "Test doğruluğu",
     target: "Hedef",
     objectiveLine: (accuracy: string) =>
-      `Spiralde ${accuracy} test doğruluğuna ulaş, hem de olabildiğince az gizli nöronla.`,
+      `Spiralde, en az 150 epok eğittikten sonra ${accuracy} test doğruluğuna ulaş, hem de olabildiğince az gizli nöronla.`,
     solvedNote: "Çözüldü. Şimdi bir nöron eksilt ve yeniden dene.",
     noBest: "Henüz yok. Çok nöronla başla, sonra ağ şekli tutamayana kadar azalt.",
     bestLine: (neurons: number, accuracy: string, epoch: number) =>
@@ -249,10 +249,10 @@ const copy: typeof en = {
       `${neurons} gizli nöronla, ${accuracy} test doğruluğuyla çözüldü.`,
     kicker: "Görev",
     title: "Spirali olabildiğince az nöronla ayır.",
-    lede: "On altı nöronla herkes çözer. Asıl soru, ağ şekli tutamaz hâle gelmeden nöron sayısını ne kadar azaltabileceğin.",
+    lede: "Çok nöronla çoğu zaman çözülür; sonuç öğrenme oranına ve rastgele başlangıca da bağlıdır. Asıl soru, ağ şekli tutamaz hâle gelmeden nöron sayısını ne kadar azaltabileceğin.",
     objective: "Hedef",
     objectiveBody: (accuracy: number) =>
-      `Spiralde %${accuracy} test doğruluğuna ulaş. Sonra aynısını daha az nöronla yap.`,
+      `Spiralde, en az 150 epok eğittikten sonra %${accuracy} test doğruluğuna ulaş. Sonra aynısını daha az nöronla yap.`,
     hiddenLayers: "Gizli katman",
     neuronsPerLayer: "Katman başına nöron",
     learningRate: "Öğrenme oranı",
@@ -269,10 +269,10 @@ const copy: typeof en = {
 
   recap: {
     lessons: [
-      "Bir nöron, ağırlıklı bir toplam ve bir sıkıştırmadan ibarettir; tek başına yalnızca düz bir karar sınırı çizebilir",
+      "Bir nöron, ağırlıklı bir toplam ve bir aktivasyon fonksiyonundan ibarettir; tek başına yalnızca düz bir karar sınırı çizebilir",
       "Gizli katmanlar bu sınırı büker; XOR, gizli katman olmadan ayrılamaz",
       "Her gizli nöron kendi özniteliğini öğrenir; sonraki katman bunları birleştirir",
-      "Kayıp ağın ne kadar yanıldığını söyler; geri yayılım her ağırlığın kayba etkisini, yani gradyanı bulur",
+      "Kayıp ağın ne kadar yanıldığını söyler; geri yayılım kaybın her ağırlığa göre kısmi türevini, yani gradyanın bileşenlerini bulur",
       "Gradient descent her ağırlığı yokuş aşağı kaydırır; öğrenme oranı gradyanı ölçekleyerek adımın büyüklüğünü etkiler",
       "Adım çok küçükse eğitim çok yavaş ilerler, çok büyükse dibi aşar; iki durumda da yöntem kayıp eğrisinin tamamını görmez",
     ],
@@ -293,7 +293,7 @@ const copy: typeof en = {
         setup: "Veri, gürültü, aktivasyon fonksiyonu ve öğrenme oranı burada.",
       },
       neuron: {
-        line: "Tek bir nöron: iki ağırlık, bir bias ve bir sıkıştırma. Sınırını taşımak için resmin üzerinde sürükle.",
+        line: "Tek bir nöron: iki ağırlık, bir bias ve bir aktivasyon fonksiyonu. Sınırını taşımak için resmin üzerinde sürükle.",
         weight: "Ya da sayıları doğrudan ayarla. Tur ilk ağırlığı değiştirdi: doğru döndü.",
         bias: "Bias doğruyu döndürmeden kaydırır. Nasıl ayarlarsan ayarla, doğru düz kalır.",
       },
@@ -312,11 +312,13 @@ const copy: typeof en = {
         slope:
           "Tek bir ağırlık için kayıp. Topu oraya koymak için eğrinin herhangi bir yerine tıkla.",
         run: "Çalıştır: top eğimin tersi yönünde adım adım ilerler.",
-        figures: "Ağırlık, kayıp, eğim ve bir sonraki adım: öğrenme oranı çarpı eğim.",
+        figures:
+          "Ağırlık, kayıp, eğim ve sonraki ağırlık: sonraki ağırlık = ağırlık − öğrenme oranı × eğim. Ağırlık −2,4 ile 2,4 arasında tutulur.",
         rate: "Öğrenme oranını buradan büyüt ve topun dibi aşmaya başlamasına bak.",
       },
       challenge: {
-        spiral: "İç içe iki sarmal. On altı nöronla herkes ayırabilir.",
+        spiral:
+          "İç içe iki sarmal. Çok nöronla çoğu zaman ayrılabilir, ama sonuç ayarlara ve rastgele başlangıca bağlıdır.",
         size: "Katman ve nöron sayısını buradan ayarla: ne kadar az, o kadar iyi.",
         run: "Eğit ve ağın şekli tutup tutamadığına bak.",
         result: "Test doğruluğu ve kullanılan nöron sayısı.",
