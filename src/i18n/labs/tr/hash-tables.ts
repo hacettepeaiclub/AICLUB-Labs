@@ -14,7 +14,7 @@ const copy: typeof en = {
     amortized:
       "Amortize çözümlemede işlem dizisinin toplam maliyeti işlem sayısına bölünür. Kapasiteyi iki katına çıkarmanın maliyeti de bütün eklemelere dağıtılır.",
     javaApi:
-      "Bu laboratuvarın kullandığı hash'i, int aritmetiğinde s[0]·31^(n−1) + … + s[n−1] olarak, ve HashMap'in varsayılanlarını tanımlar: 16 kova, 0,75 doluluk oranı ve her yeniden hash'lemede yaklaşık iki katı kova.",
+      "String.hashCode için 32 bitlik tamsayı aritmetiğindeki hesabı tanımlar. HashMap belgeleri 16 başlangıç kovasını, 0,75 varsayılan doluluk eşiğini ve kapasitenin yaklaşık iki katına çıkmasını açıklar.",
   },
 
   percent: (value: string) => `%${String(value).replace(".", ",")}`,
@@ -99,7 +99,7 @@ const copy: typeof en = {
     title: "İlk yuva doluysa sırada hangisi var?",
     lede: "Tabloda 32 yuva var. Anahtarın hesaplanan yuvası doluysa sıradaki yuva denenir. Anahtar ekleyerek boş yer bulmak için yapılan deneme sayısını izle.",
     caption:
-      "Hücrelerde anahtarların başlangıç yuvaları gösterilir. Turuncu çerçeveler son eklemede denenen yuvalardır. Dolu hücreler yan yana biriktikçe arama uzayabilir.",
+      "Hücrelerde anahtarların başlangıç yuvaları gösterilir. Kehribar çerçeveler son eklemede denenen yuvalardır. Dolu hücreler yan yana biriktikçe arama uzayabilir.",
     announce: (count: number, home: number, slot: number, probes: number) =>
       `${count}. anahtar için ilk yuva ${home}. ${probes} yoklamayla ${slot} numaralı yuvaya yerleşti.`,
     tableLabel: (count: number, m: number) => `${m} yuvalı, ${count} anahtar tutan bir tablo.`,
@@ -137,7 +137,7 @@ const copy: typeof en = {
     caption:
       "Eşit olasılıklı kova seçiminde zincirlemenin başarılı arama maliyeti yaklaşık 1 + α/2 olur. Doğrusal yoklamada α değeri 1'e yaklaşırken başarılı arama maliyeti ½(1 + 1/(1 − α)), ekleme maliyeti ½(1 + 1/(1 − α)²) ile artar.",
     announce: (alpha: string, chain: string, linear: string) =>
-      `${String(alpha).replace(".", ",")} doluluğunda zincirleme ortalama ${String(chain).replace(".", ",")}, doğrusal yoklama ${String(linear).replace(".", ",")} karşılaştırma ister.`,
+      `${String(alpha).replace(".", ",")} doluluğunda zincirleme ortalama ${String(chain).replace(".", ",")} karşılaştırma, doğrusal yoklama ${String(linear).replace(".", ",")} yoklama gerektirir.`,
     chartLabel:
       "Bir anahtarı bulmak için ortalama yoklamanın doluluk oranına göre grafiği: zincirleme için düz bir çizgi, doğrusal yoklama için 1'e yaklaşırken dikleşen bir eğri ve ona ekleme için daha dik, kesikli bir eğri. Noktalar rastgele tablolarda ölçülmüştür.",
     axis: "doluluk oranı α",
@@ -186,8 +186,8 @@ const copy: typeof en = {
     dragHint: "Daha çok anahtar eklemek ya da geri almak için grafik boyunca bas veya sürükle.",
     figures: {
       capacity: "Kova",
-      capacityHint: (threshold: number) => `${threshold} anahtarı geçince yine taşınır`,
-      resizes: "Taşınma",
+      capacityHint: (threshold: number) => `${threshold} anahtarı geçince kapasite yine artar`,
+      resizes: "Kapasite artışı",
       average: "Ortalama iş",
       averageHint: "ekleme başına, her zaman 3'ün altında",
     },
@@ -219,10 +219,10 @@ const copy: typeof en = {
   // 7 ----------------------------------------------------------------------
   challenge: {
     kicker: "Görevler",
-    title: "Üç farklı tabloyu dene",
+    title: "Hash tablolarıyla üç görev",
     lede: "Görevde istenen özelliği sağlayan anahtarları veya tablo ayarını bul. Birden fazla geçerli yanıt olabilir.",
     caption:
-      "Yanıtlar bu labdaki hash fonksiyonu ve tablo işlemleri çalıştırılarak kontrol edilir.",
+      "Yanıtlar bu lab'daki hash fonksiyonu ve tablo işlemleri çalıştırılarak kontrol edilir.",
     announce: (solved: number, total: number) => `${total} görevden ${solved} tanesi çözüldü.`,
     pickLabel: "Görev",
     reset: "İlerlememi unut",
@@ -275,7 +275,7 @@ const copy: typeof en = {
       "365 kovada 23 bağımsız ve eşit olasılıklı atamada çakışma olasılığı %50'yi geçer.",
       "Zincirleme her kovada bir liste tutar. Eşit olasılıklı kova seçiminde başarılı aramanın ortalaması yaklaşık 1 + α/2 karşılaştırmadır.",
       "Doğrusal yoklama boş yuva bulana kadar yuvaları sırayla inceler. Yan yana dolu yuvalar aramayı uzatabilir.",
-      "α değeri 1'e yaklaşırken doğrusal yoklamanın maliyeti hızla artar. Başarılı arama için ½(1 + 1/(1 − α)), eklemek için ½(1 + 1/(1 − α)²)",
+      "α değeri 1'e yaklaşırken doğrusal yoklamanın maliyeti hızla artar. Başarılı arama için ½(1 + 1/(1 − α)), ekleme için ½(1 + 1/(1 − α)²) yoklama gerekir.",
       "Kapasite doluluk eşiğinde iki katına çıkarsa ekleme başına amortize maliyet sabit kalır.",
       "s adımıyla artan anahtarların kova numaraları m / ebob(s, m) adımda tekrar eder.",
     ],
@@ -297,11 +297,11 @@ const copy: typeof en = {
       },
       birthday: {
         chart:
-          "Anahtar eklendikçe iki anahtarın aynı kovaya düşme olasılığı. Önce yukarıda tahminini yap.",
+          "Önce tahminini yap. Ardından grafikte anahtar sayısına göre çakışma olasılığını izle.",
         keys: "Kaç anahtar atılacağını ayarla.",
         throw: "Denemeyi başlat ve ilk çakışmanın kaçıncı anahtarda olduğunu gör.",
         chance:
-          "Kesin olasılık, yarı yarıya ihtimal için gereken anahtar sayısı ve şimdiye kadarki denemelerin.",
+          "Kesin olasılık, %50 olasılık için gereken anahtar sayısı ve şimdiye kadar yaptığın denemeler.",
       },
       probe: {
         slots: "Tabloda 32 yuva var. İlk yuva doluysa sağdaki yuvalar sırayla yoklanır.",
@@ -311,12 +311,12 @@ const copy: typeof en = {
       },
       compare: {
         chart: "Tablo doldukça bir anahtarı bulmanın maliyeti: zincirleme ve doğrusal yoklama.",
-        load: "Doluluk oranını grafik boyunca sürükleyerek ya da ok tuşlarıyla ayarla. Tur tabloyu doldurdu.",
+        load: "Doluluk oranını grafik boyunca sürükleyerek ya da ok tuşlarıyla ayarla. Eğrilerin doluluğa göre nasıl değiştiğine bak.",
         costs: "Dolmaya yakınken yoklama dikleşerek artar, zincirleme ise düz bir çizgide büyür.",
       },
       resize: {
         bars: "Her çubuk bir eklemenin yaptığı iş; tablo ikiye katlandığında kopyalanan bütün anahtarlar dahil.",
-        add: "Anahtar eklemek için grafik boyunca sürükle ya da ok tuşlarını kullan. Tur birkaç tane ekledi.",
+        add: "Anahtar eklemek için grafik boyunca sürükle ya da ok tuşlarını kullan. Kapasitenin hangi eklemede arttığına bak.",
         average:
           "Yüksek çubuklar kapasitenin arttığı eklemeleri gösterir. Ekleme başına ortalama iş grafiğini bu çubuklarla karşılaştır.",
       },
