@@ -60,12 +60,12 @@ export const journeys: Record<string, { en: Journey; tr: Journey }> = {
     tr: [
       "Bir modelin, kimsenin etiketlemediği resimlerden, gizli olanı tahmin ederek nasıl öğrenebildiğini gör.",
       "Bir blok gizle ve modeli birkaç saniye eğit.",
-      "Kayıp düşerken aynı türden parçaların haritada bir araya geldiğini izle.",
+      "Kayıp düşerken aynı dokudan parçaların haritada bir araya gelip gelmediğine bak.",
       "Bir model bu görevde sıfır kayba ulaşıyor. Bu, mutlaka işe yarar bir şey öğrendiği anlamına gelir mi?",
-      "Hayır: her parçaya aynı vektörü vermek de her tahmini doğru yapar.",
+      "Hayır: her parçaya aynı vektörü vermek de tahmini hedefle aynı yapar ve kaybı düşürür.",
       "Evet: sıfır kayıp her tahminin kusursuz olduğunu gösterir, yani öğrenmiştir.",
-      "Evet: kayıp ancak türler birbirinden ayrı tutulursa sıfıra iner.",
-      "Yavaş kopyayı kapatıp eğit. Kayıp sıfıra iner, çünkü bütün vektörler aynılaşır ve içlerinde resimden hiçbir şey kalmaz.",
+      "Evet: kayıp ancak dokular birbirinden ayrı tutulursa sıfıra iner.",
+      "“İki taraftan gradyan” yöntemini seçip eğit. Bu modelde vektörler birbirine çok yaklaşabilir; kayıp düşerken temsillerde dokuları ayıran bilgi azalır. Kaybın yanında yayılıma ve doğruluğa da bak.",
     ],
   },
   generalization: {

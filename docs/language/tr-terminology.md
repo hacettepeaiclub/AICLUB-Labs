@@ -710,3 +710,38 @@ Hafta XI, Ders 1: Sonsal Dağılım ve Beklenen Sonsal Kayıp*, Ankara
 
 - **Tercih:** rastgele tohum, düğmede "Yeni tohum (seed)"; ᾱ için "sinyal payı".
 - **Kaynak:** Proje kararı.
+
+---
+
+## jepa
+
+### Kodlayıcı, hedef kodlayıcı, tahminci
+
+- **Tercih:** kodlayıcı (encoder); hedef kodlayıcı; bağlam kodlayıcısı;
+  tahminci (predictor).
+- **Bağlama bağlı alternatifler:** gizyazar (DLT). Projede kullanma.
+- **Kaynak:** D2L-TR ("encoder: kodlayıcı"); DLT. "Tahminci" proje kararıdır.
+
+### Ara katman (bu lab'da)
+
+- **Tercih:** Bu lab'da ağların iç katmanı "ara katman", nöronu "ara
+  katmandaki nöron". "Gizli" sözcüğü gizlenen parçaya ayrılmıştır; diğer
+  lab'larda "gizli katman" kullanılır (bkz. ## multilayer-perceptrons).
+- **Kaynak:** Proje kararı.
+
+### Parça, temsil, çöküş
+
+- **Tercih:** parça (patch); temsil (representation; DLT "gösterim");
+  çöküş (collapse: temsillerin tek noktaya yaklaşması).
+- **Kaynak:** Proje kararı; DLT ("representation: gösterim") projede kullanılmaz.
+
+### EMA, stop-gradient, JEPA
+
+- **Tercih:** EMA (üstel hareketli ortalama), stop-gradient ve
+  joint-embedding predictive architecture (JEPA) özgün adlarıyla kalır;
+  kart terimi "öz-denetimli öğrenme" (self-supervised learning).
+- **Kaynak:** Proje kararı; "öz-denetimli öğrenme" için incelenmiş kaynak yok. Açık karar.
+
+### k en yakın komşu
+
+- **Tercih:** "5 en yakın komşu (k = 5)"; bkz. ## generalization.

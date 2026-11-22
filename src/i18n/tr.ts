@@ -230,7 +230,7 @@ export const tr: Translation = {
       term: "Öz-denetimli öğrenme",
       figure: "gizli bir parçanın dört sayılık temsili, görünen komşularından tahmin ediliyor.",
       description:
-        "Görüntünün bir kısmını gizle. Modelin, görünen komşulardan gizli parçanın temsilini nasıl öğrendiğini incele.",
+        "Bir resmin bir kısmını gizle ve modelin, gizli parçanın temsilini görünen komşularından tahmin etmeyi nasıl öğrendiğine bak.",
     },
     generalization: {
       title: "Learned or memorised?",

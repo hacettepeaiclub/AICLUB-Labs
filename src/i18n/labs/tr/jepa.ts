@@ -1,5 +1,13 @@
 import type en from "../en/jepa";
 
+/**
+ * Türkçe metin: jepa. Şekli `en/jepa.ts` ile birebir aynı olmak zorundadır.
+ *
+ * Terimler docs/language/tr-terminology.md (## jepa), anlatım kuralları
+ * docs/language/tr-style.md dosyasındadır. Bu lab'da "gizli" gizlenen parçayı
+ * anlatır; ağların iç katmanı bu yüzden "ara katman" diye adlandırılır.
+ */
+
 const copy: typeof en = {
   percent: (n: number) => `%${n}`,
   decimal: (x: number, digits: number) => x.toFixed(digits).replace(".", ","),
@@ -21,7 +29,7 @@ const copy: typeof en = {
     method: "Eğitim yöntemi",
     joint: "İki taraftan gradyan",
     detached: "Yalnızca stop-gradient",
-    ema: "EMA ve stop-gradient",
+    ema: "EMA ile stop-gradient",
     advanced: "İki işlemi ayrı incele",
     stop: "Hedefe giden gradyanı durdur",
     resetHint: "Yöntem veya başlangıç değişince eğitim sıfırlanır. Önceki sonuç otomatik taşınmaz.",
@@ -63,9 +71,9 @@ const copy: typeof en = {
     noContext: "Bu parçanın görünen komşusu yok. Başka bir gizli parçayı seç.",
   },
   application: {
-    title: "Bir uygulamada: görselle arama",
+    title: "Bir uygulama: görselle arama",
     kicker: "Öğrenilen temsil ne işe yarar?",
-    lede: "Bir doku seç. Görüntünün bir kısmını ört, ışığı ve gürültüyü değiştir. Katalogdaki sıralama, görünen parçaların vektörlerine göre anında güncellensin.",
+    lede: "Bir doku seç. Görüntünün bir kısmını ört, ışığı ve gürültüyü değiştir. Katalogdaki sıralama, görünen parçaların vektörlerine göre anında güncellenir.",
     query: "Kameradan gelen görüntü",
     catalog: "En yakın katalog örnekleri",
     mask: "Örtü boyutu",
@@ -97,9 +105,9 @@ const copy: typeof en = {
     encoder: "Görünen parçanın kodlayıcısı",
     predictor: "Gizli parçanın tahmincisi",
     target: "Hedef kodlayıcı",
-    input: "Giriş",
+    input: "Girdi",
     hidden: "Ara katman · tanh",
-    output: "Çıkış",
+    output: "Çıktı",
     neuron: "Ara katmandaki nöron",
     value: "Aktivasyon",
     note: "Her kutu tek bir katman değil, küçük bir ağdır. Aşağıda aynı anda yalnızca seçtiğin ağ gösteriliyor. Çizgiler bağlantıları, düğümlerin rengi ve parlaklığı gerçek aktivasyonları gösterir.",
@@ -137,7 +145,7 @@ const copy: typeof en = {
     title: "Resim sayılardan oluşur",
     question:
       "Bu görüntü 256 parlaklık değerinden oluşuyor. Bir parçaya dokun; içindeki 16 pikselin değerlerini gör.",
-    pictureLabel: "16'ya 16 piksellik bir resim, 4'e 4 piksellik 16 parçaya bölünmüş.",
+    pictureLabel: "16 × 16 piksellik bir resim, 4 × 4 piksellik 16 parçaya bölünmüş.",
     patchLabel: (n: number) => `Parça ${n}`,
     numbersTitle: (n: number) => `Parça ${n}: piksel değerleri`,
     numbersLabel: "Parçanın parlaklık değerleri: siyah için 0, beyaz için 1.",
@@ -153,12 +161,12 @@ const copy: typeof en = {
     pictureLabel:
       "Gizli bloğu taşımak için bir parçaya dokun. Bu inceleme örneği eğitim ve puanlama verilerinden ayrıdır.",
     mapLabel:
-      "Dört boyutlu hedef vektörlerin PCA ile iki boyuta yansıtılması. Renkler yalnızca değerlendirme için kullanılan doku etiketleridir. Halkalar tahmini, çizgilerin uçları hedefi gösterir. İki boyutlu yakınlık yanıltabilir.",
+      "Dört boyutlu hedef vektörlerin PCA ile iki boyuta izdüşümü. Renkler yalnızca değerlendirme için kullanılan doku etiketleridir. Halkalar tahmini, çizgilerin uçları hedefi gösterir. İki boyutlu yakınlık yanıltabilir.",
     legendGuess: "Tahmin",
     legendGoal: "Hedef",
     lossLabel: "Eğitim boyunca kayıp",
     play: "Eğit",
-    pause: "Durdur",
+    pause: "Duraklat",
     restart: "Baştan başla",
     newStart: "Başka bir başlangıç noktası",
     newStartHint:
@@ -166,13 +174,13 @@ const copy: typeof en = {
     startLabel: "Başlangıç noktası ve gösterdiği",
     steps: "Adım",
     loss: "Kayıp",
-    separation: "Türler arası / kaymalar arası uzaklık",
+    separation: "Doku türleri arası / kaymalar arası uzaklık",
     kindGuess: "Tüm değerlendirilen parçalar",
     times: (x: number) => `×${x.toFixed(1).replace(".", ",")}`,
     announceDone: (percent: number) =>
       `Eğitim tamamlandı. Değerlendirilen tüm parçaların %${percent} kadarı doğru adlandırıldı.`,
     caption:
-      "Tarayıcıda eğitilen küçük bir JEPA modeli: yapay dokular, yaklaşık 500 parametre ve Adam. Ağ doku etiketi görmez. Ekrandaki tür adları, eğitimden ayrı tutulan etiketli referanslara göre 5-nearest-neighbours ile bulunur; modelin doğrudan çıktısı bir vektördür.",
+      "Tarayıcıda eğitilen küçük bir JEPA modeli: yapay dokular, yaklaşık 500 parametre ve Adam. Ağ doku etiketi görmez. Ekrandaki tür adları, eğitimden ayrı tutulan etiketli referans vektörlerle 5 en yakın komşu (k = 5) karşılaştırmasıyla bulunur; modelin doğrudan çıktısı bir vektördür.",
   },
   collapse: {
     kicker: "Düşük kayıp yeterli mi?",
@@ -191,7 +199,7 @@ const copy: typeof en = {
     kicker: "Hangi bilgiyi tahmin ediyoruz?",
     title: "Tahmin ne olmalı?",
     lede: "Aynı gizli parçalar için iki farklı çıktı gör: piksel değerleri ve JEPA vektöründen çıkarılan doku adı. Bu, eşdeğer iki modelin genel başarı karşılaştırması değildir.",
-    pictureLabel: "2×2'lik bir bloğu gizlenmiş bir resim. Bloğu taşımak için bir parça seç.",
+    pictureLabel: "2×2 parçalık bir bloğu gizlenmiş bir resim. Bloğu taşımak için bir parça seç.",
     preparing: (percent: number) => `Önce model eğitiliyor: %${percent}`,
     another: "Başka bir resim",
     real: "Gizli parça",
@@ -205,13 +213,13 @@ const copy: typeof en = {
   },
   bridge: {
     title: "Bu lab nelerden oluşuyor",
-    intro: "Bu modelin her parçasının kendi labı var.",
+    intro: "Bu modelin her parçasının kendi lab'ı var.",
     open: "Aç",
     items: {
       convolution: "Resim sayılardır ve küçük pencereler onu parça parça okur.",
       "word-embeddings": "Bir yer olarak anlam: birbirine benzeyenler haritada yakın düşer.",
       "multilayer-perceptrons": "Kodlayıcı ve tahminci, bunlar gibi küçük ağlardır.",
-      backpropagation: "Her ağırlığın hatadaki payını nasıl öğrendiği.",
+      backpropagation: "Her ağırlığın gradyanının nasıl hesaplandığı.",
       "gradient-descent": "Ne büyüklükte adım atılacağı ve Adam'ın onu neden uyarladığı.",
       generalization: "Düşük kayıp, öğrenmiş olmakla aynı şey değildir.",
       attention:
@@ -221,7 +229,7 @@ const copy: typeof en = {
   recap: {
     lessons: [
       "Görüntünün bir kısmını gizleyip temsilini tahmin etmek, doku etiketleri olmadan öğrenme sinyali üretebilir.",
-      "JEPA bir vektör tahmin eder. Doku adını göstermek için ayrıca etiketli referanslarla karşılaştırma yapıyoruz.",
+      "JEPA bir vektör tahmin eder. Doku adını göstermek için ayrıca etiketli referans vektörlerle karşılaştırma gerekir.",
       "Düşük kayıp tek başına başarı değildir. Yayılımı, tüm parçaların başarısını ve zor sınır örneklerini birlikte incele.",
     ],
     footer:
@@ -230,10 +238,10 @@ const copy: typeof en = {
   sources: {
     title: "Kaynaklar",
     ijepa:
-      "I-JEPA: bir bağlam kodlayıcısı, bir tahminci ve üstel hareketli ortalamayla güncellenen bir hedef kodlayıcı; kayıp, gizli blokların piksellerini değil, tahmin edilen ve hedef temsillerini karşılaştırır.",
-    byol: "BYOL, çevrimiçi ağın yavaş güncellenen hedef temsili tahmin ettiği asimetrik bir eğitim kullanır. Başarı, tek başına EMA için genel bir çöküşsüzlük garantisi değildir.",
+      "I-JEPA: bir bağlam kodlayıcısı, bir tahminci ve üstel hareketli ortalamayla (EMA) güncellenen bir hedef kodlayıcı; kayıp, gizli blokların piksellerini değil, tahmin edilen ve hedef temsillerini karşılaştırır.",
+    byol: "BYOL, çevrimiçi ağın yavaş güncellenen bir hedef ağın temsilini tahmin ettiği asimetrik bir eğitim kullanır. Sonuçları, EMA'nın tek başına çöküşü her zaman önlediğini göstermez.",
     lecunPath:
-      "Ortak gömme tahmin mimarilerini öneren görüş makalesi: tahmini temsil uzayında yap ve tahmin edilemeyen ayrıntıları dışarıda bırak.",
+      "Joint-embedding predictive architecture'ları (JEPA) öneren görüş makalesi: tahmini temsil uzayında yap ve tahmin edilemeyen ayrıntıları dışarıda bırak.",
   },
   tour: {
     intro:
@@ -270,7 +278,7 @@ const copy: typeof en = {
     },
   },
   study: {
-    topics: { jepa: "Ortak gömme tahmin mimarileri" },
+    topics: { jepa: "Joint-embedding predictive architecture (JEPA)" },
     notes: {
       "meta-ijepa":
         "Meta'nın I-JEPA'yı kendi anlattığı kısa yazı: gizli bölgelerin piksellerini değil, soyut temsillerini tahmin etmek.",
