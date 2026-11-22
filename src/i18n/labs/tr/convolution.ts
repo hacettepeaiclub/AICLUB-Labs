@@ -122,7 +122,7 @@ const copy: typeof en = {
     moveLabel: "Artıyı taşı",
     move: { left: "Sola taşı", up: "Yukarı taşı", down: "Aşağı taşı", right: "Sağa taşı" },
     caption:
-      "Tam olarak artıyı içeren bir pencere 9 alır; bu, herhangi bir pencerenin alabileceği en yüksek değerdir. X, blok ve çubuk daha düşük alır. Her konumda aynı 25 ağırlık kullanıldığı için en büyük değer, artı nereye giderse gitsin onu hücre hücre izler.",
+      "Yalnızca artıyı içeren bir pencere 9 alır; bu, herhangi bir pencerenin alabileceği en yüksek değerdir. X, blok ve çubuk daha düşük alır. Her konumda aynı 25 ağırlık kullanıldığı için, artı diğer şekillerle örtüşmediği sürece en büyük değer artıyı hücre hücre izler. Artı bir şeklin üzerine gelirse pencere 9'dan az alabilir.",
     figures: {
       peak: "En büyük yanıt",
       peakAt: (x: number, y: number) => `sütun ${x}, satır ${y}`,
@@ -178,7 +178,7 @@ const copy: typeof en = {
     stridesLabel: "Her katmanın adım kaydırması",
     strideButton: (l: number, s: number) => `Katman ${l}: adım kaydırma ${s}`,
     caption:
-      "Her katman, en üstün görebildiği alana iki hücre ekler; bu iki hücre, altındaki katmanların adım kaydırmalarının çarpımıyla büyür. İki 3×3 katman 18 ağırlıkla 5×5 görür; tek bir 5×5 çekirdek 25 ağırlık isterdi. Derin ağların küçük çekirdeklerden kurulmasının nedeni tam olarak budur.",
+      "Her katman, en üstün görebildiği alana iki hücre ekler; bu iki hücre, altındaki katmanların adım kaydırmalarının çarpımıyla büyür. Adım kaydırma 1 iken ve her katmanda tek çekirdek varken, iki 3×3 katman 18 ağırlıkla 5×5 görür; tek bir 5×5 çekirdek 25 ağırlık isterdi. Derin ağların küçük çekirdeklerden kurulmasının nedeni budur.",
     figures: {
       field: "Alıcı alan",
       fieldHint: "en üstteki tek bir hücrenin",
@@ -211,7 +211,7 @@ const copy: typeof en = {
     curve: "Kayıp, log ölçek",
     curveLabel: "Her adımdan sonraki kayıp, logaritmik ölçekte.",
     found: (steps: number) =>
-      `${steps} adımda buldu. Ağırlıklar artık gizli çekirdeğin kendisi: kenarın ne olduğunu onlara kimse söylemedi.`,
+      `${steps} adımda buldu. Ağırlıklar artık gösterilen hassasiyette gizli çekirdekle aynı: kenarın ne olduğunu onlara kimse söylemedi.`,
     ready: "Dokuz rastgele ağırlık. “Eğit” düğmesine bas ve ağırlıkların nasıl değiştiğine bak.",
     searching: "Her adım, dokuz ağırlığın hepsini hatanın gradyanının tersi yönünde kaydırır.",
     train: "Eğit",
@@ -223,9 +223,10 @@ const copy: typeof en = {
     reveal: "Gizli çekirdeği şimdi göster",
     secondaryLabel: "Başka bir gizli çekirdek seç",
     caption:
-      "Hata, tek bir dibi olan bir çanaktır ve gizli çekirdek tam o diptedir; bu yüzden gradient descent nereden başlarsa başlasın orada biter. Ağların girdileriyle yaptığı gibi, önce resmin ortalama parlaklığı çıkarılır; bu, uyumun nerede biteceğini değil, ne kadar hızlı gideceğini değiştirir.",
+      "Bu resimde hata, tek bir dibi olan bir çanaktır ve gizli çekirdek o diptedir; lab güvenli bir adım boyu seçtiği için gradient descent rastgele başlangıçlardan bu dibe yaklaşır. Kayıp çok küçüldüğünde (10⁻¹⁰'un altında) durur; en çok 3.000 adım atar. Ağların girdileriyle yaptığı gibi, önce resmin ortalama parlaklığı çıkarılır; bu, uyumun nerede biteceğini değil, ne kadar hızlı ilerleyeceğini değiştirir.",
     figures: { steps: "Adım", loss: "Kayıp" },
-    announceDone: (steps: number) => `Gizli çekirdek ${steps} adımda bulundu.`,
+    announceDone: (steps: number) =>
+      `${steps} adımda gizli çekirdeğe gösterilen hassasiyette ulaşıldı.`,
   },
 
   // 7 ----------------------------------------------------------------------
@@ -243,7 +244,7 @@ const copy: typeof en = {
     shift: {
       tab: "Kaydır",
       task: "Resmin tamamını bir hücre sağa kaydır.",
-      hint: "Çıktı aynı boyuta dolgulanıyor; yani her pikselin gidecek bir yeri var.",
+      hint: "Çıktı girdiyle aynı boyutta kalır: en sağdaki sütun resmin dışına çıkar ve soldan açılan sütun sıfırla dolar.",
       input: "Resim",
       goal: "Hedef",
       solved: "Çözüldü. Solda tek bir 1: her çıktı solundaki pikseli okur ve bu, resmi sağa taşır.",
@@ -277,7 +278,7 @@ const copy: typeof en = {
         silent: "Yatay çizgide hiçbir yerde 0'ın üstünde değil",
       },
       solved:
-        "Çözüldü. Çekirdeğinin bir sütununun toplamı 0'dan büyük ve hiçbir satırın toplamı 0'dan büyük değil. Tek bir yöne duyarlı bir dedektör tam olarak budur.",
+        "Çözüldü. Bu iki deneme resminde çekirdeğin dikey çizgide 0'ın üstünde bir yanıt verdi, yatay çizgide hiçbir yerde 0'ın üstüne çıkmadı. Bu, iki koşulu bu resimlerde sağladığını gösterir; her durumda tek bir yöne duyarlı olduğunu kanıtlamaz.",
       notYet: "Henüz değil: iki koşula bak.",
     },
   },
@@ -288,7 +289,7 @@ const copy: typeof en = {
       "Neyin bulunacağını ağırlıklar belirler: aynı aritmetik bulanıklaştırır, keskinleştirir ya da kenarları bulur",
       "Düz bir parçada çıktı, parlaklık çarpı ağırlıkların toplamıdır; bu yüzden kenar dedektörlerinin toplamı sıfırdır",
       "Her konumda aynı ağırlıkların kullanılması, bir desenin nerede olursa olsun, çok daha az ağırlıkla bulunması demektir",
-      "Çıktı boyutu ⌊(n + 2p − k)/s⌋ + 1'dir: dolgu boyutu korur, adım kaydırma küçültür",
+      "Çekirdek dolgulu girdiye sığıyorsa çıktı boyutu ⌊(n + 2p − k)/s⌋ + 1'dir: dolgu boyutu artırır, adım kaydırma küçültür",
       "Üst üste konmuş küçük çekirdekler uzağı görür: her katman alıcı alanı genişletir",
       "Çekirdekler elle tasarlanmaz: gradient descent onları örneklerden bulur",
     ],
@@ -317,7 +318,7 @@ const copy: typeof en = {
       shift: {
         shapes: "Bir artı işareti ve üç yanıltıcı şekil. Çekirdek, aradığı şeklin kendisidir.",
         move: "Artıyı bu oklarla taşı. Tur onu bir hücre sağa taşıdı.",
-        peak: "En büyük çıktı da onunla birlikte hücre hücre kaydı; çünkü her konumda aynı ağırlıklar kullanılıyor.",
+        peak: "Artı diğer şekillerle örtüşmediği sürece en büyük çıktı da onunla birlikte hücre hücre kaydı; çünkü her konumda aynı ağırlıklar kullanılıyor.",
       },
       size: {
         grid: "Kesikli dolgusuyla girdi ve çıktı. Bir çıktı hücresine tıklayınca onu üreten pencere görünür.",
@@ -336,7 +337,7 @@ const copy: typeof en = {
         panels:
           "Hedef resmi gizli bir çekirdek üretti. Ağırlıklar rastgele başlıyor; eğri hatayı gösteriyor.",
         train: "Eğit: gradient descent dokuz ağırlığı adım adım gizli çekirdeğe doğru taşır.",
-        loss: "Atılan adımlar ve kayıp. Dibe ulaşınca ağırlıklar gizli çekirdekle aynı olur.",
+        loss: "Atılan adımlar ve kayıp. Kayıp çok küçüldüğünde ağırlıklar, gösterilen hassasiyette gizli çekirdekle aynı olur.",
       },
       challenge: {
         pick: "Elle kurman gereken üç davranış. Buradan birini seç.",
@@ -351,7 +352,7 @@ const copy: typeof en = {
     topics: {
       window: "Kayan bir ağırlık penceresi",
       sharing: "Her yerde aynı ağırlıklar",
-      size: "Dolgu, adım ve çıktı boyutu",
+      size: "Dolgu, adım kaydırma ve çıktı boyutu",
     },
     notes: {
       "ng-edge": "3×3'lük bir kenar çekirdeğinin resim üzerinde toplam toplam kaydırılması.",
@@ -359,7 +360,7 @@ const copy: typeof en = {
       "ng-why-conv": "Parametre paylaşımı ve neden bu kadar az ağırlık gerektirdiği.",
       "cs231n-conv": "Katmanın tamamı: paylaşım, alıcı alan, derinlik.",
       "ng-padding": "Dolgu ve lab'ın kullandığı çıktı boyutu formülü.",
-      "ng-stride": "Adım ve aşağı yuvarlama.",
+      "ng-stride": "Adım kaydırma ve aşağı yuvarlama.",
       "d2l-padding": "Aynı formül, çözümlü örneklerle.",
       "d2l-convolution-book":
         "Kayan pencereyi küçük matrislerle hesapla. Bölüm, lab gibi çekirdeği çevirmeden uygulanan çapraz korelasyonla başlar ve bunu matematikteki evrişimden ayırır.",

@@ -539,8 +539,9 @@ Kaynaklar: DLT ve D2L-TR sözlükleri (bkz. ilk tablo); D2L-TR-BÖLÜM (bkz.
 - **Tanım:** Çekirdeği ters çevirmeden uygulanan kayan toplam; evrişim
   katmanlarının gerçekte yaptığı işlem. Matematikteki evrişim çekirdeği çevirir.
 - **Tercih:** çapraz korelasyon
-- **Kaynak:** Proje kararı (sinyal işleme derslerindeki yaygın ad; incelenmiş
-  bir kaynak yok). Açık karar.
+- **Kaynak:** D2L-TR §6.2.5 ([conv-layer](https://tr.d2l.ai/chapter_convolutional-neural-networks/conv-layer.html)),
+  Codex-TR'nin okuduğu: çapraz korelasyon ile çekirdeği çevrilmiş evrişim
+  ayrımı.
 
 ### Dolgu, adım kaydırma (stride)
 
