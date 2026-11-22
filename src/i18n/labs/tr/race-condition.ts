@@ -17,9 +17,9 @@ const copy: typeof en = {
   sources: {
     title: "Kaynaklar",
     ostep:
-      "Lab'ın temel örneğini destekler: counter++ bir okuma, bir toplama ve bir yazmaya derlenir ve aralarına giren bir kesme bir güncellemeyi kaybettirir. Çare olarak kilitlerin ve atomik komutların anlatımını da destekler.",
+      "Paylaşılan sayacı artırma örneğini okuma, artırma ve yazma olarak inceler. İşlemler iç içe geçtiğinde bir artırmanın nasıl kaybolabildiğini, kilitlerin ve atomik komutların neyi koruduğunu açıklar.",
     mutex:
-      "4. bölümdeki kilidin ardındaki fikri destekler: kritik bölüme aynı anda yalnızca bir sürecin girmesi problemi ilk kez burada ortaya konup çözülmüştür.",
+      "Kritik bölgeye aynı anda yalnızca bir sürecin girmesini sağlayan karşılıklı dışlama problemini ele alır.",
     concurrencyBugs:
       "5. bölümdeki iddiayı destekler: gerçek yazılımdaki yarışlar çoğunlukla bozulan bölünmezlik ya da bozulan sıradır ve çoğu yalnızca birkaç bellek erişiminin belirli bir sırasında ortaya çıkar; testte yakalanmalarını zorlaştıran da budur.",
     therac:
@@ -36,9 +36,9 @@ const copy: typeof en = {
     memory: "Ortak bellek",
     lockFree: "boşta",
     lockHeld: (name: string) => `${name} tutuyor`,
-    status: { waiting: "m'yi bekliyor", done: "bitti" },
+    status: { waiting: "m kilidini bekliyor", done: "bitti" },
     orderLabel: "Seçtiğin sıra",
-    orderEmpty: "Henüz hiçbir şey çalışmadı.",
+    orderEmpty: "Henüz adım çalıştırmadın.",
     said: {
       load: (who: string, v: string, value: number) =>
         `${who}, ${v} değerini kendi yazmacına okudu: r = ${value}.`,
@@ -50,28 +50,28 @@ const copy: typeof en = {
       atomicAdd: (who: string, v: string, before: number, after: number) =>
         `${who}, ${v} değişkenine tek ve bölünmez bir adımda 1 ekledi: ${before} → ${after}.`,
       checkPass: (who: string, value: number) =>
-        `${who} bakiyeye baktı: ${value}. Yeterli, yani para çekecek.`,
+        `${who} bakiyeyi ${value} olarak okudu. Çekme koşulu sağlandı.`,
       checkFail: (who: string, value: number) =>
-        `${who} bakiyeye baktı: ${value}. Yetmiyor, yani hiçbir şey ödemeyecek.`,
+        `${who} bakiyeyi ${value} olarak okudu. Çekme koşulu sağlanmadı.`,
       withdraw: (who: string, before: number, after: number) =>
-        `${who} 100 çekip ödedi: bakiye ${before} → ${after}.`,
+        `${who} 100 ödedi. Bakiye ${before} → ${after}.`,
     },
   },
 
   game: {
     title: "İki iş parçacığı aynı sayacı artırırsa",
     question:
-      "İki iş parçacığı, 0'dan başlayan bir sayaca birer ekliyor. Her biri counter++ satırını tam bir kez çalıştırıyor. Sayaç 1'de bitebilir mi?",
-    hint: "A veya B düğmesi ilgili iş parçacığının bir sonraki işlemini çalıştırır. İşlemlerin sırasını seçerek sayacı 1’de bitirmeyi dene.",
+      "İki iş parçacığı, 0'dan başlayan bir sayacı birer kez artırıyor. Her biri counter++ satırını tam bir kez çalıştırıyor. İki artırma da tamamlandığında sayaç 1 olabilir mi?",
+    hint: "A veya B düğmesi ilgili iş parçacığının bir sonraki işlemini çalıştırır. İşlemlerin sırasını seçerek iki artırma tamamlandığında sayacın 1 olduğu bir sıra bul.",
     caption:
-      "Her iş parçacığı counter++ satırını, işlemcinin yaptığı gibi üç adıma böler: belleği kendi yazmacına oku, orada 1 ekle, geri yaz. Tuşlar: A ve B bir adım çalıştırır, U geri alır, R baştan başlatır.",
-    lost: "Sayaç 1'de bitti. İki iş parçacığı da, hiçbiri yazmadan önce 0 okudu; ikisi de 1 yazdı ve ikinci yazma birincisini sildi. İkisi de çalıştığı halde bir ekleme kayboldu.",
-    kept: "Sayaç 2'de bitti. Bir iş parçacığı, öteki okumadan önce yazdı; kaybolan bir şey yok. Birkaç adım geri alıp önce iki okumayı da çalıştırmayı dene.",
+      "Model her counter++ işlemini üç adımda gösterir. İş parçacığı sayacı yazmacına okur, yazmaca 1 ekler ve sonucu belleğe yazar. A ve B tuşları sıradaki adımı çalıştırır. U geri alır, R başa döndürür.",
+    lost: "Sayaç 1 oldu. İki iş parçacığı da ilk yazmadan önce 0 okudu. İkisi de 1 yazdığı için ikinci yazma ilk artırmanın üzerine yazdı.",
+    kept: "Sayaç 2 oldu. Bir iş parçacığı yazdıktan sonra diğeri 1 okudu. İki okumanın da ilk yazmadan önce gerçekleştiği sırayı dene.",
     figures: {
       counter: "Sayaç",
       counterHint: "ortak bellekte, şu an",
       lostHint: "bir güncelleme kayboldu",
-      keptHint: "iki güncelleme de yerine ulaştı",
+      keptHint: "iki artırma da sayaca yansıdı",
       expected: "Beklenen",
       expectedHint: "iki iş parçacığı, birer ekleme",
     },
@@ -80,9 +80,9 @@ const copy: typeof en = {
   orders: {
     kicker: "Bütün sıralar",
     title: "Hangi işlem sıralarında güncelleme kaybolur?",
-    lede: "Üçer işlem yapan iki iş parçacığı, kendi iç sıralarını koruyarak 20 farklı biçimde çalışabilir. Her sıranın sayaçta bıraktığı sonucu karşılaştır.",
+    lede: "İki iş parçacığının üçer adımı, kendi iç sıraları korunarak 20 farklı sırada çalıştırılabilir. Kartlarda her sıranın son sayaç değerini karşılaştır.",
     caption:
-      "Her kart, altı adımın soldan sağa A'lı B'li bir sırasıdır. Birini seçince izini görürsün: her adımdan sonra iki yazmacın ve sayacın değeri.",
+      "Bir kart seç. Karttaki A ve B harfleri, altı adımı hangi iş parçacığının çalıştırdığını gösterir. Tabloda her adımın ardından iki yazmacın ve sayacın değerine bak.",
     announce: (order: string, counter: number) =>
       `${order} sırası: sayaç ${counter} olarak bitiyor.`,
     cardLabel: (order: string, counter: number) =>
@@ -91,29 +91,29 @@ const copy: typeof en = {
     stepHeader: "Adım",
     regHeader: (name: string) => `${name} için r`,
     whyLost:
-      "İki iş parçacığı da sayacı, hiçbiri geri yazmadan önce okudu. Sonra ne olursa olsun ikisi de aynı 1'i yazar.",
+      "İlk yazmadan önce iki iş parçacığı da 0 okudu. Kalan adımlar hangi sırada çalışırsa çalışsın, ikisi de 1 yazar.",
     whyRight:
-      "Bir iş parçacığı, öteki hiçbir şey okumadan önce bitti. 2 bırakan sıralar yalnızca bu ikisi.",
+      "Bir iş parçacığı bütün adımlarını diğerinden önce tamamladı. Sonucu 2 olan iki sırada da bu koşul sağlanır.",
     figures: {
       orders: "Sıra",
       ordersHint: "6 adım, 3'ü A'nın",
       lost: "Güncelleme kaybettiren",
       lostHint: "sayaç 1'de bitiyor",
       right: "Doğru çıkan",
-      rightHint: "bir iş parçacığı tümüyle önce",
+      rightHint: "bir iş parçacığı bütün adımlarını önce tamamladı",
     },
   },
 
   odds: {
-    kicker: "Nadir, ama var",
+    kicker: "Zamanlayıcı denemeleri",
     title: "Testler bu hatayı neden kaçırabilir?",
     lede: "Gerçek bir zamanlayıcı bu sıraları eşit olasılıkla seçmez. Buradaki model, ortalama kaç işlemde bir iş parçacığının değiştiğini ayarlamana izin verir. Aynı ayarla yapılan 200 çalıştırmanın sonuçlarını incele.",
     caption:
-      "Her nokta tamamlanmış bir çalıştırmadır. Zamanlayıcı rastgele değiştirir; ortalama olarak yukarıda seçilen adım sayısında bir. Model bilerek basit tutuldu; önemli olan, iki iş parçacığının adımlarının ne kadar sık iç içe geçtiği.",
+      "Nokta, sayacın beklenen sonuca ulaştığını gösterir. Boş kare, güncelleme kaybı olduğunu gösterir. Zamanlayıcı adımlar arasında rastgele geçiş yapar.",
     announce: (right: number, runs: number, worst: string, slice: string) =>
       `Yaklaşık her ${slice} adımda bir değişimle ${runs} çalıştırmanın ${right} tanesi doğru çıktı. En kötü çalıştırma ${worst} güncelleme kaybetti.`,
     setup: (k: string, target: string, slice: string) =>
-      `Her iş parçacığı counter++ satırını ${k} kez çalıştırıyor; doğru sonuç ${target}. Zamanlayıcı yaklaşık her ${slice} adımda bir değiştiriyor.`,
+      `Her iş parçacığı counter++ satırını ${k} kez çalıştırır. Beklenen sayaç değeri ${target}. İş parçacığı ortalama ${slice} adımda bir değişiyor.`,
     dotsLabel: (right: number, total: number) =>
       `${total} çalıştırmanın ${right} tanesi doğru çıktı.`,
     legendRight: (target: string) => `${target} ile bitti`,
@@ -121,11 +121,11 @@ const copy: typeof en = {
     running: "Çalışıyor…",
     runningShort: "Çalışıyor…",
     allRight:
-      "Bütün çalıştırmalar doğru çıktı. Yayına alalım mı? Hata hâlâ orada: o üç adım hâlâ bölünebilir, yalnızca iki yüz denemede denk gelmedi.",
+      "Bu 200 çalıştırmada güncelleme kaybolmadı. Okuma, artırma ve yazma ayrı adımlar olduğu için başka bir sırada güncelleme kaybolabilir.",
     noneRight:
-      "Tek bir çalıştırma bile doğru çıkmadı. Değişimler bu kadar sıkken ya da bu kadar çok sayarken okuma ile yazma arasındaki boşluğa her seferinde denk geliniyor.",
+      "Bu ayarlarda her çalıştırmada en az bir güncelleme kayboldu. Değişim aralığını uzatıp doğru sonuç sayısını karşılaştır.",
     someRight:
-      "Aynı kod, aynı girdi; kimi çalıştırma doğru, kimi değil. Yarış durumunu bulmayı zorlaştıran tam da bu: bir test bugün geçip yarın kalabilir.",
+      "Aynı kod ve girdiyle farklı sonuçlar çıktı. Bir yarış durumunda sonuç, adımların hangi sırada çalıştığına bağlıdır.",
     sliceLabel: "Ortalama değişim aralığı",
     sliceValue: (n: string) => `${n} adım`,
     again: (runs: number) => `${runs} kez daha çalıştır`,
@@ -142,21 +142,21 @@ const copy: typeof en = {
   },
 
   fix: {
-    kicker: "Boşluğu kapatmak",
+    kicker: "Kritik bölgeyi koru",
     title: "Kilitleme ve atomik güncelleme",
     lede: "Okuma, artırma ve yazma işlemlerinin arasına başka bir iş parçacığı girebilir. Kilit bu üç işlemi birlikte korur; atomik artırma ise tek işlemde tamamlanır. Her yöntemde kayıp güncelleme oluşturmayı dene.",
     hint: {
-      none: "Koruma yok: öncekiyle aynı üç adım. Burada nasıl kaybettireceğini zaten biliyorsun.",
-      lock: "A'nın ilk adımını çalıştır, sonra araya B'yi sokmayı dene. Neden olmadığını düğmesi söylüyor.",
-      atomic: "Her birinde tek adım var. Arasına girilecek bir yer yok.",
+      none: "İki iş parçacığının okuma adımını yazmalardan önce çalıştır. Son sayaç değerine bak.",
+      lock: "A'nın kilidi almasını sağla. B'yi çalıştırmayı dene ve m kilidini bekliyor etiketine bak.",
+      atomic:
+        "A ve B düğmelerine birer kez bas. Her atomik artırma, sayaç değerini tek adımda değiştirir.",
     },
     caption:
       "m kilidi de bellekteki bir değerdir, ama onu aynı anda yalnızca bir iş parçacığı tutabilir. Öteki onu tutarken lock(m) satırına gelen iş parçacığı orada bekler.",
     kept: {
-      none: "Sayaç bu sefer 2'de bitti. Kod güvenli olduğu için değil: önce iki okumayı dene.",
-      lock: "Sayaç 2'de bitti. Bir iş parçacığı kilidi tutarken öteki başlayamadı bile: zamanlayıcı yalnızca kimin önce gideceğini seçebildi.",
-      atomic:
-        "Sayaç 2'de bitti. Her ekleme tek adımdı, yani bir okuma ile onun yazması arasında hiçbir an olmadı.",
+      none: "Sayaç bu sırada 2 oldu. İki okumayı da yazmalardan önce çalıştırıp sonucu karşılaştır.",
+      lock: "Sayaç 2 oldu. Bir iş parçacığı kilidi tutarken diğeri bekledi. Her artırmanın üç adımı aynı kritik bölgede tamamlandı.",
+      atomic: "Sayaç 2 oldu. Her artırma atomik olarak tamamlandı.",
     },
     lost: "Sayaç 1'de bitti. Korumasız iki iş parçacığı da, hiçbiri yazmadan önce 0 okudu.",
     fixLabel: "Koruma",
@@ -169,32 +169,32 @@ const copy: typeof en = {
       lost: "Kaybettiren sıra",
       lostHint: "zamanlayıcının bütün sıraları içinde",
       steps: "İş parçacığı başına adım",
-      stepsHint: "korumanın bedeli",
+      stepsHint: "kilit alma ve bırakma varsa dahil",
     },
   },
 
   atm: {
-    kicker: "Sıra sizde",
-    title: "Aynı ödeme iki kez nasıl yapılabilir?",
-    lede: "İki ATM aynı hesaptan 100’er çekmeye çalışıyor. Başlangıç bakiyesi 100. Her işlem tek başına atomik olsa da bakiye kontrolü ile para çekme ayrı işlemler. Toplam 200 çekilebilen bir sıra bulabilir misin?",
+    kicker: "Bakiye deneyi",
+    title: "İki ATM aynı bakiyeye göre ödeme yapabilir mi?",
+    lede: "Modelde iki ATM, bakiyesi 100 olan bir hesaptan 100'er çekmeye çalışır. Bakiye kontrolü ve para çekme ayrı atomik adımlardır. Hangi sırada toplam ödeme 200 olur?",
     hint: {
-      none: "Her ATM önce bakiyeye bakar, yeterliyse çeker. 200 ödeten sırayı bul.",
-      lock: "Şimdi bakiye kontrolü ile para çekme aynı kilidin içinde. Aynı numarayı dene.",
+      none: "İki ATM de önce bakiyeyi kontrol eder. Toplam ödemenin 200 olduğu sırayı bul.",
+      lock: "Bakiye kontrolü ile para çekme aynı kritik bölgede. İkinci ATM'nin kontrolü ne zaman yapabildiğine bak.",
     },
     caption:
-      "withdraw(100), bakiyeden 100 düşer ve onu tek, bölünmez bir adımda öder. Yarış hiçbir adımın içinde değil; iki adımın arasında.",
+      "withdraw(100), bakiyeden 100 düşüp toplam ödemeye 100 ekler. Bu adım atomiktir. Bakiye kontrolü ayrı bir adım olduğu için iki ATM de ilk çekimden önce aynı bakiyeyi görebilir.",
     overdrawn:
-      "Banka, 100 olan bir hesaptan 200 ödedi. İki ATM de bakiye hâlâ 100 iken baktı, sonra ikisi de artık doğru olmayan bir kontrole dayanarak çekti. Her adım atomikti, yine de yarış oldu.",
+      "İki ATM de bakiyeyi 100 olarak okudu. İlk ödeme yapıldığında ikinci ATM'nin okuduğu değer güncelliğini yitirdi. İkinci çekme de çalışınca toplam ödeme 200 oldu.",
     safe: {
       none: "Olması gerektiği gibi 100 ödendi. İkinci ATM, birincisi çektikten sonra baktı. İkisine de önce bakiyeye baktırmayı dene.",
       lock: "100 ödendi. Kontrol ile çekme aynı kilidin içindeyken ikinci ATM ancak birincisi bitince bakabildi ve 0 gördü.",
     },
     guardLabel: "Koruma",
-    guards: { none: "Yok", lock: "İkisine birden kilit" },
+    guards: { none: "Yok", lock: "Kontrol ve çekme için ortak kilit" },
     secondaryLabel: "Korumayı seç",
     figures: {
       paid: "Ödenen",
-      paidHint: "hesapta 100 vardı",
+      paidHint: "başlangıç bakiyesi 100",
       paidOver: "hesaptakinden fazla",
       over: "Fazla ödeten sıra",
       overHint: "zamanlayıcının bütün sıraları içinde",
@@ -203,14 +203,14 @@ const copy: typeof en = {
 
   recap: {
     lessons: [
-      "Tek satır kod gibi görünen counter++, işlemci için birkaç adımdır: oku, değiştir, yaz.",
+      "Modelde counter++ üç adımdır. Sayacı oku, yazmaca 1 ekle ve sonucu belleğe yaz.",
       "İki iş parçacığı belleği paylaştığında sonuç yalnızca koda değil, zamanlayıcının seçtiği sıraya da bağlı olabilir.",
       "Korumasız iki eklemenin sıralarının çoğu bir eklemeyi kaybettirir; yalnızca bir iş parçacığının önce bittiği sıralar doğrudur.",
-      "Bir yarış durumu testten teste geçip yine de orada olabilir: ne sıklıkla görüneceğini doğruluk değil, zamanlama belirler.",
-      "Kilit ya da atomik komut boşluğu kapatır, ama yalnızca adımları tek tek değil, kontrol-et-sonra-yap bütününü kapsıyorsa.",
+      "Bir test doğru sonuç verebilir. Kayıp güncelleme, okuma ve yazmalar farklı bir sırada çalıştığında ortaya çıkabilir.",
+      "Sayacı korumak için okuma, artırma ve yazmayı birlikte kilitle veya tek atomik artırma kullan. ATM örneğinde kilit hem bakiye kontrolünü hem para çekmeyi kapsar.",
     ],
     footer:
-      "Bu lab iş parçacıklarının işlem sırasını simüle eder. İşlemleri elle seçmek, kayıp güncellemenin nerede oluştuğunu görmeyi sağlar.",
+      "Bu lab, iki iş parçacığının işlemlerini sırayla simüle eder. Sayaç örneğinde bütün geçerli sıralar hesaplanabilir. Bir kart seçerek her adımın belleğe ve yazmaçlara etkisini incele.",
   },
 
   // The guided tours, one per experiment (components/lab/guide/tours.ts).
@@ -223,31 +223,29 @@ const copy: typeof en = {
           "A ve B, counter++ işlemini birer kez, üç adımda çalıştırır: oku, 1 ekle, yaz. Her düğme kendi iş parçacığının sıradaki adımını çalıştırır.",
         readA: "A sayacı okur: kendi yazmacına 0 alır.",
         readB: "B de A yazmadan önce okur, yani o da 0 alır.",
-        goal: "Buradan sonra hangi sırayla bitirirseniz bitirin sayaç 2'de değil, 1'de kalır. Bitirip kontrol edin.",
+        goal: "İki okumadan sonra kalan adımları çalıştır. İki iş parçacığı da belleğe 1 yazar.",
       },
       orders: {
-        cards:
-          "Altı adımı iç içe geçirmenin yirmi yolunun hepsi; her biri geride bıraktığı sayaçla birlikte.",
+        cards: "Kartlar altı adımın 20 olası sırasını ve son sayaç değerini gösterir.",
         open: "Bir kartı açınca sırası adım adım görünür.",
         count: "Sıraların çoğu bir güncellemeyi kaybeder.",
       },
       odds: {
-        runs: "İki iş parçacığı defalarca büyük bir sayıya kadar sayar. Her koşu bir nokta.",
+        runs: "Her nokta, iki iş parçacığının tüm artırmalarını tamamladığı bir çalıştırmadır.",
         slice:
-          "Zamanlayıcı geçiş yapmadan önce bir iş parçacığının ne kadar çalıştığı. Dilim kısaldıkça adımın ortasına denk gelme şansı artar.",
-        result: "Kaç koşunun doğru çıktığı, en kötüsü ve ortalama.",
+          "Ortalama değişim aralığını kısalt. Okuma ile yazmanın arasına başka bir adım girdikçe kayıp güncellemelerin nasıl değiştiğine bak.",
+        result: "Doğru, En kötü çalıştırma ve Ortalama kayıp sayaçlarına bak.",
       },
       fix: {
-        threads: "Aynı oyun, bu kez bir düzeltmeyle.",
-        lock: "Korumayı seç. Tur üç adımın etrafına bir kilit koydu.",
-        run: "A'nın ilk adımını çalıştır, sonra B'yi araya sokmaya çalışın; düğmesi neden beklemesi gerektiğini söyler.",
-        atomic: "Ya da atomik toplamayı dene: her biri tek adım, araya girecek bir boşluk yok.",
+        threads: "Aynı sayaçla korumasız, kilitli ve atomik artırma seçeneklerini karşılaştır.",
+        lock: "Koruma menüsünden Kilit seç. Okuma, artırma ve yazma aynı kritik bölgede çalışır.",
+        run: "A'nın kilidi almasını sağla. B'nin m kilidini beklediğini doğrula.",
+        atomic: "Atomik eklemeyi seç. A ve B birer adımda sayacı artırır.",
       },
       atm: {
-        machines:
-          "İki ATM, içinde 100 olan tek bir hesabı paylaşıyor. Her biri 100 çekmek istiyor.",
-        run: "Her adım bölünmez, yine de sıra önemli. Çalıştır ve 200 çekmeye çalışın.",
-        options: "Sorunu bulduğunda düzeltmesi burada.",
+        machines: "İki ATM aynı bakiyeyi okur. Her ATM'nin çekme tutarı 100.",
+        run: "İki ATM'nin de bakiye kontrolünü çalıştır. Ardından çekimleri tamamla ve toplam ödemeye bak.",
+        options: "Ortak kilidi seç ve aynı işlem sırasını dene.",
       },
     },
   },

@@ -312,10 +312,9 @@ export const tr: Translation = {
     "race-condition": {
       title: "Lost Update",
       term: "Yarış durumu",
-      figure:
-        "iki iş parçacığının adımları iç içe; ikisi de yazmadan önce okur ve bir güncelleme kaybolur.",
+      figure: "iki iş parçacığının yazmaçları, ortak sayaç ve okuma, artırma, yazma adımları.",
       description:
-        "İki iş parçacığının işlem sırasını seç. Sayaçtaki bir güncellemenin nasıl kaybolduğunu göster.",
+        "İki iş parçacığının adımlarını sırala. Bir artırmanın ne zaman kaybolduğunu ve kilidin bunu nasıl önlediğini incele.",
     },
     "hash-tables": {
       title: "Computed Address",

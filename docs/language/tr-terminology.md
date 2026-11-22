@@ -511,3 +511,32 @@ yukarıdaki biçimde yeniden yazılacak.
   [Final çözümleri, soru 4](https://web.cs.hacettepe.edu.tr/~bil220/finalsol.pdf).
   İnönü Üniversitesi [Bilgisayar Sistemlerine Giriş](https://akademi.inonu.edu.tr/mucahit/menu/65/bilgisayar-sistemlerine-giris)
   “önbellek yerelliği” terimini kullanır.
+
+## race-condition
+
+### Yarış durumu, iş parçacığı ve kayıp güncelleme
+
+- **Tanım:** Bir yarış durumunda sonuç, paylaşılan veriye erişen
+  işlemlerin sırasına bağlıdır. Burada iki iş parçacığı aynı sayaç
+  değerini yazarak bir artırmayı kaybettirebilir. Yazmaç, iş
+  parçacığının geçici okuma ve hesaplama değerini tutar.
+- **Tercih:** yarış durumu, iş parçacığı, yazmaç, kayıp güncelleme.
+  Lab'daki sayaç örneğinde kayıp güncelleme, tamamlandığı hâlde
+  son sayaç değerine yansımayan artırmadır.
+- **Kaynak:** İTÜ,
+  [İşletim Sistemleri, Prosesler Arası Haberleşme, s. 122–123](https://web.itu.edu.tr/bkurt/Courses/os/lecture4_6spp.pdf).
+  [İnönü Üniversitesi, Bilgisayar Sistemlerine Giriş](https://akademi.inonu.edu.tr/mucahit/menu/65/bilgisayar-sistemlerine-giris)
+  “iş parçacığı” terimini kullanır. [Başkent Üniversitesi, Veri Tipleri, §1.10](https://mail.baskent.edu.tr/~tkaracay/etudio/ders/prg/c/dataTypes.pdf)
+  register için “yazmaç” der.
+
+### Kritik bölge, kilit ve atomik adım
+
+- **Tanım:** Kritik bölge, paylaşılan veri üzerindeki işlemleri içeren
+  kod bölümüdür. Aynı kilidi kullanan iş parçacıklarından biri kritik
+  bölgedeyken diğeri bekler. Atomik adım tek işlem olarak tamamlanır.
+  Bakiye deneyinde kontrol ve çekme ayrı ayrı atomik olsa da iki adım
+  arasındaki erişimi önlemek için ikisi aynı kilitle korunur.
+- **Tercih:** kritik bölge, kilit, atomik adım, atomik ekleme.
+- **Kaynak:** İTÜ,
+  [İşletim Sistemleri, Karşılıklı Dışlama, s. 118–119](https://web.itu.edu.tr/bkurt/Courses/os/lecture4_6spp.pdf).
+  Atomik eklemenin sınırı deneyin işlem modelinde gösterilir.
