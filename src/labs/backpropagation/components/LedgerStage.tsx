@@ -119,11 +119,12 @@ export function LedgerStage() {
       viewport={
         <div className="space-y-3 rounded-lg border border-line/20 bg-ink-900 p-3">
           <div tabIndex={0} role="region" aria-label={t.diagramLabel} className="overflow-x-auto">
+            {/* 44rem keeps each 56-unit node 46px tall, a full touch target, on a phone. */}
             <svg
               viewBox={`0 0 ${W} ${H}`}
               role="group"
               aria-label={t.diagramLabel}
-              className="block h-auto w-full min-w-[40rem]"
+              className="block h-auto w-full min-w-[44rem]"
             >
               {GRAPH.nodes.map((node, i) =>
                 node.args.map((a, k) => (

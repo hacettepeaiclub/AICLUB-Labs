@@ -141,14 +141,14 @@ export function ScaleStage({ attention, words, selected, onSelect }: ScaleStageP
             <button
               type="button"
               onClick={() => setTrack(TRACK_MIN)}
-              className="underline decoration-line/30 underline-offset-2 hover:text-fg"
+              className="inline-flex min-h-11 items-center underline decoration-line/30 underline-offset-2 hover:text-fg"
             >
               {scale.noneMark}
             </button>
             <button
               type="button"
               onClick={() => setTrack(modelTrack)}
-              className="underline decoration-line/30 underline-offset-2 hover:text-fg"
+              className="inline-flex min-h-11 items-center underline decoration-line/30 underline-offset-2 hover:text-fg"
             >
               {scale.modelMark(formatNumber(comparison.root, 2))}
             </button>

@@ -1,4 +1,4 @@
-import type { CSSProperties } from "react";
+import type { CSSProperties, MouseEvent } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useTheme } from "@/app/ThemeProvider";
 import type { Language, ThemeName } from "@/app/preferences";
@@ -71,6 +71,18 @@ export function SiteHeader({
     { value: "light", label: t.preferences.light, icon: SunIcon },
     { value: "dark", label: t.preferences.dark, icon: MoonIcon },
   ];
+
+  function closeMobileNav(event: MouseEvent<HTMLAnchorElement>) {
+    if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)
+      return;
+
+    const menu = event.currentTarget.closest("details");
+    if (!menu) return;
+    if (event.currentTarget.getAttribute("aria-current") === "page") {
+      menu.querySelector("summary")?.focus();
+    }
+    menu.open = false;
+  }
 
   return (
     <header className="sticky top-0 z-40 border-b border-line/10 bg-ink-950/95">
@@ -161,7 +173,16 @@ export function SiteHeader({
             </span>
           </button>
 
-          <details className="relative sm:hidden">
+          <details
+            className="relative sm:hidden"
+            onKeyDown={(event) => {
+              const menu = event.currentTarget;
+              if (event.key !== "Escape" || !menu.open || event.defaultPrevented) return;
+              event.preventDefault();
+              menu.querySelector("summary")?.focus();
+              menu.open = false;
+            }}
+          >
             <summary
               className="grid min-h-11 min-w-11 cursor-pointer list-none place-items-center rounded border
                 border-line/20 text-fg-muted hover:text-fg [&::-webkit-details-marker]:hidden"
@@ -182,21 +203,23 @@ export function SiteHeader({
             </summary>
             <nav
               aria-label={t.shell.primaryNav}
-              onClick={(event) => {
-                const menu = event.currentTarget.closest("details");
-                if (menu) menu.open = false;
-              }}
               className="absolute start-0 top-full z-50 grid min-w-48 gap-2 rounded border border-line/20 bg-ink-950 p-3"
             >
-              <Link className="flex min-h-11 items-center rounded px-2 hover:bg-line/5" to="/">
-                {t.shell.allLabs}
-              </Link>
-              <Link
+              <NavLink
                 className="flex min-h-11 items-center rounded px-2 hover:bg-line/5"
+                onClick={closeMobileNav}
+                to="/"
+              >
+                {t.shell.allLabs}
+              </NavLink>
+              <NavLink
+                className="flex min-h-11 items-center rounded px-2 hover:bg-line/5"
+                onClick={closeMobileNav}
                 to={CALCULATOR_PATH}
+                end
               >
                 {t.shell.calculator}
-              </Link>
+              </NavLink>
             </nav>
           </details>
           <PreferenceToggle

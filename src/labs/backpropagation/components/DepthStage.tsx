@@ -1,7 +1,7 @@
 import { useRef, type KeyboardEvent, type PointerEvent } from "react";
 import { Figure, LabSlider, Stage } from "@/components/lab";
 import { Segmented } from "@/components/ui";
-import { useLocalControls } from "@/hooks";
+import { useLocalControls, useTouchRadius } from "@/hooks";
 import { useLabCopy } from "@/i18n/labs";
 import { depthGradients, type Activation } from "../engine";
 import { formatSmall, formatValue } from "../view";
@@ -54,6 +54,7 @@ export function DepthStage() {
   const factor = depth > 1 && first > 0 ? first ** (1 / depth) : (grads[0] ?? 0);
   const dragging = useRef(false);
   const svgRef = useRef<SVGSVGElement>(null);
+  const hitRadius = useTouchRadius(svgRef, { width: W, height: H }, 22);
 
   const xOf = (l: number) => LEFT + l * SPACING;
   const fromPointer = (e: PointerEvent<SVGSVGElement>) => {
@@ -150,7 +151,7 @@ export function DepthStage() {
               }}
               className="cursor-ew-resize outline-none focus-visible:[&>circle:last-child]:stroke-accent"
             >
-              <circle cx={xOf(depth)} cy={ROW} r={22} className="fill-transparent" />
+              <circle cx={xOf(depth)} cy={ROW} r={hitRadius} className="fill-transparent" />
               <circle
                 cx={xOf(depth)}
                 cy={ROW}
@@ -172,7 +173,8 @@ export function DepthStage() {
               x={xOf(depth)}
               y={ROW - 18}
               textAnchor="middle"
-              className="fill-fg font-mono"
+              // Drawn over the handle: let a tap on it reach the handle below.
+              className="pointer-events-none fill-fg font-mono"
               fontSize={10}
             >
               {t.end}

@@ -94,6 +94,8 @@ const ROUTES = [
 
 /** How long the experiment runs while long tasks are counted. */
 const RUN_MS = 5000;
+/** How long to wait for that quiet before recording the page as never quiet. */
+const QUIET_DEADLINE_MS = 20_000;
 /** A quiet main thread for this long counts as interactive. */
 const QUIET_MS = 500;
 
@@ -206,7 +208,10 @@ async function measure(browser, origin, route, profile, { ambient = true } = {})
   const usableAt = await page.evaluate(() => performance.now());
   // Then a quiet main thread: what a click needs to be answered. Polled from
   // here, since the site's CSP (rightly) refuses the eval waitForFunction uses.
-  const deadline = Date.now() + 60_000;
+  // A page that never goes quiet is a result, not a failure: it is recorded
+  // as neverQuiet (interactive null), and the run phase is still measured.
+  const deadline = Date.now() + QUIET_DEADLINE_MS;
+  let neverQuiet = false;
   for (;;) {
     const quietFor = await page.evaluate(() => {
       const tasks = window.__perf.longTasks;
@@ -214,16 +219,21 @@ async function measure(browser, origin, route, profile, { ambient = true } = {})
       return performance.now() - (last ? last.start + last.duration : 0);
     });
     if (quietFor >= QUIET_MS) break;
-    if (Date.now() > deadline) throw new Error(`${route.path}: never quiet for ${QUIET_MS} ms`);
+    if (Date.now() > deadline) {
+      neverQuiet = true;
+      break;
+    }
     await page.waitForTimeout(100);
   }
   // Interactive: the later of the moment the control was visible and
   // enabled, and the end of the last long task before the quiet spell.
-  const interactiveAt = await page.evaluate((usable) => {
-    const tasks = window.__perf.longTasks;
-    const last = tasks.length ? tasks[tasks.length - 1] : null;
-    return Math.max(usable, last ? last.start + last.duration : 0);
-  }, usableAt);
+  const interactiveAt = neverQuiet
+    ? null
+    : await page.evaluate((usable) => {
+        const tasks = window.__perf.longTasks;
+        const last = tasks.length ? tasks[tasks.length - 1] : null;
+        return Math.max(usable, last ? last.start + last.duration : 0);
+      }, usableAt);
   const interactiveWall = Date.now();
   const atLoad = await page.evaluate(() => JSON.parse(JSON.stringify(window.__perf)));
 
@@ -258,7 +268,8 @@ async function measure(browser, origin, route, profile, { ambient = true } = {})
     cls: largestSessionWindow(final.shifts),
     clsSum: final.shifts.reduce((sum, s) => sum + s.value, 0),
     interactive: interactiveAt,
-    wallToInteractive: interactiveWall - started,
+    neverQuiet,
+    wallToInteractive: neverQuiet ? null : interactiveWall - started,
     loadLongTasks: loadTasks.length,
     loadBlockingMs: tbt(loadTasks),
     longestLoadTask: loadTasks.reduce((m, t) => Math.max(m, t.duration), 0),
@@ -319,6 +330,11 @@ async function main() {
             `  ${label.padEnd(30)} ${key.startsWith("cls") ? value.toFixed(3) : value.toFixed(0)}`,
           );
         }
+        const restless = raw.filter((r) => r.neverQuiet).length;
+        if (restless)
+          console.log(
+            `  never quiet for ${QUIET_MS} ms within ${QUIET_DEADLINE_MS / 1000} s: ${restless}/${raw.length} runs`,
+          );
         const errors = raw.flatMap((r) => r.errors);
         if (errors.length) console.log(`  page errors: ${[...new Set(errors)].join(" | ")}`);
       }

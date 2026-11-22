@@ -135,9 +135,15 @@ describe("contrast — WCAG AA", () => {
       }
     });
 
-    it(`${name}: faint text clears 3:1, the large/secondary floor`, () => {
-      expect(contrast(theme["fg-faint"]!, theme["ink-950"]!)).toBeGreaterThanOrEqual(3);
-      expect(contrast(theme["fg-faint"]!, theme["ink-800"]!)).toBeGreaterThanOrEqual(3);
+    it(`${name}: caption and amber label text clear 4.5:1 on every surface`, () => {
+      for (const [surface, bg] of surfaces(theme)) {
+        for (const token of ["fg-faint", "signal-amber"] as const) {
+          expect(
+            contrast(theme[token]!, bg),
+            `${name} ${token} on ${surface}`,
+          ).toBeGreaterThanOrEqual(4.5);
+        }
+      }
     });
 
     it(`${name}: accent text clears 4.5:1 on every surface`, () => {

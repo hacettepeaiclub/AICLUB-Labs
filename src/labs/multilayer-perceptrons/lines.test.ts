@@ -5,6 +5,7 @@ import {
   clip,
   foot,
   fromTip,
+  hitArea,
   oneLineAccuracy,
   side,
   through,
@@ -96,5 +97,50 @@ describe("bestOneLine", () => {
       { x: 0.5, y: 0, label: -1 as const },
     ];
     expect(bestOneLine(onLine, 4, 3)).toBe(direct(onLine, 4, 3));
+  });
+});
+
+describe("a handle's hit area", () => {
+  /** The numbers of an SVG path, in order. */
+  const numbers = (d: string) => (d.match(/-?\d+(?:\.\d+)?(?:e-?\d+)?/g) ?? []).map(Number);
+
+  it("is the whole circle when the other handle is far enough away", () => {
+    const d = hitArea({ x: 0, y: 0 }, { x: 1, y: 0 }, 0.2);
+    expect(d).toBe("M-0.2 0a0.2 0.2 0 1 0 0.4 0a0.2 0.2 0 1 0 -0.4 0Z");
+  });
+
+  it("is the whole circle when the handles coincide (no side to cut on)", () => {
+    const d = hitArea({ x: 0.3, y: 0.1 }, { x: 0.3, y: 0.1 }, 0.2);
+    expect(d).toMatch(/a.*a.*Z$/);
+    const [x, y] = numbers(d);
+    expect(x).toBeCloseTo(0.1, 12);
+    expect(y).toBeCloseTo(0.1, 12);
+  });
+
+  it("is cut along the bisector when the handles are closer than two radii", () => {
+    const at = { x: 0, y: 0 };
+    const other = { x: 0.2, y: 0 };
+    const [ax, ay, , , , large, sweep, bx, by] = numbers(hitArea(at, other, 0.2));
+    // The chord's ends lie on the circle and on the bisector x = 0.1.
+    expect(ax).toBeCloseTo(0.1, 12);
+    expect(bx).toBeCloseTo(0.1, 12);
+    expect(Math.hypot(ax!, ay!)).toBeCloseTo(0.2, 12);
+    expect(Math.hypot(bx!, by!)).toBeCloseTo(0.2, 12);
+    // The long way round, through the side away from the other handle.
+    expect([large, sweep]).toEqual([1, 1]);
+    expect(ay).toBeGreaterThan(0);
+    expect(by).toBeLessThan(0);
+  });
+
+  it("splits two close handles' areas exactly at the bisector, whichever way they face", () => {
+    const a = { x: 0.1, y: -0.2 };
+    const b = { x: 0.25, y: -0.05 };
+    const [ax, ay, , , , , , bx, by] = numbers(hitArea(a, b, 0.3));
+    const [cx, cy, , , , , , dx, dy] = numbers(hitArea(b, a, 0.3));
+    // The same chord, traversed from the other end.
+    expect(ax).toBeCloseTo(dx!, 12);
+    expect(ay).toBeCloseTo(dy!, 12);
+    expect(bx).toBeCloseTo(cx!, 12);
+    expect(by).toBeCloseTo(cy!, 12);
   });
 });

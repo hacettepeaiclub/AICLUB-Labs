@@ -215,7 +215,7 @@ export function SentenceView({
                   words.length,
                 )}
                 className={cn(
-                  "group relative flex min-h-11 flex-col items-center rounded px-1.5 pb-2 pt-1",
+                  "group relative flex min-h-11 min-w-11 flex-col items-center rounded px-1.5 pb-2 pt-1",
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
                   "focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950",
                   !reduced && "transition-[opacity,color] duration-fast",

@@ -1,7 +1,7 @@
 import { useRef, type KeyboardEvent, type RefObject } from "react";
-import { useDrag } from "@/hooks";
+import { useDrag, useTouchRadius } from "@/hooks";
 import { cn } from "@/lib/cn";
-import { clip, foot, fromTip, through, tip, type Line, type Xy } from "../lines";
+import { clip, foot, fromTip, hitArea, through, tip, type Line, type Xy } from "../lines";
 
 export interface LineOverlayProps {
   lines: readonly Line[];
@@ -16,6 +16,9 @@ export interface LineOverlayProps {
 
 /** Below this the handles stop being drawn: the line's foot is off the square. */
 const VISIBLE = 0.97;
+/** The drawn dots of the two handles, in model units. */
+const TIP_DOT = 0.045;
+const FOOT_DOT = 0.04;
 
 /**
  * A neuron's boundary, held in the hand.
@@ -41,6 +44,7 @@ export function LineOverlay({
   className,
 }: LineOverlayProps) {
   const svgRef = useRef<SVGSVGElement>(null);
+  const hitRadius = useTouchRadius(svgRef, { width: 2, height: 2 }, 0.11);
   const toModel = (fx: number, fy: number): Xy => ({ x: fx * 2 - 1, y: 1 - fy * 2 });
 
   const ground = useDrag({
@@ -74,6 +78,7 @@ export function LineOverlay({
             onChange={(next) => onChange(i, next)}
             onActivate={() => onActivate?.(i)}
             svgRef={svgRef}
+            hitRadius={hitRadius}
             labels={labels}
           />
         ))}
@@ -89,6 +94,7 @@ function LineGlyph({
   onChange,
   onActivate,
   svgRef,
+  hitRadius,
   labels,
 }: {
   index: number;
@@ -97,6 +103,8 @@ function LineGlyph({
   onChange: (line: Line) => void;
   onActivate: () => void;
   svgRef: RefObject<SVGSVGElement>;
+  /** The handles' invisible hit circles, 44px across at least. */
+  hitRadius: number;
   labels: LineOverlayProps["labels"];
 }) {
   const seg = clip(line);
@@ -181,12 +189,14 @@ function LineGlyph({
             {...turn}
             className="cursor-grab outline-none [&:focus-visible>circle:last-child]:stroke-accent"
           >
-            <circle cx={t.x} cy={t.y} r={0.11} className="fill-transparent" />
+            {/* Cut where it meets the foot's, so each dot keeps its own taps; the
+                painted dots take none, or the later one would bypass the cut. */}
+            <path d={hitArea(t, f, hitRadius)} className="fill-transparent" />
             <circle
               cx={t.x}
               cy={t.y}
-              r={0.045}
-              className="fill-data stroke-ink-950"
+              r={TIP_DOT}
+              className="pointer-events-none fill-data stroke-ink-950"
               strokeWidth={2}
               vectorEffect="non-scaling-stroke"
             />
@@ -201,12 +211,12 @@ function LineGlyph({
             {...slide}
             className="cursor-move outline-none [&:focus-visible>circle:last-child]:stroke-accent"
           >
-            <circle cx={f.x} cy={f.y} r={0.11} className="fill-transparent" />
+            <path d={hitArea(f, t, hitRadius)} className="fill-transparent" />
             <circle
               cx={f.x}
               cy={f.y}
-              r={0.04}
-              className="fill-ink-950 stroke-fg"
+              r={FOOT_DOT}
+              className="pointer-events-none fill-ink-950 stroke-fg"
               strokeWidth={2}
               vectorEffect="non-scaling-stroke"
             />

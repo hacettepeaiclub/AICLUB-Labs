@@ -1,6 +1,7 @@
 export { useRafLoop } from "./useRafLoop";
 export { useCanvas2D, type CanvasDrawArgs } from "./useCanvas2D";
 export { useElementSize, type ElementSize } from "./useElementSize";
+export { useTouchRadius, TOUCH_RADIUS_PX } from "./useTouchRadius";
 export { useLocalStorage } from "./useLocalStorage";
 export { useLocalControls } from "./useLocalControls";
 export { useKeyPress } from "./useKeyPress";
