@@ -2,7 +2,7 @@ import { useId, useState } from "react";
 import { Figure, LabSlider, Stage } from "@/components/lab";
 import { Button, Kbd } from "@/components/ui";
 import { useLabCopy } from "@/i18n/labs";
-import { formatNumber } from "@/lib/format";
+import { useNumberFormat } from "./useNumberFormat";
 import { conditionNumber, gradient, type Landscape, type Point } from "../engine";
 import { LandscapeCanvas } from "./LandscapeCanvas";
 import { VIEW_EXTENT } from "./DescentStage";
@@ -42,6 +42,7 @@ function angleBetween(u: Point, v: Point): number {
  */
 export function GradientStage() {
   const g = useLabCopy("gradient-descent");
+  const { formatNumber } = useNumberFormat();
   const hintId = useId();
 
   const [point, setPoint] = useState<Point>(HOME);

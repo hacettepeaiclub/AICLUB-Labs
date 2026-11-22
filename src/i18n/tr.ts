@@ -276,9 +276,9 @@ export const tr: Translation = {
     "gradient-descent": {
       title: "The Size of a Step",
       term: "Gradient descent",
-      figure: "yukarıdan görülen bir çanak ve adımların tabanına indiği yol.",
+      figure: "amaç fonksiyonunun eşyükselti eğrileri ve başlangıç noktasından atılan adımlar.",
       description:
-        "Adım boyunu seç. Yüzeyin biçimi o adımı kaldıramıyorsa yol hedefe inmek yerine dağılır.",
+        "Adım boyunu değiştir. Aynı yüzeyde hangi ayarların minimuma yaklaştığını haritada karşılaştır.",
     },
     backpropagation: {
       title: "Who Is to Blame?",

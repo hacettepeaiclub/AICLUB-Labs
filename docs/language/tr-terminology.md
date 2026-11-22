@@ -300,3 +300,15 @@ yukarıdaki biçimde yeniden yazılacak.
 - **Bağlama bağlı alternatif:** benzetim. Arayüzde “simülasyon” kullanılır.
 - **Kaynak:** İstanbul Sabahattin Zaim Üniversitesi,
   [Olasılık Teorisi, §1.8 ve §7.4](https://w3.izu.edu.tr/sites/default/files/2026-10/112-olasilikteorisi.pdf).
+
+## gradient-descent
+
+### Gradient descent, gradyan ve adım boyu
+
+- **Tanım:** Momentumsuz gradient descent, konumu −η∇f kadar değiştirir.
+  Negatif gradyan, fonksiyonun bulunduğun noktada en hızlı azaldığı yönü
+  gösterir. Bu yönde gidilen mesafe η·|∇f| kadardır.
+- **Tercih:** gradient descent, gradyan, adım boyu (η). Eğitim kaynaklarında
+  η için öğrenme oranı da kullanılır. Deneydeki kontrolde adım boyu yazılır.
+- **Kaynak:** Afyon Kocatepe Üniversitesi,
+  [Görüntü Sınıflandırma İçin Derin Öğrenme, s. 18–19](https://acikerisim.aku.edu.tr/server/api/core/bitstreams/e975eb1d-13e9-45f8-a16c-23fb196f63e2/content).
