@@ -122,7 +122,7 @@ const copy: typeof en = {
     moveLabel: "Artıyı taşı",
     move: { left: "Sola taşı", up: "Yukarı taşı", down: "Aşağı taşı", right: "Sağa taşı" },
     caption:
-      "Yalnızca artıyı içeren bir pencere 9 alır; bu, herhangi bir pencerenin alabileceği en yüksek değerdir. X, blok ve çubuk daha düşük alır. Her konumda aynı 25 ağırlık kullanıldığı için, artı diğer şekillerle örtüşmediği sürece en büyük değer artıyı hücre hücre izler. Artı bir şeklin üzerine gelirse pencere 9'dan az alabilir.",
+      "Yalnızca artıyı içeren bir pencere 9 alır; bu, herhangi bir pencerenin alabileceği en yüksek değerdir. X, blok ve çubuk daha düşük alır. Her konumda aynı 25 ağırlık kullanıldığı için, 5×5 pencereye başka bir şeklin pikselleri girmediği sürece en büyük değer artıyı hücre hücre izler. Artı bir şeklin üzerine gelirse pencere 9'dan az alabilir.",
     figures: {
       peak: "En büyük yanıt",
       peakAt: (x: number, y: number) => `sütun ${x}, satır ${y}`,
@@ -318,7 +318,7 @@ const copy: typeof en = {
       shift: {
         shapes: "Bir artı işareti ve üç yanıltıcı şekil. Çekirdek, aradığı şeklin kendisidir.",
         move: "Artıyı bu oklarla taşı. Tur onu bir hücre sağa taşıdı.",
-        peak: "Artı diğer şekillerle örtüşmediği sürece en büyük çıktı da onunla birlikte hücre hücre kaydı; çünkü her konumda aynı ağırlıklar kullanılıyor.",
+        peak: "5×5 pencereye başka bir şeklin pikselleri girmediği sürece en büyük çıktı da onunla birlikte hücre hücre kaydı; çünkü her konumda aynı ağırlıklar kullanılıyor.",
       },
       size: {
         grid: "Kesikli dolgusuyla girdi ve çıktı. Bir çıktı hücresine tıklayınca onu üreten pencere görünür.",
