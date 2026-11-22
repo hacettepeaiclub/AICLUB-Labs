@@ -8,13 +8,14 @@ import type en from "../en/generalization";
  */
 
 const copy: typeof en = {
-  question: "Eğitim noktalarında hata yok. Yeni noktalarda ne olur?",
+  percent: (n: number) => `%${n}`,
+  question: "k = 1 iken eğitim noktalarının hepsi doğru sınıflanır. Yeni noktalarda ne olur?",
   training: "Eğitim doğruluğu",
   validation: "Doğrulama doğruluğu",
   test: "Son test doğruluğu",
-  map: "Sınıflandırıcının karar bölgeleri ve etiketli örnekler. Daireler ve üçgenler iki ayrı sınıftır; turuncu halkalar yanlış tahminleri gösterir.",
+  map: "Sınıflandırıcının karar bölgeleri ve etiketli örnekler. Daire ya da üçgen, noktanın verideki etiketini gösterir; bu etiket ters çevrilmiş olabilir. Turuncu halkalar, tahminin bu etiketle uyuşmadığı noktalardır.",
   legend:
-    "Daire / üçgen: gerçek sınıf. Zemin rengi: tahmin edilen sınıf. Turuncu halka: yanlış tahmin.",
+    "Daire / üçgen: verideki etiket. Zemin rengi: tahmin edilen sınıf. Turuncu halka: tahmin etiketle uyuşmuyor.",
   settings: "Model ayarları",
   neighbours: "Oy veren komşu sayısı (k)",
   kHint:
@@ -33,7 +34,7 @@ const copy: typeof en = {
   dataHint:
     "Bu iki ayarı doğrulama noktalarını göstermeden önce seç. Gördüğün noktaları gizlemek onları görülmemiş yapmaz. Bu ayarları değiştirmek için yeni veri kümesi oluştur.",
   scope:
-    "Bu lab, sentetik daire verisi üzerinde gerçek bir k-en yakın komşu (k-NN) sınıflandırıcısı çalıştırır. Eğitim, doğrulama ve test örneklemleri birbirinden bağımsız üretilir. Her etiket, seçilen olasılıkla ters çevrilebilir. Burada yapay sinir ağı eğitilmez; k büyüdükçe karar sınırı yumuşar. Sonuçlar örnekleme göre değişir ve daha çok yumuşatma her zaman daha iyi sonuç vermez.",
+    "Bu lab, sentetik daire verisi üzerinde gerçek bir k-en yakın komşu (k-NN) sınıflandırıcısı çalıştırır. Eğitim, doğrulama ve test örneklemleri birbirinden bağımsız üretilir. Her etiket, seçilen olasılıkla ters çevrilebilir. Burada yapay sinir ağı eğitilmez. k büyüdüğünde karar bölgeleri genellikle daha az parçalı görünür; farkı görmek için haritayı farklı k değerlerinde karşılaştır. Sonuçlar örnekleme göre değişir ve daha çok yumuşatma her zaman daha iyi sonuç vermez.",
   bridgeTitle: "Aynı soru yapay sinir ağları için de sorulur.",
   bridge:
     "Esnek bir karar sınırı gürültüye de uyabilir. Buradaki model komşuları ezberler; yapay sinir ağı ise ağırlıklarını ayarlar. İkisi de, parametrelerinin seçiminde kullanılmamış örneklerde değerlendirilmelidir.",

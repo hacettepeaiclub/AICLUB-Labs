@@ -366,8 +366,10 @@ D2L-TR sözlüklerine (bkz. ilk tablo) ve sitenin önceki kullanımına dayanır
 - **Tanım:** Bir noktayı, ona en yakın k eğitim noktasının çoğunluk oyuyla
   sınıflandıran yöntem.
 - **Tercih:** k-en yakın komşu (k-NN); "oy veren komşu sayısı (k)".
-- **Kaynak:** Türkçe ders kaynağı okunamadı; ad, Türkçe arama sonuçlarındaki
-  yaygın kullanımdır. Açık karar.
+- **Kaynak:** İstanbul Üniversitesi doktora tezi
+  ([PDF](https://nek.istanbul.edu.tr/ekos/TEZ/61102.pdf), §2.6.2, s. 24–25):
+  "k-en yakın komşu" ve çoğunluk oylaması. Tezi Codex-TR okudu; Claude-TR'nin
+  indirdiği kopyadan metin çıkarılamadı.
 
 ### Karar sınırı, karar bölgesi
 
