@@ -191,13 +191,13 @@ export const journeys: Record<string, { en: Journey; tr: Journey }> = {
     ],
     tr: [
       "Çıktıdaki hatanın her ağırlığa nasıl ulaştığını izle.",
-      "Çıktı noktasını çek ve bağlantıların tepkisine bak.",
-      "Her ağırlığın katkısının yönünü ve büyüklüğünü ayırt et.",
-      "Aynı ağırlık iki dalı besliyor. Geri gelen katkılar nasıl birleşir?",
+      "Çıktı noktasını çek ve bağlantıların nasıl parladığına bak.",
+      "Her bağlantının rengine (artacak mı, azalacak mı) ve kalınlığına (payı ne kadar) bak.",
+      "Aynı ağırlık iki dala giriyor. Geri gelen katkılar nasıl birleşir?",
       "İki dalın katkıları toplanır.",
-      "Yalnız büyük katkı alınır.",
+      "Yalnızca büyük katkı alınır.",
       "İki dalın katkıları çarpılır.",
-      "Zincir kuralında bir yol boyunca türevler çarpılır; farklı yollardan gelen katkılar toplanır. Ortak ağırlığın iki katkıyı aldığı yeri geri yayılım hesabında izle.",
+      "Zincir kuralında bir yol boyunca yerel türevler çarpılır; farklı yollardan gelen katkılar toplanır. “Geri geçişi sen yap.” bölümünde, paylaşılan w'nin iki katkıyı nerede topladığını izle.",
     ],
   },
   convolution: {

@@ -5,7 +5,7 @@ import { useReducedMotion, useTouchRadius } from "@/hooks";
 import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import { aimStep, evaluate, gradient, network, NETWORK_PARAMS, type NetworkParam } from "../engine";
-import { formatValue } from "../view";
+import { useNumberFormat } from "./useNumberFormat";
 
 const X1 = 0.8;
 const X2 = -0.5;
@@ -83,6 +83,7 @@ const labelAt = (e: { x1: number; y1: number; x2: number; y2: number }, param: N
  * amount.
  */
 export function PullStage() {
+  const { formatValue } = useNumberFormat();
   const lab = useLabCopy("backpropagation");
   const t = lab.pull;
   const reduced = useReducedMotion() ?? false;

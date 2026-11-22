@@ -4,7 +4,7 @@ import { Button } from "@/components/ui";
 import { useLanguage } from "@/i18n";
 import { useLabCopy } from "@/i18n/labs";
 import { backward, forward, numericGradient, parameterNodes, wideNetwork } from "../engine";
-import { formatSmall, formatValue } from "../view";
+import { useNumberFormat } from "./useNumberFormat";
 
 interface Result {
   readonly params: number;
@@ -31,6 +31,7 @@ const SLICE = 40;
  * machine's, and they will differ on the next one; the ratio is what holds.
  */
 export function CostStage() {
+  const { formatSmall, formatValue } = useNumberFormat();
   const t = useLabCopy("backpropagation").cost;
   const { language } = useLanguage();
   const [width, setWidth] = useState(12);
@@ -129,7 +130,9 @@ export function CostStage() {
                   {row.ms !== undefined
                     ? ms(row.ms)
                     : row.live
-                      ? `${formatValue(progress * 100, 0)}%`
+                      ? language === "tr"
+                        ? `%${formatValue(progress * 100, 0)}`
+                        : `${formatValue(progress * 100, 0)}%`
                       : "—"}
                 </span>
               </div>

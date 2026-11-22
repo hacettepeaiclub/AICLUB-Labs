@@ -12,7 +12,7 @@ import {
   localGradients,
   numericGradient,
 } from "../engine";
-import { formatValue } from "../view";
+import { useNumberFormat } from "./useNumberFormat";
 
 const GRAPH = ledgerGraph();
 const VALUES = forward(GRAPH, LEDGER_PARAMS);
@@ -59,6 +59,7 @@ const FILLABLE = GRAPH.nodes.map((n) => n.op !== "const");
  * against the numeric gradient.
  */
 export function LedgerStage() {
+  const { formatValue } = useNumberFormat();
   const lab = useLabCopy("backpropagation");
   const t = lab.ledger;
   const [done, setDone] = useState<ReadonlySet<number>>(() => new Set([ROOT]));

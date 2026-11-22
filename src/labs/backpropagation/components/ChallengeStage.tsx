@@ -6,7 +6,7 @@ import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import { CASES, caseOf, culprit, type CaseId } from "../cases";
 import { gradient, numericGradient, parameterNodes } from "../engine";
-import { formatValue } from "../view";
+import { useNumberFormat } from "./useNumberFormat";
 
 /**
  * Section 7: someone's backward pass is wrong. Find where.
@@ -20,6 +20,7 @@ import { formatValue } from "../view";
  * it is not there.
  */
 export function ChallengeStage() {
+  const { formatValue } = useNumberFormat();
   const lab = useLabCopy("backpropagation");
   const t = lab.challenge;
   const [progress, save] = useLocalControls("acl:backpropagation:challenge", {

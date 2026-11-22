@@ -4,7 +4,7 @@ import { Segmented } from "@/components/ui";
 import { useLocalControls, useTouchRadius } from "@/hooks";
 import { useLabCopy } from "@/i18n/labs";
 import { depthGradients, type Activation } from "../engine";
-import { formatSmall, formatValue } from "../view";
+import { useNumberFormat } from "./useNumberFormat";
 
 const MAX = 30;
 const W = 720;
@@ -38,6 +38,7 @@ const ACTIVATIONS: readonly Activation[] = ["sigmoid", "tanh", "relu"];
  * `depthGradients`, which the tests hold to central differences.
  */
 export function DepthStage() {
+  const { formatSmall, formatValue } = useNumberFormat();
   const t = useLabCopy("backpropagation").depth;
   const [stored, save] = useLocalControls("acl:backpropagation:depth", {
     depth: 8,

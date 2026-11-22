@@ -393,3 +393,72 @@ D2L-TR sözlüklerine (bkz. ilk tablo) ve sitenin önceki kullanımına dayanır
 - **Bağlama bağlı alternatifler:** sığım (DLT). Projede kullanma; ML
   derslerinde "kapasite" daha anlaşılırdır. Açık karar.
 - **Kaynak:** DLT ("capacity: sığım")
+
+---
+
+## backpropagation
+
+Kaynak: D2L-TR bölüm metinleri (okundu): *İleri Yayma, Geri Yayma ve
+Hesaplamalı Çizge* ([backprop.md](https://github.com/d2l-ai/d2l-tr/blob/master/chapter_multilayer-perceptrons/backprop.md)),
+*Sayısal Kararlılık ve İlkleme* ([numerical-stability-and-init.md](https://github.com/d2l-ai/d2l-tr/blob/master/chapter_multilayer-perceptrons/numerical-stability-and-init.md)),
+*Çok Katmanlı Algılayıcılar* ([mlp.md](https://github.com/d2l-ai/d2l-tr/blob/master/chapter_multilayer-perceptrons/mlp.md)).
+Aşağıda "D2L-TR-BÖLÜM" diye anılır.
+
+### Geri yayılım, ileri ve geri geçiş
+
+- **Tanım:** Geri yayılım, kaybın her parametreye göre gradyanını zincir
+  kuralıyla, kayıptan girdiye doğru hesaplayan yöntem. İleri geçiş ağın bir
+  kez çalıştırılıp ara değerlerin hesaplanması; geri geçiş, gradyanların bir
+  kez geriye doğru hesaplanması.
+- **Tercih:** geri yayılım; ileri geçiş; geri geçiş. Sayılırken "1 ileri ve 1
+  geri geçiş", "${n} ileri geçiş".
+- **Bağlama bağlı alternatifler:** geri yayma, ileri yayma (D2L-TR-BÖLÜM);
+  geri yayılım (DLT). "Geçiş", tek bir çalıştırmayı (pass) yöntemin adından
+  (propagation) ayırmak için kullanılır; açık karar.
+- **Kaynak:** DLT, D2L-TR-BÖLÜM
+
+### Hesaplama çizgesi, düğüm
+
+- **Tanım:** Bir ifadenin işlemlerini düğüm, veri akışını kenar olarak
+  gösteren çizge.
+- **Tercih:** hesaplama çizgesi; düğüm. Graph Search lab'ıyla ortak karar:
+  çizge, düğüm, kenar.
+- **Kullanma:** "grafik" (bir veri grafiği, chart demektir); "graf" yerine "çizge".
+- **Kaynak:** D2L-TR-BÖLÜM ("hesaplamalı çizge"); Codex-TR'nin okuduğu
+  Ankara Üniversitesi ders metni (Bölüm 10, çizge/düğüm/kenar).
+
+### Zincir kuralı, yerel türev
+
+- **Tercih:** zincir kuralı; yerel türev (bir düğümün çıktısının girdisine göre türevi).
+- **Kaynak:** D2L-TR-BÖLÜM ("zincir kuralına göre")
+
+### Kaybolan ve patlayan gradyan
+
+- **Tercih:** kaybolan gradyan; patlayan gradyan. Fiil olarak "gradyan
+  kaybolur / söner", "gradyan patlar".
+- **Kaynak:** D2L-TR-BÖLÜM ("Kaybolan Gradyanlar", "patlayan gradyan problemi")
+
+### Aktivasyon fonksiyonu
+
+- **Tercih:** aktivasyon fonksiyonu. Fonksiyon adları özgün kalır: sigmoid,
+  tanh, ReLU.
+- **Bağlama bağlı alternatifler:** etkinleştirme fonksiyonu (D2L-TR-BÖLÜM,
+  "etkinleştirme (aktivasyon) fonksiyonu"); etkilenim fonksiyonu (DLT).
+  Projede kullanma: ders anlatımlarında yerleşik olan "aktivasyon"dur ve
+  D2L-TR de onu parantez içinde verir. Açık karar.
+- **Kaynak:** D2L-TR-BÖLÜM, DLT
+
+### Gradyan kontrolü, sayısal türev, merkezi fark
+
+- **Tanım:** Gradyan kontrolü, geri yayılımın bulduğu gradyanı parametreyi
+  biraz değiştirip kaybı ölçerek bulunan sayısal türevle karşılaştırmaktır.
+  Lab merkezi fark kullanır: (L(w + h) − L(w − h)) / 2h.
+- **Tercih:** gradyan kontrolü; sayısal türev; merkezi fark. "Dürtmek"
+  (nudge) kullanma; "biraz değiştirmek" de.
+- **Kaynak:** Proje kararı.
+
+### Ceza terimi
+
+- **Tanım:** Kayba eklenen ve ağırlığı küçük tutan 0,1·w² terimi.
+- **Tercih:** ceza terimi. Kavram adı gerekirse düzenlileştirme terimi.
+- **Kaynak:** D2L-TR-BÖLÜM ("düzenlileştirme terimi"); DLT ("regularization: düzenlileştirme")
