@@ -50,7 +50,7 @@ const copy: typeof en = {
     chain: (row: number, col: number, action: string, value: string) =>
       `Satır ${row}, sütun ${col}. En yüksek Q-değerine sahip hamleyle ajan ${action} gider. Bu hamlenin Q-değeri ${value}.`,
 
-    unexploredLabel: "En yüksek Q-değerleri izlenirken uğranmayan kareler",
+    unexploredLabel: "Rotanın uğramadığı kareler",
     unexploredHint: "en yüksek Q-değerli hamleler izlenirken",
 
     propagation:
@@ -61,7 +61,7 @@ const copy: typeof en = {
       "Güncelleme, Q-değerini hedefe doğru α oranında değiştirir. Hedef, alınan ödül ile yeni durumdaki en büyük Q-değerinin γ ile çarpımının toplamıdır. Kapıya girince gelecek değer sıfırdır.",
 
     honesty:
-      "Ajan bütün hücreleri aynı ölçüde ziyaret etmez. Az ziyaret edilen durumlarda Q-değerleri başlangıç değerlerine yakın kalabilir. Öğrenilen yol, ortamın tamamının öğrenildiği anlamına gelmez.",
+      "Ajan bütün kareleri aynı ölçüde ziyaret etmez. Az ziyaret edilen durumlarda Q-değerleri başlangıç değerlerine yakın kalabilir. Öğrenilen yol, ortamın tamamının öğrenildiği anlamına gelmez.",
 
     scheduleWarning:
       "Kaydırıcı yalnızca kaydedilen turları gösterir. İki kayıt arasında da Q-değerleri güncellenir.",
@@ -107,7 +107,7 @@ const copy: typeof en = {
     rulesLabel: "Bu kareden yapılabilecek hamlelerin ödülleri",
     previewHint: "Ajan bu tabloyu göremez. Ancak hareket ederek öğrenir.",
     moveAnnounce: (action: string, paid: string, total: string) =>
-      `Seçilen yön ${action}. Hamlenin ödülü ${paid}. Toplam ${total}.`,
+      `${action} gitme hamlesi seçildi. Hamlenin ödülü ${paid}. Toplam ${total}.`,
   },
 
   train: {
@@ -144,7 +144,7 @@ const copy: typeof en = {
   policy: {
     kicker: "Politika",
     title: "Öğrenilen değerler rotayı nasıl belirler?",
-    lede: "Ajan hazır bir rota saklamaz. Her kare ve hamle için bir Q-değeri tutar. En yüksek değerli hareketleri izlediğinde bir rota oluşur. Eğitim öncesi ve sonrasını karşılaştır.",
+    lede: "Ajan hazır bir rota saklamaz. Her kare ve hamle için bir Q-değeri tutar. En yüksek Q-değerli hamleleri izlediğinde bir rota oluşur. Eğitim öncesi ve sonrasını karşılaştır.",
     caption:
       "Her ok, bulunduğu karede en büyük Q-değerine sahip hamleyi gösterir. Bir kare seçip dört hamlenin değerlerini karşılaştır.",
     beforeTitle: "Eğitimden önce",
@@ -183,10 +183,10 @@ const copy: typeof en = {
       landed: string,
       reward: string,
     ) =>
-      `${row}. satır, ${col}. sütundan ${action} gitmeyi denedi. Seçim ${choice}. Sonuç olarak ${landed}. Hamlenin ödülü ${reward}.`,
+      `${row}. satır, ${col}. sütundan ${action} gitmeyi denedi. ${choice}. Sonuç olarak ${landed}. Hamlenin ödülü ${reward}.`,
     choice: {
-      explored: "rastgele seçilen hamle",
-      exploited: "en yüksek Q-değerine göre seçilen hamle",
+      explored: "Hamle rastgele seçildi",
+      exploited: "Hamle en yüksek Q-değerine göre seçildi",
     },
     landed: {
       wall: "duvara çarpıp olduğu yerde kaldı",
@@ -347,12 +347,12 @@ const copy: typeof en = {
         error: "Hedefle arasındaki farka, Q-değerindeki değişime ve keşif oranına bak.",
       },
       rules: {
-        chart: "Bu ayarlarla koşunun nasıl davrandığı.",
+        chart: "Bu ayarlarla eğitimin nasıl ilerlediğine bak.",
         epsilon:
           "Öğrenme oranını, indirim katsayısını veya keşif oranını değiştir. Her değişiklikte eğitim baştan başlar.",
         restore: "Bu düğme başlangıç ayarlarını geri getirir.",
         figures:
-          "Kararlı hâle geldiği tura, son 50 turdaki başarıya ve tur başına hamle sayısına bak.",
+          "Art arda kapıya ulaştığı ilk tura, son 50 turdaki başarıya ve tur başına hamle sayısına bak.",
       },
       challenge: {
         map: "Her görevde ajan istemediğin bir şey yapıyor. Görevi yukarıdan seç.",

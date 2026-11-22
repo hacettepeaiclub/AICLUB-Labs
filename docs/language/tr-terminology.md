@@ -336,7 +336,7 @@ yukarıdaki biçimde yeniden yazılacak.
   değişmese de sayılır.
 - **Tur:** Başlangıç karesinden kapıya ya da hamle sınırına kadar süren
   hamle dizisi. Eğitim birden çok turdan oluşur. Tur, deneydeki mevcut
-  sayaç adıdır. Alan kaynaklarında episode için bölüm de kullanılır.
+  sayaç adıdır.
 - **İndirim katsayısı (γ), keşif oranı (ε):** γ, ilerideki ödüllerin
   ağırlığını belirleyen çarpandır. ε, rastgele hamle seçme olasılığıdır.
   [5. Türkiye Robotbilim Konferansı Bildirileri, s. 86](https://tork2019.ozyegin.edu.tr/sites/default/files/tork2019_r1.pdf)
