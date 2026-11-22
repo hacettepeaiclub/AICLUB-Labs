@@ -329,3 +329,16 @@ yukarıdaki biçimde yeniden yazılacak.
   politika için “yaklaşım”, hamle için “davranış” kullanır.
   [Çukurova Üniversitesi, Pekiştirmeli Öğrenme ders planı](https://eobs.cu.edu.tr/Ders/GenelBilgi/694126)
   “politika” ve “Q-learning” terimlerini kullanır.
+
+- **Ajan ve hamle:** İTÜ notunda aracı ve davranış, Özyeğin Üniversitesi
+  konferans bildirisinde robot ve aksiyon kullanılır. Bu deneyde karar
+  veren öğe ajan, seçtiği yön hamledir. Hamle, duvara yöneldiğinde konum
+  değişmese de sayılır.
+- **Tur:** Başlangıç karesinden kapıya ya da hamle sınırına kadar süren
+  hamle dizisi. Eğitim birden çok turdan oluşur. Tur, deneydeki mevcut
+  sayaç adıdır. Alan kaynaklarında episode için bölüm de kullanılır.
+- **İndirim katsayısı (γ), keşif oranı (ε):** γ, ilerideki ödüllerin
+  ağırlığını belirleyen çarpandır. ε, rastgele hamle seçme olasılığıdır.
+  [5. Türkiye Robotbilim Konferansı Bildirileri, s. 86](https://tork2019.ozyegin.edu.tr/sites/default/files/tork2019_r1.pdf)
+  γ için “indirim oranı” der ve keşif ile deneyimden yararlanmayı ayırır.
+  Deneyde γ için katsayı denir çünkü sonraki değeri doğrudan çarpar.
