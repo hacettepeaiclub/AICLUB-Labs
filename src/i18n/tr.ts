@@ -362,9 +362,9 @@ export const tr: Translation = {
     tokenization: {
       title: "Cheap Words",
       term: "BPE tokenization",
-      figure: "farklı uzunlukta token'lara bölünmüş bir cümle; biri vurgulu.",
+      figure: "farklı uzunlukta tokenlere ayrılmış bir cümle; biri vurgulu.",
       description:
-        "Metnin parçalara nasıl ayrıldığını tahmin et. BPE birleşimlerini ve eğitim metninin etkisini incele.",
+        "Bir cümlenin nerelerden kesildiğini tahmin et, sonra BPE birleştirmelerinin ve okunan derlemin token sayısını nasıl değiştirdiğine bak.",
     },
   },
 };

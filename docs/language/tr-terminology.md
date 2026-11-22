@@ -612,3 +612,38 @@ Aşağıda D2L-TR-DİKKAT diye anılır.
 ### İzdüşüm matrisi
 
 - **Tercih:** izdüşüm (projection); bkz. ## pca.
+
+---
+
+## tokenization
+
+### Token, tokenizer, BPE
+
+- **Tercih:** token, tokenizer, BPE (sözlük tablosu). "token" Türkçe yazımına
+  göre ek alır: tokenler, tokene, tokendir. "tokenizer" kesme işaretiyle ek
+  alır: tokenizer'ın. Sayıdan sonra çoğul yok: "5 token".
+- **Bağlama bağlı alternatifler:** jeton (DLT), andıç/belirteç (D2L-TR).
+  Projede kullanma; "jeton" i18n.test.ts ile yasak.
+- **Kaynak:** sözlük tablosu; DLT, D2L-TR
+
+### Bayt çifti kodlaması (BPE), birleştirme, alt sözcük
+
+- **Tanım:** En sık yan yana gelen çifti tek parçaya birleştirip sayımı
+  yineleyen yöntem. Her adım bir birleştirmedir (merge); sonunda elde edilen
+  parçalar sözlüktür.
+- **Tercih:** bayt çifti kodlaması (BPE); birleştirme; alt sözcük
+  bölütleme (subword segmentation).
+- **Kullanma:** "birleşim", "kaynaştırma" (aynı işleme ikinci ad).
+- **Kaynak:** Proje kararı; incelenmiş Türkçe kaynak yok. Açık karar.
+
+### Derlem, sözlük
+
+- **Tercih:** derlem (corpus; "eğitim metni" ve "külliyat" kullanma);
+  sözlük (vocabulary; i18n.test.ts ile korunur).
+- **Kaynak:** sözlük tablosu.
+
+### Kesim
+
+- **Tanım:** Tokenizer'ın metni ayırdığı yer (lab'daki "cut").
+- **Tercih:** kesim ("kesik", "sınır" kullanma).
+- **Kaynak:** Proje kararı.
