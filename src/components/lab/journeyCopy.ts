@@ -324,7 +324,7 @@ export const journeys: Record<string, { en: Journey; tr: Journey }> = {
       "A probability belongs to a specified experiment. Changing how a clue is produced can change what that clue tells you. Compare the rules before comparing the numbers.",
     ],
     tr: [
-      "Kapı seçimini değiştirmenin kazanma olasılığını hesapla.",
+      "Kapı değiştirerek kazanma olasılığını simülasyondaki oranla karşılaştır.",
       "Bir kapı seç. Sunucu keçiyi gösterince kapında kal ya da öbür kapıya geç.",
       "1.000 tur çalıştır ve iki seçeneğin kazanma oranını karşılaştır.",
       "Sunucunun kapı seçme biçimini değiştirdin. Eski olasılığı kontrol etmeden kullanabilir misin?",

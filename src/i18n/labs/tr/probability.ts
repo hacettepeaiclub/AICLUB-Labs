@@ -384,7 +384,7 @@ const copy: typeof en = {
     boardEmptyLabel: (rows: number) =>
       `${rows} sıra çividen oluşan bir simülasyon; altındaki gözler boş.`,
     tableCaption: (rows: number, dropped: number) =>
-      `${rows} sıralı simülasyonun her gözü: ideal modelin saydığı yol sayısı, öngördüğü pay ve fiziksel olarak benzetilen ${dropped} bilyenin ulaştığı gerçek pay.`,
+      `${rows} sıralı simülasyonun her gözü: ideal modelin saydığı yol sayısı, öngördüğü pay ve fizik simülasyonunda gözlere yerleşen ${dropped} bilyeden bu göze düşenlerin oranı.`,
     binColumn: "Göz",
     pathsColumn: "Yol",
     idealColumn: "İdeal model",

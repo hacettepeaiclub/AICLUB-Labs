@@ -241,3 +241,62 @@ yukarıdaki biçimde yeniden yazılacak.
 | reinforcement learning | pekiştirmeli öğrenme | |
 | attention, word embedding | attention, word embedding | |
 | corpus, epoch | derlem, epok | "korpus" kullanma (testle korunur) |
+
+## probability
+
+### Koşullu olasılık ve tümleyen
+
+- **Tanım:** Koşullu olasılık, bir olay gerçekleştiğinde başka bir olayın
+  olasılığıdır. İki çocuk deneyinde dört eşit olasılıklı sonuçtan ipucuna
+  uyanları say. Monty Hall deneyinde sunucunun kapıyı hangi kuralla açtığını
+  hesaba kat. Doğum günü deneyinde, en az iki kişinin aynı gün doğması
+  olayının tümleyeni, bütün doğum günlerinin farklı olmasıdır.
+- **Tercih:** koşullu olasılık, tümleyen.
+- **Kaynak:** İstanbul Sabahattin Zaim Üniversitesi,
+  [Olasılık Teorisi, örnekler 1.9, 1.12 ve 1.13](https://w3.izu.edu.tr/sites/default/files/2026-10/112-olasilikteorisi.pdf).
+
+### Simpson paradoksu
+
+- **Tanım:** Her alt grupta aynı yönde olan karşılaştırmanın, gruplar
+  birleştirildiğinde tersine dönebilmesi. Bu deneyde her tedavinin toplam
+  başarı oranı, grup oranlarının hasta sayılarıyla ağırlıklandırılmış
+  ortalamasıdır.
+- **Tercih:** Simpson paradoksu. Toplam ve grup oranlarını ayrı adlandır.
+- **Kaynak:** Jale Girmen, Çukurova Üniversitesi,
+  [İstatistik Öğretiminde Çarpıcı Görsel Uygulamalar, s. 152–153](https://libratez.cu.edu.tr/tezler/5791.pdf).
+
+### Binom dağılımı, binom katsayısı ve Galton tahtası
+
+- **Tanım:** İdeal tahtada her sırada birbirinden bağımsız ve eşit olasılıklı
+  sağ veya sol adım atılır. Sağ adım sayısının dağılımı binom dağılımıdır.
+  Bir göze ulaşan sağ-sol dizilerinin sayısı binom katsayısıdır. Fizik
+  simülasyonundaki oranlar, gözlerde durduğu gözlenen bilyelerden hesaplanır.
+- **Tercih:** binom dağılımı, binom katsayısı, Galton tahtası.
+- **Kaynak:** Çukurova Üniversitesi,
+  [İstatistik I, Binom Dağılımı](https://abs.cu.edu.tr/Dokumanlar/2016/BY%20211/358475825_istatistik_i.pdf)
+  ve Ege Üniversitesi, [Galton Dizileri, §6.1](https://acikerisim.ege.edu.tr/bitstreams/25c44dd4-5804-46a7-94be-e5f1296e56da/download).
+
+### Büyük sayılar yasası ve gözlenen oran
+
+- **Tanım:** Bağımsız ve aynı dağılımlı sağ-sol denemelerinde sağa gidenlerin
+  gözlenen oranı, deneme sayısı arttıkça teorik olasılığa yaklaşır. Gözlenen
+  oran ile teorik olasılık arasındaki mutlak fark, her denemede azalmak
+  zorunda değildir.
+- **Tercih:** büyük sayılar yasası, gözlenen oran, teorik olasılık.
+- **Bağlama bağlı alternatif:** büyük sayılar kanunu. Bu deneyde kaynakla ve
+  başlıkla tutarlı olarak “yasa” kullanılır.
+- **Kaynak:** İstanbul Sabahattin Zaim Üniversitesi,
+  [Olasılık Teorisi, §7.4](https://w3.izu.edu.tr/sites/default/files/2026-10/112-olasilikteorisi.pdf).
+
+### Bağımsızlık ve simülasyon
+
+- **Tanım:** Bağımsız denemelerde önceki sonuçlar, sonraki sonucun
+  olasılığını değiştirmez. Doğum günü modelinde tarihler kişiler arasında
+  bağımsız çekilir. Galton tahtasının ideal modelinde sağ-sol adımları
+  bağımsızdır. Fizik simülasyonu ise bilyelerin hareketini hesaplar ve
+  bilyelerin durduğu gözleri sayar.
+- **Tercih:** bağımsızlık, simülasyon. Örnek: “Simülasyondaki oranı
+  hesaplanan olasılıkla karşılaştır.”
+- **Bağlama bağlı alternatif:** benzetim. Arayüzde “simülasyon” kullanılır.
+- **Kaynak:** İstanbul Sabahattin Zaim Üniversitesi,
+  [Olasılık Teorisi, §1.8 ve §7.4](https://w3.izu.edu.tr/sites/default/files/2026-10/112-olasilikteorisi.pdf).
