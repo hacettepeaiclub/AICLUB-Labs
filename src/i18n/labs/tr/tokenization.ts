@@ -119,7 +119,7 @@ const copy: typeof en = {
       `Tokenizer eğitiliyor… ${total} birleştirmenin ${done} tanesi tamam.`,
     ready: "Tokenizer'ın eğitimi bitti. Birleştirme kaydırıcısını sürükle.",
     explain:
-      "Sıfır birleştirmede her karakter ayrı bir tokendir, çünkü tokenizer harflerden başka bir şey bilmez. Kaydırıcıyı sağa sürükle ve “·ev · ler · imiz · den” dizisinin önce “·ev · lerimiz · den”, sonra “·evlerimiz · den” hâline gelişine bak. “ev” kökten sonraki parçalar Türkçe eklerle örtüşür, ama algoritmada ekin ne olduğunu bilen hiçbir şey yoktur: bunlar yalnızca bu derlemde sürekli yan yana çıkan komşulardır.",
+      "Sıfır birleştirmede her karakter ayrı bir tokendir, çünkü tokenizer harflerden başka bir şey bilmez. Kaydırıcıyı sağa sürükle ve “·ev · ler · imiz · den” dizisinin önce “·ev · lerimiz · den”, sonra “·evlerimiz · den” hâline gelişine bak. “ev” köktür. Sonraki parçalar Türkçe eklerle örtüşür, ama algoritmada ekin ne olduğunu bilen hiçbir şey yoktur: bunlar yalnızca bu derlemde sürekli yan yana çıkan komşulardır.",
     jumpTo: "Şuraya atla",
   },
 
@@ -135,7 +135,7 @@ const copy: typeof en = {
     englishCorpus: "birkaç kilobaytlık İngilizce düzyazı",
     turkishCorpus: "birkaç kilobaytlık Türkçe düzyazı",
     tokens: "token",
-    cheaper: "Burada daha az token tutuyor: bu, okuduğu dil.",
+    cheaper: "Bu metin burada daha az token tutuyor.",
     ratio: (ratio: string) =>
       `Aynı karakterler, aynı algoritma, aynı sayıda birleştirme; yine de biri diğerinin ${String(ratio).replace(".", ",")} katı token tutuyor. Aradaki tek fark, iki tokenizer'ın okuduğu derlem.`,
     sampleLoaded: (label: string, words: number, characters: number) =>
