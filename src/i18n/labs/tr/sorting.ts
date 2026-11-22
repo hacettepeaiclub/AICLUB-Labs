@@ -27,11 +27,12 @@ const copy: typeof en = {
     valuesRelocated: "yer değiştirme veya kaydırma",
     inversions: (n: number) => `${n} terslik`,
   },
-  drawHint: "Bir çubuğun değerini değiştirmek için çubuğu yukarı veya aşağı sürükle.",
+  drawHint: "Diziyi yeniden çizmek için grafiğin üzerinde sürükle.",
   keyboardHint: "bir çubuk seçer.",
   keyboardHint2: "yüksekliğini değiştirir.",
   keyboardHelp:
-    "Değeri değiştirmek için çubuğu yukarı veya aşağı sürükle. Grafik odaktayken sol ve sağ oklar çubuk seçer. Yukarı ve aşağı oklar seçili çubuğun değerini değiştirir.",
+    "Diziyi yeniden çizmek için grafiğin üzerinde sürükle. Grafik odaktayken sol ve sağ oklar çubuk seçer. Yukarı ve aşağı oklar seçili çubuğun değerini değiştirir.",
+  chartRole: "Sıralanabilir çubuk grafik",
   chartLabel: (size: number, algorithm: string, disorder: number, state: string) =>
     `${size} değerden oluşan çubuk grafik. ${algorithm}. Düzensizlik: ${disorder} terslik. ${state}`,
   state: {
@@ -73,7 +74,7 @@ const copy: typeof en = {
   distance: {
     kicker: "Terslik sayısı",
     title: "Terslikler kaydırma sayısını nasıl etkiler?",
-    lede: "Sıralı dizide bir çubuğun yüksekliğini çok değiştir. Sonra sıralı diziden başlayıp birkaç çubuğu az değiştir. Her iki dizide Terslik ve Taşıma değerlerini karşılaştır.",
+    lede: "Sıralı dizide bir çubuğun yüksekliğini çok değiştir. Sonra sıralı diziden başlayıp birkaç çubuğu az değiştir. Her iki dizide Düzensizlik ve Taşıma değerlerini karşılaştır.",
     caption:
       "Daha büyük değer daha küçük değerden önce gelirse bu çift bir tersliktir. Eklemeli sıralama her terslik için bir kaydırma yapar. Taşıma sayacı, kaydırmaları ve bir değeri farklı konuma yazan son ekleme işlemlerini birlikte sayar.",
   },
@@ -87,7 +88,7 @@ const copy: typeof en = {
     solvedNote: "Çözüldü. Şimdi bir nöron eksiltip yeniden dene.",
     noBest: "Henüz yok. Nöron sayısını artır, sonra hedefi karşılayan en küçük sayıyı bul.",
     bestLine: (neurons: number, accuracy: string, epoch: number) =>
-      `En iyi: ${neurons} gizli nöron, ${epoch.toLocaleString("en-US")} epok sonra ${accuracy}.`,
+      `En iyi: ${neurons} gizli nöron, ${epoch.toLocaleString("tr-TR")} epok sonra ${accuracy}.`,
     canvasLabel: (neurons: number, accuracy: string, epoch: number) =>
       `Spiral görevi: ${neurons} gizli nöron, ${epoch} epok sonra ${accuracy} test doğruluğu.`,
     announceSolved: (neurons: number, accuracy: string) =>
@@ -100,7 +101,7 @@ const copy: typeof en = {
     barsChanged: "değişen çubuk",
     beaten: (done: number, total: number) => `${total} görevden ${done} tanesi geçildi`,
     fixedTo: (algorithm: string) =>
-      `Bu görevde ${algorithm} kullanılır. Çubuk değerlerini değiştirerek işlem sayısını düşür.`,
+      `Bu görevde sabit algoritma ${algorithm}. Çubuk değerlerini değiştirerek işlem sayısını düşür.`,
     goal: (budget: number, unit: string) => `Hedef: en fazla ${budget} ${unit}.`,
     chartLabel: (title: string, size: number, disorder: number, goal: string, state: string) =>
       `${title}: ${size} değerden oluşan çubuk grafik. Düzensizlik: ${disorder} terslik. ${goal} ${state}`,
@@ -113,7 +114,7 @@ const copy: typeof en = {
     puzzles: {
       "which-one-cares": {
         title: "Karşılaştırma sınırı",
-        brief: "İşlem sınırınin izin verdiğinden daha az soru sorarak sırala.",
+        brief: "Karşılaştırma sınırını aşmadan diziyi sırala.",
       },
       "fewest-writes": {
         title: "Taşıma sınırı",
@@ -145,8 +146,7 @@ const copy: typeof en = {
 
   // The guided tours, one per experiment (components/lab/guide/tours.ts).
   tour: {
-    intro:
-      "Aynı diziyi iki algoritmayla sırala. Oynatma hızından önce karşılaştırma ve yazma sayaçlarına bak.",
+    intro: "Aynı diziyi iki algoritmayla sırala. Karşılaştırma ve Taşıma sayaçlarına bak.",
     stages: {
       race: {
         bars: "İki sıralayıcı, aynı karışık çubuklar.",
@@ -162,7 +162,7 @@ const copy: typeof en = {
       },
       data: {
         shape:
-          "Verinin biçimini buradan seç: karışık, neredeyse sıralı, ters. Grafiğin üzerinde sürükleyerek de çizebilirsin.",
+          "Başlangıç dizisini seç. Grafiğin üzerinde sürükleyerek kendi dizini de çizebilirsin.",
         sort: "Yeniden sırala.",
         figures:
           "Seçmeli sıralamanın karşılaştırma sayısı başlangıç sırasıyla değişmez. Eklemeli sıralamanın sayacı diziye göre değişir.",
