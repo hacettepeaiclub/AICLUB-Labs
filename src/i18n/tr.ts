@@ -321,8 +321,9 @@ export const tr: Translation = {
     "hash-tables": {
       title: "Computed Address",
       term: "Hash tabloları",
-      figure: "dolu bir yuvaya düşen ve ilk boş yuvaya kadar sağa adımlayan bir anahtar.",
-      description: "Anahtar ekle, çakışma oluştur ve tablo büyüdüğünde yapılan işi karşılaştır.",
+      figure: "hesaplanan yuva doluyken sırayla yoklanan yuvalar.",
+      description:
+        "Anahtar ekle ve çakışma olduğunda kaç yuva yoklandığına bak. Kapasite artınca ekleme maliyetini karşılaştır.",
     },
     "cryptographic-hashing": {
       title: "Digital Fingerprint",

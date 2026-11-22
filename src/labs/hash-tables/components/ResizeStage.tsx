@@ -3,6 +3,7 @@ import { Figure, Stage } from "@/components/lab";
 import { useLabCopy } from "@/i18n/labs";
 import { grow } from "../engine";
 import { formatValue } from "../view";
+import { useNumberFormat } from "./useNumberFormat";
 import { Scrub } from "./Scrub";
 
 const LIMIT = 200;
@@ -20,6 +21,7 @@ const H = 50;
  */
 export function ResizeStage() {
   const t = useLabCopy("hash-tables").resize;
+  const { decimal } = useNumberFormat();
   const [n, setN] = useState(100);
   const steps = useMemo(() => grow(LIMIT), []);
   const shown = steps.slice(0, n);
@@ -52,7 +54,7 @@ export function ResizeStage() {
       width="wide"
       controls="stack"
       caption={t.caption}
-      announcement={t.announce(n, capacity, formatValue(average))}
+      announcement={t.announce(n, capacity, decimal(formatValue(average)))}
       viewport={
         <div className="rounded-lg border border-line/20 bg-ink-900 p-4 pt-6">
           <Scrub
@@ -69,7 +71,7 @@ export function ResizeStage() {
               viewBox={`0 0 ${W} ${H}`}
               preserveAspectRatio="none"
               role="img"
-              aria-label={t.chartLabel(n, resizes, formatValue(average))}
+              aria-label={t.chartLabel(n, resizes, decimal(formatValue(average)))}
               className="block h-48 w-full"
             >
               {shown.map((s, i) => (
@@ -88,7 +90,7 @@ export function ResizeStage() {
               viewBox={`0 0 ${W} ${LINE_H}`}
               preserveAspectRatio="none"
               role="img"
-              aria-label={t.averageLabel(formatValue(average))}
+              aria-label={t.averageLabel(decimal(formatValue(average)))}
               className="mt-2 block h-20 w-full"
             >
               <line
@@ -150,7 +152,7 @@ export function ResizeStage() {
           <Figure label={t.figures.resizes} value={String(resizes)} />
           <Figure
             label={t.figures.average}
-            value={formatValue(average)}
+            value={decimal(formatValue(average))}
             hint={t.figures.averageHint}
             tone="accent"
           />

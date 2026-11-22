@@ -367,3 +367,29 @@ yukarıdaki biçimde yeniden yazılacak.
   basamakları yerelleştirilir. JavaScript çıktısı olduğu belirtilen
   örnekler, konsolda göründükleri biçimde yazılır.
 - **Kaynak:** Deneydeki IEEE 754 yuvarlama uygulaması ve BİL220, soru 2.
+
+## hash-tables
+
+### Kova, yuva, çakışma ve doğrusal yoklama
+
+- **Tanım:** Hash tablosu anahtardan bir başlangıç konumu hesaplar. Aynı
+  konuma birden fazla anahtar eşlendiğinde çakışma olur. Zincirlemede
+  kova bir anahtar listesi tutar. Açık adreslemede yuva tek bir anahtar
+  alır. Bu deneyin doğrusal yoklaması sıradaki yuvaya geçer ve dizinin
+  sonunda başa döner.
+- **Tercih:** hash tablosu, kova, yuva, çakışma, zincirleme, açık adresleme,
+  doğrusal yoklama.
+- **Kaynak:** Çukurova Üniversitesi,
+  [Veri Yapıları ders içeriği, 11. hafta](https://ebs.cu.edu.tr/Ders/GenelBilgi/691538).
+  Kova, yuva ve yoklama sözcükleri deneydeki mevcut kullanımdır.
+
+### Doluluk oranı ve amortize maliyet
+
+- **Tanım:** Doluluk oranı α, anahtar sayısının kapasiteye oranıdır.
+  Zincirlemede bir kova birden çok anahtar alabildiği için oran 1'i aşabilir.
+  Amortize maliyet, bir ekleme dizisinin toplam işini ekleme sayısına böler.
+- **Tercih:** doluluk oranı, amortize maliyet. Ekleme başına ortalama iş
+  grafiği, kapasite artışında taşınan anahtarları da içerir.
+- **Kaynak:** İstanbul Medipol Üniversitesi,
+  [Algoritma Analizi, 13. hafta](https://sens.medipol.edu.tr/tr/subjects/IND3233890).
+  Ders planı amortize analiz ile dinamik tabloları birlikte işler.
