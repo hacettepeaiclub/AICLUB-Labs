@@ -328,7 +328,7 @@ export const tr: Translation = {
       term: "Kriptografik hash",
       figure: "iki farklı mesajın 256 bitlik SHA-256 özetleri.",
       description:
-        "Bir mesaj yazıp bir harfini değiştir. SHA-256 özetinde değişen bitleri say ve iki özetin ortak ön ekini karşılaştır.",
+        "Bir mesaj yazıp bir karakterini değiştir. SHA-256 özetinde değişen bitleri say ve iki özetin ortak ön ekini karşılaştır.",
     },
     "multilayer-perceptrons": {
       title: "Bending the Line",

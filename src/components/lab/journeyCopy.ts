@@ -391,7 +391,7 @@ export const journeys: Record<string, { en: Journey; tr: Journey }> = {
     ],
     tr: [
       "Mesaj değiştiğinde SHA-256 özetinin hangi bitlerinin değiştiğine bak.",
-      "Bir mesaj yaz. Ardından bir harfini değiştir.",
+      "Bir mesaj yaz. Ardından bir karakterini değiştir.",
       "Özetin uzunluğunu ve Değişen bit kutusundaki sayıyı karşılaştır.",
       "İki farklı mesajın özetleri aynı uzunlukta. Bu bir çakışma mı?",
       "Hayır. Çakışma için özetlerin bütün bitleri eşleşmeli.",

@@ -5,7 +5,7 @@ import type en from "../en/cryptographic-hashing";
 const copy: typeof en = {
   sources: {
     title: "Kaynaklar",
-    sha2: "Tarayıcının Web Crypto üzerinden hesapladığı SHA-256 algoritmasını tanımlar.",
+    sha2: "SHA-256 algoritmasını tanımlar. Lab bu hesabı tarayıcının Web Crypto uygulamasından ister.",
   },
   inputLabel: "Mesajın",
   inputPlaceholder: "merhaba dünya",
@@ -27,22 +27,22 @@ const copy: typeof en = {
     messageLength: "Mesaj",
     characters: "UTF-16 kod birimi",
     digestLength: "Özet",
-    hexChars: "onaltılık basamak",
+    hexChars: "on altılık basamak",
     digestBits: "Bit",
     alwaysBits: "mesaj ne kadar uzun olursa olsun",
     bitsChanged: "Değişen bit",
-    percentChanged: "Özetin",
-    expectedHalf: "çok sayıda karşılaştırmada yaklaşık yarısı beklenir",
-    charsChanged: "Değişen onaltılık basamak",
+    percentChanged: "Değişen bit oranı",
+    expectedHalf: "çok sayıda karşılaştırmada ortalama %50 beklenir",
+    charsChanged: "Değişen on altılık basamak",
     ofSixtyFour: "64 basamaktan",
   },
 
   hero: {
     title: "Mesajın özeti",
-    question: "İki farklı mesaj aynı uzunlukta çıktı üretebilir mi?",
+    question: "Mesajın uzunluğunu değiştir. Özet uzunluğu değişiyor mu?",
     digestLabel: "SHA-256 özeti",
     caption:
-      "Bir mesaj yaz. SHA-256, mesajın uzunluğundan bağımsız olarak 256 bitlik bir özet üretir. Tarayıcı bu özeti 64 onaltılık basamakla gösterir.",
+      "Bir mesaj yaz. SHA-256, mesajın uzunluğundan bağımsız olarak 256 bitlik bir özet üretir. Tarayıcı bu özeti 64 on altılık basamakla gösterir.",
     help: "Bir mesaj yaz. SHA-256 özeti alanın altında görünür ve yazdıkça güncellenir.",
     announce: (start: string) => `Özet güncellendi, artık ${start} ile başlıyor.`,
   },
@@ -63,13 +63,13 @@ const copy: typeof en = {
   },
 
   avalanche: {
-    kicker: "Tek küçük değişiklik",
+    kicker: "Çığ etkisi",
     title: "Bir karakter değişince kaç bit değişir?",
-    lede: "Mesajda bir harfi değiştir. Önce ve sonra gösterilen özetlerde hangi onaltılık basamakların değiştiğine bak.",
+    lede: "Mesajda bir karakteri değiştir. Önce ve sonra gösterilen özetlerde hangi on altılık basamakların değiştiğine bak.",
     before: "Önce",
     after: "Sonra",
     fieldLabel: "Bir karakteri değiştir",
-    help: "Mesajı düzenle. Önceki ve yeni özetin farklı onaltılık basamakları yukarıda işaretlenir.",
+    help: "Mesajı düzenle. Önceki ve yeni özetin farklı on altılık basamakları yukarıda işaretlenir.",
     editPrompt: "İki özeti karşılaştırmak için mesajdaki bir karakteri değiştir.",
     caption: "Değişen bit sayısı, iki SHA-256 özeti bit bit karşılaştırılarak hesaplanır.",
     announce: (changed: number, total: number, percent: number) =>
@@ -87,13 +87,13 @@ const copy: typeof en = {
   challenge: {
     kicker: "Ön ek eşleştirme",
     title: "İki farklı mesajın özetleri aynı basamaklarla başlayabilir mi?",
-    lede: "Mesaj B'yi değiştir ve iki özetin ilk basamağını eşleştir. Her turda ön eke bir basamak eklenir. Bağımsız ve eşit olasılıklı özetler varsayılırsa her ek basamakla deneme başına olasılık önceki turdaki olasılığın 1/16'sına iner.",
+    lede: "Mesaj B'yi değiştir ve iki özetin ilk basamağını eşleştir. Her turda ön eke bir basamak eklenir. Bağımsız ve eşit olasılıklı özetler varsayılırsa her ek basamakla deneme başına olasılık önceki değerin 16'da biri olur.",
     inputA: "Mesaj A",
     inputB: "Mesaj B",
     identical:
       "İki mesaj aynı olduğu için özetleri de aynı. Ön ek eşleştirme görevinde iki farklı mesaj kullan.",
     target: (round: number, odds: string) =>
-      `${round}. tur: ilk ${round} onaltılık basamağı eşleştir. Deneme başına olasılık: 1/${odds}.`,
+      `${round}. tur: ilk ${round} on altılık basamağı eşleştir. Deneme başına olasılık: 1/${odds}.`,
     nextRound: (round: number) => `${round}. tura geç`,
     keepTrying: "Denemeye devam",
     maxRound: "Son tur tamamlandı",
@@ -103,11 +103,11 @@ const copy: typeof en = {
     bestLabel: "En uzun ortak ön ek",
     attemptsLabel: "Deneme",
     ladderLabel: (matched: number, total: number, round: number) =>
-      `${total} onaltılık basamağın ilk ${matched} tanesi eşleşiyor. Tur hedefi ${round} basamak.`,
+      `${total} on altılık basamağın ilk ${matched} tanesi eşleşiyor. Tur hedefi ${round} basamak.`,
     caption:
       "Tek bir rastgele özetin belirli bir 256 bitlik özetle tam eşleşme olasılığı 1/2²⁵⁶. İki serbest girdi arasında tam çakışma için doğum günü hesabı yaklaşık 2¹²⁸ özet ölçeğindedir.",
     announce: (matched: number, total: number, best: number, round: number) =>
-      `${total} baştaki karakterden ${matched} tanesi eşleşiyor. En uzun ortak ön ek ${best}. ${round}. tur ${round} tane istiyor.`,
+      `Toplam ${total} on altılık basamak. Baştan ${matched} basamak eşleşti. En uzun ortak ön ek ${best} basamak. Bu turun hedefi ${round} basamak.`,
   },
 
   usage: {
@@ -142,7 +142,7 @@ const copy: typeof en = {
     lessons: [
       "Aynı bayt dizisi aynı SHA-256 özetini üretir. Özet uzunluğu her zaman 256 bittir.",
       "Girdideki küçük değişiklik çoğu zaman özetin yaklaşık yarısını değiştirir. Çığ etkisini görmek için değişen bit sayısını birkaç farklı düzenlemede karşılaştır.",
-      "Rastgele özetlerde ortak ön eke eklenen her onaltılık basamak, eşleşme olasılığını 16'da bire indirir.",
+      "Rastgele özetlerde ortak ön eke eklenen her on altılık basamak, önceki eşleşme olasılığını 16'ya böler.",
     ],
     footer:
       'Özetler tarayıcında crypto.subtle.digest("SHA-256", …) ile hesaplanır. Mesaj ve özetler bu sayfa tarafından kaydedilmez.',
@@ -151,22 +151,22 @@ const copy: typeof en = {
   // The guided tours, one per experiment (components/lab/guide/tours.ts).
   tour: {
     intro:
-      "Bir mesaj yazıp bir harfini değiştir. Değişen onaltılık basamak sayısını değişen bit sayısıyla karşılaştır.",
+      "Bir mesaj yazıp bir karakterini değiştir. Değişen on altılık basamak sayısını değişen bit sayısıyla karşılaştır.",
     stages: {
       digest: {
         type: "Bu kutuya istediğini yaz. Örneğin metnin sonuna bir ünlem ekle.",
         digest: "Bir harf ekle ve mesajın özetini önceki hâliyle karşılaştır.",
         length:
-          "Mesajı uzat ve Özet kutusundaki uzunluğa bak. Sonuç yine 64 onaltılık basamakla gösterilir ve 256 bittir.",
+          "Mesajı uzat ve Özet kutusundaki uzunluğa bak. Sonuç yine 64 on altılık basamakla gösterilir ve 256 bittir.",
       },
       determinism: {
         again: "Hesapla düğmesine bas. Listeye aynı mesajın yeni hesaplanan özeti eklenir.",
-        runs: "Her hesaplama bu listeye eklenir ve hepsi aynı özet.",
+        runs: "Her hesaplamadan sonra listeye aynı özet eklenir.",
         distinct: "Hesaplama ve Farklı özet sayaçlarını karşılaştır.",
       },
       avalanche: {
         edit: "Mesajı değiştir. Önceki ve yeni özetlerde işaretlenen basamaklara bak.",
-        compare: "Önceki ve sonraki özet. Farklı olan her basamak ikisinde de işaretli.",
+        compare: "Önceki ve sonraki özet. Değişen basamaklar iki özette de işaretlenir.",
         count: "Değişen bit sayısına bak. Mesajı yeniden düzenle ve iki sayımı karşılaştır.",
       },
       collision: {

@@ -462,7 +462,7 @@ yukarıdaki biçimde yeniden yazılacak.
 ### Kriptografik hash, özet ve çakışma
 
 - **Tanım:** SHA-256 bir bayt dizisinden 256 bitlik özet hesaplar. Bu lab
-  özeti 64 onaltılık basamakla gösterir. Farklı girdilerin bütün özetleri
+  özeti 64 on altılık basamakla gösterir. Farklı girdilerin bütün özetleri
   eşleşirse çakışma olur. Ortak ön ek yalnızca baştan itibaren eşleşen
   basamakları sayar.
 - **Tercih:** kriptografik hash fonksiyonu, özet, çakışma, ortak ön ek.
@@ -478,10 +478,11 @@ yukarıdaki biçimde yeniden yazılacak.
 - **Tanım:** Girdideki küçük bir değişiklik, özetin birçok bitini
   değiştirebilir. Tek bir karşılaştırmada tam 128 bit değişmesi gerekmez.
   Ekrandaki sayaç iki gerçek özette farklı olan bitleri sayar.
-- **Tercih:** çığ etkisi, değişen bit sayısı. Bir onaltılık basamak
+- **Tercih:** çığ etkisi, değişen bit sayısı. Bir on altılık basamak
   dört biti gösterdiği için değişen basamak ve bit sayıları ayrıdır.
 - **Kaynak:** Bu lab'da gösterilen davranış, Web Crypto ile hesaplanan
-  özetler üzerinden ölçülür. [NIST FIPS 180-4](https://csrc.nist.gov/pubs/fips/180-4/upd1/final)
+  özetler üzerinden ölçülür. [Marmara Üniversitesi, Şekil 8](https://katalog.marmara.edu.tr/veriler/yordambt/cokluortam/3E/18D7BE0D-34CF-034D-83E4-0D3F9FE97E6D.pdf)
+  tek boşluk farkı olan iki mesajla aynı kavramı gösterir. [NIST FIPS 180-4](https://csrc.nist.gov/pubs/fips/180-4/upd1/final)
   SHA-256 hesabını tanımlar.
 
 ## cache-locality
