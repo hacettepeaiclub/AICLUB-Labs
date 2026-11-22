@@ -1,4 +1,3 @@
-import { useNumberFormat } from "./useNumberFormat";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Figure, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
@@ -6,6 +5,7 @@ import { useLocalStorage, useReducedMotion } from "@/hooks";
 import { orNull } from "@/hooks/useLocalStorage";
 import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
+import { useNumberFormat } from "./useNumberFormat";
 import { gradient } from "../engine";
 import {
   BOUND,

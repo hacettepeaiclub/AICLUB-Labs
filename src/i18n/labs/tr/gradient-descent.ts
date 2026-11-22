@@ -87,7 +87,7 @@ const copy: typeof en = {
       "Başlangıç noktasını seçmek için haritaya dokun veya noktayı sürükle. Bıraktığında hareket başlar. Klavyede ok tuşları noktayı taşır, Enter hareketi başlatır.",
     handleLabel:
       "İlk adımı gösteren okun ucu. Adım boyunu değiştirmek için sürükle veya ok tuşlarını kullan.",
-    moreLabel: "Adım boyu ve çalıştırma denetimleri",
+    moreLabel: "Tam adım boyu ve adım adım denetimler",
     momentumHint:
       "Önceki hızın etkisini artırmak için β kadranını çevir. Başlangıç noktasını değiştirmek için iki haritadan birine dokun.",
   },
@@ -101,7 +101,7 @@ const copy: typeof en = {
   direction: {
     kicker: "Adımın yönü",
     title: "Gradyan hangi yönü gösterir?",
-    lede: "Sürekli çizgili ok negatif gradyanı, −∇f = −(a·x, b·y), kesikli ok ise minimuma giden yönü, −(x, y), gösterir. Eğrilikler farklı olduğunda bu yönler genellikle ayrılır. Noktayı ve eğrilik oranını değiştirerek karşılaştır.",
+    lede: "Sürekli çizgili ok negatif gradyanı, −∇f = −(a·x, b·y), kesikli ok ise minimuma giden yönü, −(x, y), gösterir. Eğrilikler farklı olduğunda bu yönler genellikle ayrılır. Noktayı ve koşul sayısını değiştirerek karşılaştır.",
     descent: "Adımın gittiği yön: −∇f",
     target: "Minimumun yönü",
     equalLength: "Yönleri karşılaştırabilmen için iki ok aynı uzunlukta çizilir.",
@@ -119,7 +119,7 @@ const copy: typeof en = {
       "Noktayı taşımak için harita üzerinde herhangi bir yeri sürükle. Harita odaktayken ok tuşları noktayı taşır, Home tuşu ise başlangıç konumuna geri gönderir.",
     legendAndKeys: "Oklar ve klavye",
     label: (x: string, y: string, kappa: string, angle: string) =>
-      `Taşınabilir noktası olan eşyükselti haritası. Nokta ${x}, ${y} konumunda. Koşul sayısı ${kappa}. İniş yönü, minimuma giden doğrudan ${angle} derece sapmış durumda.`,
+      `Taşınabilir noktası olan eşyükselti haritası. Nokta ${x}, ${y} konumunda. Koşul sayısı ${kappa}. İniş yönü, minimuma giden doğru çizgiden ${angle} derece sapmış durumda.`,
     caption:
       "Koşul sayısı κ 1 olduğunda oklar çakışır. Oran farklıyken, koordinat eksenleri dışındaki noktalarda negatif gradyan doğrudan minimumu göstermez.",
   },
@@ -137,7 +137,7 @@ const copy: typeof en = {
     },
     regimeNote: {
       monotone:
-        "0 < η < 1/max(a, b) olduğunda iki koordinat da işaret değiştirmeden sıfıra yaklaşır.",
+        "0 < η ≤ 1/max(a, b) olduğunda iki koordinat da işaret değiştirmeden sıfıra yaklaşır.",
       oscillating:
         "Eğriliği büyük olan eksende koordinat her adımda işaret değiştirir. Mutlak değeri giderek küçülür.",
       boundary:
@@ -171,14 +171,14 @@ const copy: typeof en = {
     freeRule: "Her vuruşta istediğin sopa",
     fixedRule: "Bütün vuruşlar için tek sopa",
     mapLabel: (name: string, strokes: number) =>
-      `${name}: deliğin eş yükselti haritası, şimdiye dek vuruş sayısı ${strokes}.`,
+      `${name}: deliğin eşyükselti haritası, şimdiye dek vuruş sayısı ${strokes}.`,
     clubLabel: "Sopa",
     clubs: {
       putter: "Putter",
       wedge: "Wedge",
       iron9: "Demir 9",
       iron5: "Demir 5",
-      wood: "Ahşap",
+      wood: "Wood",
       driver: "Driver",
     },
     shotLine: (n: number, club: string, eta: string, slope: string, distance: string) =>
@@ -227,7 +227,7 @@ const copy: typeof en = {
       ravine: {
         name: "Yarık",
         lesson:
-          "Yarığın enine eğrilik 20. η = 1/20 olan sopayla enine koordinatı sıfırla. Sonraki vuruşta hareket yarık boyunca sürer. η = 2/20 iken enine koordinat işaret değiştirir ve mutlak değeri sabit kalır.",
+          "Yarığın enine eğriliği 20. η = 1/20 olan sopayla enine koordinatı sıfırla. Sonraki vuruşta hareket yarık boyunca sürer. η = 2/20 iken enine koordinat işaret değiştirir ve mutlak değeri sabit kalır.",
       },
       valley: {
         name: "Uzun Vadi",
@@ -272,10 +272,10 @@ const copy: typeof en = {
   momentumSection: {
     kicker: "Momentum",
     title: "Momentum bir sonraki adımı nasıl etkiler?",
-    lede: "Momentum, önceki gradyanların etkisini bir hız değişkeninde tutar: v ← β·v + ∇f, ardından θ ← θ − η·v. β’yı değiştir ve aynı başlangıçtan yapılan iki çalıştırmayı karşılaştır.",
-    marks: { plain: "düz sınır", momentum: "momentum sınırı" },
+    lede: "Momentum, önceki gradyanların etkisini bir hız değişkeninde tutar: v ← β·v + ∇f, ardından θ ← θ − η·v. β'yı değiştir ve aynı başlangıçtan yapılan iki çalıştırmayı karşılaştır.",
+    marks: { plain: "momentumsuz sınır", momentum: "momentum sınırı" },
     caption:
-      "Kararlılık koşulu η·max(a,b) < 2(1+β) olur; bu, momentumsuz gradient descentin η·max(a,b) < 2 koşulundan daha geniştir. Yani momentum, momentumsuz gradient descentin taşıyamayacağı kadar büyük bir adım boyunu taşıyabilir. Bu aralığın bedeli salınımdır. Adım boyunu sabit tutup β'yı yükselt: çalışma önce kısalır, belli bir noktadan sonra yeniden uzar.",
+      "Kararlılık koşulu η·max(a,b) < 2(1+β) olur; bu, momentumsuz gradient descent'in η·max(a,b) < 2 koşulundan daha geniştir. Yani momentum, momentumsuz gradient descent'in taşıyamayacağı kadar büyük bir adım boyunu taşıyabilir. Bu aralığın bedeli salınımdır. Adım boyunu sabit tutup β'yı yükselt: çalışma önce kısalır, belli bir noktadan sonra yeniden uzar.",
     announce: (
       plainSteps: number,
       plainStatus: string,
@@ -304,18 +304,18 @@ const copy: typeof en = {
       "Başlangıç yanlılığı düzeltildikten sonra ilk güncelleme η·g ÷ (|g| + ε) hâline gelir. Gradyanın büyüklüğü sadeleşir ve iki eksen de yaklaşık η kadar hareket eder: düzeltmenin atlanmayıp gerçekten uygulanmasının nedeni budur.",
     rate: "Adam adım boyu η",
     honesty:
-      "Adam her yüzeyde daha hızlı yakınsamaz. Bu labdaki κ = 60 vadisinde, taranan ayarlar içinde Adam 17 adımda, momentum yaklaşık 10 adımda aynı toleransa ulaşır. Adam için η = 0,10 seçildiğinde 66 adım gerekir. Yöntem kadar adım boyu seçimi de sonucu etkiler.",
+      "Adam her yüzeyde daha hızlı yakınsamaz. Bu lab'daki κ = 60 vadisinde, taranan 300 adım boyu içinde Adam'ın en iyi sonucu 17 adımdır. İyi seçilmiş bir momentum ayarı aynı toleransa yaklaşık 10 adımda ulaşır. Adam için η = 0,10 seçildiğinde 66 adım gerekir. Yöntem kadar adım boyu seçimi de sonucu etkiler.",
   },
 
   challenge: {
     kicker: "Üç soru",
-    title: "Aynı adım sayısıyla hangi yöntem daha ileri gider?",
-    lede: "Her görevde yüzey, başlangıç noktası ve adım sınırı sabittir. Verilen adım sayısı içinde hedef toleransa ulaşan ayarları bul.",
+    title: "Hedefe kaç adımda ulaşırsın?",
+    lede: "Her soruda yüzey, başlangıç noktası ve adım sınırı sabittir. Verilen adım sayısı içinde hedef toleransa ulaşan ayarları bul.",
     puzzle: "Soru",
     budget: (n: number) => `${n} adım`,
     goal: (budget: number, tolerance: string) =>
       `Hedef: ${budget} adım içinde amaç değeri ≤ ${tolerance}.`,
-    progress: (done: number, total: number) => `${total} görevden ${done} tanesi çözüldü`,
+    progress: (done: number, total: number) => `${total} sorudan ${done} tanesi çözüldü`,
     pressRun:
       "Bu denemenin sonucunu görmek için Çalıştır'a bas ya da adım kaydırıcısını sona sürükle.",
     pass: "Çözüldü.",
@@ -330,7 +330,7 @@ const copy: typeof en = {
         `Hedefe varıyor ama ${steps} adımda; bütçe ise ${budget}.`,
       stalled: (budget: number) => `Bu, hedefe hiç ulaşmıyor. Bütçe ${budget} adım.`,
       diverged:
-        "Yol çizim için belirlenen uzaklık sınırını aştı. Başlangıç ve adım boyunu kontrol et.",
+        "Çalıştırma uzaklık sınırını aştı veya sonlu olmayan bir değere ulaştı. Adım boyunu küçültüp aynı noktadan yeniden çalıştır.",
     },
     transfer: {
       title: "Aynı sayı, daha yumuşak bir yüzeyde",
@@ -362,7 +362,7 @@ const copy: typeof en = {
       c3: {
         title: "Dar vadi",
         brief:
-          "κ = 60 olan bu vadide momentumsuz gradient descent hiçbir adım boyuyla verilen sürede hedefe ulaşamaz. Momentum veya Adam ile dene.",
+          "κ = 60 olan bu vadide momentumsuz gradient descent hiçbir adım boyuyla verilen adım sayısı içinde hedefe ulaşamaz. Momentum veya Adam ile dene.",
       },
     },
   },
@@ -388,7 +388,7 @@ const copy: typeof en = {
         step: "Bu kaydırıcı adım boyunu belirler. Tur adımı uzattı.",
         run: "Çalıştır: nokta yokuş aşağı adım adım iner. Fazla uzun bir adım hedefi aşar ve noktayı savurabilir.",
         figures:
-          "Atılan adım sayısı, ulaşılan yükseklik ve koşunun oturup oturmadığı. Haritadaki okun ucunu da sürükleyebilirsin.",
+          "Adım sayısına, amaç değerine ve sonuç etiketine bak. Adım boyunu değiştirmek için haritadaki okun ucunu sürükle.",
       },
       direction: {
         arrows:
@@ -424,10 +424,10 @@ const copy: typeof en = {
         steps: "Yeterince yaklaşmak için kaç adım gerektiği ve diğer değerler.",
       },
       challenge: {
-        map: "Her bulmacada yüzey, başlangıç ve adım bütçesi sabit. Bulmacayı haritanın üstünden seç.",
+        map: "Her soruda yüzey, başlangıç noktası ve adım sınırı sabit. Soruyu haritanın üstünden seç.",
         settings: "Yöntemi ve ayarlarını seç.",
         run: "Çalıştır ve amaç değerinin verilen adım sayısı içinde hedefe ulaşıp ulaşmadığına bak.",
-        status: "Kullanılan adımlar, ulaşılan yükseklik ve sonuç.",
+        status: "Adım sayısını, amaç değerini ve sonucu karşılaştır.",
       },
     },
   },
@@ -447,7 +447,7 @@ const copy: typeof en = {
       "ng-momentum": "Gradyanların hareketli ortalaması ve zikzakın neden söndüğü.",
       "ng-adam": "Her parametreye kendi geçmişine göre ölçeklenmiş bir adım boyu.",
       "d2l-gradient-book":
-        "Öğrenme oranının yakınsamayı nasıl etkilediğini tek ve çok değişkenli örneklerle incele. Türev ve vektör bilgisi gerektirir; labdaki adımları formüllerle takip etmek için uygun.",
+        "Öğrenme oranının (bu lab'daki adım boyunun) yakınsamayı nasıl etkilediğini tek ve çok değişkenli örneklerle incele. Türev ve vektör bilgisi gerektirir; lab'daki adımları formüllerle takip etmek için uygun.",
     },
   },
 };
