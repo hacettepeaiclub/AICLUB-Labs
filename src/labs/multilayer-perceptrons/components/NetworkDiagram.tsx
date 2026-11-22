@@ -10,7 +10,7 @@ import {
 import { useCanvas2D, useElementSize, useRepaintFlag } from "@/hooks";
 import { useLabCopy } from "@/i18n/labs";
 import { labPalette as palette } from "@/design/tokens";
-import { formatNumber } from "@/lib/format";
+import { useFormat } from "@/lib/useFormat";
 import { clamp } from "@/lib/math";
 import { cn } from "@/lib/cn";
 import { maxAbsWeight, type Mlp } from "../engine";
@@ -154,6 +154,7 @@ export function NetworkDiagram({
   revision = 0,
   editing,
 }: NetworkDiagramProps) {
+  const { formatNumber } = useFormat();
   const d = useLabCopy("multilayer-perceptrons").diagram;
   const tooltipId = useId();
   const [containerRef, { width }] = useElementSize<HTMLDivElement>();

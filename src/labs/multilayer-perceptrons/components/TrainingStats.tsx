@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { Figure } from "@/components/lab";
 import { useLabCopy } from "@/i18n/labs";
-import { formatNumber, formatPercent } from "@/lib/format";
+import { useFormat } from "@/lib/useFormat";
 import { useDebouncedValue } from "@/hooks";
 import type { TrainerStats } from "../useTrainer";
 
@@ -63,6 +63,7 @@ const LossCurve = memo(function LossCurve({ history }: { history: readonly numbe
  * second bordered surface around four numbers is a card in a card.
  */
 export function TrainingFigures({ stats, history }: TrainingStatsProps) {
+  const { formatNumber, formatPercent } = useFormat();
   const t = useLabCopy("multilayer-perceptrons").stats;
   // Stats publish 10x a second; announcing each one would be a running
   // commentary. This settles to whatever the figure is when training pauses
@@ -72,7 +73,7 @@ export function TrainingFigures({ stats, history }: TrainingStatsProps) {
   return (
     <>
       <div className="flex flex-wrap gap-x-8 gap-y-4">
-        <Figure label={t.epoch} value={stats.epoch.toLocaleString("en-US")} tone="muted" />
+        <Figure label={t.epoch} value={formatNumber(stats.epoch, 0)} tone="muted" />
         <Figure label={t.loss} value={formatNumber(stats.loss, 4)} />
         <Figure label={t.trainAcc} value={formatPercent(stats.accuracy, 1)} tone="accent" />
         <Figure label={t.testAcc} value={formatPercent(stats.testAccuracy, 1)} />

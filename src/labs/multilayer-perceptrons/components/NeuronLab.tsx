@@ -3,7 +3,7 @@ import { useCanvas2D, useLocalControls, useRepaintFlag } from "@/hooks";
 import { LabSlider, Stage } from "@/components/lab";
 import { useLabCopy } from "@/i18n/labs";
 import { Segmented } from "@/components/ui";
-import { formatNumber } from "@/lib/format";
+import { useFormat } from "@/lib/useFormat";
 import { ACTIVATIONS, type Activation } from "../engine";
 import { LIMIT, type Line } from "../lines";
 import { createScalarFieldPainter, drawAxes } from "../paint";
@@ -39,6 +39,7 @@ const squash = (kind: Activation, z: number): number => {
  * disclosure, for exact values and the keyboard.
  */
 export function NeuronLab() {
+  const { formatNumber } = useFormat();
   const lab = useLabCopy("multilayer-perceptrons");
   const n = lab.neuron;
   const [state, set] = useLocalControls("acl:multilayer-perceptrons:neuron", {

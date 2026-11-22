@@ -117,6 +117,7 @@ describe("Turkish quality", () => {
     "labMeta.gradient-descent.term",
     "labMeta.tokenization.term",
     "labs.gradient-descent.optimizers.gd",
+    "labs.multilayer-perceptrons.loop.cards.descent.title",
     "labs.cryptographic-hashing.usage.items.git.label",
     "labs.cryptographic-hashing.usage.items.https.label",
     "labs.multilayer-perceptrons.neuron.bias",

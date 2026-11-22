@@ -337,7 +337,7 @@ export const tr: Translation = {
       term: "Çok katmanlı algılayıcılar",
       figure: "üç girdi, dört nöronlu bir gizli katman ve iki çıktı; her bağlantı çizili.",
       description:
-        "Küçük bir sinir ağını eğit. Katmanları ve veriyi değiştirerek karar sınırını karşılaştır.",
+        "İki renk nokta çiz ve küçük bir yapay sinir ağının onları ayırmayı nasıl öğrendiğine bak.",
     },
     "graph-search": {
       title: "The Spreading Search",

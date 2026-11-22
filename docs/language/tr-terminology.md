@@ -462,3 +462,57 @@ Aşağıda "D2L-TR-BÖLÜM" diye anılır.
 - **Tanım:** Kayba eklenen ve ağırlığı küçük tutan 0,1·w² terimi.
 - **Tercih:** ceza terimi. Kavram adı gerekirse düzenlileştirme terimi.
 - **Kaynak:** D2L-TR-BÖLÜM ("düzenlileştirme terimi"); DLT ("regularization: düzenlileştirme")
+
+---
+
+## multilayer-perceptrons
+
+Kaynaklar: D2L-TR-BÖLÜM (bkz. ## backpropagation; özellikle *Çok Katmanlı
+Algılayıcılar*), DLT.
+
+### Çok katmanlı algılayıcı (MLP), gizli katman, nöron
+
+- **Tercih:** çok katmanlı algılayıcı (kart terimi); gizli katman; nöron;
+  gizli nöron. Metinde genel ad olarak "yapay sinir ağı".
+- **Bağlama bağlı alternatifler:** saklı katman (DLT); gizli birim
+  (D2L-TR-BÖLÜM, "nöron" ile birlikte kullanılır). Projede kullanma.
+- **Kaynak:** D2L-TR-BÖLÜM ("çok katmanlı algılayıcı", "gizli katman",
+  "nöron"), DLT ("çok katmanlı algılayıcı")
+
+### Bias
+
+- **Tanım:** Nöronun ağırlıklı toplamına eklenen sabit terim; karar
+  sınırını döndürmeden kaydırır.
+- **Tercih:** bias (özgün adıyla).
+- **Bağlama bağlı alternatifler:** ek girdi (DLT, D2L-TR). İki sözlükte de
+  geçer, ama sabit terimi bir girdi gibi anlattığı için lab'ın "doğruyu
+  kaydırır" anlatımıyla uyuşmaz. Açık karar.
+- **Karıştırılmaması gereken:** yanlılık (istatistikte bias; DLT
+  "yanlılık"), önyargı.
+- **Kaynak:** DLT, D2L-TR-BÖLÜM
+
+### Öğrenme oranı
+
+- **Tanım:** Gradyanı ölçekleyen η katsayısı (engine.ts `applyGradients`;
+  bu lab ayrıca bir L2 terimi uygular).
+- **Tercih:** öğrenme oranı (kontrol etiketi ve metin). "Öğrenme oranı
+  gradyanı ölçekleyerek adımın büyüklüğünü etkiler"; "adımın büyüklüğüdür"
+  deme. Gradient Descent lab'ı aynı η için algoritma bağlamında "adım boyu"
+  kullanır (Codex-TR ile ortak karar).
+- **Kaynak:** Proje kararı.
+
+### Gradient descent
+
+- **Tercih:** gradient descent (sözlük tablosundaki gibi özgün adıyla).
+- **Bağlama bağlı alternatifler:** gradyan inişi (eski site metni).
+- **Kaynak:** Sözlük tablosu.
+
+### Öznitelik, sıkıştırma
+
+- **Tercih:** öznitelik (feature); aktivasyon fonksiyonunun etkisi için
+  "sıkıştırma" (squash).
+- **Kaynak:** D2L-TR ("feature: öznitelik"; "sıkıştırma işlevi")
+
+### Epok
+
+- **Tercih:** epok (sözlük tablosu). D2L-TR "dönem" der; projede kullanma.
