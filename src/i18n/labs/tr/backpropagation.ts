@@ -11,7 +11,7 @@ const copy: typeof en = {
   sources: {
     title: "Kaynaklar",
     backpropagation:
-      "Katmanlı ağları eğitmenin bir yolu olarak geri yayılımı savunur: hata katmanlar boyunca geriye taşınır ve her ağırlık hatadaki payı kadar değiştirilir. Bu sayfadaki ağlar makaledekiler değil, küçük öğretim örnekleridir.",
+      "Katmanlı ağları eğitmenin bir yolu olarak geri yayılımı savunur: kaybın her ağırlığa göre türevi katmanlar boyunca geriye doğru hesaplanır. Güncellemenin yönünü bu türevler, büyüklüğünü optimizasyon yöntemi ve adım boyu belirler. Bu sayfadaki ağlar makaledekiler değil, küçük öğretim örnekleridir.",
     linnainmaa:
       "Ters mod türev almanın yayımlanmış ilk anlatımı; geri yayılım bu genel yöntemin bir özel durumudur. Türevler, hesaplamanın içinden geriye doğru, her seferinde bir yerel adımla taşınır.",
     griewank:
@@ -28,10 +28,10 @@ const copy: typeof en = {
     question:
       "Ağın çıktısını tut ve başka bir değere çek. Bunun için hangi ağırlıkların değişmesi gerekir?",
     caption:
-      "Çıktıyı tuttuğun sürece her bağlantı, çekişteki payıyla parlar: pay büyüdükçe çizgi kalınlaşır; mavi ağırlığın artacağını, pembe azalacağını gösterir. Kesikli çizgiler çıktıdan geriye doğru akar ve hatanın hangi yönde dağıtıldığını gösterir. Bıraktığında her ağırlık tam bu payı kadar değişir.",
+      "Çıktıyı tuttuğun sürece her bağlantı, çıktıyı hedefe taşımak için önerilen ağırlık değişimini gösterir: değişim büyüdükçe çizgi kalınlaşır; mavi artışı, pembe azalışı gösterir. Kesikli çizgiler çıktıdan geriye doğru akar ve türevlerin hesaplandığı yönü gösterir. Önerilen değişimler, çıktının her ağırlığa göre türevinden (∂ŷ/∂θ) bulunur. Bıraktığında ağırlıklar tam bu kadar değişir.",
     announceLanded: (aimed: string, landed: string) => `Hedef ${aimed} idi, çıktı ${landed} oldu.`,
     announceAim: (target: string, leader: string) =>
-      `Çıktı ${target} değerine çekiliyor. En büyük pay ${leader} ağırlığında.`,
+      `Çıktı ${target} değerine çekiliyor. En büyük değişim ${leader} ağırlığında.`,
     diagramLabel: (out: string) =>
       `İki girdili, tanh kullanan iki nöronlu ve tek çıktılı bir ağ; çıktı şu an ${out}. Çıktıyı yukarı ya da aşağı sürükle veya seçip ok tuşlarını kullan, sonra Enter'a bas.`,
     bias: (name: string, value: string) => `${name} ${value}`,
@@ -39,13 +39,13 @@ const copy: typeof en = {
     handleValue: (out: string, target: string | null) =>
       target === null ? `Çıktı ${out}` : `Çıktı ${out}, ${target} değerine çekiliyor`,
     leaderLine: (leader: string, share: string) =>
-      `Bu çekişte en büyük pay ${leader} ağırlığında: ${share} kadar değişirdi.`,
+      `Bu çekişte en çok ${leader} değişiyor: ${share} kadar değişirdi.`,
     landedLine: (aimed: string, landed: string) =>
       `Hedef ${aimed} idi, çıktı ${landed} oldu. Ağın doğrusal yaklaşımı tam ${aimed} öngörüyordu; aradaki farkı tanh'ın eğriliği yaratır.`,
     hint: "Sağdaki beyaz noktayı sürükle. Her bağlantı, ne kadar değişmesi gerektiğine göre parlar.",
     letGo: "Bırak",
     reset: "Baştan başla",
-    tableTitle: "Her ağırlık ve gradyanı",
+    tableTitle: "Her ağırlık ve çıktının ona göre türevi (∂ŷ/∂θ)",
     columns: { weight: "Ağırlık", value: "Değer" },
     figures: {
       output: "Çıktı",
@@ -58,10 +58,10 @@ const copy: typeof en = {
   // 2 ----------------------------------------------------------------------
   zoom: {
     kicker: "Sayının anlamı",
-    title: "Eğri bir doğru gibi görünene kadar yaklaş.",
-    lede: "Bir ağırlık dışındaki bütün ağırlıkları sabit tut; kayıp o ağırlığın bir fonksiyonu, yani bir eğri olur. Eğrinin bir noktasına yaklaş ve eğrinin nasıl düzleştiğine bak.",
+    title: "Eğriye, teğetinden ayırt edilemeyene kadar yaklaş.",
+    lede: "Bir ağırlık dışındaki bütün ağırlıkları sabit tut; kayıp o ağırlığın bir fonksiyonu, yani bir eğri olur. Eğrinin bir noktasına yaklaş ve eğrinin teğet doğrusuna nasıl yaklaştığına bak.",
     caption:
-      "Kesikli doğrunun eğimi, geri yayılımın bu ağırlık için bulduğu değerdir. Uzaktan bakınca doğru eğriye pek uymaz; yakından eğri ile doğru ayırt edilemez. Gradyan bu eğimden ibarettir: ağırlık değiştiğinde kaybın ne hızla değiştiği. Eğri boyunca ilerlemek için grafiği sürükle.",
+      "Kesikli doğrunun eğimi, geri yayılımın bu ağırlık için bulduğu kısmi türev ∂L/∂w₁₁'dir; ağırlık gradyanının bir bileşenidir. Uzaktan bakınca teğet eğriye pek uymaz; yaklaştıkça aradaki fark küçülür, çünkü teğet eğrinin o noktadaki yerel doğrusal yaklaşımıdır. Kısmi türev bu eğimdir: yalnızca bu ağırlık değiştiğinde kaybın ne hızla değiştiği. Eğri boyunca ilerlemek için grafiği sürükle.",
     announce: (half: string, slope: string, gap: string) =>
       `Pencere ±${half}. Geri yayılımın eğimi ${slope}; ölçülen eğimle farkı ${gap}.`,
     chartLabel: (w: string, half: string) =>
@@ -85,9 +85,9 @@ const copy: typeof en = {
     title: "İlk kadranı çevir, sonuncuya bak.",
     lede: "Beş kadran birbirine bağlı; her biri bir öncekiyle döner. Her bağlantı komşusunu kendi oranıyla çevirir ve oranlar çarpılır.",
     caption:
-      "Bir bağlantının üzerindeki sayı, önceki kadran çok az döndüğünde o kadranın ne kadar döndüğüdür, yani yerel türevidir. Son kadran bu sayıların çarpımı kadar döner. Geri yayılım bu çarpmayı uzak uçtan başlayarak yapar.",
+      "Bir bağlantının üzerindeki sayı, o kadranın önceki kadrana göre yerel türevidir: önceki kadran çok az döndüğünde ne kadar döndüğü. Bu sayıların çarpımı, şu anki x için d′(x)'tir; son dönüşte ölçülen Δd ÷ Δx, dönüş küçüldükçe bu değere yaklaşır. Geri yayılım bu çarpmayı uzak uçtan başlayarak yapar.",
     announce: (x: string, d: string, product: string) =>
-      `x = ${x}, d = ${d}. d, x'in ${product} katı hızla değişiyor.`,
+      `x = ${x}, d = ${d}. Şu anki x için d, x'in ${product} katı hızla değişiyor.`,
     diagramLabel: (values: string) =>
       `x, a, b, c ve d adlı beş kadran; değerleri ${values}. İlki bir denetimdir: döndürmek için sürükle ya da ok tuşlarını kullan.`,
     stages: ["a = 1,5x", "b = tanh a", "c = b²", "d = 2c − 1"],
@@ -140,7 +140,7 @@ const copy: typeof en = {
     title: "Tek geri geçiş, ağırlık başına iki geçişe karşı.",
     lede: "Gradyanı bulmanın daha basit bir yolu var: her ağırlığı biraz değiştir, ağı yeniden çalıştır ve kayıptaki değişime bak. Bu yöntemi geri yayılımla bu tarayıcıda gerçekten yarıştır.",
     caption:
-      "İki sütun da aynı gradyanı hesaplar; yarış ancak sonuçlar tuttuğu için anlamlıdır. Sayısal yöntem her ağırlık için ağı iki kez çalıştırır, bu yüzden süresi ağırlık sayısıyla büyür. Geri yayılım, ağırlık sayısı ne olursa olsun bir ileri ve bir geri geçiş ister. Süreler senin cihazına bağlıdır; değişmeyen, aradaki orandır.",
+      "İki sütun da aynı gradyanı hesaplar: sayısal yöntem yaklaşık, geri yayılım tam değeri verir. Yarış, iki sonuç birbirine çok yakın olduğu için anlamlıdır. Sayısal yöntem her ağırlık için ağı iki kez çalıştırır, bu yüzden geçiş sayısı ağırlık sayısıyla büyür. Geri yayılım, ağırlık sayısı ne olursa olsun bir ileri ve bir geri geçiş ister. Süreler ve aralarındaki oran senin cihazına bağlıdır; değişmeyen, geçiş sayılarıdır.",
     announce: (ratio: string, params: number) =>
       `${params} ağırlıkta geri yayılım ${ratio} kat daha hızlıydı.`,
     sizeLine: (count: string, passes: number) =>
@@ -149,14 +149,14 @@ const copy: typeof en = {
     backprop: "Geri yayılım",
     numericPasses: (n: number) => `${n} ileri geçiş`,
     backpropPasses: "1 ileri ve 1 geri geçiş",
-    agree: (worst: string) => `İkisi de aynı gradyanı buldu: aralarındaki fark en çok ${worst}.`,
+    agree: (worst: string) => `İki yöntemin gradyanları arasındaki en büyük mutlak fark: ${worst}.`,
     widthLabel: "Gizli katman başına nöron",
     running: "Yarış sürüyor…",
     race: "Yarıştır",
     figures: {
       weights: "Ağırlık",
       ratio: "Geri yayılım kaç kat hızlı",
-      ratioHint: "ağ büyüdükçe fark açılır",
+      ratioHint: "bu cihazda ölçüldü; ağ büyüdükçe genellikle artar",
     },
   },
 
@@ -166,10 +166,11 @@ const copy: typeof en = {
     title: "Ağı uzat, gradyanın nasıl söndüğüne bak.",
     lede: "Her katmanında tek nöron olan bir zincir. Katman eklemek için son katmanı sağa sürükle ve gradyanın ne kadarının hâlâ başa ulaştığına bak.",
     caption:
-      "Her katman gradyanı, w ile aktivasyon fonksiyonunun eğiminin çarpımıyla çarpar. Sigmoid'in eğimi en çok dörtte birdir; bu yüzden w = 1 iken on katman gradyanı en az altı büyüklük mertebesi küçültür ve ilk katmanlar öğrenemez hâle gelir. ReLU, sinyal pozitif kaldıkça gradyanı değiştirmeden geçirir; 1'den büyük bir ağırlık ise gradyanı büyütür: gradyan patlar.",
-    announce: (depth: number, first: string) => `${depth} katman. Girdiye ulaşan gradyan ${first}.`,
+      "Her katman gradyanın büyüklüğünü |w × aktivasyon fonksiyonunun eğimi| ile çarpar. Sigmoid'in eğimi en çok dörtte birdir; bu yüzden w = 1 iken on katman gradyanın büyüklüğünü en az altı büyüklük mertebesi küçültür ve ilk katmanların öğrenmesi çok zorlaşır. ReLU'nun eğimi sinyal pozitifken 1'dir, yani katman başına çarpan w olur: gradyan yalnızca w = 1 iken değişmeden geçer, 1'den büyük bir w ise onu büyütür: gradyan patlar.",
+    announce: (depth: number, first: string) =>
+      `${depth} katman. Girdiye ulaşan gradyanın büyüklüğü ${first}.`,
     chartLabel: (depth: number, activation: string, first: string) =>
-      `${activation} kullanan ${depth} katmanlı bir zincir. Çubuklar her katmana ulaşan gradyanı logaritmik ölçekte gösterir; girdide ${first}.`,
+      `${activation} kullanan ${depth} katmanlı bir zincir. Çubuklar her katmana ulaşan gradyanın büyüklüğünü (mutlak değerini) logaritmik ölçekte gösterir; girdide ${first}.`,
     handleLabel: "Katman sayısı",
     end: "son",
     hint: "Sondaki mavi noktayı sürükle ya da seçip sol ve sağ ok tuşlarını kullan.",
@@ -182,7 +183,7 @@ const copy: typeof en = {
       first: "Girdide",
       firstHint: "sondaki gradyana oranı",
       factor: "Katman başına",
-      factorHint: "ortalama çarpan",
+      factorHint: "ortalama çarpan büyüklüğü",
     },
   },
 
@@ -230,41 +231,41 @@ const copy: typeof en = {
 
   recap: {
     lessons: [
-      "Gradyan bir eğimdir: kayba yeterince yakından bakınca eğri bir doğruya dönüşür",
+      "Kısmi türev bir eğimdir: kayba yeterince yakından bakınca eğri, o noktadaki teğetinden ayırt edilemez",
       "Zincir kuralı yerel türevleri çarpar; geri yayılım bu çarpmayı kayıptan geriye doğru yapar",
       "İki yerde kullanılan bir değer, iki yoldan gelen gradyanların toplamını alır",
       "Geri geçiş sırayla ilerler: bir düğümden önce, onu okuyan bütün düğümler hesaplanır",
       "Tek bir geri geçiş bütün ağırlıkların gradyanını verir; sayısal yöntem ağırlık başına iki geçiş ister",
-      "Derin zincirler çok sayıda çarpanı çarpar: çarpanlar 1'in altındaysa gradyan kaybolur, üstündeyse patlar",
+      "Derin zincirler çok sayıda çarpanı çarpar: çarpanların büyüklüğü 1'in altındaysa gradyan kaybolur, üstündeyse patlar",
       "Gradyan kontrolü, geri yayılımın sonucunu sayısal olarak ölçülen değerle karşılaştırır; bozuk bir geri geçiş böyle yakalanır",
     ],
     footer:
-      "Bugün eğitilen her yapay sinir ağı, bu sayfanın başındaki küçük ağdan milyarlarca ağırlığı olanlara kadar, bu geri yürüyüşle öğrenir. Derin öğrenme kütüphaneleri bu hesabı senin yerine yazar; yazdıkları budur.",
+      "Bugün gradyanla eğitilen yapay sinir ağları, bu sayfanın başındaki küçük ağdan milyarlarca ağırlığı olanlara kadar, gradyanlarını bu geri yürüyüşle hesaplar. Derin öğrenme kütüphaneleri bu hesabı senin yerine yazar; yazdıkları budur.",
   },
 
   // The guided tours, one per experiment (components/lab/guide/tours.ts).
   tour: {
     intro:
-      "Küçük bir ağ ve çıktısı, tutup çekebileceğin bir nokta. Noktayı çekince her ağırlık hatadaki payıyla parlar.",
+      "Küçük bir ağ ve çıktısı, tutup çekebileceğin bir nokta. Noktayı çekince her bağlantı, önerilen ağırlık değişimine göre parlar.",
     stages: {
       pull: {
         pull: "Bu nokta ağın çıktısı. Yukarı ya da aşağı sürükle veya ok tuşlarını kullan; tur onu yukarı çekti.",
-        letGo: "Bıraktığında her ağırlık, çekişteki payı kadar değişir.",
+        letGo: "Bıraktığında her ağırlık, önerilen değişim kadar değişir.",
         result:
           "Hedeflediğin değer, ulaşılan değer ve aradaki fark. Daha uzağa çektikçe fark büyür.",
       },
       zoom: {
         curve:
           "Tek bir ağırlık değişirken kayıp; kesikli doğru geri yayılımın bulduğu eğimi gösterir. Eğri boyunca sürükleyebilirsin.",
-        zoom: "Tur sonuna kadar yaklaştı: eğri ile doğru artık ayırt edilemiyor.",
+        zoom: "Tur sonuna kadar yaklaştı: eğri ile teğet artık neredeyse ayırt edilemiyor.",
         slope:
-          "Geri yayılımın eğimi ve pencere boyunca ölçülen eğim yan yana. Yaklaştıkça fark küçülür: gradyan bu eğimden ibarettir.",
+          "Geri yayılımın eğimi ve pencere boyunca ölçülen eğim yan yana. Yaklaştıkça fark küçülür: ∂L/∂w₁₁ bu eğimdir.",
       },
       chain: {
         dial: "İlk kadranı sürükleyerek ya da ok tuşlarıyla çevir. Tur onu biraz çevirdi.",
         links:
           "Her bağlantıdaki sayı, önceki kadran çok az döndüğünde o kadranın ne kadar döndüğüdür.",
-        last: "Bağlantıların çarpımı ve son dönüşünde ölçülen oran yan yana. İkisi tutar: zincir kuralı budur.",
+        last: "Bağlantıların çarpımı ve son dönüşünde ölçülen oran yan yana. Dönüş küçüldükçe ikisi birbirine yaklaşır: zincir kuralı budur.",
       },
       ledger: {
         graph:
@@ -277,13 +278,13 @@ const copy: typeof en = {
         columns:
           "Aynı gradyanı bulmanın iki yolu: her ağırlığı biraz değiştirip ağı yeniden çalıştırmak ya da tek bir geri geçiş.",
         width: "Bu ayar her katmandaki nöron sayısını belirler. Tur ağı genişletti.",
-        race: "İkisini bu tarayıcıda yarıştır. Ağ genişledikçe sayısal yöntem daha da geride kalır.",
+        race: "İkisini bu tarayıcıda yarıştır. Ağ genişledikçe sayısal yöntemin geçiş sayısı artar ve genellikle daha da geride kalır.",
       },
       depth: {
-        chart: "Gradyanın ne kadarının her katmana ulaştığı, sondan başa doğru.",
+        chart: "Her katmana ulaşan gradyanın büyüklüğü, sondan başa doğru.",
         add: "Katman eklemek için son katmanı sağa sürükle ya da ok tuşlarını kullan. Tur dört katman ekledi.",
         activation:
-          "Buradan başka bir aktivasyon fonksiyonu seç: ReLU ile sinyal değişmeden geçer.",
+          "Buradan başka bir aktivasyon fonksiyonu seç: ReLU'da katman başına çarpan w olur; w = 1 iken gradyan değişmeden geçer.",
       },
       challenge: {
         cases: "Her birinin geri geçişinde bir hata olan üç çizge. Buradan birini seç.",
@@ -297,7 +298,7 @@ const copy: typeof en = {
   // The learning guide (src/labs/learning.ts): idea names, and why each resource is here.
   study: {
     topics: {
-      slope: "Gradyan bir eğimdir; zincir kuralı",
+      slope: "Kısmi türev bir eğimdir; zincir kuralı",
       graph: "Hesaplama çizgesi ve geri geçişin sırası",
       depth: "Kaybolan ve patlayan gradyanlar",
       check: "Gradyan kontrolü",

@@ -285,9 +285,9 @@ export const tr: Translation = {
       title: "Who Is to Blame?",
       term: "Geri yayılım",
       figure:
-        "çıktısından geriye doğru hatanın aktığı küçük bir ağ; hatadaki payı büyük olan bağlantı daha kalın.",
+        "çıktısından geriye doğru türevlerin aktığı küçük bir ağ; çok değişmesi gereken bağlantı daha kalın.",
       description:
-        "Ağın çıktısını çek ve her ağırlığın hatadaki payına göre nasıl değiştiğine bak; sonra geri geçişi kendin hesapla.",
+        "Ağın çıktısını çek ve her ağırlığın ne kadar değişmesi gerektiğine bak; sonra geri geçişi kendin hesapla.",
     },
     convolution: {
       title: "Nine Weights",

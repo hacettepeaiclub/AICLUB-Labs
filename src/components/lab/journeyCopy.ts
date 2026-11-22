@@ -190,9 +190,9 @@ export const journeys: Record<string, { en: Journey; tr: Journey }> = {
       "The chain rule multiplies along a path and adds contributions from different paths. Use the backward-pass ledger to trace where a shared weight receives both contributions.",
     ],
     tr: [
-      "Çıktıdaki hatanın her ağırlığa nasıl ulaştığını izle.",
+      "Çıktıyı değiştirmek için her ağırlığın ne kadar değişmesi gerektiğini izle.",
       "Çıktı noktasını çek ve bağlantıların nasıl parladığına bak.",
-      "Her bağlantının rengine (artacak mı, azalacak mı) ve kalınlığına (payı ne kadar) bak.",
+      "Her bağlantının rengine (ağırlık artacak mı, azalacak mı) ve kalınlığına (ne kadar değişecek) bak.",
       "Aynı ağırlık iki dala giriyor. Geri gelen katkılar nasıl birleşir?",
       "İki dalın katkıları toplanır.",
       "Yalnızca büyük katkı alınır.",
