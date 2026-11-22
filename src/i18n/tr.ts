@@ -341,10 +341,11 @@ export const tr: Translation = {
     },
     "graph-search": {
       title: "The Spreading Search",
-      term: "Graf araması",
-      figure: "başlangıcından bir ızgaraya yayılan bir arama; parlak halka sınır.",
+      term: "Çizgede arama",
+      figure:
+        "arama sırasında bekleyen hücreleri, işlenen hücreleri ve bulunan yolu gösteren ızgara.",
       description:
-        "Engeller ve farklı maliyetler ekle. BFS, Dijkstra ve A* yöntemlerinin incelediği hücreleri karşılaştır.",
+        "Engel ve çamur ekle. BFS, Dijkstra ve A* ile bulunan yolların maliyetini ve işlenen hücre sayısını karşılaştır.",
     },
     probability: {
       title: "Guess, Then Count",

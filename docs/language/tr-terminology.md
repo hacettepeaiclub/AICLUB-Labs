@@ -426,3 +426,28 @@ yukarıdaki biçimde yeniden yazılacak.
   Çukurova Üniversitesi [Veri Yapıları ders içeriği](https://eobs.cu.edu.tr/Ders/GenelBilgi/624729)
   “araya eklemeli sıralama” der. Sayaç ve terslik tanımları deneyin
   sıralama motorunda belirtilir.
+
+## graph-search
+
+### Çizge, genişlik öncelikli arama ve yol maliyeti
+
+- **Tanım:** Izgaradaki her geçilebilir hücre çizgenin bir düğümüdür.
+  Genişlik öncelikli arama (BFS) en az adımlı yolu bulur. Dijkstra,
+  negatif olmayan geçiş maliyetlerinde en düşük maliyetli yolu bulur.
+  Burada başlangıç hücresi ödenmez. Girilen hücrelerin maliyetleri
+  toplamı yol maliyetidir.
+- **Tercih:** çizgede arama, genişlik öncelikli arama (BFS), yol uzunluğu,
+  yol maliyeti. Izgarada düğüm yerine hücre denir. İşlenen hücre, sıradan
+  alınmış hücredir. Sırada bekleyen hücre grafikte halkayla gösterilir.
+- **Kaynak:** Savaş Öztürk, Marmara Üniversitesi,
+  [Uzman Sistem Tabanlı Müzayede ile Çoklu Robot Görev Paylaşımı, s. 58–60](https://katalog.marmara.edu.tr/veriler/yordambt/cokluortam/3D/60F9D9CF-170F-0445-A56D-84D1D45B42C5.pdf).
+
+### A* ve Manhattan uzaklığı
+
+- **Tanım:** A*, birikmiş maliyete hedefe kalan maliyetin tahminini ekler.
+  Bu deneyde tahmin, yatay ve düşey adım farklarının mutlak değerlerinin
+  toplamıdır. Her geçiş en az 1 birim olduğu için tahmin kalan maliyeti
+  aşmaz.
+- **Tercih:** A*, Manhattan uzaklığı, kalan maliyet tahmini.
+- **Kaynak:** Sakarya Üniversitesi,
+  [Manhattan uzaklığı, bölüm 4.2.2.3](https://acikerisim.sakarya.edu.tr/bitstream/20.500.12619/80982/1/T04049.pdf).

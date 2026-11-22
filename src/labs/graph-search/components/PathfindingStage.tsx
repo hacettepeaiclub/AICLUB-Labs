@@ -24,9 +24,6 @@ export interface PathfindingStageProps {
   caption?: string;
 }
 
-const describe = (grid: Grid, index: number): string =>
-  `row ${rowOf(grid, index) + 1}, column ${colOf(grid, index) + 1}`;
-
 /**
  * The interactive unit every section is built from: a grid you draw on, the
  * controls that run it, and the numbers the run produced — inside one `Stage`.
@@ -59,6 +56,8 @@ export function PathfindingStage({
 }: PathfindingStageProps) {
   const t = useT();
   const lab = useLabCopy("graph-search");
+  const describe = (grid: Grid, index: number) =>
+    lab.row(rowOf(grid, index) + 1, colOf(grid, index) + 1);
   const reduced = useReducedMotion() ?? false;
 
   // Chosen once. A grid that reflowed on resize would throw away the drawing.
@@ -230,8 +229,8 @@ export function PathfindingStage({
             <p className="text-caption text-fg-faint">
               {lab.gridHelpFull.drag} <span className="font-mono text-fg">S</span>{" "}
               {lab.gridHelpFull.or} <span className="font-mono text-fg">G</span>{" "}
-              {lab.gridHelpFull.toMove} <Kbd>Space</Kbd> {lab.gridHelpFull.toggles} <Kbd>S</Kbd>{" "}
-              {lab.gridHelpFull.or} <Kbd>G</Kbd> {lab.gridHelpFull.drops}
+              {lab.gridHelpFull.toMove} <Kbd>{lab.spaceKey}</Kbd> {lab.gridHelpFull.toggles}{" "}
+              <Kbd>S</Kbd> {lab.gridHelpFull.or} <Kbd>G</Kbd> {lab.gridHelpFull.drops}
             </p>
           </>
         }

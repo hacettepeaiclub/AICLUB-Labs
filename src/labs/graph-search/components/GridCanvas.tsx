@@ -6,6 +6,7 @@ import {
   type MutableRefObject,
   type PointerEvent,
 } from "react";
+import { useLabCopy } from "@/i18n/labs";
 import { usePaletteVersion } from "@/hooks";
 import { useCanvasBacking } from "@/hooks/useCanvasBacking";
 import { cn } from "@/lib/cn";
@@ -63,6 +64,7 @@ export function GridCanvas({
   label,
   describedBy,
 }: GridCanvasProps) {
+  const { gridRole } = useLabCopy("graph-search");
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
   const sizeRef = useRef({ width: 0, height: 0 });
@@ -217,7 +219,7 @@ export function GridCanvas({
   return (
     <div
       role="application"
-      aria-roledescription="Pathfinding grid"
+      aria-roledescription={gridRole}
       aria-label={label}
       aria-describedby={describedBy}
       tabIndex={0}
