@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { tr } from "../src/i18n/tr";
 
 test.use({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
 
@@ -9,7 +10,7 @@ test.beforeEach(async ({ page }) => {
 
 test("Turkish mobile navigation fits the screen and its links can be tapped", async ({ page }) => {
   await page.goto("/");
-  await page.locator('summary[aria-label="Gezinme"]').tap();
+  await page.locator("summary").and(page.getByLabel(tr.shell.mobileNav)).tap();
   const menu = page.getByRole("navigation", { name: "Ana menü" });
   await expect(menu).toBeVisible();
   const bounds = await menu.boundingBox();
@@ -31,8 +32,8 @@ test("Turkish mobile navigation fits the screen and its links can be tapped", as
 test("Turkish touch finder recovery restores focus and clears on navigation", async ({ page }) => {
   await page.route(/\/assets\/LabPalette-[^/?]+\.js$/, (route) => route.abort());
   await page.goto("/");
-  const finder = page.getByRole("button", { name: "Lab ara", exact: true });
-  const alert = page.getByRole("alert").filter({ hasText: "Lab arama şu anda kullanılamıyor." });
+  const finder = page.getByRole("button", { name: tr.palette.open, exact: true });
+  const alert = page.getByRole("alert").filter({ hasText: tr.palette.unavailable });
 
   await finder.tap();
   await expect(alert).toBeVisible();
@@ -42,7 +43,7 @@ test("Turkish touch finder recovery restores focus and clears on navigation", as
 
   await finder.tap();
   await expect(alert).toBeVisible();
-  await page.locator('summary[aria-label="Gezinme"]').tap();
+  await page.locator("summary").and(page.getByLabel(tr.shell.mobileNav)).tap();
   await page
     .getByRole("navigation", { name: "Ana menü" })
     .getByRole("link", { name: "Hesap makinesi" })

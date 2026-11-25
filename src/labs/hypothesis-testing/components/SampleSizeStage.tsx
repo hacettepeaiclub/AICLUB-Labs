@@ -1,6 +1,5 @@
 import { Figure, LabSlider, Stage } from "@/components/lab";
 import { useState } from "react";
-import { useLanguage } from "@/i18n";
 import { domainOf } from "../view";
 import { useNumberFormat } from "./useNumberFormat";
 import { useLabCopy } from "@/i18n/labs";
@@ -35,7 +34,6 @@ export function SampleSizeStage({ result, onChange }: SampleSizeStageProps) {
   const copy = useLabCopy("hypothesis-testing");
   const s = copy.sampleSection;
   const { n } = result.params;
-  const { language } = useLanguage();
   const [fixed, setFixed] = useState(true);
   const fixedDomain = domainOf(evaluate({ ...result.params, n: BOUNDS.n.min }));
 
@@ -69,19 +67,9 @@ export function SampleSizeStage({ result, onChange }: SampleSizeStageProps) {
               onClick={() => setFixed(!fixed)}
               className="min-h-11 rounded border border-accent/40 px-3 text-body-sm text-accent"
             >
-              {language === "tr"
-                ? fixed
-                  ? "X ekseni: sabit"
-                  : "X ekseni: otomatik"
-                : fixed
-                  ? "X axis: fixed"
-                  : "X axis: automatic"}
+              {fixed ? s.fixedAxis : s.automaticAxis}
             </button>
-            <p className="text-caption text-fg-muted">
-              {language === "tr"
-                ? "X ekseni sabitken n'yi artır ve iki eğrinin yatayda daralmasına bak. Yükseklik kendiliğinden ölçeklenir."
-                : "On a fixed horizontal scale, watch the curves narrow as n grows. Height is scaled automatically."}
-            </p>
+            <p className="text-caption text-fg-muted">{s.axisHint}</p>
           </div>
           <DistributionPlot result={result} domain={fixed ? fixedDomain : undefined} />
           <div className="rounded-lg border border-line/20 bg-ink-900 p-3">

@@ -86,6 +86,7 @@ export function HomePage() {
             </p>
             <h1
               id="home-title"
+              lang="en"
               className="mt-6 max-w-[21ch] font-mono text-[clamp(2rem,4.5vw,4rem)] font-semibold leading-[1.12] tracking-[-0.02em] text-fg"
             >
               {copy.title}

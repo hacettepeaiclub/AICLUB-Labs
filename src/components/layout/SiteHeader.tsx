@@ -186,7 +186,7 @@ export function SiteHeader({
             <summary
               className="grid min-h-11 min-w-11 cursor-pointer list-none place-items-center rounded border
                 border-line/20 text-fg-muted hover:text-fg [&::-webkit-details-marker]:hidden"
-              aria-label={language === "tr" ? "Gezinme" : "Navigation"}
+              aria-label={t.shell.mobileNav}
             >
               <svg
                 viewBox="0 0 16 16"

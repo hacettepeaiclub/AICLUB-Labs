@@ -3,7 +3,7 @@ import { useEffect, useId, useState, type RefObject } from "react";
 import { useLanguage } from "@/i18n";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { Button } from "@/components/ui";
-import { journeys } from "./journeyCopy";
+import { journeys, journeyUi } from "./journeyCopy";
 import { useJourneySlug } from "./journeyContext";
 
 /** Space left between the sticky header and what "Try it" scrolls to. */
@@ -44,7 +44,7 @@ export function LabOrientation({ rootRef }: { rootRef: RefObject<HTMLElement> })
   const slug = useJourneySlug();
   const { language } = useLanguage();
   const reduced = useReducedMotion();
-  const tr = language === "tr";
+  const ui = journeyUi[language];
   const copy = journeys[slug]?.[language];
   const [chapters, setChapters] = useState<{ element: HTMLElement; title: string }[]>([]);
   const [start, setStart] = useState<HTMLElement | null>(null);
@@ -94,24 +94,21 @@ export function LabOrientation({ rootRef }: { rootRef: RefObject<HTMLElement> })
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
           <p className="text-overline uppercase text-accent">
-            <span>{tr ? "İlk adım" : "Your first move"}</span>
+            <span>{ui.firstMove}</span>
           </p>
           <p className="mt-2 text-body-sm text-fg">{copy[1]}</p>
         </div>
         <Button disabled={!start} onClick={() => start && reveal(start, reduced)}>
-          {tr ? "Deneyi aç" : "Try it"} <span aria-hidden>↓</span>
+          {ui.tryIt} <span aria-hidden>↓</span>
         </Button>
       </div>
       <details className="mt-3 border-t border-line/15 pt-1">
         <summary className="min-h-11 cursor-pointer py-3 text-caption text-fg-muted">
-          <span>{tr ? "Deneyin adımları" : "What to watch · Explore the route"}</span>
+          <span>{ui.overview}</span>
         </summary>
         <p className="text-body-sm text-fg">{copy[0]}</p>
         <p className="mt-2 text-body-sm text-fg-muted">{copy[2]}</p>
-        <nav
-          aria-label={tr ? "Labın keşif rotası" : "Lab exploration route"}
-          className="mt-4 grid gap-1"
-        >
+        <nav aria-label={ui.chapters} className="mt-4 grid gap-1">
           {chapters.map(({ element, title }, i) => (
             <button
               key={i}
@@ -124,7 +121,7 @@ export function LabOrientation({ rootRef }: { rootRef: RefObject<HTMLElement> })
               </span>
               <span>{title}</span>
               {element.closest("details.lab-section") && (
-                <span className="text-caption text-fg-faint">{tr ? "İleri" : "Deeper"}</span>
+                <span className="text-caption text-fg-faint">{ui.deeper}</span>
               )}
             </button>
           ))}
@@ -137,7 +134,7 @@ export function LabOrientation({ rootRef }: { rootRef: RefObject<HTMLElement> })
 export function LabTransfer() {
   const slug = useJourneySlug();
   const { language } = useLanguage();
-  const tr = language === "tr";
+  const ui = journeyUi[language];
   const copy = journeys[slug]?.[language];
   const [selected, setSelected] = useState<number | null>(null);
   const id = useId();
@@ -148,16 +145,12 @@ export function LabTransfer() {
   return (
     <section data-transfer-check aria-labelledby={id} className="transfer-check">
       <p className="text-overline uppercase text-accent">
-        <span>{tr ? "Öğrendiğini dene" : "Try a new situation"}</span>
+        <span>{ui.transferTitle}</span>
       </p>
       <h2 id={id} className="mt-3 text-title font-semibold text-fg">
         {copy[3]}
       </h2>
-      <p className="mt-2 text-body-sm text-fg-muted">
-        {tr
-          ? "Bir açıklama seç. Sonra gerekçeyi karşılaştır."
-          : "Choose an explanation, then compare the reasoning."}
-      </p>
+      <p className="mt-2 text-body-sm text-fg-muted">{ui.transferHint}</p>
       <div className="mt-5 grid gap-2" role="group" aria-labelledby={id}>
         {order.map((answer, position) => (
           <button
@@ -178,13 +171,7 @@ export function LabTransfer() {
         {selected !== null && (
           <div className="mt-4 border-l-2 border-accent bg-accent-soft p-4">
             <p className="text-body-sm font-semibold text-fg">
-              {selected === 0
-                ? tr
-                  ? "Evet — işte nedeni."
-                  : "Yes — here is why."
-                : tr
-                  ? "Şu ayrımı düşün."
-                  : "Consider this distinction."}
+              {selected === 0 ? ui.correct : ui.reconsider}
             </p>
             <p className="mt-2 text-body-sm text-fg-muted">{copy[7]}</p>
           </div>

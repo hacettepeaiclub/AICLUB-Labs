@@ -119,6 +119,10 @@ const copy: typeof en = {
   },
 
   sampleSection: {
+    fixedAxis: "X ekseni sabit",
+    automaticAxis: "X ekseni otomatik",
+    axisHint:
+      "X ekseni sabitken örneklem büyüklüğünü (n) artır ve iki örnekleme dağılımının nasıl daraldığına bak. Dikey ölçek otomatik ayarlanır.",
     kicker: "Örneklem büyüklüğünün etkisi",
     title: "Örneklem büyüdükçe hata olasılıkları nasıl değişir?",
     lede: "n arttıkça standart hata SE = σ/√n küçülür. α sabitken, μ₁ alternatif yöndeyse testin gücü artar. Gerçek ortalama μ₀'a eşitse reddetme olasılığı α'da kalır; μ₁ ters yöndeyse azalabilir.",

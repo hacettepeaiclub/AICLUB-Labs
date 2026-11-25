@@ -1,4 +1,5 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
+import { journeyUi } from "../src/components/lab/journeyCopy";
 
 /**
  * Touch targets a lab audit at 390px found under 44px.
@@ -32,8 +33,8 @@ const addLayer = { en: "+ Add a layer", tr: "+ Katman ekle" } as const;
 const check_ = { en: "Check", tr: "Kontrol et" } as const;
 const accuse = { en: "Where is the fault?", tr: "Hata nerede?" } as const;
 const copy = {
-  en: { tryIt: "Try it", tour: "Guided tour", learn: "Open the learning guide" },
-  tr: { tryIt: "Deneyi aç", tour: "Rehberli tur", learn: "Öğrenme rehberini aç" },
+  en: { tryIt: journeyUi.en.tryIt, tour: "Guided tour", learn: "Open the learning guide" },
+  tr: { tryIt: journeyUi.tr.tryIt, tour: "Rehberli tur", learn: "Öğrenme rehberini aç" },
 } as const;
 
 async function open(page: Page, slug: string) {

@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { journeyUi } from "../src/components/lab/journeyCopy";
 
 test.use({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
 
@@ -12,7 +13,7 @@ for (const { slug, target } of [
     await page.route("**/cloud.umami.is/**", (route) => route.abort());
     await page.addInitScript(() => localStorage.setItem("aiclub-labs-language", "tr"));
     await page.goto(`/labs/${slug}/`);
-    await page.getByRole("button", { name: "Deneyi aç" }).tap();
+    await page.getByRole("button", { name: journeyUi.tr.tryIt }).tap();
 
     const experiment = page.locator(target).first();
     await expect(experiment).toBeFocused();
