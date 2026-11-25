@@ -73,7 +73,7 @@ const copy: typeof en = {
     editPrompt: "İki özeti karşılaştırmak için mesajdaki bir karakteri değiştir.",
     caption: "Değişen bit sayısı, iki SHA-256 özeti bit bit karşılaştırılarak hesaplanır.",
     announce: (changed: number, total: number, percent: number) =>
-      `${total} bitten ${changed} tanesi değişti, özetin %${percent} kadarı.`,
+      `${total} bitten ${changed} tanesi değişti, bitlerin %${percent} kadarı.`,
   },
 
   bits: {
@@ -96,7 +96,7 @@ const copy: typeof en = {
       `${round}. tur: ilk ${round} on altılık basamağı eşleştir. Deneme başına olasılık: 1/${odds}.`,
     nextRound: (round: number) => `${round}. tura geç`,
     keepTrying: "Denemeye devam",
-    maxRound: "Son tur tamamlandı",
+    maxRound: "Son tur",
     matchedLabel: "Ortak ön ek",
     roundLabelFull: "Tur",
     oddsHint: (odds: string) => `deneme başına 1/${odds}`,
@@ -141,7 +141,7 @@ const copy: typeof en = {
   recap: {
     lessons: [
       "Aynı bayt dizisi aynı SHA-256 özetini üretir. Özet uzunluğu her zaman 256 bittir.",
-      "Girdideki küçük değişiklik çoğu zaman özetin yaklaşık yarısını değiştirir. Çığ etkisini görmek için değişen bit sayısını birkaç farklı düzenlemede karşılaştır.",
+      "Girdideki küçük değişiklik çoğu zaman özetin bitlerinin yaklaşık yarısını değiştirir. Çığ etkisini görmek için değişen bit sayısını birkaç farklı düzenlemede karşılaştır.",
       "Rastgele özetlerde ortak ön eke eklenen her on altılık basamak, önceki eşleşme olasılığını 16'ya böler.",
     ],
     footer:
@@ -154,8 +154,8 @@ const copy: typeof en = {
       "Bir mesaj yazıp bir karakterini değiştir. Değişen on altılık basamak sayısını değişen bit sayısıyla karşılaştır.",
     stages: {
       digest: {
-        type: "Bu kutuya istediğini yaz. Örneğin metnin sonuna bir ünlem ekle.",
-        digest: "Bir harf ekle ve mesajın özetini önceki hâliyle karşılaştır.",
+        type: "Bu kutuya istediğin mesajı yaz. Tur mesajın sonuna bir ünlem ekledi.",
+        digest: "Mesajın sonuna tek karakter eklenince özetin nasıl değiştiğine bak.",
         length:
           "Mesajı uzat ve Özet kutusundaki uzunluğa bak. Sonuç yine 64 on altılık basamakla gösterilir ve 256 bittir.",
       },
@@ -165,13 +165,13 @@ const copy: typeof en = {
         distinct: "Hesaplama ve Farklı özet sayaçlarını karşılaştır.",
       },
       avalanche: {
-        edit: "Mesajı değiştir. Önceki ve yeni özetlerde işaretlenen basamaklara bak.",
+        edit: "Tur mesaja bir harf ekledi. Önceki ve yeni özetlerde işaretlenen basamaklara bak.",
         compare: "Önceki ve sonraki özet. Değişen basamaklar iki özette de işaretlenir.",
         count: "Değişen bit sayısına bak. Mesajı yeniden düzenle ve iki sayımı karşılaştır.",
       },
       collision: {
         fields: "İki farklı mesaj kullan. İlk turda iki özetin yalnızca ilk basamağını eşleştir.",
-        type: "İkinci mesajı değiştirip yeniden dene. Ortak ön ek sayacına bak.",
+        type: "Rehberli tur ikinci mesaja bir harf ekledi. Ortak ön ek sayacına bak.",
         rounds:
           "Her turda hedef ön ek bir basamak uzar. Ortak ön ek sayacını tur hedefiyle karşılaştır.",
       },
@@ -190,7 +190,7 @@ const copy: typeof en = {
       "cp-birthday": "Çakışmaların neden beklenenden erken geldiği ve bunun bir özet için anlamı.",
       "3b1b-256bit": "2²⁵⁶'nın gerçekte ne kadar büyük olduğu ve aramanın neden imkânsız olduğu.",
       cryptobook:
-        "İleri düzey, ücretsiz kitap. Çakışmaya dayanıklı hash işlevleri kısmına bak; hash tablosu için hızlı adres üretmek ile kriptografik güvenliğin neden farklı hedefler olduğunu açıklar.",
+        "İleri düzey, ücretsiz kitap. Çakışmaya dayanıklı hash fonksiyonları kısmına bak; hash tablosu için hızlı adres üretmek ile kriptografik güvenliğin neden farklı hedefler olduğunu açıklar.",
     },
   },
 };
