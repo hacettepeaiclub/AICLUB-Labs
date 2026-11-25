@@ -2,7 +2,6 @@ import type en from "../en/diffusion";
 
 /**
  * Türkçe metin: diffusion. Şekli `en/diffusion.ts` ile birebir aynı olmak zorundadır.
- * Deneyin geri kalan Türkçe metni src/labs/diffusion/index.tsx içindedir.
  *
  * Terimler docs/language/tr-terminology.md (## diffusion), anlatım kuralları
  * docs/language/tr-style.md dosyasındadır.
@@ -10,6 +9,28 @@ import type en from "../en/diffusion";
 
 const copy: typeof en = {
   draft: true,
+  experiment: {
+    shapes: ["Halka", "Artı", "Elmas", "Çubuklar"],
+    sampleLabel: "Şu anki örnek xₜ",
+    estimateLabel: "Temiz örnek tahmini E[x₀|xₜ]",
+    posteriorHint:
+      "Yüzdeler, bu modelde izin verilen üç ya da dört şeklin sonsal (posterior) olasılıklarını gösterir. Piksel değerleri ekranda gösterim aralığına kırpılır. Hesaplarda piksel değerleri kırpılmadan kullanılır.",
+    noiseStep: "Gürültü adımı t (değiştirirsen deney yeniden başlar)",
+    reverseStep: "Bir ters adım at",
+    finish: "Kalan ters adımları hesapla",
+    newSeed: "Yeni tohum (seed)",
+    startFromNoise: "Yalnızca gürültüyle başla",
+    excludeSource: "Kaynak şekli önsel dağılımdan çıkar",
+    stepsLeft: "Kalan ters adım sayısı",
+    signalFraction: "Sinyal payı ᾱ",
+    sourceShape: "Kaynak şekli seç",
+    sourceLabel: "İleri sürecin kaynak şekli (pikselleri ters sürece verilmez)",
+    caption:
+      "İleri süreçte xₜ = √ᾱ x₀ + √(1−ᾱ) ε bağıntısıyla gürültü eklenir. Ters süreç, şu anki örnekten temiz örneği tahmin eder ve aynı girdilerle aynı sonucu veren bir DDIM adımı uygular. Ters adımda kaynak şeklin pikselleri (x₀) ve ilk eklenen gürültü kullanılmaz. Kutuyu işaretlediğinde kaynak şekil, izin verilen şekiller listesinden çıkar.",
+    modelTitle: "Ters süreç hangi bilgileri kullanır?",
+    modelBody:
+      "Bu deneyde bir yapay sinir ağı eğitilmez. Model, Gauss gürültüsü ve izin verilen şekillere eşit olasılık veren bir önsel dağılım varsayımıyla sonsal ortalamayı tam olarak hesaplar. Başlangıçta dört şekle izin verilir. Kaynak şekli çıkarırsan üç şekil kalır. Eğitilen diffusion modelleri gürültü gidericiyi veriden öğrenir. Bu deney, üretilen görüntüyü önsel dağılımdaki şekillerden hesaplar. Yalnızca gürültüyle başlamak, ileri sürecin sonundaki (t = 60) dağılımı yaklaşık olarak temsil eder. Son ters adımdaki örnek, şekillerin sonsal olasılıklarla ağırlıklandırılmış ortalamasıdır.",
+  },
   recap: {
     lessons: [
       "Ters süreç şu anki örneği ve önsel dağılımı kullanır; gizlenen özgün görüntüyü kullanmaz.",

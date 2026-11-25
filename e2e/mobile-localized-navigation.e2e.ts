@@ -10,7 +10,7 @@ test.beforeEach(async ({ page }) => {
 
 test("Turkish mobile navigation fits the screen and its links can be tapped", async ({ page }) => {
   await page.goto("/");
-  await page.locator('summary[aria-label="Gezinme"]').tap();
+  await page.locator("summary").and(page.getByLabel(tr.shell.mobileNav)).tap();
   const menu = page.getByRole("navigation", { name: "Ana menü" });
   await expect(menu).toBeVisible();
   const bounds = await menu.boundingBox();
@@ -43,7 +43,7 @@ test("Turkish touch finder recovery restores focus and clears on navigation", as
 
   await finder.tap();
   await expect(alert).toBeVisible();
-  await page.locator('summary[aria-label="Gezinme"]').tap();
+  await page.locator("summary").and(page.getByLabel(tr.shell.mobileNav)).tap();
   await page
     .getByRole("navigation", { name: "Ana menü" })
     .getByRole("link", { name: "Hesap makinesi" })

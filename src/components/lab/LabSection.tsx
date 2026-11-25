@@ -1,4 +1,4 @@
-import { useLanguage } from "@/i18n";
+import { useT } from "@/i18n";
 import type { ReactNode } from "react";
 
 export interface LabSectionProps {
@@ -40,13 +40,13 @@ export interface LabSectionProps {
  * no element at all: an empty overline would still take a line of space.
  */
 export function LabSection({ id, kicker, title, lede, children, deeper = false }: LabSectionProps) {
-  const { language } = useLanguage();
+  const t = useT();
   if (deeper)
     return (
       <details id={id} className="lab-section lab-deeper">
         <summary>
           <span className="text-overline uppercase text-accent">
-            <span>{language === "tr" ? "Ayrıntılara geç" : "Go deeper · Optional"}</span>
+            <span>{t.common.optionalSection}</span>
           </span>
           <h2 className="mt-2 text-title font-semibold text-fg">{title}</h2>
           {kicker && <p className="mt-2 text-overline text-fg-faint">{kicker}</p>}

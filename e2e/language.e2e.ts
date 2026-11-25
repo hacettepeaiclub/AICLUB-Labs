@@ -1,4 +1,6 @@
 import { expect, test } from "@playwright/test";
+import { en } from "../src/i18n/en";
+import { tr } from "../src/i18n/tr";
 import { labs } from "../src/labs/registry";
 
 const paths = [
@@ -10,6 +12,7 @@ const paths = [
 for (const path of paths) {
   test(`localized headings and shared lab names: ${path}`, async ({ browser, baseURL }) => {
     const headings: string[][] = [];
+    const isLab = labs.some(({ meta }) => path === `/labs/${meta.slug}/`);
     for (const language of ["en", "tr"]) {
       const context = await browser.newContext({ reducedMotion: "reduce" });
       await context.addInitScript(
@@ -19,7 +22,14 @@ for (const path of paths) {
       const page = await context.newPage();
       await page.route("**/cloud.umami.is/**", (route) => route.abort());
       await page.goto(`${baseURL}${path}`);
-      await expect(page.locator("h1")).toBeVisible();
+      const heading = page.locator("h1");
+      await expect(heading).toBeVisible();
+      if (path === "/") {
+        await expect(heading).toHaveText(en.home.title);
+        await expect(heading).toHaveAttribute("lang", "en");
+        const home = language === "tr" ? tr.home : en.home;
+        await expect(page.getByText(home.lede, { exact: true })).toBeVisible();
+      }
       const lab = page.locator("[data-lab]");
       if (await lab.count()) {
         if (!path.includes("word-embeddings-3d"))
@@ -40,10 +50,8 @@ for (const path of paths) {
       }
       await context.close();
     }
-    // Lab titles are shared English names; every other page, home included,
-    // has a heading in its own language.
-    if (labs.some((l) => path === `/labs/${l.meta.slug}/`))
-      expect(headings[1]![0]).toBe(headings[0]![0]);
+    // Lab titles and the home slogan are shared across both languages.
+    if (isLab || path === "/") expect(headings[1]![0]).toBe(headings[0]![0]);
     else expect(headings[1]![0]).not.toBe(headings[0]![0]);
     expect(headings[1]).not.toEqual(headings[0]);
   });

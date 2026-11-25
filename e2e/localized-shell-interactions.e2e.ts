@@ -18,7 +18,7 @@ const locales = [
     lang: "tr",
     daily: "Bugünün bulmacasını çöz",
     practice: "Bir ders seç ve tuşları dene",
-    menu: "Gezinme",
+    menu: tr.shell.mobileNav,
     navigation: "Ana menü",
     labs: "Tüm lablar",
     calculator: "Hesap makinesi",

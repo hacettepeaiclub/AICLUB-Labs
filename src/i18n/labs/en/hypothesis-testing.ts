@@ -113,6 +113,10 @@ const copy = {
   },
 
   sampleSection: {
+    fixedAxis: "X axis: fixed",
+    automaticAxis: "X axis: automatic",
+    axisHint:
+      "On a fixed horizontal scale, watch the curves narrow as n grows. Height is scaled automatically.",
     kicker: "The effect of sample size",
     title: "More data narrows everything at once.",
     lede: "Increasing n reduces SE = sigma/sqrt(n). At fixed alpha, power increases for a true effect in the alternative direction. At the null mean rejection probability stays alpha; in the opposite direction it can decrease.",

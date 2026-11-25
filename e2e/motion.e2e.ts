@@ -1,5 +1,6 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
 import { labs } from "../src/labs/registry";
+import diffusionCopy from "../src/i18n/labs/en/diffusion";
 
 const stage = (page: Page) => page.locator("[data-stage]").first();
 const readout = (target: Locator) => target.locator('[data-stage-part="figures"]');
@@ -43,7 +44,7 @@ const exercise: Record<string, (page: Page) => Promise<void>> = {
       .toBeGreaterThan(0);
   },
   pca: (page) => moveSlider(stage(page).getByRole("slider", { name: "v, around" })),
-  diffusion: (page) => clickAndAdvance(button(page, "Reverse one step")),
+  diffusion: (page) => clickAndAdvance(button(page, diffusionCopy.experiment.reverseStep)),
   generalization: async (page) => {
     await clickAndAdvance(button(page, "Reveal unseen examples"));
     await expect(button(page, "Lock model & test once")).toBeEnabled();
