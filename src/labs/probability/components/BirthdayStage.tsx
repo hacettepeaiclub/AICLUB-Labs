@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Figure, LabSlider, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
+import { useLanguage } from "@/i18n";
 import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import {
@@ -11,7 +12,7 @@ import {
   sharedProbability,
   simulate,
 } from "../engine/birthday";
-import { dayLabel, percent } from "../view";
+import { dayLabel, percent as formatPercent } from "../view";
 import { Coach, Explain } from "./Framing";
 import { Prediction } from "./Prediction";
 
@@ -40,6 +41,8 @@ const ROOMS = 2000;
  * beside the first is the whole explanation in two figures.
  */
 export function BirthdayStage() {
+  const { language } = useLanguage();
+  const percent = (value: number) => formatPercent(value, language);
   const copy = useLabCopy("probability");
   const b = copy.birthday;
 

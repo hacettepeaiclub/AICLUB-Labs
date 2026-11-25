@@ -66,10 +66,10 @@ export default function DiffusionLab() {
         viewport={
           <div className="space-y-5">
             <div className="grid grid-cols-2 gap-3">
-              <Pixels values={sample} label={tr ? "Mevcut görüntü xₜ" : "Current sample xₜ"} />
+              <Pixels values={sample} label={tr ? "Şu anki örnek xₜ" : "Current sample xₜ"} />
               <Pixels
                 values={prediction.clean}
-                label={tr ? "Temiz görüntü tahmini E[x₀|xₜ]" : "Clean estimate E[x₀|xₜ]"}
+                label={tr ? "Temiz örnek tahmini E[x₀|xₜ]" : "Clean estimate E[x₀|xₜ]"}
               />
             </div>
             <div className="grid grid-cols-2 gap-2">
@@ -77,7 +77,11 @@ export default function DiffusionLab() {
                 <div key={id} className="rounded border border-line/20 p-2">
                   <p className="flex justify-between gap-2 text-caption text-fg">
                     <span>{names[id]}</span>
-                    <span>{(prediction.weights[i]! * 100).toFixed(1)}%</span>
+                    <span>
+                      {tr
+                        ? `%${(prediction.weights[i]! * 100).toFixed(1).replace(".", ",")}`
+                        : `${(prediction.weights[i]! * 100).toFixed(1)}%`}
+                    </span>
                   </p>
                   <div className="mt-2 h-2 bg-line/10" aria-hidden>
                     <div
@@ -90,7 +94,7 @@ export default function DiffusionLab() {
             </div>
             <p className="text-caption text-fg-muted">
               {tr
-                ? "Yüzdeler yalnız bu dört şekilli oyuncak modeldeki posterior olasılıklardır. Piksel gösterimi kırpılır; hesaplama değerleri kırpılmaz."
+                ? "Yüzdeler, yalnızca bu dört şekilli oyuncak modeldeki sonsal (posterior) olasılıklardır. Piksel gösterimi kırpılır; hesaplamadaki değerler kırpılmaz."
                 : "Percentages are posterior probabilities only within this four-shape toy model. Pixel display is clipped; calculation values are not."}
             </p>
           </div>
@@ -100,7 +104,7 @@ export default function DiffusionLab() {
             <LabSlider
               label={
                 tr
-                  ? "Gürültü adımı (değiştirmek deneyi sıfırlar)"
+                  ? "Gürültü adımı t (değiştirmek deneyi baştan başlatır)"
                   : "Noise step (changing resets the experiment)"
               }
               value={t}
@@ -111,7 +115,7 @@ export default function DiffusionLab() {
             />
             <div className="flex flex-wrap gap-2">
               <Button disabled={t === 0} onClick={() => step()}>
-                {tr ? "Bir ters adım" : "Reverse one step"}
+                {tr ? "Bir ters adım at" : "Reverse one step"}
               </Button>
               <Button variant="secondary" disabled={t === 0} onClick={() => step(true)}>
                 {tr ? "Sona kadar hesapla" : "Compute to the end"}
@@ -125,7 +129,7 @@ export default function DiffusionLab() {
                 reset(35, shape, next);
               }}
             >
-              {tr ? "Yeni seed" : "New seed"} · {seed}
+              {tr ? "Yeni tohum (seed)" : "New seed"} · {seed}
             </Button>
             <Button
               variant="ghost"
@@ -134,7 +138,7 @@ export default function DiffusionLab() {
                 setSample(noise(seed));
               }}
             >
-              {tr ? "Yalnız gürültüden başla" : "Start from noise only"}
+              {tr ? "Yalnızca gürültüden başla" : "Start from noise only"}
             </Button>
             <label className="flex min-h-11 items-center gap-3 text-body-sm text-fg">
               <input
@@ -145,7 +149,7 @@ export default function DiffusionLab() {
                   reset(35);
                 }}
               />
-              {tr ? "Başlangıçtaki şekli seçeneklerden çıkar" : "Exclude source from prior"}
+              {tr ? "Kaynak şekli önsel dağılımdan çıkar" : "Exclude source from prior"}
             </label>
           </div>
         }
@@ -153,12 +157,12 @@ export default function DiffusionLab() {
           <>
             <Figure label={tr ? "Kalan adım" : "Steps left"} value={String(t)} />
             <Figure
-              label={tr ? "Sinyal katsayısı ᾱ" : "Signal fraction ᾱ"}
-              value={alpha(t).toFixed(4)}
+              label={tr ? "Sinyal payı ᾱ" : "Signal fraction ᾱ"}
+              value={tr ? alpha(t).toFixed(4).replace(".", ",") : alpha(t).toFixed(4)}
             />
           </>
         }
-        secondaryLabel={tr ? "Başlangıç şekli" : "Source shape"}
+        secondaryLabel={tr ? "Kaynak şekil" : "Source shape"}
         secondary={
           <div className="space-y-3">
             <div className="flex flex-wrap gap-2">
@@ -179,7 +183,7 @@ export default function DiffusionLab() {
               values={TEMPLATES[shape]!}
               label={
                 tr
-                  ? "İleri sürecin kaynağı (ters süreç bunu almaz)"
+                  ? "İleri sürecin kaynağı (pikselleri ters sürece verilmez)"
                   : "Forward source (not passed to reverse process)"
               }
             />
@@ -187,17 +191,17 @@ export default function DiffusionLab() {
         }
         caption={
           tr
-            ? "İleri: xₜ = √ᾱ x₀ + √(1−ᾱ) ε. Ters: mevcut örnekten temiz örneği tahmin et, sonra deterministik DDIM adımı uygula. Kaynak şekil ve özgün gürültü ters adıma verilmez."
+            ? "İleri süreç: xₜ = √ᾱ x₀ + √(1−ᾱ) ε. Ters süreç: şu anki örnekten temiz örneği tahmin eder, sonra deterministik bir DDIM adımı uygular. Ters adıma kaynak şeklin pikselleri (x₀) ve özgün gürültü verilmez; yalnızca kutu işaretliyken izin verilen şekiller listesi kaynak şekle göre belirlenir."
             : "Forward: xₜ = √ᾱ x₀ + √(1−ᾱ) ε. Reverse: estimate a clean sample from the current sample, then apply a deterministic DDIM step. The reverse step receives neither the source shape nor its original noise."
         }
       />
       <section className="rounded-lg border border-line/20 bg-ink-800 p-5">
         <h2 className="text-title text-fg">
-          {tr ? "Model tahmin yaparken hangi bilgileri kullanır?" : "What does this model know?"}
+          {tr ? "Bu modelin elinde hangi bilgi var?" : "What does this model know?"}
         </h2>
         <p className="mt-3 text-body-sm text-fg-muted">
           {tr
-            ? "Bu model dört sabit şekli eşit başlangıç olasılığıyla kullanır. Gürültülü görüntüye bakarak her şeklin olasılığını Bayes kuralıyla günceller. Temiz görüntü tahmini, bu şekillerin ağırlıklı ortalamasıdır. Sinir ağı eğitilmez ve yeni nesneler veya fotoğraflar üretilemez. Yalnız gürültüden başlatmak, son adımdaki dağılımın yaklaşık bir örneğini verir."
+            ? "Bu taslakta hiçbir yapay sinir ağı eğitilmez. Model, izin verilen şekiller üzerinde (varsayılan olarak dördü; kaynak şekil çıkarılırsa üçü) düzgün (eşit olasılıklı) bir önsel dağılım ve Gauss gürültüsü varsayımı altında tam sonsal ortalamayı hesaplar. Gerçek diffusion modelleri gürültü gidericiyi veriden öğrenir. Bu model yeni nesneler, metinden görüntü ya da fotoğraf üretemez; tanımlanan önsel dağılıma bağlıdır. Yalnızca gürültüden başlamak, ileri sürecin sonundaki (t = 60) dağılımı yaklaşık olarak temsil eder. Son ters adımdaki örnek, şekillerin sonsal ağırlıklı bir ortalamasıdır; tek bir şekle eşit olmak zorunda değildir."
             : "No neural network is trained in this draft. It computes the exact posterior mean under a uniform prior over four fixed shapes and Gaussian corruption. Real diffusion models learn a denoiser from data. This model cannot generate new objects, text prompts or photos; it depends on its specified prior. Starting from noise approximates the terminal distribution."}
         </p>
         <a

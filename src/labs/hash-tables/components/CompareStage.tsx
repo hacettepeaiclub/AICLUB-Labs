@@ -13,6 +13,7 @@ import {
   mean,
 } from "../engine";
 import { formatValue } from "../view";
+import { useNumberFormat } from "./useNumberFormat";
 import { Scrub } from "./Scrub";
 
 const M = 1024;
@@ -64,6 +65,7 @@ const path = (f: (a: number) => number) => {
  */
 export function CompareStage() {
   const lab = useLabCopy("hash-tables");
+  const { decimal } = useNumberFormat();
   const t = lab.compare;
   const [alpha, setAlpha] = useState(0.75);
   const [seed, setSeed] = useState(1);
@@ -75,8 +77,8 @@ export function CompareStage() {
       caption={t.caption}
       announcement={t.announce(
         formatValue(alpha),
-        formatValue(chainSuccessTheory(alpha)),
-        formatValue(linearSuccessTheory(alpha)),
+        decimal(formatValue(chainSuccessTheory(alpha))),
+        decimal(formatValue(linearSuccessTheory(alpha))),
       )}
       viewport={
         <div className="rounded-lg border border-line/20 bg-ink-900 p-4 pt-6">
@@ -88,7 +90,7 @@ export function CompareStage() {
             floor={0.05}
             onChange={setAlpha}
             label={t.loadLabel}
-            valueText={(v) => t.loadValue(formatValue(v))}
+            valueText={(v) => t.loadValue(decimal(formatValue(v)))}
           >
             <svg
               viewBox={`0 0 ${W} ${H}`}
@@ -171,7 +173,7 @@ export function CompareStage() {
           <div className="mt-2 flex justify-between font-mono text-caption text-fg-faint">
             <span>α = 0</span>
             <span>{t.axis}</span>
-            <span>0.95</span>
+            <span>{decimal("0.95")}</span>
           </div>
           <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-caption text-fg-muted">
             <li className="flex items-center gap-2">
@@ -206,15 +208,15 @@ export function CompareStage() {
       secondaryLabel={t.secondaryLabel}
       figures={
         <>
-          <Figure label={t.figures.chain} value={formatValue(chainSuccessTheory(alpha))} />
+          <Figure label={t.figures.chain} value={decimal(formatValue(chainSuccessTheory(alpha)))} />
           <Figure
             label={t.figures.linear}
-            value={formatValue(linearSuccessTheory(alpha))}
+            value={decimal(formatValue(linearSuccessTheory(alpha)))}
             tone="accent"
           />
           <Figure
             label={t.figures.insert}
-            value={formatValue(linearInsertTheory(alpha), 1)}
+            value={decimal(formatValue(linearInsertTheory(alpha), 1))}
             hint={t.figures.insertHint}
           />
         </>

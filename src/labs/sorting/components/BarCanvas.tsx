@@ -1,3 +1,4 @@
+import { useLabCopy } from "@/i18n/labs";
 import {
   useCallback,
   useEffect,
@@ -70,6 +71,7 @@ export function BarCanvas({
   heightClass = "h-40 sm:h-52 lg:h-64",
   className,
 }: BarCanvasProps) {
+  const { chartRole } = useLabCopy("sorting");
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
   const sizeRef = useRef({ width: 0, height: 0 });
@@ -189,7 +191,7 @@ export function BarCanvas({
   return (
     <div
       role="application"
-      aria-roledescription="Sortable bar chart"
+      aria-roledescription={chartRole}
       aria-label={label}
       aria-describedby={describedBy}
       tabIndex={0}

@@ -76,7 +76,9 @@ for (const { width, isMobile } of [
         await expect(selected).toHaveAttribute("id", target.id);
 
         const neighbours = page
-          .getByRole("heading", { name: language === "en" ? /^Nearest to/ : /en yakınlar$/ })
+          .getByRole("heading", {
+            name: language === "en" ? /^Nearest to/ : /kelimesine en yakınlar,/,
+          })
           .locator("xpath=..");
         const neighbour = neighbours.getByRole("button").first();
         if (isMobile) {

@@ -214,155 +214,158 @@ export const tr: Translation = {
     diffusion: {
       title: "From noise to a guess",
       term: "Diffusion",
-      figure: "Gauss gürültüsü ve sonlu önbilgi",
+      figure: "Gauss gürültüsü ve sonlu bir önsel dağılım",
       description:
-        "Gürültülü görüntüden bir tahmin oluştur. Modelin kullanabildiği şekilleri değiştirerek sonuçları karşılaştır.",
+        "Gürültülü bir görüntüden ters süreçle bir tahmin üret ve sonucun önsel dağılıma nasıl bağlı olduğuna bak.",
     },
     pca: {
       title: "The Widest Shadow",
-      term: "Temel bileşen analizi",
-      figure: "bir nokta bulutu ve en geniş yayıldığı çizgi.",
+      term: "Temel bileşenler analizi",
+      figure: "bir nokta bulutu ve bulutun en geniş yayıldığı doğru.",
       description:
-        "Bir matrisin yalnızca uzattığı yönleri, sonra bir veri bulutunun en geniş yayıldığı çizgiyi bul.",
+        "Önce bir matrisin doğrultusunu değiştirmediği yönleri, sonra bir veri bulutunun en geniş yayıldığı doğruyu bul.",
     },
     jepa: {
       title: "The Missing Piece",
       term: "Öz-denetimli öğrenme",
       figure: "gizli bir parçanın dört sayılık temsili, görünen komşularından tahmin ediliyor.",
       description:
-        "Görüntünün bir kısmını gizle. Modelin, görünen komşulardan gizli parçanın temsilini nasıl öğrendiğini incele.",
+        "Bir resmin bir kısmını gizle ve modelin, gizli parçanın temsilini görünen komşularından tahmin etmeyi nasıl öğrendiğine bak.",
     },
     generalization: {
       title: "Learned or memorised?",
       term: "Genelleme",
-      figure: "esnek bir sınır tanıdık noktalara uyuyor, sonra yeni örneklerle karşılaşıyor.",
-      description: "Modeli eğitim verisinde dene. Sonra ayrı örnekleri açıp doğruluğu karşılaştır.",
+      figure: "eğitim noktalarına tam uyan esnek bir karar sınırı ve yeni örnekler.",
+      description:
+        "k'yı değiştir, sonra ayrı örnekleri göster ve eğitim doğruluğunu doğrulama doğruluğuyla karşılaştır.",
     },
     "word-embeddings-3d": {
       title: "The Map of Meaning, in 3D",
       term: "Word embedding, prototip",
-      figure: "nokta olarak kelimeler ve bunlardan birine en yakın dördü.",
-      description: "Bir deney: aynı 318 kelime, iki yerine üç PCA eksenine indirgenmiş hâliyle.",
+      figure: "nokta olarak kelimeler ve bunlardan birine en yakın dört kelime.",
+      description: "Bir prototip: aynı 318 kelime, iki yerine üç PCA eksenine indirgenmiş hâliyle.",
     },
     "word-embeddings": {
       title: "The Map of Meaning",
       term: "Word embedding",
-      figure: "bir uzayda nokta olarak kelimeler ve bunlardan birine en yakın dördü.",
+      figure: "bir uzayda nokta olarak kelimeler ve bunlardan birine en yakın dört kelime.",
       description:
-        "Kelime vektörlerini haritada incele. Ekrandaki uzaklıkla asıl vektör benzerliğini karşılaştır.",
+        "Kelimeleri bir haritada gez ve ekrandaki uzaklığı, 300 boyutlu vektörlerin kosinüs benzerliğiyle karşılaştır.",
     },
     "hypothesis-testing": {
       title: "The Price of Certainty",
       term: "Hipotez testi",
-      figure: "iki örneklem dağılımı, aralarında karar veren çizgi ve onun ötesindeki kuyruk.",
+      figure:
+        "iki örnekleme dağılımı, kritik değeri gösteren çizgi ve onun ötesindeki ret bölgesi.",
       description:
-        "Ortalamayı, anlamlılık düzeyini ve örnek sayısını değiştir. Hata olasılıklarını ve testin gücünü karşılaştır.",
+        "Ortalamayı, anlamlılık düzeyini ve örneklem büyüklüğünü değiştir. Hata olasılıklarını ve testin gücünü karşılaştır.",
     },
     "reinforcement-learning": {
       title: "Exactly What You Asked",
       term: "Pekiştirmeli öğrenme",
-      figure: "karelerden bir oda, robotun başladığı yer ve ulaşınca ödül aldığı kare.",
+      figure: "başlangıç noktası, ödül veren kare ve çıkış kapısı olan bir oda.",
       description:
-        "Ödülleri değiştirip ajanı yeniden eğit. Öğrendiği davranışın hedefinle uyuşup uyuşmadığını incele.",
+        "İşaretli karenin ödülünü değiştir ve ajanı yeniden eğit. Rotanın kapıya mı gittiğine, kareye mi döndüğüne bak.",
     },
     attention: {
       title: "Where the Model Looks",
       term: "Attention",
       figure: "cümlesinin geri kalanına bakan bir kelime; en kalın yay, en çok baktığı yer.",
-      description:
-        "Bir kelimeyi değiştir. Seçili kelimenin attention ağırlıkları ve çıktı vektörü nasıl değişiyor?",
+      description: "Bir kelime seç ve modelin cümlenin hangi kısmına dayandığına bak.",
     },
     "gradient-descent": {
       title: "The Size of a Step",
       term: "Gradient descent",
-      figure: "yukarıdan görülen bir çanak ve adımların tabanına indiği yol.",
+      figure: "amaç fonksiyonunun eşyükselti eğrileri ve başlangıç noktasından atılan adımlar.",
       description:
-        "Adım boyunu seç. Yüzeyin biçimi o adımı kaldıramıyorsa yol hedefe inmek yerine dağılır.",
+        "Adım boyunu değiştir. Aynı yüzeyde hangi ayarların minimuma yaklaştığını haritada karşılaştır.",
     },
     backpropagation: {
       title: "Who Is to Blame?",
       term: "Geri yayılım",
       figure:
-        "çıkışından geriye doğru hatanın aktığı küçük bir ağ; suçun çoğu nereye gidiyorsa orası daha kalın.",
-      description: "Çıktıyı değiştir ve hatanın ağırlık güncellemelerine nasıl yansıdığını incele.",
+        "çıktısından geriye doğru türevlerin aktığı küçük bir ağ; çok değişmesi gereken bağlantı daha kalın.",
+      description:
+        "Ağın çıktısını çek ve her ağırlığın ne kadar değişmesi gerektiğine bak; sonra geri geçişi kendin hesapla.",
     },
     convolution: {
       title: "Nine Weights",
       term: "Evrişim",
-      figure: "bir resmin üzerinde 3×3'lük bir pencere ve çıktıda yazdığı hücre.",
+      figure: "bir resmin üzerinde 3×3'lük bir pencere ve çıktıda hesapladığı hücre.",
       description:
-        "Bir filtreyi görüntü üzerinde kaydır. Çarpımların her çıktı hücresini nasıl oluşturduğunu incele.",
+        "Dokuz ağırlıklık bir çekirdeği resim üzerinde kaydır ve her çıktı hücresinin dokuz çarpımın toplamı olarak nasıl hesaplandığına bak.",
     },
     "floating-point": {
       title: "0.1 + 0.2",
       term: "Kayan nokta",
       figure:
-        "işaret, üs ve kesir bitleri olarak bir sayı; altında bu bitlerin tutabildiği değerlerin cetveli.",
-      description: "Bir sayı yaz. Bilgisayarın sakladığı değeri ve yuvarlama farkını incele.",
+        "bir sayının işaret, üs ve kesir bitleri ile temsil edilebilen değerlerin sayı doğrusu.",
+      description:
+        "Bir ondalık sayı yaz. Girdiyle saklanan değer arasındaki farkı incele ve float32 ile float16 gösterimlerini karşılaştır.",
     },
     "cache-locality": {
       title: "The Neighbours Come Free",
       term: "Önbellek yerelliği",
-      figure:
-        "sekizli satırlar halinde sayılar; birini okumak bütün bloğunu, komşularıyla birlikte getirir.",
+      figure: "sekiz sayılık önbellek blokları ve her erişimdeki isabet ya da ıska.",
       description:
-        "Aynı veriyi farklı sıralarla oku. Ölçülen süreleri cache modeliyle karşılaştır.",
+        "Aynı sayıları satır ve sütun sırasıyla oku. Cihazında ölçülen süreleri önbellek modeliyle karşılaştır.",
     },
     "race-condition": {
       title: "Lost Update",
       term: "Yarış durumu",
-      figure:
-        "iki iş parçacığının adımları iç içe; ikisi de yazmadan önce okur ve bir güncelleme kaybolur.",
+      figure: "iki iş parçacığının yazmaçları, ortak sayaç ve okuma, artırma, yazma adımları.",
       description:
-        "İki iş parçacığının işlem sırasını seç. Sayaçtaki bir güncellemenin nasıl kaybolduğunu göster.",
+        "İki iş parçacığının adımlarını sırala. Bir artırmanın ne zaman kaybolduğunu ve kilidin bunu nasıl önlediğini incele.",
     },
     "hash-tables": {
       title: "Computed Address",
       term: "Hash tabloları",
-      figure: "dolu bir yuvaya düşen ve ilk boş yuvaya kadar sağa adımlayan bir anahtar.",
-      description: "Anahtar ekle, çakışma oluştur ve tablo büyüdüğünde yapılan işi karşılaştır.",
+      figure: "hesaplanan yuva doluyken sırayla yoklanan yuvalar.",
+      description:
+        "Anahtar ekle ve çakışma olduğunda kaç yuva yoklandığına bak. Kapasite artınca ekleme maliyetini karşılaştır.",
     },
     "cryptographic-hashing": {
       title: "Digital Fingerprint",
       term: "Kriptografik hash",
-      figure: "farklı uzunlukta iki girdi, tek bir fonksiyon ve aynı boyda iki çıktı.",
+      figure: "iki farklı mesajın 256 bitlik SHA-256 özetleri.",
       description:
-        "Bir mesajın SHA-256 özetini hesapla. Tek karakter değişince kaç bitin değiştiğine bak.",
+        "Bir mesaj yazıp bir karakterini değiştir. SHA-256 özetinde değişen bitleri say ve iki özetin ortak ön ekini karşılaştır.",
     },
     "multilayer-perceptrons": {
       title: "Bending the Line",
       term: "Çok katmanlı algılayıcılar",
       figure: "üç girdi, dört nöronlu bir gizli katman ve iki çıktı; her bağlantı çizili.",
       description:
-        "Küçük bir sinir ağını eğit. Katmanları ve veriyi değiştirerek karar sınırını karşılaştır.",
+        "İki renk nokta çiz ve küçük bir yapay sinir ağının onları ayırmayı nasıl öğrendiğine bak.",
     },
     "graph-search": {
       title: "The Spreading Search",
-      term: "Graf araması",
-      figure: "başlangıcından bir ızgaraya yayılan bir arama; parlak halka sınır.",
+      term: "Çizgede arama",
+      figure:
+        "arama sırasında bekleyen hücreleri, işlenen hücreleri ve bulunan yolu gösteren ızgara.",
       description:
-        "Engeller ve farklı maliyetler ekle. BFS, Dijkstra ve A* yöntemlerinin incelediği hücreleri karşılaştır.",
+        "Engel ve çamur ekle. BFS, Dijkstra ve A* ile bulunan yolların maliyetini ve işlenen hücre sayısını karşılaştır.",
     },
     probability: {
       title: "Guess, Then Count",
       term: "Olasılık",
       figure: "üç kapı ve sunucunun açtığı kapı.",
       description:
-        "Altı deneyde önce tahmin yap. Hesaplanan olasılıkları, rastgele denemeleri ve fizik simülasyonunu karşılaştır.",
+        "Kapı seç, odaya kişi ekle, Galton tahtasına bilye bırak. Altı deneyde tahminlerini hesaplarla ve simülasyonla karşılaştır.",
     },
     sorting: {
       title: "The Cost of Order",
       term: "Sıralama algoritmaları",
-      figure: "kısadan uzuna sıralanmış çubuklar; son yerleşenler vurgulu.",
+      figure: "değerleri gösteren çubuklar ve sıralı bölümü belirten vurgu.",
       description:
-        "Aynı diziyi iki algoritmayla sırala. Karşılaştırma ve yazma sayılarını ayrı ayrı incele.",
+        "Aynı diziyi seçmeli ve eklemeli sıralamayla sırala. Karşılaştırma ve taşıma sayaçlarını incele.",
     },
     tokenization: {
       title: "Cheap Words",
       term: "BPE tokenization",
-      figure: "farklı uzunlukta token'lara bölünmüş bir cümle; biri vurgulu.",
+      figure: "farklı uzunlukta tokenlere ayrılmış bir cümle; biri vurgulu.",
       description:
-        "Metnin parçalara nasıl ayrıldığını tahmin et. BPE birleşimlerini ve eğitim metninin etkisini incele.",
+        "Bir cümlenin nerelerden kesildiğini tahmin et, sonra BPE birleştirmelerinin ve okunan derlemin token sayısını nasıl değiştirdiğine bak.",
     },
   },
 };

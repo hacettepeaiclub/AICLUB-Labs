@@ -2,7 +2,7 @@ import { useMemo, useRef, useState, type PointerEvent } from "react";
 import { Figure, LabSlider, Stage } from "@/components/lab";
 import { useLabCopy } from "@/i18n/labs";
 import { evaluate, gradient, networkLoss, type NetworkParam } from "../engine";
-import { formatSmall, formatValue } from "../view";
+import { useNumberFormat } from "./useNumberFormat";
 
 const GRAPH = networkLoss(0.8, -0.5, 1.2);
 const FIXED: Record<NetworkParam, number> = {
@@ -40,6 +40,7 @@ const SAMPLES = 240;
  * than eyeballed. Dragging the chart slides the point along the curve.
  */
 export function ZoomStage() {
+  const { formatSmall, formatValue } = useNumberFormat();
   const t = useLabCopy("backpropagation").zoom;
   const [w, setW] = useState(0.9);
   const [zoom, setZoom] = useState(0);

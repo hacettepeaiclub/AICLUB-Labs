@@ -5,7 +5,7 @@ import { useLocalControls } from "@/hooks";
 import { useLabCopy } from "@/i18n/labs";
 import { at, correlate, extent, sum, withCell } from "../engine";
 import { PRESET_ORDER, PRESETS, scene, type PresetId } from "../pictures";
-import { formatValue } from "../view";
+import { useNumberFormat } from "./useNumberFormat";
 import { GridView } from "./GridView";
 import { Panel } from "./Panel";
 import { kernelOf, KernelEditor, textOf } from "./KernelEditor";
@@ -32,6 +32,7 @@ const presetOf = (cells: readonly string[]): PresetId | "custom" =>
  * add up to zero.
  */
 export function KernelStage() {
+  const { formatValue } = useNumberFormat();
   const lab = useLabCopy("convolution");
   const t = lab.kernels;
   const [saved, save] = useLocalControls("acl:convolution:kernel", {

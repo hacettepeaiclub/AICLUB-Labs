@@ -3,17 +3,8 @@ import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import { normalPdf, type Result } from "../engine";
 import type { Domain } from "../view";
-import {
-  PLOT,
-  areaPath,
-  coord,
-  criticalList,
-  curvePath,
-  labelAt,
-  prob,
-  regionsOf,
-  scaleOf,
-} from "../view";
+import { PLOT, areaPath, criticalList, curvePath, labelAt, regionsOf, scaleOf } from "../view";
+import { useNumberFormat } from "./useNumberFormat";
 
 export interface DistributionPlotProps {
   result: Result;
@@ -60,6 +51,7 @@ export function DistributionPlot({
   className,
   domain,
 }: DistributionPlotProps) {
+  const { coord, prob } = useNumberFormat();
   const copy = useLabCopy("hypothesis-testing");
   const plot = copy.plot;
   const baseId = useId();

@@ -1,4 +1,4 @@
-import { formatNumber } from "@/lib/format";
+import { useFormat } from "@/lib/useFormat";
 import { cn } from "@/lib/cn";
 
 export interface BarsProps {
@@ -24,6 +24,7 @@ export interface BarsProps {
  * beside every bar, so length is never the only channel.
  */
 export function Bars({ names, values, scale, signed = false, label }: BarsProps) {
+  const { formatNumber } = useFormat();
   return (
     <ul className="space-y-3" aria-label={label}>
       {names.map((name, i) => {

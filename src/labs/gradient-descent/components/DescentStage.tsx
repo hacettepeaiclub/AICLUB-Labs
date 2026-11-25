@@ -3,7 +3,7 @@ import { useReducedMotion } from "@/hooks";
 import { Figure, LabSlider, Stage, Transport } from "@/components/lab";
 import { Badge } from "@/components/ui";
 import { useLabCopy } from "@/i18n/labs";
-import { formatNumber } from "@/lib/format";
+import { useNumberFormat } from "./useNumberFormat";
 import { cn } from "@/lib/cn";
 import { gradient, type Point } from "../engine";
 import {
@@ -125,6 +125,7 @@ export function DescentStage({
   caption,
 }: DescentStageProps) {
   const g = useLabCopy("gradient-descent");
+  const { formatNumber } = useNumberFormat();
   const reduced = useReducedMotion() ?? false;
 
   const preset = LANDSCAPES[landscapeId];

@@ -32,7 +32,7 @@ export default function GeneralizationLab() {
   const validScore = reveal ? accuracy(training, validation, k) : null;
   const testScore = tested ? accuracy(training, testing, k) : null;
   const points = tested ? testing : reveal ? validation : training;
-  const percent = (n: number) => `${Math.round(n * 100)}%`;
+  const percent = (n: number) => t.percent(Math.round(n * 100));
   const pointShape = (p: Point, index: number) => {
     const x = (p.x + 1) * 160;
     const y = (1 - p.y) * 160;

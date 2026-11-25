@@ -15,7 +15,7 @@ import {
   type Grid,
 } from "../engine";
 import { BOX_BLUR, LAPLACIAN, SOBEL_X, texturedScene } from "../pictures";
-import { formatLoss, formatValue } from "../view";
+import { useNumberFormat } from "./useNumberFormat";
 import { GridView } from "./GridView";
 import { Panel } from "./Panel";
 
@@ -51,6 +51,7 @@ const start = (seed: number): Float64Array => {
  * is what lets a few hundred steps suffice (see `centred`).
  */
 export function LearnStage() {
+  const { formatLoss, formatValue } = useNumberFormat();
   const t = useLabCopy("convolution").learn;
   const reduced = useReducedMotion() ?? false;
   const [target, setTarget] = useState<Target>("vertical");

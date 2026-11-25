@@ -30,6 +30,7 @@ const copy = {
   keyboardHint2: "change its height.",
   keyboardHelp:
     "Drag across the chart to reshape it. With it focused, left and right arrows pick a bar and up and down change its height.",
+  chartRole: "Sortable bar chart",
   chartLabel: (size: number, algorithm: string, disorder: number, state: string) =>
     `Bar chart of ${size} values. ${algorithm}. Disorder: ${disorder} inversions. ${state}`,
   state: {

@@ -1,7 +1,7 @@
 import { useRef, type KeyboardEvent, type PointerEvent } from "react";
 import { cn } from "@/lib/cn";
 import { extent, type Grid } from "../engine";
-import { formatValue } from "../view";
+import { useNumberFormat } from "./useNumberFormat";
 
 export interface Box {
   readonly x: number;
@@ -79,6 +79,7 @@ export function GridView({
   ariaLabel,
   className,
 }: GridViewProps) {
+  const { formatValue } = useNumberFormat();
   const range = extent(grid);
   const mode = kind === "auto" ? (range.min < -1e-9 ? "signed" : "image") : kind;
   const magnitude = scale ?? Math.max(Math.abs(range.min), Math.abs(range.max));

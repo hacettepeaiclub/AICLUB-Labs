@@ -3,7 +3,7 @@ import { Figure, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
 import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
-import { formatNumber } from "@/lib/format";
+import { useFormat } from "@/lib/useFormat";
 import { rowScores, rowWeights, type Attention } from "../engine";
 import { percent, softmaxOf } from "../view";
 import { TokenPicker } from "./TokenPicker";
@@ -39,6 +39,7 @@ export interface SoftmaxStageProps {
  * never the only channel.
  */
 export function SoftmaxStage({ attention, words, selected, onSelect }: SoftmaxStageProps) {
+  const { formatNumber } = useFormat();
   const a = useLabCopy("attention");
   const s = a.softmax;
 

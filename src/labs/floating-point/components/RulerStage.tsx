@@ -1,3 +1,4 @@
+import { useNumberFormat } from "./useNumberFormat";
 import { useMemo, useState, type MouseEvent } from "react";
 import { Figure, LabSlider, Stage } from "@/components/lab";
 import { useDebouncedValue } from "@/hooks";
@@ -45,6 +46,7 @@ const ratio = (v: Rational, max: Rational): number =>
  */
 export function RulerStage() {
   const lab = useLabCopy("floating-point");
+  const { decimal } = useNumberFormat();
   const t = lab.ruler;
   const [exponentBits, setExponentBits] = useState(3);
   const [fractionBits, setFractionBits] = useState(3);
@@ -79,7 +81,7 @@ export function RulerStage() {
   const pickedValue = item(model.values, index);
   const gap = gapAbove(picked);
   const isTop = index === model.floats.length - 1;
-  const settled = useDebouncedValue(`${shortest(picked)}|${gap ? readable(gap) : "-"}`);
+  const settled = useDebouncedValue(`${decimal(shortest(picked))}|${gap ? readable(gap) : "-"}`);
 
   /** Keep the pick at about the same value when the format changes. */
   const reformat = (e: number, f: number) => {
@@ -122,7 +124,9 @@ export function RulerStage() {
       caption={t.caption}
       secondaryLabel={t.controlsLabel}
       announcement={
-        settled ? t.announce(shortest(picked), gap ? readable(gap) : t.figures.top) : ""
+        settled
+          ? t.announce(decimal(shortest(picked)), gap ? decimal(readable(gap)) : t.figures.top)
+          : ""
       }
       viewport={
         <div className="space-y-3">
@@ -131,7 +135,7 @@ export function RulerStage() {
             role="img"
             aria-label={t.lineLabel(
               model.values.length,
-              shortest(item(model.floats, model.floats.length - 1)),
+              decimal(shortest(item(model.floats, model.floats.length - 1))),
               2 ** fractionBits,
             )}
             onClick={onClick}
@@ -195,7 +199,7 @@ export function RulerStage() {
               textAnchor="middle"
               className="fill-data font-mono text-[13px]"
             >
-              {shortest(picked)}
+              {decimal(shortest(picked))}
             </text>
             <text
               x={Math.min(Math.max(px, 70), W - 70)}
@@ -230,9 +234,9 @@ export function RulerStage() {
           max={model.floats.length - 1}
           step={1}
           onChange={setPick}
-          format={(i) => shortest(model.floats[i] ?? picked)}
+          format={(i) => decimal(shortest(model.floats[i] ?? picked))}
           valueText={(i) =>
-            t.pickValue(shortest(model.floats[i] ?? picked), i + 1, model.floats.length)
+            t.pickValue(decimal(shortest(model.floats[i] ?? picked)), i + 1, model.floats.length)
           }
         />
       }
@@ -261,11 +265,11 @@ export function RulerStage() {
           <Figure label={t.figures.values} value={String(model.values.length)} />
           <Figure
             label={t.figures.largest}
-            value={shortest(item(model.floats, model.floats.length - 1))}
+            value={decimal(shortest(item(model.floats, model.floats.length - 1)))}
           />
           <Figure
             label={t.figures.gap}
-            value={isTop || !gap ? "—" : readable(gap)}
+            value={isTop || !gap ? "—" : decimal(readable(gap))}
             hint={isTop ? t.figures.top : undefined}
             tone="accent"
           />

@@ -1,7 +1,8 @@
 import { Figure, LabSlider, Stage } from "@/components/lab";
 import { useLabCopy } from "@/i18n/labs";
 import { BOUNDS, type Params, type Result } from "../engine";
-import { coord, separation } from "../view";
+import { separation } from "../view";
+import { useNumberFormat } from "./useNumberFormat";
 import { DistributionPlot } from "./DistributionPlot";
 import { SecondaryControls } from "./SecondaryControls";
 
@@ -21,6 +22,7 @@ export interface SeparationStageProps {
  * has anything to say.
  */
 export function SeparationStage({ result, onChange }: SeparationStageProps) {
+  const { coord } = useNumberFormat();
   const copy = useLabCopy("hypothesis-testing");
   const s = copy.separation;
   const { mu0, mu1 } = result.params;

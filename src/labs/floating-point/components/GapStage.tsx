@@ -1,3 +1,4 @@
+import { useNumberFormat } from "./useNumberFormat";
 import { useMemo, useState } from "react";
 import { Figure, LabSlider, Stage } from "@/components/lab";
 import { useDebouncedValue } from "@/hooks";
@@ -67,6 +68,7 @@ const py = (log2gap: number) => H - B - ((log2gap - GAP_MIN) / (GAP_MAX - GAP_MI
  */
 export function GapStage() {
   const lab = useLabCopy("floating-point");
+  const { decimal } = useNumberFormat();
   const t = lab.gap;
   const [power, setPower] = useState(3);
   const [text, setText] = useState("");
@@ -103,14 +105,16 @@ export function GapStage() {
       width="full"
       caption={t.caption}
       secondaryLabel={t.inputLabel}
-      announcement={settled ? t.announce(shortest(x), gap ? readable(gap) : "—") : ""}
+      announcement={
+        settled ? t.announce(decimal(shortest(x)), gap ? decimal(readable(gap)) : "—") : ""
+      }
       viewport={
         <div className="space-y-4">
           <dl className="grid gap-px overflow-hidden rounded border border-line/10 bg-line/10 sm:grid-cols-3">
             {[
-              [t.value, shortest(x)],
-              [t.next, finite ? shortest(nextUp(x)) : "—"],
-              [t.plusOne, finite ? shortest(plusOne) : "—"],
+              [t.value, decimal(shortest(x))],
+              [t.next, finite ? decimal(shortest(nextUp(x))) : "—"],
+              [t.plusOne, finite ? decimal(shortest(plusOne)) : "—"],
             ].map(([label, shown], i) => (
               <div key={label} className="bg-ink-950 px-4 py-3">
                 <dt className="text-overline uppercase text-fg-faint">{label}</dt>
@@ -139,7 +143,7 @@ export function GapStage() {
           <svg
             viewBox={`0 0 ${W} ${H}`}
             role="img"
-            aria-label={t.chartLabel(gap ? readable(gap) : "—")}
+            aria-label={t.chartLabel(gap ? decimal(readable(gap)) : "—")}
             className="w-full rounded-lg border border-line/20 bg-ink-900"
           >
             {/* gap = 1 and gap = 2: where whole numbers start to go missing */}
@@ -230,7 +234,7 @@ export function GapStage() {
             setText("");
             setPower(p);
           }}
-          format={(p) => shortest(atPower(p))}
+          format={(p) => decimal(shortest(atPower(p)))}
           valueText={(p) => t.sliderValue(p.toFixed(1))}
         />
       }
@@ -246,10 +250,10 @@ export function GapStage() {
       }
       figures={
         <>
-          <Figure label={t.figures.gap} value={gap ? readable(gap) : "—"} tone="accent" />
+          <Figure label={t.figures.gap} value={gap ? decimal(readable(gap)) : "—"} tone="accent" />
           <Figure
             label={t.figures.relative}
-            value={rel ? readable(rel) : "—"}
+            value={rel ? decimal(readable(rel)) : "—"}
             hint={t.figures.relativeHint}
           />
           <Figure

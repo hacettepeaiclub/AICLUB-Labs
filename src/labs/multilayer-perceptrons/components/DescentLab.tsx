@@ -2,7 +2,7 @@ import { useCallback, useRef, useState, type PointerEvent } from "react";
 import { Figure, LabSlider, Stage, Transport } from "@/components/lab";
 import { useLabCopy } from "@/i18n/labs";
 import { useRafLoop } from "@/hooks";
-import { formatNumber } from "@/lib/format";
+import { useFormat } from "@/lib/useFormat";
 import { clamp } from "@/lib/math";
 
 /**
@@ -37,6 +37,7 @@ const CURVE = Array.from({ length: 161 }, (_, i) => {
 const GLOBAL_MIN_W = -1.11;
 
 export function DescentLab() {
+  const { formatNumber } = useFormat();
   const lab = useLabCopy("multilayer-perceptrons");
   const d = lab.descent;
   const [rateIndex, setRateIndex] = useState(3);
@@ -192,7 +193,7 @@ export function DescentLab() {
           min={0}
           max={LEARNING_RATES.length - 1}
           onChange={setRateIndex}
-          format={(i) => String(LEARNING_RATES[i] ?? 0.12)}
+          format={(i) => formatNumber(LEARNING_RATES[i] ?? 0.12, 3)}
         />
       }
     />

@@ -6,9 +6,9 @@ const copy: typeof en = {
   sources: {
     title: "Kaynaklar",
     astar:
-      "Laboratuvarda çalışan A* kurgusunu destekler: şimdiye kadarki maliyet ile sezgisel tahminin toplamına göre sıralanan en-iyi-önce arama ve bu sezgiselin sağlaması gereken kabul edilebilirlik koşulu.",
+      "A*'ın sıradaki düğümü, birikmiş maliyet ve kalan maliyet tahmininin toplamına göre seçmesini açıklar. Kabul edilebilir bir tahmin, gerçek kalan maliyeti aşmaz.",
     dijkstra:
-      "Sezgisel kapatıldığında laboratuvarın çalıştırdığı en kısa yol yöntemini ve bu yöntemin varsaydığı negatif olmayan kenar maliyetlerini destekler.",
+      "Dijkstra algoritmasını ve kenar maliyetlerinin negatif olmaması koşulunu açıklar. Bu deneyde A*'ın tahmini sıfırlanınca seçim kuralı Dijkstra ile aynı olur.",
   },
   findTheWay: "Yolu bul",
   algorithm: "Algoritma",
@@ -18,22 +18,26 @@ const copy: typeof en = {
   tools: { wall: "Engel", mud: "Çamur", erase: "Sil", start: "Başlangıç", goal: "Hedef" },
   legend: {
     wall: "engel",
-    frontier: "sınır",
-    settled: "kesinleşen",
+    frontier: "sırada bekleyen",
+    settled: "işlenen",
     path: "yol",
     mud: "çamur",
   },
   metrics: {
-    explored: "İncelenen",
-    path: "Yol",
-    cost: "Maliyet",
+    explored: "İşlenen hücre",
+    path: "Yol uzunluğu",
+    cost: "Yol maliyeti",
     noPath: "Yol yok",
   },
+  comparisonCaption: "Aynı haritada arama sonuçları",
+  comparisonSteps: "Adım sayısı",
+  gridRole: "Yol arama ızgarası",
+  spaceKey: "Boşluk",
   steps: (n: number) => `${n} adım`,
   gridLabel: (walls: number, mud: number, state: string) =>
     `Düzenlenebilir ızgara. Engel: ${walls}. Çamurlu hücre: ${mud}. ${state}`,
   gridHelp:
-    "Çizmek için ızgaranın üzerinde sürükle. Izgara odaktayken yön tuşları hareket ettirir, Boşluk boyar.",
+    "Çizmek için ızgaranın üzerinde sürükle. Izgara odaktayken yön tuşları imleci hareket ettirir, Boşluk boyar.",
   gridHelpFull: {
     drag: "Çizmek veya silmek için ızgarada sürükle.",
     or: "veya",
@@ -54,9 +58,9 @@ const copy: typeof en = {
     `Yol bulma ızgarası, ${cols} sütun × ${rows} satır. Başlangıç: ${start}. Hedef: ${goal}. Engel: ${walls}. Çamurlu hücre: ${mud}. Algoritma: ${algorithm}. ${result}`,
   status: {
     solved: (explored: number, steps: number, cost: number) =>
-      `Çözüldü: ${explored} hücre incelendi, yol ${steps} adım, maliyet ${cost}.`,
-    unreachable: (explored: number) => `Yol yok. ${explored} hücre incelendi.`,
-    running: (explored: number) => `Aranıyor. Şu ana kadar ${explored} hücre incelendi.`,
+      `Hedefe ulaşıldı. İşlenen hücre sayısı ${explored}, yol uzunluğu ${steps} adım, yol maliyeti ${cost}.`,
+    unreachable: (explored: number) => `Yol yok. ${explored} hücre işlendi.`,
+    running: (explored: number) => `Arama sürüyor. ${explored} hücre işlendi.`,
     notStarted: "Başlatılmadı.",
     gridReset: "Izgara sıfırlandı.",
     gridCleared: "Izgara temizlendi.",
@@ -65,35 +69,35 @@ const copy: typeof en = {
   },
   row: (row: number, col: number) => `satır ${row}, sütun ${col}`,
   intro: {
-    question: "İlk olarak hangi kareye bakıyor?",
+    question: "Arama hangi hücreleri işler?",
     caption:
-      "Izgaraya engeller çiz ve aramayı çalıştır. Hedefe giden yolun yanında incelenen hücreleri de izle.",
+      "Izgaraya engeller çiz ve aramayı çalıştır. Hedefe giden yolu ve işlenen hücreleri karşılaştır.",
   },
   bfs: {
     kicker: "Arama sürerken",
     title: "Arama başlangıçtan katman katman ilerler",
-    lede: "Birer adım ilerle. Halkalı hücreler sırada bekler, dolu hücrelerin uzaklığı belirlenmiştir. Hücrelerin hangi sırayla işlendiğini incele.",
+    lede: "Adımla düğmesine bas. Halkalı hücreler kuyrukta bekler. Dolu renkle gösterilen hücreler kuyruktan alınmıştır. Aramanın başlangıçtan kaç adım uzaktaki hücrelere ulaştığına bak.",
     caption:
-      "Hücreleri ilk giren ilk çıkar sırasıyla ele almak işin tamamı: bu, onların uzaklık sırasına göre kesinleşmesini sağlar, dolayısıyla hedefe ulaşan ilk rota en kısasıdır. Buna genişlik öncelikli arama denir.",
+      "Genişlik öncelikli arama (BFS), kuyruğa ilk eklenen hücreyi önce işler. Hücrelere artan adım sayısıyla ulaşır ve hedefe giden en az adımlı bir yol bulur.",
   },
   cost: {
-    kicker: "Uzaklık maliyet değildir",
+    kicker: "Adım sayısı ve yol maliyeti",
     title: "Her hücreden geçmenin maliyeti aynı mı?",
-    lede: "Açık zemine giriş 1, çamura giriş 5 maliyetlidir. Aynı haritada BFS ve Dijkstra’yı çalıştır. Adım sayısıyla toplam maliyeti ayrı ayrı karşılaştır.",
+    lede: "Açık zemine girmek 1, çamura girmek 5 birim tutar. Aynı haritada BFS ve Dijkstra'yı çalıştır. Yol uzunluğu ve Yol maliyeti sayaçlarını karşılaştır.",
     caption:
-      "BFS hamle sayısını azaltır. Dijkstra ise birikmiş maliyeti en düşük hücreyi seçer. Bu haritada daha uzun bir rota daha ucuz olabilir.",
+      "BFS en az adımlı yolu bulur. Dijkstra, sırada bekleyen hücrelerden birikmiş maliyeti en düşük olanı işler. Çamurun etrafından dolaşan bir yol daha çok adımda daha az maliyetle hedefe ulaşabilir.",
   },
   astar: {
-    kicker: "Aramaya bir ipucu verin",
+    kicker: "Kalan maliyet tahmini",
     title: "Hedefe yönelmek aramayı nasıl değiştirir?",
-    lede: "A*, şimdiye kadarki maliyete hedefe kalan maliyetin tahminini ekler: f = g + h. Aynı haritada Dijkstra ile karşılaştırıp hangi hücreleri incelediğine bak.",
+    lede: "A*, birikmiş maliyet g ile kalan maliyet tahmini h değerini toplayarak sıradaki hücreyi seçer. Dijkstra ve A*'ı aynı haritada çalıştır. İki aramanın işlediği hücrelerin dağılımına bak.",
     caption:
-      "En düşük maliyet aynı olsa da seçilen rotalar farklı olabilir. Bu dört yönlü ızgarada Manhattan uzaklığı kalan maliyeti olduğundan büyük tahmin etmez. İncelenen hücre sayısını karşılaştır.",
+      "Bu dört yönlü ızgarada Manhattan uzaklığı, yatay ve düşey adım farklarının toplamıdır. En düşük maliyetli geçiş 1 birim olduğu için bu tahmin kalan yol maliyetini aşmaz. İki arama farklı yollar bulabilir. Her iki yol da aynı en düşük maliyete sahiptir.",
   },
   challenge: {
     kicker: "Görev",
-    title: "En kısa yolu bulmak için kaç hücre incelendi?",
-    lede: "Her haritada hem en ucuz rotayı bul hem de incelenen hücre sınırını aşma. Arama yöntemini ve izin verilen ayarları buna göre seç.",
+    title: "En düşük maliyetli yolu kaç hücre işleyerek bulabilirsin?",
+    lede: "Her haritada en düşük maliyetli bir yol bul. İşlenen hücre sınırını aşmayacak algoritmayı seç.",
     mazeLabel: (
       title: string,
       cols: number,
@@ -102,47 +106,47 @@ const copy: typeof en = {
       budget: number,
       algorithm: string,
     ) =>
-      `${title}: sabit ${cols} × ${rows} labirent. Hedefe ${cost} olan en uygun maliyetle ulaşın ve en çok ${budget} hücre kesinleştirin. Geçerli algoritma: ${algorithm}.`,
+      `${title}. ${cols} sütun ve ${rows} satır. Hedef yol maliyeti ${cost}. En fazla ${budget} hücre işle. Seçili algoritma ${algorithm}.`,
     bothAtOnce: "İkisi birden",
-    beaten: (done: number, total: number) => `${total} haritadan ${done} tanesi geçildi`,
-    costMustBe: "maliyet şu olmalı",
-    exploredAtMost: "en çok incelenecek",
+    beaten: (done: number, total: number) => `${total} görevden ${done} tanesi tamamlandı`,
+    costMustBe: "Hedef yol maliyeti",
+    exploredAtMost: "İşlenen hücre sınırı",
     maps: {
       swamp: {
         title: "Bataklık",
-        hint: "En hızlı geçiş, en ucuz geçiş değildir.",
+        hint: "En az adımlı yolu bul. Ardından çamurdan dolaşan yolun maliyetiyle karşılaştır.",
       },
       "open-ground": {
         title: "Açık arazi",
-        hint: "Burada hiçbir şey pahalı değil. Tasarruf edilecek tek şey emek.",
+        hint: "Bu haritada her geçiş 1 birim. Yol maliyeti aynıyken işlenen hücre sayısını azalt.",
       },
       "wrong-door": {
         title: "Yanlış kapı",
-        hint: "Hedef yakın. İçeri giden yol değil.",
+        hint: "Hedefe olan Manhattan uzaklığını engellerin izin verdiği yolla karşılaştır.",
       },
     },
     budget: (cost: number, budget: number) =>
-      `En ucuz yolun maliyeti ${cost}. En çok ${budget} hücre kesinleştirin.`,
+      `En düşük yol maliyeti ${cost}. En fazla ${budget} hücre işle.`,
     verdict: {
       unreachable: "Bu arama hedefe hiç ulaşamadı.",
       solved: (cost: number, explored: number) =>
-        `Çözüldü. Maliyet ${cost} ve yalnızca ${explored} hücre kesinleşti.`,
+        `Görev tamamlandı. Yol maliyeti ${cost}, işlenen hücre sayısı ${explored}.`,
       overBudget: (explored: number, budget: number) =>
-        `Yol en uygun olanı ama ${explored} hücre inceledin. Bütçe: ${budget}.`,
+        `Bulunan yol en düşük maliyette. ${explored} hücre işlendi. Sınır ${budget}.`,
       suboptimal: (explored: number, cost: number, optimal: number) =>
-        `Yalnızca ${explored} hücre inceledin, ancak yolunun maliyeti ${cost}. En uygun maliyet: ${optimal}.`,
+        `${explored} hücre işlendi. Yol maliyeti ${cost}, en düşük maliyet ${optimal}.`,
       both: (cost: number, optimal: number, explored: number, budget: number) =>
-        `Yolunun maliyeti ${cost}; en uygunu ${optimal}. Ayrıca ${explored} hücre inceledin; bütçe ise ${budget}.`,
+        `Yol maliyeti ${cost}, en düşük maliyet ${optimal}. İşlenen hücre sayısı ${explored}, sınır ${budget}.`,
     },
   },
   recap: {
     lessons: [
-      "Bir arama doğrudan hedefe yönelmez; hedef, ulaştığı noktalardan biri olana kadar her yöne yayılır",
-      "BFS hücreleri ilk giren ilk çıkar sırasıyla alır; böylece onları en az hamle sırasına göre kesinleştirir",
-      "Zemin tekdüze olmaktan çıktığı anda en az hamle ile en ucuz rota farklı sorulardır",
-      "Dijkstra her zaman bildiği en ucuz hücreyi kesinleştirir; cevabının en ucuz olmasının nedeni budur",
-      "A* kalan mesafe için bir tahmin ekler ve çabasını hedefin bulunduğu yöne harcar",
-      "Tahmin mesafeyi asla olduğundan fazla göstermez; bu yüzden A* daha hızlı ulaşırken hiçbir şeyden ödün vermez",
+      "Genişlik öncelikli arama başlangıca en yakın hücrelerden başlayarak yayılır.",
+      "BFS hücreleri kuyruğa eklenme sırasıyla işler. Böylece en az adımlı yolu bulur.",
+      "Geçiş maliyetleri farklıysa en az adımlı yol ile en düşük maliyetli yol farklı olabilir.",
+      "Dijkstra birikmiş maliyeti en düşük hücreyi işler. Bu seçim, negatif olmayan kenar maliyetlerinde en düşük maliyetli yolu verir.",
+      "A*, birikmiş maliyeti kalan maliyet tahminiyle birlikte kullanır.",
+      "Bu ızgarada Manhattan uzaklığı kalan maliyeti aşmaz. A* en düşük maliyetli bir yol bulur ve Dijkstra'dan daha az hücre işleyebilir.",
     ],
     footer:
       "Bu modeller, başlangıçtan hedefe ulaşırken sıradaki konumun nasıl seçildiğini gösterir. Gerçek rota sistemleri daha büyük haritaları ve ek maliyetleri işler.",
@@ -150,38 +154,36 @@ const copy: typeof en = {
 
   // The guided tours, one per experiment (components/lab/guide/tours.ts).
   tour: {
-    intro:
-      "Engelleri çiz ve aramayı çalıştır. Hangi hücrelerin incelendiğini ve bulunan rotayı karşılaştır.",
+    intro: "Izgaraya engel çiz ve aramayı çalıştır. İşlenen hücreleri ve bulunan yolu incele.",
     stages: {
       find: {
-        grid: "S başlangıç, G hedef. Arama G'nin nerede olduğunu bilmiyor.",
-        run: "Çalıştır: halkalı hücreler aramanın sınırı, dolu hücreler kesinleşmiş olanlar.",
-        explored: "Kaç hücreye baktığı ve bulduğu yolun uzunluğu.",
+        grid: "S başlangıcı, G hedefi gösterir. BFS, hücreleri seçerken hedefe olan uzaklığı kullanmaz.",
+        run: "Çalıştır düğmesine bas. Halkalı hücreler sırada bekler. Dolu renkle gösterilen hücreler işlenmiştir.",
+        explored: "İşlenen hücre ve Yol uzunluğu kutularına bak.",
         walls:
-          "Şimdi ızgarada sürükleyerek duvar çiz ya da S ile G'yi taşı, sonra yeniden çalıştır.",
+          "Şimdi ızgarada sürükleyerek engel çiz ya da S ile G'yi taşı, sonra yeniden çalıştır.",
       },
       bfs: {
-        grid: "Bu kez bir dolambaç var. Adım adım ilerleyin.",
-        step: "Adımla: sınırdan bir hücre alınır, komşuları sınıra eklenir.",
+        grid: "Adımla düğmesiyle aramanın engelin çevresinden nasıl ilerlediğine bak.",
+        step: "Adımla düğmesiyle kuyruğun başındaki hücrenin alınmasını ve komşularının sırayla eklenmesini izle.",
         layers:
-          "Adımlamaya devam edin: arama katman katman, en yakın hücrelerden başlayarak yayılır.",
+          "Adımlamayı sürdür. Başlangıçtan aynı adım sayısıyla ulaşılan hücrelerin hangi sırayla işlendiğine bak.",
       },
       cost: {
         swamp: "Çamura girmek 5, açık zemine girmek 1'e mal olur.",
         run: "Önce BFS ile çalıştır.",
         algorithm:
-          "Sonra buradan Dijkstra'ya geçip yeniden çalıştır; isterseniz daha fazla çamur çiz.",
-        compare: "BFS en az hamleyi yapar; Dijkstra en az bedeli öder.",
+          "Dijkstra'yı seçip aynı haritada çalıştır. Ardından çamurlu hücreler ekleyip iki aramayı yeniden karşılaştır.",
+        compare: "BFS en az adımlı yolu, Dijkstra en düşük maliyetli yolu bulur.",
       },
       astar: {
-        grid: "Açık bir alan. Dijkstra her yöne eşit yayılır.",
+        grid: "Açık zeminde Dijkstra'nın başlangıç çevresinde işlediği hücrelere bak.",
         run: "Çalıştır, sonra aşağıdan A*'a geçip yeniden çalıştır.",
-        algorithm: "A* kalan mesafe için bir tahmin ekler ve hedefe yönelir.",
-        explored:
-          "Aynı en düşük maliyet; yollar farklı olabilir. Her birinin kaç hücreye baktığını karşılaştır.",
+        algorithm: "A*, birikmiş maliyete kalan maliyet tahminini ekler.",
+        explored: "Yol maliyeti ve İşlenen hücre kutularını karşılaştır.",
       },
       challenge: {
-        maze: "Sabit bir harita: en ucuz yol ve bütçeyi aşmayan sayıda incelenen hücre. Haritayı yukarıdan seç.",
+        maze: "Yukarıdan bir harita seç. Yol maliyetini ve işlenen hücre sınırını kontrol et.",
         algorithm: "Algoritmayı seç.",
         run: "Çalıştır ve iki koşulun da sağlanıp sağlanmadığına bak.",
       },
@@ -192,19 +194,19 @@ const copy: typeof en = {
   study: {
     topics: {
       bfs: "BFS: katman katman yayılma",
-      dijkstra: "Dijkstra: en ucuz yol",
-      astar: "A*: hedefe nişan almak",
+      dijkstra: "Dijkstra: en düşük maliyetli yol",
+      astar: "A* ve kalan maliyet tahmini",
     },
     notes: {
-      "reducible-bfs": "Sınırıyla birlikte, animasyonlu genişlik öncelikli arama.",
-      "mit-6006-bfs": "MIT dersi: ilk giren ilk çıkar düzeninin neden en az hamleyi bulduğu.",
+      "reducible-bfs": "Bekleyen hücreleri kuyrukta gösteren genişlik öncelikli arama animasyonu.",
+      "mit-6006-bfs": "MIT dersi: ilk giren ilk çıkar düzeninin neden en az adımlı yolu bulduğu.",
       "cp-dijkstra": "Dijkstra algoritması küçük bir harita üzerinde, elle.",
       "mit-6006-dijkstra": "Ders: doğruluğu ve maliyetlerin neden negatif olmaması gerektiği.",
       "cp-astar": "A*'ın Dijkstra'yla karşılaştırmalı anlatımı.",
-      "reducible-astar": "Harita uygulamalarının kullandığı haliyle A* ve sezgisel tahmin.",
-      "redblob-astar": "Etkileşimli ızgaralar: BFS, Dijkstra, greedy ve A* yan yana.",
+      "reducible-astar": "A* ve kalan maliyet tahmininin harita üzerinde gösterimi.",
+      "redblob-astar": "Etkileşimli ızgaralar: BFS, Dijkstra, açgözlü arama ve A* yan yana.",
       "ods-book":
-        "Graphs bölümünde komşuluk listeleri, kuyruk ve BFS bağlantısını kur. Kod benzeri anlatım, labdaki ziyaret sırasını kendi algoritmana dönüştürmek için uygun.",
+        "Graphs bölümünde komşuluk listeleri, kuyruk ve BFS bağlantısını kur. Kod benzeri anlatım, lab'daki ziyaret sırasını kendi algoritmana dönüştürmek için uygun.",
     },
   },
 };

@@ -237,6 +237,13 @@ export const prob = (value: number): string => value.toFixed(3);
 /** Positions and standard errors to two, which is the resolution of the sliders. */
 export const coord = (value: number): string => value.toFixed(2);
 
+/**
+ * A number written by `coord` or `prob`, with the decimal separator of the
+ * language it is shown in: a comma in Turkish, a point in English.
+ */
+export const withDecimalSeparator = (text: string, language: "en" | "tr"): string =>
+  language === "tr" ? text.replace(".", ",") : text;
+
 // -------------------------------------------------------------- challenge ---
 
 export interface ChallengeSpec {

@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { journeys } from "../src/components/lab/journeyCopy";
 
 /**
  * The 3-D word map opens with a first move, and "Try it" hands over the map.
@@ -13,18 +14,21 @@ const sizes = [
   { name: "laptop", viewport: { width: 1280, height: 800 } },
 ];
 
+// The orientation card shows the lab's journey step 1 (LabExperience.tsx).
+const journey = journeys["word-embeddings-3d"]!;
+
 const words = {
   en: {
     firstMove: "Your first move",
-    tap: /^Tap a word/,
+    tap: journey.en[1],
     tryIt: /^Try it/,
     nearest: /^Nearest to/,
   },
   tr: {
     firstMove: "İlk adım",
-    tap: /^Bir kelimeye dokun/,
+    tap: journey.tr[1],
     tryIt: /^Deneyi aç/,
-    nearest: /en yakınlar$/,
+    nearest: /kelimesine en yakınlar,/,
   },
 } as const;
 

@@ -2,7 +2,7 @@ import { Figure, LabSlider, Stage } from "@/components/lab";
 import { Segmented } from "@/components/ui";
 import { useLabCopy } from "@/i18n/labs";
 import { BOUNDS, TEST_TYPES, type Params, type Result, type TestType } from "../engine";
-import { coord, prob } from "../view";
+import { useNumberFormat } from "./useNumberFormat";
 import { DistributionPlot } from "./DistributionPlot";
 import { SecondaryControls } from "./SecondaryControls";
 
@@ -26,6 +26,7 @@ export interface BetaStageProps {
  * condition, not a stricter one.
  */
 export function BetaStage({ result, onChange }: BetaStageProps) {
+  const { coord, prob } = useNumberFormat();
   const copy = useLabCopy("hypothesis-testing");
   const b = copy.betaSection;
   const { testType, mu1 } = result.params;

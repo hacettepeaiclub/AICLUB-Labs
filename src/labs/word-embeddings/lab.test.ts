@@ -146,7 +146,7 @@ describe("copy", () => {
       expect(dict.honesty.source).toMatch(/Gigaword/);
     }
     expect(copy.honesty.turkish).toMatch(/not a Turkish embedding space/i);
-    expect(tr.labs["word-embeddings"].honesty.turkish).toMatch(/Türkçe gömme uzayı değildir/i);
+    expect(tr.labs["word-embeddings"].honesty.turkish).toMatch(/Türkçe embedding uzayı değildir/i);
   });
 
   /**

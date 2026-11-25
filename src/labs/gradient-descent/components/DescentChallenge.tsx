@@ -3,7 +3,7 @@ import { useReducedMotion } from "@/hooks";
 import { Figure, LabSlider, Stage, Transport } from "@/components/lab";
 import { Badge, Segmented } from "@/components/ui";
 import { useLabCopy, type LabsCopy } from "@/i18n/labs";
-import { formatNumber } from "@/lib/format";
+import { useNumberFormat } from "./useNumberFormat";
 import { cn } from "@/lib/cn";
 import type { OptimizerConfig, OptimizerKind } from "../engine";
 import { landscapeFacts, learningRateAt, LR_LIMIT_INDEX, momentumLimitIndex } from "../landscape";
@@ -83,6 +83,7 @@ export function DescentChallenge() {
 
 function ChallengeCard({ spec, onSolved }: { spec: ChallengeSpec; onSolved: () => void }) {
   const g = useLabCopy("gradient-descent");
+  const { formatNumber } = useNumberFormat();
   const reduced = useReducedMotion() ?? false;
   const defaults = DEFAULTS[spec.id];
   const facts = landscapeFacts(spec.landscape);
@@ -300,6 +301,7 @@ function ChallengeCard({ spec, onSolved }: { spec: ChallengeSpec; onSolved: () =
 /** The same step size, on the gentler landscape. Nothing else changes. */
 function TransferPreview({ learningRate, tolerance }: { learningRate: number; tolerance: number }) {
   const g = useLabCopy("gradient-descent");
+  const { formatNumber } = useNumberFormat();
   const reduced = useReducedMotion() ?? false;
   const run = useDescentRun({
     landscape: TRANSFER_LANDSCAPE,

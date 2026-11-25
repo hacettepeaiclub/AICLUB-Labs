@@ -1,7 +1,7 @@
 import { Figure, Stage, Transport } from "@/components/lab";
 import { Button, Segmented } from "@/components/ui";
 import { useLabCopy } from "@/i18n/labs";
-import { formatNumber } from "@/lib/format";
+import { useNumberFormat } from "./useNumberFormat";
 import { greedyPolicy } from "../engine";
 import { SMOOTHING_WINDOW, curve, smooth } from "../view";
 import { SPEEDS, type TrainingRun } from "../useTrainingRun";
@@ -34,6 +34,7 @@ export interface TrainStageProps {
  */
 export function TrainStage({ run }: TrainStageProps) {
   const copy = useLabCopy("reinforcement-learning");
+  const { formatNumber } = useNumberFormat();
   const train = copy.train;
 
   const rewards = run.history.map((episode) => episode.totalReward);

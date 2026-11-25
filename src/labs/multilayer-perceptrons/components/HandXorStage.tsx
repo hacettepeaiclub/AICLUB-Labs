@@ -3,7 +3,7 @@ import { Figure, Stage } from "@/components/lab";
 import { Segmented } from "@/components/ui";
 import { useCanvas2D, useRepaintFlag } from "@/hooks";
 import { useLabCopy } from "@/i18n/labs";
-import { formatPercent } from "@/lib/format";
+import { useFormat } from "@/lib/useFormat";
 import { generateDataset, type Point } from "../datasets";
 import { bestOneLine, side, type Line } from "../lines";
 import { createScalarFieldPainter, drawAxes, drawJudgedPoints } from "../paint";
@@ -49,6 +49,7 @@ function judge(points: readonly Point[], lines: readonly Line[], mode: Mode) {
  * The race below is the same thing done by gradient descent, with four.
  */
 export function HandXorStage() {
+  const { formatPercent } = useFormat();
   const lab = useLabCopy("multilayer-perceptrons");
   const t = lab.handXor;
   const points = useMemo(() => generateDataset("xor", 160, 0.06, 3), []);

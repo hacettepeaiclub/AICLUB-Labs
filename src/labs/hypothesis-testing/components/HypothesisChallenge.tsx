@@ -5,7 +5,8 @@ import { useT } from "@/i18n";
 import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import { BOUNDS, TEST_TYPES, evaluate, type Params, type TestType } from "../engine";
-import { CHALLENGES, challengeById, coord, judge, prob, type ChallengeId } from "../view";
+import { CHALLENGES, challengeById, judge, type ChallengeId } from "../view";
+import { useNumberFormat } from "./useNumberFormat";
 import { DistributionPlot } from "./DistributionPlot";
 
 /**
@@ -22,6 +23,7 @@ import { DistributionPlot } from "./DistributionPlot";
  * explains itself rather than just lighting up.
  */
 export function HypothesisChallenge() {
+  const { coord, prob } = useNumberFormat();
   const t = useT();
   const copy = useLabCopy("hypothesis-testing");
   const c = copy.challenge;
@@ -70,7 +72,7 @@ export function HypothesisChallenge() {
       </div>
 
       <p className="max-w-prose text-body-sm text-fg-muted">
-        {puzzle.brief(prob(spec.minPower), spec.maxAlpha.toFixed(2))}
+        {puzzle.brief(prob(spec.minPower), coord(spec.maxAlpha))}
       </p>
 
       <Stage
@@ -98,9 +100,9 @@ export function HypothesisChallenge() {
                 </span>
               )}
               {verdict.solved
-                ? puzzle.solved(prob(result.power), result.params.alpha.toFixed(2))
+                ? puzzle.solved(prob(result.power), coord(result.params.alpha))
                 : !verdict.alphaMet
-                  ? c.alphaTooHigh(spec.maxAlpha.toFixed(2))
+                  ? c.alphaTooHigh(coord(spec.maxAlpha))
                   : c.notYet(prob(result.power), prob(spec.minPower))}
             </p>
           </div>
@@ -133,8 +135,8 @@ export function HypothesisChallenge() {
                 min={Math.round(BOUNDS.alpha.min * 100)}
                 max={Math.round(BOUNDS.alpha.max * 100)}
                 onChange={(value) => set({ alpha: value / 100 })}
-                format={() => params.alpha.toFixed(2)}
-                valueText={() => copy.controls.alphaValue(params.alpha.toFixed(2))}
+                format={() => coord(params.alpha)}
+                valueText={() => copy.controls.alphaValue(coord(params.alpha))}
               />
             )}
             {spec.levers.includes("sigma") && (
@@ -165,7 +167,7 @@ export function HypothesisChallenge() {
               tone={verdict.powerMet ? "accent" : "default"}
               hint={c.target(prob(spec.minPower))}
             />
-            <Figure label={c.alphaLabel} value={result.params.alpha.toFixed(2)} />
+            <Figure label={c.alphaLabel} value={coord(result.params.alpha)} />
             <Figure label={c.seLabel} value={coord(result.se)} />
           </>
         }

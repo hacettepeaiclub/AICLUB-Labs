@@ -1,7 +1,7 @@
 import { LabSlider } from "@/components/lab";
 import { useLabCopy } from "@/i18n/labs";
 import { BOUNDS, type Params, type Result } from "../engine";
-import { coord } from "../view";
+import { useNumberFormat } from "./useNumberFormat";
 
 export type SecondaryLever = "mu0" | "sigma" | "n" | "alpha" | "mu1";
 
@@ -26,6 +26,7 @@ export interface SecondaryControlsProps {
  * same value rather than accumulating floating-point drift as it moves.
  */
 export function SecondaryControls({ result, onChange, show }: SecondaryControlsProps) {
+  const { coord } = useNumberFormat();
   const copy = useLabCopy("hypothesis-testing").controls;
   const { mu0, mu1, sigma, alpha, n } = result.params;
 
@@ -71,8 +72,8 @@ export function SecondaryControls({ result, onChange, show }: SecondaryControlsP
           min={Math.round(BOUNDS.alpha.min * 100)}
           max={Math.round(BOUNDS.alpha.max * 100)}
           onChange={(value) => onChange({ alpha: value / 100 })}
-          format={() => alpha.toFixed(2)}
-          valueText={() => copy.alphaValue(alpha.toFixed(2))}
+          format={() => coord(alpha)}
+          valueText={() => copy.alphaValue(coord(alpha))}
         />
       )}
       {show.includes("n") && (

@@ -2,7 +2,7 @@ import { useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import { Figure, Stage } from "@/components/lab";
 import { useLabCopy } from "@/i18n/labs";
 import { chain } from "../engine";
-import { formatValue } from "../view";
+import { useNumberFormat } from "./useNumberFormat";
 
 /** How each dial maps its value to an angle: ±135° covers this range. */
 const RANGES = [2, 3, 1, 1, 1] as const;
@@ -30,6 +30,7 @@ const angleOf = (v: number, range: number) =>
  * beside the product, so the claim is checked by the hand that made it.
  */
 export function ChainStage() {
+  const { formatValue } = useNumberFormat();
   const t = useLabCopy("backpropagation").chain;
   const [x, setX] = useState(0.35);
   const [last, setLast] = useState<{ dx: number; dd: number } | null>(null);

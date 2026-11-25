@@ -6,6 +6,7 @@ import { cn } from "@/lib/cn";
 import { createRng } from "@/lib/random";
 import { clusters, EMPTY, linear, mean, probe } from "../engine";
 import { formatValue } from "../view";
+import { useNumberFormat } from "./useNumberFormat";
 
 const M = 32;
 
@@ -26,6 +27,7 @@ const homesFor = (seed: number) => {
  */
 export function ProbeStage() {
   const lab = useLabCopy("hash-tables");
+  const { decimal } = useNumberFormat();
   const t = lab.probe;
   const [seed, setSeed] = useState(3);
   const [count, setCount] = useState(8);
@@ -135,7 +137,7 @@ export function ProbeStage() {
           />
           <Figure
             label={t.figures.mean}
-            value={count ? formatValue(mean(now.costs)) : "—"}
+            value={count ? decimal(formatValue(mean(now.costs))) : "—"}
             hint={t.figures.meanHint}
           />
           <Figure label={t.figures.longest} value={String(longest)} />

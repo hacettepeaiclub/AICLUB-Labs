@@ -2,6 +2,7 @@ import { useCallback, useRef, useState } from "react";
 import { useReducedMotion } from "@/hooks";
 import { Figure, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
+import { useLanguage } from "@/i18n";
 import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import { createRng } from "@/lib/random";
@@ -18,7 +19,7 @@ import {
   type Strategy,
   type Tally,
 } from "../engine/montyHall";
-import { percent } from "../view";
+import { percent as formatPercent } from "../view";
 import { Coach, Explain } from "./Framing";
 import { MontyDoor } from "./MontyDoor";
 import { Prediction } from "./Prediction";
@@ -42,6 +43,8 @@ type Phase = "picking" | "opened" | "done";
  */
 export function MontyStage() {
   const reduced = useReducedMotion() ?? false;
+  const { language } = useLanguage();
+  const percent = (value: number) => formatPercent(value, language);
   const copy = useLabCopy("probability");
   const m = copy.monty;
 

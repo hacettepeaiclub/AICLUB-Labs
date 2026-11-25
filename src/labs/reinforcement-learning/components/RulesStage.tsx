@@ -1,7 +1,7 @@
 import { Figure, LabSlider, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
 import { useLabCopy } from "@/i18n/labs";
-import { formatNumber } from "@/lib/format";
+import { useNumberFormat } from "./useNumberFormat";
 import { SMOOTHING_WINDOW, curve, smooth } from "../view";
 import type { RunSettings, TrainingRun } from "../useTrainingRun";
 
@@ -33,6 +33,7 @@ export interface RulesStageProps {
  */
 export function RulesStage({ run, settings, onChange, onRestore, changed }: RulesStageProps) {
   const copy = useLabCopy("reinforcement-learning");
+  const { formatNumber } = useNumberFormat();
   const rules = copy.rules;
 
   const rewards = run.history.map((episode) => episode.totalReward);
