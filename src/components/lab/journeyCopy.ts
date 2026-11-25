@@ -1,3 +1,40 @@
+type JourneyUiCopy = {
+  firstMove: string;
+  tryIt: string;
+  overview: string;
+  chapters: string;
+  deeper: string;
+  transferTitle: string;
+  transferHint: string;
+  correct: string;
+  reconsider: string;
+};
+
+export const journeyUi: Record<"en" | "tr", JourneyUiCopy> = {
+  en: {
+    firstMove: "Your first move",
+    tryIt: "Try it",
+    overview: "What to watch · Explore the route",
+    chapters: "Lab exploration route",
+    deeper: "Deeper",
+    transferTitle: "Try a new situation",
+    transferHint: "Choose an explanation, then compare the reasoning.",
+    correct: "Yes — here is why.",
+    reconsider: "Consider this distinction.",
+  },
+  tr: {
+    firstMove: "İlk adım",
+    tryIt: "Deneye geç",
+    overview: "Deneyde neye bakacaksın?",
+    chapters: "Deney bölümleri",
+    deeper: "İsteğe bağlı",
+    transferTitle: "Öğrendiğini yeni bir örnekte dene",
+    transferHint: "Bir yanıt seç, ardından çıkan açıklamayı oku.",
+    correct: "Doğru yanıt",
+    reconsider: "Yanıtını yeniden değerlendir",
+  },
+};
+
 /** Goal, first action, observation, transfer question, correct answer, distractors, explanation.
  * These are concept checks, not claims that scrolling or clicking proves mastery. */
 export type Journey = readonly [string, string, string, string, string, string, string, string];

@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { journeys } from "../src/components/lab/journeyCopy";
+import { journeys, journeyUi } from "../src/components/lab/journeyCopy";
 
 /**
  * The 3-D word map opens with a first move, and "Try it" hands over the map.
@@ -19,15 +19,15 @@ const journey = journeys["word-embeddings-3d"]!;
 
 const words = {
   en: {
-    firstMove: "Your first move",
+    firstMove: journeyUi.en.firstMove,
     tap: journey.en[1],
-    tryIt: /^Try it/,
+    tryIt: journeyUi.en.tryIt,
     nearest: /^Nearest to/,
   },
   tr: {
-    firstMove: "İlk adım",
+    firstMove: journeyUi.tr.firstMove,
     tap: journey.tr[1],
-    tryIt: /^Deneyi aç/,
+    tryIt: journeyUi.tr.tryIt,
     nearest: /kelimesine en yakınlar,/,
   },
 } as const;
