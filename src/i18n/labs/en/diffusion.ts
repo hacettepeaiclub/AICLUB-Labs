@@ -1,5 +1,27 @@
 const copy = {
   draft: true,
+  experiment: {
+    shapes: ["Ring", "Cross", "Diamond", "Bars"],
+    sampleLabel: "Current sample xₜ",
+    estimateLabel: "Clean estimate E[x₀|xₜ]",
+    posteriorHint:
+      "Percentages are posterior probabilities only within this four-shape toy model. Pixel display is clipped; calculation values are not.",
+    noiseStep: "Noise step (changing resets the experiment)",
+    reverseStep: "Reverse one step",
+    finish: "Compute to the end",
+    newSeed: "New seed",
+    startFromNoise: "Start from noise only",
+    excludeSource: "Exclude source from prior",
+    stepsLeft: "Steps left",
+    signalFraction: "Signal fraction ᾱ",
+    sourceShape: "Source shape",
+    sourceLabel: "Forward source (not passed to reverse process)",
+    caption:
+      "Forward: xₜ = √ᾱ x₀ + √(1−ᾱ) ε. Reverse: estimate a clean sample from the current sample, then apply a deterministic DDIM step. The reverse step receives neither the source shape nor its original noise.",
+    modelTitle: "What does this model know?",
+    modelBody:
+      "No neural network is trained in this draft. It computes the exact posterior mean under a uniform prior over four fixed shapes and Gaussian corruption. Real diffusion models learn a denoiser from data. This model cannot generate new objects, text prompts or photos; it depends on its specified prior. Starting from noise approximates the terminal distribution.",
+  },
   recap: {
     lessons: [
       "A reverse process uses the current sample and its prior, not the hidden original.",

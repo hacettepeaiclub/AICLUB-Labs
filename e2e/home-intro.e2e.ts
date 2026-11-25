@@ -1,20 +1,11 @@
 import { expect, test } from "@playwright/test";
 
+import { en } from "../src/i18n/en";
+import { tr } from "../src/i18n/tr";
+
 const homeCopy = [
-  {
-    language: "en",
-    title: "Learn computer science and AI by experimenting.",
-    lede: "Run algorithms and neural networks. Change a setting and see what happens.",
-    browse: "Browse labs",
-    labs: "Labs",
-  },
-  {
-    language: "tr",
-    title: "Bilgisayar bilimini ve yapay zekâyı deneyerek öğren.",
-    lede: "Algoritmaları ve yapay sinir ağlarını çalıştır. Bir ayarı değiştirip sonucu gör.",
-    browse: "Labları incele",
-    labs: "Laboratuvarlar",
-  },
+  { language: "en", ...en.home },
+  { language: "tr", ...tr.home },
 ];
 
 for (const { width, touch } of [

@@ -1,4 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
+import { CALCULATOR_COPY } from "../src/calculator/copy";
 
 /**
  * The calculator's three events reach Umami, each once.
@@ -51,7 +52,8 @@ test("the calculator counts lessons, finished puzzles and shared results", async
   await page.getByRole("button", { name: "Solve today's puzzle" }).click();
   for (let i = 0; i < 5; i++) {
     await page.getByRole("button", { name: "Give up", exact: true }).click();
-    if (i < 4) await page.getByRole("button", { name: "Next question" }).click();
+    if (i < 4)
+      await page.getByRole("button", { name: CALCULATOR_COPY.en.dailyNextQuestion }).click();
   }
   await expect
     .poll(() => named(page, "daily_finish"))

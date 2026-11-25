@@ -40,6 +40,7 @@ const en = {
   step: (n: number, of: number) => `Step ${n} of ${of}`,
   nextKey: "Next key",
   wrongKey: "This step wants",
+  lessonMismatch: "The result does not match the lesson. Restart and try again.",
   showMe: "Show me",
   restart: "Start again",
   nextLesson: "Next lesson",
@@ -60,6 +61,9 @@ const en = {
   dailyPlay: "Solve today's puzzle",
   dailyContinue: "Carry on",
   dailySeeResult: "See your result",
+  dailyReviewResult: "See result",
+  dailyNextQuestion: "Next question",
+  dailyStudyTopic: "Practise this topic",
   dailyNext: (time: string) => `Next puzzle in ${time}`,
   dailyStreak: (days: number) => (days === 1 ? "1-day streak" : `${days}-day streak`),
   dailyHow:
@@ -152,6 +156,8 @@ const tr: CalculatorCopy = {
   step: (n: number, of: number) => `Adım ${n} / ${of}`,
   nextKey: "Sıradaki tuş",
   wrongKey: "Bu adımda beklenen tuş",
+  lessonMismatch:
+    "Hesap makinesindeki sonuç beklenenden farklı. Dersi baştan başlatıp yeniden dene.",
   showMe: "Göster",
   restart: "Baştan başla",
   nextLesson: "Sonraki ders",
@@ -172,6 +178,9 @@ const tr: CalculatorCopy = {
   dailyPlay: "Bugünün bulmacasını çöz",
   dailyContinue: "Devam et",
   dailySeeResult: "Sonucunu gör",
+  dailyReviewResult: "Sonucunu gör",
+  dailyNextQuestion: "Sıradaki soruya geç",
+  dailyStudyTopic: "Konuyla ilgili dersi aç",
   dailyNext: (time: string) => `Sonraki bulmacaya ${time} kaldı`,
   dailyStreak: (days: number) => `${days} günlük seri`,
   dailyHow:

@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { journeyUi } from "../src/components/lab/journeyCopy";
 import { labs } from "../src/labs/registry";
 
 /**
@@ -24,7 +25,7 @@ for (const { name, viewport } of sizes) {
         await page.addInitScript((language) => {
           localStorage.setItem("aiclub-labs-language", language);
         }, language);
-        const label = language === "tr" ? /^Deneyi aç/ : /^Try it/;
+        const label = journeyUi[language].tryIt;
         const missed: string[] = [];
         let checked = 0;
         for (const { meta } of labs) {

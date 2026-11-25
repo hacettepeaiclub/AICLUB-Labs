@@ -186,13 +186,7 @@ export function DailyQuestion({
       {reviewing && (
         <div className="mt-3 flex flex-wrap gap-2">
           <Button onClick={onNext}>
-            {language === "tr"
-              ? isFinished(daily.progress)
-                ? "Sonucu gör"
-                : "Sonraki soru"
-              : isFinished(daily.progress)
-                ? "See result"
-                : "Next question"}
+            {isFinished(daily.progress) ? copy.dailyReviewResult : copy.dailyNextQuestion}
           </Button>
           <Button
             variant="ghost"
@@ -210,7 +204,7 @@ export function DailyQuestion({
               )
             }
           >
-            {language === "tr" ? "Bu konuyu çalış" : "Practise this topic"}
+            {copy.dailyStudyTopic}
           </Button>
         </div>
       )}

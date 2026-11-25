@@ -21,6 +21,7 @@ export const en = {
     brand: "AI Club",
     brandSuffix: "Labs",
     primaryNav: "Primary",
+    mobileNav: "Navigation",
     allLabs: "All labs",
     // The calculator page (pages/CalculatorPage.tsx), in the header.
     calculator: "Calculator",
@@ -183,6 +184,7 @@ export const en = {
     // Names what a stage's disclosure holds. Never "Advanced", never a
     // gear icon: a visitor should know what is behind it before opening it.
     moreControls: "Settings and help",
+    optionalSection: "Go deeper · Optional",
     keyboardHint: "With the chart focused,",
     // The way out of a lab, at the bottom of it. The collection is written as
     // a sequence, and until this existed the sequence stopped at the grid: a

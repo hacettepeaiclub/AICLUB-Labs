@@ -171,9 +171,7 @@ export function LessonPanel({
 
         {available && progress >= total && !completed && (
           <p role="alert" className="mt-4 text-body-sm text-signal-amber">
-            {language === "tr"
-              ? "Sonuç beklenen durumla uyuşmuyor. Dersi baştan başlatıp tekrar dene."
-              : "The result does not match the lesson. Restart and try again."}
+            {copy.lessonMismatch}
           </p>
         )}
         {miss && !finished && (
