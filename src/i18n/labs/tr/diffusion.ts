@@ -24,12 +24,12 @@ const copy: typeof en = {
     stepsLeft: "Kalan ters adım sayısı",
     signalFraction: "Sinyal payı ᾱ",
     sourceShape: "Kaynak şekli seç",
-    sourceLabel: "İleri sürecin kaynak şekli (pikselleri ters sürece verilmez)",
+    sourceLabel: "İleri süreçte gürültü eklenen şekil",
     caption:
-      "İleri süreçte xₜ = √ᾱ x₀ + √(1−ᾱ) ε bağıntısıyla gürültü eklenir. Ters süreç, şu anki örnekten temiz örneği tahmin eder ve aynı girdilerle aynı sonucu veren bir DDIM adımı uygular. Ters adımda kaynak şeklin pikselleri (x₀) ve ilk eklenen gürültü kullanılmaz. Kutuyu işaretlediğinde kaynak şekil, izin verilen şekiller listesinden çıkar.",
+      "İleri süreçte xₜ = √ᾱ x₀ + √(1−ᾱ) ε bağıntısıyla gürültü eklenir. Ters süreç, şu anki örnekten temiz örneği tahmin eder ve aynı girdilerle aynı sonucu veren bir DDIM adımı uygular. Ters adım, şu anki örneği ve izin verilen şekilleri kullanır. Örneğin hangi şekilden üretildiği ve ilk eklenen gürültü bu adıma verilmez. Kutuyu işaretlediğinde kaynak şekil, izin verilen şekiller listesinden çıkar.",
     modelTitle: "Ters süreç hangi bilgileri kullanır?",
     modelBody:
-      "Bu deneyde bir yapay sinir ağı eğitilmez. Model, Gauss gürültüsü ve izin verilen şekillere eşit olasılık veren bir önsel dağılım varsayımıyla sonsal ortalamayı tam olarak hesaplar. Başlangıçta dört şekle izin verilir. Kaynak şekli çıkarırsan üç şekil kalır. Eğitilen diffusion modelleri gürültü gidericiyi veriden öğrenir. Bu deney, üretilen görüntüyü önsel dağılımdaki şekillerden hesaplar. Yalnızca gürültüyle başlamak, ileri sürecin sonundaki (t = 60) dağılımı yaklaşık olarak temsil eder. Son ters adımdaki örnek, şekillerin sonsal olasılıklarla ağırlıklandırılmış ortalamasıdır.",
+      "Bu deneyde bir yapay sinir ağı eğitilmez. Model, Gauss gürültüsü ve izin verilen şekillere eşit olasılık veren bir önsel dağılım varsayımıyla sonsal ortalamayı tam olarak hesaplar. Başlangıçta dört şekle izin verilir. Kaynak şekli çıkarırsan üç şekil kalır. Eğitilen diffusion modelleri gürültü gidericiyi veriden öğrenir. Bu model yalnızca önsel dağılımdaki şekillerden görüntü hesaplar. Yeni nesneler üretemez, metinden görüntü üretemez ve fotoğraf oluşturamaz. Yalnızca gürültüyle başlamak, ileri sürecin sonundaki (t = 60) dağılımı yaklaşık olarak temsil eder. Son ters adımdaki örnek, şekillerin sonsal olasılıklarla ağırlıklandırılmış ortalamasıdır.",
   },
   recap: {
     lessons: [

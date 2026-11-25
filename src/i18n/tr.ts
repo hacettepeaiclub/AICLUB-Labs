@@ -19,7 +19,7 @@ export const tr: Translation = {
     hashtag: "#AIForAll",
     footerRights: (year: number) => `© ${year} Hacettepe AI Club`,
     footerCredit: "Hacettepe Yapay Zekâ Topluluğunun projesi",
-    developedBy: "Bu siteyi Metehan Özcan, {org} adına geliştirdi.",
+    developedBy: "Bu siteyi Metehan Özcan {org} adına geliştirdi.",
     feedback: "Bir sorun ya da önerin mi var?",
     sourceLink: "GitHub'daki kaynak kod",
     privacy: "Ziyaretleri çerez kullanmadan ve kişisel veri toplamadan sayıyoruz.",
@@ -60,7 +60,7 @@ export const tr: Translation = {
     },
 
     offlineNotice:
-      "İnternet bağlantın kesildi. Açık sayfayı kullanmaya devam edebilirsin. Yeni bir sayfa açmak için internete bağlan.",
+      "İnternet bağlantın yok. Açık sayfayı kullanmaya devam edebilirsin. Yeni bir sayfa açmak için internete bağlan.",
   },
 
   preferences: {
@@ -92,7 +92,7 @@ export const tr: Translation = {
     continueLab: (title: string) => `${title} labına dön`,
     filterLabel: "Labları konuya göre filtrele",
     allFields: "Tümü",
-    otherLabs: "Diğer laboratuvarlar",
+    otherLabs: "Diğer lablar",
     showing: (shown: number, total: number, field: string) => `${field} · ${shown} / ${total} lab`,
     visited: "Açıldı",
     opened: (n: number) => `${n} lab açıldı`,
