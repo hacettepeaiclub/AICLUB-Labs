@@ -102,8 +102,8 @@ const copy: typeof en = {
     secondaryLabel: "Şeritte gösterilen adım",
     stripLabel: (stride: number) =>
       stride === 1
-        ? "1 adımlık bir tur her sayıyı okur:"
-        : `${stride} adımlık bir tur her ${stride}. sayıyı okur:`,
+        ? "Adım 1 iken bir geçiş her sayıyı okur:"
+        : `Adım ${stride} iken bir geçiş her ${stride}. sayıyı okur:`,
     stripNote: (fraction: string) => `Modelde bu, ${fraction} ıska demek.`,
     everyRead: "her okumada",
     oneIn: (n: number) => `${n} okumada 1`,
@@ -138,16 +138,16 @@ const copy: typeof en = {
     secondaryLabel: "Bir döngü sırası seç",
     walkLabel: "En içteki döngünün matrislerdeki erişim yönü",
     walk: { row: "satır boyunca", column: "sütun boyunca", still: "yerinde" },
-    legendModel: "model: adım başına ıska",
+    legendModel: "model: yineleme başına ıska",
     legendMeasured: "bu bilgisayarda ölçülen",
     measure: (order: string) => `${order} sırasını ölç`,
     measureAll: "Altısını da ölç",
     running: "Ölçülüyor…",
     ms: (value: string) => `${value} ms`,
     rowLabel: (order: string, model: string, ms: string | null) =>
-      `${order}: model adım başına ${model} ıska${ms === null ? ", henüz ölçülmedi" : `, ölçülen ${ms} milisaniye`}`,
+      `${order}: modelde iç döngü yinelemesi başına ${model} ıska${ms === null ? ", henüz ölçülmedi" : `, ölçülen ${ms} milisaniye`}`,
     chartNote:
-      "Model, 16 × 16 boyutlu matrisleri sekiz blokluk önbellekle çarpar. Cihazındaki ölçüm 512 × 512 boyutlu matrisleri kullanır. Her matris 2 MiB yer kaplar.",
+      "Model, 16 × 16 boyutlu matrisleri sekiz blokluk önbellekle çarpar. Cihazındaki ölçüm 512 × 512 boyutlu matrisleri kullanır. Her matris 2 MiB yer kaplar. Modelde bir yineleme, en içteki döngünün bir kez çalışmasıdır.",
     caption: (n: string) =>
       `Her sıra aynı ${n} × ${n} × ${n} çarpma ve toplamayı yapar. Sütun boyunca erişimde adres bir satır kadar artar. Satır boyunca erişimde sıradaki komşu okunur.`,
     announceOne: (order: string, ms: string) => `${order} bu bilgisayarda ${ms} milisaniye sürdü.`,
@@ -158,7 +158,7 @@ const copy: typeof en = {
     error: "Ölçüm tamamlanamadı. Sayfayı yenileyip yeniden dene.",
     figures: {
       model: "Model",
-      modelHint: "adım başına ıska, bu sıra",
+      modelHint: "iç döngü yinelemesi başına ıska",
       fastest: "En kısa süren sıra",
       fastestHint: (ms: string) => `bu bilgisayarda ${ms} ms`,
       fastestEmpty: "başlamak için bir sıra ölç",
@@ -176,7 +176,7 @@ const copy: typeof en = {
       "Modelde bellekten 64 baytlık bloklar getirilir. Aynı bloktaki komşular bir okumayla birlikte önbelleğe gelir.",
       "Ardışık okumalar aynı önbellek bloğunu yeniden kullanabilir. Erişim adımı blok kadar büyüdüğünde tek geçişte her okuma yeni bir bloğa gidebilir.",
       "Gerekli bloklar önbelleğe sığdığında sütun sırasındaki okumalar da daha önce getirilen blokları kullanabilir.",
-      "Matris çarpımında en iç döngüyü değiştir. Satır boyunca erişimin ıska sayısına etkisine bak.",
+      "Matris çarpımında döngülerin sırası değiştirilebiliyorsa satır boyunca ilerleyen döngüyü en içe almak modelde en az ıskayı verir.",
     ],
     footer:
       "Süreler bu cihazda ölçülür. Model tek seviyeli ve en uzun süredir kullanılmayan bloğu çıkaran bir önbellek kullanır. Ölçümde işlemcinin önceden veri getirmesi ve diğer bellek düzeyleri de sonucu etkileyebilir.",

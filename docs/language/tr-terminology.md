@@ -501,17 +501,29 @@ yukarıdaki biçimde yeniden yazılacak.
   YÖK tez no. 177847, s. 12–13. Önbellek bloğu, isabet ve ıska
   kullanımlarını içerir.
 
-### Uzlamsal ve zamansal yerellik
+### Uzamsal ve zamansal yerellik
 
-- **Tanım:** Uzlamsal yerellikte birbirine yakın adreslere erişilir.
+- **Tanım:** Uzamsal yerellikte birbirine yakın adreslere erişilir.
   Zamansal yerellikte kısa süre önce kullanılan adrese tekrar erişilir.
   Satır boyunca ardışık okuma, aynı bloktaki komşu sayıları kullanır.
-- **Tercih:** uzlamsal yerellik, zamansal yerellik. Okuma başına ıska,
+- **Tercih:** uzamsal yerellik, zamansal yerellik. Okuma başına ıska,
   modelin hesapladığı orandır. Okuma başına süre cihazda ölçülür.
-- **Kaynak:** Hacettepe Üniversitesi BİL220,
-  [Final çözümleri, soru 4](https://web.cs.hacettepe.edu.tr/~bil220/finalsol.pdf).
+- **Kaynak:** İstinye Üniversitesi [Bilgisayar Mimarisi ders içeriği](https://ois.istinye.edu.tr/bilgipaketi/eobsakts/ders/ders_id/8064/program_kodu/0402001/s/6/st/M/ln/tr/print/1/)
+  “uzamsal yerellik” terimini kullanır. Hacettepe Üniversitesi BİL220
+  [final çözümleri, soru 4](https://web.cs.hacettepe.edu.tr/~bil220/finalsol.pdf)
+  aynı kavramı bir önbellek örneğinde “Uzlamsal (spatial)” olarak yazar.
   İnönü Üniversitesi [Bilgisayar Sistemlerine Giriş](https://akademi.inonu.edu.tr/mucahit/menu/65/bilgisayar-sistemlerine-giris)
   “önbellek yerelliği” terimini kullanır.
+
+### Erişim adımı ve yineleme
+
+- **Tanım:** Erişim adımı (stride), ardışık iki okuma arasındaki eleman
+  uzaklığıdır. Matris çarpımı modelinde bir yineleme, en içteki döngünün
+  gövdesinin bir kez çalışmasıdır. Model, her yinelemede üç okuma yapar.
+- **Tercih:** erişim adımı (kontrollerde “adım”), iç döngü yinelemesi.
+- **Kaynak:** Deneydeki erişim dizileri ve matris çarpımı modeli.
+  Ankara Üniversitesi [Döngüler ders notu](https://oys.ankara.edu.tr/pluginfile.php/426200/mod_resource/content/2/7.%20B%C3%96L%C3%9CM.pdf)
+  döngüler için “yineleme” terimini kullanır.
 
 ## race-condition
 
