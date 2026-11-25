@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { tr } from "../src/i18n/tr";
 
 test.use({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
 
@@ -31,8 +32,8 @@ test("Turkish mobile navigation fits the screen and its links can be tapped", as
 test("Turkish touch finder recovery restores focus and clears on navigation", async ({ page }) => {
   await page.route(/\/assets\/LabPalette-[^/?]+\.js$/, (route) => route.abort());
   await page.goto("/");
-  const finder = page.getByRole("button", { name: "Lab ara", exact: true });
-  const alert = page.getByRole("alert").filter({ hasText: "Lab arama şu anda kullanılamıyor." });
+  const finder = page.getByRole("button", { name: tr.palette.open, exact: true });
+  const alert = page.getByRole("alert").filter({ hasText: tr.palette.unavailable });
 
   await finder.tap();
   await expect(alert).toBeVisible();

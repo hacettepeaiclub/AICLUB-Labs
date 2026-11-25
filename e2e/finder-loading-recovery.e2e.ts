@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { tr } from "../src/i18n/tr";
 
 const FINDER_CHUNK = /\/assets\/LabPalette-[^/?]+\.js$/;
 
@@ -7,8 +8,8 @@ const configurations = [
     label: "Turkish touch success",
     width: 390,
     language: "tr",
-    trigger: "Lab ara",
-    loading: "Lab arama açılıyor…",
+    trigger: tr.palette.open,
+    loading: tr.palette.loading,
     mobile: true,
   },
   {

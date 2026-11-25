@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { tr } from "../src/i18n/tr";
 
 const locales = [
   {
@@ -21,7 +22,7 @@ const locales = [
     navigation: "Ana menü",
     labs: "Tüm lablar",
     calculator: "Hesap makinesi",
-    offline: "Çevrimdışısın.",
+    offline: tr.shell.offlineNotice,
     step: "Adımla",
     stepSlider: "Adım",
   },

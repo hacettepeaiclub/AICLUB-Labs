@@ -145,10 +145,10 @@ describe("error boundary", () => {
         expect({ banned, found: joined.includes(banned) }).toEqual({ banned, found: false });
       }
     }
-    expect(tr.shell.errors.offline.title).toBe("Bağlantı yok.");
-    expect(tr.shell.errors.load.lab).toBe("Lab yüklenemedi.");
-    expect(tr.shell.errors.runtime.title).toBe("Bir sorun oluştu.");
+    expect(tr.shell.errors.offline.title).toBe("İnternet bağlantısı yok");
+    expect(tr.shell.errors.load.lab).toBe("Lab yüklenemedi");
+    expect(tr.shell.errors.runtime.title).toBe("Beklenmeyen hata");
     expect(tr.notFound.title).toBe("Bu sayfa bulunamadı.");
-    expect(tr.shell.errors.retrying).toBe("Deneniyor…");
+    expect(tr.shell.errors.retrying).toBe("Yeniden deneniyor…");
   });
 });
