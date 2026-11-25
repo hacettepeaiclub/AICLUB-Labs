@@ -4,7 +4,7 @@ import { Button } from "@/components/ui";
 import { useLabCopy } from "@/i18n/labs";
 import { at, correlate, terms, withCell } from "../engine";
 import { LETTER_T, PREWITT } from "../pictures";
-import { factor, formatValue } from "../view";
+import { useNumberFormat } from "./useNumberFormat";
 import { GridView } from "./GridView";
 import { Panel } from "./Panel";
 
@@ -25,6 +25,7 @@ const CELLS = SIDE * SIDE;
  * again.
  */
 export function SlideStage() {
+  const { factor, formatValue } = useNumberFormat();
   const t = useLabCopy("convolution").slide;
   const [image, setImage] = useState(LETTER_T);
   const [position, setPosition] = useState(0);

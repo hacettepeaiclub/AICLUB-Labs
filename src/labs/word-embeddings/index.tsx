@@ -2,7 +2,8 @@ import { useMemo, useRef, useState } from "react";
 import { useReducedMotion } from "@/hooks";
 import { Figure, LabRecap, LabSection, LabSources, Stage } from "@/components/lab";
 import { useLabCopy } from "@/i18n/labs";
-import { formatPercent } from "@/lib/format";
+import { useLanguage } from "@/i18n";
+import { useFormat } from "@/lib/useFormat";
 import { cosine, nearestNeighbours, totalVarianceExplained, varianceExplained } from "./engine";
 import { VOCABULARY } from "./vocabulary";
 import { NEIGHBOUR_COUNT, PREDICTION, hiddenDimensions } from "./view";
@@ -40,6 +41,8 @@ import { WordSearch } from "./components/WordSearch";
  * vocabulary word or a measured constant ever appears as a literal in one.
  */
 export default function EmbeddingUniverse() {
+  const { formatPercent } = useFormat();
+  const { language } = useLanguage();
   const copy = useLabCopy("word-embeddings");
   const universe = useUniverse();
 
@@ -77,9 +80,10 @@ export default function EmbeddingUniverse() {
    * Not `formatNumber`: it maximises fraction digits rather than fixing them,
    * so a column of cosines came out as 0.5, 0.47, 0.41 — ragged to compare, and
    * 0.2951 collapsed to "0.3", which throws away the precision the number is
-   * there to carry. The house decimal separator stays "." as everywhere else.
+   * there to carry. Turkish uses a decimal comma (docs/language/tr-style.md).
    */
-  const score = (value: number) => value.toFixed(2);
+  const score = (value: number) =>
+    language === "tr" ? value.toFixed(2).replace(".", ",") : value.toFixed(2);
 
   const neighbours = useMemo(() => {
     if (!set) return [];

@@ -4,7 +4,7 @@ import { Figure, LabSlider, Stage, Transport } from "@/components/lab";
 import { useLabCopy } from "@/i18n/labs";
 import { useInView, useLocalStorage } from "@/hooks";
 import { isFiniteNumber, orNull } from "@/hooks/useLocalStorage";
-import { formatPercent } from "@/lib/format";
+import { useFormat } from "@/lib/useFormat";
 import { generateDataset, splitDataset } from "../datasets";
 import { useTrainer } from "../useTrainer";
 import { DecisionCanvas } from "./DecisionCanvas";
@@ -49,6 +49,7 @@ const beats = (candidate: Attempt, best: Attempt | null): boolean =>
  * decision.
  */
 export function SpiralChallenge() {
+  const { formatNumber, formatPercent } = useFormat();
   const lab = useLabCopy("multilayer-perceptrons");
   const c = lab.challenge;
   const [layers, setLayers] = useState(2);
@@ -178,7 +179,7 @@ export function SpiralChallenge() {
               min={0}
               max={LEARNING_RATES.length - 1}
               onChange={setRateIndex}
-              format={(i) => String(LEARNING_RATES[i] ?? 0.1)}
+              format={(i) => formatNumber(LEARNING_RATES[i] ?? 0.1, 3)}
             />
           </>
         }

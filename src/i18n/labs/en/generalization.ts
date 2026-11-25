@@ -1,4 +1,5 @@
 const copy = {
+  percent: (n: number) => `${n}%`,
   question: "Perfect on familiar points. What about new ones?",
   training: "Training accuracy",
   validation: "Validation accuracy",

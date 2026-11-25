@@ -1,6 +1,7 @@
 import { Figure } from "@/components/lab";
 import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
+import { useFormat } from "@/lib/useFormat";
 
 export interface TokenMetricsProps {
   tokens: number;
@@ -36,6 +37,7 @@ export function TokenMetrics({
   honest = true,
   className,
 }: TokenMetricsProps) {
+  const { formatNumber } = useFormat();
   const t = useLabCopy("tokenization");
   return (
     <div className={cn("min-w-0", className)}>
@@ -46,15 +48,15 @@ export function TokenMetrics({
       <div className="grid grid-cols-2 gap-x-6 gap-y-4">
         <Figure
           label={t.metrics.tokens}
-          value={tokens.toLocaleString("en-US")}
+          value={formatNumber(tokens, 0)}
           tone={emphasis === "tokens" ? "accent" : "default"}
         />
-        <Figure label={t.metrics.characters} value={characters.toLocaleString("en-US")} />
-        <Figure label={t.metrics.words} value={words.toLocaleString("en-US")} />
+        <Figure label={t.metrics.characters} value={formatNumber(characters, 0)} />
+        <Figure label={t.metrics.words} value={formatNumber(words, 0)} />
         {merges !== undefined && (
           <Figure
             label={t.metrics.merges}
-            value={merges.toLocaleString("en-US")}
+            value={formatNumber(merges, 0)}
             tone={emphasis === "merges" ? "accent" : "default"}
           />
         )}

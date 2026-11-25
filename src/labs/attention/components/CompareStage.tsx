@@ -1,6 +1,6 @@
 import { Figure, Stage } from "@/components/lab";
 import { useLabCopy } from "@/i18n/labs";
-import { formatNumber } from "@/lib/format";
+import { useFormat } from "@/lib/useFormat";
 import { keyOf, queryOf, ranked, rowScores, type Attention } from "../engine";
 import { scaleComparison } from "../view";
 import { Bars } from "./Bars";
@@ -31,6 +31,7 @@ export interface CompareStageProps {
  * on one screen — which is the entire claim this stage makes.
  */
 export function CompareStage({ attention, words, selected, onSelect }: CompareStageProps) {
+  const { formatNumber } = useFormat();
   const a = useLabCopy("attention");
   const trace = a.trace;
 

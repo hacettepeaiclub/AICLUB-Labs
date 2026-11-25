@@ -214,42 +214,43 @@ export const tr: Translation = {
     diffusion: {
       title: "From noise to a guess",
       term: "Diffusion",
-      figure: "Gauss gürültüsü ve sonlu önbilgi",
+      figure: "Gauss gürültüsü ve sonlu bir önsel dağılım",
       description:
-        "Gürültülü görüntüden bir tahmin oluştur. Modelin kullanabildiği şekilleri değiştirerek sonuçları karşılaştır.",
+        "Gürültülü bir görüntüden ters süreçle bir tahmin üret ve sonucun önsel dağılıma nasıl bağlı olduğuna bak.",
     },
     pca: {
       title: "The Widest Shadow",
-      term: "Temel bileşen analizi",
-      figure: "bir nokta bulutu ve en geniş yayıldığı çizgi.",
+      term: "Temel bileşenler analizi",
+      figure: "bir nokta bulutu ve bulutun en geniş yayıldığı doğru.",
       description:
-        "Bir matrisin yalnızca uzattığı yönleri, sonra bir veri bulutunun en geniş yayıldığı çizgiyi bul.",
+        "Önce bir matrisin doğrultusunu değiştirmediği yönleri, sonra bir veri bulutunun en geniş yayıldığı doğruyu bul.",
     },
     jepa: {
       title: "The Missing Piece",
       term: "Öz-denetimli öğrenme",
       figure: "gizli bir parçanın dört sayılık temsili, görünen komşularından tahmin ediliyor.",
       description:
-        "Görüntünün bir kısmını gizle. Modelin, görünen komşulardan gizli parçanın temsilini nasıl öğrendiğini incele.",
+        "Bir resmin bir kısmını gizle ve modelin, gizli parçanın temsilini görünen komşularından tahmin etmeyi nasıl öğrendiğine bak.",
     },
     generalization: {
       title: "Learned or memorised?",
       term: "Genelleme",
-      figure: "esnek bir sınır tanıdık noktalara uyuyor, sonra yeni örneklerle karşılaşıyor.",
-      description: "Modeli eğitim verisinde dene. Sonra ayrı örnekleri açıp doğruluğu karşılaştır.",
+      figure: "eğitim noktalarına tam uyan esnek bir karar sınırı ve yeni örnekler.",
+      description:
+        "k'yı değiştir, sonra ayrı örnekleri göster ve eğitim doğruluğunu doğrulama doğruluğuyla karşılaştır.",
     },
     "word-embeddings-3d": {
       title: "The Map of Meaning, in 3D",
       term: "Word embedding, prototip",
-      figure: "nokta olarak kelimeler ve bunlardan birine en yakın dördü.",
-      description: "Bir deney: aynı 318 kelime, iki yerine üç PCA eksenine indirgenmiş hâliyle.",
+      figure: "nokta olarak kelimeler ve bunlardan birine en yakın dört kelime.",
+      description: "Bir prototip: aynı 318 kelime, iki yerine üç PCA eksenine indirgenmiş hâliyle.",
     },
     "word-embeddings": {
       title: "The Map of Meaning",
       term: "Word embedding",
-      figure: "bir uzayda nokta olarak kelimeler ve bunlardan birine en yakın dördü.",
+      figure: "bir uzayda nokta olarak kelimeler ve bunlardan birine en yakın dört kelime.",
       description:
-        "Kelime vektörlerini haritada incele. Ekrandaki uzaklıkla asıl vektör benzerliğini karşılaştır.",
+        "Kelimeleri bir haritada gez ve ekrandaki uzaklığı, 300 boyutlu vektörlerin kosinüs benzerliğiyle karşılaştır.",
     },
     "hypothesis-testing": {
       title: "The Price of Certainty",
@@ -270,8 +271,7 @@ export const tr: Translation = {
       title: "Where the Model Looks",
       term: "Attention",
       figure: "cümlesinin geri kalanına bakan bir kelime; en kalın yay, en çok baktığı yer.",
-      description:
-        "Bir kelimeyi değiştir. Seçili kelimenin attention ağırlıkları ve çıktı vektörü nasıl değişiyor?",
+      description: "Bir kelime seç ve modelin cümlenin hangi kısmına dayandığına bak.",
     },
     "gradient-descent": {
       title: "The Size of a Step",
@@ -284,15 +284,16 @@ export const tr: Translation = {
       title: "Who Is to Blame?",
       term: "Geri yayılım",
       figure:
-        "çıkışından geriye doğru hatanın aktığı küçük bir ağ; suçun çoğu nereye gidiyorsa orası daha kalın.",
-      description: "Çıktıyı değiştir ve hatanın ağırlık güncellemelerine nasıl yansıdığını incele.",
+        "çıktısından geriye doğru türevlerin aktığı küçük bir ağ; çok değişmesi gereken bağlantı daha kalın.",
+      description:
+        "Ağın çıktısını çek ve her ağırlığın ne kadar değişmesi gerektiğine bak; sonra geri geçişi kendin hesapla.",
     },
     convolution: {
       title: "Nine Weights",
       term: "Evrişim",
-      figure: "bir resmin üzerinde 3×3'lük bir pencere ve çıktıda yazdığı hücre.",
+      figure: "bir resmin üzerinde 3×3'lük bir pencere ve çıktıda hesapladığı hücre.",
       description:
-        "Bir filtreyi görüntü üzerinde kaydır. Çarpımların her çıktı hücresini nasıl oluşturduğunu incele.",
+        "Dokuz ağırlıklık bir çekirdeği resim üzerinde kaydır ve her çıktı hücresinin dokuz çarpımın toplamı olarak nasıl hesaplandığına bak.",
     },
     "floating-point": {
       title: "0.1 + 0.2",
@@ -335,7 +336,7 @@ export const tr: Translation = {
       term: "Çok katmanlı algılayıcılar",
       figure: "üç girdi, dört nöronlu bir gizli katman ve iki çıktı; her bağlantı çizili.",
       description:
-        "Küçük bir sinir ağını eğit. Katmanları ve veriyi değiştirerek karar sınırını karşılaştır.",
+        "İki renk nokta çiz ve küçük bir yapay sinir ağının onları ayırmayı nasıl öğrendiğine bak.",
     },
     "graph-search": {
       title: "The Spreading Search",
@@ -362,9 +363,9 @@ export const tr: Translation = {
     tokenization: {
       title: "Cheap Words",
       term: "BPE tokenization",
-      figure: "farklı uzunlukta token'lara bölünmüş bir cümle; biri vurgulu.",
+      figure: "farklı uzunlukta tokenlere ayrılmış bir cümle; biri vurgulu.",
       description:
-        "Metnin parçalara nasıl ayrıldığını tahmin et. BPE birleşimlerini ve eğitim metninin etkisini incele.",
+        "Bir cümlenin nerelerden kesildiğini tahmin et, sonra BPE birleştirmelerinin ve okunan derlemin token sayısını nasıl değiştirdiğine bak.",
     },
   },
 };

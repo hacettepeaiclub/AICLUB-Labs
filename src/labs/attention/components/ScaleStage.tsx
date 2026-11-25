@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Figure, LabSlider, Stage } from "@/components/lab";
 import { useLabCopy } from "@/i18n/labs";
-import { formatNumber } from "@/lib/format";
+import { useFormat } from "@/lib/useFormat";
 import { ranked, type Attention } from "../engine";
 import { peak, percent, scaleComparison, sharesAt } from "../view";
 import { TokenPicker } from "./TokenPicker";
@@ -34,6 +34,7 @@ export interface ScaleStageProps {
  * the model's own share, so the divisor's effect is always read against it.
  */
 export function ScaleStage({ attention, words, selected, onSelect }: ScaleStageProps) {
+  const { formatNumber } = useFormat();
   const a = useLabCopy("attention");
   const scale = a.scale;
 

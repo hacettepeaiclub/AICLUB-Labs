@@ -242,6 +242,8 @@ yukarıdaki biçimde yeniden yazılacak.
 | attention, word embedding | attention, word embedding | |
 | corpus, epoch | derlem, epok | "korpus" kullanma (testle korunur) |
 
+---
+
 ## probability
 
 ### Koşullu olasılık ve tümleyen
@@ -301,6 +303,8 @@ yukarıdaki biçimde yeniden yazılacak.
 - **Kaynak:** İstanbul Sabahattin Zaim Üniversitesi,
   [Olasılık Teorisi, §1.8 ve §7.4](https://w3.izu.edu.tr/sites/default/files/2026-10/112-olasilikteorisi.pdf).
 
+---
+
 ## gradient-descent
 
 ### Gradient descent, gradyan ve adım boyu
@@ -312,6 +316,8 @@ yukarıdaki biçimde yeniden yazılacak.
   η için öğrenme oranı da kullanılır. Deneydeki kontrolde adım boyu yazılır.
 - **Kaynak:** Afyon Kocatepe Üniversitesi,
   [Görüntü Sınıflandırma İçin Derin Öğrenme, s. 18–19](https://acikerisim.aku.edu.tr/server/api/core/bitstreams/e975eb1d-13e9-45f8-a16c-23fb196f63e2/content).
+
+---
 
 ## reinforcement-learning
 
@@ -342,6 +348,8 @@ yukarıdaki biçimde yeniden yazılacak.
   [5. Türkiye Robotbilim Konferansı Bildirileri, s. 86](https://tork2019.ozyegin.edu.tr/sites/default/files/tork2019_r1.pdf)
   γ için “indirim oranı” der ve keşif ile deneyimden yararlanmayı ayırır.
   Deneyde γ için katsayı denir çünkü sonraki değeri doğrudan çarpar.
+
+---
 
 ## floating-point
 
@@ -383,6 +391,8 @@ yukarıdaki biçimde yeniden yazılacak.
   terimlerini kullanır. [Hacettepe Üniversitesi BİL220, soru 2](https://web.cs.hacettepe.edu.tr/~bil220/mt1sol.pdf)
   ikili alanların sıfır olup olmamasına göre aynı sınıfı gösterir.
 
+---
+
 ## hash-tables
 
 ### Kova, yuva, çakışma ve doğrusal yoklama
@@ -409,6 +419,8 @@ yukarıdaki biçimde yeniden yazılacak.
   [Algoritma Analizi, 13. hafta](https://sens.medipol.edu.tr/tr/subjects/IND3233890).
   Ders planı amortize analiz ile dinamik tabloları birlikte işler.
 
+---
+
 ## sorting
 
 ### Seçmeli sıralama, eklemeli sıralama ve terslik
@@ -426,6 +438,8 @@ yukarıdaki biçimde yeniden yazılacak.
   Çukurova Üniversitesi [Veri Yapıları ders içeriği](https://eobs.cu.edu.tr/Ders/GenelBilgi/624729)
   “araya eklemeli sıralama” der. Sayaç ve terslik tanımları deneyin
   sıralama motorunda belirtilir.
+
+---
 
 ## graph-search
 
@@ -457,6 +471,8 @@ yukarıdaki biçimde yeniden yazılacak.
 - **Kaynak:** Sakarya Üniversitesi,
   [Manhattan uzaklığı, bölüm 4.2.2.3](https://acikerisim.sakarya.edu.tr/bitstream/20.500.12619/80982/1/T04049.pdf).
 
+---
+
 ## cryptographic-hashing
 
 ### Kriptografik hash, özet ve çakışma
@@ -484,6 +500,8 @@ yukarıdaki biçimde yeniden yazılacak.
   özetler üzerinden ölçülür. [Marmara Üniversitesi, Şekil 8](https://katalog.marmara.edu.tr/veriler/yordambt/cokluortam/3E/18D7BE0D-34CF-034D-83E4-0D3F9FE97E6D.pdf)
   tek boşluk farkı olan iki mesajla aynı kavramı gösterir. [NIST FIPS 180-4](https://csrc.nist.gov/pubs/fips/180-4/upd1/final)
   SHA-256 hesabını tanımlar.
+
+---
 
 ## cache-locality
 
@@ -525,6 +543,8 @@ yukarıdaki biçimde yeniden yazılacak.
   Ankara Üniversitesi [Döngüler ders notu](https://oys.ankara.edu.tr/pluginfile.php/426200/mod_resource/content/2/7.%20B%C3%96L%C3%9CM.pdf)
   döngüler için “yineleme” terimini kullanır.
 
+---
+
 ## race-condition
 
 ### Yarış durumu, iş parçacığı ve kayıp güncelleme
@@ -553,3 +573,507 @@ yukarıdaki biçimde yeniden yazılacak.
 - **Kaynak:** İTÜ,
   [İşletim Sistemleri, Karşılıklı Dışlama, s. 118–119](https://web.itu.edu.tr/bkurt/Courses/os/lecture4_6spp.pdf).
   Atomik eklemenin sınırı deneyin işlem modelinde gösterilir.
+
+---
+
+## pca
+
+Kaynaklar (bu bölümde kısaltmalarıyla anılır):
+
+| Kısaltma | Kaynak | Not |
+| --- | --- | --- |
+| MAT114 | Prof. Dr. F. Nejat Ekmekci, Prof. Dr. Yusuf Yaylı, Doç. Dr. İsmail Gök, *MAT114 Lineer Cebir, Hafta 13: Özdeğerler ve Özvektörler*, Ankara Üniversitesi, 2017-2018. [Açık ders](https://acikders.ankara.edu.tr/mod/resource/view.php?id=62128) | "özdeğer (karakteristik değer)", "özvektör"; "karakteristik vektör bir lineer dönüşüm altında doğrultusu değişmeyen vektör demektir" |
+| SIRMATEL | Dr. Öğr. Üyesi Işık İlber Sırmatel, *Özdeğerler ve Özvektörler* ders notu, Trakya Üniversitesi Elektrik-Elektronik Müh. [PDF](https://sirmatel.github.io/assets/files/linear_algebra/ozdegerler-ve-ozvektorler.pdf) | "A gerçel olsa da özdeğerleri ve özvektörleri karmaşık olabilir", köşegenleştirme |
+| VİKİ-KOV | Vikipedi, *Kovaryans matrisi*. [Sayfa](https://tr.wikipedia.org/wiki/Kovaryans_matrisi) | "kovaryans matrisi (veya varyans-kovaryans matrisi)", "temel bileşenler analizi" |
+| DLT | Yukarıdaki tabloda. | projection: izdüşüm; eigenvector: özyöney; variance: değişinti; covariance: eşdeğişinti |
+
+İncelenemeyenler: Ankara Üniversitesi açık ders "Temel Bileşenler Analizi"
+notu (resource id=51326; PDF açıldı ama metni okunamadı, yazı tipi
+gömülü), OMÜ AVYS çok değişkenli istatistik notları (alan adı çözülemedi),
+Vikipedi "Temel bileşenler analizi" ve "Özdeğer ve özvektör" sayfaları (404).
+
+### Temel bileşenler analizi (PCA)
+
+- **Tanım:** Verinin kovaryans matrisinin özvektörlerini özdeğere göre büyükten
+  küçüğe sıralayıp veriyi bu yönler boyunca yeniden yazan yöntem.
+- **Tercih:** temel bileşenler analizi; metinde kısaltma olarak **PCA**.
+  İlk geçtiği yerde "temel bileşenler analizi (PCA)".
+- **Bağlama bağlı alternatifler:** "temel bileşen analizi" de yaygındır;
+  istatistik kaynakları çoğul biçimi kullanır (VİKİ-KOV). "TBA" kısaltmasını
+  kullanma: ML okurunun aradığı ad PCA'dır.
+- **Karıştırılmaması gereken:** temel bileşen (tek bir yön/eksen) ile analizin kendisi.
+- **Örnek:** "Bulut ve birinci temel bileşen."
+- **Kaynak:** VİKİ-KOV. Ankara Üniversitesi notunun metni okunamadığı için
+  kaynak gösterilmiyor.
+
+### Özvektör, özdeğer
+
+- **Tanım:** Au = λu eşitliğini sağlayan sıfırdan farklı u bir özvektördür:
+  matris u'yu yalnızca λ sayısıyla çarpar. λ > 1 ise uzatır, 0 < λ < 1 ise
+  kısaltır, λ < 0 ise yönünü ters çevirir; λ = 0 ise u'yu sıfır vektörüne
+  götürür. λ özdeğerdir. Sezgisel tanımda "uzatır" yazma; "bir sayıyla
+  çarpar" ya da "doğrultusunu değiştirmez" de.
+- **Tercih:** özvektör; özdeğer. Sezgisel tanımda "doğrultusu değişmeyen vektör".
+- **Bağlama bağlı alternatifler:** karakteristik vektör/değer (MAT114, eşdeğer
+  ad); özyöney (DLT). Projede kullanma.
+- **Karıştırılmaması gereken:** yön ile doğrultu: λ negatifse u'nun yönü
+  döner ama doğrultusu aynı kalır; bu yüzden tanımda "doğrultu" kullan.
+  Lab'daki açı göstergesi de iki doğrultu arasındaki dar açıyı (0° ile 90°)
+  ölçer (engine.ts `between3`). Simetrik bir matrisin birbirine dik
+  özvektörleri her zaman seçilebilir; tekrarlı özdeğerde her özvektör çifti
+  dik olmak zorunda değildir.
+- **Örnek:** "Bu yön bir özvektördür, 1,62 de onun özdeğeridir."
+- **Kaynak:** MAT114, SIRMATEL
+
+### İzdüşüm
+
+- **Tanım:** Bir noktanın bir doğruya dik olarak düşürülmesiyle doğru üzerinde
+  elde edilen nokta. Lab'daki "gölge".
+- **Tercih:** izdüşüm (dik izdüşüm). Lab "gölge" benzetmesini başlıkta
+  kullanır; metinde ilk geçtiği yerde "izdüşüm, noktanın doğru üzerindeki
+  gölgesidir" diye bağlanır, sonra "izdüşüm" kullanılır.
+- **Karıştırılmaması gereken:** "çizgi" (gündelik); geometrik nesne **doğru**dur.
+- **Kaynak:** DLT ("projection: izdüşüm")
+
+### Kovaryans matrisi, varyans
+
+- **Tanım:** Değişkenlerin varyanslarını köşegende, kovaryanslarını köşegen
+  dışında tutan simetrik matris.
+- **Tercih:** kovaryans matrisi; varyans; kısaltmalar Var(·), Kov.
+- **Bağlama bağlı alternatifler:** varyans-kovaryans matrisi (VİKİ-KOV, istatistik
+  derslerinde yaygın). değişinti / eşdeğişinti (DLT, D2L-TR): projede kullanma,
+  istatistik derslerinde yerleşik değil.
+- **Örnek:** "İzdüşümlerin varyansı", "Korunan varyans"
+- **Kaynak:** VİKİ-KOV
+
+### Kayma matrisi (shear)
+
+- **Tanım:** Bir ekseni sabit tutup diğer koordinatları ona orantılı kaydıran
+  dönüşümün matrisi. Lab'daki "Kayma" hazır ayarı x yönündeki kaymayı z
+  boyunca 1,5 kat ölçeklemeyle birleştirir (engine.ts `shear`).
+- **Tercih:** kayma (düğmede "Kayma"; metinde "kayma matrisi")
+- **Bağlama bağlı alternatifler:** kesme dönüşümü. İkisi için de okunabilen
+  bir Türkçe ders kaynağı bulunamadı; açık karar.
+- **Kaynak:** İncelenen kaynak yok. Proje önerisi.
+
+---
+
+## generalization
+
+Bu bölümdeki terimler için okunabilen Türkçe ders notu bulunamadı: İTÜ
+"Veri Madenciliği" slaytları (web.itu.edu.tr/~sgunduz, d4.pdf) ve Ankara
+Üniversitesi açık ders Python ile makine öğrenmesi sunumu (resource
+id=174038) indirildi ama metinleri çıkarılamadı. Aşağıdaki seçimler DLT ve
+D2L-TR sözlüklerine (bkz. ilk tablo) ve sitenin önceki kullanımına dayanır.
+
+### Genelleme
+
+- **Tanım:** Modelin eğitimde görmediği örneklerde de doğru tahmin yapması.
+- **Tercih:** genelleme
+- **Karıştırılmaması gereken:** ezberleme (eğitim örneklerine tam uyum).
+- **Örnek:** "Tanıdık örnekleri ezberlemeyi yeni örneklere genellemeden ayırt et."
+- **Kaynak:** DLT ("generalization: genelleme")
+
+### Eğitim, doğrulama ve test kümesi
+
+- **Tanım:** Eğitim kümesi modelin parametrelerini belirler (k-NN'de
+  ezberlenen noktalar). Doğrulama kümesi model seçiminde (k) kullanılır.
+  Test kümesi yalnızca son değerlendirmede, bir kez kullanılır.
+- **Tercih:** eğitim kümesi; doğrulama kümesi; test kümesi. Gösterge
+  etiketlerinde "Eğitim doğruluğu", "Doğrulama doğruluğu", "Son test doğruluğu".
+- **Bağlama bağlı alternatifler:** geçerleme kümesi (D2L-TR), doğrulama seti
+  (DLT), sınama kümesi (DLT "test: sınama"). Projede "doğrulama" ve "test"
+  kullanılır; "set" yerine "küme".
+- **Karıştırılmaması gereken:** doğrulama (validation) ile doğruluk (accuracy).
+- **Kaynak:** DLT, D2L-TR
+
+### Doğruluk (accuracy)
+
+- **Tanım:** Doğru sınıflandırılan örneklerin oranı (engine.ts `accuracy`).
+- **Tercih:** doğruluk. "Skor" kullanma; ölçülen nicelik doğruluktur.
+- **Kaynak:** Proje kararı.
+
+### k-en yakın komşu (k-NN)
+
+- **Tanım:** Bir noktayı, ona en yakın k eğitim noktasının çoğunluk oyuyla
+  sınıflandıran yöntem.
+- **Tercih:** k-en yakın komşu (k-NN); "oy veren komşu sayısı (k)".
+- **Kaynak:** İstanbul Üniversitesi doktora tezi
+  ([PDF](https://nek.istanbul.edu.tr/ekos/TEZ/61102.pdf), §2.6.2, s. 24–25):
+  "k-en yakın komşu" ve çoğunluk oylaması. Tezi Codex-TR okudu; Claude-TR'nin
+  indirdiği kopyadan metin çıkarılamadı.
+
+### Karar sınırı, karar bölgesi
+
+- **Tanım:** Sınıflandırıcının tahmininin bir sınıftan diğerine geçtiği
+  sınır; bölgeler bu sınırın ayırdığı alanlardır.
+- **Tercih:** karar sınırı; karar bölgesi
+- **Kaynak:** Proje kararı.
+
+### Etiket gürültüsü
+
+- **Tanım:** Etiketlerin seçilen olasılıkla ters çevrilmesi (engine.ts
+  `dataset`, `noise`).
+- **Tercih:** etiket gürültüsü; kontrol etiketi "Etiketin ters çevrilme olasılığı".
+- **Karıştırılmaması gereken:** standart sapma (bkz. "Standart sapma, gürültü").
+- **Kaynak:** DLT ("noise: gürültü")
+
+### Kapasite
+
+- **Tanım:** Modelin uyabileceği fonksiyonların esnekliği.
+- **Tercih:** kapasite
+- **Bağlama bağlı alternatifler:** sığım (DLT). Projede kullanma; ML
+  derslerinde "kapasite" daha anlaşılırdır. Açık karar.
+- **Kaynak:** DLT ("capacity: sığım")
+
+---
+
+## backpropagation
+
+Kaynak: D2L-TR bölüm metinleri (okundu): *İleri Yayma, Geri Yayma ve
+Hesaplamalı Çizge* ([backprop.md](https://github.com/d2l-ai/d2l-tr/blob/master/chapter_multilayer-perceptrons/backprop.md)),
+*Sayısal Kararlılık ve İlkleme* ([numerical-stability-and-init.md](https://github.com/d2l-ai/d2l-tr/blob/master/chapter_multilayer-perceptrons/numerical-stability-and-init.md)),
+*Çok Katmanlı Algılayıcılar* ([mlp.md](https://github.com/d2l-ai/d2l-tr/blob/master/chapter_multilayer-perceptrons/mlp.md)).
+Aşağıda "D2L-TR-BÖLÜM" diye anılır.
+
+### Geri yayılım, ileri ve geri geçiş
+
+- **Tanım:** Geri yayılım, kaybın her parametreye göre gradyanını zincir
+  kuralıyla, kayıptan girdiye doğru hesaplayan yöntem. İleri geçiş ağın bir
+  kez çalıştırılıp ara değerlerin hesaplanması; geri geçiş, gradyanların bir
+  kez geriye doğru hesaplanması.
+- **Tercih:** geri yayılım; ileri geçiş; geri geçiş. Sayılırken "1 ileri ve 1
+  geri geçiş", "${n} ileri geçiş".
+- **Bağlama bağlı alternatifler:** geri yayma, ileri yayma (D2L-TR-BÖLÜM);
+  geri yayılım (DLT). "Geçiş", tek bir çalıştırmayı (pass) yöntemin adından
+  (propagation) ayırmak için kullanılır; açık karar.
+- **Kaynak:** DLT, D2L-TR-BÖLÜM
+
+### Hesaplama çizgesi, düğüm
+
+- **Tanım:** Bir ifadenin işlemlerini düğüm, veri akışını kenar olarak
+  gösteren çizge.
+- **Tercih:** hesaplama çizgesi; düğüm. Graph Search lab'ıyla ortak karar:
+  çizge, düğüm, kenar.
+- **Kullanma:** "grafik" (bir veri grafiği, chart demektir); "graf" yerine "çizge".
+- **Kaynak:** D2L-TR-BÖLÜM ("hesaplamalı çizge"); Codex-TR'nin okuduğu
+  Ankara Üniversitesi ders metni (Bölüm 10, çizge/düğüm/kenar).
+
+### Zincir kuralı, yerel türev
+
+- **Tercih:** zincir kuralı; yerel türev (bir düğümün çıktısının girdisine göre türevi).
+- **Kaynak:** D2L-TR-BÖLÜM ("zincir kuralına göre")
+
+### Kaybolan ve patlayan gradyan
+
+- **Tercih:** kaybolan gradyan; patlayan gradyan. Fiil olarak "gradyan
+  kaybolur / söner", "gradyan patlar".
+- **Kaynak:** D2L-TR-BÖLÜM ("Kaybolan Gradyanlar", "patlayan gradyan problemi")
+
+### Aktivasyon fonksiyonu
+
+- **Tercih:** aktivasyon fonksiyonu. Fonksiyon adları özgün kalır: sigmoid,
+  tanh, ReLU.
+- **Bağlama bağlı alternatifler:** etkinleştirme fonksiyonu (D2L-TR-BÖLÜM,
+  "etkinleştirme (aktivasyon) fonksiyonu"); etkilenim fonksiyonu (DLT).
+  Projede kullanma: ders anlatımlarında yerleşik olan "aktivasyon"dur ve
+  D2L-TR de onu parantez içinde verir. Açık karar.
+- **Kaynak:** D2L-TR-BÖLÜM, DLT
+
+### Gradyan kontrolü, sayısal türev, merkezi fark
+
+- **Tanım:** Gradyan kontrolü, geri yayılımın bulduğu gradyanı parametreyi
+  biraz değiştirip kaybı ölçerek bulunan sayısal türevle karşılaştırmaktır.
+  Lab merkezi fark kullanır: (L(w + h) − L(w − h)) / 2h.
+- **Tercih:** gradyan kontrolü; sayısal türev; merkezi fark. "Dürtmek"
+  (nudge) kullanma; "biraz değiştirmek" de.
+- **Kaynak:** Proje kararı.
+
+### Ceza terimi
+
+- **Tanım:** Kayba eklenen ve ağırlığı küçük tutan 0,1·w² terimi.
+- **Tercih:** ceza terimi. Kavram adı gerekirse düzenlileştirme terimi.
+- **Kaynak:** D2L-TR-BÖLÜM ("düzenlileştirme terimi"); DLT ("regularization: düzenlileştirme")
+
+---
+
+## multilayer-perceptrons
+
+Kaynaklar: D2L-TR-BÖLÜM (bkz. ## backpropagation; özellikle *Çok Katmanlı
+Algılayıcılar*), DLT.
+
+### Çok katmanlı algılayıcı (MLP), gizli katman, nöron
+
+- **Tercih:** çok katmanlı algılayıcı (kart terimi); gizli katman; nöron;
+  gizli nöron. Metinde genel ad olarak "yapay sinir ağı".
+- **Bağlama bağlı alternatifler:** saklı katman (DLT); gizli birim
+  (D2L-TR-BÖLÜM, "nöron" ile birlikte kullanılır). Projede kullanma.
+- **Kaynak:** D2L-TR-BÖLÜM ("çok katmanlı algılayıcı", "gizli katman",
+  "nöron"), DLT ("çok katmanlı algılayıcı")
+
+### Bias
+
+- **Tanım:** Nöronun ağırlıklı toplamına eklenen sabit terim; karar
+  sınırını döndürmeden kaydırır.
+- **Tercih:** bias (özgün adıyla).
+- **Bağlama bağlı alternatifler:** ek girdi (DLT, D2L-TR). İki sözlükte de
+  geçer, ama sabit terimi bir girdi gibi anlattığı için lab'ın "doğruyu
+  kaydırır" anlatımıyla uyuşmaz. Açık karar.
+- **Karıştırılmaması gereken:** yanlılık (istatistikte bias; DLT
+  "yanlılık"), önyargı.
+- **Kaynak:** DLT, D2L-TR-BÖLÜM
+
+### Öğrenme oranı
+
+- **Tanım:** Gradyanı ölçekleyen η katsayısı (engine.ts `applyGradients`;
+  bu lab ayrıca bir L2 terimi uygular).
+- **Tercih:** öğrenme oranı (kontrol etiketi ve metin). "Öğrenme oranı
+  gradyanı ölçekleyerek adımın büyüklüğünü etkiler"; "adımın büyüklüğüdür"
+  deme. Gradient Descent lab'ı aynı η için algoritma bağlamında "adım boyu"
+  kullanır (Codex-TR ile ortak karar).
+- **Kaynak:** Proje kararı.
+
+### Gradient descent
+
+- **Tercih:** gradient descent (sözlük tablosundaki gibi özgün adıyla).
+- **Bağlama bağlı alternatifler:** gradyan inişi (eski site metni).
+- **Kaynak:** Sözlük tablosu.
+
+### Öznitelik, sıkıştırma
+
+- **Tercih:** öznitelik (feature); aktivasyon fonksiyonunun etkisi için
+  "sıkıştırma" (squash).
+- **Kaynak:** D2L-TR ("feature: öznitelik"; "sıkıştırma işlevi")
+
+### Epok
+
+- **Tercih:** epok (sözlük tablosu). D2L-TR "dönem" der; projede kullanma.
+
+---
+
+## convolution
+
+Kaynaklar: DLT ve D2L-TR sözlükleri (bkz. ilk tablo); D2L-TR-BÖLÜM (bkz.
+## backpropagation). D2L-TR'nin evrişim bölümü bu çalışmada okunmadı.
+
+### Evrişim, çekirdek
+
+- **Tanım:** Küçük bir ağırlık penceresinin (çekirdek) girdi üzerinde
+  kaydırılması; her çıktı, pencerenin altındaki piksellerin ağırlıklı toplamıdır.
+- **Tercih:** evrişim; çekirdek. "Filtre" ve "kernel" kullanma: aynı kavrama
+  üç ad olur. Hazır çekirdekler "Bulanıklaştır", "Keskinleştir", "Dikey
+  kenarlar", "Dış hat" gibi işlevleriyle adlandırılır.
+- **Bağlama bağlı alternatifler:** süzgeç (DLT "filter"). Projede kullanma.
+- **Kaynak:** DLT ("convolution: evrişim", "kernel: çekirdek"), D2L-TR ("kernel: çekirdek"); sözlük tablosu.
+
+### Çapraz korelasyon
+
+- **Tanım:** Çekirdeği ters çevirmeden uygulanan kayan toplam; evrişim
+  katmanlarının gerçekte yaptığı işlem. Matematikteki evrişim çekirdeği çevirir.
+- **Tercih:** çapraz korelasyon
+- **Kaynak:** D2L-TR §6.2.5 ([conv-layer](https://tr.d2l.ai/chapter_convolutional-neural-networks/conv-layer.html)),
+  Codex-TR'nin okuduğu: çapraz korelasyon ile çekirdeği çevrilmiş evrişim
+  ayrımı.
+
+### Dolgu, adım kaydırma (stride)
+
+- **Tanım:** Dolgu, girdinin çevresine eklenen sıfır hücreler (p). Adım
+  kaydırma, pencerenin her seferinde kaç hücre sıçradığı (s).
+- **Tercih:** dolgu; adım kaydırma, ilk geçtiği yerde "adım kaydırma (stride)".
+  Kaydırıcı etiketi "Adım kaydırma s".
+- **Bağlama bağlı alternatifler:** dolgulama (DLT); uzun adım (D2L-TR).
+  Yalın "adım" kullanma: aynı lab'daki öğrenme bölümünde "adım" bir gradient
+  descent adımıdır.
+- **Kaynak:** DLT ("stride: adım kaydırma", "padding: dolgulama"), D2L-TR ("padding: dolgu", "stride: uzun adım")
+
+### Alıcı alan
+
+- **Tanım:** Üstteki bir hücrenin değerini etkileyen girdi hücrelerinin bölgesi.
+- **Tercih:** alıcı alan
+- **Bağlama bağlı alternatifler:** alım alanı (D2L-TR). Fizyolojideki
+  (Hubel ve Wiesel) "receptive field" karşılığı olarak "alıcı alan"
+  tercih edildi; açık karar.
+- **Kaynak:** D2L-TR ("receptive field: alım alanı")
+
+### Kenar dedektörü
+
+- **Tercih:** kenar dedektörü ("kenar bulucu", "kenar filtresi" kullanma).
+- **Kaynak:** Proje kararı.
+
+---
+
+## attention
+
+Kaynak: D2L-TR dikkat bölümleri (okundu): *Dikkat İşaretleri*, *Dikkat
+Puanlama Fonksiyonları*, *Özdikkat ve Konumsal Kodlama*, *Çoklu-Kafalı
+Dikkat* ([chapter_attention-mechanisms](https://github.com/d2l-ai/d2l-tr/tree/master/chapter_attention-mechanisms)).
+Aşağıda D2L-TR-DİKKAT diye anılır.
+
+### Attention
+
+- **Tercih:** attention (tr-style.md "Zorla Türkçeleştirme" kuralındaki örnek).
+  "attention payı" bir kelimenin softmax sonrası ağırlığıdır.
+- **Bağlama bağlı alternatifler:** dikkat, dikkat mekanizması, dikkat
+  ağırlıkları (D2L-TR-DİKKAT). Kaynakta yerleşik olduğu için açık karar.
+- **Kaynak:** tr-style.md; D2L-TR-DİKKAT
+
+### Sorgu, anahtar, değer (query, key, value)
+
+- **Tercih:** sorgu (query), anahtar (key), değer (value); ilk geçtiği yerde
+  İngilizcesi parantezde. Vektörler: sorgu vektörü, anahtar vektörü, değer vektörü.
+- **Karıştırılmaması gereken:** "değer" sözcüğünün sayısal değer anlamı;
+  karışabilecek yerde "değer vektörü" yaz.
+- **Kaynak:** D2L-TR-DİKKAT ("Sorgular, Anahtarlar ve Değerler"); DLT ("query: sorgu")
+
+### Eşleşme, puan, pay
+
+- **Tanım:** Eşleşme, sorgu ile anahtarın nokta çarpımı (ham). Puan, √d'ye
+  bölünmüş eşleşme. Pay, softmax sonrası ağırlık (toplamı %100).
+- **Tercih:** eşleşme; puan ("skor" kullanma); pay.
+- **Kaynak:** D2L-TR-DİKKAT ("dikkat puanlama fonksiyonu"). Ayrım proje kararıdır.
+
+### Ölçeklenmiş nokta çarpımı, softmax, kafa, self-attention
+
+- **Tercih:** ölçeklenmiş nokta çarpımı attention'ı; softmax (özgün adıyla);
+  attention kafası (head); self-attention; Transformer.
+- **Bağlama bağlı alternatifler:** ölçeklendirilmiş nokta çarpımı dikkati,
+  softmaks, özdikkat, kafa (D2L-TR-DİKKAT). "attention" İngilizce kaldığı için
+  "self-attention" da İngilizce kalır; açık karar.
+- **Kaynak:** D2L-TR-DİKKAT
+
+### İzdüşüm matrisi
+
+- **Tercih:** izdüşüm (projection); bkz. ## pca.
+
+---
+
+## tokenization
+
+### Token, tokenizer, BPE
+
+- **Tercih:** token, tokenizer, BPE (sözlük tablosu). "token" Türkçe yazımına
+  göre ek alır: tokenler, tokene, tokendir. "tokenizer" kesme işaretiyle ek
+  alır: tokenizer'ın. Sayıdan sonra çoğul yok: "5 token".
+- **Bağlama bağlı alternatifler:** jeton (DLT), andıç/belirteç (D2L-TR).
+  Projede kullanma; "jeton" i18n.test.ts ile yasak.
+- **Kaynak:** sözlük tablosu; DLT, D2L-TR
+
+### Bayt çifti kodlaması (BPE), birleştirme, alt sözcük
+
+- **Tanım:** En sık yan yana gelen çifti tek parçaya birleştirip sayımı
+  yineleyen yöntem. Her adım bir birleştirmedir (merge); sonunda elde edilen
+  parçalar sözlüktür.
+- **Tercih:** bayt çifti kodlaması (BPE); birleştirme; alt sözcük
+  bölütleme (subword segmentation).
+- **Kullanma:** "birleşim", "kaynaştırma" (aynı işleme ikinci ad).
+- **Kaynak:** Proje kararı; incelenmiş Türkçe kaynak yok. Açık karar.
+
+### Derlem, sözlük
+
+- **Tercih:** derlem (corpus; "eğitim metni" ve "külliyat" kullanma);
+  sözlük (vocabulary; i18n.test.ts ile korunur).
+- **Kaynak:** sözlük tablosu.
+
+### Kesim
+
+- **Tanım:** Tokenizer'ın metni ayırdığı yer (lab'daki "cut").
+- **Tercih:** kesim ("kesik", "sınır" kullanma).
+- **Kaynak:** Proje kararı.
+
+---
+
+## word-embeddings
+
+### Embedding, word embedding
+
+- **Tercih:** embedding / word embedding (sözlük tablosu; özgün adıyla).
+  "embedding uzayı". Kelime vektörü de kullanılabilir.
+- **Bağlama bağlı alternatifler:** gömme, kelime gömme (DLT). Projede kullanma; açık karar.
+- **Kaynak:** sözlük tablosu; DLT ("embedding: gömme")
+
+### Kosinüs benzerliği
+
+- **Tanım:** İki vektör arasındaki açının kosinüsü; lab'da vektörler birim
+  uzunlukta olduğu için nokta çarpımına eşittir.
+- **Tercih:** kosinüs benzerliği; tablo ve göstergelerde kısaca "benzerlik".
+- **Kaynak:** Proje kararı.
+
+### İzdüşüm, açıklanan varyans, uzaklık uyumu
+
+- **Tercih:** izdüşüm (bkz. ## pca; "projeksiyon" kullanma); açıklanan varyans;
+  uzaklık uyumu (Spearman sıra korelasyonu; "mesafe" yerine "uzaklık").
+- **Kaynak:** bkz. ## pca.
+
+---
+
+## word-embeddings-3d
+
+Yeni kavram yok; terimler ## word-embeddings ve ## pca bölümlerindedir.
+"Ödünleşim" (trade-off) proje önerisidir; incelenmiş bir kaynak yok.
+
+---
+
+## diffusion
+
+Kaynak: İhsan Karabulut, *IST304 İstatistik Karar Kuramı ve Yöntemleri,
+Hafta XI, Ders 1: Sonsal Dağılım ve Beklenen Sonsal Kayıp*, Ankara
+Üniversitesi. [Açık ders](https://acikders.ankara.edu.tr/mod/resource/view.php?id=118936)
+(okundu: "sonsal (posterior) dağılım", "önsel dağılım"). Aşağıda IST304.
+
+### Önsel dağılım, sonsal olasılık, sonsal ortalama
+
+- **Tanım:** Önsel dağılım, gözlemden önce şekillere verilen olasılıklar
+  (lab'da izin verilen şekiller üzerinde düzgün dağılım: varsayılan dört, kaynak şekil çıkarılırsa üç). Sonsal olasılık, gürültülü
+  örnek görüldükten sonra Bayes kuralıyla güncellenen olasılık. Sonsal
+  ortalama E[x₀|xₜ], temiz örnek tahminidir (engine.ts `estimate`).
+- **Tercih:** önsel dağılım; sonsal olasılık (posterior); sonsal ortalama.
+  İlk geçtiği yerde İngilizcesi parantezde.
+- **Kullanma:** "önbilgi", "başlangıç olasılığı", "seçenekler" (aynı kavrama başka adlar).
+- **Kaynak:** IST304
+
+### İleri süreç, ters süreç, gürültü giderme
+
+- **Tercih:** ileri süreç; ters süreç; ters adım; gürültü giderme (denoising);
+  gürültü giderici (denoiser). "diffusion modeli" özgün adıyla kalır.
+- **Bağlama bağlı alternatifler:** gürültü arındırma (D2L-TR). Açık karar.
+- **Kaynak:** D2L-TR ("denoising: gürültü arındırma"); proje kararı.
+
+### Tohum (seed), sinyal payı ᾱ
+
+- **Tercih:** rastgele tohum, düğmede "Yeni tohum (seed)"; ᾱ için "sinyal payı".
+- **Kaynak:** Proje kararı.
+
+---
+
+## jepa
+
+### Kodlayıcı, hedef kodlayıcı, tahminci
+
+- **Tercih:** kodlayıcı (encoder); hedef kodlayıcı; bağlam kodlayıcısı;
+  tahminci (predictor).
+- **Bağlama bağlı alternatifler:** gizyazar (DLT). Projede kullanma.
+- **Kaynak:** D2L-TR ("encoder: kodlayıcı"); DLT. "Tahminci" proje kararıdır.
+
+### Ara katman (bu lab'da)
+
+- **Tercih:** Bu lab'da ağların iç katmanı "ara katman", nöronu "ara
+  katmandaki nöron". "Gizli" sözcüğü gizlenen parçaya ayrılmıştır; diğer
+  lab'larda "gizli katman" kullanılır (bkz. ## multilayer-perceptrons).
+- **Kaynak:** Proje kararı.
+
+### Parça, temsil, çöküş
+
+- **Tercih:** parça (patch); temsil (representation; DLT "gösterim");
+  çöküş (collapse: temsillerin tek noktaya yaklaşması).
+- **Kaynak:** Proje kararı; DLT ("representation: gösterim") projede kullanılmaz.
+
+### EMA, stop-gradient, JEPA
+
+- **Tercih:** EMA (üstel hareketli ortalama), stop-gradient ve
+  joint-embedding predictive architecture (JEPA) özgün adlarıyla kalır;
+  kart terimi "öz-denetimli öğrenme" (self-supervised learning).
+- **Kaynak:** Proje kararı; "öz-denetimli öğrenme" için incelenmiş kaynak yok. Açık karar.
+
+### k en yakın komşu
+
+- **Tercih:** "5 en yakın komşu (k = 5)"; bkz. ## generalization.

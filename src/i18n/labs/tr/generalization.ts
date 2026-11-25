@@ -1,50 +1,60 @@
 import type en from "../en/generalization";
+
+/**
+ * Türkçe metin: generalization. Şekli `en/generalization.ts` ile birebir aynı olmak zorundadır.
+ *
+ * Terimler docs/language/tr-terminology.md (## generalization), anlatım kuralları
+ * docs/language/tr-style.md dosyasındadır.
+ */
+
 const copy: typeof en = {
-  question:
-    "Eğitim noktalarının hepsi doğru sınıflandırılıyor. Yeni noktalarda sonuç nasıl değişir?",
+  percent: (n: number) => `%${n}`,
+  question: "k = 1 iken eğitim noktalarının hepsi doğru sınıflanır. Yeni noktalarda ne olur?",
   training: "Eğitim doğruluğu",
   validation: "Doğrulama doğruluğu",
   test: "Son test doğruluğu",
-  map: "Sınıflandırıcının bölgeleri ve etiketli örnekler. Daire ve üçgen farklı sınıfları, turuncu halkalar yanlışları gösterir.",
-  legend: "Daire / üçgen: gerçek sınıf. Zemin: tahmin. Turuncu halka: hata.",
+  map: "Sınıflandırıcının karar bölgeleri ve etiketli örnekler. Daire ya da üçgen, noktanın verideki etiketini gösterir; bu etiket ters çevrilmiş olabilir. Turuncu halkalar, tahminin bu etiketle uyuşmadığı noktalardır.",
+  legend:
+    "Daire / üçgen: verideki etiket. Zemin rengi: tahmin edilen sınıf. Turuncu halka: tahmin etiketle uyuşmuyor.",
   settings: "Model ayarları",
-  neighbours: "Oy veren komşular (k)",
+  neighbours: "Oy veren komşu sayısı (k)",
   kHint:
-    "k = 1 iken en yakın komşu, eğitim noktasının kendisidir. k’yı artırarak sınıflandırmaya daha fazla komşu kat.",
+    "k = 1 iken her eğitim noktasının en yakın komşusu kendisidir ve kendi etiketine oy verir. Oylamaya daha çok komşu katmak için k'yı artır.",
   hide: "Eğitim noktalarını göster",
-  show: "Görülmemiş örnekleri aç",
+  show: "Görülmemiş örnekleri göster",
   lock: "Modeli kilitle ve bir kez test et",
   finalNote:
-    "Skor ayrı test verisiyle hesaplandı ve model ayarları kilitlendi. Bu skora bakarak ayar değiştirmek test verisini model seçimine dahil eder. Yeni bir karşılaştırma için yeni veri oluştur.",
-  revealed: "Yeni örnekler açıldı. Hatalarını eğitim sonucuyla karşılaştır.",
-  newData: "Yeni veri oluştur",
-  dataSettings: "Örneklem ve etiket gürültüsü",
-  samples: "Eğitim örnekleri",
+    "Bu doğruluk ayrı bir test kümesiyle hesaplandı. Ayarlar kilitlendi: bu sonuca bakarak ayar değiştirmek test kümesini bir doğrulama kümesine çevirir. Yeniden denemek için yeni veri kümesi oluştur.",
+  revealed:
+    "Yeni örnekler görünüyor. Bu örneklerdeki hataları eğitim kümesindeki sonuçla karşılaştır.",
+  newData: "Yeni veri kümesi oluştur",
+  dataSettings: "Örnek sayısı ve etiket gürültüsü",
+  samples: "Eğitim örneği sayısı",
   noise: "Etiketin ters çevrilme olasılığı",
   dataHint:
-    "Örnek sayısını ve gürültüyü doğrulama verisini açmadan önce seç. Veriyi gizlemek daha önce gördüğün bilgiyi silmez. Bu ayarları değiştirmek için yeni veri oluştur.",
+    "Bu iki ayarı doğrulama noktalarını göstermeden önce seç. Gördüğün noktaları gizlemek onları görülmemiş yapmaz. Bu ayarları değiştirmek için yeni veri kümesi oluştur.",
   scope:
-    "Bu deney, daire biçimindeki sentetik verilerde k-en yakın komşu yöntemiyle sınıflandırma yapar. Eğitim, doğrulama ve test verileri ayrı üretilir. Etiketler seçilen olasılıkla ters çevrilir. Daha büyük k, sınırı yumuşatır; ancak doğruluğu her zaman artırmaz. Sinir ağı eğitilmez.",
-  bridgeTitle: "Aynı soru bir sinir ağı için de geçerli.",
+    "Bu lab, sentetik daire verisi üzerinde gerçek bir k-en yakın komşu (k-NN) sınıflandırıcısı çalıştırır. Eğitim, doğrulama ve test örneklemleri birbirinden bağımsız üretilir. Her etiket, seçilen olasılıkla ters çevrilebilir. Burada yapay sinir ağı eğitilmez. k büyüdüğünde karar bölgeleri genellikle daha az parçalı görünür; farkı görmek için haritayı farklı k değerlerinde karşılaştır. Sonuçlar örnekleme göre değişir ve daha çok yumuşatma her zaman daha iyi sonuç vermez.",
+  bridgeTitle: "Aynı soru yapay sinir ağları için de sorulur.",
   bridge:
-    "Esnek bir sınır gürültüye de uyabilir. Buradaki model komşuları saklar; sinir ağı ağırlıklarını ayarlar. İkisi de parametrelerinin seçiminde kullanılmamış örneklerde değerlendirilmelidir.",
-  link: "Sinir ağının kapasitesini keşfet",
+    "Esnek bir karar sınırı gürültüye de uyabilir. Buradaki model komşuları ezberler; yapay sinir ağı ise ağırlıklarını ayarlar. İkisi de, parametrelerinin seçiminde kullanılmamış örneklerde değerlendirilmelidir.",
+  link: "Yapay sinir ağında kapasiteyi incele",
   recap: {
     lessons: [
-      "Eğitim başarısı, yeni verideki başarının tahmini değildir.",
-      "Modeli doğrulama örnekleriyle seç; son değerlendirme için ayrı test kümesi sakla.",
-      "Daha fazla kapasite ve daha fazla yumuşatma birer tercihtir; iyileşme garantisi değildir.",
+      "Eğitim kümesindeki doğruluk, yeni verideki doğruluğun bir tahmini değildir.",
+      "Modeli doğrulama örnekleriyle seç; son değerlendirme için ayrı bir test kümesi ayır.",
+      "Kapasiteyi ya da yumuşatmayı artırmak bir şey kazandırırken başka bir şey kaybettirir; iyileşmeyi garanti etmez.",
     ],
   },
   tour: {
-    intro: "Sınıflandırıcının hiç görmediği noktaları aç.",
+    intro: "Sınıflandırıcının hiç görmediği noktaları göster.",
     stages: {
       experiment: {
-        map: "Zemin komşuların oylarıyla hesaplanıyor. k = 1 iken eğitim noktaları kendilerini kusursuz sınıflar.",
+        map: "Zemin rengi komşuların oylamasıyla hesaplanır. k = 1 iken eğitim noktalarının hepsi doğru sınıflandırılır.",
         reveal:
-          "Ayrı bir örneklem aç. Turuncu halkalar tahmin ile etiketin uyuşmadığı noktaları gösterir.",
+          "Ayrı bir örneklemi göster. Turuncu halkalar, tahminin etiketle uyuşmadığı noktaları gösterir.",
         smooth:
-          "Daha çok komşuya oy verdir. Doğrulama doğruluğunu eğitim sonucuyla karşılaştır; ikisinin de yükselmesi garanti değil.",
+          "k'yı artırarak daha çok komşunun oy vermesini sağla. Doğrulama doğruluğunu eğitim doğruluğuyla karşılaştır; ikisinin de yükselmesi garanti değildir.",
       },
     },
   },
@@ -52,13 +62,13 @@ const copy: typeof en = {
     topics: { generalisation: "Genelleme ve model seçimi" },
     notes: {
       "sklearn-generalization":
-        "Test verisini model seçimine sızdırmadan eğitim ve değerlendirme verilerini ayırmak.",
+        "Test verisini model seçimine sızdırmadan eğitim ve değerlendirme verisinin nasıl ayrılacağını anlatır.",
       "isl-courses":
-        "Video derslerinde istatistiksel öğrenme ve yeniden örnekleme konularıyla başla. R ve Python seçenekleri var; derslere erişim için edX hesabı gerekebilir.",
+        "İstatistiksel öğrenme ve yeniden örnekleme video dersleriyle başla. R ve Python seçenekleri var; edX'e erişim için hesap gerekebilir.",
       "isl-book":
-        "Ücretsiz kitabın sınıflandırma ve yeniden örnekleme bölümlerini oku. k seçimini, doğrulama verisini ve son testin neden ayrı tutulduğunu labdaki sonuçlarla karşılaştır.",
+        "Ücretsiz kitabın sınıflandırma ve yeniden örnekleme bölümlerini oku. k seçimini ve doğrulama verisini, son testin neden ayrı tutulması gerektiğiyle birlikte düşün.",
       "d2l-generalization":
-        "Eğitim hatası ile yeni verideki hata arasındaki farkı matematikle açıklar. Labdan sonra oku; örnekler k-en yakın komşu yerine regresyon kullanır.",
+        "Eğitim hatası ile yeni verideki hata arasındaki farkın matematiksel anlatımı. Lab'dan sonra oku; örnekler k-en yakın komşu yerine regresyon kullanır.",
     },
   },
 };

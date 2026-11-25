@@ -3,7 +3,7 @@ import { useInView, useKeyPress, useReducedMotion } from "@/hooks";
 import { Button, Kbd, Segmented } from "@/components/ui";
 import { LabSlider, Stage, Transport } from "@/components/lab";
 import { useLabCopy } from "@/i18n/labs";
-import { formatNumber } from "@/lib/format";
+import { useFormat } from "@/lib/useFormat";
 import {
   DATASETS,
   generateDataset,
@@ -99,6 +99,7 @@ function useRoomForDiagram() {
 }
 
 export function Playground() {
+  const { formatNumber } = useFormat();
   const lab = useLabCopy("multilayer-perceptrons");
   const p = lab.playground;
   const diagramOpen = useRoomForDiagram();
@@ -336,7 +337,7 @@ export function Playground() {
               min={0}
               max={LEARNING_RATES.length - 1}
               onChange={setRateIndex}
-              format={(i) => String(LEARNING_RATES[i] ?? 0.03)}
+              format={(i) => formatNumber(LEARNING_RATES[i] ?? 0.03, 3)}
             />
             <p className="text-caption text-fg-faint">
               <Kbd>Space</Kbd> {lab.keyboardHint.trainPause} <Kbd>R</Kbd> {lab.keyboardHint.restart}
