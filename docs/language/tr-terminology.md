@@ -853,8 +853,9 @@ Algılayıcılar*), DLT.
 
 ## convolution
 
-Kaynaklar: DLT ve D2L-TR sözlükleri (bkz. ilk tablo); D2L-TR-BÖLÜM (bkz.
-## backpropagation). D2L-TR'nin evrişim bölümü bu çalışmada okunmadı.
+Kaynaklar: DLT ve D2L-TR sözlükleri (bkz. ilk tablo); D2L-TR-BÖLÜM
+(bkz. backpropagation bölümü). D2L-TR'nin evrişim bölümü bu çalışmada
+okunmadı.
 
 ### Evrişim, çekirdek
 
