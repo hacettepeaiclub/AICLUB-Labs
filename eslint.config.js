@@ -20,7 +20,7 @@ import prettier from "eslint-config-prettier";
  * `strict` + `noUncheckedIndexedAccess` already enforce.
  */
 export default tseslint.config(
-  { ignores: ["dist/**", "node_modules/**", "*.tsbuildinfo"] },
+  { ignores: ["dist/**", "node_modules/**", "*.tsbuildinfo", ".worktrees/**"] },
 
   js.configs.recommended,
   ...tseslint.configs.recommended,
