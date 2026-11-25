@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useReducedMotion } from "@/hooks";
 import { Figure, LabSlider, Stage, Transport } from "@/components/lab";
 import { useLabCopy } from "@/i18n/labs";
-import { formatNumber } from "@/lib/format";
+import { useNumberFormat } from "./useNumberFormat";
 import { clamp } from "@/lib/math";
 import { createRun, gradient, step, type OptimizerConfig } from "../engine";
 import { LANDSCAPES } from "../landscape";
@@ -62,6 +62,7 @@ const logWidth = (value: number, lo: number, hi: number): number => {
  */
 export function AdamStage() {
   const g = useLabCopy("gradient-descent");
+  const { formatNumber, decimal } = useNumberFormat();
   const reduced = useReducedMotion() ?? false;
 
   const scale = LANDSCAPES.scaleGap;
@@ -140,7 +141,7 @@ export function AdamStage() {
                 {([row.x, row.y] as const).map((value, i) => (
                   <td key={i} className="py-3 pr-4">
                     <span className="block font-mono tabular-nums text-fg">
-                      {value.toExponential(2)}
+                      {decimal(value.toExponential(2))}
                     </span>
                     <span
                       aria-hidden

@@ -1,3 +1,4 @@
+import { useLanguage } from "@/i18n";
 import { Figure } from "@/components/lab";
 import { useLabCopy } from "@/i18n/labs";
 import { Badge } from "@/components/ui";
@@ -29,12 +30,13 @@ export interface SearchFiguresProps {
  */
 export function SearchFigures({ metrics, emphasis, showCost = true }: SearchFiguresProps) {
   const t = useLabCopy("graph-search");
+  const { language } = useLanguage();
   const solved = metrics.status === "solved";
   return (
     <>
       <Figure
         label={t.metrics.explored}
-        value={metrics.explored.toLocaleString("en-US")}
+        value={metrics.explored.toLocaleString(language === "tr" ? "tr-TR" : "en-US")}
         tone={emphasis === "explored" ? "accent" : "default"}
       />
       <Figure label={t.metrics.path} value={solved ? t.steps(metrics.pathLength) : "—"} />
@@ -69,6 +71,7 @@ export function AlgorithmComparison({
   emphasis,
   showCost = true,
 }: ComparisonProps) {
+  const t = useLabCopy("graph-search");
   const rows = order.filter((algorithm) => results[algorithm]);
   if (rows.length === 0) return null;
 
@@ -76,22 +79,22 @@ export function AlgorithmComparison({
     <div className="overflow-x-auto rounded-card border border-line/10 bg-ink-800 p-5">
       <table className="w-full min-w-72 text-body-sm">
         <caption className="mb-3 text-left text-caption text-fg-faint">
-          Same map, run by run
+          {t.comparisonCaption}
         </caption>
         <thead>
           <tr className="text-overline uppercase text-fg-faint">
             <th scope="col" className="pb-2 text-left font-medium">
-              Algorithm
+              {t.algorithm}
             </th>
             <th scope="col" className="pb-2 text-right font-medium">
-              Explored
+              {t.metrics.explored}
             </th>
             <th scope="col" className="pb-2 text-right font-medium">
-              Steps
+              {t.comparisonSteps}
             </th>
             {showCost && (
               <th scope="col" className="pb-2 text-right font-medium">
-                Cost
+                {t.metrics.cost}
               </th>
             )}
           </tr>

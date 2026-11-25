@@ -241,3 +241,315 @@ yukarıdaki biçimde yeniden yazılacak.
 | reinforcement learning | pekiştirmeli öğrenme | |
 | attention, word embedding | attention, word embedding | |
 | corpus, epoch | derlem, epok | "korpus" kullanma (testle korunur) |
+
+## probability
+
+### Koşullu olasılık ve tümleyen
+
+- **Tanım:** Koşullu olasılık, bir olay gerçekleştiğinde başka bir olayın
+  olasılığıdır. İki çocuk deneyinde dört eşit olasılıklı sonuçtan ipucuna
+  uyanları say. Monty Hall deneyinde sunucunun kapıyı hangi kuralla açtığını
+  hesaba kat. Doğum günü deneyinde, en az iki kişinin aynı gün doğması
+  olayının tümleyeni, bütün doğum günlerinin farklı olmasıdır.
+- **Tercih:** koşullu olasılık, tümleyen.
+- **Kaynak:** İstanbul Sabahattin Zaim Üniversitesi,
+  [Olasılık Teorisi, örnekler 1.9, 1.12 ve 1.13](https://w3.izu.edu.tr/sites/default/files/2026-10/112-olasilikteorisi.pdf).
+
+### Simpson paradoksu
+
+- **Tanım:** Her alt grupta aynı yönde olan karşılaştırmanın, gruplar
+  birleştirildiğinde tersine dönebilmesi. Bu deneyde her tedavinin toplam
+  başarı oranı, grup oranlarının hasta sayılarıyla ağırlıklandırılmış
+  ortalamasıdır.
+- **Tercih:** Simpson paradoksu. Toplam ve grup oranlarını ayrı adlandır.
+- **Kaynak:** Jale Girmen, Çukurova Üniversitesi,
+  [İstatistik Öğretiminde Çarpıcı Görsel Uygulamalar, s. 152–153](https://libratez.cu.edu.tr/tezler/5791.pdf).
+
+### Binom dağılımı, binom katsayısı ve Galton tahtası
+
+- **Tanım:** İdeal tahtada her sırada birbirinden bağımsız ve eşit olasılıklı
+  sağ veya sol adım atılır. Sağ adım sayısının dağılımı binom dağılımıdır.
+  Bir göze ulaşan sağ-sol dizilerinin sayısı binom katsayısıdır. Fizik
+  simülasyonundaki oranlar, gözlerde durduğu gözlenen bilyelerden hesaplanır.
+- **Tercih:** binom dağılımı, binom katsayısı, Galton tahtası.
+- **Kaynak:** Çukurova Üniversitesi,
+  [İstatistik I, Binom Dağılımı](https://abs.cu.edu.tr/Dokumanlar/2016/BY%20211/358475825_istatistik_i.pdf)
+  ve Ege Üniversitesi, [Galton Dizileri, §6.1](https://acikerisim.ege.edu.tr/bitstreams/25c44dd4-5804-46a7-94be-e5f1296e56da/download).
+
+### Büyük sayılar yasası ve gözlenen oran
+
+- **Tanım:** Bağımsız ve aynı dağılımlı sağ-sol denemelerinde sağa gidenlerin
+  gözlenen oranı, deneme sayısı arttıkça teorik olasılığa yaklaşır. Gözlenen
+  oran ile teorik olasılık arasındaki mutlak fark, her denemede azalmak
+  zorunda değildir.
+- **Tercih:** büyük sayılar yasası, gözlenen oran, teorik olasılık.
+- **Bağlama bağlı alternatif:** büyük sayılar kanunu. Bu deneyde kaynakla ve
+  başlıkla tutarlı olarak “yasa” kullanılır.
+- **Kaynak:** İstanbul Sabahattin Zaim Üniversitesi,
+  [Olasılık Teorisi, §7.4](https://w3.izu.edu.tr/sites/default/files/2026-10/112-olasilikteorisi.pdf).
+
+### Bağımsızlık ve simülasyon
+
+- **Tanım:** Bağımsız denemelerde önceki sonuçlar, sonraki sonucun
+  olasılığını değiştirmez. Doğum günü modelinde tarihler kişiler arasında
+  bağımsız çekilir. Galton tahtasının ideal modelinde sağ-sol adımları
+  bağımsızdır. Fizik simülasyonu ise bilyelerin hareketini hesaplar ve
+  bilyelerin durduğu gözleri sayar.
+- **Tercih:** bağımsızlık, simülasyon. Örnek: “Simülasyondaki oranı
+  hesaplanan olasılıkla karşılaştır.”
+- **Bağlama bağlı alternatif:** benzetim. Arayüzde “simülasyon” kullanılır.
+- **Kaynak:** İstanbul Sabahattin Zaim Üniversitesi,
+  [Olasılık Teorisi, §1.8 ve §7.4](https://w3.izu.edu.tr/sites/default/files/2026-10/112-olasilikteorisi.pdf).
+
+## gradient-descent
+
+### Gradient descent, gradyan ve adım boyu
+
+- **Tanım:** Momentumsuz gradient descent, konumu −η∇f kadar değiştirir.
+  Negatif gradyan, fonksiyonun bulunduğun noktada en hızlı azaldığı yönü
+  gösterir. Bu yönde gidilen mesafe η·|∇f| kadardır.
+- **Tercih:** gradient descent, gradyan, adım boyu (η). Eğitim kaynaklarında
+  η için öğrenme oranı da kullanılır. Deneydeki kontrolde adım boyu yazılır.
+- **Kaynak:** Afyon Kocatepe Üniversitesi,
+  [Görüntü Sınıflandırma İçin Derin Öğrenme, s. 18–19](https://acikerisim.aku.edu.tr/server/api/core/bitstreams/e975eb1d-13e9-45f8-a16c-23fb196f63e2/content).
+
+## reinforcement-learning
+
+### Pekiştirmeli öğrenme, ödül ve Q-değeri
+
+- **Tanım:** Ajan bir hamle seçer, yeni duruma geçer ve o hamlenin ödülünü
+  alır. Q tablosu, her durum ve hamle çifti için indirgenmiş getiriye
+  ilişkin bir tahmin tutar. Bu deneyde politika, her karede en yüksek
+  Q-değerine sahip hamleyi seçer.
+- **Tercih:** pekiştirmeli öğrenme, hamle, ödül, Q-değeri ve politika.
+  Hareketin gerçekleşmediği duvar denemeleri de birer hamledir. Ödül tek
+  hamlede alınır, getiri ise birden çok ödülü hesaba katar.
+- **Kaynak:** İstanbul Teknik Üniversitesi,
+  [Pekiştirmeli Öğrenme ders notu, s. 9–10](https://web.itu.edu.tr/ayhant/dersler/ysa/dn/ysa_ders12.pdf),
+  politika için “yaklaşım”, hamle için “davranış” kullanır.
+  [Çukurova Üniversitesi, Pekiştirmeli Öğrenme ders planı](https://eobs.cu.edu.tr/Ders/GenelBilgi/694126)
+  “politika” ve “Q-learning” terimlerini kullanır.
+
+- **Ajan ve hamle:** İTÜ notunda aracı ve davranış, Özyeğin Üniversitesi
+  konferans bildirisinde robot ve aksiyon kullanılır. Bu deneyde karar
+  veren öğe ajan, seçtiği yön hamledir. Hamle, duvara yöneldiğinde konum
+  değişmese de sayılır.
+- **Tur:** Başlangıç karesinden kapıya ya da hamle sınırına kadar süren
+  hamle dizisi. Eğitim birden çok turdan oluşur. Tur, deneydeki mevcut
+  sayaç adıdır.
+- **İndirim katsayısı (γ), keşif oranı (ε):** γ, ilerideki ödüllerin
+  ağırlığını belirleyen çarpandır. ε, rastgele hamle seçme olasılığıdır.
+  [5. Türkiye Robotbilim Konferansı Bildirileri, s. 86](https://tork2019.ozyegin.edu.tr/sites/default/files/tork2019_r1.pdf)
+  γ için “indirim oranı” der ve keşif ile deneyimden yararlanmayı ayırır.
+  Deneyde γ için katsayı denir çünkü sonraki değeri doğrudan çarpar.
+
+## floating-point
+
+### Kayan nokta, işaret, üs ve kesir
+
+- **Tanım:** Kayan noktalı gösterim, değeri işaret, üs ve kesir alanlarıyla
+  kodlar. Üs, normal değerlerde ikinin hangi kuvvetiyle ölçeklendiğini
+  belirler. Kesir alanı, anlamlı kısmın ikili noktanın sağındaki bitlerini
+  tutar. Alt normal sayılarda baştaki örtük bit sıfırdır.
+- **Tercih:** kayan nokta, işaret biti, üs alanı, kesir alanı. float32,
+  float64 ve bfloat16 biçim adlarıdır.
+- **Kaynak:** Hacettepe Üniversitesi, BİL220,
+  [Ara Sınav 1 çözümleri, soru 2](https://web.cs.hacettepe.edu.tr/~bil220/mt1sol.pdf).
+  Aynı işaret, üs ve kesir ayrımını 8 bitlik bir örnekte kullanır.
+
+### Temsil, yuvarlama ve komşu değer
+
+- **Tanım:** Girilen sayı biçimde tam olarak temsil edilemiyorsa en yakın
+  temsil edilebilir değer kullanılır. Tam ortada düşük anlamlı biti 0 olan
+  komşu seçilir. Sayı doğrusu, deneydeki küçük biçimin sonlu pozitif
+  değerlerini ve sıfırı gösterir.
+- **Tercih:** temsil edilebilir değer, yuvarlama, komşu değer. Sayı
+  basamakları yerelleştirilir. JavaScript çıktısı olduğu belirtilen
+  örnekler, konsolda göründükleri biçimde yazılır.
+- **Kaynak:** Deneydeki IEEE 754 yuvarlama uygulaması ve BİL220, soru 2.
+
+### Alt normal sayı ve duyarlık
+
+- **Tanım:** Üs alanı sıfır ve kesir alanı sıfırdan farklıysa değer alt
+  normaldir. Bu değerler sıfır ile mutlak değerce en küçük normal sayı
+  arasını doldurur. Duyarlık, anlamlı basamakların sayısıyla ilgilidir.
+- **Tercih:** alt normal sayı, duyarlık. Grafiklerde iki komşu değer
+  arasındaki uzaklık, biçimin değer aralığından ayrı bir büyüklüktür.
+- **Alternatifler:** BİL220 notu “normalize olmayan” der. İngilizce
+  subnormal ve denormal aynı sınıfı anlatır. Gündelik dilde hassasiyet
+  denebilir, bu lab'da duyarlık kullanılır.
+- **Kaynak:** [IBM Türkçe sayı türleri başvurusu](https://www.ibm.com/docs/tr/db2/11.5.x?topic=list-numbers)
+  kayan nokta için “duyarlık”, ondalık kayan nokta için “alt normal”
+  terimlerini kullanır. [Hacettepe Üniversitesi BİL220, soru 2](https://web.cs.hacettepe.edu.tr/~bil220/mt1sol.pdf)
+  ikili alanların sıfır olup olmamasına göre aynı sınıfı gösterir.
+
+## hash-tables
+
+### Kova, yuva, çakışma ve doğrusal yoklama
+
+- **Tanım:** Hash tablosu anahtardan bir başlangıç konumu hesaplar. Aynı
+  konuma birden fazla anahtar eşlendiğinde çakışma olur. Zincirlemede
+  kova bir anahtar listesi tutar. Açık adreslemede yuva tek bir anahtar
+  alır. Bu deneyin doğrusal yoklaması sıradaki yuvaya geçer ve dizinin
+  sonunda başa döner.
+- **Tercih:** hash tablosu, kova, yuva, çakışma, zincirleme, açık adresleme,
+  doğrusal yoklama.
+- **Kaynak:** Çukurova Üniversitesi,
+  [Veri Yapıları ders içeriği, 11. hafta](https://ebs.cu.edu.tr/Ders/GenelBilgi/691538).
+  Kova, yuva ve yoklama sözcükleri deneydeki mevcut kullanımdır.
+
+### Doluluk oranı ve amortize maliyet
+
+- **Tanım:** Doluluk oranı α, anahtar sayısının kapasiteye oranıdır.
+  Zincirlemede bir kova birden çok anahtar alabildiği için oran 1'i aşabilir.
+  Amortize maliyet, bir ekleme dizisinin toplam işini ekleme sayısına böler.
+- **Tercih:** doluluk oranı, amortize maliyet. Ekleme başına ortalama iş
+  grafiği, kapasite artışında taşınan anahtarları da içerir.
+- **Kaynak:** İstanbul Medipol Üniversitesi,
+  [Algoritma Analizi, 13. hafta](https://sens.medipol.edu.tr/tr/subjects/IND3233890).
+  Ders planı amortize analiz ile dinamik tabloları birlikte işler.
+
+## sorting
+
+### Seçmeli sıralama, eklemeli sıralama ve terslik
+
+- **Tanım:** Seçmeli sıralama her turda sıralanmamış bölümün en küçük
+  elemanını seçer. Eklemeli sıralama sıradaki elemanı sıralı bölümdeki
+  yerine ekler. Başta daha büyük olan eleman daha küçük olandan önceyse
+  bu ikili bir tersliktir. Eşit değerler terslik oluşturmaz.
+- **Tercih:** seçmeli sıralama, eklemeli sıralama, terslik. Bu deneyde bir
+  yer değiştirme bir taşıma sayılır. Eklemeli sıralamada sağa kaydırma
+  bir taşıma, eldeki değer başka yere yazılırsa son yazma da bir taşıma
+  sayılır. Sayaç doğrudan bellek yazma sayısını ölçmez.
+- **Kaynak:** İstanbul Okan Üniversitesi,
+  [Veri Yapıları ve Algoritmalar, 11. hafta](https://ois.okan.edu.tr/bilgipaketi/eobsakts/ders/ders_id/1917/program_kodu/0202002/s/3/st/M/ln/tr/print/1/pdf/1).
+  Çukurova Üniversitesi [Veri Yapıları ders içeriği](https://eobs.cu.edu.tr/Ders/GenelBilgi/624729)
+  “araya eklemeli sıralama” der. Sayaç ve terslik tanımları deneyin
+  sıralama motorunda belirtilir.
+
+## graph-search
+
+### Çizge, genişlik öncelikli arama ve yol maliyeti
+
+- **Tanım:** Izgaradaki her geçilebilir hücre çizgenin bir düğümüdür.
+  Genişlik öncelikli arama (BFS) en az adımlı yolu bulur. Dijkstra,
+  negatif olmayan geçiş maliyetlerinde en düşük maliyetli yolu bulur.
+  Burada başlangıç hücresi ödenmez. Girilen hücrelerin maliyetleri
+  toplamı yol maliyetidir.
+- **Tercih:** çizgede arama, genişlik öncelikli arama (BFS), yol uzunluğu,
+  yol maliyeti. Izgarada düğüm yerine hücre denir. İşlenen hücre, sıradan
+  alınmış hücredir. Sırada bekleyen hücre grafikte halkayla gösterilir.
+- **Kaynak:** Savaş Öztürk, Marmara Üniversitesi,
+  [Uzman Sistem Tabanlı Müzayede ile Çoklu Robot Görev Paylaşımı, s. 58–60](https://katalog.marmara.edu.tr/veriler/yordambt/cokluortam/3D/60F9D9CF-170F-0445-A56D-84D1D45B42C5.pdf).
+
+- **Sırada bekleyen hücre:** Aramaya eklenen ve henüz işlenmemiş hücre.
+  BFS bunları ilk giren ilk çıkar kuyruğunda, Dijkstra ve A* ise öncelik
+  kuyruğunda tutar. [Sakarya Üniversitesi tezi, bölüm 4.2.2](https://acikerisim.sakarya.edu.tr/bitstream/20.500.12619/80982/1/T04049.pdf)
+  A* için “açık liste” terimini kullanır.
+
+### A* ve Manhattan uzaklığı
+
+- **Tanım:** A*, birikmiş maliyete hedefe kalan maliyetin tahminini ekler.
+  Bu deneyde tahmin, yatay ve düşey adım farklarının mutlak değerlerinin
+  toplamıdır. Her geçiş en az 1 birim olduğu için tahmin kalan maliyeti
+  aşmaz.
+- **Tercih:** A*, Manhattan uzaklığı, kalan maliyet tahmini.
+- **Kaynak:** Sakarya Üniversitesi,
+  [Manhattan uzaklığı, bölüm 4.2.2.3](https://acikerisim.sakarya.edu.tr/bitstream/20.500.12619/80982/1/T04049.pdf).
+
+## cryptographic-hashing
+
+### Kriptografik hash, özet ve çakışma
+
+- **Tanım:** SHA-256 bir bayt dizisinden 256 bitlik özet hesaplar. Bu lab
+  özeti 64 on altılık basamakla gösterir. Farklı girdilerin bütün özetleri
+  eşleşirse çakışma olur. Ortak ön ek yalnızca baştan itibaren eşleşen
+  basamakları sayar.
+- **Tercih:** kriptografik hash fonksiyonu, özet, çakışma, ortak ön ek.
+  Hash, fonksiyonun adında, özet ise çıktıyı adlandırmak için kullanılır.
+  Eşit özet uzunluğu çakışma ölçütü değildir.
+- **Kaynak:** Atatürk Üniversitesi,
+  [Lojistik Bilgi Sistemleri, 11. hafta ders notu](https://adm.atauni.edu.tr/pluginfile.php/4606/mod_resource/content/1/Lojistik%20Bilgi%20Sistemleri%2011.%20Hafta%20Ders%20Notu.pdf).
+  Atılım Üniversitesi [Kriptografik Algoritmalar ders planı, 5. hafta](https://www.atilim.edu.tr/tr/ects/site-courses/222/10621/detail)
+  “kriptografik özet fonksiyonları” ve “çakışma direnci” terimlerini kullanır.
+
+### Çığ etkisi
+
+- **Tanım:** Girdideki küçük bir değişiklik, özetin birçok bitini
+  değiştirebilir. Tek bir karşılaştırmada tam 128 bit değişmesi gerekmez.
+  Ekrandaki sayaç iki gerçek özette farklı olan bitleri sayar.
+- **Tercih:** çığ etkisi, değişen bit sayısı. Bir on altılık basamak
+  dört biti gösterdiği için değişen basamak ve bit sayıları ayrıdır.
+- **Kaynak:** Bu lab'da gösterilen davranış, Web Crypto ile hesaplanan
+  özetler üzerinden ölçülür. [Marmara Üniversitesi, Şekil 8](https://katalog.marmara.edu.tr/veriler/yordambt/cokluortam/3E/18D7BE0D-34CF-034D-83E4-0D3F9FE97E6D.pdf)
+  tek boşluk farkı olan iki mesajla aynı kavramı gösterir. [NIST FIPS 180-4](https://csrc.nist.gov/pubs/fips/180-4/upd1/final)
+  SHA-256 hesabını tanımlar.
+
+## cache-locality
+
+### Önbellek bloğu, isabet ve ıska
+
+- **Tanım:** Önbellek bloğu, birlikte getirilen komşu adresler grubudur.
+  Modelde bir blok 64 bayt ve sekiz sayı içerir. Aranan adresin bloğu
+  önbellekteyse isabet olur. Blok önbellekte yoksa ıska olur ve blok
+  bellekten getirilir. Kapasite doluysa en uzun süredir kullanılmayan
+  blok çıkarılır.
+- **Tercih:** önbellek, önbellek bloğu, isabet, ıska. Bazı kaynaklar
+  “önbellek satırı” der. Bu deneyde satır, matris satırını gösterir.
+- **Kaynak:** Davut Akçiçek, Çanakkale Onsekiz Mart Üniversitesi,
+  *Ölü Bloklara Dayalı Veri Önbelleği Güvenirliğinin Arttırılması*,
+  YÖK tez no. 177847, s. 12–13. Önbellek bloğu, isabet ve ıska
+  kullanımlarını içerir.
+
+### Uzamsal ve zamansal yerellik
+
+- **Tanım:** Uzamsal yerellikte birbirine yakın adreslere erişilir.
+  Zamansal yerellikte kısa süre önce kullanılan adrese tekrar erişilir.
+  Satır boyunca ardışık okuma, aynı bloktaki komşu sayıları kullanır.
+- **Tercih:** uzamsal yerellik, zamansal yerellik. Okuma başına ıska,
+  modelin hesapladığı orandır. Okuma başına süre cihazda ölçülür.
+- **Kaynak:** İstinye Üniversitesi [Bilgisayar Mimarisi ders içeriği](https://ois.istinye.edu.tr/bilgipaketi/eobsakts/ders/ders_id/8064/program_kodu/0402001/s/6/st/M/ln/tr/print/1/)
+  “uzamsal yerellik” terimini kullanır. Hacettepe Üniversitesi BİL220
+  [final çözümleri, soru 4](https://web.cs.hacettepe.edu.tr/~bil220/finalsol.pdf)
+  aynı kavramı bir önbellek örneğinde “Uzlamsal (spatial)” olarak yazar.
+  İnönü Üniversitesi [Bilgisayar Sistemlerine Giriş](https://akademi.inonu.edu.tr/mucahit/menu/65/bilgisayar-sistemlerine-giris)
+  “önbellek yerelliği” terimini kullanır.
+
+### Erişim adımı ve yineleme
+
+- **Tanım:** Erişim adımı (stride), ardışık iki okuma arasındaki eleman
+  uzaklığıdır. Matris çarpımı modelinde bir yineleme, en içteki döngünün
+  gövdesinin bir kez çalışmasıdır. Model, her yinelemede üç okuma yapar.
+- **Tercih:** erişim adımı (kontrollerde “adım”), iç döngü yinelemesi.
+- **Kaynak:** Deneydeki erişim dizileri ve matris çarpımı modeli.
+  Ankara Üniversitesi [Döngüler ders notu](https://oys.ankara.edu.tr/pluginfile.php/426200/mod_resource/content/2/7.%20B%C3%96L%C3%9CM.pdf)
+  döngüler için “yineleme” terimini kullanır.
+
+## race-condition
+
+### Yarış durumu, iş parçacığı ve kayıp güncelleme
+
+- **Tanım:** Bir yarış durumunda sonuç, paylaşılan veriye erişen
+  işlemlerin sırasına bağlıdır. Burada iki iş parçacığı aynı sayaç
+  değerini yazarak bir artırmayı kaybettirebilir. Yazmaç, iş
+  parçacığının geçici okuma ve hesaplama değerini tutar.
+- **Tercih:** yarış durumu, iş parçacığı, yazmaç, kayıp güncelleme.
+  Lab'daki sayaç örneğinde kayıp güncelleme, tamamlandığı hâlde
+  son sayaç değerine yansımayan artırmadır.
+- **Kaynak:** İTÜ,
+  [İşletim Sistemleri, Prosesler Arası Haberleşme, s. 122–123](https://web.itu.edu.tr/bkurt/Courses/os/lecture4_6spp.pdf).
+  [İnönü Üniversitesi, Bilgisayar Sistemlerine Giriş](https://akademi.inonu.edu.tr/mucahit/menu/65/bilgisayar-sistemlerine-giris)
+  “iş parçacığı” terimini kullanır. [Başkent Üniversitesi, Veri Tipleri, §1.10](https://mail.baskent.edu.tr/~tkaracay/etudio/ders/prg/c/dataTypes.pdf)
+  register için “yazmaç” der.
+
+### Kritik bölge, kilit ve atomik adım
+
+- **Tanım:** Kritik bölge, paylaşılan veri üzerindeki işlemleri içeren
+  kod bölümüdür. Aynı kilidi kullanan iş parçacıklarından biri kritik
+  bölgedeyken diğeri bekler. Atomik adım tek işlem olarak tamamlanır.
+  Bakiye deneyinde kontrol ve çekme ayrı ayrı atomik olsa da iki adım
+  arasındaki erişimi önlemek için ikisi aynı kilitle korunur.
+- **Tercih:** kritik bölge, kilit, atomik adım, atomik ekleme.
+- **Kaynak:** İTÜ,
+  [İşletim Sistemleri, Karşılıklı Dışlama, s. 118–119](https://web.itu.edu.tr/bkurt/Courses/os/lecture4_6spp.pdf).
+  Atomik eklemenin sınırı deneyin işlem modelinde gösterilir.

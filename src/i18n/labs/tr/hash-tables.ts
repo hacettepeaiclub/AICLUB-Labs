@@ -8,13 +8,13 @@ const copy: typeof en = {
     peterson:
       "Kayıtları anahtarlarından hesaplanan bir adreste saklamayı ve depolama doldukça aramanın nasıl uzadığını inceleyen ilk çalışmalardan biri.",
     linearProbing:
-      "Doğrusal yoklamayı kesin olarak çözümler ve Knuth'un maliyetlerini yeniden elde eder: saklanan bir anahtarı bulmak için ½(1 + 1/(1 − α)) yoklama, ıskalayan bir arama için, yani bir ekleme için, ½(1 + 1/(1 − α)²).",
+      "Doğrusal yoklamanın beklenen maliyetini inceler. Başarılı arama için ½(1 + 1/(1 − α)), başarısız arama ve ekleme için ½(1 + 1/(1 − α)²) sonucunu verir.",
     birthday:
       "Doğum günü problemini, aynı günü paylaşan ikiden fazla kişiye genelleştirir. İki kişi için klasik sonucu verir: 23 kişide ortak bir doğum günü olması, olmamasından daha olasıdır.",
     amortized:
-      "Amortize çözümlemeyi ortaya koyar: bir işlemi, bütün bir dizi boyunca ortalama maliyetiyle değerlendirmek. İkiye katlamanın, ara sıra attığı büyük adıma rağmen eklemeyi sabit zamanlı yapması bu anlamdadır.",
+      "Amortize çözümlemede işlem dizisinin toplam maliyeti işlem sayısına bölünür. Kapasiteyi iki katına çıkarmanın maliyeti de bütün eklemelere dağıtılır.",
     javaApi:
-      "Bu laboratuvarın kullandığı hash'i, int aritmetiğinde s[0]·31^(n−1) + … + s[n−1] olarak, ve HashMap'in varsayılanlarını tanımlar: 16 kova, 0,75 doluluk oranı ve her yeniden hash'lemede yaklaşık iki katı kova.",
+      "String.hashCode için 32 bitlik tamsayı aritmetiğindeki hesabı tanımlar. HashMap belgeleri 16 başlangıç kovasını, 0,75 varsayılan doluluk eşiğini ve kapasitenin yaklaşık iki katına çıkmasını açıklar.",
   },
 
   percent: (value: string) => `%${String(value).replace(".", ",")}`,
@@ -22,12 +22,12 @@ const copy: typeof en = {
   // 1 ----------------------------------------------------------------------
   address: {
     title: "Anahtar hangi adrese gider?",
-    question: "Bir anahtar yaz. Hash değeri hangi kovayı seçiyor?",
+    question: "Bir anahtar yaz ve hesaplanan kova numarasına bak.",
     inputLabel: "Bir anahtar",
-    emptyWord: "Nereye düştüğünü görmek için herhangi bir kelime yaz.",
-    workingCaption: "Hash, her seferinde bir karakter.",
-    columns: { char: "Karakter", code: "Kod", hash: "Ara hash" },
-    wrapped: "32 bite sarılır:",
+    emptyWord: "Kova numarasını hesaplamak için bir kelime yaz.",
+    workingCaption: "UTF-16 kod birimlerine göre hash hesabı",
+    columns: { char: "Karakter", code: "UTF-16 kodu", hash: "Ara hash değeri" },
+    wrapped: "Düşük 32 bit alınır",
     bucketLine: (hash: string, m: number) => `${hash} mod ${m} =`,
     tableLabel: (n: number) => `16 kovalı, ${n} anahtar tutan bir tablo.`,
     bucketName: (i: number, keys: string) => (keys ? `Kova ${i}: ${keys}` : `Kova ${i}: boş`),
@@ -35,7 +35,7 @@ const copy: typeof en = {
     already: "Zaten tabloda",
     reset: "Baştan başla",
     caption:
-      "Hash, Java'nın metinler için kullandığı hash'tir: 31 ile çarp, sıradaki karakteri ekle, 32 biti tut. 16'ya bölümünden kalan, kovadır. Aynı kovaya düşen iki kelime orayı kısa bir liste olarak paylaşır.",
+      "Sonucu 31 ile çarp, sıradaki UTF-16 kod birimini ekle ve düşük 32 biti al. Son hash değerinin 16'ya göre negatif olmayan kalanı kova numarasıdır. Aynı kovaya giden anahtarlar o kovanın listesinde saklanır.",
     announce: (word: string, bucket: number, present: boolean, looks: number) =>
       present
         ? `${word}, kova ${bucket} içinde; ${looks} karşılaştırmada bulundu.`
@@ -54,30 +54,29 @@ const copy: typeof en = {
   birthday: {
     kicker: "Çakışmalar",
     title: "İki anahtar ne zaman aynı kovaya düşer?",
-    lede: "Her kova eşit olasılıklı, hiçbir kova dolu değil, yine de bir çakışma erkenden gelir. Önce ne kadar erken olduğuna karar ver.",
+    lede: "Her anahtar birbirinden bağımsız olarak ve eşit olasılıkla bir kovaya atanır. En az bir çakışmanın hangi anahtar sayısında %50 olasılığı geçtiğini tahmin et.",
     question:
-      "Bir tabloda 365 kova var ve her anahtar rastgele birine düşüyor. Kaç anahtardan sonra iki anahtarın aynı kovayı paylaşması, paylaşmamasından daha olası olur?",
+      "365 kovalı tabloda en az iki anahtarın aynı kovaya atanma olasılığı kaç anahtarla %50'yi geçer?",
     answer:
-      "23. Bu, doğum günü problemidir: 23 kişilik bir odada ortak bir doğum günü olması, olmamasından daha olasıdır; üstelik 340'tan fazla gün hâlâ kullanılmamışken.",
+      "23 anahtarda çakışma olasılığı %50'yi geçer. Aynı hesap, 365 günün eşit olasılıklı kabul edildiği doğum günü probleminde de kullanılır.",
     guess: {
       yours: "Tahminin",
       actual: "Cevap",
       agreed: "Biliyordun.",
-      disagreed: "Neredeyse herkes çok daha yüksek bir sayı tahmin eder.",
+      disagreed: "Grafikte olasılığın %50'yi geçtiği noktaya bak.",
     },
     caption:
-      "Eğri kesindir: n anahtarın hepsinin birbirini ıskalama olasılığı (1 − 1/m)(1 − 2/m)…(1 − (n−1)/m) çarpımıdır. Hızla düşer, çünkü her yeni anahtar orada olan her anahtarı ıskalamak zorundadır.",
+      "Çakışma olasılığını bulmak için bütün anahtarların farklı kovalara atanma olasılığını 1'den çıkar. n ≤ m iken bu olasılık (1 − 1/m)(1 − 2/m)…(1 − (n−1)/m) çarpımıdır. n > m olduğunda çakışma kesindir.",
     announce: (keys: number, chance: string) =>
       `${keys} anahtarla ortak bir kova olasılığı ${chance}.`,
-    curveTitle: (m: number) => `Ortak kova olasılığı, ${m} kova`,
+    curveTitle: (m: number) => `Çakışma olasılığı, ${m} kova`,
     curveLabel: (m: number, half: number) =>
       `${m} kova için, en az bir ortak kova olasılığının anahtar sayısına göre eğrisi. ${half} anahtarda yarıyı geçer.`,
     axis: "anahtar",
     gridTitle: (m: number) => `Tek bir deneme, ${m} kova`,
     gridLabel: (n: number, m: number) =>
       `${m} kovaya ilk ortak kovaya kadar atılan anahtarlar: ${n} anahtar gerekti.`,
-    gridEmpty:
-      "Bir denemeyi izlemek için anahtar atın: her biri rastgele bir kovaya düşer, ta ki biri başka birinin üstüne düşene kadar.",
+    gridEmpty: "Denemeyi başlat. Dolu bir kovaya ilk kez anahtar geldiğinde deneme durur.",
     trialLine: (n: number, empty: number) =>
       `${n}. anahtar zaten kullanılmış bir kovaya düştü; ${empty} kova hâlâ boş.`,
     keysLabel: "Anahtar",
@@ -100,23 +99,24 @@ const copy: typeof en = {
     title: "İlk yuva doluysa sırada hangisi var?",
     lede: "Tabloda 32 yuva var. Anahtarın hesaplanan yuvası doluysa sıradaki yuva denenir. Anahtar ekleyerek boş yer bulmak için yapılan deneme sayısını izle.",
     caption:
-      "Hücrelerde anahtarların başlangıç yuvaları gösterilir. Turuncu çerçeveler son eklemede denenen yuvalardır. Dolu hücreler yan yana biriktikçe arama uzayabilir.",
+      "Hücrelerde anahtarların başlangıç yuvaları gösterilir. Kehribar çerçeveler son eklemede denenen yuvalardır. Dolu hücreler yan yana biriktikçe arama uzayabilir.",
     announce: (count: number, home: number, slot: number, probes: number) =>
-      `${count}. anahtar yuva ${home} istedi, ${probes} yoklamada yuva ${slot} içine yerleşti.`,
+      `${count}. anahtar için ilk yuva ${home}. ${probes} yoklamayla ${slot} numaralı yuvaya yerleşti.`,
     tableLabel: (count: number, m: number) => `${m} yuvalı, ${count} anahtar tutan bir tablo.`,
-    slotFull: (slot: number, home: number) => `Yuva ${slot}: evi ${home} olan bir anahtar`,
+    slotFull: (slot: number, home: number) =>
+      `Yuva ${slot}. Bu anahtarın hesaplanan yuvası ${home}.`,
     slotEmpty: (slot: number) => `Yuva ${slot}: boş`,
     pathLine: (home: number, slot: number, probes: number) =>
       probes === 1
-        ? `En yeni anahtar doğrudan evine, yuva ${home} içine girdi.`
-        : `En yeni anahtar yuva ${home} istedi, dolu buldu ve yuva ${slot} konumuna kadar yürüdü: ${probes} yoklama.`,
+        ? `Son anahtar, hesaplanan ${home} numaralı yuvaya yerleşti.`
+        : `Son anahtarın ilk yuvası ${home} doluydu. ${probes} yoklamayla ${slot} numaralı boş yuva bulundu.`,
     emptyLine: "Boş bir tablo. Bir anahtar ekle.",
     clusterLine: (lengths: string) => `Dolu yuva dizileri: ${lengths}.`,
     noClusters: "Henüz dizi yok.",
     add: "Anahtar ekle",
     full: "Tablo dolu",
     addFour: "4 ekle",
-    restart: "Boşalt, yeni evlerle",
+    restart: "Tabloyu boşalt ve yeniden başla",
     secondaryLabel: "Yeniden başla",
     figures: {
       load: "Dolu",
@@ -131,19 +131,19 @@ const copy: typeof en = {
 
   // 4 ----------------------------------------------------------------------
   compare: {
-    kicker: "Listeye karşı adım",
-    title: "Tablo doldukça arama süresi nasıl değişir?",
-    lede: "Doluluk oranı α büyüdükçe, zincirleme ve doğrusal yoklama için saklanan bir anahtarı bulmanın maliyeti. Çizgiler formüllerdir; noktalar 1.024 yuvalı gerçek tablolardır.",
+    kicker: "Zincirleme ve doğrusal yoklama",
+    title: "Doluluk oranı arama maliyetini nasıl değiştirir?",
+    lede: "Doluluk oranını değiştir. Zincirlemede ortalama anahtar karşılaştırmasını, doğrusal yoklamada ortalama yuva yoklamasını karşılaştır. Eğriler kuramsal değerleri, noktalar 1.024 konumlu tablolardaki ölçümleri gösterir.",
     caption:
-      "Zincirlemenin maliyeti 1 + α/2'dir: düz bir çizgide kötüleşir, hatta α = 1'in ötesine de geçebilir. Doğrusal yoklamanınki ½(1 + 1/(1 − α)) olur; yarı doluyken iyidir, dolmaya yakın patlar. Eklemek daha da kötüdür, ½(1 + 1/(1 − α)²), ve α = 0,8'e varmadan grafiğin dışına çıkar.",
+      "Eşit olasılıklı kova seçiminde zincirlemenin başarılı arama maliyeti yaklaşık 1 + α/2 olur. Doğrusal yoklamada α değeri 1'e yaklaşırken başarılı arama maliyeti ½(1 + 1/(1 − α)), ekleme maliyeti ½(1 + 1/(1 − α)²) ile artar.",
     announce: (alpha: string, chain: string, linear: string) =>
-      `${String(alpha).replace(".", ",")} doluluğunda zincirleme ortalama ${String(chain).replace(".", ",")}, doğrusal yoklama ${String(linear).replace(".", ",")} karşılaştırma ister.`,
+      `${String(alpha).replace(".", ",")} doluluğunda zincirleme ortalama ${String(chain).replace(".", ",")} karşılaştırma, doğrusal yoklama ${String(linear).replace(".", ",")} yoklama gerektirir.`,
     chartLabel:
       "Bir anahtarı bulmak için ortalama yoklamanın doluluk oranına göre grafiği: zincirleme için düz bir çizgi, doğrusal yoklama için 1'e yaklaşırken dikleşen bir eğri ve ona ekleme için daha dik, kesikli bir eğri. Noktalar rastgele tablolarda ölçülmüştür.",
     axis: "doluluk oranı α",
     legend: {
-      chain: "Zincirleme, bulma",
-      linear: "Doğrusal yoklama, bulma",
+      chain: "Zincirleme, başarılı arama",
+      linear: "Doğrusal yoklama, başarılı arama",
       insert: "Doğrusal yoklama, ekleme",
       dots: "ölçülen",
     },
@@ -163,7 +163,7 @@ const copy: typeof en = {
 
   // 5 ----------------------------------------------------------------------
   resize: {
-    kicker: "Hızlı kalmak",
+    kicker: "Kapasite artışı",
     title: "Tablonun kapasitesi iki katına çıkınca",
     lede: "Bu modelde tablo 16 kovayla başlar. Doluluk eşiği aşıldığında kapasite iki katına çıkar ve anahtarlar taşınır. Tek eklemenin maliyetiyle bütün eklemelerin ortalamasını karşılaştır.",
     caption:
@@ -178,7 +178,7 @@ const copy: typeof en = {
     axis: "eklenen anahtar",
     legend: {
       insert: "sıradan bir ekleme",
-      resize: "tabloyu taşıyan bir ekleme",
+      resize: "kapasiteyi artıran ekleme",
       average: "şimdiye kadarki ortalama",
     },
     keysLabel: "Eklenen anahtar",
@@ -186,8 +186,8 @@ const copy: typeof en = {
     dragHint: "Daha çok anahtar eklemek ya da geri almak için grafik boyunca bas veya sürükle.",
     figures: {
       capacity: "Kova",
-      capacityHint: (threshold: number) => `${threshold} anahtarı geçince yine taşınır`,
-      resizes: "Taşınma",
+      capacityHint: (threshold: number) => `${threshold} anahtarı geçince kapasite yine artar`,
+      resizes: "Kapasite artışı",
       average: "Ortalama iş",
       averageHint: "ekleme başına, her zaman 3'ün altında",
     },
@@ -195,11 +195,11 @@ const copy: typeof en = {
 
   // 6 ----------------------------------------------------------------------
   modulus: {
-    kicker: "Kötü anahtarlar",
+    kicker: "Sabit adımla artan anahtarlar",
     title: "Düzenli aralıklardaki anahtarlar nasıl dağılır?",
     lede: "Sekizer artan kimlikler, onar artan fiyatlar, 64'e hizalı adresler: anahtarlar çoğu zaman bir adımı paylaşır. Bir tablo boyutu ve bir adım seç: anahtarların kaç kovaya dağıldığı hemen sayılır.",
     caption:
-      "0, s, 2s, … anahtarları, başka her şey ne olursa olsun tam olarak m / ebob(s, m) kovaya ulaşır. İkinin bir kuvveti ile çift bir adım en kötü durumdur; bir asal sayının paylaşacak çarpanı yoktur. HashMap ikinin kuvvetlerini kullanır; kova seçmeden önce hash'in yüksek bitlerini düşük bitlerine karıştırmasının nedeni budur.",
+      "0, s, 2s, … dizisi mod m ile m / ebob(s, m) farklı kova üretir, sonra kova numaraları tekrarlanır. Anahtar sayısı bu sayıdan küçükse kullanılan kova sayısı anahtar sayısı kadardır. s ile m aralarında asalsa döngü bütün kovaları kapsar. Java HashMap, kova seçerken hash değerinin yüksek bitlerini düşük bitlerle birleştirir.",
     announce: (used: number, m: number, most: number) =>
       `Anahtarlar ${m} kovanın ${used} tanesine ulaşıyor; en dolu kovada ${most} anahtar var.`,
     keysLine: (step: number, keys: number) =>
@@ -218,11 +218,11 @@ const copy: typeof en = {
 
   // 7 ----------------------------------------------------------------------
   challenge: {
-    kicker: "Sıra sizde",
-    title: "Üç farklı tabloyu dene",
+    kicker: "Görevler",
+    title: "Hash tablolarıyla üç görev",
     lede: "Görevde istenen özelliği sağlayan anahtarları veya tablo ayarını bul. Birden fazla geçerli yanıt olabilir.",
     caption:
-      "Yanıtlar bu labdaki hash fonksiyonu ve tablo işlemleri çalıştırılarak kontrol edilir.",
+      "Yanıtlar bu lab'daki hash fonksiyonu ve tablo işlemleri çalıştırılarak kontrol edilir.",
     announce: (solved: number, total: number) => `${total} görevden ${solved} tanesi çözüldü.`,
     pickLabel: "Görev",
     reset: "İlerlememi unut",
@@ -236,7 +236,7 @@ const copy: typeof en = {
       hashOf: (hash: string) => `hash ${hash}`,
       sameString: "Bunlar aynı metin. İki farklı metin olmalı.",
       solved:
-        "Çözüldü. İki farklı anahtar, tek bir hash: hiçbir tablo onları ayırt edemez ve uzun metinleri 32 bite indiren hiçbir hash bundan kaçınamaz.",
+        "Çözüldü. İki farklı anahtarın 32 bitlik hash değeri aynı. Hash değeri tek başına anahtarları ayırt edemez. Tablo, anahtarların kendisini karşılaştırarak ayırt edebilir.",
       notYetPlain: "Henüz değil: iki hash farklı.",
     },
     size: {
@@ -264,20 +264,20 @@ const copy: typeof en = {
         spread: "Her kovada bir kelime",
       },
       solved:
-        "Çözüldü. Kusursuz bir yerleşim: hiç çakışma yok. Şans bunu bin denemede yaklaşık iki kez başarır; tabloların boşluk bırakmasının nedeni budur.",
+        "Çözüldü. Her kovaya bir anahtar yerleşti. Çakışma yok. Sekiz bağımsız ve eşit olasılıklı atamada bu sonucun olasılığı yaklaşık %0,24'tür.",
       notYetPlain: "Henüz değil: üç koşula bak.",
     },
   },
 
   recap: {
     lessons: [
-      "Bir hash tablosu, anahtarın adresini aramak yerine hesaplar",
-      "Çakışmalar erken gelir: 365 kovada 23 anahtar, bir çakışmayı olmamasından daha olası yapar",
-      "Zincirleme her kovada bir liste tutar; bir anahtarı bulmak yaklaşık 1 + α/2 karşılaştırmadır",
-      "Doğrusal yoklama bir sonraki boş yuvaya geçer; dolu yuva dizileri birleşerek büyür",
-      "Dolmaya yakın yoklama patlar: bulmak için ½(1 + 1/(1 − α)), eklemek için ½(1 + 1/(1 − α)²)",
-      "Tablo dolunca iki katına çıkmak, eklemeyi ortalamada sabit tutar",
-      "Tablo boyutuyla bir adımı paylaşan anahtarlar m / ebob(s, m) kovaya sıkışır",
+      "Hash tablosu, hash değerinden ilk kova veya yuva numarasını hesaplar.",
+      "365 kovada 23 bağımsız ve eşit olasılıklı atamada çakışma olasılığı %50'yi geçer.",
+      "Zincirleme her kovada bir liste tutar. Eşit olasılıklı kova seçiminde başarılı aramanın ortalaması yaklaşık 1 + α/2 karşılaştırmadır.",
+      "Doğrusal yoklama boş yuva bulana kadar yuvaları sırayla inceler. Yan yana dolu yuvalar aramayı uzatabilir.",
+      "α değeri 1'e yaklaşırken doğrusal yoklamanın maliyeti hızla artar. Başarılı arama için ½(1 + 1/(1 − α)), ekleme için ½(1 + 1/(1 − α)²) yoklama gerekir.",
+      "Kapasite doluluk eşiğinde iki katına çıkarsa ekleme başına amortize maliyet sabit kalır.",
+      "s adımıyla artan anahtarların kova numaraları m / ebob(s, m) adımda tekrar eder.",
     ],
     footer:
       "Hash tablosu uygulamaları ayrıntılarda farklılaşır. Buradaki deneyler kova seçimini, çakışma çözümünü ve kapasite artırmanın maliyetini ayrı ayrı gösterir.",
@@ -289,39 +289,41 @@ const copy: typeof en = {
       "Bir anahtar yaz. Hash hesabını, seçilen kovayı ve aynı kovaya düşen anahtarları incele.",
     stages: {
       address: {
-        type: "Anahtar olarak bir kelime yaz. Tur pizza yazdı.",
-        bucket: "Harf harf hesaplanan hash, 16 kovadan birini seçer ve o kova yanar.",
-        put: "“Tabloya koy” deyin: kelime o kovaya yerleşir.",
+        type: "Anahtar olarak bir kelime yaz. Örneğin pizza yaz.",
+        bucket:
+          "Hash değeri UTF-16 kod birimlerinden hesaplanır. Tabloda vurgulanan kova, hesaplanan numarayı gösterir.",
+        put: "Tabloya koy düğmesine bas. Anahtar, gösterilen kovaya eklenir.",
         looks: "Onu yeniden bulmak için yalnızca kendi kovasındaki anahtarlara bakılır.",
       },
       birthday: {
         chart:
-          "Anahtar eklendikçe iki anahtarın aynı kovaya düşme olasılığı. Önce yukarıda tahminini yapın.",
+          "Önce tahminini yap. Ardından grafikte anahtar sayısına göre çakışma olasılığını izle.",
         keys: "Kaç anahtar atılacağını ayarla.",
-        throw: "Onları rastgele kovalara atın ve ikisinin çakışıp çakışmadığına bak.",
+        throw: "Denemeyi başlat ve ilk çakışmanın kaçıncı anahtarda olduğunu gör.",
         chance:
-          "Kesin olasılık, yarı yarıya ihtimal için gereken anahtar sayısı ve şimdiye kadarki denemelerin.",
+          "Kesin olasılık, %50 olasılık için gereken anahtar sayısı ve şimdiye kadar yaptığın denemeler.",
       },
       probe: {
-        slots: "Liste yok, 32 yuvalık tek bir dizi. Evi dolu olan anahtar sağa kayar.",
+        slots: "Tabloda 32 yuva var. İlk yuva doluysa sağdaki yuvalar sırayla yoklanır.",
         add: "Bir anahtar ekle. Kehribar çerçeve, denediği her yuvayı gösterir.",
-        four: "Dördünü birden ekle: tablo doldukça yürüyüşler uzar.",
-        walks: "Tablonun doluluğu ve yürüyüşlerin ne kadar uzadığı.",
+        four: "Dört anahtar ekle. Doluluk artınca yoklama sayısının nasıl değiştiğine bak.",
+        walks: "Doluluk oranını ve Son ekleme kutusundaki yoklama sayısını karşılaştır.",
       },
       compare: {
         chart: "Tablo doldukça bir anahtarı bulmanın maliyeti: zincirleme ve doğrusal yoklama.",
-        load: "Doluluk oranını grafik boyunca sürükleyerek ya da ok tuşlarıyla ayarla. Tur tabloyu doldurdu.",
+        load: "Doluluk oranını grafik boyunca sürükleyerek ya da ok tuşlarıyla ayarla. Eğrilerin doluluğa göre nasıl değiştiğine bak.",
         costs: "Dolmaya yakınken yoklama dikleşerek artar, zincirleme ise düz bir çizgide büyür.",
       },
       resize: {
         bars: "Her çubuk bir eklemenin yaptığı iş; tablo ikiye katlandığında kopyalanan bütün anahtarlar dahil.",
-        add: "Anahtar eklemek için grafik boyunca sürükle ya da ok tuşlarını kullan. Tur birkaç tane ekledi.",
-        average: "Taşınmalar büyüdükçe seyrekleşir; bu yüzden ortalama düşük kalır.",
+        add: "Anahtar eklemek için grafik boyunca sürükle ya da ok tuşlarını kullan. Kapasitenin hangi eklemede arttığına bak.",
+        average:
+          "Yüksek çubuklar kapasitenin arttığı eklemeleri gösterir. Ekleme başına ortalama iş grafiğini bu çubuklarla karşılaştır.",
       },
       modulus: {
         buckets: "Eşit adımlarla artan anahtarlar ve düştükleri kovalar.",
-        step: "Adımı değiştir. Tur çift bir adım seçti ve kovaların çoğu boş kaldı.",
-        size: "Şimdi buradan asal bir tablo boyutu dene: bütün kovalar kullanılır.",
+        step: "Adımı değiştir. Kullanılan kova sayısının nasıl değiştiğine bak.",
+        size: "m ile s aralarında asal olacak bir boyut seç. Kullanılan kova sayısını karşılaştır.",
       },
       challenge: {
         pick: "Bir hash tablosuna kazandırman gereken üç özellik. Buradan birini seç.",
@@ -345,7 +347,7 @@ const copy: typeof en = {
       "algs4-hash": "Lab'ın kullandığı yoklama formülleri (Önerme M).",
       "java-hashmap": "Java'nın kendi kuralı: 0,75 doluluk, sonra yaklaşık iki kat kova.",
       "ods-book":
-        "Ücretsiz kitabın Hash Tables bölümünde chaining ve linear probing yöntemlerini karşılaştır. Labdaki yük oranı arttığında arama maliyetinin neden değiştiğini takip et.",
+        "Ücretsiz kitabın Hash Tables bölümünde zincirleme ve doğrusal yoklama yöntemlerini karşılaştır. Lab'daki doluluk oranı arttığında arama maliyetinin neden değiştiğini takip et.",
     },
   },
 };

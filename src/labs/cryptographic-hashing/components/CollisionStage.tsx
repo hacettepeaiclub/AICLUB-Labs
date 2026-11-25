@@ -3,7 +3,7 @@ import { Figure, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
 import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
-import { formatNumber } from "@/lib/format";
+import { useLanguage } from "@/i18n";
 import { useDebouncedValue, useLocalControls } from "@/hooks";
 import { commonHexPrefix, HEX_CHARS } from "../hashUtils";
 import { useSha256 } from "../useSha256";
@@ -12,7 +12,6 @@ import { MessageField } from "./MessageField";
 const MAX_ROUND = 6;
 
 /** Odds of matching the first n hex characters by chance: 1 in 16^n. */
-const odds = (n: number) => formatNumber(16 ** n, 0);
 
 /**
  * Section 4: can you make two different messages produce the same hash?
@@ -41,6 +40,9 @@ const odds = (n: number) => formatNumber(16 ** n, 0);
 export function CollisionStage() {
   const t = useLabCopy("cryptographic-hashing");
   const c = t.challenge;
+  const { language } = useLanguage();
+  const counts = new Intl.NumberFormat(language === "tr" ? "tr-TR" : "en-US");
+  const odds = (n: number) => counts.format(16 ** n);
   const [inputA, setInputA] = useState("hello");
   const [inputB, setInputB] = useState("hello!");
   // Progress is worth keeping across visits; `attempts` is this sitting's
@@ -174,7 +176,7 @@ export function CollisionStage() {
             hint={c.oddsHint(odds(round))}
           />
           <Figure label={c.bestLabel} value={String(best)} />
-          <Figure label={c.attemptsLabel} value={formatNumber(attempts, 0)} />
+          <Figure label={c.attemptsLabel} value={counts.format(attempts)} />
         </>
       }
     />

@@ -2,7 +2,7 @@ import { Figure, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
 import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
-import { formatNumber } from "@/lib/format";
+import { useNumberFormat } from "./useNumberFormat";
 import { colOf, rowOf } from "../world";
 import { rewardParts } from "../view";
 import type { TrainingRun } from "../useTrainingRun";
@@ -36,6 +36,7 @@ export interface UpdateStageProps {
  */
 export function UpdateStage({ run, tileReward }: UpdateStageProps) {
   const copy = useLabCopy("reinforcement-learning");
+  const { formatNumber } = useNumberFormat();
   const update = copy.update;
   const last = run.last;
 

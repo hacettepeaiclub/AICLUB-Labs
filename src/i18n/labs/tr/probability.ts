@@ -4,8 +4,8 @@ import type en from "../en/probability";
 
 const copy: typeof en = {
   routes: {
-    label: "Kısa bir keşif seç",
-    hint: "Altı bağımsız deney. Bir soruyla başla; hepsini tek ziyarette bitirmen gerekmiyor.",
+    label: "Bir deney seç",
+    hint: "Altı deneyden birini seç ve sonucu görmeden önce tahmin yap.",
     clues: "01 · İpucu olasılığı değiştirince",
     groups: "02 · Grupları birleştirmek yanıltınca",
     repeats: "03 · Tekrar bir örüntü gösterince",
@@ -13,9 +13,9 @@ const copy: typeof en = {
   sources: {
     title: "Kaynaklar",
     statisticalInference:
-      "İki çocuk deneyinin arkasındaki koşullu olasılık kurallarını (koşullu olasılık, s. 20; problemin kendisi Alıştırma 1.25, s. 40), Pascal satırının arkasındaki binom katsayılarını (s. 15) ve büyük sayılar kanununu (zayıf, s. 232; güçlü, s. 235) destekler. Buradaki benzetimler bu sonuçları gösterir; onları temellendirmez.",
+      "Koşullu olasılık için s. 20’ye, iki çocuk problemi için s. 40’taki 1.25 numaralı alıştırmaya bak. Kitap binom katsayılarını s. 15’te ve büyük sayılar yasasının zayıf ve kuvvetli biçimlerini sırasıyla s. 232 ve s. 235’te ele alır.",
     simpson:
-      "Dördüncü dene gösterdiği tersine dönmeyi destekler: her alt grupta geçerli olan bir ilişkinin, alt gruplar birleştirildiğinde yön değiştirmesi.",
+      "Simpson paradoksunda alt grupların her birinde görülen ilişki, gruplar birleştirildiğinde yön değiştirebilir.",
   },
 
   scope:
@@ -24,8 +24,8 @@ const copy: typeof en = {
   prediction: {
     yours: "dedin",
     actual: "Gerçekte",
-    agreed: "Sezgin modelle aynı fikirde.",
-    disagreed: "Sezginle model aynı fikirde değil. İlginç olan kısım da bu.",
+    agreed: "Tahminin modelin sonucuyla örtüşüyor.",
+    disagreed: "Tahminin modelin sonucundan farklı.",
   },
 
   // Her sonucun altındaki iki adım: önce nedeni, sonra hesabı.
@@ -36,7 +36,7 @@ const copy: typeof en = {
 
   monty: {
     title: "Üç kapıdan hangisini seçersin?",
-    question: "Sunucuyu yenebilir misin?",
+    question: "İlk seçtiğin kapıda kalmak mı, kapıyı değiştirmek mi daha sık kazandırır?",
     setup: [
       "Üç kapı. Birinin arkasında bir araba, diğer ikisinin arkasında birer keçi.",
       "Bir kapı seçersin. Kapı kapalı kalır.",
@@ -47,23 +47,23 @@ const copy: typeof en = {
     coach: {
       notHalf: {
         q: "İki kapı kaldı. Neden 50/50 değil?",
-        a: "Çünkü iki kapı buraya aynı yoldan gelmedi. Seninkini hiçbir şey bilmezken seçtin. Diğeri ise arabanın yerini tam olarak bilen ve onu asla açmayacak olan birinin seçiminden sağ çıktı.",
+        a: "İlk seçtiğin kapının arkasında araba olma olasılığı 1/3’tür. Kalan iki kapıda araba olma olasılığı toplam 2/3’tür. Sunucu bu iki kapıdan keçi olanı açınca o 2/3, diğer kapalı kapıya kalır.",
       },
       whySwitch: {
         q: "Değiştirmek neden daha iyi?",
         a: (stay: string, swap: string) =>
-          `İlk seçimin zamanın ${stay} kadarında arabadır ve kalmak yalnızca o zaman kazanır. Kalan ${swap} kadarında araba seçmediğin iki kapıdan birinin arkasındadır: sunucu da az önce bu ikisinden hangisinde olmadığını gösterdi.`,
+          `İlk seçiminde arabayı bulma olasılığın ${stay}. Arabayı ilk seçiminde bulamadığın turlarda sunucu diğer keçili kapıyı açar. Böylece kapı değiştirerek kazanma olasılığın ${swap} olur.`,
       },
       hostKnows: {
         q: "Sunucunun biliyor olması önemli mi?",
-        a: "Her şey o. Rastgele kapı açan (bazen kazara arabayı gösteren) bir sunucu, kalmakla değiştirmeyi eşit kılardı. Açılan kapıyı bilgilendirici yapan şey, sunucunun bilmesi.",
+        a: "Evet. Sunucu seçmediğin iki kapıdan birini eşit olasılıkla ve arabanın yerini bilmeden açsaydı, keçi gösterdiği turlarda iki kapının da kazanma olasılığı 1/2 olurdu.",
       },
     },
     caption:
-      "Sunucu iki kurala bağlıdır: kapını asla açmaz, arabayı asla açmaz. Açmayı bilgilendirici kılan da bu kurallardır: rastgele kapı açan bir sunucu iki seçeneği eşit bırakırdı.",
-    predictQuestion: "Bir el oynadın. Çok sayıda elde hangisi daha iyi gider?",
+      "Sunucu yalnızca seçmediğin ve arkasında keçi olan bir kapıyı açar. Böyle iki kapı varsa ikisi arasından eşit olasılıkla seçim yapar.",
+    predictQuestion: "Çok sayıda tur oynadığında hangi seçim daha sık kazandırır?",
     predict: { stay: "Kal", switch: "Değiştir", same: "Fark etmez" },
-    predictAnswer: (value: string) => `Değiştirmek zamanın ${value} kadarında kazanır`,
+    predictAnswer: (value: string) => `Kapı değiştirerek kazanma olasılığı ${value}`,
     strategy: { stay: "Kal", switch: "Değiştir" },
     doorsIdle: "Üç kapalı kapı. Birinin arkasında araba, ikisinde keçi var.",
     doorsLabel: (picked: number, opened: number) =>
@@ -79,7 +79,7 @@ const copy: typeof en = {
     lost: "arabayı kazanamadın",
     promptPick: "Bir kapı seç.",
     promptDecide: (opened: number, other: number) =>
-      `Sunucu ${opened}. kapıyı açtı ve arkasından keçi çıktı. Kapında kalın mı, ${other}. kapıya mı geçin?`,
+      `Sunucu ${opened}. kapıyı açtı ve arkasından keçi çıktı. İlk seçtiğin kapıda kalmak mı istersin, ${other}. kapıya geçmek mi?`,
     resultLine: (strategy: string, result: string) => `${strategy} dedin, ${result}.`,
     again: "Yeniden oyna",
     announceOpened: (n: number) => `Sunucu ${n}. kapıyı açtı. Arkasından keçi çıktı.`,
@@ -87,7 +87,7 @@ const copy: typeof en = {
     runBatch: (n: number) => `${n.toLocaleString("tr-TR")} tur çalıştır`,
     batchTitle: "Simüle edilen turlar",
     batchIdle: (n: number) =>
-      `Elle birkaç tur oynamak bunu çözmez. ${n.toLocaleString("tr-TR")} tur çalıştır.`,
+      `${n.toLocaleString("tr-TR")} tur çalıştır ve iki seçeneğin kazanma oranına bak.`,
     batchCaption: (n: number) =>
       `${n} simüle edilmiş turda kalmanın ve değiştirmenin kazanma oranları, tam olasılıkların yanında.`,
     strategyHeader: "Strateji",
@@ -111,16 +111,17 @@ const copy: typeof en = {
       "İlk seçimin üç kapıdan biriydi, yani üç seferde bir arabaydı. Geriye kalan iki kapıya birlikte üç seferde iki düşüyor, ve sunucu az önce o ikisinden zaten araba olmayanı açtı.",
     explainMaths: (stay: string, swap: string) =>
       `Kalmak yalnızca ilk seçimin baştan araba olduğunda kazanır: ${stay}. Değiştirmek diğer bütün durumlarda kazanır: ${swap}.`,
-    batchInvite: "İki kapı kaldı ve bu bir yazı tura değil. 1.000 oyunda görelim mi?",
+    batchInvite:
+      "1.000 tur çalıştır. Her iki stratejinin simülasyondaki kazanma oranını hesaplanan olasılıkla karşılaştır.",
   },
 
   birthday: {
-    kicker: "Sandığınızdan küçük bir oda",
-    title: "İki kişinin doğum gününün aynı olma olasılığı nedir?",
+    kicker: "Doğum günü problemi",
+    title: "Odada en az iki kişinin doğum gününün aynı olma olasılığı nedir?",
     setup: [
       "İnsanlar odaya teker teker giriyor.",
       "Herkesin doğum günü 365 günden biri ve her gün eşit olasılıkta.",
-      "Soru, birinin seninle aynı doğum gününe sahip olup olmadığı değil. Odadaki herhangi iki kişinin tutup tutmadığı.",
+      "Odadaki bütün çiftleri düşün. En az bir çiftin aynı gün doğmuş olması yeter.",
     ],
     addPerson: "Bir kişi ekle",
     addPersonHint: "Çift sayısına ne olduğuna bak.",
@@ -130,26 +131,26 @@ const copy: typeof en = {
       soonWhy: {
         q: (n: number) => `${n} kişi nasıl yazı tura oluyor?`,
         a: (n: number, pairs: string) =>
-          `Kişileri değil çiftleri say. ${n} kişi ${pairs} farklı çift yapar ve her çift kendi başına bir tutma şansıdır. Bir kişi daha eklediğinde odadaki herkesle yeni birer çift getirir; yani şanslar kalabalıktan çok daha hızlı birikir.`,
+          `${n} kişi ${pairs} farklı çift oluşturur. Odaya giren her yeni kişi, içerideki herkesle bir çift daha oluşturur. Yalnızca bir kişi eklediğinde çift sayısının ne kadar arttığına bak.`,
       },
       notMine: {
         q: "Bu benim doğum günümle ilgili değil mi?",
-        a: "Sezginin yaptığı takas bu ve o çok daha zor bir soru. Birinin tam olarak seninle tutması için yaklaşık 253 kişi gerekir. Herhangi iki kişinin birbiriyle tutması için 23.",
+        a: "Odadaki diğer 253 kişiden en az birinin seninle aynı gün doğmuş olma olasılığı %50’yi aşar. Herhangi bir çiftin aynı gün doğmuş olma olasılığının bu eşiği aşması için odada toplam 23 kişi yeter.",
       },
       realBirthdays: {
         q: "Doğum günleri gerçekten eşit mi dağılır?",
-        a: "Hayır: gerçek doğum günleri mevsime göre kümelenir ve kümelenme tutmayı daha olası kılar, daha az değil. Yani buradaki eşit dağılım modeli temkinli cevabı verir; gerçekte %50 biraz daha erken geçilir.",
+        a: "Doğum günleri yılın bazı dönemlerinde daha sık görülebilir. Bağımsızlık varsayımı altında, günler eşit olasılıklı olmadığında en az bir çiftin doğum gününün aynı olma olasılığı artar. Eşiği geçmek için gereken kişi sayısı azalabilir.",
       },
     },
     caption:
       "Model, doğum günlerinin 365 güne eşit olasılıkla ve kişiler arasında bağımsız dağıldığını varsayar. Artık yılları ve gerçek doğum tarihlerinin mevsimsel farklılıklarını içermez.",
     predictQuestion: "Sence olasılık ilk ne zaman %50'yi geçer?",
-    predict: { count: (n: number) => `${n} kiÅi` },
+    predict: { count: (n: number) => `${n} kişi` },
     predictAnswer: (n: number, value: string) => `${n} kişi, ${value} ile`,
     peopleLabel: "Odadaki kişi",
     peopleValue: (n: number, value: string) => `${n} kişi, aynı doğum günü olasılığı ${value}`,
-    peopleHint: "Yirmili sayılardan yavaşça geçir.",
-    roomLabel: (n: number) => `${n} kişilik bir oda. Hiç kimsenin doğum günü tutmuyor.`,
+    peopleHint: "Kişi sayısını 20’den 25’e çıkar ve olasılığın %50’yi nerede geçtiğine bak.",
+    roomLabel: (n: number) => `${n} kişilik bir oda. Herkesin doğum günü farklı.`,
     roomLabelMatch: (n: number, a: number, b: number, day: string) =>
       `${n} kişilik bir oda. ${a}. ve ${b}. kişinin doğum günü aynı: ${day}.`,
     foundPair: (a: number, b: number, day: string) =>
@@ -161,10 +162,10 @@ const copy: typeof en = {
     simulatedRow: (rooms: number) => `Simülasyon (${rooms.toLocaleString("tr-TR")} oda)`,
     stale: (n: number) => `yeniden çalıştır, son çalışma ${n} kişiydi`,
     reading: (n: number, pairs: number) =>
-      `${n} kişi ${pairs.toLocaleString("tr-TR")} farklı çift oluşturur ve her biri tutma şansıdır.`,
+      `${n} kişi ${pairs.toLocaleString("tr-TR")} farklı çift oluşturur. Her çift aynı doğum gününü paylaşabilir.`,
     peopleFigure: "Kişi",
     pairsFigure: "Çift",
-    pairsHint: "tutma şansı",
+    pairsHint: "aynı gün doğabilecek iki kişi",
     chanceFigure: "Aynı doğum günü",
     exactHint: "tam değer",
     thresholdFigure: "%50'yi geçtiği yer",
@@ -179,9 +180,9 @@ const copy: typeof en = {
     roomEmpty: "Odada henüz kimse yok.",
     explainWhat: "Çoğu kişinin tahmin ettiğinden çok daha az insan yetiyor.",
     explainWhy:
-      "Soru, birinin seninle tutup tutmadığı değil. Herhangi iki kişinin birbiriyle tutup tutmadığı, ve odaya giren her yeni kişi, içerideki herkesle yeni bir çift kuruyor. Çiftler, insanlardan çok daha hızlı birikiyor.",
+      "Odaya bir kişi eklediğinde içerideki herkesle birer yeni çift oluşur. Çift sayısı arttıkça en az bir çiftin aynı gün doğmuş olma olasılığı da artar.",
     explainMaths: (n: number, pairs: string, value: string) =>
-      `${n} kişiyle ${pairs} çift olur. Hiçbir çiftin tutmama olasılığı 365/365 × 364/365 × … çarpımıdır; bunun bire tümleyeni ${value}.`,
+      `${n} kişiyle ${pairs} çift olur. Herkesin doğum gününün farklı olma olasılığı 365/365 × 364/365 × … çarpımıdır. Bu olasılığı 1’den çıkarınca ${value} kalır.`,
     simulateLabel: "Bunun yerine çalıştır",
     runRooms: (n: number) => `${n.toLocaleString("tr-TR")} oda doldur`,
     simulateNote: (days: number) =>
@@ -191,11 +192,11 @@ const copy: typeof en = {
   },
 
   conditional: {
-    kicker: "İşi yapan şey ipucu",
+    kicker: "Koşullu olasılık",
     title: "İki çocuk hakkında verilen bilgi olasılığı nasıl değiştirir?",
     setup: [
       "Bir ailenin iki çocuğu var: biri büyük, biri küçük.",
-      "Her çocuk erkek ya da kız ve ikisi de eşit olasılıkta, yani eşit olasılıklı dört aile var.",
+      "Modelde her çocuk bağımsız olarak 1/2 olasılıkla erkek ya da kızdır. Doğum sırasını da sayınca eşit olasılıklı dört sonuç çıkar.",
       "Biri sana bu aile hakkında doğru tek bir cümle söylüyor.",
       "Senin sorun: ikisinin de erkek olma olasılığı nedir?",
     ],
@@ -257,7 +258,7 @@ const copy: typeof en = {
     familyLabel: (older: string, younger: string) =>
       `Büyük çocuğu ${older}, küçük çocuğu ${younger} olan aile`,
     familiesTitle: "Eşit olasılıklı dört aile",
-    explainWhat: "Bir çocuk hakkında bilgi almak, diğerinin ne olma ihtimalini değiştirir.",
+    explainWhat: "İki çocuğun da erkek olma olasılığı, hangi bilginin verildiğine bağlıdır.",
     explainWhy:
       "“En az biri erkek” hangisi olduğunu söylemez. Yalnızca iki kızlı aileyi eler ve kalan üç aileden ikisinde bir kız vardır. Bunun yerine “büyük olan erkek” dersen bir değil iki aile elenir: aynı aile, farklı cümle, farklı cevap.",
     explainMaths: (kept: number, value: string) =>
@@ -276,12 +277,12 @@ const copy: typeof en = {
       "Tabloyu oku ve isteyeceğin tedaviyi seç.",
     ],
     named:
-      "Baktığın şeyin bir adı var: Simpson paradoksu: gruplar toplandığında tersine dönen bir karşılaştırma.",
+      "Simpson paradoksu, her alt grupta aynı yönde olan karşılaştırmanın gruplar birleştirilince tersine dönmesidir.",
     coachLabel: "Herkesin sorduğu sorular",
     coach: {
       howBoth: {
         q: "A her iki grupta kazanıp toplamda nasıl kaybedebilir?",
-        a: "Çünkü iki tedavi aynı tür hastaya verilmedi. A çoğunlukla zor vakalarda, B çoğunlukla kolay vakalarda kullanıldı. Grupları toplamak “hangi tedavi” ile “hangi hastalar” sorusunu birbirine karıştırır ve hasta karışımı daha güçlü etkidir.",
+        a: "A çoğunlukla büyük taşı, B ise çoğunlukla küçük taşı olan hastalara uygulandı. Küçük taşlarda başarı oranı iki tedavide de daha yüksek. Toplam oran hesaplanırken her grubun etkisi, o tedaviyi alan hasta sayısına bağlıdır.",
       },
       whichWrong: {
         q: "Sayılardan biri yanlış mı?",
@@ -289,11 +290,11 @@ const copy: typeof en = {
       },
       whichBelieve: {
         q: "Peki hangi sayıya inanmalıyım?",
-        a: "Tek bir hasta için tedavi seçerken grup satırlarına, çünkü o hastanın ya küçük taşı vardır ya büyük, ikisinin ortalaması asla olmaz. Toplam satırı başka bir soruyu yanıtlar: bu belirli hasta karışımına ne oldu.",
+        a: "Aynı taş büyüklüğündeki hastaların sonuçlarını karşılaştırmak için ilgili grup satırına bak. Toplam satırı her tedavinin kendi hasta grubundaki genel başarı oranını gösterir.",
       },
     },
     caption:
-      "Grup başına başarı oranları Charig ve ark. (1986) çalışmasından, iki böbrek taşı tedavisinin karşılaştırılmasından geliyor. Kaydırıcılar hastaları gruplar arasında taşır; oranlar yerinde kalır. Her yüzde, yanında yazan sayıların bölümüdür.",
+      "Başlangıçtaki tablo Charig ve ark. (1986) çalışmasındaki iki böbrek taşı tedavisini karşılaştırır. Kaydırıcıları değiştirince model, yayımlanan grup oranlarından başarı sayılarını hesaplayıp en yakın tam sayıya yuvarlar. Tablodaki yüzdeler bu sayılardan hesaplanır.",
     predictQuestion: "Bir tedavi her grupta kazanıp toplamda kaybedebilir mi?",
     predict: { impossible: "Hayır, bu imkânsız", possible: "Evet, olabilir" },
     predictAnswer: "Evet; aşağıdaki tablo gerçek bir örnek",
@@ -321,7 +322,7 @@ const copy: typeof en = {
     shareValue: (treatment: string, small: number, large: number) =>
       `${treatment}: ${small} küçük taşlı, ${large} büyük taşlı hasta`,
     shareHint:
-      "Her tedavi 350 hastasını ve grup başına başarı oranlarını korur. Yalnızca karışım değişir.",
+      "Her tedavide toplam 350 hasta var. Küçük taşlı hasta sayısını değiştir ve toplam başarı oranına bak. Yuvarlama nedeniyle grupta gösterilen oran da biraz değişebilir.",
     restore: "Yayımlanmış tabloya dön",
     overallA: "A toplam",
     overallB: "B toplam",
@@ -337,13 +338,14 @@ const copy: typeof en = {
     stepSmallTitle: "Kolay vakalarla başlayalım",
     stepLargeButton: "Şimdi büyük taşları göster",
     stepOverallButton: "İki grubu topla",
-    seenBoth: "Her iki grupta da kazanan aynı.",
+    seenBoth: "İki grupta da aynı tedavinin başarı oranı daha yüksek.",
     chooseQuestion: "İki grup da aynı şeyi söylüyor. Sen hangi tedaviyi seçerdin?",
     choose: { a: "Açık ameliyat", b: "Kapalı yöntem" },
     chooseAnswer: (leader: string) => `İki grup da ${leader} diyor. Şimdi iki grubu topla.`,
-    explainWhat: "Her grupta kazanan taraf, gruplar toplanınca kaybedebilir.",
+    explainWhat:
+      "Her grupta daha yüksek olan başarı oranı, gruplar birleştirilince daha düşük kalabilir.",
     explainWhy:
-      "İki tedavi aynı tür hastaya verilmedi. Açık ameliyat büyük taşların çoğunu (zor vakaları) üstlendi, kapalı yöntem ise küçük taşların çoğunu. Grupları toplamak “hangi tedavi” ile “hangi hastalar” sorusunu birbirine karıştırır ve hasta karışımı daha güçlü etkidir.",
+      "Açık ameliyat daha çok büyük taşlı hastalarda, kapalı yöntem ise daha çok küçük taşlı hastalarda kullanıldı. Her tedavinin toplam başarı oranında daha çok hastası olan grup daha fazla ağırlık alır.",
     explainMaths:
       "Her toplam oran, o tedavinin iki grup oranının ağırlıklı ortalamasıdır; ağırlıklar da her gruptaki hasta sayısıdır. Ağırlıklar değişince ortalama da değişir: grup oranları sabit kalsa bile.",
     illustrative:
@@ -360,11 +362,11 @@ const copy: typeof en = {
     title: "Aynı deneyi iki farklı modelle incele",
     setup: [
       "Bilye, çivilerden oluşan üçgenin üstünden bırakılır ve yerçekimiyle düşer.",
-      "Yön değişimlerinin her biri bir çarpışmadan doğar, bir yazı turadan değil.",
+      "Fizik simülasyonunda bilyenin yönünü çivilerle teması ve hızı belirler.",
       "Sonunda durduğu göz hangisiyse orada sayılır.",
     ],
     caption:
-      "İdeal model, her sırada bağımsız olarak sağa veya sola gidildiğini varsayar ve binom dağılımını verir. Fizik simülasyonunda ise bilyelerin hareketini yerçekimi, temas ve sürtünme belirler. İki sonuç ayrı sütunlarda gösterilir.",
+      "İdeal modelde bilye her sırada, önceki adımlardan bağımsız olarak, 1/2 olasılıkla sağa veya sola gider. Gözlere ulaşma olasılıkları binom dağılımını izler. Fizik simülasyonunda ise bilyelerin hareketini yerçekimi, temas ve sürtünme belirler. İki sonuç ayrı sütunlarda gösterilir.",
     predictQuestion: "Birkaç bilye bırak. Nerede durur bunlar?",
     predict: {
       edges: "İki uçta",
@@ -382,7 +384,7 @@ const copy: typeof en = {
     boardEmptyLabel: (rows: number) =>
       `${rows} sıra çividen oluşan bir simülasyon; altındaki gözler boş.`,
     tableCaption: (rows: number, dropped: number) =>
-      `${rows} sıralı simülasyonun her gözü: ideal modelin saydığı yol sayısı, öngördüğü pay ve fiziksel olarak benzetilen ${dropped} bilyenin ulaştığı gerçek pay.`,
+      `${rows} sıralı simülasyonun her gözü: ideal modelin saydığı yol sayısı, öngördüğü pay ve fizik simülasyonunda gözlere yerleşen ${dropped} bilyeden bu göze düşenlerin oranı.`,
     binColumn: "Göz",
     pathsColumn: "Yol",
     idealColumn: "İdeal model",
@@ -470,12 +472,12 @@ const copy: typeof en = {
     observedColumn: "Gözlenen",
     deviationColumn: "Sapma",
     tableNote:
-      "Sapma sütununu yukarıdan aşağıya oku. Küçülme eğilimindedir; her satırda küçülmesi gerekmez.",
+      "Sapma sütununu yukarıdan aşağıya oku. Farkın azaldığı ve yeniden büyüdüğü satırlara bak.",
     reading: (trials: string) =>
       `Tek bir tohumdan üretilmiş ${trials} bağımsız karar. Aynı tohum her seferinde aynı koşuyu verir.`,
     explainWhat: "Oran başlarda gezinir, sonra teorik olasılığın yakınında durulur.",
     explainWhy:
-      "Her yeni deneme, yürüyen oranı bir öncekinden daha az oynatır; çünkü giderek artan sayıda sonucun yalnızca biridir. Başlangıçta tek bir sonuç payı onda bir oynatabilir; on bin denemeden sonra on binde birden fazla oynatamaz. Gezinme durmaz, yalnızca bu ölçekte görünmez olur.",
+      "n. deneme gözlenen oranı en fazla 1/n kadar değiştirebilir. Örneğin 10.000. denemenin etkisi en fazla 1/10.000’dir.",
     explainMaths:
       "Gözlenen oran, sağa giden karar sayısının deneme sayısına bölümüdür; sapma ise bu oranın teorik olasılığa uzaklığıdır. İkisi de bir formülden değil, koşunun kendisinden okunur; sapma sütununun arada bir yeniden yükselmesinin nedeni de budur.",
     theoreticalFigure: "Teorik olasılık",
@@ -504,7 +506,7 @@ const copy: typeof en = {
 
   recap: {
     lessons: [
-      "Sezgi bir olasılık hesaplayıcısı değildir. Dört dene dördünde de akla ilk gelen cevap yanlış olanıdır.",
+      "Monty Hall oyununda kapı değiştirerek kazanma olasılığı 2/3’tür. Bu sonuç, sunucunun her turda keçi göstermesine bağlıdır.",
       'Bir ipucu hangi sonuçların mümkün kaldığını değiştirir ve hangilerinin kalacağına cümlenin kuruluşu karar verir. "En az biri erkek" ile "ilki erkek" farklı kümeler bırakır.',
       "Tutma meselesi kişilerle değil çiftlerle ilgilidir. Yirmi üç kişi 253 çift oluşturur; aynı doğum gününün hissedildiğinden çok daha erken gelmesinin nedeni budur.",
       "Grupları toplamak, gruplar aynı biçimde doldurulmamışsa içlerindeki karşılaştırmayı tersine çevirebilir.",
@@ -521,14 +523,14 @@ const copy: typeof en = {
       monty: {
         pick: "Bir kapı seç. Tur ilk kapıyı seçti.",
         choose:
-          "Sunucu arkasında keçi olan bir kapıyı açtı. Karar : kapında kalın ya da kapalı olan öbür kapıya geçin.",
+          "Sunucu arkasında keçi olan bir kapıyı açtı. Seçtiğin kapıda kal ya da kapalı olan öbür kapıya geç.",
         score:
           "Oynadığın turlar burada toplanır. Birkaç turdan sonra bin turu tek seferde oynatabilirsin.",
       },
       birthday: {
         guess:
-          "Önce tahmin edin: kaç kişide ortak bir doğum günü olması olmamasından daha olası hale gelir?",
-        people: "Kişileri düğmeyle teker teker ekle ya da bu kaydırıcıyla atlayın.",
+          "Önce tahmin et. Odadaki kişi sayısı kaç olduğunda en az iki kişinin aynı gün doğmuş olma olasılığı %50’yi geçer?",
+        people: "Düğmeyle birer kişi ekle ya da kaydırıcıyla kişi sayısını değiştir.",
         room: "Odaya giren her yeni kişi, içerideki herkesle yeni bir çift oluşturur.",
         chance: "Kişi, çift ve kesin olasılık. Çift sayısı kişi sayısını hızla geçer.",
       },
@@ -551,9 +553,10 @@ const copy: typeof en = {
         rows: "Sıra sayısını buradan değiştir.",
       },
       largeNumbers: {
-        chart: "Turlar biriktikçe kazanma oranı ve teorik değer.",
-        trials: "Kaç tur oynanacağını seç. Tur en çoğunu seçti.",
-        figures: "Gözlenen ve teorik değer. Fark her adımda küçülmez ama sonunda oturur.",
+        chart: "Grafikte sağa gidenlerin oranını yatay teorik olasılık çizgisiyle karşılaştır.",
+        trials: "Deneme sayısını değiştir ve grafiğin yatay eksenine bak.",
+        figures:
+          "Sapma sütununa bak. Deneme sayısı arttıkça fark genellikle küçülür. Bazı satırlarda tekrar büyüyebilir.",
       },
     },
   },

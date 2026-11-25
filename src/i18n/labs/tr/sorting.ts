@@ -5,33 +5,34 @@ import type en from "../en/sorting";
 const copy: typeof en = {
   theRace: "Yarış",
   algorithm: "Algoritma",
-  shape: "Biçim",
-  shapeAndKeys: "Biçim ve klavye",
+  shape: "Başlangıç dizisi",
+  shapeAndKeys: "Dizi ve klavye",
   puzzle: "Görev",
   sorterA: "Sıralayıcı A",
   sorterB: "Sıralayıcı B",
   sort: "Sırala",
-  algorithms: { selection: "Seçmeli Sıralama", insertion: "Eklemeli Sıralama" },
+  algorithms: { selection: "Seçmeli sıralama", insertion: "Eklemeli sıralama" },
   shapes: {
     almost: "Neredeyse sıralı",
     sorted: "Sıralı",
     random: "Karışık",
     reversed: "Ters",
   },
-  legend: { settled: "yerleşti", comparing: "karşılaştırılıyor", lifted: "havada" },
+  legend: { settled: "sıralı bölüm", comparing: "karşılaştırılıyor", lifted: "eklenecek değer" },
   metrics: {
     comparisons: "Karşılaştırma",
     moves: "Taşıma",
     disorder: "Düzensizlik",
-    questionsAsked: "sorulan soru",
-    valuesRelocated: "yeri değişen değer",
+    questionsAsked: "iki değer arasında",
+    valuesRelocated: "yer değiştirme veya kaydırma",
     inversions: (n: number) => `${n} terslik`,
   },
-  drawHint: "Veriyi yeniden biçimlendirmek için grafiğin üzerinde sürükle.",
-  keyboardHint: "bir çubuk seçer,",
+  drawHint: "Diziyi yeniden çizmek için grafiğin üzerinde sürükle.",
+  keyboardHint: "bir çubuk seçer.",
   keyboardHint2: "yüksekliğini değiştirir.",
   keyboardHelp:
-    "Grafiği yeniden biçimlendirmek için üzerinde sürükle. Grafik odaktayken sol ve sağ oklar bir çubuk seçer, yukarı ve aşağı oklar yüksekliğini değiştirir.",
+    "Diziyi yeniden çizmek için grafiğin üzerinde sürükle. Grafik odaktayken sol ve sağ oklar çubuk seçer. Yukarı ve aşağı oklar seçili çubuğun değerini değiştirir.",
+  chartRole: "Sıralanabilir çubuk grafik",
   chartLabel: (size: number, algorithm: string, disorder: number, state: string) =>
     `${size} değerden oluşan çubuk grafik. ${algorithm}. Düzensizlik: ${disorder} terslik. ${state}`,
   state: {
@@ -49,33 +50,33 @@ const copy: typeof en = {
   },
   race: {
     question: "Hangisi önce bitirir?",
-    oneButton: "Tek düğme. İkisi de aynı veriden başlıyor.",
-    bothDone: "Aynı sonuç, ama biri diğerinin sorduğu soruların çok azını sordu.",
+    oneButton: "Sırala düğmesine bas. İki algoritma da aynı başlangıç dizisini alır.",
+    bothDone: "İki algoritma da aynı diziyi elde etti. Karşılaştırma ve taşıma sayılarına bak.",
     sorted: "sıralandı",
-    caption: "Aynı dizi, aynı sonuç. Sayaçlar değil.",
+    caption: "Aynı başlangıç dizisinde bile karşılaştırma ve taşıma sayıları farklı olabilir.",
     panelLabel: (title: string, size: number, state: string) =>
       `${title}: ${size} değerden oluşan çubuk grafik. ${state}`,
   },
   watch: {
     kicker: "Adım adım",
     title: "Aynı diziyi iki yöntemle sırala",
-    lede: "Birer adım ilerle. A’nın kalan diziyi nasıl taradığını, B’nin ise seçtiği değeri nasıl yerine taşıdığını karşılaştır.",
+    lede: "Adımla düğmesine bas. A, sıralanmamış bölümün en küçük değerini arar. B, sıradaki değeri sıralı bölümdeki yerine ekler.",
     caption:
-      "A, selection sort; B, insertion sort uygular. Karşılaştırma ve yazma sayılarını ayrı ayrı izle.",
+      "A seçmeli sıralama, B eklemeli sıralama uygular. Karşılaştırma ve taşıma sayaçlarını ayrı ayrı izle.",
   },
   data: {
-    kicker: "Veriyi çizin",
+    kicker: "Başlangıç dizisini değiştir",
     title: "Başlangıç sırası işlem sayısını nasıl etkiler?",
     lede: "Çubukları sürükleyerek diziyi değiştir veya hazır bir dizi seç. Aynı diziyi iki algoritmayla yeniden sırala.",
     caption:
-      "32 eleman için selection sort her seferinde 496 karşılaştırma yapar. Insertion sort’un karşılaştırma ve yazma sayıları ise girdinin ne kadar sıralı olduğuna bağlıdır.",
+      "Seçmeli sıralama 32 elemanda her zaman 496 karşılaştırma yapar. Eklemeli sıralamanın karşılaştırma ve taşıma sayıları elemanların başlangıç sırasına bağlıdır.",
   },
   distance: {
-    kicker: "Evinden ne kadar uzakta",
-    title: "Yer değiştirme sayısını ne belirler?",
-    lede: "Sıralı bir dizide tek bir çubuğu uzağa taşı. Ardından birkaç çubuğu küçük miktarlarda değiştir. İki durumda gereken yazma sayısını karşılaştır.",
+    kicker: "Terslik sayısı",
+    title: "Terslikler kaydırma sayısını nasıl etkiler?",
+    lede: "Sıralı dizide bir çubuğun yüksekliğini çok değiştir. Sonra sıralı diziden başlayıp birkaç çubuğu az değiştir. Her iki dizide Düzensizlik ve Taşıma değerlerini karşılaştır.",
     caption:
-      "Terslik, sırası yanlış olan bir çifttir. Bu eklemeli sıralama, kendisine verilen dizideki her terslik için tam bir kez kaydırır, yani evinden çok uzaktaki tek bir değer, birkaç küçük hatadan daha pahalıya gelebilir. Taşıma ise bu kaydırmalara, yeri değişen her değeri yerine yazan son işlemi de ekler; bu yüzden Düzensizlik'in biraz üzerinde durur.",
+      "Daha büyük değer daha küçük değerden önce gelirse bu çift bir tersliktir. Eklemeli sıralama her terslik için bir kaydırma yapar. Taşıma sayacı, kaydırmaları ve bir değeri farklı konuma yazan son ekleme işlemlerini birlikte sayar.",
   },
   challenge: {
     architecture: "Mimari",
@@ -83,69 +84,69 @@ const copy: typeof en = {
     testAccuracy: "Test doğruluğu",
     target: "Hedef",
     objectiveLine: (accuracy: string) =>
-      `Spiralde ${accuracy} test doğruluğuna ulaşın: olabildiğince az gizli nöron kullanarak.`,
+      `Spiralde olabildiğince az gizli nöronla ${accuracy} test doğruluğuna ulaş.`,
     solvedNote: "Çözüldü. Şimdi bir nöron eksiltip yeniden dene.",
-    noBest: "Henüz yok. Bol nöronla başlayın, sonra bozulana kadar azalt.",
+    noBest: "Henüz yok. Nöron sayısını artır, sonra hedefi karşılayan en küçük sayıyı bul.",
     bestLine: (neurons: number, accuracy: string, epoch: number) =>
-      `En iyi: ${neurons} gizli nöron, ${epoch.toLocaleString("en-US")} epok sonra ${accuracy}.`,
+      `En iyi: ${neurons} gizli nöron, ${epoch.toLocaleString("tr-TR")} epok sonra ${accuracy}.`,
     canvasLabel: (neurons: number, accuracy: string, epoch: number) =>
       `Spiral görevi: ${neurons} gizli nöron, ${epoch} epok sonra ${accuracy} test doğruluğu.`,
     announceSolved: (neurons: number, accuracy: string) =>
       `${neurons} gizli nöronla, ${accuracy} test doğruluğunda çözüldü.`,
-    kicker: "Meydan okuma",
-    title: "Karşılaştırmak mı, belleğe yazmak mı daha maliyetli?",
-    lede: "Her görevde sabit bir dizi ve işlem sınırı var. Karşılaştırma veya yazma bütçesine uyan ayarı bul.",
-    budget: "Bütçe",
+    kicker: "Görevler",
+    title: "İşlem sınırını aşmadan sırala",
+    lede: "Her görevde bir başlangıç dizisi ve işlem sınırı var. Sayaçta belirtilen karşılaştırma veya taşıma sınırını aşmadan diziyi sırala.",
+    budget: "İşlem sınırı",
     atMost: (unit: string) => `en fazla ${unit}`,
     barsChanged: "değişen çubuk",
     beaten: (done: number, total: number) => `${total} görevden ${done} tanesi geçildi`,
-    fixedTo: (algorithm: string) => `${algorithm} sabit. Onun yerine veriyi yeniden biçimlendirin.`,
-    goal: (budget: number, unit: string) => `Hedef: en fazla ${budget}  ${unit}.`,
+    fixedTo: (algorithm: string) =>
+      `Bu görevde sabit algoritma ${algorithm}. Çubuk değerlerini değiştirerek işlem sayısını düşür.`,
+    goal: (budget: number, unit: string) => `Hedef: en fazla ${budget} ${unit}.`,
     chartLabel: (title: string, size: number, disorder: number, goal: string, state: string) =>
-      `${title}: ${size} değerden oluşan çubuk grafik. Düzensizlik: ${disorder} terslik. ${goal}  ${state}`,
+      `${title}: ${size} değerden oluşan çubuk grafik. Düzensizlik: ${disorder} terslik. ${goal} ${state}`,
     editsUsed: (used: number, max: number) => `${max} düzenlemeden ${used} tanesi kullanıldı.`,
     finished: (comparisons: number, moves: number) =>
       `${comparisons} karşılaştırma ve ${moves} taşıma ile bitti.`,
-    budgetValue: (budget: number, unit: string) => `${budget}  ${unit}`,
+    budgetValue: (budget: number, unit: string) => `${budget} ${unit}`,
     editsLeft: (used: number, max: number) => `${max} düzenlemeden ${used} tanesi kullanıldı`,
     units: { comparisons: "karşılaştırma", moves: "taşıma" },
     puzzles: {
       "which-one-cares": {
-        title: "Hangisi umursuyor?",
-        brief: "Bütçenin izin verdiğinden daha az soru sorarak sırala.",
+        title: "Karşılaştırma sınırı",
+        brief: "Karşılaştırma sınırını aşmadan diziyi sırala.",
       },
       "fewest-writes": {
-        title: "En az yazma",
-        brief: "İstediğin kadar soru sorun: yeter ki fazla veri taşımayın.",
+        title: "Taşıma sınırı",
+        brief: "Taşıma sınırını aşmadan diziyi sırala. Karşılaştırma sayısı serbest.",
       },
       "three-edits": {
         title: "Üç düzenleme",
-        brief: "En fazla üç çubuğu yeniden biçimlendirin, sonra bütçenin altına inin.",
+        brief: "En fazla üç çubuğun değerini değiştir. Sonra işlem sınırını aşmadan diziyi sırala.",
       },
     },
     verdict: {
       tooManyEdits: (edits: number, max: number) =>
         `${edits} çubuk değiştirdin. En fazla ${max} değiştirebilirsin.`,
       overBudget: (used: number, unit: string, budget: number) =>
-        `${used}  ${unit}. Bütçe: ${budget}.`,
+        `${used} ${unit}. Sınır ${budget}.`,
       passed: (used: number, unit: string, budget: number) =>
-        `${budget} bütçesinin altında, ${used}  ${unit} ile çözüldü.`,
+        `${used} ${unit} ile çözüldü. Sınır ${budget}.`,
     },
   },
   recap: {
     lessons: [
-      "İki algoritma aynı sonuca, birbirinden çok farklı miktarda iş yaparak ulaşabilir",
-      "Seçmeli sıralama her turda kalanın tamamını yeniden tarar, bu yüzden maliyeti sabittir; eklemeli sıralama yalnızca gerektiği kadar geriye yürür, bu yüzden maliyeti verinin bir özelliğidir",
-      "Terslik, sırası yanlış olan bir çifttir ve bu eklemeli sıralama her biri için bir kez kaydırır; Taşıma buna her değeri yerine yazan son işlemi de ekler, ama daha az soru sormak, daha az veri yazmakla aynı hedef değildir",
+      "İki algoritma aynı sıralı diziyi üretir. Karşılaştırma ve taşıma sayıları farklı olabilir.",
+      "Seçmeli sıralama kalan elemanları taradığı için karşılaştırma sayısı yalnızca dizinin uzunluğuna bağlıdır. Eklemeli sıralama yalnızca gerekli elemanları kaydırır.",
+      "Eklemeli sıralamada her terslik bir kaydırmaya karşılık gelir. Taşıma sayacı, kaydırmaların yanı sıra değer farklı bir konuma eklenirse o işlemi de sayar.",
     ],
     footer:
-      "Bazı sıralama kütüphaneleri küçük veya büyük ölçüde sıralı parçaları insertion sort ile işler. Hangi yöntemin uygun olduğu girdiye ve önem verilen maliyete bağlıdır.",
+      "Bazı sıralama kütüphaneleri küçük veya büyük ölçüde sıralı parçaları eklemeli sıralamayla işler. Hangi yöntemin uygun olduğu girdiye ve önem verilen maliyete bağlıdır.",
   },
 
   // The guided tours, one per experiment (components/lab/guide/tours.ts).
   tour: {
-    intro:
-      "Aynı diziyi iki algoritmayla sırala. Oynatma hızından önce karşılaştırma ve yazma sayaçlarına bak.",
+    intro: "Aynı diziyi iki algoritmayla sırala. Karşılaştırma ve Taşıma sayaçlarına bak.",
     stages: {
       race: {
         bars: "İki sıralayıcı, aynı karışık çubuklar.",
@@ -157,25 +158,26 @@ const copy: typeof en = {
         bars: "Her seferinde tek sıralayıcı, yavaşlatılmış.",
         step: "Adımla: tek bir karşılaştırma ya da taşıma. Vurgulanan çubuklar o an bakılanlar.",
         algorithm:
-          "Buradan A ve B sıralayıcıları arasında geçiş yapıp ikisinde de adım adım ilerleyin.",
+          "A ve B arasında geçiş yap. Adımla düğmesiyle iki algoritmanın bir sonraki işlemini karşılaştır.",
       },
       data: {
         shape:
-          "Verinin biçimini buradan seç: karışık, neredeyse sıralı, ters. Grafiğin üzerinde sürükleyerek de çizebilirsin.",
+          "Başlangıç dizisini seç. Grafiğin üzerinde sürükleyerek kendi dizini de çizebilirsin.",
         sort: "Yeniden sırala.",
         figures:
-          "Selection Sort her seferinde aynı sayıda soru sorar; Insertion Sort'un sayısı veriyle değişir.",
+          "Seçmeli sıralamanın karşılaştırma sayısı başlangıç sırasıyla değişmez. Eklemeli sıralamanın sayacı diziye göre değişir.",
       },
       distance: {
-        bars: "Sıralı çubuklar. Birini yerinden çok uzağa sürükle ya da birkaçını hafifçe kaydırın.",
+        bars: "Bir çubuğun değerini çok değiştir veya birkaç çubuğun değerini az değiştir.",
         sort: "Sırala ve maliyeti karşılaştır.",
         figures:
-          "Önemli olan kaç tanesinin yanlış olduğu değil, ne kadar uzakta olduğu: yanlış sıradaki her çift bir kaydırmaya mal olur.",
+          "Düzensizlik sayacında terslik sayısını gör. Eklemeli sıralamada her terslik bir kaydırmaya karşılık gelir.",
       },
       challenge: {
-        array: "Üç sabit dizi, üç bütçe. Bulmacayı yukarıdan seç.",
-        algorithm: "Sıralayıcıyı seç: hangisinin daha ucuz olduğu neyin sayıldığına bağlı.",
-        sort: "Sırala ve bütçenin içinde kalıp kalmadığına bak.",
+        array: "Yukarıdan bir görev seç. İşlem sınırı grafiğin üstünde gösterilir.",
+        algorithm:
+          "Görev izin veriyorsa sıralama algoritmasını seç. Hangi sayacın sınırlandığına bak.",
+        sort: "Sırala düğmesine bas ve sayacı işlem sınırıyla karşılaştır.",
       },
     },
   },
@@ -184,16 +186,16 @@ const copy: typeof en = {
   study: {
     topics: {
       two: "Seçmeli ve eklemeli sıralama",
-      cost: "İş verinin içinde",
+      cost: "Başlangıç sırası ve işlem sayısı",
     },
     notes: {
       "sambol-selection": "Üç dakikadan kısa sürede seçmeli sıralama.",
       "sambol-insertion": "Üç dakikadan kısa sürede eklemeli sıralama.",
       "mit-6006-sorting": "MIT'nin sıralama dersi, iki algoritma da dahil.",
       "tomscott-sorting": "İşi saymanın neden koddan daha önemli olduğu.",
-      "algs4-sorts": "Eklemeli sıralamanın yer değiştirme sayısı ters çift sayısına eşittir.",
+      "algs4-sorts": "Eklemeli sıralamada kaydırmalar ile terslik sayısı arasındaki ilişki.",
       "ods-book":
-        "Sorting Algorithms bölümünde yöntemlerin maliyetini ve hangi koşullarda karşılaştırıldığını oku. Labdaki tek bir koşuyu bütün girdiler için performans garantisi sayma.",
+        "Sorting Algorithms bölümünde yöntemlerin maliyetini ve hangi koşullarda karşılaştırıldığını oku. Bu lab'daki tek bir çalıştırmayı bütün girdiler için performans garantisi sayma.",
     },
   },
 };

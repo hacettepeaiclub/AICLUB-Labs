@@ -262,9 +262,9 @@ export const tr: Translation = {
     "reinforcement-learning": {
       title: "Exactly What You Asked",
       term: "Pekiştirmeli öğrenme",
-      figure: "karelerden bir oda, robotun başladığı yer ve ulaşınca ödül aldığı kare.",
+      figure: "başlangıç noktası, ödül veren kare ve çıkış kapısı olan bir oda.",
       description:
-        "Ödülleri değiştirip ajanı yeniden eğit. Öğrendiği davranışın hedefinle uyuşup uyuşmadığını incele.",
+        "İşaretli karenin ödülünü değiştir ve ajanı yeniden eğit. Rotanın kapıya mı gittiğine, kareye mi döndüğüne bak.",
     },
     attention: {
       title: "Where the Model Looks",
@@ -276,9 +276,9 @@ export const tr: Translation = {
     "gradient-descent": {
       title: "The Size of a Step",
       term: "Gradient descent",
-      figure: "yukarıdan görülen bir çanak ve adımların tabanına indiği yol.",
+      figure: "amaç fonksiyonunun eşyükselti eğrileri ve başlangıç noktasından atılan adımlar.",
       description:
-        "Adım boyunu seç. Yüzeyin biçimi o adımı kaldıramıyorsa yol hedefe inmek yerine dağılır.",
+        "Adım boyunu değiştir. Aynı yüzeyde hangi ayarların minimuma yaklaştığını haritada karşılaştır.",
     },
     backpropagation: {
       title: "Who Is to Blame?",
@@ -298,37 +298,37 @@ export const tr: Translation = {
       title: "0.1 + 0.2",
       term: "Kayan nokta",
       figure:
-        "işaret, üs ve kesir bitleri olarak bir sayı; altında bu bitlerin tutabildiği değerlerin cetveli.",
-      description: "Bir sayı yaz. Bilgisayarın sakladığı değeri ve yuvarlama farkını incele.",
+        "bir sayının işaret, üs ve kesir bitleri ile temsil edilebilen değerlerin sayı doğrusu.",
+      description:
+        "Bir ondalık sayı yaz. Girdiyle saklanan değer arasındaki farkı incele ve float32 ile float16 gösterimlerini karşılaştır.",
     },
     "cache-locality": {
       title: "The Neighbours Come Free",
       term: "Önbellek yerelliği",
-      figure:
-        "sekizli satırlar halinde sayılar; birini okumak bütün bloğunu, komşularıyla birlikte getirir.",
+      figure: "sekiz sayılık önbellek blokları ve her erişimdeki isabet ya da ıska.",
       description:
-        "Aynı veriyi farklı sıralarla oku. Ölçülen süreleri cache modeliyle karşılaştır.",
+        "Aynı sayıları satır ve sütun sırasıyla oku. Cihazında ölçülen süreleri önbellek modeliyle karşılaştır.",
     },
     "race-condition": {
       title: "Lost Update",
       term: "Yarış durumu",
-      figure:
-        "iki iş parçacığının adımları iç içe; ikisi de yazmadan önce okur ve bir güncelleme kaybolur.",
+      figure: "iki iş parçacığının yazmaçları, ortak sayaç ve okuma, artırma, yazma adımları.",
       description:
-        "İki iş parçacığının işlem sırasını seç. Sayaçtaki bir güncellemenin nasıl kaybolduğunu göster.",
+        "İki iş parçacığının adımlarını sırala. Bir artırmanın ne zaman kaybolduğunu ve kilidin bunu nasıl önlediğini incele.",
     },
     "hash-tables": {
       title: "Computed Address",
       term: "Hash tabloları",
-      figure: "dolu bir yuvaya düşen ve ilk boş yuvaya kadar sağa adımlayan bir anahtar.",
-      description: "Anahtar ekle, çakışma oluştur ve tablo büyüdüğünde yapılan işi karşılaştır.",
+      figure: "hesaplanan yuva doluyken sırayla yoklanan yuvalar.",
+      description:
+        "Anahtar ekle ve çakışma olduğunda kaç yuva yoklandığına bak. Kapasite artınca ekleme maliyetini karşılaştır.",
     },
     "cryptographic-hashing": {
       title: "Digital Fingerprint",
       term: "Kriptografik hash",
-      figure: "farklı uzunlukta iki girdi, tek bir fonksiyon ve aynı boyda iki çıktı.",
+      figure: "iki farklı mesajın 256 bitlik SHA-256 özetleri.",
       description:
-        "Bir mesajın SHA-256 özetini hesapla. Tek karakter değişince kaç bitin değiştiğine bak.",
+        "Bir mesaj yazıp bir karakterini değiştir. SHA-256 özetinde değişen bitleri say ve iki özetin ortak ön ekini karşılaştır.",
     },
     "multilayer-perceptrons": {
       title: "Bending the Line",
@@ -339,24 +339,25 @@ export const tr: Translation = {
     },
     "graph-search": {
       title: "The Spreading Search",
-      term: "Graf araması",
-      figure: "başlangıcından bir ızgaraya yayılan bir arama; parlak halka sınır.",
+      term: "Çizgede arama",
+      figure:
+        "arama sırasında bekleyen hücreleri, işlenen hücreleri ve bulunan yolu gösteren ızgara.",
       description:
-        "Engeller ve farklı maliyetler ekle. BFS, Dijkstra ve A* yöntemlerinin incelediği hücreleri karşılaştır.",
+        "Engel ve çamur ekle. BFS, Dijkstra ve A* ile bulunan yolların maliyetini ve işlenen hücre sayısını karşılaştır.",
     },
     probability: {
       title: "Guess, Then Count",
       term: "Olasılık",
       figure: "üç kapı ve sunucunun açtığı kapı.",
       description:
-        "Altı deneyde önce tahmin yap. Hesaplanan olasılıkları, rastgele denemeleri ve fizik simülasyonunu karşılaştır.",
+        "Kapı seç, odaya kişi ekle, Galton tahtasına bilye bırak. Altı deneyde tahminlerini hesaplarla ve simülasyonla karşılaştır.",
     },
     sorting: {
       title: "The Cost of Order",
       term: "Sıralama algoritmaları",
-      figure: "kısadan uzuna sıralanmış çubuklar; son yerleşenler vurgulu.",
+      figure: "değerleri gösteren çubuklar ve sıralı bölümü belirten vurgu.",
       description:
-        "Aynı diziyi iki algoritmayla sırala. Karşılaştırma ve yazma sayılarını ayrı ayrı incele.",
+        "Aynı diziyi seçmeli ve eklemeli sıralamayla sırala. Karşılaştırma ve taşıma sayaçlarını incele.",
     },
     tokenization: {
       title: "Cheap Words",

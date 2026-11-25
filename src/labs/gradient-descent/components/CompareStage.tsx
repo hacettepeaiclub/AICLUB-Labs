@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useReducedMotion } from "@/hooks";
 import { Dial, Figure, LabSlider, Stage, Transport } from "@/components/lab";
 import { useLabCopy } from "@/i18n/labs";
-import { formatNumber } from "@/lib/format";
+import { useNumberFormat } from "./useNumberFormat";
 import type { OptimizerConfig, Point } from "../engine";
 import {
   LANDSCAPES,
@@ -57,6 +57,7 @@ export function CompareStage({
   caption,
 }: CompareStageProps) {
   const g = useLabCopy("gradient-descent");
+  const { formatNumber } = useNumberFormat();
   const reduced = useReducedMotion() ?? false;
 
   const preset = LANDSCAPES[landscapeId];
@@ -235,6 +236,7 @@ function ComparePanel({
   highlight?: boolean;
 }) {
   const g = useLabCopy("gradient-descent");
+  const { formatNumber } = useNumberFormat();
   const preset = LANDSCAPES[landscapeId];
   if (!view) return null;
 

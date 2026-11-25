@@ -2,7 +2,7 @@ import { useState, type KeyboardEvent } from "react";
 import { Figure, Stage } from "@/components/lab";
 import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
-import { formatNumber } from "@/lib/format";
+import { useNumberFormat } from "./useNumberFormat";
 import { createQ, greedyPolicy, rolloutGreedy, valueMap } from "../engine";
 import { ARROWS, cellActions, isGridKey, moveCursor } from "../view";
 import { TILE, colOf, rowOf } from "../world";
@@ -37,6 +37,7 @@ const UNTRAINED = createQ();
  */
 export function PolicyStage({ run }: PolicyStageProps) {
   const copy = useLabCopy("reinforcement-learning");
+  const { formatNumber } = useNumberFormat();
   const policy = copy.policy;
 
   const [cell, setCell] = useState(TILE);

@@ -22,6 +22,10 @@ const copy = {
     mud: "mud",
   },
   metrics: { explored: "Explored", path: "Path", cost: "Cost", noPath: "No path" },
+  comparisonCaption: "Same map, run by run",
+  comparisonSteps: "Steps",
+  gridRole: "Pathfinding grid",
+  spaceKey: "Space",
   steps: (n: number) => `${n} steps`,
   gridLabel: (walls: number, mud: number, state: string) =>
     `Editable grid. Walls: ${walls}. Mud cells: ${mud}. ${state}`,

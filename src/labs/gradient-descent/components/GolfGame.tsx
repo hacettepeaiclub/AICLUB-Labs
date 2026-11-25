@@ -5,6 +5,7 @@ import { useLocalStorage, useReducedMotion } from "@/hooks";
 import { orNull } from "@/hooks/useLocalStorage";
 import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
+import { useNumberFormat } from "./useNumberFormat";
 import { gradient } from "../engine";
 import {
   BOUND,
@@ -75,6 +76,7 @@ export const isRoundScore = (value: unknown): value is number => Number.isSafeIn
  */
 export function GolfGame() {
   const copy = useLabCopy("gradient-descent");
+  const { decimal } = useNumberFormat();
   const g = copy.golf;
   const reduced = useReducedMotion() ?? false;
   // Planned when the visitor starts, not on mount: a round is six searches.
@@ -279,7 +281,9 @@ export function GolfGame() {
                       )}
                     >
                       <span className="text-caption">{g.clubs[c.id]}</span>
-                      <span className="font-mono text-caption tabular-nums">η {c.eta}</span>
+                      <span className="font-mono text-caption tabular-nums">
+                        η {decimal(String(c.eta))}
+                      </span>
                     </button>
                   ))}
                 </div>
@@ -309,7 +313,7 @@ export function GolfGame() {
             <Figure label={g.figures.strokes} value={String(strokes)} tone="accent" />
             <Figure
               label={g.figures.slope}
-              value={slopeAt(plan.spec.landscape, lie).toFixed(2)}
+              value={decimal(slopeAt(plan.spec.landscape, lie).toFixed(2))}
               hint={g.figures.slopeHint}
             />
             <Figure label={g.figures.round} value={signedPar(total)} />
@@ -345,6 +349,7 @@ function Intro() {
 
 function ShotLog({ shots }: { shots: readonly Shot[] }) {
   const g = useLabCopy("gradient-descent").golf;
+  const { decimal } = useNumberFormat();
   if (shots.length === 0) return <p className="text-body-sm text-fg-muted">{g.firstShot}</p>;
   const recent = shots.slice(-3);
   return (
@@ -363,9 +368,9 @@ function ShotLog({ shots }: { shots: readonly Shot[] }) {
             {g.shotLine(
               shots.length - recent.length + i + 1,
               g.clubs[s.club],
-              String(club.eta),
-              s.slope.toFixed(2),
-              distance.toFixed(2),
+              decimal(String(club.eta)),
+              decimal(s.slope.toFixed(2)),
+              decimal(distance.toFixed(2)),
             )}{" "}
             {s.result === "out" ? g.results.out : s.result === "holed" ? g.results.holed : ""}
           </li>

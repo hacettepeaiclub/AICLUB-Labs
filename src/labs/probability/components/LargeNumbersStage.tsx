@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Figure, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
+import { useLanguage } from "@/i18n";
 import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import {
@@ -10,7 +11,7 @@ import {
   run as runTrials,
   widestDeviation,
 } from "../engine/largeNumbers";
-import { bandY, grouped, logX } from "../view";
+import { bandY, decimal, grouped, logX } from "../view";
 import { Coach, Explain } from "./Framing";
 import { Prediction } from "./Prediction";
 
@@ -42,6 +43,7 @@ const WATCHABLE = 100;
  * phenomenon lives. Each decade gets equal room instead.
  */
 export function LargeNumbersStage() {
+  const { language } = useLanguage();
   const copy = useLabCopy("probability");
   const l = copy.largeNumbers;
 
@@ -104,15 +106,15 @@ export function LargeNumbersStage() {
       <Stage
         width="full"
         caption={l.caption}
-        announcement={l.announce(count(trials), result.final.proportion.toFixed(4))}
+        announcement={l.announce(count(trials), decimal(result.final.proportion, 4, language))}
         viewport={
           <div className="space-y-3">
             <div
               role="img"
               aria-label={l.chartLabel(
                 count(trials),
-                result.final.proportion.toFixed(4),
-                RIGHT_PROBABILITY.toFixed(4),
+                decimal(result.final.proportion, 4, language),
+                decimal(RIGHT_PROBABILITY, 4, language),
               )}
               className="rounded-lg border border-line/20 bg-ink-900 p-4"
             >
@@ -219,13 +221,13 @@ export function LargeNumbersStage() {
                           {count(scale)}
                         </th>
                         <td className="py-1 pr-3 text-right font-mono tabular-nums text-accent">
-                          {RIGHT_PROBABILITY.toFixed(4)}
+                          {decimal(RIGHT_PROBABILITY, 4, language)}
                         </td>
                         <td className="py-1 pr-3 text-right font-mono tabular-nums text-fg">
-                          {point.proportion.toFixed(4)}
+                          {decimal(point.proportion, 4, language)}
                         </td>
                         <td className="py-1 text-right font-mono tabular-nums text-fg-muted">
-                          {point.deviation.toFixed(4)}
+                          {decimal(point.deviation, 4, language)}
                         </td>
                       </tr>
                     ))}
@@ -290,14 +292,17 @@ export function LargeNumbersStage() {
           <>
             <Figure
               label={l.theoreticalFigure}
-              value={RIGHT_PROBABILITY.toFixed(4)}
+              value={decimal(RIGHT_PROBABILITY, 4, language)}
               tone="accent"
               hint={l.theoreticalHint}
             />
-            <Figure label={l.observedFigure} value={result.final.proportion.toFixed(4)} />
+            <Figure
+              label={l.observedFigure}
+              value={decimal(result.final.proportion, 4, language)}
+            />
             <Figure
               label={l.deviationFigure}
-              value={result.final.deviation.toFixed(4)}
+              value={decimal(result.final.deviation, 4, language)}
               hint={l.deviationHint}
             />
             <Figure label={l.trialsFigure} value={count(trials)} />

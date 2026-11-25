@@ -5,6 +5,7 @@ import { useLabCopy } from "@/i18n/labs";
 import { cn } from "@/lib/cn";
 import { floorMod, gcd } from "../engine";
 import { formatValue } from "../view";
+import { useNumberFormat } from "./useNumberFormat";
 
 const KEYS = 32;
 
@@ -22,6 +23,7 @@ const KEYS = 32;
  */
 export function ModulusStage() {
   const t = useLabCopy("hash-tables").modulus;
+  const { decimal } = useNumberFormat();
   const [stored, save] = useLocalControls("acl:hash-tables:modulus", { m: 16, step: 8 });
   const m = Math.min(Math.max(Math.round(stored.m), 8), 32);
   const step = Math.min(Math.max(Math.round(stored.step), 1), 12);
@@ -87,7 +89,7 @@ export function ModulusStage() {
           <Figure
             label={t.figures.most}
             value={String(most)}
-            hint={t.figures.mostHint(formatValue(KEYS / m))}
+            hint={t.figures.mostHint(decimal(formatValue(KEYS / m)))}
           />
         </>
       }

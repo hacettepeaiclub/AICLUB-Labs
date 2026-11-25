@@ -5,7 +5,7 @@ import type en from "../en/cryptographic-hashing";
 const copy: typeof en = {
   sources: {
     title: "Kaynaklar",
-    sha2: "Bu laboratuvarın tarayıcının Web Crypto uygulamasından istediği SHA-256 özetini tanımlar. Laboratuvar özet işlevini kendisi uygulamaz.",
+    sha2: "SHA-256 algoritmasını tanımlar. Lab bu hesabı tarayıcının Web Crypto uygulamasından ister.",
   },
   inputLabel: "Mesajın",
   inputPlaceholder: "merhaba dünya",
@@ -17,32 +17,32 @@ const copy: typeof en = {
   unavailable: {
     title: "Bu tarayıcıda SHA-256 kullanılamıyor",
     insecureContext:
-      "Bu laboratuvarın tarayıcında özet hesaplayabilmesi için güvenli bir bağlantı (HTTPS) gerekiyor. Sayfayı https:// ile açmak sorunu çözecektir.",
+      "Özet hesaplamak için tarayıcının güvenli bağlantı kullanması gerekir. Sayfayı HTTPS üzerinden aç.",
     unsupported:
-      "Tarayıcın yerleşik özetleme özelliğini (Web Crypto) kullanıma sunmadı, bu yüzden gösterilecek bir özet yok. Bir ayar ya da bir eklenti bunu kapatmış olabilir.",
+      "Tarayıcında Web Crypto kullanılamıyor. Bir ayarın veya eklentinin bu özelliği kapatıp kapatmadığını kontrol et.",
     note: "Bu deney tarayıcının SHA-256 desteğini gerektirir. Destek yoksa özet hesaplanamaz.",
   },
 
   figures: {
     messageLength: "Mesaj",
-    characters: "karakter girdi",
+    characters: "UTF-16 kod birimi",
     digestLength: "Özet",
-    hexChars: "hex karakter çıktı",
+    hexChars: "on altılık basamak",
     digestBits: "Bit",
     alwaysBits: "mesaj ne kadar uzun olursa olsun",
     bitsChanged: "Değişen bit",
-    percentChanged: "Özetin",
-    expectedHalf: "yaklaşık yarısı beklenir",
-    charsChanged: "Değişen hex karakter",
-    ofSixtyFour: "64 karakterden",
+    percentChanged: "Değişen bit oranı",
+    expectedHalf: "çok sayıda karşılaştırmada ortalama %50 beklenir",
+    charsChanged: "Değişen on altılık basamak",
+    ofSixtyFour: "64 basamaktan",
   },
 
   hero: {
     title: "Mesajın özeti",
-    question: "İki farklı mesaj aynı uzunlukta çıktı üretebilir mi?",
+    question: "Mesajın uzunluğunu değiştir. Özet uzunluğu değişiyor mu?",
     digestLabel: "SHA-256 özeti",
     caption:
-      "Bir mesaj yaz. SHA-256, mesajın uzunluğundan bağımsız olarak 64 onaltılık karakter üretir. Bu çıktı, mesajın geri okunabilir bir kopyası değildir.",
+      "Bir mesaj yaz. SHA-256, mesajın uzunluğundan bağımsız olarak 256 bitlik bir özet üretir. Tarayıcı bu özeti 64 on altılık basamakla gösterir.",
     help: "Bir mesaj yaz. SHA-256 özeti alanın altında görünür ve yazdıkça güncellenir.",
     announce: (start: string) => `Özet güncellendi, artık ${start} ile başlıyor.`,
   },
@@ -50,100 +50,99 @@ const copy: typeof en = {
   determinism: {
     kicker: "Aynı mesaj, aynı özet",
     title: "Aynı mesaj her seferinde aynı özeti mi verir?",
-    lede: "Aynı mesajın özetini yeniden hesapla. Her tıklama yeni bir SHA-256 çağrısı yapar; önceki sonuç kullanılmaz.",
-    hashAgain: "Yeniden hash'le",
-    enough: "Bu kadar çalıştırma yeter",
-    empty: "Henüz çalıştırma yok. Bu mesajı hash'lemek için düğmeye bas.",
-    run: (n: number) => `${n}. çalıştırma`,
-    runsLabel: "Çalıştırma",
+    lede: "Hesapla düğmesine art arda bas. Her basışta aynı mesaj için yeni bir SHA-256 hesabı yapılır. Listedeki sonuçları karşılaştır.",
+    hashAgain: "Hesapla",
+    enough: "Hesaplama sınırına ulaşıldı",
+    empty: "İlk özeti listeye eklemek için Hesapla düğmesine bas.",
+    run: (n: number) => `${n}. hesaplama`,
+    runsLabel: "Hesaplama",
     distinctLabel: "Farklı özet",
-    distinctHint: "kaç kez çalıştırılırsa çalıştırılsın",
-    caption:
-      "Mesajı değiştirince liste temizlenir: eski mesajın sonuçları yenisi hakkında bir şey söylemez.",
-    announce: (runs: number, distinct: number) => `${runs} çalıştırma, ${distinct} farklı özet.`,
+    distinctHint: "aynı mesaj için",
+    caption: "Liste seçili mesaja ait özetleri gösterir. Mesajı değiştirdiğinde liste temizlenir.",
+    announce: (runs: number, distinct: number) => `${runs} hesaplama, ${distinct} farklı özet.`,
   },
 
   avalanche: {
-    kicker: "Tek küçük değişiklik",
+    kicker: "Çığ etkisi",
     title: "Bir karakter değişince kaç bit değişir?",
-    lede: "Mesajın tek karakterini değiştir. İki özette farklı olan karakterler işaretlenir.",
+    lede: "Mesajda bir karakteri değiştir. Önce ve sonra gösterilen özetlerde hangi on altılık basamakların değiştiğine bak.",
     before: "Önce",
     after: "Sonra",
     fieldLabel: "Bir karakteri değiştir",
-    help: "Mesajı düzenleyin. Düzenlemeden önceki ve sonraki özetler yukarıda karakter karakter karşılaştırılır.",
+    help: "Mesajı düzenle. Önceki ve yeni özetin farklı on altılık basamakları yukarıda işaretlenir.",
     editPrompt: "İki özeti karşılaştırmak için mesajdaki bir karakteri değiştir.",
     caption: "Değişen bit sayısı, iki SHA-256 özeti bit bit karşılaştırılarak hesaplanır.",
     announce: (changed: number, total: number, percent: number) =>
-      `${total} bitten ${changed} tanesi değişti, özetin %${percent} kadarı.`,
+      `${total} bitten ${changed} tanesi değişti, bitlerin %${percent} kadarı.`,
   },
 
   bits: {
     gridLabel: (total: number, ones: number, zeros: number, flipped: number) =>
-      `Mevcut özetin ${total} biti, 16'ya 16 ızgara olarak. ${ones} tanesi 1, ${zeros} tanesi 0. Son düzenlemede ${flipped} tanesi değişti.`,
+      `Özetin ${total} biti, 16 satır ve 16 sütun. ${ones} bit 1, ${zeros} bit 0. Son düzenlemede ${flipped} bit değişti.`,
     legendOne: "bit 1",
     legendZero: "bit 0",
     legendChanged: "değişti",
   },
 
   challenge: {
-    kicker: "Meydan okuma",
-    title: "İki farklı mesaj aynı kısa özeti verebilir mi?",
-    lede: "Önce özetin ilk karakterini eşleştirmeyi dene. Her turda bir karakter daha istenir. Rastgele bir denemenin başarı olasılığı her ek karakterde 16 kat azalır.",
+    kicker: "Ön ek eşleştirme",
+    title: "İki farklı mesajın özetleri aynı basamaklarla başlayabilir mi?",
+    lede: "Mesaj B'yi değiştir ve iki özetin ilk basamağını eşleştir. Her turda ön eke bir basamak eklenir. Bağımsız ve eşit olasılıklı özetler varsayılırsa her ek basamakla deneme başına olasılık önceki değerin 16'da biri olur.",
     inputA: "Mesaj A",
     inputB: "Mesaj B",
     identical:
-      "İki mesaj da aynı, dolayısıyla özetler tanım gereği eşleşiyor. Çakışma için iki farklı mesaj gerekir.",
+      "İki mesaj aynı olduğu için özetleri de aynı. Ön ek eşleştirme görevinde iki farklı mesaj kullan.",
     target: (round: number, odds: string) =>
-      `${round}. tur: ilk ${round} hex karakter aynı olsun. Deneme başına olasılık: 1/${odds}.`,
-    nextRound: (round: number) => `${round}. tur, on altı kat zor`,
+      `${round}. tur: ilk ${round} on altılık basamağı eşleştir. Deneme başına olasılık: 1/${odds}.`,
+    nextRound: (round: number) => `${round}. tura geç`,
     keepTrying: "Denemeye devam",
-    maxRound: "Elle deneyenlerin durduğu yer burası",
+    maxRound: "Son tur",
     matchedLabel: "Ortak ön ek",
     roundLabelFull: "Tur",
     oddsHint: (odds: string) => `deneme başına 1/${odds}`,
-    bestLabel: "En iyi",
+    bestLabel: "En uzun ortak ön ek",
     attemptsLabel: "Deneme",
     ladderLabel: (matched: number, total: number, round: number) =>
-      `Ortak ön ek: ${total} hex karakterden ${matched} tanesi eşleşiyor. Bu tur ${round} tane istiyor.`,
+      `${total} on altılık basamağın ilk ${matched} tanesi eşleşiyor. Tur hedefi ${round} basamak.`,
     caption:
-      "64 karakterin tamamının rastlantıyla eşleşmesi 2^256'da 1. Doğum günü kısayolu bile yaklaşık 2^128 hash gerektirir: saniyede bir trilyon hash'lense, kabaca 10^19 yıl.",
+      "Tek bir rastgele özetin belirli bir 256 bitlik özetle tam eşleşme olasılığı 1/2²⁵⁶. İki serbest girdi arasında tam çakışma için doğum günü hesabı yaklaşık 2¹²⁸ özet ölçeğindedir.",
     announce: (matched: number, total: number, best: number, round: number) =>
-      `${total} baştaki karakterden ${matched} tanesi eşleşiyor. En iyi ${best}. ${round}. tur ${round} tane istiyor.`,
+      `Toplam ${total} on altılık basamak. Baştan ${matched} basamak eşleşti. En uzun ortak ön ek ${best} basamak. Bu turun hedefi ${round} basamak.`,
   },
 
   usage: {
-    kicker: "Gerçek hayatta",
+    kicker: "Kullanım alanları",
     title: "Özetler nerede kullanılır?",
-    lede: "Aynı sabit boyutlu parmak izi, beş farklı biçimde kullanılıyor.",
+    lede: "Sabit uzunluklu özetler, veri bütünlüğü denetimi ve dijital imza gibi işlemlerde kullanılır.",
     items: {
       git: {
         label: "Git",
-        body: "Git her commit'i, içeriğini ve ebeveyninin hash'ini hash'leyerek tanımlar. Geçmişteki bir satırı değiştir, sonraki bütün hash'ler değişir, kurcalama görünür olur.",
+        body: "Git, commit nesnesinin içeriğinden bir kimlik hesaplar. Bu içerikte ebeveyn commit kimlikleri de bulunur. Geçmişte bir commit değişirse ona bağlı sonraki commit kimlikleri de değişir.",
       },
       passwords: {
         label: "Parolalar",
-        body: "Sunucular parolanın kendisini değil, tuzlanmış parola hash'ini saklar; böylece sızan bir veritabanı parolaları değil hash'leri barındırır. Ama kullanılan fonksiyon SHA-256 değildir: parola saklamada Argon2id, scrypt, bcrypt ya da PBKDF2 gibi kasıtlı olarak yavaş bir hash kullanılır, böylece deneme yapmak pahalı kalır.",
+        body: "Parolalar, rastgele bir tuzla birlikte parola saklamaya uygun bir algoritmadan geçirilir. Argon2id, scrypt, bcrypt ve PBKDF2 gibi yöntemler her parola denemesine hesaplama maliyeti ekler.",
       },
       https: {
         label: "HTTPS",
-        body: "TLS, sertifikaları parmak izlemek ve verinin yolda değiştirilmediğini doğrulamak için hash kullanır. Tek bir bitin değişmesi hash'i bozar.",
+        body: "Sertifika parmak izi, sertifikanın özetidir. TLS ayrıca bağlantının bütünlüğünü doğrulamak için kimlik doğrulama mekanizmaları kullanır.",
       },
       blockchain: {
         label: "Blok zinciri",
-        body: "Her blok bir öncekinin hash'ini içerir ve böylece birbirlerine zincirlenir. Eski bir bloğu değiştir, sonraki bütün hash'ler bozulur; defteri kurcalamaya karşı görünür kılan da budur.",
+        body: "Her blok, önceki bloğun özetini içerir. Eski bir bloğun içeriği değişirse ardındaki blokta kayıtlı özet artık onunla eşleşmez.",
       },
       signatures: {
         label: "İmzalar",
-        body: "Dijital imza, belgenin kendisi üzerinde değil hash'i üzerinde atılır. Herkes belgeyi yeniden hash'leyip imzayı doğrulayabilir.",
+        body: "Birçok dijital imza şeması, belgenin özetini imza hesabında kullanır. Doğrulamada belge, imza ve açık anahtar birlikte kullanılır.",
       },
     },
   },
 
   recap: {
     lessons: [
-      "Aynı mesaj her zaman aynı özeti üretir ve özet, girene bakılmaksızın aynı uzunluktadır",
-      "Tek bir karakteri değiştirmek 256 bitin yaklaşık yarısını değiştirir; çığ etkisi denen bu davranış burada varsayılmıyor, ölçülüyor",
-      "İki özetin baştan paylaştığı her yeni hex karakter on altı kat daha olasılıksızdır; 64 karakterin birden tutmasının ulaşılmaz olmasının nedeni bu",
+      "Aynı bayt dizisi aynı SHA-256 özetini üretir. Özet uzunluğu her zaman 256 bittir.",
+      "Girdideki küçük değişiklik çoğu zaman özetin bitlerinin yaklaşık yarısını değiştirir. Çığ etkisini görmek için değişen bit sayısını birkaç farklı düzenlemede karşılaştır.",
+      "Rastgele özetlerde ortak ön eke eklenen her on altılık basamak, önceki eşleşme olasılığını 16'ya böler.",
     ],
     footer:
       'Özetler tarayıcında crypto.subtle.digest("SHA-256", …) ile hesaplanır. Mesaj ve özetler bu sayfa tarafından kaydedilmez.',
@@ -152,29 +151,29 @@ const copy: typeof en = {
   // The guided tours, one per experiment (components/lab/guide/tours.ts).
   tour: {
     intro:
-      "Bir mesaj yaz, ardından tek karakterini değiştir. Özette değişen karakterleri ve bit sayısını karşılaştır.",
+      "Bir mesaj yazıp bir karakterini değiştir. Değişen on altılık basamak sayısını değişen bit sayısıyla karşılaştır.",
     stages: {
       digest: {
-        type: "Bu kutuya istediğini yaz. Tur, metnin sonuna bir ünlem ekledi.",
-        digest: "Tek bir karakter fazlası, özetin bitlerinin yaklaşık yarısını değiştirdi.",
-        length: "Mesaj istediğin uzunlukta olabilir; özet her zaman 64 hex karakter, yani 256 bit.",
+        type: "Bu kutuya istediğin mesajı yaz. Tur mesajın sonuna bir ünlem ekledi.",
+        digest: "Mesajın sonuna tek karakter eklenince özetin nasıl değiştiğine bak.",
+        length:
+          "Mesajı uzat ve Özet kutusundaki uzunluğa bak. Sonuç yine 64 on altılık basamakla gösterilir ve 256 bittir.",
       },
       determinism: {
-        again: "Aynı mesajı yeniden hash'leyin. Her basış yeni bir SHA-256 hesabı.",
-        runs: "Her çalıştırma bu listeye eklenir ve hepsi aynı özet.",
-        distinct: "Şimdiye kadarki çalıştırmalar ve kaç farklı özet verdikleri: her zaman bir.",
+        again: "Hesapla düğmesine bas. Listeye aynı mesajın yeni hesaplanan özeti eklenir.",
+        runs: "Her hesaplamadan sonra listeye aynı özet eklenir.",
+        distinct: "Hesaplama ve Farklı özet sayaçlarını karşılaştır.",
       },
       avalanche: {
-        edit: "Mesajı buradan değiştir. Tur tek bir harf ekledi.",
-        compare: "Önceki ve sonraki özet. Farklı olan her karakter ikisinde de işaretli.",
-        count:
-          "Değişen bitler, iki gerçek özet bit bit karşılaştırılarak sayıldı: yaklaşık yarısı.",
+        edit: "Tur mesaja bir harf ekledi. Önceki ve yeni özetlerde işaretlenen basamaklara bak.",
+        compare: "Önceki ve sonraki özet. Değişen basamaklar iki özette de işaretlenir.",
+        count: "Değişen bit sayısına bak. Mesajı yeniden düzenle ve iki sayımı karşılaştır.",
       },
       collision: {
-        fields: "İki mesaj, iki özet. Amaç, ilk karakterlerinin aynı olması.",
-        type: "İkinci mesajı değiştirip yeniden dene. Tur bir harf ekledi.",
+        fields: "İki farklı mesaj kullan. İlk turda iki özetin yalnızca ilk basamağını eşleştir.",
+        type: "Rehberli tur ikinci mesaja bir harf ekledi. Ortak ön ek sayacına bak.",
         rounds:
-          "Her tur bir karakter daha eşleşmesini ister ve bir öncekinden on altı kat daha zordur.",
+          "Her turda hedef ön ek bir basamak uzar. Ortak ön ek sayacını tur hedefiyle karşılaştır.",
       },
     },
   },
@@ -191,7 +190,7 @@ const copy: typeof en = {
       "cp-birthday": "Çakışmaların neden beklenenden erken geldiği ve bunun bir özet için anlamı.",
       "3b1b-256bit": "2²⁵⁶'nın gerçekte ne kadar büyük olduğu ve aramanın neden imkânsız olduğu.",
       cryptobook:
-        "İleri düzey, ücretsiz kitap. Çakışmaya dayanıklı hash işlevleri kısmına bak; hash table için hızlı adres üretmek ile kriptografik güvenliğin neden farklı hedefler olduğunu açıklar.",
+        "İleri düzey, ücretsiz kitap. Çakışmaya dayanıklı hash fonksiyonları kısmına bak; hash tablosu için hızlı adres üretmek ile kriptografik güvenliğin neden farklı hedefler olduğunu açıklar.",
     },
   },
 };

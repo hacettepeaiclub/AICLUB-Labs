@@ -1,3 +1,4 @@
+import { useNumberFormat } from "./useNumberFormat";
 import { useMemo, useState } from "react";
 import { Figure, Stage } from "@/components/lab";
 import { Button } from "@/components/ui";
@@ -29,6 +30,7 @@ const EXAMPLES = ["0.1", "1/3", "0.5", "9007199254740993", "0.3", "1e-320", "1e3
  */
 export function StoreStage() {
   const lab = useLabCopy("floating-point");
+  const { decimal } = useNumberFormat();
   const t = lab.store;
   const [text, setText] = useState("0.1");
   const [next, setNext] = useState(1);
@@ -68,7 +70,7 @@ export function StoreStage() {
     <Stage
       width="wide"
       caption={t.caption}
-      announcement={settled ? t.announce(settled) : ""}
+      announcement={settled ? t.announce(decimal(settled)) : ""}
       viewport={
         <div className="space-y-3">
           <FloatField
@@ -129,14 +131,14 @@ export function StoreStage() {
         <>
           <Figure
             label={t.figures.offBy}
-            value={view?.error ? readable(absR(view.error)) : "—"}
+            value={view?.error ? decimal(readable(absR(view.error))) : "—"}
             tone={view?.error && view.error.num !== 0n ? "accent" : "default"}
           />
           <Figure
             label={t.figures.relative}
             value={
               view?.error && view.typed
-                ? readable(relative(view.error, view.typed) ?? absR(view.error))
+                ? decimal(readable(relative(view.error, view.typed) ?? absR(view.error)))
                 : "—"
             }
           />

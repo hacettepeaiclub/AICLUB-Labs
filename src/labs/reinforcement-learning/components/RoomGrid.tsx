@@ -1,4 +1,5 @@
 import { useLabCopy } from "@/i18n/labs";
+import { useNumberFormat } from "./useNumberFormat";
 import { cn } from "@/lib/cn";
 import { COLS, GOAL, ROWS, START, TILE, colOf, rowOf } from "../world";
 import { ARROWS, cellKind, type CellKind } from "../view";
@@ -63,6 +64,7 @@ export function RoomGrid({
   className,
 }: RoomGridProps) {
   const copy = useLabCopy("reinforcement-learning");
+  const { decimal } = useNumberFormat();
   const interactive = typeof onSelect === "function";
 
   const visits = new Map<number, number>();
@@ -141,7 +143,7 @@ export function RoomGrid({
                         aria-hidden
                         className="relative mt-0.5 font-mono text-[0.55rem] leading-none tabular-nums text-fg-muted"
                       >
-                        {value.toFixed(1)}
+                        {decimal(value.toFixed(1))}
                       </span>
                     )}
                   </>
@@ -171,7 +173,7 @@ export function RoomGrid({
                   : copy.learn.cellLabel(
                       rowOf(index) + 1,
                       colOf(index) + 1,
-                      value.toFixed(2),
+                      decimal(value.toFixed(2)),
                       action < 0
                         ? copy.learn.noAction
                         : copy.learn.actions[action as 0 | 1 | 2 | 3],
