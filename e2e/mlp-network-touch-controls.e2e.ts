@@ -1,16 +1,18 @@
 import { expect, test } from "@playwright/test";
+import enMlp from "../src/i18n/labs/en/multilayer-perceptrons";
+import trMlp from "../src/i18n/labs/tr/multilayer-perceptrons";
 
 const locales = [
   {
     language: "en",
-    diagram: "The network, from the inside",
+    diagram: enMlp.playground.insideTitle,
     addLayer: "+ Add a layer",
     addNeuron: /^Add a neuron to /,
     removeNeuron: /^Remove a neuron from /,
   },
   {
     language: "tr",
-    diagram: "Ağın içeriden görünüşü",
+    diagram: trMlp.playground.insideTitle,
     addLayer: "+ Katman ekle",
     addNeuron: / katmanına nöron ekle$/,
     removeNeuron: / katmanından nöron çıkar$/,

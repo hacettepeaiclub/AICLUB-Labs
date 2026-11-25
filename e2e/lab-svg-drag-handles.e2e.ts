@@ -1,4 +1,8 @@
 import { devices, expect, test, type Locator, type Page } from "@playwright/test";
+import enBackprop from "../src/i18n/labs/en/backpropagation";
+import enMlp from "../src/i18n/labs/en/multilayer-perceptrons";
+import trBackprop from "../src/i18n/labs/tr/backpropagation";
+import trMlp from "../src/i18n/labs/tr/multilayer-perceptrons";
 
 type Point = { x: number; y: number };
 
@@ -46,18 +50,18 @@ async function drag(page: Page, start: Point, end: Point, touch: boolean) {
 const labels = [
   {
     language: "en",
-    output: "The network's output",
-    layers: "Number of layers",
-    depthTitle: "Make the network longer and watch the signal fade.",
-    line: "The line's position. Arrow keys slide it along its arrow.",
+    output: enBackprop.pull.handleLabel,
+    layers: enBackprop.depth.handleLabel,
+    depthTitle: enBackprop.depth.title,
+    line: enMlp.neuron.slideHandle,
     tip: /^The arrow's tip:/,
   },
   {
     language: "tr",
-    output: "Ağın çıktısı",
-    layers: "Katman sayısı",
-    depthTitle: "Katman sayısı arttıkça gradyan neden küçülür?",
-    line: "Çizginin konumu. Ok tuşları onu okunun yönünde kaydırır.",
+    output: trBackprop.pull.handleLabel,
+    layers: trBackprop.depth.handleLabel,
+    depthTitle: trBackprop.depth.title,
+    line: trMlp.neuron.slideHandle,
     tip: /^Okun ucu:/,
   },
 ];
