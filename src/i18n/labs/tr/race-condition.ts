@@ -21,7 +21,7 @@ const copy: typeof en = {
     mutex:
       "Kritik bölgeye aynı anda yalnızca bir sürecin girmesini sağlayan karşılıklı dışlama problemini ele alır.",
     concurrencyBugs:
-      "5. bölümdeki iddiayı destekler: gerçek yazılımdaki yarışlar çoğunlukla bozulan bölünmezlik ya da bozulan sıradır ve çoğu yalnızca birkaç bellek erişiminin belirli bir sırasında ortaya çıkar; testte yakalanmalarını zorlaştıran da budur.",
+      "5. bölümdeki iddiayı destekler. Gerçek yazılımdaki yarışlar çoğunlukla atomiklik ihlali ya da sıra ihlalidir. Çoğu, birkaç bellek erişimi belirli bir sırada gerçekleştiğinde ortaya çıkar. Bu yüzden testte yakalanmaları zordur.",
     therac:
       "Nadir olanın zararsız olmadığını destekler: bir radyoterapi cihazının yazılımındaki, yalnızca belirli zamanlamalarda ortaya çıkan yarış durumları ölümcül aşırı dozlara yol açan nedenler arasındaydı.",
   },
@@ -43,7 +43,7 @@ const copy: typeof en = {
       load: (who: string, v: string, value: number) =>
         `${who}, ${v} değerini kendi yazmacına okudu: r = ${value}.`,
       add: (who: string, value: number) =>
-        `${who}, yazmacında 1 ekledi: r = ${value}. Bellek değişmedi.`,
+        `${who}, yazmacındaki değere 1 ekledi: r = ${value}. Bellek değişmedi.`,
       store: (who: string, v: string, value: number) => `${who}, ${v} değişkenine ${value} yazdı.`,
       lock: (who: string) => `${who}, m kilidini aldı. Bırakana kadar öteki iş parçacığı bekler.`,
       unlock: (who: string) => `${who}, m kilidini bıraktı.`,
@@ -238,8 +238,8 @@ const copy: typeof en = {
       },
       fix: {
         threads: "Aynı sayaçla korumasız, kilitli ve atomik artırma seçeneklerini karşılaştır.",
-        lock: "Koruma menüsünden Kilit seç. Okuma, artırma ve yazma aynı kritik bölgede çalışır.",
-        run: "A'nın kilidi almasını sağla. B'nin m kilidini beklediğini doğrula.",
+        lock: "Tur, Koruma seçeneklerinden Kilit'i seçti. Okuma, artırma ve yazma artık aynı kritik bölgede çalışır.",
+        run: "Tur A'nın ilk adımını çalıştırdı ve A m kilidini aldı. Şimdi B'yi çalıştır ve m kilidini bekliyor etiketine bak.",
         atomic: "Atomik eklemeyi seç. A ve B birer adımda sayacı artırır.",
       },
       atm: {
